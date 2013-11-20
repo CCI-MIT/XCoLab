@@ -24,6 +24,7 @@ public abstract class ContestPhaseTypeBaseImpl extends ContestPhaseTypeModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a contest phase type model instance should use the {@link ContestPhaseType} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ContestPhaseTypeLocalServiceUtil.addContestPhaseType(this);

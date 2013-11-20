@@ -24,6 +24,7 @@ public abstract class ProposalSupporterBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal supporter model instance should use the {@link ProposalSupporter} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ProposalSupporterLocalServiceUtil.addProposalSupporter(this);

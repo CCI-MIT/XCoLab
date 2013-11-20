@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the FocusAreaOntologyTerm service. Represents a row in the &quot;xcolab_FocusAreaOntologyTerm&quot; database table, with each column mapped to a property of this class.
@@ -64,10 +66,11 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.FocusAreaOntologyTerm"),
             true);
     public static long FOCUSAREAID_COLUMN_BITMASK = 1L;
+    public static long ORDER_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.FocusAreaOntologyTerm"));
     private static ClassLoader _classLoader = FocusAreaOntologyTerm.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             FocusAreaOntologyTerm.class
         };
     private long _focusAreaId;
@@ -76,7 +79,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
     private long _ontologyTermId;
     private int _order;
     private long _columnBitmask;
-    private FocusAreaOntologyTerm _escapedModelProxy;
+    private FocusAreaOntologyTerm _escapedModel;
 
     public FocusAreaOntologyTermModelImpl() {
     }
@@ -89,6 +92,10 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
      */
     public static FocusAreaOntologyTerm toModel(
         FocusAreaOntologyTermSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         FocusAreaOntologyTerm model = new FocusAreaOntologyTermImpl();
 
         model.setFocusAreaId(soapModel.getFocusAreaId());
@@ -106,6 +113,10 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
      */
     public static List<FocusAreaOntologyTerm> toModels(
         FocusAreaOntologyTermSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<FocusAreaOntologyTerm> models = new ArrayList<FocusAreaOntologyTerm>(soapModels.length);
 
         for (FocusAreaOntologyTermSoap soapModel : soapModels) {
@@ -115,36 +126,76 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
         return models;
     }
 
+    @Override
     public FocusAreaOntologyTermPK getPrimaryKey() {
         return new FocusAreaOntologyTermPK(_focusAreaId, _ontologyTermId);
     }
 
+    @Override
     public void setPrimaryKey(FocusAreaOntologyTermPK primaryKey) {
         setFocusAreaId(primaryKey.focusAreaId);
         setOntologyTermId(primaryKey.ontologyTermId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new FocusAreaOntologyTermPK(_focusAreaId, _ontologyTermId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((FocusAreaOntologyTermPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return FocusAreaOntologyTerm.class;
     }
 
+    @Override
     public String getModelClassName() {
         return FocusAreaOntologyTerm.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("ontologyTermId", getOntologyTermId());
+        attributes.put("order", getOrder());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long focusAreaId = (Long) attributes.get("focusAreaId");
+
+        if (focusAreaId != null) {
+            setFocusAreaId(focusAreaId);
+        }
+
+        Long ontologyTermId = (Long) attributes.get("ontologyTermId");
+
+        if (ontologyTermId != null) {
+            setOntologyTermId(ontologyTermId);
+        }
+
+        Integer order = (Integer) attributes.get("order");
+
+        if (order != null) {
+            setOrder(order);
+        }
+    }
+
     @JSON
+    @Override
     public long getFocusAreaId() {
         return _focusAreaId;
     }
 
+    @Override
     public void setFocusAreaId(long focusAreaId) {
         _columnBitmask |= FOCUSAREAID_COLUMN_BITMASK;
 
@@ -162,19 +213,23 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
     }
 
     @JSON
+    @Override
     public long getOntologyTermId() {
         return _ontologyTermId;
     }
 
+    @Override
     public void setOntologyTermId(long ontologyTermId) {
         _ontologyTermId = ontologyTermId;
     }
 
     @JSON
+    @Override
     public int getOrder() {
         return _order;
     }
 
+    @Override
     public void setOrder(int order) {
         _columnBitmask = -1L;
 
@@ -187,13 +242,12 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
 
     @Override
     public FocusAreaOntologyTerm toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (FocusAreaOntologyTerm) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (FocusAreaOntologyTerm) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -209,6 +263,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
         return focusAreaOntologyTermImpl;
     }
 
+    @Override
     public int compareTo(FocusAreaOntologyTerm focusAreaOntologyTerm) {
         int value = 0;
 
@@ -229,17 +284,15 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FocusAreaOntologyTerm)) {
             return false;
         }
 
-        FocusAreaOntologyTerm focusAreaOntologyTerm = null;
-
-        try {
-            focusAreaOntologyTerm = (FocusAreaOntologyTerm) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        FocusAreaOntologyTerm focusAreaOntologyTerm = (FocusAreaOntologyTerm) obj;
 
         FocusAreaOntologyTermPK primaryKey = focusAreaOntologyTerm.getPrimaryKey();
 
@@ -294,6 +347,7 @@ public class FocusAreaOntologyTermModelImpl extends BaseModelImpl<FocusAreaOntol
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

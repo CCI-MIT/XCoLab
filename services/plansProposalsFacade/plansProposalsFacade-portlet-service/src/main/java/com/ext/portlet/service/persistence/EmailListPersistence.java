@@ -24,67 +24,6 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
      */
 
     /**
-    * Caches the email list in the entity cache if it is enabled.
-    *
-    * @param emailList the email list
-    */
-    public void cacheResult(com.ext.portlet.model.EmailList emailList);
-
-    /**
-    * Caches the email lists in the entity cache if it is enabled.
-    *
-    * @param emailLists the email lists
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.EmailList> emailLists);
-
-    /**
-    * Creates a new email list with the primary key. Does not add the email list to the database.
-    *
-    * @param id the primary key for the new email list
-    * @return the new email list
-    */
-    public com.ext.portlet.model.EmailList create(long id);
-
-    /**
-    * Removes the email list with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param id the primary key of the email list
-    * @return the email list that was removed
-    * @throws com.ext.portlet.NoSuchEmailListException if a email list with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.EmailList remove(long id)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.EmailList updateImpl(
-        com.ext.portlet.model.EmailList emailList, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the email list with the primary key or throws a {@link com.ext.portlet.NoSuchEmailListException} if it could not be found.
-    *
-    * @param id the primary key of the email list
-    * @return the email list
-    * @throws com.ext.portlet.NoSuchEmailListException if a email list with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.EmailList findByPrimaryKey(long id)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the email list with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param id the primary key of the email list
-    * @return the email list, or <code>null</code> if a email list with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.EmailList fetchByPrimaryKey(long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the email lists where name = &#63;.
     *
     * @param name the name
@@ -99,7 +38,7 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
     * Returns a range of all the email lists where name = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.EmailListModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param name the name
@@ -116,7 +55,7 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
     * Returns an ordered range of all the email lists where name = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.EmailListModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param name the name
@@ -134,10 +73,6 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
     /**
     * Returns the first email list in the ordered set where name = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param name the name
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching email list
@@ -151,11 +86,20 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last email list in the ordered set where name = &#63;.
+    * Returns the first email list in the ordered set where name = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param name the name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching email list, or <code>null</code> if a matching email list could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList fetchByfindByName_First(
+        java.lang.String name,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last email list in the ordered set where name = &#63;.
     *
     * @param name the name
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -170,11 +114,20 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the email lists before and after the current email list in the ordered set where name = &#63;.
+    * Returns the last email list in the ordered set where name = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param name the name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching email list, or <code>null</code> if a matching email list could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList fetchByfindByName_Last(
+        java.lang.String name,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the email lists before and after the current email list in the ordered set where name = &#63;.
     *
     * @param id the primary key of the current email list
     * @param name the name
@@ -188,6 +141,25 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchEmailListException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the email lists where name = &#63; from the database.
+    *
+    * @param name the name
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByfindByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of email lists where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching email lists
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByfindByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the email list where name = &#63; and email = &#63; or throws a {@link com.ext.portlet.NoSuchEmailListException} if it could not be found.
@@ -229,6 +201,92 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the email list where name = &#63; and email = &#63; from the database.
+    *
+    * @param name the name
+    * @param email the email
+    * @return the email list that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList removeByfindByNameEmail(
+        java.lang.String name, java.lang.String email)
+        throws com.ext.portlet.NoSuchEmailListException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of email lists where name = &#63; and email = &#63;.
+    *
+    * @param name the name
+    * @param email the email
+    * @return the number of matching email lists
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByfindByNameEmail(java.lang.String name,
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the email list in the entity cache if it is enabled.
+    *
+    * @param emailList the email list
+    */
+    public void cacheResult(com.ext.portlet.model.EmailList emailList);
+
+    /**
+    * Caches the email lists in the entity cache if it is enabled.
+    *
+    * @param emailLists the email lists
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.EmailList> emailLists);
+
+    /**
+    * Creates a new email list with the primary key. Does not add the email list to the database.
+    *
+    * @param id the primary key for the new email list
+    * @return the new email list
+    */
+    public com.ext.portlet.model.EmailList create(long id);
+
+    /**
+    * Removes the email list with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param id the primary key of the email list
+    * @return the email list that was removed
+    * @throws com.ext.portlet.NoSuchEmailListException if a email list with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList remove(long id)
+        throws com.ext.portlet.NoSuchEmailListException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.EmailList updateImpl(
+        com.ext.portlet.model.EmailList emailList)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the email list with the primary key or throws a {@link com.ext.portlet.NoSuchEmailListException} if it could not be found.
+    *
+    * @param id the primary key of the email list
+    * @return the email list
+    * @throws com.ext.portlet.NoSuchEmailListException if a email list with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList findByPrimaryKey(long id)
+        throws com.ext.portlet.NoSuchEmailListException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the email list with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param id the primary key of the email list
+    * @return the email list, or <code>null</code> if a email list with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.EmailList fetchByPrimaryKey(long id)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the email lists.
     *
     * @return the email lists
@@ -241,7 +299,7 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
     * Returns a range of all the email lists.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.EmailListModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of email lists
@@ -256,7 +314,7 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
     * Returns an ordered range of all the email lists.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.EmailListModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of email lists
@@ -271,54 +329,11 @@ public interface EmailListPersistence extends BasePersistence<EmailList> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the email lists where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByfindByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes the email list where name = &#63; and email = &#63; from the database.
-    *
-    * @param name the name
-    * @param email the email
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByfindByNameEmail(java.lang.String name,
-        java.lang.String email)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the email lists from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of email lists where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching email lists
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByfindByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of email lists where name = &#63; and email = &#63;.
-    *
-    * @param name the name
-    * @param email the email
-    * @return the number of matching email lists
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByfindByNameEmail(java.lang.String name,
-        java.lang.String email)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

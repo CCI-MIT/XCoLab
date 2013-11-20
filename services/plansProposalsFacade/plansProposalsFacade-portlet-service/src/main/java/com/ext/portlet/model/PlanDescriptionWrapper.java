@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link PlanDescription}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanDescription
+ * @author Brian Wing Shun Chan
+ * @see PlanDescription
  * @generated
  */
 public class PlanDescriptionWrapper implements PlanDescription,
@@ -19,12 +24,95 @@ public class PlanDescriptionWrapper implements PlanDescription,
         _planDescription = planDescription;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanDescription.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanDescription.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("version", getVersion());
+        attributes.put("planVersion", getPlanVersion());
+        attributes.put("created", getCreated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+        attributes.put("image", getImage());
+        attributes.put("pitch", getPitch());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Long planVersion = (Long) attributes.get("planVersion");
+
+        if (planVersion != null) {
+            setPlanVersion(planVersion);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+
+        Long image = (Long) attributes.get("image");
+
+        if (image != null) {
+            setImage(image);
+        }
+
+        String pitch = (String) attributes.get("pitch");
+
+        if (pitch != null) {
+            setPitch(pitch);
+        }
     }
 
     /**
@@ -32,6 +120,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the primary key of this plan description
     */
+    @Override
     public long getPrimaryKey() {
         return _planDescription.getPrimaryKey();
     }
@@ -41,6 +130,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param primaryKey the primary key of this plan description
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _planDescription.setPrimaryKey(primaryKey);
     }
@@ -50,6 +140,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the ID of this plan description
     */
+    @Override
     public long getId() {
         return _planDescription.getId();
     }
@@ -59,6 +150,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param id the ID of this plan description
     */
+    @Override
     public void setId(long id) {
         _planDescription.setId(id);
     }
@@ -68,6 +160,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the plan ID of this plan description
     */
+    @Override
     public long getPlanId() {
         return _planDescription.getPlanId();
     }
@@ -77,6 +170,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param planId the plan ID of this plan description
     */
+    @Override
     public void setPlanId(long planId) {
         _planDescription.setPlanId(planId);
     }
@@ -86,6 +180,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the name of this plan description
     */
+    @Override
     public java.lang.String getName() {
         return _planDescription.getName();
     }
@@ -95,6 +190,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param name the name of this plan description
     */
+    @Override
     public void setName(java.lang.String name) {
         _planDescription.setName(name);
     }
@@ -104,6 +200,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the description of this plan description
     */
+    @Override
     public java.lang.String getDescription() {
         return _planDescription.getDescription();
     }
@@ -113,6 +210,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param description the description of this plan description
     */
+    @Override
     public void setDescription(java.lang.String description) {
         _planDescription.setDescription(description);
     }
@@ -122,6 +220,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the version of this plan description
     */
+    @Override
     public long getVersion() {
         return _planDescription.getVersion();
     }
@@ -131,6 +230,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param version the version of this plan description
     */
+    @Override
     public void setVersion(long version) {
         _planDescription.setVersion(version);
     }
@@ -140,6 +240,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the plan version of this plan description
     */
+    @Override
     public long getPlanVersion() {
         return _planDescription.getPlanVersion();
     }
@@ -149,6 +250,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param planVersion the plan version of this plan description
     */
+    @Override
     public void setPlanVersion(long planVersion) {
         _planDescription.setPlanVersion(planVersion);
     }
@@ -158,6 +260,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the created of this plan description
     */
+    @Override
     public java.util.Date getCreated() {
         return _planDescription.getCreated();
     }
@@ -167,6 +270,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param created the created of this plan description
     */
+    @Override
     public void setCreated(java.util.Date created) {
         _planDescription.setCreated(created);
     }
@@ -176,6 +280,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the update author ID of this plan description
     */
+    @Override
     public long getUpdateAuthorId() {
         return _planDescription.getUpdateAuthorId();
     }
@@ -185,6 +290,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param updateAuthorId the update author ID of this plan description
     */
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _planDescription.setUpdateAuthorId(updateAuthorId);
     }
@@ -194,6 +300,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the image of this plan description
     */
+    @Override
     public long getImage() {
         return _planDescription.getImage();
     }
@@ -203,6 +310,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param image the image of this plan description
     */
+    @Override
     public void setImage(long image) {
         _planDescription.setImage(image);
     }
@@ -212,6 +320,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @return the pitch of this plan description
     */
+    @Override
     public java.lang.String getPitch() {
         return _planDescription.getPitch();
     }
@@ -221,42 +330,64 @@ public class PlanDescriptionWrapper implements PlanDescription,
     *
     * @param pitch the pitch of this plan description
     */
+    @Override
     public void setPitch(java.lang.String pitch) {
         _planDescription.setPitch(pitch);
     }
 
+    @Override
     public boolean isNew() {
         return _planDescription.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _planDescription.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _planDescription.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _planDescription.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _planDescription.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _planDescription.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _planDescription.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _planDescription.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _planDescription.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _planDescription.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _planDescription.setExpandoBridgeAttributes(serviceContext);
@@ -267,6 +398,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
         return new PlanDescriptionWrapper((PlanDescription) _planDescription.clone());
     }
 
+    @Override
     public int compareTo(PlanDescription planDescription) {
         return _planDescription.compareTo(planDescription);
     }
@@ -276,12 +408,19 @@ public class PlanDescriptionWrapper implements PlanDescription,
         return _planDescription.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<PlanDescription> toCacheModel() {
         return _planDescription.toCacheModel();
     }
 
+    @Override
     public PlanDescription toEscapedModel() {
         return new PlanDescriptionWrapper(_planDescription.toEscapedModel());
+    }
+
+    @Override
+    public PlanDescription toUnescapedModel() {
+        return new PlanDescriptionWrapper(_planDescription.toUnescapedModel());
     }
 
     @Override
@@ -289,26 +428,50 @@ public class PlanDescriptionWrapper implements PlanDescription,
         return _planDescription.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _planDescription.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planDescription.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanDescriptionWrapper)) {
+            return false;
+        }
+
+        PlanDescriptionWrapper planDescriptionWrapper = (PlanDescriptionWrapper) obj;
+
+        if (Validator.equals(_planDescription,
+                    planDescriptionWrapper._planDescription)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public PlanDescription getWrappedPlanDescription() {
         return _planDescription;
     }
 
+    @Override
     public PlanDescription getWrappedModel() {
         return _planDescription;
     }
 
+    @Override
     public void resetOriginalValues() {
         _planDescription.resetOriginalValues();
     }

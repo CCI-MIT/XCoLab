@@ -1,67 +1,183 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.PlanSectionPlanMapLocalServiceUtil;
 import com.ext.portlet.service.persistence.PlanSectionPlanMapPK;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
     implements PlanSectionPlanMap {
     private long _sectionId;
     private long _relatedPlanId;
+    private BaseModel<?> _planSectionPlanMapRemoteModel;
 
     public PlanSectionPlanMapClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanSectionPlanMap.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanSectionPlanMap.class.getName();
     }
 
+    @Override
     public PlanSectionPlanMapPK getPrimaryKey() {
         return new PlanSectionPlanMapPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKey(PlanSectionPlanMapPK primaryKey) {
         setSectionId(primaryKey.sectionId);
         setRelatedPlanId(primaryKey.relatedPlanId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanSectionPlanMapPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanSectionPlanMapPK) primaryKeyObj);
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("sectionId", getSectionId());
+        attributes.put("relatedPlanId", getRelatedPlanId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long sectionId = (Long) attributes.get("sectionId");
+
+        if (sectionId != null) {
+            setSectionId(sectionId);
+        }
+
+        Long relatedPlanId = (Long) attributes.get("relatedPlanId");
+
+        if (relatedPlanId != null) {
+            setRelatedPlanId(relatedPlanId);
+        }
+    }
+
+    @Override
     public long getSectionId() {
         return _sectionId;
     }
 
+    @Override
     public void setSectionId(long sectionId) {
         _sectionId = sectionId;
+
+        if (_planSectionPlanMapRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionPlanMapRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSectionId", long.class);
+
+                method.invoke(_planSectionPlanMapRemoteModel, sectionId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
+    @Override
     public void setRelatedPlanId(long relatedPlanId) {
         _relatedPlanId = relatedPlanId;
+
+        if (_planSectionPlanMapRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionPlanMapRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setRelatedPlanId", long.class);
+
+                method.invoke(_planSectionPlanMapRemoteModel, relatedPlanId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getPlanSectionPlanMapRemoteModel() {
+        return _planSectionPlanMapRemoteModel;
+    }
+
+    public void setPlanSectionPlanMapRemoteModel(
+        BaseModel<?> planSectionPlanMapRemoteModel) {
+        _planSectionPlanMapRemoteModel = planSectionPlanMapRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _planSectionPlanMapRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_planSectionPlanMapRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionPlanMapLocalServiceUtil.addPlanSectionPlanMap(this);
@@ -72,7 +188,7 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
 
     @Override
     public PlanSectionPlanMap toEscapedModel() {
-        return (PlanSectionPlanMap) Proxy.newProxyInstance(PlanSectionPlanMap.class.getClassLoader(),
+        return (PlanSectionPlanMap) ProxyUtil.newProxyInstance(PlanSectionPlanMap.class.getClassLoader(),
             new Class[] { PlanSectionPlanMap.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -87,6 +203,7 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
         return clone;
     }
 
+    @Override
     public int compareTo(PlanSectionPlanMap planSectionPlanMap) {
         PlanSectionPlanMapPK primaryKey = planSectionPlanMap.getPrimaryKey();
 
@@ -95,17 +212,15 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanSectionPlanMapClp)) {
             return false;
         }
 
-        PlanSectionPlanMapClp planSectionPlanMap = null;
-
-        try {
-            planSectionPlanMap = (PlanSectionPlanMapClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanSectionPlanMapClp planSectionPlanMap = (PlanSectionPlanMapClp) obj;
 
         PlanSectionPlanMapPK primaryKey = planSectionPlanMap.getPrimaryKey();
 
@@ -134,6 +249,7 @@ public class PlanSectionPlanMapClp extends BaseModelImpl<PlanSectionPlanMap>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

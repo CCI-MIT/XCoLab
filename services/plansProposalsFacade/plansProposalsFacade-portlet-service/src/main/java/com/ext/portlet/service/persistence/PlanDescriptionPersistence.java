@@ -24,6 +24,348 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
      */
 
     /**
+    * Returns the plan description where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanDescriptionException} if it could not be found.
+    *
+    * @param planId the plan ID
+    * @return the matching plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription findByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan description where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param planId the plan ID
+    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByCurrentByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan description where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param planId the plan ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByCurrentByPlanId(
+        long planId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes the plan description where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @return the plan description that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription removeByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan descriptions where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByCurrentByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the plan descriptions where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @return the matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByPlanIdPlanVersion(
+        long planId, long planVersion)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the plan descriptions where planId = &#63; and planVersion &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param start the lower bound of the range of plan descriptions
+    * @param end the upper bound of the range of plan descriptions (not inclusive)
+    * @return the range of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByPlanIdPlanVersion(
+        long planId, long planVersion, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the plan descriptions where planId = &#63; and planVersion &le; &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param start the lower bound of the range of plan descriptions
+    * @param end the upper bound of the range of plan descriptions (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByPlanIdPlanVersion(
+        long planId, long planVersion, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan description in the ordered set where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription findByPlanIdPlanVersion_First(
+        long planId, long planVersion,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan description in the ordered set where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByPlanIdPlanVersion_First(
+        long planId, long planVersion,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan description in the ordered set where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription findByPlanIdPlanVersion_Last(
+        long planId, long planVersion,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan description in the ordered set where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByPlanIdPlanVersion_Last(
+        long planId, long planVersion,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan descriptions before and after the current plan description in the ordered set where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param id the primary key of the current plan description
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription[] findByPlanIdPlanVersion_PrevAndNext(
+        long id, long planId, long planVersion,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the plan descriptions where planId = &#63; and planVersion &le; &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByPlanIdPlanVersion(long planId, long planVersion)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan descriptions where planId = &#63; and planVersion &le; &#63;.
+    *
+    * @param planId the plan ID
+    * @param planVersion the plan version
+    * @return the number of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByPlanIdPlanVersion(long planId, long planVersion)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the plan descriptions where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the plan descriptions where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan descriptions
+    * @param end the upper bound of the range of plan descriptions (not inclusive)
+    * @return the range of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
+        long planId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the plan descriptions where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan descriptions
+    * @param end the upper bound of the range of plan descriptions (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
+        long planId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan description in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription findByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan description in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan description in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription findByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan description in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan description, or <code>null</code> if a matching plan description could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription fetchByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan descriptions before and after the current plan description in the ordered set where planId = &#63;.
+    *
+    * @param id the primary key of the current plan description
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan description
+    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanDescription[] findByAllByPlanId_PrevAndNext(
+        long id, long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanDescriptionException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the plan descriptions where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan descriptions where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan descriptions
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Caches the plan description in the entity cache if it is enabled.
     *
     * @param planDescription the plan description
@@ -60,7 +402,7 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.PlanDescription updateImpl(
-        com.ext.portlet.model.PlanDescription planDescription, boolean merge)
+        com.ext.portlet.model.PlanDescription planDescription)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -86,184 +428,6 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the plan description where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanDescriptionException} if it could not be found.
-    *
-    * @param planId the plan ID
-    * @return the matching plan description
-    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription findByCurrentByPlanId(
-        long planId)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan description where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param planId the plan ID
-    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription fetchByCurrentByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan description where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param planId the plan ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription fetchByCurrentByPlanId(
-        long planId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan description where planId = &#63; and planVersion &le; &#63; or throws a {@link com.ext.portlet.NoSuchPlanDescriptionException} if it could not be found.
-    *
-    * @param planId the plan ID
-    * @param planVersion the plan version
-    * @return the matching plan description
-    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription findByPlanIdPlanVersion(
-        long planId, long planVersion)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan description where planId = &#63; and planVersion &le; &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param planId the plan ID
-    * @param planVersion the plan version
-    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription fetchByPlanIdPlanVersion(
-        long planId, long planVersion)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan description where planId = &#63; and planVersion &le; &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param planId the plan ID
-    * @param planVersion the plan version
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching plan description, or <code>null</code> if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription fetchByPlanIdPlanVersion(
-        long planId, long planVersion, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns all the plan descriptions where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns a range of all the plan descriptions where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan descriptions
-    * @param end the upper bound of the range of plan descriptions (not inclusive)
-    * @return the range of matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
-        long planId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns an ordered range of all the plan descriptions where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan descriptions
-    * @param end the upper bound of the range of plan descriptions (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanDescription> findByAllByPlanId(
-        long planId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the first plan description in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan description
-    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription findByAllByPlanId_First(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the last plan description in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan description
-    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a matching plan description could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription findByAllByPlanId_Last(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan descriptions before and after the current plan description in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current plan description
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan description
-    * @throws com.ext.portlet.NoSuchPlanDescriptionException if a plan description with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanDescription[] findByAllByPlanId_PrevAndNext(
-        long id, long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the plan descriptions.
     *
     * @return the plan descriptions
@@ -276,7 +440,7 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
     * Returns a range of all the plan descriptions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan descriptions
@@ -292,7 +456,7 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
     * Returns an ordered range of all the plan descriptions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanDescriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan descriptions
@@ -307,72 +471,11 @@ public interface PlanDescriptionPersistence extends BasePersistence<PlanDescript
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes the plan description where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByCurrentByPlanId(long planId)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes the plan description where planId = &#63; and planVersion &le; &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @param planVersion the plan version
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByPlanIdPlanVersion(long planId, long planVersion)
-        throws com.ext.portlet.NoSuchPlanDescriptionException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the plan descriptions where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the plan descriptions from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan descriptions where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByCurrentByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan descriptions where planId = &#63; and planVersion &le; &#63;.
-    *
-    * @param planId the plan ID
-    * @param planVersion the plan version
-    * @return the number of matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByPlanIdPlanVersion(long planId, long planVersion)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan descriptions where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan descriptions
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByAllByPlanId(long planId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

@@ -66,13 +66,17 @@ public interface ActivitySubscriptionModel extends AttachedModel,
      *
      * @return the fully qualified class name of this activity subscription
      */
+    @Override
     public String getClassName();
+
+    public void setClassName(String className);
 
     /**
      * Returns the class name ID of this activity subscription.
      *
      * @return the class name ID of this activity subscription
      */
+    @Override
     public long getClassNameId();
 
     /**
@@ -80,6 +84,7 @@ public interface ActivitySubscriptionModel extends AttachedModel,
      *
      * @param classNameId the class name ID of this activity subscription
      */
+    @Override
     public void setClassNameId(long classNameId);
 
     /**
@@ -87,6 +92,7 @@ public interface ActivitySubscriptionModel extends AttachedModel,
      *
      * @return the class p k of this activity subscription
      */
+    @Override
     public long getClassPK();
 
     /**
@@ -94,6 +100,7 @@ public interface ActivitySubscriptionModel extends AttachedModel,
      *
      * @param classPK the class p k of this activity subscription
      */
+    @Override
     public void setClassPK(long classPK);
 
     /**
@@ -182,35 +189,60 @@ public interface ActivitySubscriptionModel extends AttachedModel,
      */
     public void setModifiedDate(Date modifiedDate);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(ActivitySubscription activitySubscription);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<ActivitySubscription> toCacheModel();
 
+    @Override
     public ActivitySubscription toEscapedModel();
 
+    @Override
+    public ActivitySubscription toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

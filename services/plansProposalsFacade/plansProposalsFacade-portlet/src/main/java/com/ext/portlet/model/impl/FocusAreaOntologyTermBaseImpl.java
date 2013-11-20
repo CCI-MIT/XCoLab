@@ -24,6 +24,7 @@ public abstract class FocusAreaOntologyTermBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a focus area ontology term model instance should use the {@link FocusAreaOntologyTerm} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             FocusAreaOntologyTermLocalServiceUtil.addFocusAreaOntologyTerm(this);

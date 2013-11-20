@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @see Contest
  * @generated
  */
-public class ContestCacheModel implements CacheModel<Contest>, Serializable {
+public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long ContestPK;
     public String ContestName;
     public String ContestShortName;
@@ -106,6 +109,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public Contest toEntityModel() {
         ContestImpl contestImpl = new ContestImpl();
 
@@ -203,5 +207,119 @@ public class ContestCacheModel implements CacheModel<Contest>, Serializable {
         contestImpl.resetOriginalValues();
 
         return contestImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        ContestPK = objectInput.readLong();
+        ContestName = objectInput.readUTF();
+        ContestShortName = objectInput.readUTF();
+        ContestDescription = objectInput.readUTF();
+        ContestModelDescription = objectInput.readUTF();
+        ContestPositionsDescription = objectInput.readUTF();
+        defaultPlanDescription = objectInput.readUTF();
+        PlanTypeId = objectInput.readLong();
+        created = objectInput.readLong();
+        updated = objectInput.readLong();
+        authorId = objectInput.readLong();
+        contestActive = objectInput.readBoolean();
+        planTemplateId = objectInput.readLong();
+        focusAreaId = objectInput.readLong();
+        contestLogoId = objectInput.readLong();
+        featured = objectInput.readBoolean();
+        plansOpenByDefault = objectInput.readBoolean();
+        sponsorLogoId = objectInput.readLong();
+        sponsorText = objectInput.readUTF();
+        flag = objectInput.readInt();
+        flagText = objectInput.readUTF();
+        flagTooltip = objectInput.readUTF();
+        groupId = objectInput.readLong();
+        discussionGroupId = objectInput.readLong();
+        weight = objectInput.readInt();
+        resourcesUrl = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(ContestPK);
+
+        if (ContestName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestName);
+        }
+
+        if (ContestShortName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestShortName);
+        }
+
+        if (ContestDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestDescription);
+        }
+
+        if (ContestModelDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestModelDescription);
+        }
+
+        if (ContestPositionsDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestPositionsDescription);
+        }
+
+        if (defaultPlanDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(defaultPlanDescription);
+        }
+
+        objectOutput.writeLong(PlanTypeId);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updated);
+        objectOutput.writeLong(authorId);
+        objectOutput.writeBoolean(contestActive);
+        objectOutput.writeLong(planTemplateId);
+        objectOutput.writeLong(focusAreaId);
+        objectOutput.writeLong(contestLogoId);
+        objectOutput.writeBoolean(featured);
+        objectOutput.writeBoolean(plansOpenByDefault);
+        objectOutput.writeLong(sponsorLogoId);
+
+        if (sponsorText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(sponsorText);
+        }
+
+        objectOutput.writeInt(flag);
+
+        if (flagText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(flagText);
+        }
+
+        if (flagTooltip == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(flagTooltip);
+        }
+
+        objectOutput.writeLong(groupId);
+        objectOutput.writeLong(discussionGroupId);
+        objectOutput.writeInt(weight);
+
+        if (resourcesUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(resourcesUrl);
+        }
     }
 }

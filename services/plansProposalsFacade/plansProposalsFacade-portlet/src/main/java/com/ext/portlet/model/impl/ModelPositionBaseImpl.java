@@ -24,6 +24,7 @@ public abstract class ModelPositionBaseImpl extends ModelPositionModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a model position model instance should use the {@link ModelPosition} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelPositionLocalServiceUtil.addModelPosition(this);

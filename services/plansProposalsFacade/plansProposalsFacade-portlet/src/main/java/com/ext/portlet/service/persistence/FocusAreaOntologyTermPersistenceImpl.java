@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchFocusAreaOntologyTermException;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.impl.FocusAreaOntologyTermImpl;
 import com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -19,69 +20,10 @@ import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.EmailListPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
-import com.ext.portlet.service.persistence.FocusAreaPersistence;
-import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
-import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +40,13 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +54,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the focus area ontology term service.
@@ -138,6 +80,17 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED,
+            FocusAreaOntologyTermImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED,
+            FocusAreaOntologyTermImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_FOCUSAREAID =
         new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +99,8 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID =
         new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
@@ -155,33 +108,26 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
             FocusAreaOntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFocusAreaId",
             new String[] { Long.class.getName() },
-            FocusAreaOntologyTermModelImpl.FOCUSAREAID_COLUMN_BITMASK);
+            FocusAreaOntologyTermModelImpl.FOCUSAREAID_COLUMN_BITMASK |
+            FocusAreaOntologyTermModelImpl.ORDER_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_FOCUSAREAID = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFocusAreaId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED,
-            FocusAreaOntologyTermImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED,
-            FocusAreaOntologyTermImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_FOCUSAREAID_FOCUSAREAID_2 = "focusAreaOntologyTerm.id.focusAreaId = ?";
     private static final String _SQL_SELECT_FOCUSAREAONTOLOGYTERM = "SELECT focusAreaOntologyTerm FROM FocusAreaOntologyTerm focusAreaOntologyTerm";
     private static final String _SQL_SELECT_FOCUSAREAONTOLOGYTERM_WHERE = "SELECT focusAreaOntologyTerm FROM FocusAreaOntologyTerm focusAreaOntologyTerm WHERE ";
     private static final String _SQL_COUNT_FOCUSAREAONTOLOGYTERM = "SELECT COUNT(focusAreaOntologyTerm) FROM FocusAreaOntologyTerm focusAreaOntologyTerm";
     private static final String _SQL_COUNT_FOCUSAREAONTOLOGYTERM_WHERE = "SELECT COUNT(focusAreaOntologyTerm) FROM FocusAreaOntologyTerm focusAreaOntologyTerm WHERE ";
-    private static final String _FINDER_COLUMN_FOCUSAREAID_FOCUSAREAID_2 = "focusAreaOntologyTerm.id.focusAreaId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "focusAreaOntologyTerm.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No FocusAreaOntologyTerm exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No FocusAreaOntologyTerm exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(FocusAreaOntologyTermPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "order"
+            });
     private static FocusAreaOntologyTerm _nullFocusAreaOntologyTerm = new FocusAreaOntologyTermImpl() {
             @Override
             public Object clone() {
@@ -196,11 +142,13 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
     private static CacheModel<FocusAreaOntologyTerm> _nullFocusAreaOntologyTermCacheModel =
         new CacheModel<FocusAreaOntologyTerm>() {
+            @Override
             public FocusAreaOntologyTerm toEntityModel() {
                 return _nullFocusAreaOntologyTerm;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -355,353 +303,11 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the focus area ontology term in the entity cache if it is enabled.
-     *
-     * @param focusAreaOntologyTerm the focus area ontology term
-     */
-    public void cacheResult(FocusAreaOntologyTerm focusAreaOntologyTerm) {
-        EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermImpl.class,
-            focusAreaOntologyTerm.getPrimaryKey(), focusAreaOntologyTerm);
-
-        focusAreaOntologyTerm.resetOriginalValues();
+=======
+    public FocusAreaOntologyTermPersistenceImpl() {
+        setModelClass(FocusAreaOntologyTerm.class);
     }
-
-    /**
-     * Caches the focus area ontology terms in the entity cache if it is enabled.
-     *
-     * @param focusAreaOntologyTerms the focus area ontology terms
-     */
-    public void cacheResult(List<FocusAreaOntologyTerm> focusAreaOntologyTerms) {
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
-            if (EntityCacheUtil.getResult(
-                        FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                        FocusAreaOntologyTermImpl.class,
-                        focusAreaOntologyTerm.getPrimaryKey()) == null) {
-                cacheResult(focusAreaOntologyTerm);
-            } else {
-                focusAreaOntologyTerm.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all focus area ontology terms.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(FocusAreaOntologyTermImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(FocusAreaOntologyTermImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the focus area ontology term.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(FocusAreaOntologyTerm focusAreaOntologyTerm) {
-        EntityCacheUtil.removeResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermImpl.class,
-            focusAreaOntologyTerm.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<FocusAreaOntologyTerm> focusAreaOntologyTerms) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
-            EntityCacheUtil.removeResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                FocusAreaOntologyTermImpl.class,
-                focusAreaOntologyTerm.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new focus area ontology term with the primary key. Does not add the focus area ontology term to the database.
-     *
-     * @param focusAreaOntologyTermPK the primary key for the new focus area ontology term
-     * @return the new focus area ontology term
-     */
-    public FocusAreaOntologyTerm create(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK) {
-        FocusAreaOntologyTerm focusAreaOntologyTerm = new FocusAreaOntologyTermImpl();
-
-        focusAreaOntologyTerm.setNew(true);
-        focusAreaOntologyTerm.setPrimaryKey(focusAreaOntologyTermPK);
-
-        return focusAreaOntologyTerm;
-    }
-
-    /**
-     * Removes the focus area ontology term with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
-     * @return the focus area ontology term that was removed
-     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusAreaOntologyTerm remove(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
-        throws NoSuchFocusAreaOntologyTermException, SystemException {
-        return remove((Serializable) focusAreaOntologyTermPK);
-    }
-
-    /**
-     * Removes the focus area ontology term with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the focus area ontology term
-     * @return the focus area ontology term that was removed
-     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public FocusAreaOntologyTerm remove(Serializable primaryKey)
-        throws NoSuchFocusAreaOntologyTermException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            FocusAreaOntologyTerm focusAreaOntologyTerm = (FocusAreaOntologyTerm) session.get(FocusAreaOntologyTermImpl.class,
-                    primaryKey);
-
-            if (focusAreaOntologyTerm == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchFocusAreaOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(focusAreaOntologyTerm);
-        } catch (NoSuchFocusAreaOntologyTermException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected FocusAreaOntologyTerm removeImpl(
-        FocusAreaOntologyTerm focusAreaOntologyTerm) throws SystemException {
-        focusAreaOntologyTerm = toUnwrappedModel(focusAreaOntologyTerm);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, focusAreaOntologyTerm);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(focusAreaOntologyTerm);
-
-        return focusAreaOntologyTerm;
-    }
-
-    @Override
-    public FocusAreaOntologyTerm updateImpl(
-        com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm,
-        boolean merge) throws SystemException {
-        focusAreaOntologyTerm = toUnwrappedModel(focusAreaOntologyTerm);
-
-        boolean isNew = focusAreaOntologyTerm.isNew();
-
-        FocusAreaOntologyTermModelImpl focusAreaOntologyTermModelImpl = (FocusAreaOntologyTermModelImpl) focusAreaOntologyTerm;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, focusAreaOntologyTerm, merge);
-
-            focusAreaOntologyTerm.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !FocusAreaOntologyTermModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((focusAreaOntologyTermModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(focusAreaOntologyTermModelImpl.getOriginalFocusAreaId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(focusAreaOntologyTermModelImpl.getFocusAreaId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaOntologyTermImpl.class,
-            focusAreaOntologyTerm.getPrimaryKey(), focusAreaOntologyTerm);
-
-        return focusAreaOntologyTerm;
-    }
-
-    protected FocusAreaOntologyTerm toUnwrappedModel(
-        FocusAreaOntologyTerm focusAreaOntologyTerm) {
-        if (focusAreaOntologyTerm instanceof FocusAreaOntologyTermImpl) {
-            return focusAreaOntologyTerm;
-        }
-
-        FocusAreaOntologyTermImpl focusAreaOntologyTermImpl = new FocusAreaOntologyTermImpl();
-
-        focusAreaOntologyTermImpl.setNew(focusAreaOntologyTerm.isNew());
-        focusAreaOntologyTermImpl.setPrimaryKey(focusAreaOntologyTerm.getPrimaryKey());
-
-        focusAreaOntologyTermImpl.setFocusAreaId(focusAreaOntologyTerm.getFocusAreaId());
-        focusAreaOntologyTermImpl.setOntologyTermId(focusAreaOntologyTerm.getOntologyTermId());
-        focusAreaOntologyTermImpl.setOrder(focusAreaOntologyTerm.getOrder());
-
-        return focusAreaOntologyTermImpl;
-    }
-
-    /**
-     * Returns the focus area ontology term with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the focus area ontology term
-     * @return the focus area ontology term
-     * @throws com.liferay.portal.NoSuchModelException if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public FocusAreaOntologyTerm findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((FocusAreaOntologyTermPK) primaryKey);
-    }
-
-    /**
-     * Returns the focus area ontology term with the primary key or throws a {@link com.ext.portlet.NoSuchFocusAreaOntologyTermException} if it could not be found.
-     *
-     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
-     * @return the focus area ontology term
-     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusAreaOntologyTerm findByPrimaryKey(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
-        throws NoSuchFocusAreaOntologyTermException, SystemException {
-        FocusAreaOntologyTerm focusAreaOntologyTerm = fetchByPrimaryKey(focusAreaOntologyTermPK);
-
-        if (focusAreaOntologyTerm == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    focusAreaOntologyTermPK);
-            }
-
-            throw new NoSuchFocusAreaOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                focusAreaOntologyTermPK);
-        }
-
-        return focusAreaOntologyTerm;
-    }
-
-    /**
-     * Returns the focus area ontology term with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the focus area ontology term
-     * @return the focus area ontology term, or <code>null</code> if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public FocusAreaOntologyTerm fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((FocusAreaOntologyTermPK) primaryKey);
-    }
-
-    /**
-     * Returns the focus area ontology term with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
-     * @return the focus area ontology term, or <code>null</code> if a focus area ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusAreaOntologyTerm fetchByPrimaryKey(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
-        throws SystemException {
-        FocusAreaOntologyTerm focusAreaOntologyTerm = (FocusAreaOntologyTerm) EntityCacheUtil.getResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                FocusAreaOntologyTermImpl.class, focusAreaOntologyTermPK);
-
-        if (focusAreaOntologyTerm == _nullFocusAreaOntologyTerm) {
-            return null;
-        }
-
-        if (focusAreaOntologyTerm == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                focusAreaOntologyTerm = (FocusAreaOntologyTerm) session.get(FocusAreaOntologyTermImpl.class,
-                        focusAreaOntologyTermPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (focusAreaOntologyTerm != null) {
-                    cacheResult(focusAreaOntologyTerm);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                        FocusAreaOntologyTermImpl.class,
-                        focusAreaOntologyTermPK, _nullFocusAreaOntologyTerm);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return focusAreaOntologyTerm;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the focus area ontology terms where focusAreaId = &#63;.
@@ -710,6 +316,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId)
         throws SystemException {
         return findByFocusAreaId(focusAreaId, QueryUtil.ALL_POS,
@@ -720,7 +327,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * Returns a range of all the focus area ontology terms where focusAreaId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param focusAreaId the focus area ID
@@ -729,6 +336,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the range of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId,
         int start, int end) throws SystemException {
         return findByFocusAreaId(focusAreaId, start, end, null);
@@ -738,7 +346,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * Returns an ordered range of all the focus area ontology terms where focusAreaId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param focusAreaId the focus area ID
@@ -748,14 +356,17 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the ordered range of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusAreaOntologyTerm> findByFocusAreaId(long focusAreaId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID;
             finderArgs = new Object[] { focusAreaId };
         } else {
@@ -765,6 +376,16 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
         List<FocusAreaOntologyTerm> list = (List<FocusAreaOntologyTerm>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (FocusAreaOntologyTerm focusAreaOntologyTerm : list) {
+                if ((focusAreaId != focusAreaOntologyTerm.getFocusAreaId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
 
         if (list == null) {
             StringBundler query = null;
@@ -783,8 +404,8 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
-            }
-            else {
+            } else
+             if (pagination) {
                 query.append(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
@@ -801,19 +422,26 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
                 qPos.add(focusAreaId);
 
-                list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<FocusAreaOntologyTerm>(list);
+                } else {
+                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -824,44 +452,58 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
     /**
      * Returns the first focus area ontology term in the ordered set where focusAreaId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param focusAreaId the focus area ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching focus area ontology term
      * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a matching focus area ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusAreaOntologyTerm findByFocusAreaId_First(long focusAreaId,
         OrderByComparator orderByComparator)
         throws NoSuchFocusAreaOntologyTermException, SystemException {
+        FocusAreaOntologyTerm focusAreaOntologyTerm = fetchByFocusAreaId_First(focusAreaId,
+                orderByComparator);
+
+        if (focusAreaOntologyTerm != null) {
+            return focusAreaOntologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("focusAreaId=");
+        msg.append(focusAreaId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchFocusAreaOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the first focus area ontology term in the ordered set where focusAreaId = &#63;.
+     *
+     * @param focusAreaId the focus area ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching focus area ontology term, or <code>null</code> if a matching focus area ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm fetchByFocusAreaId_First(long focusAreaId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<FocusAreaOntologyTerm> list = findByFocusAreaId(focusAreaId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("focusAreaId=");
-            msg.append(focusAreaId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchFocusAreaOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last focus area ontology term in the ordered set where focusAreaId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param focusAreaId the focus area ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -869,36 +511,58 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a matching focus area ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusAreaOntologyTerm findByFocusAreaId_Last(long focusAreaId,
         OrderByComparator orderByComparator)
         throws NoSuchFocusAreaOntologyTermException, SystemException {
+        FocusAreaOntologyTerm focusAreaOntologyTerm = fetchByFocusAreaId_Last(focusAreaId,
+                orderByComparator);
+
+        if (focusAreaOntologyTerm != null) {
+            return focusAreaOntologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("focusAreaId=");
+        msg.append(focusAreaId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchFocusAreaOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the last focus area ontology term in the ordered set where focusAreaId = &#63;.
+     *
+     * @param focusAreaId the focus area ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching focus area ontology term, or <code>null</code> if a matching focus area ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm fetchByFocusAreaId_Last(long focusAreaId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByFocusAreaId(focusAreaId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<FocusAreaOntologyTerm> list = findByFocusAreaId(focusAreaId,
                 count - 1, count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("focusAreaId=");
-            msg.append(focusAreaId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchFocusAreaOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the focus area ontology terms before and after the current focus area ontology term in the ordered set where focusAreaId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param focusAreaOntologyTermPK the primary key of the current focus area ontology term
      * @param focusAreaId the focus area ID
@@ -907,6 +571,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusAreaOntologyTerm[] findByFocusAreaId_PrevAndNext(
         FocusAreaOntologyTermPK focusAreaOntologyTermPK, long focusAreaId,
         OrderByComparator orderByComparator)
@@ -1000,8 +665,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
                     }
                 }
             }
-        }
-        else {
+        } else {
             query.append(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
         }
 
@@ -1034,134 +698,15 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
     }
 
     /**
-     * Returns all the focus area ontology terms.
-     *
-     * @return the focus area ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public List<FocusAreaOntologyTerm> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the focus area ontology terms.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of focus area ontology terms
-     * @param end the upper bound of the range of focus area ontology terms (not inclusive)
-     * @return the range of focus area ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public List<FocusAreaOntologyTerm> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the focus area ontology terms.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of focus area ontology terms
-     * @param end the upper bound of the range of focus area ontology terms (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of focus area ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public List<FocusAreaOntologyTerm> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<FocusAreaOntologyTerm> list = (List<FocusAreaOntologyTerm>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_FOCUSAREAONTOLOGYTERM);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_FOCUSAREAONTOLOGYTERM.concat(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
      * Removes all the focus area ontology terms where focusAreaId = &#63; from the database.
      *
      * @param focusAreaId the focus area ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByFocusAreaId(long focusAreaId) throws SystemException {
         for (FocusAreaOntologyTerm focusAreaOntologyTerm : findByFocusAreaId(
-                focusAreaId)) {
-            remove(focusAreaOntologyTerm);
-        }
-    }
-
-    /**
-     * Removes all the focus area ontology terms from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : findAll()) {
+                focusAreaId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(focusAreaOntologyTerm);
         }
     }
@@ -1173,11 +718,14 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
      * @return the number of matching focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByFocusAreaId(long focusAreaId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_FOCUSAREAID;
+
         Object[] finderArgs = new Object[] { focusAreaId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1200,16 +748,13 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
                 qPos.add(focusAreaId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1218,11 +763,506 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
     }
 
     /**
+     * Caches the focus area ontology term in the entity cache if it is enabled.
+     *
+     * @param focusAreaOntologyTerm the focus area ontology term
+     */
+    @Override
+    public void cacheResult(FocusAreaOntologyTerm focusAreaOntologyTerm) {
+        EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermImpl.class,
+            focusAreaOntologyTerm.getPrimaryKey(), focusAreaOntologyTerm);
+
+        focusAreaOntologyTerm.resetOriginalValues();
+    }
+
+    /**
+     * Caches the focus area ontology terms in the entity cache if it is enabled.
+     *
+     * @param focusAreaOntologyTerms the focus area ontology terms
+     */
+    @Override
+    public void cacheResult(List<FocusAreaOntologyTerm> focusAreaOntologyTerms) {
+        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
+            if (EntityCacheUtil.getResult(
+                        FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                        FocusAreaOntologyTermImpl.class,
+                        focusAreaOntologyTerm.getPrimaryKey()) == null) {
+                cacheResult(focusAreaOntologyTerm);
+            } else {
+                focusAreaOntologyTerm.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all focus area ontology terms.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(FocusAreaOntologyTermImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(FocusAreaOntologyTermImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the focus area ontology term.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(FocusAreaOntologyTerm focusAreaOntologyTerm) {
+        EntityCacheUtil.removeResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermImpl.class,
+            focusAreaOntologyTerm.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<FocusAreaOntologyTerm> focusAreaOntologyTerms) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
+            EntityCacheUtil.removeResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                FocusAreaOntologyTermImpl.class,
+                focusAreaOntologyTerm.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new focus area ontology term with the primary key. Does not add the focus area ontology term to the database.
+     *
+     * @param focusAreaOntologyTermPK the primary key for the new focus area ontology term
+     * @return the new focus area ontology term
+     */
+    @Override
+    public FocusAreaOntologyTerm create(
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK) {
+        FocusAreaOntologyTerm focusAreaOntologyTerm = new FocusAreaOntologyTermImpl();
+
+        focusAreaOntologyTerm.setNew(true);
+        focusAreaOntologyTerm.setPrimaryKey(focusAreaOntologyTermPK);
+
+        return focusAreaOntologyTerm;
+    }
+
+    /**
+     * Removes the focus area ontology term with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
+     * @return the focus area ontology term that was removed
+     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm remove(
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        throws NoSuchFocusAreaOntologyTermException, SystemException {
+        return remove((Serializable) focusAreaOntologyTermPK);
+    }
+
+    /**
+     * Removes the focus area ontology term with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the focus area ontology term
+     * @return the focus area ontology term that was removed
+     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm remove(Serializable primaryKey)
+        throws NoSuchFocusAreaOntologyTermException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            FocusAreaOntologyTerm focusAreaOntologyTerm = (FocusAreaOntologyTerm) session.get(FocusAreaOntologyTermImpl.class,
+                    primaryKey);
+
+            if (focusAreaOntologyTerm == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchFocusAreaOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(focusAreaOntologyTerm);
+        } catch (NoSuchFocusAreaOntologyTermException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected FocusAreaOntologyTerm removeImpl(
+        FocusAreaOntologyTerm focusAreaOntologyTerm) throws SystemException {
+        focusAreaOntologyTerm = toUnwrappedModel(focusAreaOntologyTerm);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(focusAreaOntologyTerm)) {
+                focusAreaOntologyTerm = (FocusAreaOntologyTerm) session.get(FocusAreaOntologyTermImpl.class,
+                        focusAreaOntologyTerm.getPrimaryKeyObj());
+            }
+
+            if (focusAreaOntologyTerm != null) {
+                session.delete(focusAreaOntologyTerm);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (focusAreaOntologyTerm != null) {
+            clearCache(focusAreaOntologyTerm);
+        }
+
+        return focusAreaOntologyTerm;
+    }
+
+    @Override
+    public FocusAreaOntologyTerm updateImpl(
+        com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
+        throws SystemException {
+        focusAreaOntologyTerm = toUnwrappedModel(focusAreaOntologyTerm);
+
+        boolean isNew = focusAreaOntologyTerm.isNew();
+
+        FocusAreaOntologyTermModelImpl focusAreaOntologyTermModelImpl = (FocusAreaOntologyTermModelImpl) focusAreaOntologyTerm;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (focusAreaOntologyTerm.isNew()) {
+                session.save(focusAreaOntologyTerm);
+
+                focusAreaOntologyTerm.setNew(false);
+            } else {
+                session.merge(focusAreaOntologyTerm);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !FocusAreaOntologyTermModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((focusAreaOntologyTermModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        focusAreaOntologyTermModelImpl.getOriginalFocusAreaId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID,
+                    args);
+
+                args = new Object[] {
+                        focusAreaOntologyTermModelImpl.getFocusAreaId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FOCUSAREAID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FOCUSAREAID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaOntologyTermImpl.class,
+            focusAreaOntologyTerm.getPrimaryKey(), focusAreaOntologyTerm);
+
+        return focusAreaOntologyTerm;
+    }
+
+    protected FocusAreaOntologyTerm toUnwrappedModel(
+        FocusAreaOntologyTerm focusAreaOntologyTerm) {
+        if (focusAreaOntologyTerm instanceof FocusAreaOntologyTermImpl) {
+            return focusAreaOntologyTerm;
+        }
+
+        FocusAreaOntologyTermImpl focusAreaOntologyTermImpl = new FocusAreaOntologyTermImpl();
+
+        focusAreaOntologyTermImpl.setNew(focusAreaOntologyTerm.isNew());
+        focusAreaOntologyTermImpl.setPrimaryKey(focusAreaOntologyTerm.getPrimaryKey());
+
+        focusAreaOntologyTermImpl.setFocusAreaId(focusAreaOntologyTerm.getFocusAreaId());
+        focusAreaOntologyTermImpl.setOntologyTermId(focusAreaOntologyTerm.getOntologyTermId());
+        focusAreaOntologyTermImpl.setOrder(focusAreaOntologyTerm.getOrder());
+
+        return focusAreaOntologyTermImpl;
+    }
+
+    /**
+     * Returns the focus area ontology term with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the focus area ontology term
+     * @return the focus area ontology term
+     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchFocusAreaOntologyTermException, SystemException {
+        FocusAreaOntologyTerm focusAreaOntologyTerm = fetchByPrimaryKey(primaryKey);
+
+        if (focusAreaOntologyTerm == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchFocusAreaOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return focusAreaOntologyTerm;
+    }
+
+    /**
+     * Returns the focus area ontology term with the primary key or throws a {@link com.ext.portlet.NoSuchFocusAreaOntologyTermException} if it could not be found.
+     *
+     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
+     * @return the focus area ontology term
+     * @throws com.ext.portlet.NoSuchFocusAreaOntologyTermException if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm findByPrimaryKey(
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        throws NoSuchFocusAreaOntologyTermException, SystemException {
+        return findByPrimaryKey((Serializable) focusAreaOntologyTermPK);
+    }
+
+    /**
+     * Returns the focus area ontology term with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the focus area ontology term
+     * @return the focus area ontology term, or <code>null</code> if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        FocusAreaOntologyTerm focusAreaOntologyTerm = (FocusAreaOntologyTerm) EntityCacheUtil.getResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                FocusAreaOntologyTermImpl.class, primaryKey);
+
+        if (focusAreaOntologyTerm == _nullFocusAreaOntologyTerm) {
+            return null;
+        }
+
+        if (focusAreaOntologyTerm == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                focusAreaOntologyTerm = (FocusAreaOntologyTerm) session.get(FocusAreaOntologyTermImpl.class,
+                        primaryKey);
+
+                if (focusAreaOntologyTerm != null) {
+                    cacheResult(focusAreaOntologyTerm);
+                } else {
+                    EntityCacheUtil.putResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                        FocusAreaOntologyTermImpl.class, primaryKey,
+                        _nullFocusAreaOntologyTerm);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(FocusAreaOntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                    FocusAreaOntologyTermImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return focusAreaOntologyTerm;
+    }
+
+    /**
+     * Returns the focus area ontology term with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param focusAreaOntologyTermPK the primary key of the focus area ontology term
+     * @return the focus area ontology term, or <code>null</code> if a focus area ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusAreaOntologyTerm fetchByPrimaryKey(
+        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) focusAreaOntologyTermPK);
+    }
+
+    /**
+     * Returns all the focus area ontology terms.
+     *
+     * @return the focus area ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<FocusAreaOntologyTerm> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the focus area ontology terms.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of focus area ontology terms
+     * @param end the upper bound of the range of focus area ontology terms (not inclusive)
+     * @return the range of focus area ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<FocusAreaOntologyTerm> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the focus area ontology terms.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaOntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of focus area ontology terms
+     * @param end the upper bound of the range of focus area ontology terms (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of focus area ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<FocusAreaOntologyTerm> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<FocusAreaOntologyTerm> list = (List<FocusAreaOntologyTerm>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_FOCUSAREAONTOLOGYTERM);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_FOCUSAREAONTOLOGYTERM;
+
+                if (pagination) {
+                    sql = sql.concat(FocusAreaOntologyTermModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<FocusAreaOntologyTerm>(list);
+                } else {
+                    list = (List<FocusAreaOntologyTerm>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the focus area ontology terms from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (FocusAreaOntologyTerm focusAreaOntologyTerm : findAll()) {
+            remove(focusAreaOntologyTerm);
+        }
+    }
+
+    /**
      * Returns the number of focus area ontology terms.
      *
      * @return the number of focus area ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1236,21 +1276,25 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
                 Query q = session.createQuery(_SQL_COUNT_FOCUSAREAONTOLOGYTERM);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -1267,7 +1311,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<FocusAreaOntologyTerm>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1280,6 +1324,7 @@ public class FocusAreaOntologyTermPersistenceImpl extends BasePersistenceImpl<Fo
     public void destroy() {
         EntityCacheUtil.removeCache(FocusAreaOntologyTermImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

@@ -5,7 +5,10 @@ import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -16,7 +19,7 @@ import java.util.Date;
  * @see Proposal
  * @generated
  */
-public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
+public class ProposalCacheModel implements CacheModel<Proposal>, Externalizable {
     public long proposalId;
     public long createDate;
     public long updatedDate;
@@ -60,6 +63,7 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public Proposal toEntityModel() {
         ProposalImpl proposalImpl = new ProposalImpl();
 
@@ -89,5 +93,36 @@ public class ProposalCacheModel implements CacheModel<Proposal>, Serializable {
         proposalImpl.resetOriginalValues();
 
         return proposalImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        proposalId = objectInput.readLong();
+        createDate = objectInput.readLong();
+        updatedDate = objectInput.readLong();
+        currentVersion = objectInput.readInt();
+        authorId = objectInput.readLong();
+        visible = objectInput.readBoolean();
+        discussionId = objectInput.readLong();
+        judgeDiscussionId = objectInput.readLong();
+        fellowDiscussionId = objectInput.readLong();
+        advisorDiscussionId = objectInput.readLong();
+        groupId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(proposalId);
+        objectOutput.writeLong(createDate);
+        objectOutput.writeLong(updatedDate);
+        objectOutput.writeInt(currentVersion);
+        objectOutput.writeLong(authorId);
+        objectOutput.writeBoolean(visible);
+        objectOutput.writeLong(discussionId);
+        objectOutput.writeLong(judgeDiscussionId);
+        objectOutput.writeLong(fellowDiscussionId);
+        objectOutput.writeLong(advisorDiscussionId);
+        objectOutput.writeLong(groupId);
     }
 }

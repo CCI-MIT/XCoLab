@@ -76,23 +76,30 @@ import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ClassLoaderObjectInputStream;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.BaseModel;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 public class ClpSerializer {
     private static Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
-    private static ClassLoader _classLoader;
     private static String _servletContextName;
+    private static boolean _useReflectionToTranslateThrowable = true;
 
     public static String getServletContextName() {
         if (Validator.isNotNull(_servletContextName)) {
@@ -148,10 +155,6 @@ public class ClpSerializer {
 
             return _servletContextName;
         }
-    }
-
-    public static void setClassLoader(ClassLoader classLoader) {
-        _classLoader = classLoader;
     }
 
     public static Object translateInput(BaseModel<?> oldModel) {
@@ -483,95 +486,87 @@ public class ClpSerializer {
 
     public static Object translateInputActivitySubscription(
         BaseModel<?> oldModel) {
-        ActivitySubscriptionClp oldCplModel = (ActivitySubscriptionClp) oldModel;
+        ActivitySubscriptionClp oldClpModel = (ActivitySubscriptionClp) oldModel;
 
-        Thread currentThread = Thread.currentThread();
+        BaseModel<?> newModel = oldClpModel.getActivitySubscriptionRemoteModel();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ActivitySubscriptionImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setPk",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getPk());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setClassNameId",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getClassNameId());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setClassPK",
-                        new Class[] { Long.TYPE });
-
-                Long value2 = new Long(oldCplModel.getClassPK());
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setType",
-                        new Class[] { Integer.TYPE });
-
-                Integer value3 = new Integer(oldCplModel.getType());
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setAutomaticSubscriptionCounter",
-                        new Class[] { Integer.TYPE });
-
-                Integer value4 = new Integer(oldCplModel.getAutomaticSubscriptionCounter());
-
-                method4.invoke(newModel, value4);
-
-                Method method5 = newModelClass.getMethod("setExtraData",
-                        new Class[] { String.class });
-
-                String value5 = oldCplModel.getExtraData();
-
-                method5.invoke(newModel, value5);
-
-                Method method6 = newModelClass.getMethod("setReceiverId",
-                        new Class[] { Long.TYPE });
-
-                Long value6 = new Long(oldCplModel.getReceiverId());
-
-                method6.invoke(newModel, value6);
-
-                Method method7 = newModelClass.getMethod("setCreateDate",
-                        new Class[] { Date.class });
-
-                Date value7 = oldCplModel.getCreateDate();
-
-                method7.invoke(newModel, value7);
-
-                Method method8 = newModelClass.getMethod("setModifiedDate",
-                        new Class[] { Date.class });
-
-                Date value8 = oldCplModel.getModifiedDate();
-
-                method8.invoke(newModel, value8);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
+    public static Object translateInputBalloonStatsEntry(BaseModel<?> oldModel) {
+        BalloonStatsEntryClp oldClpModel = (BalloonStatsEntryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getBalloonStatsEntryRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContest(BaseModel<?> oldModel) {
+        ContestClp oldClpModel = (ContestClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestDebate(BaseModel<?> oldModel) {
+        ContestDebateClp oldClpModel = (ContestDebateClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestDebateRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestPhase(BaseModel<?> oldModel) {
+        ContestPhaseClp oldClpModel = (ContestPhaseClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestPhaseRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestPhaseColumn(BaseModel<?> oldModel) {
+        ContestPhaseColumnClp oldClpModel = (ContestPhaseColumnClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestPhaseColumnRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestPhaseRibbonType(
+        BaseModel<?> oldModel) {
+        ContestPhaseRibbonTypeClp oldClpModel = (ContestPhaseRibbonTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestPhaseRibbonTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestPhaseType(BaseModel<?> oldModel) {
+        ContestPhaseTypeClp oldClpModel = (ContestPhaseTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestPhaseTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+<<<<<<< HEAD
     public static Object translateInputAnalyticsUserEvent(BaseModel<?> oldModel) {
         AnalyticsUserEventClp oldCplModel = (AnalyticsUserEventClp) oldModel;
 
@@ -652,744 +647,727 @@ public class ClpSerializer {
         BalloonStatsEntryClp oldCplModel = (BalloonStatsEntryClp) oldModel;
 
         Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.BalloonStatsEntryImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setFirstContestId",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getFirstContestId());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setSecondContestId",
-                        new Class[] { Long.TYPE });
-
-                Long value2 = new Long(oldCplModel.getSecondContestId());
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setChoosenContest",
-                        new Class[] { Integer.TYPE });
-
-                Integer value3 = new Integer(oldCplModel.getChoosenContest());
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setCookie",
-                        new Class[] { String.class });
-
-                String value4 = oldCplModel.getCookie();
-
-                method4.invoke(newModel, value4);
-
-                Method method5 = newModelClass.getMethod("setIp",
-                        new Class[] { String.class });
-
-                String value5 = oldCplModel.getIp();
-
-                method5.invoke(newModel, value5);
-
-                Method method6 = newModelClass.getMethod("setExtraData",
-                        new Class[] { String.class });
-
-                String value6 = oldCplModel.getExtraData();
-
-                method6.invoke(newModel, value6);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContest(BaseModel<?> oldModel) {
-        ContestClp oldCplModel = (ContestClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setContestPK",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getContestPK());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setContestName",
-                        new Class[] { String.class });
-
-                String value1 = oldCplModel.getContestName();
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setContestShortName",
-                        new Class[] { String.class });
-
-                String value2 = oldCplModel.getContestShortName();
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setContestDescription",
-                        new Class[] { String.class });
-
-                String value3 = oldCplModel.getContestDescription();
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setContestModelDescription",
-                        new Class[] { String.class });
-
-                String value4 = oldCplModel.getContestModelDescription();
-
-                method4.invoke(newModel, value4);
-
-                Method method5 = newModelClass.getMethod("setContestPositionsDescription",
-                        new Class[] { String.class });
-
-                String value5 = oldCplModel.getContestPositionsDescription();
-
-                method5.invoke(newModel, value5);
-
-                Method method6 = newModelClass.getMethod("setDefaultPlanDescription",
-                        new Class[] { String.class });
-
-                String value6 = oldCplModel.getDefaultPlanDescription();
-
-                method6.invoke(newModel, value6);
-
-                Method method7 = newModelClass.getMethod("setPlanTypeId",
-                        new Class[] { Long.TYPE });
-
-                Long value7 = new Long(oldCplModel.getPlanTypeId());
-
-                method7.invoke(newModel, value7);
-
-                Method method8 = newModelClass.getMethod("setCreated",
-                        new Class[] { Date.class });
-
-                Date value8 = oldCplModel.getCreated();
-
-                method8.invoke(newModel, value8);
-
-                Method method9 = newModelClass.getMethod("setUpdated",
-                        new Class[] { Date.class });
-
-                Date value9 = oldCplModel.getUpdated();
-
-                method9.invoke(newModel, value9);
-
-                Method method10 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
-
-                Long value10 = new Long(oldCplModel.getAuthorId());
-
-                method10.invoke(newModel, value10);
-
-                Method method11 = newModelClass.getMethod("setContestActive",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value11 = new Boolean(oldCplModel.getContestActive());
-
-                method11.invoke(newModel, value11);
-
-                Method method12 = newModelClass.getMethod("setPlanTemplateId",
-                        new Class[] { Long.TYPE });
-
-                Long value12 = new Long(oldCplModel.getPlanTemplateId());
-
-                method12.invoke(newModel, value12);
-
-                Method method13 = newModelClass.getMethod("setFocusAreaId",
-                        new Class[] { Long.TYPE });
-
-                Long value13 = new Long(oldCplModel.getFocusAreaId());
-
-                method13.invoke(newModel, value13);
-
-                Method method14 = newModelClass.getMethod("setContestLogoId",
-                        new Class[] { Long.TYPE });
-
-                Long value14 = new Long(oldCplModel.getContestLogoId());
-
-                method14.invoke(newModel, value14);
-
-                Method method15 = newModelClass.getMethod("setFeatured",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value15 = new Boolean(oldCplModel.getFeatured());
-
-                method15.invoke(newModel, value15);
-
-                Method method16 = newModelClass.getMethod("setPlansOpenByDefault",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value16 = new Boolean(oldCplModel.getPlansOpenByDefault());
-
-                method16.invoke(newModel, value16);
-
-                Method method17 = newModelClass.getMethod("setSponsorLogoId",
-                        new Class[] { Long.TYPE });
-
-                Long value17 = new Long(oldCplModel.getSponsorLogoId());
-
-                method17.invoke(newModel, value17);
-
-                Method method18 = newModelClass.getMethod("setSponsorText",
-                        new Class[] { String.class });
-
-                String value18 = oldCplModel.getSponsorText();
-
-                method18.invoke(newModel, value18);
-
-                Method method19 = newModelClass.getMethod("setFlag",
-                        new Class[] { Integer.TYPE });
-
-                Integer value19 = new Integer(oldCplModel.getFlag());
-
-                method19.invoke(newModel, value19);
-
-                Method method20 = newModelClass.getMethod("setFlagText",
-                        new Class[] { String.class });
-
-                String value20 = oldCplModel.getFlagText();
-
-                method20.invoke(newModel, value20);
-
-                Method method21 = newModelClass.getMethod("setFlagTooltip",
-                        new Class[] { String.class });
-
-                String value21 = oldCplModel.getFlagTooltip();
-
-                method21.invoke(newModel, value21);
-
-                Method method22 = newModelClass.getMethod("setGroupId",
-                        new Class[] { Long.TYPE });
-
-                Long value22 = new Long(oldCplModel.getGroupId());
-
-                method22.invoke(newModel, value22);
-
-                Method method23 = newModelClass.getMethod("setDiscussionGroupId",
-                        new Class[] { Long.TYPE });
-
-                Long value23 = new Long(oldCplModel.getDiscussionGroupId());
-
-                method23.invoke(newModel, value23);
-
-                Method method24 = newModelClass.getMethod("setWeight",
-                        new Class[] { Integer.TYPE });
-
-                Integer value24 = new Integer(oldCplModel.getWeight());
-
-                method24.invoke(newModel, value24);
-
-                Method method25 = newModelClass.getMethod("setResourcesUrl",
-                        new Class[] { String.class });
-
-                String value25 = oldCplModel.getResourcesUrl();
-
-                method25.invoke(newModel, value25);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContestDebate(BaseModel<?> oldModel) {
-        ContestDebateClp oldCplModel = (ContestDebateClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestDebateImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setDebateId",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getDebateId());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setContestPK",
-                        new Class[] { Long.TYPE });
-
-                Long value2 = new Long(oldCplModel.getContestPK());
-
-                method2.invoke(newModel, value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContestPhase(BaseModel<?> oldModel) {
-        ContestPhaseClp oldCplModel = (ContestPhaseClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestPhaseImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setContestPhasePK",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getContestPhasePK());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setContestPK",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getContestPK());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setContestPhaseType",
-                        new Class[] { Long.TYPE });
-
-                Long value2 = new Long(oldCplModel.getContestPhaseType());
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setContestPhaseAutopromote",
-                        new Class[] { String.class });
-
-                String value3 = oldCplModel.getContestPhaseAutopromote();
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setContestPhaseDescriptionOverride",
-                        new Class[] { String.class });
-
-                String value4 = oldCplModel.getContestPhaseDescriptionOverride();
-
-                method4.invoke(newModel, value4);
-
-                Method method5 = newModelClass.getMethod("setPhaseActiveOverride",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value5 = new Boolean(oldCplModel.getPhaseActiveOverride());
-
-                method5.invoke(newModel, value5);
-
-                Method method6 = newModelClass.getMethod("setPhaseInactiveOverride",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value6 = new Boolean(oldCplModel.getPhaseInactiveOverride());
-
-                method6.invoke(newModel, value6);
-
-                Method method7 = newModelClass.getMethod("setPhaseStartDate",
-                        new Class[] { Date.class });
-
-                Date value7 = oldCplModel.getPhaseStartDate();
-
-                method7.invoke(newModel, value7);
-
-                Method method8 = newModelClass.getMethod("setPhaseEndDate",
-                        new Class[] { Date.class });
-
-                Date value8 = oldCplModel.getPhaseEndDate();
-
-                method8.invoke(newModel, value8);
-
-                Method method9 = newModelClass.getMethod("setNextStatus",
-                        new Class[] { String.class });
-
-                String value9 = oldCplModel.getNextStatus();
-
-                method9.invoke(newModel, value9);
-
-                Method method10 = newModelClass.getMethod("setCreated",
-                        new Class[] { Date.class });
-
-                Date value10 = oldCplModel.getCreated();
-
-                method10.invoke(newModel, value10);
-
-                Method method11 = newModelClass.getMethod("setUpdated",
-                        new Class[] { Date.class });
-
-                Date value11 = oldCplModel.getUpdated();
-
-                method11.invoke(newModel, value11);
-
-                Method method12 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
-
-                Long value12 = new Long(oldCplModel.getAuthorId());
-
-                method12.invoke(newModel, value12);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContestPhaseColumn(BaseModel<?> oldModel) {
-        ContestPhaseColumnClp oldCplModel = (ContestPhaseColumnClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestPhaseColumnImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setContestPhasePK",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getContestPhasePK());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setColumnName",
-                        new Class[] { String.class });
-
-                String value2 = oldCplModel.getColumnName();
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setColumnWeight",
-                        new Class[] { Integer.TYPE });
-
-                Integer value3 = new Integer(oldCplModel.getColumnWeight());
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setDefaultSort",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value4 = new Boolean(oldCplModel.getDefaultSort());
-
-                method4.invoke(newModel, value4);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContestPhaseRibbonType(
-        BaseModel<?> oldModel) {
-        ContestPhaseRibbonTypeClp oldCplModel = (ContestPhaseRibbonTypeClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestPhaseRibbonTypeImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setRibbon",
-                        new Class[] { Integer.TYPE });
-
-                Integer value1 = new Integer(oldCplModel.getRibbon());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setHoverText",
-                        new Class[] { String.class });
-
-                String value2 = oldCplModel.getHoverText();
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setDescription",
-                        new Class[] { String.class });
-
-                String value3 = oldCplModel.getDescription();
-
-                method3.invoke(newModel, value3);
-
-                Method method4 = newModelClass.getMethod("setCopyOnPromote",
-                        new Class[] { Boolean.TYPE });
-
-                Boolean value4 = new Boolean(oldCplModel.getCopyOnPromote());
-
-                method4.invoke(newModel, value4);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
-    public static Object translateInputContestPhaseType(BaseModel<?> oldModel) {
-        ContestPhaseTypeClp oldCplModel = (ContestPhaseTypeClp) oldModel;
-
-        Thread currentThread = Thread.currentThread();
-
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestPhaseTypeImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setName",
-                        new Class[] { String.class });
-
-                String value1 = oldCplModel.getName();
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setDescription",
-                        new Class[] { String.class });
-
-                String value2 = oldCplModel.getDescription();
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setStatus",
-                        new Class[] { String.class });
-
-                String value3 = oldCplModel.getStatus();
-
-                method3.invoke(newModel, value3);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
-    }
-
+=======
     public static Object translateInputContestTeamMember(BaseModel<?> oldModel) {
-        ContestTeamMemberClp oldCplModel = (ContestTeamMemberClp) oldModel;
+        ContestTeamMemberClp oldClpModel = (ContestTeamMemberClp) oldModel;
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
-        Thread currentThread = Thread.currentThread();
+        BaseModel<?> newModel = oldClpModel.getContestTeamMemberRemoteModel();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
-
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.ContestTeamMemberImpl",
-                        true, _classLoader);
-
-                Object newModel = newModelClass.newInstance();
-
-                Method method0 = newModelClass.getMethod("setId",
-                        new Class[] { Long.TYPE });
-
-                Long value0 = new Long(oldCplModel.getId());
-
-                method0.invoke(newModel, value0);
-
-                Method method1 = newModelClass.getMethod("setContestId",
-                        new Class[] { Long.TYPE });
-
-                Long value1 = new Long(oldCplModel.getContestId());
-
-                method1.invoke(newModel, value1);
-
-                Method method2 = newModelClass.getMethod("setUserId",
-                        new Class[] { Long.TYPE });
-
-                Long value2 = new Long(oldCplModel.getUserId());
-
-                method2.invoke(newModel, value2);
-
-                Method method3 = newModelClass.getMethod("setRole",
-                        new Class[] { String.class });
-
-                String value3 = oldCplModel.getRole();
-
-                method3.invoke(newModel, value3);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateInputDiscussionCategory(BaseModel<?> oldModel) {
-        DiscussionCategoryClp oldCplModel = (DiscussionCategoryClp) oldModel;
+        DiscussionCategoryClp oldClpModel = (DiscussionCategoryClp) oldModel;
 
-        Thread currentThread = Thread.currentThread();
+        BaseModel<?> newModel = oldClpModel.getDiscussionCategoryRemoteModel();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        return newModel;
+    }
 
-            try {
-                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.DiscussionCategoryImpl",
-                        true, _classLoader);
+    public static Object translateInputDiscussionCategoryGroup(
+        BaseModel<?> oldModel) {
+        DiscussionCategoryGroupClp oldClpModel = (DiscussionCategoryGroupClp) oldModel;
 
-                Object newModel = newModelClass.newInstance();
+        BaseModel<?> newModel = oldClpModel.getDiscussionCategoryGroupRemoteModel();
 
-                Method method0 = newModelClass.getMethod("setPk",
-                        new Class[] { Long.TYPE });
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-                Long value0 = new Long(oldCplModel.getPk());
+        return newModel;
+    }
 
-                method0.invoke(newModel, value0);
+    public static Object translateInputDiscussionMessage(BaseModel<?> oldModel) {
+        DiscussionMessageClp oldClpModel = (DiscussionMessageClp) oldModel;
 
-                Method method1 = newModelClass.getMethod("setCategoryId",
-                        new Class[] { Long.TYPE });
+        BaseModel<?> newModel = oldClpModel.getDiscussionMessageRemoteModel();
 
-                Long value1 = new Long(oldCplModel.getCategoryId());
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-                method1.invoke(newModel, value1);
+        return newModel;
+    }
 
-                Method method2 = newModelClass.getMethod("setCategoryGroupId",
-                        new Class[] { Long.TYPE });
+    public static Object translateInputDiscussionMessageFlag(
+        BaseModel<?> oldModel) {
+        DiscussionMessageFlagClp oldClpModel = (DiscussionMessageFlagClp) oldModel;
 
-                Long value2 = new Long(oldCplModel.getCategoryGroupId());
+        BaseModel<?> newModel = oldClpModel.getDiscussionMessageFlagRemoteModel();
 
-                method2.invoke(newModel, value2);
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-                Method method3 = newModelClass.getMethod("setAuthorId",
-                        new Class[] { Long.TYPE });
+        return newModel;
+    }
 
-                Long value3 = new Long(oldCplModel.getAuthorId());
+    public static Object translateInputEmailList(BaseModel<?> oldModel) {
+        EmailListClp oldClpModel = (EmailListClp) oldModel;
 
-                method3.invoke(newModel, value3);
+        BaseModel<?> newModel = oldClpModel.getEmailListRemoteModel();
 
-                Method method4 = newModelClass.getMethod("setName",
-                        new Class[] { String.class });
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-                String value4 = oldCplModel.getName();
+        return newModel;
+    }
 
-                method4.invoke(newModel, value4);
+    public static Object translateInputFocusArea(BaseModel<?> oldModel) {
+        FocusAreaClp oldClpModel = (FocusAreaClp) oldModel;
 
-                Method method5 = newModelClass.getMethod("setDescription",
-                        new Class[] { String.class });
+        BaseModel<?> newModel = oldClpModel.getFocusAreaRemoteModel();
 
-                String value5 = oldCplModel.getDescription();
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
+        return newModel;
+    }
+
+    public static Object translateInputFocusAreaOntologyTerm(
+        BaseModel<?> oldModel) {
+        FocusAreaOntologyTermClp oldClpModel = (FocusAreaOntologyTermClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getFocusAreaOntologyTermRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputLandingPage(BaseModel<?> oldModel) {
+        LandingPageClp oldClpModel = (LandingPageClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getLandingPageRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessage(BaseModel<?> oldModel) {
+        MessageClp oldClpModel = (MessageClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessageRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessageRecipientStatus(
+        BaseModel<?> oldModel) {
+        MessageRecipientStatusClp oldClpModel = (MessageRecipientStatusClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessageRecipientStatusRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingIgnoredRecipients(
+        BaseModel<?> oldModel) {
+        MessagingIgnoredRecipientsClp oldClpModel = (MessagingIgnoredRecipientsClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingIgnoredRecipientsRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingMessage(BaseModel<?> oldModel) {
+        MessagingMessageClp oldClpModel = (MessagingMessageClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingMessageRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingMessageConversion(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionClp oldClpModel = (MessagingMessageConversionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingMessageConversionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingMessageConversionType(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionTypeClp oldClpModel = (MessagingMessageConversionTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingMessageConversionTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingMessageRecipient(
+        BaseModel<?> oldModel) {
+        MessagingMessageRecipientClp oldClpModel = (MessagingMessageRecipientClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingMessageRecipientRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingRedirectLink(
+        BaseModel<?> oldModel) {
+        MessagingRedirectLinkClp oldClpModel = (MessagingRedirectLinkClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingRedirectLinkRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputMessagingUserPreferences(
+        BaseModel<?> oldModel) {
+        MessagingUserPreferencesClp oldClpModel = (MessagingUserPreferencesClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getMessagingUserPreferencesRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelCategory(BaseModel<?> oldModel) {
+        ModelCategoryClp oldClpModel = (ModelCategoryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelCategoryRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelDiscussion(BaseModel<?> oldModel) {
+        ModelDiscussionClp oldClpModel = (ModelDiscussionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelDiscussionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelGlobalPreference(
+        BaseModel<?> oldModel) {
+        ModelGlobalPreferenceClp oldClpModel = (ModelGlobalPreferenceClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelGlobalPreferenceRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelInputGroup(BaseModel<?> oldModel) {
+        ModelInputGroupClp oldClpModel = (ModelInputGroupClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelInputGroupRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelInputItem(BaseModel<?> oldModel) {
+        ModelInputItemClp oldClpModel = (ModelInputItemClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelInputItemRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelOutputChartOrder(
+        BaseModel<?> oldModel) {
+        ModelOutputChartOrderClp oldClpModel = (ModelOutputChartOrderClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelOutputChartOrderRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelOutputItem(BaseModel<?> oldModel) {
+        ModelOutputItemClp oldClpModel = (ModelOutputItemClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelOutputItemRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputModelPosition(BaseModel<?> oldModel) {
+        ModelPositionClp oldClpModel = (ModelPositionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getModelPositionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputOntologySpace(BaseModel<?> oldModel) {
+        OntologySpaceClp oldClpModel = (OntologySpaceClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getOntologySpaceRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputOntologyTerm(BaseModel<?> oldModel) {
+        OntologyTermClp oldClpModel = (OntologyTermClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getOntologyTermRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputOntologyTermEntity(BaseModel<?> oldModel) {
+        OntologyTermEntityClp oldClpModel = (OntologyTermEntityClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getOntologyTermEntityRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlan2Proposal(BaseModel<?> oldModel) {
+        Plan2ProposalClp oldClpModel = (Plan2ProposalClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlan2ProposalRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanAttribute(BaseModel<?> oldModel) {
+        PlanAttributeClp oldClpModel = (PlanAttributeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanAttributeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanAttributeFilter(
+        BaseModel<?> oldModel) {
+        PlanAttributeFilterClp oldClpModel = (PlanAttributeFilterClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanAttributeFilterRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanColumnSettings(BaseModel<?> oldModel) {
+        PlanColumnSettingsClp oldClpModel = (PlanColumnSettingsClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanColumnSettingsRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanDescription(BaseModel<?> oldModel) {
+        PlanDescriptionClp oldClpModel = (PlanDescriptionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanDescriptionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanFan(BaseModel<?> oldModel) {
+        PlanFanClp oldClpModel = (PlanFanClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanFanRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanItem(BaseModel<?> oldModel) {
+        PlanItemClp oldClpModel = (PlanItemClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanItemRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanItemGroup(BaseModel<?> oldModel) {
+        PlanItemGroupClp oldClpModel = (PlanItemGroupClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanItemGroupRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanMeta(BaseModel<?> oldModel) {
+        PlanMetaClp oldClpModel = (PlanMetaClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanMetaRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanModelRun(BaseModel<?> oldModel) {
+        PlanModelRunClp oldClpModel = (PlanModelRunClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanModelRunRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanPosition(BaseModel<?> oldModel) {
+        PlanPositionClp oldClpModel = (PlanPositionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanPositionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanPositionItem(BaseModel<?> oldModel) {
+        PlanPositionItemClp oldClpModel = (PlanPositionItemClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanPositionItemRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanPositions(BaseModel<?> oldModel) {
+        PlanPositionsClp oldClpModel = (PlanPositionsClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanPositionsRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanPropertyFilter(BaseModel<?> oldModel) {
+        PlanPropertyFilterClp oldClpModel = (PlanPropertyFilterClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanPropertyFilterRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanRelated(BaseModel<?> oldModel) {
+        PlanRelatedClp oldClpModel = (PlanRelatedClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanRelatedRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanSection(BaseModel<?> oldModel) {
+        PlanSectionClp oldClpModel = (PlanSectionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanSectionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanSectionDefinition(
+        BaseModel<?> oldModel) {
+        PlanSectionDefinitionClp oldClpModel = (PlanSectionDefinitionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanSectionDefinitionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanSectionPlanMap(BaseModel<?> oldModel) {
+        PlanSectionPlanMapClp oldClpModel = (PlanSectionPlanMapClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanSectionPlanMapRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlansFilter(BaseModel<?> oldModel) {
+        PlansFilterClp oldClpModel = (PlansFilterClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlansFilterRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlansFilterPosition(
+        BaseModel<?> oldModel) {
+        PlansFilterPositionClp oldClpModel = (PlansFilterPositionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlansFilterPositionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlansUserSettings(BaseModel<?> oldModel) {
+        PlansUserSettingsClp oldClpModel = (PlansUserSettingsClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlansUserSettingsRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanTeamHistory(BaseModel<?> oldModel) {
+        PlanTeamHistoryClp oldClpModel = (PlanTeamHistoryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTeamHistoryRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanTemplate(BaseModel<?> oldModel) {
+        PlanTemplateClp oldClpModel = (PlanTemplateClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTemplateRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanTemplateSection(
+        BaseModel<?> oldModel) {
+        PlanTemplateSectionClp oldClpModel = (PlanTemplateSectionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTemplateSectionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanType(BaseModel<?> oldModel) {
+        PlanTypeClp oldClpModel = (PlanTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanTypeAttribute(BaseModel<?> oldModel) {
+        PlanTypeAttributeClp oldClpModel = (PlanTypeAttributeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTypeAttributeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanTypeColumn(BaseModel<?> oldModel) {
+        PlanTypeColumnClp oldClpModel = (PlanTypeColumnClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanTypeColumnRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPlanVote(BaseModel<?> oldModel) {
+        PlanVoteClp oldClpModel = (PlanVoteClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPlanVoteRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposal(BaseModel<?> oldModel) {
+        ProposalClp oldClpModel = (ProposalClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposal2Phase(BaseModel<?> oldModel) {
+        Proposal2PhaseClp oldClpModel = (Proposal2PhaseClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposal2PhaseRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalAttribute(BaseModel<?> oldModel) {
+        ProposalAttributeClp oldClpModel = (ProposalAttributeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalAttributeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalAttributeType(
+        BaseModel<?> oldModel) {
+        ProposalAttributeTypeClp oldClpModel = (ProposalAttributeTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalAttributeTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalContestPhaseAttribute(
+        BaseModel<?> oldModel) {
+        ProposalContestPhaseAttributeClp oldClpModel = (ProposalContestPhaseAttributeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalContestPhaseAttributeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalContestPhaseAttributeType(
+        BaseModel<?> oldModel) {
+        ProposalContestPhaseAttributeTypeClp oldClpModel = (ProposalContestPhaseAttributeTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalContestPhaseAttributeTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalSupporter(BaseModel<?> oldModel) {
+        ProposalSupporterClp oldClpModel = (ProposalSupporterClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalSupporterRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalVersion(BaseModel<?> oldModel) {
+        ProposalVersionClp oldClpModel = (ProposalVersionClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalVersionRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalVote(BaseModel<?> oldModel) {
+        ProposalVoteClp oldClpModel = (ProposalVoteClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalVoteRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInput(Object obj) {
+        if (obj instanceof BaseModel<?>) {
+            return translateInput((BaseModel<?>) obj);
+        } else if (obj instanceof List<?>) {
+            return translateInput((List<Object>) obj);
+        } else {
+            return obj;
+        }
+    }
+
+    public static Object translateOutput(BaseModel<?> oldModel) {
+        Class<?> oldModelClass = oldModel.getClass();
+
+        String oldModelClassName = oldModelClass.getName();
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ActivitySubscriptionImpl")) {
+            return translateOutputActivitySubscription(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.BalloonStatsEntryImpl")) {
+            return translateOutputBalloonStatsEntry(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.ContestImpl")) {
+            return translateOutputContest(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestDebateImpl")) {
+            return translateOutputContestDebate(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestPhaseImpl")) {
+            return translateOutputContestPhase(oldModel);
+        }
+
+<<<<<<< HEAD
                 method5.invoke(newModel, value5);
 
                 Method method6 = newModelClass.getMethod("setCreateDate",
@@ -9623,1448 +9601,1646 @@ public class ClpSerializer {
             }
         } finally {
             currentThread.setContextClassLoader(contextClassLoader);
+=======
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestPhaseColumnImpl")) {
+            return translateOutputContestPhaseColumn(oldModel);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestPhaseRibbonTypeImpl")) {
+            return translateOutputContestPhaseRibbonType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestPhaseTypeImpl")) {
+            return translateOutputContestPhaseType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestTeamMemberImpl")) {
+            return translateOutputContestTeamMember(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.DiscussionCategoryImpl")) {
+            return translateOutputDiscussionCategory(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.DiscussionCategoryGroupImpl")) {
+            return translateOutputDiscussionCategoryGroup(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.DiscussionMessageImpl")) {
+            return translateOutputDiscussionMessage(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.DiscussionMessageFlagImpl")) {
+            return translateOutputDiscussionMessageFlag(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.EmailListImpl")) {
+            return translateOutputEmailList(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.FocusAreaImpl")) {
+            return translateOutputFocusArea(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.FocusAreaOntologyTermImpl")) {
+            return translateOutputFocusAreaOntologyTerm(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.LandingPageImpl")) {
+            return translateOutputLandingPage(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.MessageImpl")) {
+            return translateOutputMessage(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessageRecipientStatusImpl")) {
+            return translateOutputMessageRecipientStatus(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl")) {
+            return translateOutputMessagingIgnoredRecipients(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageImpl")) {
+            return translateOutputMessagingMessage(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageConversionImpl")) {
+            return translateOutputMessagingMessageConversion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageConversionTypeImpl")) {
+            return translateOutputMessagingMessageConversionType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingMessageRecipientImpl")) {
+            return translateOutputMessagingMessageRecipient(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingRedirectLinkImpl")) {
+            return translateOutputMessagingRedirectLink(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.MessagingUserPreferencesImpl")) {
+            return translateOutputMessagingUserPreferences(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelCategoryImpl")) {
+            return translateOutputModelCategory(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelDiscussionImpl")) {
+            return translateOutputModelDiscussion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelGlobalPreferenceImpl")) {
+            return translateOutputModelGlobalPreference(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelInputGroupImpl")) {
+            return translateOutputModelInputGroup(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelInputItemImpl")) {
+            return translateOutputModelInputItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelOutputChartOrderImpl")) {
+            return translateOutputModelOutputChartOrder(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelOutputItemImpl")) {
+            return translateOutputModelOutputItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ModelPositionImpl")) {
+            return translateOutputModelPosition(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.OntologySpaceImpl")) {
+            return translateOutputOntologySpace(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.OntologyTermImpl")) {
+            return translateOutputOntologyTerm(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.OntologyTermEntityImpl")) {
+            return translateOutputOntologyTermEntity(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.Plan2ProposalImpl")) {
+            return translateOutputPlan2Proposal(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanAttributeImpl")) {
+            return translateOutputPlanAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanAttributeFilterImpl")) {
+            return translateOutputPlanAttributeFilter(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanColumnSettingsImpl")) {
+            return translateOutputPlanColumnSettings(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanDescriptionImpl")) {
+            return translateOutputPlanDescription(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanFanImpl")) {
+            return translateOutputPlanFan(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanItemImpl")) {
+            return translateOutputPlanItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanItemGroupImpl")) {
+            return translateOutputPlanItemGroup(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanMetaImpl")) {
+            return translateOutputPlanMeta(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanModelRunImpl")) {
+            return translateOutputPlanModelRun(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanPositionImpl")) {
+            return translateOutputPlanPosition(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanPositionItemImpl")) {
+            return translateOutputPlanPositionItem(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanPositionsImpl")) {
+            return translateOutputPlanPositions(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanPropertyFilterImpl")) {
+            return translateOutputPlanPropertyFilter(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanRelatedImpl")) {
+            return translateOutputPlanRelated(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanSectionImpl")) {
+            return translateOutputPlanSection(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanSectionDefinitionImpl")) {
+            return translateOutputPlanSectionDefinition(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanSectionPlanMapImpl")) {
+            return translateOutputPlanSectionPlanMap(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlansFilterImpl")) {
+            return translateOutputPlansFilter(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlansFilterPositionImpl")) {
+            return translateOutputPlansFilterPosition(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlansUserSettingsImpl")) {
+            return translateOutputPlansUserSettings(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanTeamHistoryImpl")) {
+            return translateOutputPlanTeamHistory(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanTemplateImpl")) {
+            return translateOutputPlanTemplate(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanTemplateSectionImpl")) {
+            return translateOutputPlanTemplateSection(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanTypeImpl")) {
+            return translateOutputPlanType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanTypeAttributeImpl")) {
+            return translateOutputPlanTypeAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PlanTypeColumnImpl")) {
+            return translateOutputPlanTypeColumn(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanVoteImpl")) {
+            return translateOutputPlanVote(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.ProposalImpl")) {
+            return translateOutputProposal(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.Proposal2PhaseImpl")) {
+            return translateOutputProposal2Phase(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalAttributeImpl")) {
+            return translateOutputProposalAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalAttributeTypeImpl")) {
+            return translateOutputProposalAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalContestPhaseAttributeImpl")) {
+            return translateOutputProposalContestPhaseAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl")) {
+            return translateOutputProposalContestPhaseAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalSupporterImpl")) {
+            return translateOutputProposalSupporter(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalVersionImpl")) {
+            return translateOutputProposalVersion(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalVoteImpl")) {
+            return translateOutputProposalVote(oldModel);
         }
 
         return oldModel;
+    }
+
+    public static Object translateOutput(List<Object> oldList) {
+        List<Object> newList = new ArrayList<Object>(oldList.size());
+
+        for (int i = 0; i < oldList.size(); i++) {
+            Object curObj = oldList.get(i);
+
+            newList.add(translateOutput(curObj));
+        }
+
+        return newList;
+    }
+
+    public static Object translateOutput(Object obj) {
+        if (obj instanceof BaseModel<?>) {
+            return translateOutput((BaseModel<?>) obj);
+        } else if (obj instanceof List<?>) {
+            return translateOutput((List<Object>) obj);
+        } else {
+            return obj;
+        }
+    }
+
+    public static Throwable translateThrowable(Throwable throwable) {
+        if (_useReflectionToTranslateThrowable) {
+            try {
+                UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+
+                objectOutputStream.writeObject(throwable);
+
+                objectOutputStream.flush();
+                objectOutputStream.close();
+
+                UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(),
+                        0, unsyncByteArrayOutputStream.size());
+
+                Thread currentThread = Thread.currentThread();
+
+                ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+                ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream,
+                        contextClassLoader);
+
+                throwable = (Throwable) objectInputStream.readObject();
+
+                objectInputStream.close();
+
+                return throwable;
+            } catch (SecurityException se) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Do not use reflection to translate throwable");
+                }
+
+                _useReflectionToTranslateThrowable = false;
+            } catch (Throwable throwable2) {
+                _log.error(throwable2, throwable2);
+
+                return throwable2;
+            }
+        }
+
+        Class<?> clazz = throwable.getClass();
+
+        String className = clazz.getName();
+
+        if (className.equals(PortalException.class.getName())) {
+            return new PortalException();
+        }
+
+        if (className.equals(SystemException.class.getName())) {
+            return new SystemException();
+        }
+
+        if (className.equals("com.ext.portlet.ModelNameException")) {
+            return new com.ext.portlet.ModelNameException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchActivitySubscriptionException")) {
+            return new com.ext.portlet.NoSuchActivitySubscriptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestException")) {
+            return new com.ext.portlet.NoSuchContestException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestPhaseException")) {
+            return new com.ext.portlet.NoSuchContestPhaseException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchEmailListException")) {
+            return new com.ext.portlet.NoSuchEmailListException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchEntityException")) {
+            return new com.ext.portlet.NoSuchEntityException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchEntityIdException")) {
+            return new com.ext.portlet.NoSuchEntityIdException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchFocusAreaExceptionException")) {
+            return new com.ext.portlet.NoSuchFocusAreaExceptionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchFocusAreaOntologyTermExceptionException")) {
+            return new com.ext.portlet.NoSuchFocusAreaOntologyTermExceptionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchLandingPageExceptionException")) {
+            return new com.ext.portlet.NoSuchLandingPageExceptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessageException")) {
+            return new com.ext.portlet.NoSuchMessageException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessageRecipientException")) {
+            return new com.ext.portlet.NoSuchMessageRecipientException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessageStatusException")) {
+            return new com.ext.portlet.NoSuchMessageStatusException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingIgnoredRecipientsExceptionException")) {
+            return new com.ext.portlet.NoSuchMessagingIgnoredRecipientsExceptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessagingMessageException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageConversionException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageConversionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageConversionTypeException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageConversionTypeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageRecipientException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageRecipientException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingUserPreferencesException")) {
+            return new com.ext.portlet.NoSuchMessagingUserPreferencesException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelException")) {
+            return new com.ext.portlet.NoSuchModelException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelInputGroupException")) {
+            return new com.ext.portlet.NoSuchModelInputGroupException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelInputItemException")) {
+            return new com.ext.portlet.NoSuchModelInputItemException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchModelOutputChartOrderException")) {
+            return new com.ext.portlet.NoSuchModelOutputChartOrderException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelOutputItemException")) {
+            return new com.ext.portlet.NoSuchModelOutputItemException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelPositionException")) {
+            return new com.ext.portlet.NoSuchModelPositionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchOntologyTermEntityExceptionException")) {
+            return new com.ext.portlet.NoSuchOntologyTermEntityExceptionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchOntologyTermExceptionException")) {
+            return new com.ext.portlet.NoSuchOntologyTermExceptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanException")) {
+            return new com.ext.portlet.NoSuchPlanException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanPositionException")) {
+            return new com.ext.portlet.NoSuchPlanPositionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchVoteException")) {
+            return new com.ext.portlet.NoSuchVoteException();
+        }
+
+        if (className.equals("com.ext.portlet.PlanNameException")) {
+            return new com.ext.portlet.PlanNameException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchActivitySubscriptionException")) {
+            return new com.ext.portlet.NoSuchActivitySubscriptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchBalloonStatsEntryException")) {
+            return new com.ext.portlet.NoSuchBalloonStatsEntryException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestException")) {
+            return new com.ext.portlet.NoSuchContestException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestDebateException")) {
+            return new com.ext.portlet.NoSuchContestDebateException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestPhaseException")) {
+            return new com.ext.portlet.NoSuchContestPhaseException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchContestPhaseColumnException")) {
+            return new com.ext.portlet.NoSuchContestPhaseColumnException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchContestPhaseRibbonTypeException")) {
+            return new com.ext.portlet.NoSuchContestPhaseRibbonTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestPhaseTypeException")) {
+            return new com.ext.portlet.NoSuchContestPhaseTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchContestTeamMemberException")) {
+            return new com.ext.portlet.NoSuchContestTeamMemberException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchDiscussionCategoryException")) {
+            return new com.ext.portlet.NoSuchDiscussionCategoryException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchDiscussionCategoryGroupException")) {
+            return new com.ext.portlet.NoSuchDiscussionCategoryGroupException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchDiscussionMessageException")) {
+            return new com.ext.portlet.NoSuchDiscussionMessageException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchDiscussionMessageFlagException")) {
+            return new com.ext.portlet.NoSuchDiscussionMessageFlagException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchEmailListException")) {
+            return new com.ext.portlet.NoSuchEmailListException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchFocusAreaException")) {
+            return new com.ext.portlet.NoSuchFocusAreaException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchFocusAreaOntologyTermException")) {
+            return new com.ext.portlet.NoSuchFocusAreaOntologyTermException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchLandingPageException")) {
+            return new com.ext.portlet.NoSuchLandingPageException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessageException")) {
+            return new com.ext.portlet.NoSuchMessageException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessageRecipientStatusException")) {
+            return new com.ext.portlet.NoSuchMessageRecipientStatusException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingIgnoredRecipientsException")) {
+            return new com.ext.portlet.NoSuchMessagingIgnoredRecipientsException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchMessagingMessageException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageConversionException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageConversionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageConversionTypeException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageConversionTypeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingMessageRecipientException")) {
+            return new com.ext.portlet.NoSuchMessagingMessageRecipientException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingRedirectLinkException")) {
+            return new com.ext.portlet.NoSuchMessagingRedirectLinkException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchMessagingUserPreferencesException")) {
+            return new com.ext.portlet.NoSuchMessagingUserPreferencesException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelCategoryException")) {
+            return new com.ext.portlet.NoSuchModelCategoryException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelDiscussionException")) {
+            return new com.ext.portlet.NoSuchModelDiscussionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchModelGlobalPreferenceException")) {
+            return new com.ext.portlet.NoSuchModelGlobalPreferenceException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelInputGroupException")) {
+            return new com.ext.portlet.NoSuchModelInputGroupException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelInputItemException")) {
+            return new com.ext.portlet.NoSuchModelInputItemException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchModelOutputChartOrderException")) {
+            return new com.ext.portlet.NoSuchModelOutputChartOrderException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelOutputItemException")) {
+            return new com.ext.portlet.NoSuchModelOutputItemException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchModelPositionException")) {
+            return new com.ext.portlet.NoSuchModelPositionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchOntologySpaceException")) {
+            return new com.ext.portlet.NoSuchOntologySpaceException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchOntologyTermException")) {
+            return new com.ext.portlet.NoSuchOntologyTermException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchOntologyTermEntityException")) {
+            return new com.ext.portlet.NoSuchOntologyTermEntityException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlan2ProposalException")) {
+            return new com.ext.portlet.NoSuchPlan2ProposalException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanAttributeException")) {
+            return new com.ext.portlet.NoSuchPlanAttributeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanAttributeFilterException")) {
+            return new com.ext.portlet.NoSuchPlanAttributeFilterException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanColumnSettingsException")) {
+            return new com.ext.portlet.NoSuchPlanColumnSettingsException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanDescriptionException")) {
+            return new com.ext.portlet.NoSuchPlanDescriptionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanFanException")) {
+            return new com.ext.portlet.NoSuchPlanFanException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanItemException")) {
+            return new com.ext.portlet.NoSuchPlanItemException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanItemGroupException")) {
+            return new com.ext.portlet.NoSuchPlanItemGroupException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanMetaException")) {
+            return new com.ext.portlet.NoSuchPlanMetaException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanModelRunException")) {
+            return new com.ext.portlet.NoSuchPlanModelRunException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanPositionException")) {
+            return new com.ext.portlet.NoSuchPlanPositionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanPositionItemException")) {
+            return new com.ext.portlet.NoSuchPlanPositionItemException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanPositionsException")) {
+            return new com.ext.portlet.NoSuchPlanPositionsException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanPropertyFilterException")) {
+            return new com.ext.portlet.NoSuchPlanPropertyFilterException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanRelatedException")) {
+            return new com.ext.portlet.NoSuchPlanRelatedException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanSectionException")) {
+            return new com.ext.portlet.NoSuchPlanSectionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanSectionDefinitionException")) {
+            return new com.ext.portlet.NoSuchPlanSectionDefinitionException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanSectionPlanMapException")) {
+            return new com.ext.portlet.NoSuchPlanSectionPlanMapException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlansFilterException")) {
+            return new com.ext.portlet.NoSuchPlansFilterException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlansFilterPositionException")) {
+            return new com.ext.portlet.NoSuchPlansFilterPositionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlansUserSettingsException")) {
+            return new com.ext.portlet.NoSuchPlansUserSettingsException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanTeamHistoryException")) {
+            return new com.ext.portlet.NoSuchPlanTeamHistoryException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanTemplateException")) {
+            return new com.ext.portlet.NoSuchPlanTemplateException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPlanTemplateSectionException")) {
+            return new com.ext.portlet.NoSuchPlanTemplateSectionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanTypeException")) {
+            return new com.ext.portlet.NoSuchPlanTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanTypeAttributeException")) {
+            return new com.ext.portlet.NoSuchPlanTypeAttributeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanTypeColumnException")) {
+            return new com.ext.portlet.NoSuchPlanTypeColumnException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPlanVoteException")) {
+            return new com.ext.portlet.NoSuchPlanVoteException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalException")) {
+            return new com.ext.portlet.NoSuchProposalException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposal2PhaseException")) {
+            return new com.ext.portlet.NoSuchProposal2PhaseException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalAttributeException")) {
+            return new com.ext.portlet.NoSuchProposalAttributeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalAttributeTypeException")) {
+            return new com.ext.portlet.NoSuchProposalAttributeTypeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalContestPhaseAttributeException")) {
+            return new com.ext.portlet.NoSuchProposalContestPhaseAttributeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException")) {
+            return new com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalSupporterException")) {
+            return new com.ext.portlet.NoSuchProposalSupporterException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalVersionException")) {
+            return new com.ext.portlet.NoSuchProposalVersionException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalVoteException")) {
+            return new com.ext.portlet.NoSuchProposalVoteException();
+        }
+
+        return throwable;
+    }
+
+    public static Object translateOutputActivitySubscription(
+        BaseModel<?> oldModel) {
+        ActivitySubscriptionClp newModel = new ActivitySubscriptionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setActivitySubscriptionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputBalloonStatsEntry(BaseModel<?> oldModel) {
+        BalloonStatsEntryClp newModel = new BalloonStatsEntryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setBalloonStatsEntryRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContest(BaseModel<?> oldModel) {
+        ContestClp newModel = new ContestClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestDebate(BaseModel<?> oldModel) {
+        ContestDebateClp newModel = new ContestDebateClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestDebateRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestPhase(BaseModel<?> oldModel) {
+        ContestPhaseClp newModel = new ContestPhaseClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestPhaseRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestPhaseColumn(
+        BaseModel<?> oldModel) {
+        ContestPhaseColumnClp newModel = new ContestPhaseColumnClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestPhaseColumnRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestPhaseRibbonType(
+        BaseModel<?> oldModel) {
+        ContestPhaseRibbonTypeClp newModel = new ContestPhaseRibbonTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestPhaseRibbonTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestPhaseType(BaseModel<?> oldModel) {
+        ContestPhaseTypeClp newModel = new ContestPhaseTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestPhaseTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestTeamMember(BaseModel<?> oldModel) {
+        ContestTeamMemberClp newModel = new ContestTeamMemberClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestTeamMemberRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputDiscussionCategory(
+        BaseModel<?> oldModel) {
+        DiscussionCategoryClp newModel = new DiscussionCategoryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setDiscussionCategoryRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputDiscussionCategoryGroup(
+        BaseModel<?> oldModel) {
+        DiscussionCategoryGroupClp newModel = new DiscussionCategoryGroupClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setDiscussionCategoryGroupRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputDiscussionMessage(BaseModel<?> oldModel) {
+        DiscussionMessageClp newModel = new DiscussionMessageClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setDiscussionMessageRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputDiscussionMessageFlag(
+        BaseModel<?> oldModel) {
+        DiscussionMessageFlagClp newModel = new DiscussionMessageFlagClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setDiscussionMessageFlagRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputEmailList(BaseModel<?> oldModel) {
+        EmailListClp newModel = new EmailListClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setEmailListRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputFocusArea(BaseModel<?> oldModel) {
+        FocusAreaClp newModel = new FocusAreaClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setFocusAreaRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputFocusAreaOntologyTerm(
+        BaseModel<?> oldModel) {
+        FocusAreaOntologyTermClp newModel = new FocusAreaOntologyTermClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setFocusAreaOntologyTermRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputLandingPage(BaseModel<?> oldModel) {
+        LandingPageClp newModel = new LandingPageClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setLandingPageRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessage(BaseModel<?> oldModel) {
+        MessageClp newModel = new MessageClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessageRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessageRecipientStatus(
+        BaseModel<?> oldModel) {
+        MessageRecipientStatusClp newModel = new MessageRecipientStatusClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessageRecipientStatusRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingIgnoredRecipients(
+        BaseModel<?> oldModel) {
+        MessagingIgnoredRecipientsClp newModel = new MessagingIgnoredRecipientsClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingIgnoredRecipientsRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingMessage(BaseModel<?> oldModel) {
+        MessagingMessageClp newModel = new MessagingMessageClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingMessageRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingMessageConversion(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionClp newModel = new MessagingMessageConversionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingMessageConversionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingMessageConversionType(
+        BaseModel<?> oldModel) {
+        MessagingMessageConversionTypeClp newModel = new MessagingMessageConversionTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingMessageConversionTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingMessageRecipient(
+        BaseModel<?> oldModel) {
+        MessagingMessageRecipientClp newModel = new MessagingMessageRecipientClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingMessageRecipientRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingRedirectLink(
+        BaseModel<?> oldModel) {
+        MessagingRedirectLinkClp newModel = new MessagingRedirectLinkClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingRedirectLinkRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputMessagingUserPreferences(
+        BaseModel<?> oldModel) {
+        MessagingUserPreferencesClp newModel = new MessagingUserPreferencesClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setMessagingUserPreferencesRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelCategory(BaseModel<?> oldModel) {
+        ModelCategoryClp newModel = new ModelCategoryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelCategoryRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelDiscussion(BaseModel<?> oldModel) {
+        ModelDiscussionClp newModel = new ModelDiscussionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelDiscussionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelGlobalPreference(
+        BaseModel<?> oldModel) {
+        ModelGlobalPreferenceClp newModel = new ModelGlobalPreferenceClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelGlobalPreferenceRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelInputGroup(BaseModel<?> oldModel) {
+        ModelInputGroupClp newModel = new ModelInputGroupClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelInputGroupRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelInputItem(BaseModel<?> oldModel) {
+        ModelInputItemClp newModel = new ModelInputItemClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelInputItemRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelOutputChartOrder(
+        BaseModel<?> oldModel) {
+        ModelOutputChartOrderClp newModel = new ModelOutputChartOrderClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelOutputChartOrderRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelOutputItem(BaseModel<?> oldModel) {
+        ModelOutputItemClp newModel = new ModelOutputItemClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelOutputItemRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputModelPosition(BaseModel<?> oldModel) {
+        ModelPositionClp newModel = new ModelPositionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setModelPositionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputOntologySpace(BaseModel<?> oldModel) {
+        OntologySpaceClp newModel = new OntologySpaceClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setOntologySpaceRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputOntologyTerm(BaseModel<?> oldModel) {
+        OntologyTermClp newModel = new OntologyTermClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setOntologyTermRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputOntologyTermEntity(
+        BaseModel<?> oldModel) {
+        OntologyTermEntityClp newModel = new OntologyTermEntityClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setOntologyTermEntityRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlan2Proposal(BaseModel<?> oldModel) {
+        Plan2ProposalClp newModel = new Plan2ProposalClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlan2ProposalRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanAttribute(BaseModel<?> oldModel) {
+        PlanAttributeClp newModel = new PlanAttributeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanAttributeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanAttributeFilter(
+        BaseModel<?> oldModel) {
+        PlanAttributeFilterClp newModel = new PlanAttributeFilterClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanAttributeFilterRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanColumnSettings(
+        BaseModel<?> oldModel) {
+        PlanColumnSettingsClp newModel = new PlanColumnSettingsClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanColumnSettingsRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanDescription(BaseModel<?> oldModel) {
+        PlanDescriptionClp newModel = new PlanDescriptionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanDescriptionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanFan(BaseModel<?> oldModel) {
+        PlanFanClp newModel = new PlanFanClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanFanRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanItem(BaseModel<?> oldModel) {
+        PlanItemClp newModel = new PlanItemClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanItemRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanItemGroup(BaseModel<?> oldModel) {
+        PlanItemGroupClp newModel = new PlanItemGroupClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanItemGroupRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanMeta(BaseModel<?> oldModel) {
+        PlanMetaClp newModel = new PlanMetaClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanMetaRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanModelRun(BaseModel<?> oldModel) {
+        PlanModelRunClp newModel = new PlanModelRunClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanModelRunRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanPosition(BaseModel<?> oldModel) {
+        PlanPositionClp newModel = new PlanPositionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanPositionRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanPositionItem(BaseModel<?> oldModel) {
+        PlanPositionItemClp newModel = new PlanPositionItemClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanPositionItemRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanPositions(BaseModel<?> oldModel) {
+        PlanPositionsClp newModel = new PlanPositionsClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanPositionsRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPlanPropertyFilter(
+        BaseModel<?> oldModel) {
+        PlanPropertyFilterClp newModel = new PlanPropertyFilterClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPlanPropertyFilterRemoteModel(oldModel);
+
+        return newModel;
     }
 
     public static Object translateOutputPlanRelated(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanRelatedClp newModel = new PlanRelatedClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanRelatedRemoteModel(oldModel);
 
-            try {
-                PlanRelatedClp newModel = new PlanRelatedClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getSectionId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setSectionId(value0);
-
-                Method method1 = oldModelClass.getMethod("getRelatedPlanId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setRelatedPlanId(value1);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanSection(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanSectionClp newModel = new PlanSectionClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanSectionRemoteModel(oldModel);
 
-            try {
-                PlanSectionClp newModel = new PlanSectionClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod(
-                        "getPlanSectionDefinitionId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanSectionDefinitionId(value1);
-
-                Method method2 = oldModelClass.getMethod("getPlanId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanId(value2);
-
-                Method method3 = oldModelClass.getMethod("getContent");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setContent(value3);
-
-                Method method4 = oldModelClass.getMethod("getNumericValue");
-
-                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
-
-                newModel.setNumericValue(value4);
-
-                Method method5 = oldModelClass.getMethod("getCreated");
-
-                Date value5 = (Date) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreated(value5);
-
-                Method method6 = oldModelClass.getMethod("getVersion");
-
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setVersion(value6);
-
-                Method method7 = oldModelClass.getMethod("getPlanVersion");
-
-                Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanVersion(value7);
-
-                Method method8 = oldModelClass.getMethod("getUpdateAuthorId");
-
-                Long value8 = (Long) method8.invoke(oldModel, (Object[]) null);
-
-                newModel.setUpdateAuthorId(value8);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanSectionDefinition(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanSectionDefinitionClp newModel = new PlanSectionDefinitionClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanSectionDefinitionRemoteModel(oldModel);
 
-            try {
-                PlanSectionDefinitionClp newModel = new PlanSectionDefinitionClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod("getType");
-
-                String value1 = (String) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setType(value1);
-
-                Method method2 = oldModelClass.getMethod("getAdminTitle");
-
-                String value2 = (String) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setAdminTitle(value2);
-
-                Method method3 = oldModelClass.getMethod("getTitle");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setTitle(value3);
-
-                Method method4 = oldModelClass.getMethod("getDefaultText");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setDefaultText(value4);
-
-                Method method5 = oldModelClass.getMethod("getHelpText");
-
-                String value5 = (String) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setHelpText(value5);
-
-                Method method6 = oldModelClass.getMethod("getCharacterLimit");
-
-                Integer value6 = (Integer) method6.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCharacterLimit(value6);
-
-                Method method7 = oldModelClass.getMethod("getFocusAreaId");
-
-                Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
-
-                newModel.setFocusAreaId(value7);
-
-                Method method8 = oldModelClass.getMethod("getLocked");
-
-                Boolean value8 = (Boolean) method8.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setLocked(value8);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanSectionPlanMap(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanSectionPlanMapClp newModel = new PlanSectionPlanMapClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanSectionPlanMapRemoteModel(oldModel);
 
-            try {
-                PlanSectionPlanMapClp newModel = new PlanSectionPlanMapClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getSectionId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setSectionId(value0);
-
-                Method method1 = oldModelClass.getMethod("getRelatedPlanId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setRelatedPlanId(value1);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlansFilter(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlansFilterClp newModel = new PlansFilterClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlansFilterRemoteModel(oldModel);
 
-            try {
-                PlansFilterClp newModel = new PlansFilterClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getUserId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value1);
-
-                Method method2 = oldModelClass.getMethod("getName");
-
-                String value2 = (String) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value2);
-
-                Method method3 = oldModelClass.getMethod("getCreator");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCreator(value3);
-
-                Method method4 = oldModelClass.getMethod("getDescription");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setDescription(value4);
-
-                Method method5 = oldModelClass.getMethod("getCO2From");
-
-                Double value5 = (Double) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCO2From(value5);
-
-                Method method6 = oldModelClass.getMethod("getCO2To");
-
-                Double value6 = (Double) method6.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCO2To(value6);
-
-                Method method7 = oldModelClass.getMethod("getVotesFrom");
-
-                Double value7 = (Double) method7.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVotesFrom(value7);
-
-                Method method8 = oldModelClass.getMethod("getVotesTo");
-
-                Double value8 = (Double) method8.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVotesTo(value8);
-
-                Method method9 = oldModelClass.getMethod("getDamageFrom");
-
-                Double value9 = (Double) method9.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setDamageFrom(value9);
-
-                Method method10 = oldModelClass.getMethod("getDamageTo");
-
-                Double value10 = (Double) method10.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setDamageTo(value10);
-
-                Method method11 = oldModelClass.getMethod("getMitigationFrom");
-
-                Double value11 = (Double) method11.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setMitigationFrom(value11);
-
-                Method method12 = oldModelClass.getMethod("getMitigationTo");
-
-                Double value12 = (Double) method12.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setMitigationTo(value12);
-
-                Method method13 = oldModelClass.getMethod("getDateFrom");
-
-                Date value13 = (Date) method13.invoke(oldModel, (Object[]) null);
-
-                newModel.setDateFrom(value13);
-
-                Method method14 = oldModelClass.getMethod("getDateTo");
-
-                Date value14 = (Date) method14.invoke(oldModel, (Object[]) null);
-
-                newModel.setDateTo(value14);
-
-                Method method15 = oldModelClass.getMethod(
-                        "getFilterPositionsAll");
-
-                Boolean value15 = (Boolean) method15.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setFilterPositionsAll(value15);
-
-                Method method16 = oldModelClass.getMethod("getEnabled");
-
-                Boolean value16 = (Boolean) method16.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setEnabled(value16);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlansFilterPosition(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlansFilterPositionClp newModel = new PlansFilterPositionClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlansFilterPositionRemoteModel(oldModel);
 
-            try {
-                PlansFilterPositionClp newModel = new PlansFilterPositionClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getUserId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value1);
-
-                Method method2 = oldModelClass.getMethod("getPositionId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setPositionId(value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlansUserSettings(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlansUserSettingsClp newModel = new PlansUserSettingsClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlansUserSettingsRemoteModel(oldModel);
 
-            try {
-                PlansUserSettingsClp newModel = new PlansUserSettingsClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod(
-                        "getPlanUserSettingsId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanUserSettingsId(value0);
-
-                Method method1 = oldModelClass.getMethod("getUserId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value1);
-
-                Method method2 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value2);
-
-                Method method3 = oldModelClass.getMethod("getSortColumn");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setSortColumn(value3);
-
-                Method method4 = oldModelClass.getMethod("getSortDirection");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setSortDirection(value4);
-
-                Method method5 = oldModelClass.getMethod("getFilterEnabled");
-
-                Boolean value5 = (Boolean) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setFilterEnabled(value5);
-
-                Method method6 = oldModelClass.getMethod(
-                        "getFilterPositionsAll");
-
-                Boolean value6 = (Boolean) method6.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setFilterPositionsAll(value6);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanTeamHistory(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTeamHistoryClp newModel = new PlanTeamHistoryClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTeamHistoryRemoteModel(oldModel);
 
-            try {
-                PlanTeamHistoryClp newModel = new PlanTeamHistoryClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanId(value1);
-
-                Method method2 = oldModelClass.getMethod("getUserId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value2);
-
-                Method method3 = oldModelClass.getMethod("getAction");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setAction(value3);
-
-                Method method4 = oldModelClass.getMethod("getPayload");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setPayload(value4);
-
-                Method method5 = oldModelClass.getMethod("getCreated");
-
-                Date value5 = (Date) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreated(value5);
-
-                Method method6 = oldModelClass.getMethod("getUpdateAuthorId");
-
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setUpdateAuthorId(value6);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanTemplate(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTemplateClp newModel = new PlanTemplateClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTemplateRemoteModel(oldModel);
 
-            try {
-                PlanTemplateClp newModel = new PlanTemplateClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod("getName");
-
-                String value1 = (String) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value1);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanTemplateSection(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTemplateSectionClp newModel = new PlanTemplateSectionClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTemplateSectionRemoteModel(oldModel);
 
-            try {
-                PlanTemplateSectionClp newModel = new PlanTemplateSectionClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getPlanTemplateId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTemplateId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanSectionId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanSectionId(value1);
-
-                Method method2 = oldModelClass.getMethod("getWeight");
-
-                Integer value2 = (Integer) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setWeight(value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanType(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTypeClp newModel = new PlanTypeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTypeRemoteModel(oldModel);
 
-            try {
-                PlanTypeClp newModel = new PlanTypeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value0);
-
-                Method method1 = oldModelClass.getMethod("getName");
-
-                String value1 = (String) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value1);
-
-                Method method2 = oldModelClass.getMethod("getDescription");
-
-                String value2 = (String) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setDescription(value2);
-
-                Method method3 = oldModelClass.getMethod("getModelId");
-
-                Long value3 = (Long) method3.invoke(oldModel, (Object[]) null);
-
-                newModel.setModelId(value3);
-
-                Method method4 = oldModelClass.getMethod("getModelTypeName");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setModelTypeName(value4);
-
-                Method method5 = oldModelClass.getMethod("getPublished");
-
-                Boolean value5 = (Boolean) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setPublished(value5);
-
-                Method method6 = oldModelClass.getMethod(
-                        "getPublishedCounterpartId");
-
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setPublishedCounterpartId(value6);
-
-                Method method7 = oldModelClass.getMethod("getIsDefault");
-
-                Boolean value7 = (Boolean) method7.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setIsDefault(value7);
-
-                Method method8 = oldModelClass.getMethod("getDefaultModelId");
-
-                Long value8 = (Long) method8.invoke(oldModel, (Object[]) null);
-
-                newModel.setDefaultModelId(value8);
-
-                Method method9 = oldModelClass.getMethod("getDefaultScenarioId");
-
-                Long value9 = (Long) method9.invoke(oldModel, (Object[]) null);
-
-                newModel.setDefaultScenarioId(value9);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanTypeAttribute(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTypeAttributeClp newModel = new PlanTypeAttributeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTypeAttributeRemoteModel(oldModel);
 
-            try {
-                PlanTypeAttributeClp newModel = new PlanTypeAttributeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod(
-                        "getPlanTypeAttributeId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeAttributeId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value1);
-
-                Method method2 = oldModelClass.getMethod("getAttributeName");
-
-                String value2 = (String) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setAttributeName(value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanTypeColumn(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanTypeColumnClp newModel = new PlanTypeColumnClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanTypeColumnRemoteModel(oldModel);
 
-            try {
-                PlanTypeColumnClp newModel = new PlanTypeColumnClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getPlanTypeColumnId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeColumnId(value0);
-
-                Method method1 = oldModelClass.getMethod("getPlanTypeId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanTypeId(value1);
-
-                Method method2 = oldModelClass.getMethod("getWeight");
-
-                Integer value2 = (Integer) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setWeight(value2);
-
-                Method method3 = oldModelClass.getMethod("getColumnName");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setColumnName(value3);
-
-                Method method4 = oldModelClass.getMethod("getVisibleByDefault");
-
-                Boolean value4 = (Boolean) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVisibleByDefault(value4);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputPlanVote(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        PlanVoteClp newModel = new PlanVoteClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setPlanVoteRemoteModel(oldModel);
 
-            try {
-                PlanVoteClp newModel = new PlanVoteClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getUserId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value0);
-
-                Method method1 = oldModelClass.getMethod("getContestId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setContestId(value1);
-
-                Method method2 = oldModelClass.getMethod("getPlanId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setPlanId(value2);
-
-                Method method3 = oldModelClass.getMethod("getCreateDate");
-
-                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreateDate(value3);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposal(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalClp newModel = new ProposalClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalRemoteModel(oldModel);
 
-            try {
-                ProposalClp newModel = new ProposalClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getProposalId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value0);
-
-                Method method1 = oldModelClass.getMethod("getCreateDate");
-
-                Date value1 = (Date) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreateDate(value1);
-
-                Method method2 = oldModelClass.getMethod("getUpdatedDate");
-
-                Date value2 = (Date) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setUpdatedDate(value2);
-
-                Method method3 = oldModelClass.getMethod("getCurrentVersion");
-
-                Integer value3 = (Integer) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCurrentVersion(value3);
-
-                Method method4 = oldModelClass.getMethod("getAuthorId");
-
-                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
-
-                newModel.setAuthorId(value4);
-
-                Method method5 = oldModelClass.getMethod("getVisible");
-
-                Boolean value5 = (Boolean) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVisible(value5);
-
-                Method method6 = oldModelClass.getMethod("getDiscussionId");
-
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setDiscussionId(value6);
-
-                Method method7 = oldModelClass.getMethod("getJudgeDiscussionId");
-
-                Long value7 = (Long) method7.invoke(oldModel, (Object[]) null);
-
-                newModel.setJudgeDiscussionId(value7);
-
-                Method method8 = oldModelClass.getMethod(
-                        "getFellowDiscussionId");
-
-                Long value8 = (Long) method8.invoke(oldModel, (Object[]) null);
-
-                newModel.setFellowDiscussionId(value8);
-
-                Method method9 = oldModelClass.getMethod(
-                        "getAdvisorDiscussionId");
-
-                Long value9 = (Long) method9.invoke(oldModel, (Object[]) null);
-
-                newModel.setAdvisorDiscussionId(value9);
-
-                Method method10 = oldModelClass.getMethod("getGroupId");
-
-                Long value10 = (Long) method10.invoke(oldModel, (Object[]) null);
-
-                newModel.setGroupId(value10);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposal2Phase(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        Proposal2PhaseClp newModel = new Proposal2PhaseClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposal2PhaseRemoteModel(oldModel);
 
-            try {
-                Proposal2PhaseClp newModel = new Proposal2PhaseClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getProposalId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value0);
-
-                Method method1 = oldModelClass.getMethod("getContestPhaseId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setContestPhaseId(value1);
-
-                Method method2 = oldModelClass.getMethod("getVersionFrom");
-
-                Integer value2 = (Integer) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVersionFrom(value2);
-
-                Method method3 = oldModelClass.getMethod("getVersionTo");
-
-                Integer value3 = (Integer) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVersionTo(value3);
-
-                Method method4 = oldModelClass.getMethod("getSortWeight");
-
-                Integer value4 = (Integer) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setSortWeight(value4);
-
-                Method method5 = oldModelClass.getMethod(
-                        "getAutopromoteCandidate");
-
-                Boolean value5 = (Boolean) method5.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setAutopromoteCandidate(value5);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalAttribute(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalAttributeClp newModel = new ProposalAttributeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalAttributeRemoteModel(oldModel);
 
-            try {
-                ProposalAttributeClp newModel = new ProposalAttributeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod("getProposalId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value1);
-
-                Method method2 = oldModelClass.getMethod("getVersion");
-
-                Integer value2 = (Integer) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVersion(value2);
-
-                Method method3 = oldModelClass.getMethod(
-                        "getVersionWhenCreated");
-
-                Integer value3 = (Integer) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVersionWhenCreated(value3);
-
-                Method method4 = oldModelClass.getMethod("getName");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value4);
-
-                Method method5 = oldModelClass.getMethod("getAdditionalId");
-
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setAdditionalId(value5);
-
-                Method method6 = oldModelClass.getMethod("getNumericValue");
-
-                Long value6 = (Long) method6.invoke(oldModel, (Object[]) null);
-
-                newModel.setNumericValue(value6);
-
-                Method method7 = oldModelClass.getMethod("getStringValue");
-
-                String value7 = (String) method7.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setStringValue(value7);
-
-                Method method8 = oldModelClass.getMethod("getRealValue");
-
-                Double value8 = (Double) method8.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setRealValue(value8);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalAttributeType(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalAttributeTypeClp newModel = new ProposalAttributeTypeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalAttributeTypeRemoteModel(oldModel);
 
-            try {
-                ProposalAttributeTypeClp newModel = new ProposalAttributeTypeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getName");
-
-                String value0 = (String) method0.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value0);
-
-                Method method1 = oldModelClass.getMethod(
-                        "getVisibleInVersionHistory");
-
-                Boolean value1 = (Boolean) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVisibleInVersionHistory(value1);
-
-                Method method2 = oldModelClass.getMethod("getCopyOnPromote");
-
-                Boolean value2 = (Boolean) method2.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCopyOnPromote(value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalContestPhaseAttribute(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalContestPhaseAttributeClp newModel = new ProposalContestPhaseAttributeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalContestPhaseAttributeRemoteModel(oldModel);
 
-            try {
-                ProposalContestPhaseAttributeClp newModel = new ProposalContestPhaseAttributeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setId(value0);
-
-                Method method1 = oldModelClass.getMethod("getProposalId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value1);
-
-                Method method2 = oldModelClass.getMethod("getContestPhaseId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setContestPhaseId(value2);
-
-                Method method3 = oldModelClass.getMethod("getName");
-
-                String value3 = (String) method3.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value3);
-
-                Method method4 = oldModelClass.getMethod("getAdditionalId");
-
-                Long value4 = (Long) method4.invoke(oldModel, (Object[]) null);
-
-                newModel.setAdditionalId(value4);
-
-                Method method5 = oldModelClass.getMethod("getNumericValue");
-
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setNumericValue(value5);
-
-                Method method6 = oldModelClass.getMethod("getStringValue");
-
-                String value6 = (String) method6.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setStringValue(value6);
-
-                Method method7 = oldModelClass.getMethod("getRealValue");
-
-                Double value7 = (Double) method7.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setRealValue(value7);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalContestPhaseAttributeType(
         BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalContestPhaseAttributeTypeClp newModel = new ProposalContestPhaseAttributeTypeClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalContestPhaseAttributeTypeRemoteModel(oldModel);
 
-            try {
-                ProposalContestPhaseAttributeTypeClp newModel = new ProposalContestPhaseAttributeTypeClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getName");
-
-                String value0 = (String) method0.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setName(value0);
-
-                Method method1 = oldModelClass.getMethod("getCopyOnPromote");
-
-                Boolean value1 = (Boolean) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setCopyOnPromote(value1);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalSupporter(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalSupporterClp newModel = new ProposalSupporterClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalSupporterRemoteModel(oldModel);
 
-            try {
-                ProposalSupporterClp newModel = new ProposalSupporterClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getProposalId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value0);
-
-                Method method1 = oldModelClass.getMethod("getUserId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value1);
-
-                Method method2 = oldModelClass.getMethod("getCreateDate");
-
-                Date value2 = (Date) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreateDate(value2);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalVersion(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalVersionClp newModel = new ProposalVersionClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalVersionRemoteModel(oldModel);
 
-            try {
-                ProposalVersionClp newModel = new ProposalVersionClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getProposalId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value0);
-
-                Method method1 = oldModelClass.getMethod("getVersion");
-
-                Integer value1 = (Integer) method1.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setVersion(value1);
-
-                Method method2 = oldModelClass.getMethod("getAuthorId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setAuthorId(value2);
-
-                Method method3 = oldModelClass.getMethod("getCreateDate");
-
-                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreateDate(value3);
-
-                Method method4 = oldModelClass.getMethod("getUpdateType");
-
-                String value4 = (String) method4.invoke(oldModel,
-                        (Object[]) null);
-
-                newModel.setUpdateType(value4);
-
-                Method method5 = oldModelClass.getMethod(
-                        "getUpdateAdditionalId");
-
-                Long value5 = (Long) method5.invoke(oldModel, (Object[]) null);
-
-                newModel.setUpdateAdditionalId(value5);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 
     public static Object translateOutputProposalVote(BaseModel<?> oldModel) {
-        Thread currentThread = Thread.currentThread();
+        ProposalVoteClp newModel = new ProposalVoteClp();
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        newModel.setModelAttributes(oldModel.getModelAttributes());
 
-        try {
-            currentThread.setContextClassLoader(_classLoader);
+        newModel.setProposalVoteRemoteModel(oldModel);
 
-            try {
-                ProposalVoteClp newModel = new ProposalVoteClp();
-
-                Class<?> oldModelClass = oldModel.getClass();
-
-                Method method0 = oldModelClass.getMethod("getProposalId");
-
-                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
-
-                newModel.setProposalId(value0);
-
-                Method method1 = oldModelClass.getMethod("getContestPhaseId");
-
-                Long value1 = (Long) method1.invoke(oldModel, (Object[]) null);
-
-                newModel.setContestPhaseId(value1);
-
-                Method method2 = oldModelClass.getMethod("getUserId");
-
-                Long value2 = (Long) method2.invoke(oldModel, (Object[]) null);
-
-                newModel.setUserId(value2);
-
-                Method method3 = oldModelClass.getMethod("getCreateDate");
-
-                Date value3 = (Date) method3.invoke(oldModel, (Object[]) null);
-
-                newModel.setCreateDate(value3);
-
-                return newModel;
-            } catch (Exception e) {
-                _log.error(e, e);
-            }
-        } finally {
-            currentThread.setContextClassLoader(contextClassLoader);
-        }
-
-        return oldModel;
+        return newModel;
     }
 }

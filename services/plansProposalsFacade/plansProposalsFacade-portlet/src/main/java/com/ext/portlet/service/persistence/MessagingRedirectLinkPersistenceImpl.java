@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchMessagingRedirectLinkException;
 import com.ext.portlet.model.MessagingRedirectLink;
 import com.ext.portlet.model.impl.MessagingRedirectLinkImpl;
 import com.ext.portlet.model.impl.MessagingRedirectLinkModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -29,59 +30,10 @@ import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
 import com.ext.portlet.service.persistence.MessagingMessagePersistence;
 import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -99,11 +51,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -139,11 +89,11 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
             MessagingRedirectLinkModelImpl.FINDER_CACHE_ENABLED,
             MessagingRedirectLinkImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
             MessagingRedirectLinkModelImpl.FINDER_CACHE_ENABLED,
             MessagingRedirectLinkImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
             MessagingRedirectLinkModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
@@ -168,11 +118,13 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
 
     private static CacheModel<MessagingRedirectLink> _nullMessagingRedirectLinkCacheModel =
         new CacheModel<MessagingRedirectLink>() {
+            @Override
             public MessagingRedirectLink toEntityModel() {
                 return _nullMessagingRedirectLink;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -327,12 +279,18 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public MessagingRedirectLinkPersistenceImpl() {
+        setModelClass(MessagingRedirectLink.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the messaging redirect link in the entity cache if it is enabled.
      *
      * @param messagingRedirectLink the messaging redirect link
      */
+    @Override
     public void cacheResult(MessagingRedirectLink messagingRedirectLink) {
         EntityCacheUtil.putResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
             MessagingRedirectLinkImpl.class,
@@ -346,6 +304,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      *
      * @param messagingRedirectLinks the messaging redirect links
      */
+    @Override
     public void cacheResult(List<MessagingRedirectLink> messagingRedirectLinks) {
         for (MessagingRedirectLink messagingRedirectLink : messagingRedirectLinks) {
             if (EntityCacheUtil.getResult(
@@ -414,6 +373,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @param redirectId the primary key for the new messaging redirect link
      * @return the new messaging redirect link
      */
+    @Override
     public MessagingRedirectLink create(long redirectId) {
         MessagingRedirectLink messagingRedirectLink = new MessagingRedirectLinkImpl();
 
@@ -431,9 +391,10 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @throws com.ext.portlet.NoSuchMessagingRedirectLinkException if a messaging redirect link with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingRedirectLink remove(long redirectId)
         throws NoSuchMessagingRedirectLinkException, SystemException {
-        return remove(Long.valueOf(redirectId));
+        return remove((Serializable) redirectId);
     }
 
     /**
@@ -484,32 +445,47 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, messagingRedirectLink);
+            if (!session.contains(messagingRedirectLink)) {
+                messagingRedirectLink = (MessagingRedirectLink) session.get(MessagingRedirectLinkImpl.class,
+                        messagingRedirectLink.getPrimaryKeyObj());
+            }
+
+            if (messagingRedirectLink != null) {
+                session.delete(messagingRedirectLink);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(messagingRedirectLink);
+        if (messagingRedirectLink != null) {
+            clearCache(messagingRedirectLink);
+        }
 
         return messagingRedirectLink;
     }
 
     @Override
     public MessagingRedirectLink updateImpl(
-        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink)
+        throws SystemException {
         messagingRedirectLink = toUnwrappedModel(messagingRedirectLink);
+
+        boolean isNew = messagingRedirectLink.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, messagingRedirectLink, merge);
+            if (messagingRedirectLink.isNew()) {
+                session.save(messagingRedirectLink);
 
-            messagingRedirectLink.setNew(false);
+                messagingRedirectLink.setNew(false);
+            } else {
+                session.merge(messagingRedirectLink);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -517,6 +493,10 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
             MessagingRedirectLinkImpl.class,
@@ -549,13 +529,24 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      *
      * @param primaryKey the primary key of the messaging redirect link
      * @return the messaging redirect link
-     * @throws com.liferay.portal.NoSuchModelException if a messaging redirect link with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchMessagingRedirectLinkException if a messaging redirect link with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingRedirectLink findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchMessagingRedirectLinkException, SystemException {
+        MessagingRedirectLink messagingRedirectLink = fetchByPrimaryKey(primaryKey);
+
+        if (messagingRedirectLink == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchMessagingRedirectLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return messagingRedirectLink;
     }
 
     /**
@@ -566,20 +557,10 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @throws com.ext.portlet.NoSuchMessagingRedirectLinkException if a messaging redirect link with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingRedirectLink findByPrimaryKey(long redirectId)
         throws NoSuchMessagingRedirectLinkException, SystemException {
-        MessagingRedirectLink messagingRedirectLink = fetchByPrimaryKey(redirectId);
-
-        if (messagingRedirectLink == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + redirectId);
-            }
-
-            throw new NoSuchMessagingRedirectLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                redirectId);
-        }
-
-        return messagingRedirectLink;
+        return findByPrimaryKey((Serializable) redirectId);
     }
 
     /**
@@ -592,7 +573,40 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
     @Override
     public MessagingRedirectLink fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        MessagingRedirectLink messagingRedirectLink = (MessagingRedirectLink) EntityCacheUtil.getResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
+                MessagingRedirectLinkImpl.class, primaryKey);
+
+        if (messagingRedirectLink == _nullMessagingRedirectLink) {
+            return null;
+        }
+
+        if (messagingRedirectLink == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                messagingRedirectLink = (MessagingRedirectLink) session.get(MessagingRedirectLinkImpl.class,
+                        primaryKey);
+
+                if (messagingRedirectLink != null) {
+                    cacheResult(messagingRedirectLink);
+                } else {
+                    EntityCacheUtil.putResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
+                        MessagingRedirectLinkImpl.class, primaryKey,
+                        _nullMessagingRedirectLink);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
+                    MessagingRedirectLinkImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return messagingRedirectLink;
     }
 
     /**
@@ -602,43 +616,10 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @return the messaging redirect link, or <code>null</code> if a messaging redirect link with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingRedirectLink fetchByPrimaryKey(long redirectId)
         throws SystemException {
-        MessagingRedirectLink messagingRedirectLink = (MessagingRedirectLink) EntityCacheUtil.getResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
-                MessagingRedirectLinkImpl.class, redirectId);
-
-        if (messagingRedirectLink == _nullMessagingRedirectLink) {
-            return null;
-        }
-
-        if (messagingRedirectLink == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                messagingRedirectLink = (MessagingRedirectLink) session.get(MessagingRedirectLinkImpl.class,
-                        Long.valueOf(redirectId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (messagingRedirectLink != null) {
-                    cacheResult(messagingRedirectLink);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(MessagingRedirectLinkModelImpl.ENTITY_CACHE_ENABLED,
-                        MessagingRedirectLinkImpl.class, redirectId,
-                        _nullMessagingRedirectLink);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return messagingRedirectLink;
+        return fetchByPrimaryKey((Serializable) redirectId);
     }
 
     /**
@@ -647,6 +628,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @return the messaging redirect links
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingRedirectLink> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -655,7 +637,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * Returns a range of all the messaging redirect links.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingRedirectLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging redirect links
@@ -663,6 +645,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @return the range of messaging redirect links
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingRedirectLink> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -672,7 +655,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * Returns an ordered range of all the messaging redirect links.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingRedirectLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging redirect links
@@ -681,17 +664,20 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @return the ordered range of messaging redirect links
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingRedirectLink> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -714,6 +700,10 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_MESSAGINGREDIRECTLINK;
+
+                if (pagination) {
+                    sql = sql.concat(MessagingRedirectLinkModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -723,26 +713,26 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<MessagingRedirectLink>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<MessagingRedirectLink>(list);
                 } else {
                     list = (List<MessagingRedirectLink>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -755,6 +745,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (MessagingRedirectLink messagingRedirectLink : findAll()) {
             remove(messagingRedirectLink);
@@ -767,6 +758,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
      * @return the number of messaging redirect links
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -780,16 +772,15 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
                 Query q = session.createQuery(_SQL_COUNT_MESSAGINGREDIRECTLINK);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -811,7 +802,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<MessagingRedirectLink>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -824,6 +815,7 @@ public class MessagingRedirectLinkPersistenceImpl extends BasePersistenceImpl<Me
     public void destroy() {
         EntityCacheUtil.removeCache(MessagingRedirectLinkImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

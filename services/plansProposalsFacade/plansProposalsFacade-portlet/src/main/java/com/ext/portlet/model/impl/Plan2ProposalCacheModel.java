@@ -5,7 +5,10 @@ import com.ext.portlet.model.Plan2Proposal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing Plan2Proposal in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class Plan2ProposalCacheModel implements CacheModel<Plan2Proposal>,
-    Serializable {
+    Externalizable {
     public long planId;
     public long proposalId;
 
@@ -32,6 +35,7 @@ public class Plan2ProposalCacheModel implements CacheModel<Plan2Proposal>,
         return sb.toString();
     }
 
+    @Override
     public Plan2Proposal toEntityModel() {
         Plan2ProposalImpl plan2ProposalImpl = new Plan2ProposalImpl();
 
@@ -41,5 +45,18 @@ public class Plan2ProposalCacheModel implements CacheModel<Plan2Proposal>,
         plan2ProposalImpl.resetOriginalValues();
 
         return plan2ProposalImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planId = objectInput.readLong();
+        proposalId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(proposalId);
     }
 }

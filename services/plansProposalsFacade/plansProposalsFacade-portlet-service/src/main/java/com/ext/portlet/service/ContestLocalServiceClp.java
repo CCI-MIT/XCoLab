@@ -1,11 +1,13 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class ContestLocalServiceClp implements ContestLocalService {
+<<<<<<< HEAD
     private ClassLoaderProxy _classLoaderProxy;
     private MethodKey _addContestMethodKey0;
     private MethodKey _createContestMethodKey1;
@@ -120,119 +122,340 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getBeanIdentifier");
+=======
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
+    private String _methodName29;
+    private String[] _methodParameterTypes29;
+    private String _methodName30;
+    private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
+    private String _methodName33;
+    private String[] _methodParameterTypes33;
+    private String _methodName34;
+    private String[] _methodParameterTypes34;
+    private String _methodName35;
+    private String[] _methodParameterTypes35;
+    private String _methodName36;
+    private String[] _methodParameterTypes36;
+    private String _methodName37;
+    private String[] _methodParameterTypes37;
+    private String _methodName38;
+    private String[] _methodParameterTypes38;
+    private String _methodName39;
+    private String[] _methodParameterTypes39;
+    private String _methodName40;
+    private String[] _methodParameterTypes40;
+    private String _methodName41;
+    private String[] _methodParameterTypes41;
+    private String _methodName42;
+    private String[] _methodParameterTypes42;
+    private String _methodName43;
+    private String[] _methodParameterTypes43;
+    private String _methodName44;
+    private String[] _methodParameterTypes44;
+    private String _methodName45;
+    private String[] _methodParameterTypes45;
+    private String _methodName46;
+    private String[] _methodParameterTypes46;
+    private String _methodName47;
+    private String[] _methodParameterTypes47;
+    private String _methodName48;
+    private String[] _methodParameterTypes48;
+    private String _methodName49;
+    private String[] _methodParameterTypes49;
+    private String _methodName50;
+    private String[] _methodParameterTypes50;
+    private String _methodName51;
+    private String[] _methodParameterTypes51;
+    private String _methodName52;
+    private String[] _methodParameterTypes52;
+    private String _methodName53;
+    private String[] _methodParameterTypes53;
+    private String _methodName54;
+    private String[] _methodParameterTypes54;
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+    public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _getContestByActiveFlagMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContestByActiveFlag", boolean.class);
+        _methodName0 = "addContest";
 
-        _createNewContestMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createNewContest", java.lang.Long.class, java.lang.String.class);
+        _methodParameterTypes0 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _updateContestGroupsAndDiscussionsMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateContestGroupsAndDiscussions");
+        _methodName1 = "createContest";
 
-        _findByActiveFeaturedMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findByActiveFeatured", boolean.class, boolean.class);
+        _methodParameterTypes1 = new String[] { "long" };
 
-        _findByActiveFlagMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findByActiveFlag", boolean.class, int.class);
+        _methodName2 = "deleteContest";
 
-        _findByActiveFlagTextMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findByActiveFlagText", boolean.class, java.lang.String.class);
+        _methodParameterTypes2 = new String[] { "long" };
 
-        _getPhasesMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPhases", com.ext.portlet.model.Contest.class);
+        _methodName3 = "deleteContest";
 
-        _getPlanTypeMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanType", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes3 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _getActivePhasesMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getActivePhases", com.ext.portlet.model.Contest.class);
+        _methodName4 = "dynamicQuery";
 
-        _getActivePhaseMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getActivePhase", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getActiveOrLastPhaseMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getActiveOrLastPhase", com.ext.portlet.model.Contest.class);
+        _methodName5 = "dynamicQuery";
 
-        _isActiveMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
-                "isActive", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getDebatesIdsMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDebatesIds", com.ext.portlet.model.Contest.class);
+        _methodName6 = "dynamicQuery";
 
-        _getTotalVotesMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getTotalVotes", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateDefaultPlanDescriptionMethodKey31 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateDefaultPlanDescription",
-                com.ext.portlet.model.Contest.class, java.lang.String.class);
+        _methodName7 = "dynamicQuery";
 
-        _storeMethodKey32 = new MethodKey(_classLoaderProxy.getClassName(),
-                "store", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _getPlanTemplateMethodKey33 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanTemplate", com.ext.portlet.model.Contest.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _getFocusAreaMethodKey34 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getFocusArea", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getLogoMethodKey35 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getLogo", com.ext.portlet.model.Contest.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _getSponsorLogoMethodKey36 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getSponsorLogo", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _setLogoMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setLogo", com.ext.portlet.model.Contest.class,
-                java.io.File.class);
+        _methodName10 = "fetchContest";
 
-        _setSponsorLogoMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setSponsorLogo", com.ext.portlet.model.Contest.class,
-                java.io.File.class);
+        _methodParameterTypes10 = new String[] { "long" };
 
-        _getLogoPathMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getLogoPath", com.ext.portlet.model.Contest.class);
+        _methodName11 = "getContest";
 
-        _getSponsorLogoPathMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getSponsorLogoPath", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes11 = new String[] { "long" };
 
-        _getProposalsCountMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalsCount", com.ext.portlet.model.Contest.class);
+        _methodName12 = "getPersistedModel";
 
-        _getDiscussionCategoryGroupMethodKey42 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionCategoryGroup",
-                com.ext.portlet.model.Contest.class);
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-        _getCommentsCountMethodKey43 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCommentsCount", com.ext.portlet.model.Contest.class);
+        _methodName13 = "getContests";
 
-        _getProposalsCommentsCountMethodKey44 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalsCommentsCount", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes13 = new String[] { "int", "int" };
 
-        _getVotesCountMethodKey45 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getVotesCount", com.ext.portlet.model.Contest.class);
+        _methodName14 = "getContestsCount";
 
-        _getTotalCommentsMethodKey46 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getTotalComments", com.ext.portlet.model.Contest.class);
+        _methodParameterTypes14 = new String[] {  };
 
-        _getTeamMembersMethodKey47 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getTeamMembers", com.ext.portlet.model.Contest.class);
+        _methodName15 = "updateContest";
 
-        _isSubscribedMethodKey48 = new MethodKey(_classLoaderProxy.getClassName(),
-                "isSubscribed", long.class, long.class);
+        _methodParameterTypes15 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _subscribeMethodKey49 = new MethodKey(_classLoaderProxy.getClassName(),
-                "subscribe", long.class, long.class);
+        _methodName16 = "getBeanIdentifier";
 
-        _unsubscribeMethodKey50 = new MethodKey(_classLoaderProxy.getClassName(),
-                "unsubscribe", long.class, long.class);
+        _methodParameterTypes16 = new String[] {  };
 
-        _getModelIdsMethodKey51 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getModelIds", long.class);
+        _methodName17 = "setBeanIdentifier";
 
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "getContestByActiveFlag";
+
+        _methodParameterTypes19 = new String[] { "boolean" };
+
+        _methodName20 = "createNewContest";
+
+        _methodParameterTypes20 = new String[] {
+                "java.lang.Long", "java.lang.String"
+            };
+
+        _methodName21 = "updateContestGroupsAndDiscussions";
+
+        _methodParameterTypes21 = new String[] {  };
+
+        _methodName22 = "findByActiveFeatured";
+
+        _methodParameterTypes22 = new String[] { "boolean", "boolean" };
+
+        _methodName23 = "findByActiveFlag";
+
+        _methodParameterTypes23 = new String[] { "boolean", "int" };
+
+        _methodName24 = "findByActiveFlagText";
+
+        _methodParameterTypes24 = new String[] { "boolean", "java.lang.String" };
+
+        _methodName25 = "getPhases";
+
+        _methodParameterTypes25 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName26 = "getPlanType";
+
+        _methodParameterTypes26 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName27 = "getActivePhases";
+
+        _methodParameterTypes27 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName28 = "getActivePhase";
+
+        _methodParameterTypes28 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName29 = "getActiveOrLastPhase";
+
+        _methodParameterTypes29 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName30 = "isActive";
+
+        _methodParameterTypes30 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName31 = "getDebatesIds";
+
+        _methodParameterTypes31 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName32 = "getTotalVotes";
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+
+        _methodParameterTypes32 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName33 = "updateDefaultPlanDescription";
+
+        _methodParameterTypes33 = new String[] {
+                "com.ext.portlet.model.Contest", "java.lang.String"
+            };
+
+        _methodName34 = "store";
+
+        _methodParameterTypes34 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName35 = "getPlanTemplate";
+
+        _methodParameterTypes35 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName36 = "getFocusArea";
+
+        _methodParameterTypes36 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName37 = "getLogo";
+
+        _methodParameterTypes37 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName38 = "getSponsorLogo";
+
+        _methodParameterTypes38 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName39 = "setLogo";
+
+        _methodParameterTypes39 = new String[] {
+                "com.ext.portlet.model.Contest", "java.io.File"
+            };
+
+        _methodName40 = "setSponsorLogo";
+
+        _methodParameterTypes40 = new String[] {
+                "com.ext.portlet.model.Contest", "java.io.File"
+            };
+
+        _methodName41 = "getLogoPath";
+
+        _methodParameterTypes41 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName42 = "getSponsorLogoPath";
+
+        _methodParameterTypes42 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName43 = "getProposalsCount";
+
+        _methodParameterTypes43 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName44 = "getDiscussionCategoryGroup";
+
+        _methodParameterTypes44 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName45 = "getCommentsCount";
+
+        _methodParameterTypes45 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName46 = "getProposalsCommentsCount";
+
+        _methodParameterTypes46 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName47 = "getVotesCount";
+
+        _methodParameterTypes47 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName48 = "getTotalComments";
+
+        _methodParameterTypes48 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName49 = "getTeamMembers";
+
+        _methodParameterTypes49 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName50 = "isSubscribed";
+
+<<<<<<< HEAD
         _getDefaultModelIdMethodKey52 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getDefaultModelId", long.class);
 
@@ -240,19 +463,40 @@ public class ContestLocalServiceClp implements ContestLocalService {
                 "getNumberOfProposalsForJudge",
                 com.liferay.portal.model.User.class,
                 com.ext.portlet.model.Contest.class);
+=======
+        _methodParameterTypes50 = new String[] { "long", "long" };
+
+        _methodName51 = "subscribe";
+
+        _methodParameterTypes51 = new String[] { "long", "long" };
+
+        _methodName52 = "unsubscribe";
+
+        _methodParameterTypes52 = new String[] { "long", "long" };
+
+        _methodName53 = "getModelIds";
+
+        _methodParameterTypes53 = new String[] { "long" };
+
+        _methodName54 = "getDefaultModelId";
+
+        _methodParameterTypes54 = new String[] { "long" };
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
+    @Override
     public com.ext.portlet.model.Contest addContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addContestMethodKey0,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -268,15 +512,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Contest createContest(long ContestPK) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createContestMethodKey1,
-                ContestPK);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1, new Object[] { ContestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -288,15 +533,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteContest(long ContestPK)
+    @Override
+    public com.ext.portlet.model.Contest deleteContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteContestMethodKey2,
-                ContestPK);
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2, new Object[] { ContestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -312,16 +560,23 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteContest(com.ext.portlet.model.Contest contest)
+    @Override
+    public com.ext.portlet.model.Contest deleteContest(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteContestMethodKey3,
-                ClpSerializer.translateInput(contest));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -333,20 +588,45 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -362,18 +642,26 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -389,6 +677,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -397,13 +686,21 @@ public class ContestLocalServiceClp implements ContestLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -419,17 +716,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -445,16 +744,50 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.Contest fetchContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchContestMethodKey8,
-                ContestPK);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10, new Object[] { ContestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -470,17 +803,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Contest getContest(long ContestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestMethodKey9,
-                ContestPK);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11, new Object[] { ContestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -500,18 +834,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -531,17 +867,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContests(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestsMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -557,15 +894,17 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getContestsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestsCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -581,17 +920,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.Contest updateContest(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateContestMethodKey13,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -607,40 +948,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.Contest updateContest(
-        com.ext.portlet.model.Contest contest, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateContestMethodKey14,
-                ClpSerializer.translateInput(contest), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -652,13 +969,15 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -668,18 +987,26 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestByActiveFlagMethodKey17,
-                contestActive);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19, new Object[] { contestActive });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchContestException) {
                 throw (com.ext.portlet.NoSuchContestException) t;
             }
@@ -699,19 +1026,24 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Contest createNewContest(
         java.lang.Long userId, java.lang.String name)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createNewContestMethodKey18,
-                ClpSerializer.translateInput(userId),
-                ClpSerializer.translateInput(name));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        ClpSerializer.translateInput(userId),
+                        
+                    ClpSerializer.translateInput(name)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -731,14 +1063,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void updateContestGroupsAndDiscussions()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_updateContestGroupsAndDiscussionsMethodKey19);
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -756,17 +1090,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_findByActiveFeaturedMethodKey20,
-                active, featured);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22, new Object[] { active, featured });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -782,17 +1117,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFlag(
         boolean active, int flag)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_findByActiveFlagMethodKey21,
-                active, flag);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23, new Object[] { active, flag });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -808,17 +1144,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
         boolean active, java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_findByActiveFlagTextMethodKey22,
-                active, ClpSerializer.translateInput(flagText));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { active, ClpSerializer.translateInput(
+                            flagText) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -834,16 +1173,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
         com.ext.portlet.model.Contest contest) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPhasesMethodKey23,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -855,18 +1196,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanType getPlanType(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPlanTypeMethodKey24,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -886,18 +1229,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.PlanType) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActivePhasesMethodKey25,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -917,18 +1262,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActivePhaseMethodKey26,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchContestPhaseException) {
                 throw (com.ext.portlet.NoSuchContestPhaseException) t;
             }
@@ -948,18 +1295,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActiveOrLastPhaseMethodKey27,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchContestPhaseException) {
                 throw (com.ext.portlet.NoSuchContestPhaseException) t;
             }
@@ -979,16 +1328,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isActiveMethodKey28,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName30,
+                    _methodParameterTypes30,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1004,17 +1355,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Boolean) returnObj).booleanValue();
     }
 
+    @Override
     public java.util.List<java.lang.Long> getDebatesIds(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDebatesIdsMethodKey29,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName31,
+                    _methodParameterTypes31,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1030,17 +1383,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.lang.Integer getTotalVotes(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTotalVotesMethodKey30,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName32,
+                    _methodParameterTypes32,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1056,16 +1411,21 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.lang.Integer) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void updateDefaultPlanDescription(
         com.ext.portlet.model.Contest contest, java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_updateDefaultPlanDescriptionMethodKey31,
-                ClpSerializer.translateInput(contest),
-                ClpSerializer.translateInput(description));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName33,
+                _methodParameterTypes33,
+                new Object[] {
+                    ClpSerializer.translateInput(contest),
+                    
+                ClpSerializer.translateInput(description)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1079,14 +1439,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_storeMethodKey32,
-                ClpSerializer.translateInput(contest));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName34,
+                _methodParameterTypes34,
+                new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1100,18 +1462,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public com.ext.portlet.model.PlanTemplate getPlanTemplate(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPlanTemplateMethodKey33,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName35,
+                    _methodParameterTypes35,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1131,18 +1495,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.PlanTemplate) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.FocusArea getFocusArea(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getFocusAreaMethodKey34,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName36,
+                    _methodParameterTypes36,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1162,18 +1528,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.FocusArea) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.Image getLogo(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getLogoMethodKey35,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName37,
+                    _methodParameterTypes37,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1193,18 +1561,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.liferay.portal.model.Image) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.Image getSponsorLogo(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getSponsorLogoMethodKey36,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName38,
+                    _methodParameterTypes38,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1224,18 +1594,23 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.liferay.portal.model.Image) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
-        MethodHandler methodHandler = new MethodHandler(_setLogoMethodKey37,
-                ClpSerializer.translateInput(contest),
-                ClpSerializer.translateInput(logoFile));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName39,
+                _methodParameterTypes39,
+                new Object[] {
+                    ClpSerializer.translateInput(contest),
+                    
+                ClpSerializer.translateInput(logoFile)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1257,18 +1632,23 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public void setSponsorLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
-        MethodHandler methodHandler = new MethodHandler(_setSponsorLogoMethodKey38,
-                ClpSerializer.translateInput(contest),
-                ClpSerializer.translateInput(logoFile));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName40,
+                _methodParameterTypes40,
+                new Object[] {
+                    ClpSerializer.translateInput(contest),
+                    
+                ClpSerializer.translateInput(logoFile)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1290,17 +1670,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getLogoPathMethodKey39,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName41,
+                    _methodParameterTypes41,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1320,18 +1702,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.lang.String getSponsorLogoPath(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getSponsorLogoPathMethodKey40,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName42,
+                    _methodParameterTypes42,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1351,17 +1735,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long getProposalsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalsCountMethodKey41,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName43,
+                    _methodParameterTypes43,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1381,18 +1767,20 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDiscussionCategoryGroupMethodKey42,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName44,
+                    _methodParameterTypes44,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1412,17 +1800,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (com.ext.portlet.model.DiscussionCategoryGroup) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long getCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCommentsCountMethodKey43,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName45,
+                    _methodParameterTypes45,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1442,17 +1832,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
     public long getProposalsCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalsCommentsCountMethodKey44,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName46,
+                    _methodParameterTypes46,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1472,17 +1864,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
     public long getVotesCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getVotesCountMethodKey45,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName47,
+                    _methodParameterTypes47,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1502,17 +1896,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
     public long getTotalComments(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTotalCommentsMethodKey46,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName48,
+                    _methodParameterTypes48,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1532,17 +1928,19 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTeamMembersMethodKey47,
-                ClpSerializer.translateInput(contest));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName49,
+                    _methodParameterTypes49,
+                    new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1558,17 +1956,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<com.ext.portlet.model.ContestTeamMember>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public boolean isSubscribed(long contestPK, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_isSubscribedMethodKey48,
-                contestPK, userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName50,
+                    _methodParameterTypes50, new Object[] { contestPK, userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1588,15 +1987,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return ((Boolean) returnObj).booleanValue();
     }
 
+    @Override
     public void subscribe(long contestPK, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_subscribeMethodKey49,
-                contestPK, userId);
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName51,
+                _methodParameterTypes51, new Object[] { contestPK, userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1614,15 +2014,16 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public void unsubscribe(long contestPK, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_unsubscribeMethodKey50,
-                contestPK, userId);
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName52,
+                _methodParameterTypes52, new Object[] { contestPK, userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1640,17 +2041,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
     }
 
+    @Override
     public java.util.List<java.lang.Long> getModelIds(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getModelIdsMethodKey51,
-                contestPK);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName53,
+                    _methodParameterTypes53, new Object[] { contestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1670,17 +2072,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.lang.Long getDefaultModelId(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDefaultModelIdMethodKey52,
-                contestPK);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName54,
+                    _methodParameterTypes54, new Object[] { contestPK });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1699,6 +2102,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         return (java.lang.Long) ClpSerializer.translateOutput(returnObj);
     }
+<<<<<<< HEAD
 
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
@@ -1734,4 +2138,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
     public ClassLoaderProxy getClassLoaderProxy() {
         return _classLoaderProxy;
     }
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 }

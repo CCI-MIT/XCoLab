@@ -1,116 +1,178 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addProposalVoteMethodKey0;
-    private MethodKey _createProposalVoteMethodKey1;
-    private MethodKey _deleteProposalVoteMethodKey2;
-    private MethodKey _deleteProposalVoteMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchProposalVoteMethodKey8;
-    private MethodKey _getProposalVoteMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getProposalVotesMethodKey11;
-    private MethodKey _getProposalVotesCountMethodKey12;
-    private MethodKey _updateProposalVoteMethodKey13;
-    private MethodKey _updateProposalVoteMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _createMethodKey17;
-    private MethodKey _findByProposalIdContestPhaseIdUserIdMethodKey18;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
 
-    public ProposalVoteLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+    public ProposalVoteLocalServiceClp(
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addProposalVoteMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addProposalVote", com.ext.portlet.model.ProposalVote.class);
+        _methodName0 = "addProposalVote";
 
-        _createProposalVoteMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createProposalVote",
-                com.ext.portlet.service.persistence.ProposalVotePK.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.ProposalVote"
+            };
 
-        _deleteProposalVoteMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposalVote",
-                com.ext.portlet.service.persistence.ProposalVotePK.class);
+        _methodName1 = "createProposalVote";
 
-        _deleteProposalVoteMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposalVote", com.ext.portlet.model.ProposalVote.class);
+        _methodParameterTypes1 = new String[] {
+                "com.ext.portlet.service.persistence.ProposalVotePK"
+            };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteProposalVote";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] {
+                "com.ext.portlet.service.persistence.ProposalVotePK"
+            };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteProposalVote";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.ProposalVote"
+            };
 
-        _fetchProposalVoteMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchProposalVote",
-                com.ext.portlet.service.persistence.ProposalVotePK.class);
+        _methodName4 = "dynamicQuery";
 
-        _getProposalVoteMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalVote",
-                com.ext.portlet.service.persistence.ProposalVotePK.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getProposalVotesMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalVotes", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getProposalVotesCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalVotesCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateProposalVoteMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposalVote", com.ext.portlet.model.ProposalVote.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateProposalVoteMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposalVote", com.ext.portlet.model.ProposalVote.class,
-                boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", long.class, long.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _findByProposalIdContestPhaseIdUserIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findByProposalIdContestPhaseIdUserId", long.class, long.class);
+        _methodName9 = "dynamicQueryCount";
+
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
+
+        _methodName10 = "fetchProposalVote";
+
+        _methodParameterTypes10 = new String[] {
+                "com.ext.portlet.service.persistence.ProposalVotePK"
+            };
+
+        _methodName11 = "getProposalVote";
+
+        _methodParameterTypes11 = new String[] {
+                "com.ext.portlet.service.persistence.ProposalVotePK"
+            };
+
+        _methodName12 = "getPersistedModel";
+
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
+
+        _methodName13 = "getProposalVotes";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getProposalVotesCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updateProposalVote";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.ProposalVote"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "create";
+
+        _methodParameterTypes19 = new String[] { "long", "long" };
+
+        _methodName20 = "findByProposalIdContestPhaseIdUserId";
+
+        _methodParameterTypes20 = new String[] { "long", "long" };
     }
 
+    @Override
     public com.ext.portlet.model.ProposalVote addProposalVote(
         com.ext.portlet.model.ProposalVote proposalVote)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addProposalVoteMethodKey0,
-                ClpSerializer.translateInput(proposalVote));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] { ClpSerializer.translateInput(proposalVote) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -126,16 +188,18 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.ProposalVote createProposalVote(
         com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createProposalVoteMethodKey1,
-                ClpSerializer.translateInput(proposalVotePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1,
+                    new Object[] { ClpSerializer.translateInput(proposalVotePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -147,16 +211,20 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteProposalVote(
+    @Override
+    public com.ext.portlet.model.ProposalVote deleteProposalVote(
         com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteProposalVoteMethodKey2,
-                ClpSerializer.translateInput(proposalVotePK));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2,
+                    new Object[] { ClpSerializer.translateInput(proposalVotePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -172,17 +240,23 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteProposalVote(
+    @Override
+    public com.ext.portlet.model.ProposalVote deleteProposalVote(
         com.ext.portlet.model.ProposalVote proposalVote)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteProposalVoteMethodKey3,
-                ClpSerializer.translateInput(proposalVote));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] { ClpSerializer.translateInput(proposalVote) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -194,20 +268,45 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -223,18 +322,26 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -250,6 +357,7 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -258,13 +366,21 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -280,17 +396,19 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -306,17 +424,52 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.ProposalVote fetchProposalVote(
         com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchProposalVoteMethodKey8,
-                ClpSerializer.translateInput(proposalVotePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10,
+                    new Object[] { ClpSerializer.translateInput(proposalVotePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -332,18 +485,20 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.ProposalVote getProposalVote(
         com.ext.portlet.service.persistence.ProposalVotePK proposalVotePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalVoteMethodKey9,
-                ClpSerializer.translateInput(proposalVotePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11,
+                    new Object[] { ClpSerializer.translateInput(proposalVotePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -363,18 +518,20 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -394,17 +551,18 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalVote> getProposalVotes(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalVotesMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -420,15 +578,17 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (java.util.List<com.ext.portlet.model.ProposalVote>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getProposalVotesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposalVotesCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -444,17 +604,19 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.ProposalVote updateProposalVote(
         com.ext.portlet.model.ProposalVote proposalVote)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateProposalVoteMethodKey13,
-                ClpSerializer.translateInput(proposalVote));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] { ClpSerializer.translateInput(proposalVote) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -470,40 +632,16 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.ProposalVote updateProposalVote(
-        com.ext.portlet.model.ProposalVote proposalVote, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateProposalVoteMethodKey14,
-                ClpSerializer.translateInput(proposalVote), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -515,13 +653,15 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -531,16 +671,25 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
         long userID) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
-                contestPhaseId, userID);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { contestPhaseId, userID });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -552,18 +701,20 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
         long contestPhaseId, long userId)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_findByProposalIdContestPhaseIdUserIdMethodKey18,
-                contestPhaseId, userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] { contestPhaseId, userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchProposalVoteException) {
                 throw (com.ext.portlet.NoSuchProposalVoteException) t;
             }
@@ -581,9 +732,5 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         }
 
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

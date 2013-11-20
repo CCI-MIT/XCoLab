@@ -49,7 +49,7 @@ public class PlanItemUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,245 @@ public class PlanItemUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlanItem update(PlanItem planItem, boolean merge)
-        throws SystemException {
-        return getPersistence().update(planItem, merge);
+    public static PlanItem update(PlanItem planItem) throws SystemException {
+        return getPersistence().update(planItem);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static PlanItem update(PlanItem planItem, boolean merge,
+    public static PlanItem update(PlanItem planItem,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planItem, merge, serviceContext);
+        return getPersistence().update(planItem, serviceContext);
+    }
+
+    /**
+    * Returns all the plan items where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the matching plan items
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns a range of all the plan items where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan items
+    * @param end the upper bound of the range of plan items (not inclusive)
+    * @return the range of matching plan items
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
+        long planId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the plan items where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan items
+    * @param end the upper bound of the range of plan items (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan items
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
+        long planId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId(planId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan item in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan item
+    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem findByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan item in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan item, or <code>null</code> if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem fetchByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan item in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan item
+    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem findByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan item in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan item, or <code>null</code> if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem fetchByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the plan items before and after the current plan item in the ordered set where planId = &#63;.
+    *
+    * @param id the primary key of the current plan item
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan item
+    * @throws com.ext.portlet.NoSuchPlanItemException if a plan item with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem[] findByAllByPlanId_PrevAndNext(
+        long id, long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
+    }
+
+    /**
+    * Removes all the plan items where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan items where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan items
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan item where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanItemException} if it could not be found.
+    *
+    * @param planId the plan ID
+    * @return the matching plan item
+    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem findByPlanId(long planId)
+        throws com.ext.portlet.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan item where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param planId the plan ID
+    * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem fetchByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan item where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param planId the plan ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem fetchByPlanId(long planId,
+        boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPlanId(planId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the plan item where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @return the plan item that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanItem removeByPlanId(long planId)
+        throws com.ext.portlet.NoSuchPlanItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan items where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan items
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByPlanId(planId);
     }
 
     /**
@@ -142,9 +368,9 @@ public class PlanItemUtil {
     }
 
     public static com.ext.portlet.model.PlanItem updateImpl(
-        com.ext.portlet.model.PlanItem planItem, boolean merge)
+        com.ext.portlet.model.PlanItem planItem)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planItem, merge);
+        return getPersistence().updateImpl(planItem);
     }
 
     /**
@@ -174,165 +400,6 @@ public class PlanItemUtil {
     }
 
     /**
-    * Returns all the plan items where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the matching plan items
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId);
-    }
-
-    /**
-    * Returns a range of all the plan items where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan items
-    * @param end the upper bound of the range of plan items (not inclusive)
-    * @return the range of matching plan items
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
-        long planId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan items where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan items
-    * @param end the upper bound of the range of plan items (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan items
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanItem> findByAllByPlanId(
-        long planId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId(planId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first plan item in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan item
-    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem findByAllByPlanId_First(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_First(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the last plan item in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan item
-    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem findByAllByPlanId_Last(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the plan items before and after the current plan item in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current plan item
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan item
-    * @throws com.ext.portlet.NoSuchPlanItemException if a plan item with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem[] findByAllByPlanId_PrevAndNext(
-        long id, long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
-    }
-
-    /**
-    * Returns the plan item where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanItemException} if it could not be found.
-    *
-    * @param planId the plan ID
-    * @return the matching plan item
-    * @throws com.ext.portlet.NoSuchPlanItemException if a matching plan item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem findByPlanId(long planId)
-        throws com.ext.portlet.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan item where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param planId the plan ID
-    * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem fetchByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan item where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param planId the plan ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching plan item, or <code>null</code> if a matching plan item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanItem fetchByPlanId(long planId,
-        boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPlanId(planId, retrieveFromCache);
-    }
-
-    /**
     * Returns all the plan items.
     *
     * @return the plan items
@@ -347,7 +414,7 @@ public class PlanItemUtil {
     * Returns a range of all the plan items.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan items
@@ -365,7 +432,7 @@ public class PlanItemUtil {
     * Returns an ordered range of all the plan items.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan items
@@ -382,29 +449,6 @@ public class PlanItemUtil {
     }
 
     /**
-    * Removes all the plan items where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByAllByPlanId(planId);
-    }
-
-    /**
-    * Removes the plan item where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanId(long planId)
-        throws com.ext.portlet.NoSuchPlanItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByPlanId(planId);
-    }
-
-    /**
     * Removes all the plan items from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -412,30 +456,6 @@ public class PlanItemUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan items where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan items
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByAllByPlanId(planId);
-    }
-
-    /**
-    * Returns the number of plan items where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan items
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByPlanId(planId);
     }
 
     /**
@@ -461,9 +481,9 @@ public class PlanItemUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanItemPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanItemUtil.class, "_persistence");
     }
 }

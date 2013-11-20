@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class PlanTeamHistoryCacheModel implements CacheModel<PlanTeamHistory>,
-    Serializable {
+    Externalizable {
     public long id;
     public long planId;
     public long userId;
@@ -50,6 +53,7 @@ public class PlanTeamHistoryCacheModel implements CacheModel<PlanTeamHistory>,
         return sb.toString();
     }
 
+    @Override
     public PlanTeamHistory toEntityModel() {
         PlanTeamHistoryImpl planTeamHistoryImpl = new PlanTeamHistoryImpl();
 
@@ -80,5 +84,39 @@ public class PlanTeamHistoryCacheModel implements CacheModel<PlanTeamHistory>,
         planTeamHistoryImpl.resetOriginalValues();
 
         return planTeamHistoryImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planId = objectInput.readLong();
+        userId = objectInput.readLong();
+        action = objectInput.readUTF();
+        payload = objectInput.readUTF();
+        created = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(userId);
+
+        if (action == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(action);
+        }
+
+        if (payload == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(payload);
+        }
+
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updateAuthorId);
     }
 }

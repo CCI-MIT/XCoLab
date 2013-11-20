@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl.mock;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -176,11 +177,127 @@ public class GroupServiceImplMock implements GroupService {
         return null;
     }
 
-    @Override
-    public Group updateGroup(long groupId, String name, String description, int type, String friendlyURL,
-            boolean active, ServiceContext serviceContext) throws PortalException, SystemException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String getBeanIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public void setBeanIdentifier(String beanIdentifier) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Group addGroup(long parentGroupId, long liveGroupId, String name,
+			String description, int type, boolean manualMembership,
+			int membershipRestriction, String friendlyURL, boolean site,
+			boolean active, ServiceContext serviceContext)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void checkRemoteStagingGroup(long groupId) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disableStaging(long groupId) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enableStaging(long groupId) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Group getCompanyGroup(long companyId) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Group> getGroups(long companyId, long parentGroupId,
+			boolean site) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Group> getManageableSiteGroups(Collection<Portlet> portlets,
+			int max) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getUserPlacesCount() throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Group> getUserSitesGroups() throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Group> getUserSitesGroups(long userId, String[] classNames,
+			boolean includeControlPanel, int max) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Group> getUserSitesGroups(long userId, String[] classNames,
+			int max) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Group> getUserSitesGroups(String[] classNames, int max)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getUserSitesGroupsCount() throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Group updateGroup(long groupId, long parentGroupId, String name,
+			String description, int type, boolean manualMembership,
+			int membershipRestriction, String friendlyURL, boolean active,
+			ServiceContext serviceContext) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateStagedPortlets(long groupId,
+			Map<String, String> stagedPortletIds) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		
+	}
 }

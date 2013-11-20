@@ -50,7 +50,7 @@ public class MessagingIgnoredRecipientsUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -84,22 +84,157 @@ public class MessagingIgnoredRecipientsUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static MessagingIgnoredRecipients update(
-        MessagingIgnoredRecipients messagingIgnoredRecipients, boolean merge)
+        MessagingIgnoredRecipients messagingIgnoredRecipients)
         throws SystemException {
-        return getPersistence().update(messagingIgnoredRecipients, merge);
+        return getPersistence().update(messagingIgnoredRecipients);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static MessagingIgnoredRecipients update(
-        MessagingIgnoredRecipients messagingIgnoredRecipients, boolean merge,
+        MessagingIgnoredRecipients messagingIgnoredRecipients,
         ServiceContext serviceContext) throws SystemException {
         return getPersistence()
-                   .update(messagingIgnoredRecipients, merge, serviceContext);
+                   .update(messagingIgnoredRecipients, serviceContext);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where email = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
+    *
+    * @param email the email
+    * @return the matching messaging ignored recipients
+    * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients findByfindByEmail(
+        java.lang.String email)
+        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByfindByEmail(email);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param email the email
+    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByEmail(
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByEmail(email);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param email the email
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByEmail(
+        java.lang.String email, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByEmail(email, retrieveFromCache);
+    }
+
+    /**
+    * Removes the messaging ignored recipients where email = &#63; from the database.
+    *
+    * @param email the email
+    * @return the messaging ignored recipients that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients removeByfindByEmail(
+        java.lang.String email)
+        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByfindByEmail(email);
+    }
+
+    /**
+    * Returns the number of messaging ignored recipientses where email = &#63;.
+    *
+    * @param email the email
+    * @return the number of matching messaging ignored recipientses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByfindByEmail(java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByfindByEmail(email);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
+    *
+    * @param userId the user ID
+    * @return the matching messaging ignored recipients
+    * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients findByfindByUserId(
+        long userId)
+        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByfindByUserId(userId);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param userId the user ID
+    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByUserId(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByUserId(userId);
+    }
+
+    /**
+    * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param userId the user ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByUserId(
+        long userId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByUserId(userId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the messaging ignored recipients where userId = &#63; from the database.
+    *
+    * @param userId the user ID
+    * @return the messaging ignored recipients that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingIgnoredRecipients removeByfindByUserId(
+        long userId)
+        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByfindByUserId(userId);
+    }
+
+    /**
+    * Returns the number of messaging ignored recipientses where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @return the number of matching messaging ignored recipientses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByfindByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByfindByUserId(userId);
     }
 
     /**
@@ -149,10 +284,9 @@ public class MessagingIgnoredRecipientsUtil {
     }
 
     public static com.ext.portlet.model.MessagingIgnoredRecipients updateImpl(
-        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients,
-        boolean merge)
+        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(messagingIgnoredRecipients, merge);
+        return getPersistence().updateImpl(messagingIgnoredRecipients);
     }
 
     /**
@@ -184,89 +318,6 @@ public class MessagingIgnoredRecipientsUtil {
     }
 
     /**
-    * Returns the messaging ignored recipients where email = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
-    *
-    * @param email the email
-    * @return the matching messaging ignored recipients
-    * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients findByfindByEmail(
-        java.lang.String email)
-        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByfindByEmail(email);
-    }
-
-    /**
-    * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param email the email
-    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByEmail(
-        java.lang.String email)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByEmail(email);
-    }
-
-    /**
-    * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param email the email
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByEmail(
-        java.lang.String email, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByEmail(email, retrieveFromCache);
-    }
-
-    /**
-    * Returns the messaging ignored recipients where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
-    *
-    * @param userId the user ID
-    * @return the matching messaging ignored recipients
-    * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients findByfindByUserId(
-        long userId)
-        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByfindByUserId(userId);
-    }
-
-    /**
-    * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param userId the user ID
-    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByUserId(
-        long userId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByUserId(userId);
-    }
-
-    /**
-    * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param userId the user ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients fetchByfindByUserId(
-        long userId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByUserId(userId, retrieveFromCache);
-    }
-
-    /**
     * Returns all the messaging ignored recipientses.
     *
     * @return the messaging ignored recipientses
@@ -281,7 +332,7 @@ public class MessagingIgnoredRecipientsUtil {
     * Returns a range of all the messaging ignored recipientses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging ignored recipientses
@@ -299,7 +350,7 @@ public class MessagingIgnoredRecipientsUtil {
     * Returns an ordered range of all the messaging ignored recipientses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging ignored recipientses
@@ -316,30 +367,6 @@ public class MessagingIgnoredRecipientsUtil {
     }
 
     /**
-    * Removes the messaging ignored recipients where email = &#63; from the database.
-    *
-    * @param email the email
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByfindByEmail(java.lang.String email)
-        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByfindByEmail(email);
-    }
-
-    /**
-    * Removes the messaging ignored recipients where userId = &#63; from the database.
-    *
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByfindByUserId(long userId)
-        throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByfindByUserId(userId);
-    }
-
-    /**
     * Removes all the messaging ignored recipientses from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -347,30 +374,6 @@ public class MessagingIgnoredRecipientsUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of messaging ignored recipientses where email = &#63;.
-    *
-    * @param email the email
-    * @return the number of matching messaging ignored recipientses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByfindByEmail(java.lang.String email)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByfindByEmail(email);
-    }
-
-    /**
-    * Returns the number of messaging ignored recipientses where userId = &#63;.
-    *
-    * @param userId the user ID
-    * @return the number of matching messaging ignored recipientses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByfindByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByfindByUserId(userId);
     }
 
     /**
@@ -396,11 +399,10 @@ public class MessagingIgnoredRecipientsUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(
         MessagingIgnoredRecipientsPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(MessagingIgnoredRecipientsUtil.class,
-            "_persistence");
     }
 }

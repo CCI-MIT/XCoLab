@@ -49,7 +49,7 @@ public class ContestPhaseColumnUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,21 +83,187 @@ public class ContestPhaseColumnUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static ContestPhaseColumn update(
-        ContestPhaseColumn contestPhaseColumn, boolean merge)
-        throws SystemException {
-        return getPersistence().update(contestPhaseColumn, merge);
+        ContestPhaseColumn contestPhaseColumn) throws SystemException {
+        return getPersistence().update(contestPhaseColumn);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ContestPhaseColumn update(
-        ContestPhaseColumn contestPhaseColumn, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(contestPhaseColumn, merge, serviceContext);
+        ContestPhaseColumn contestPhaseColumn, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(contestPhaseColumn, serviceContext);
+    }
+
+    /**
+    * Returns all the contest phase columns where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @return the matching contest phase columns
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
+        long ContestPhasePK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestPhasePK(ContestPhasePK);
+    }
+
+    /**
+    * Returns a range of all the contest phase columns where ContestPhasePK = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseColumnModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param start the lower bound of the range of contest phase columns
+    * @param end the upper bound of the range of contest phase columns (not inclusive)
+    * @return the range of matching contest phase columns
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
+        long ContestPhasePK, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestPhasePK(ContestPhasePK, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the contest phase columns where ContestPhasePK = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseColumnModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param start the lower bound of the range of contest phase columns
+    * @param end the upper bound of the range of contest phase columns (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contest phase columns
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
+        long ContestPhasePK, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhasePK(ContestPhasePK, start, end,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first contest phase column in the ordered set where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest phase column
+    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a matching contest phase column could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhaseColumn findByContestPhasePK_First(
+        long ContestPhasePK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseColumnException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhasePK_First(ContestPhasePK, orderByComparator);
+    }
+
+    /**
+    * Returns the first contest phase column in the ordered set where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest phase column, or <code>null</code> if a matching contest phase column could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhaseColumn fetchByContestPhasePK_First(
+        long ContestPhasePK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhasePK_First(ContestPhasePK,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last contest phase column in the ordered set where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest phase column
+    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a matching contest phase column could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhaseColumn findByContestPhasePK_Last(
+        long ContestPhasePK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseColumnException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhasePK_Last(ContestPhasePK, orderByComparator);
+    }
+
+    /**
+    * Returns the last contest phase column in the ordered set where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest phase column, or <code>null</code> if a matching contest phase column could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhaseColumn fetchByContestPhasePK_Last(
+        long ContestPhasePK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhasePK_Last(ContestPhasePK, orderByComparator);
+    }
+
+    /**
+    * Returns the contest phase columns before and after the current contest phase column in the ordered set where ContestPhasePK = &#63;.
+    *
+    * @param id the primary key of the current contest phase column
+    * @param ContestPhasePK the contest phase p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest phase column
+    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a contest phase column with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestPhaseColumn[] findByContestPhasePK_PrevAndNext(
+        long id, long ContestPhasePK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestPhaseColumnException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhasePK_PrevAndNext(id, ContestPhasePK,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the contest phase columns where ContestPhasePK = &#63; from the database.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByContestPhasePK(long ContestPhasePK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByContestPhasePK(ContestPhasePK);
+    }
+
+    /**
+    * Returns the number of contest phase columns where ContestPhasePK = &#63;.
+    *
+    * @param ContestPhasePK the contest phase p k
+    * @return the number of matching contest phase columns
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestPhasePK(long ContestPhasePK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByContestPhasePK(ContestPhasePK);
     }
 
     /**
@@ -145,10 +311,9 @@ public class ContestPhaseColumnUtil {
     }
 
     public static com.ext.portlet.model.ContestPhaseColumn updateImpl(
-        com.ext.portlet.model.ContestPhaseColumn contestPhaseColumn,
-        boolean merge)
+        com.ext.portlet.model.ContestPhaseColumn contestPhaseColumn)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(contestPhaseColumn, merge);
+        return getPersistence().updateImpl(contestPhaseColumn);
     }
 
     /**
@@ -179,129 +344,6 @@ public class ContestPhaseColumnUtil {
     }
 
     /**
-    * Returns all the contest phase columns where ContestPhasePK = &#63;.
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @return the matching contest phase columns
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
-        long ContestPhasePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestPhasePK(ContestPhasePK);
-    }
-
-    /**
-    * Returns a range of all the contest phase columns where ContestPhasePK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @param start the lower bound of the range of contest phase columns
-    * @param end the upper bound of the range of contest phase columns (not inclusive)
-    * @return the range of matching contest phase columns
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
-        long ContestPhasePK, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestPhasePK(ContestPhasePK, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the contest phase columns where ContestPhasePK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @param start the lower bound of the range of contest phase columns
-    * @param end the upper bound of the range of contest phase columns (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching contest phase columns
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestPhaseColumn> findByContestPhasePK(
-        long ContestPhasePK, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhasePK(ContestPhasePK, start, end,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the first contest phase column in the ordered set where ContestPhasePK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching contest phase column
-    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a matching contest phase column could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestPhaseColumn findByContestPhasePK_First(
-        long ContestPhasePK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestPhaseColumnException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhasePK_First(ContestPhasePK, orderByComparator);
-    }
-
-    /**
-    * Returns the last contest phase column in the ordered set where ContestPhasePK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching contest phase column
-    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a matching contest phase column could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestPhaseColumn findByContestPhasePK_Last(
-        long ContestPhasePK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestPhaseColumnException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhasePK_Last(ContestPhasePK, orderByComparator);
-    }
-
-    /**
-    * Returns the contest phase columns before and after the current contest phase column in the ordered set where ContestPhasePK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current contest phase column
-    * @param ContestPhasePK the contest phase p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next contest phase column
-    * @throws com.ext.portlet.NoSuchContestPhaseColumnException if a contest phase column with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestPhaseColumn[] findByContestPhasePK_PrevAndNext(
-        long id, long ContestPhasePK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestPhaseColumnException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhasePK_PrevAndNext(id, ContestPhasePK,
-            orderByComparator);
-    }
-
-    /**
     * Returns all the contest phase columns.
     *
     * @return the contest phase columns
@@ -316,7 +358,7 @@ public class ContestPhaseColumnUtil {
     * Returns a range of all the contest phase columns.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseColumnModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest phase columns
@@ -334,7 +376,7 @@ public class ContestPhaseColumnUtil {
     * Returns an ordered range of all the contest phase columns.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseColumnModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest phase columns
@@ -351,17 +393,6 @@ public class ContestPhaseColumnUtil {
     }
 
     /**
-    * Removes all the contest phase columns where ContestPhasePK = &#63; from the database.
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByContestPhasePK(long ContestPhasePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByContestPhasePK(ContestPhasePK);
-    }
-
-    /**
     * Removes all the contest phase columns from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -369,18 +400,6 @@ public class ContestPhaseColumnUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of contest phase columns where ContestPhasePK = &#63;.
-    *
-    * @param ContestPhasePK the contest phase p k
-    * @return the number of matching contest phase columns
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByContestPhasePK(long ContestPhasePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByContestPhasePK(ContestPhasePK);
     }
 
     /**
@@ -406,10 +425,9 @@ public class ContestPhaseColumnUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ContestPhaseColumnPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ContestPhaseColumnUtil.class,
-            "_persistence");
     }
 }

@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link ContestPhase}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       ContestPhase
+ * @author Brian Wing Shun Chan
+ * @see ContestPhase
  * @generated
  */
 public class ContestPhaseWrapper implements ContestPhase,
@@ -19,12 +24,121 @@ public class ContestPhaseWrapper implements ContestPhase,
         _contestPhase = contestPhase;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhase.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhase.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("ContestPhasePK", getContestPhasePK());
+        attributes.put("ContestPK", getContestPK());
+        attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
+        attributes.put("ContestPhaseDescriptionOverride",
+            getContestPhaseDescriptionOverride());
+        attributes.put("phaseActiveOverride", getPhaseActiveOverride());
+        attributes.put("phaseInactiveOverride", getPhaseInactiveOverride());
+        attributes.put("PhaseStartDate", getPhaseStartDate());
+        attributes.put("PhaseEndDate", getPhaseEndDate());
+        attributes.put("nextStatus", getNextStatus());
+        attributes.put("created", getCreated());
+        attributes.put("updated", getUpdated());
+        attributes.put("authorId", getAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long ContestPhasePK = (Long) attributes.get("ContestPhasePK");
+
+        if (ContestPhasePK != null) {
+            setContestPhasePK(ContestPhasePK);
+        }
+
+        Long ContestPK = (Long) attributes.get("ContestPK");
+
+        if (ContestPK != null) {
+            setContestPK(ContestPK);
+        }
+
+        Long ContestPhaseType = (Long) attributes.get("ContestPhaseType");
+
+        if (ContestPhaseType != null) {
+            setContestPhaseType(ContestPhaseType);
+        }
+
+        String contestPhaseAutopromote = (String) attributes.get(
+                "contestPhaseAutopromote");
+
+        if (contestPhaseAutopromote != null) {
+            setContestPhaseAutopromote(contestPhaseAutopromote);
+        }
+
+        String ContestPhaseDescriptionOverride = (String) attributes.get(
+                "ContestPhaseDescriptionOverride");
+
+        if (ContestPhaseDescriptionOverride != null) {
+            setContestPhaseDescriptionOverride(ContestPhaseDescriptionOverride);
+        }
+
+        Boolean phaseActiveOverride = (Boolean) attributes.get(
+                "phaseActiveOverride");
+
+        if (phaseActiveOverride != null) {
+            setPhaseActiveOverride(phaseActiveOverride);
+        }
+
+        Boolean phaseInactiveOverride = (Boolean) attributes.get(
+                "phaseInactiveOverride");
+
+        if (phaseInactiveOverride != null) {
+            setPhaseInactiveOverride(phaseInactiveOverride);
+        }
+
+        Date PhaseStartDate = (Date) attributes.get("PhaseStartDate");
+
+        if (PhaseStartDate != null) {
+            setPhaseStartDate(PhaseStartDate);
+        }
+
+        Date PhaseEndDate = (Date) attributes.get("PhaseEndDate");
+
+        if (PhaseEndDate != null) {
+            setPhaseEndDate(PhaseEndDate);
+        }
+
+        String nextStatus = (String) attributes.get("nextStatus");
+
+        if (nextStatus != null) {
+            setNextStatus(nextStatus);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
     }
 
     /**
@@ -32,6 +146,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the primary key of this contest phase
     */
+    @Override
     public long getPrimaryKey() {
         return _contestPhase.getPrimaryKey();
     }
@@ -41,6 +156,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param primaryKey the primary key of this contest phase
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _contestPhase.setPrimaryKey(primaryKey);
     }
@@ -50,6 +166,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest phase p k of this contest phase
     */
+    @Override
     public long getContestPhasePK() {
         return _contestPhase.getContestPhasePK();
     }
@@ -59,6 +176,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPhasePK the contest phase p k of this contest phase
     */
+    @Override
     public void setContestPhasePK(long ContestPhasePK) {
         _contestPhase.setContestPhasePK(ContestPhasePK);
     }
@@ -68,6 +186,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest p k of this contest phase
     */
+    @Override
     public long getContestPK() {
         return _contestPhase.getContestPK();
     }
@@ -77,6 +196,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPK the contest p k of this contest phase
     */
+    @Override
     public void setContestPK(long ContestPK) {
         _contestPhase.setContestPK(ContestPK);
     }
@@ -86,6 +206,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest phase type of this contest phase
     */
+    @Override
     public long getContestPhaseType() {
         return _contestPhase.getContestPhaseType();
     }
@@ -95,6 +216,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPhaseType the contest phase type of this contest phase
     */
+    @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _contestPhase.setContestPhaseType(ContestPhaseType);
     }
@@ -104,6 +226,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest phase autopromote of this contest phase
     */
+    @Override
     public java.lang.String getContestPhaseAutopromote() {
         return _contestPhase.getContestPhaseAutopromote();
     }
@@ -113,6 +236,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param contestPhaseAutopromote the contest phase autopromote of this contest phase
     */
+    @Override
     public void setContestPhaseAutopromote(
         java.lang.String contestPhaseAutopromote) {
         _contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
@@ -123,6 +247,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the contest phase description override of this contest phase
     */
+    @Override
     public java.lang.String getContestPhaseDescriptionOverride() {
         return _contestPhase.getContestPhaseDescriptionOverride();
     }
@@ -132,6 +257,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param ContestPhaseDescriptionOverride the contest phase description override of this contest phase
     */
+    @Override
     public void setContestPhaseDescriptionOverride(
         java.lang.String ContestPhaseDescriptionOverride) {
         _contestPhase.setContestPhaseDescriptionOverride(ContestPhaseDescriptionOverride);
@@ -142,6 +268,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the phase active override of this contest phase
     */
+    @Override
     public boolean getPhaseActiveOverride() {
         return _contestPhase.getPhaseActiveOverride();
     }
@@ -151,6 +278,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return <code>true</code> if this contest phase is phase active override; <code>false</code> otherwise
     */
+    @Override
     public boolean isPhaseActiveOverride() {
         return _contestPhase.isPhaseActiveOverride();
     }
@@ -160,6 +288,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param phaseActiveOverride the phase active override of this contest phase
     */
+    @Override
     public void setPhaseActiveOverride(boolean phaseActiveOverride) {
         _contestPhase.setPhaseActiveOverride(phaseActiveOverride);
     }
@@ -169,6 +298,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the phase inactive override of this contest phase
     */
+    @Override
     public boolean getPhaseInactiveOverride() {
         return _contestPhase.getPhaseInactiveOverride();
     }
@@ -178,6 +308,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return <code>true</code> if this contest phase is phase inactive override; <code>false</code> otherwise
     */
+    @Override
     public boolean isPhaseInactiveOverride() {
         return _contestPhase.isPhaseInactiveOverride();
     }
@@ -187,6 +318,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param phaseInactiveOverride the phase inactive override of this contest phase
     */
+    @Override
     public void setPhaseInactiveOverride(boolean phaseInactiveOverride) {
         _contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
     }
@@ -196,6 +328,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the phase start date of this contest phase
     */
+    @Override
     public java.util.Date getPhaseStartDate() {
         return _contestPhase.getPhaseStartDate();
     }
@@ -205,6 +338,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param PhaseStartDate the phase start date of this contest phase
     */
+    @Override
     public void setPhaseStartDate(java.util.Date PhaseStartDate) {
         _contestPhase.setPhaseStartDate(PhaseStartDate);
     }
@@ -214,6 +348,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the phase end date of this contest phase
     */
+    @Override
     public java.util.Date getPhaseEndDate() {
         return _contestPhase.getPhaseEndDate();
     }
@@ -223,6 +358,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param PhaseEndDate the phase end date of this contest phase
     */
+    @Override
     public void setPhaseEndDate(java.util.Date PhaseEndDate) {
         _contestPhase.setPhaseEndDate(PhaseEndDate);
     }
@@ -232,6 +368,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the next status of this contest phase
     */
+    @Override
     public java.lang.String getNextStatus() {
         return _contestPhase.getNextStatus();
     }
@@ -241,6 +378,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param nextStatus the next status of this contest phase
     */
+    @Override
     public void setNextStatus(java.lang.String nextStatus) {
         _contestPhase.setNextStatus(nextStatus);
     }
@@ -250,6 +388,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the created of this contest phase
     */
+    @Override
     public java.util.Date getCreated() {
         return _contestPhase.getCreated();
     }
@@ -259,6 +398,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param created the created of this contest phase
     */
+    @Override
     public void setCreated(java.util.Date created) {
         _contestPhase.setCreated(created);
     }
@@ -268,6 +408,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the updated of this contest phase
     */
+    @Override
     public java.util.Date getUpdated() {
         return _contestPhase.getUpdated();
     }
@@ -277,6 +418,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param updated the updated of this contest phase
     */
+    @Override
     public void setUpdated(java.util.Date updated) {
         _contestPhase.setUpdated(updated);
     }
@@ -286,6 +428,7 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @return the author ID of this contest phase
     */
+    @Override
     public long getAuthorId() {
         return _contestPhase.getAuthorId();
     }
@@ -295,42 +438,64 @@ public class ContestPhaseWrapper implements ContestPhase,
     *
     * @param authorId the author ID of this contest phase
     */
+    @Override
     public void setAuthorId(long authorId) {
         _contestPhase.setAuthorId(authorId);
     }
 
+    @Override
     public boolean isNew() {
         return _contestPhase.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _contestPhase.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _contestPhase.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _contestPhase.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _contestPhase.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _contestPhase.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _contestPhase.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _contestPhase.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _contestPhase.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _contestPhase.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _contestPhase.setExpandoBridgeAttributes(serviceContext);
@@ -341,6 +506,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         return new ContestPhaseWrapper((ContestPhase) _contestPhase.clone());
     }
 
+    @Override
     public int compareTo(ContestPhase contestPhase) {
         return _contestPhase.compareTo(contestPhase);
     }
@@ -350,12 +516,19 @@ public class ContestPhaseWrapper implements ContestPhase,
         return _contestPhase.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<ContestPhase> toCacheModel() {
         return _contestPhase.toCacheModel();
     }
 
+    @Override
     public ContestPhase toEscapedModel() {
         return new ContestPhaseWrapper(_contestPhase.toEscapedModel());
+    }
+
+    @Override
+    public ContestPhase toUnescapedModel() {
+        return new ContestPhaseWrapper(_contestPhase.toUnescapedModel());
     }
 
     @Override
@@ -363,26 +536,49 @@ public class ContestPhaseWrapper implements ContestPhase,
         return _contestPhase.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _contestPhase.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestPhase.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhaseWrapper)) {
+            return false;
+        }
+
+        ContestPhaseWrapper contestPhaseWrapper = (ContestPhaseWrapper) obj;
+
+        if (Validator.equals(_contestPhase, contestPhaseWrapper._contestPhase)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public ContestPhase getWrappedContestPhase() {
         return _contestPhase;
     }
 
+    @Override
     public ContestPhase getWrappedModel() {
         return _contestPhase;
     }
 
+    @Override
     public void resetOriginalValues() {
         _contestPhase.resetOriginalValues();
     }

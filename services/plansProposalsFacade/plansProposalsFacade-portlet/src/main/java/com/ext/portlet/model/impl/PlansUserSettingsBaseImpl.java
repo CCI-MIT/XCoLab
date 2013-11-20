@@ -24,6 +24,7 @@ public abstract class PlansUserSettingsBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plans user settings model instance should use the {@link PlansUserSettings} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlansUserSettingsLocalServiceUtil.addPlansUserSettings(this);

@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanFan service. Represents a row in the &quot;xcolab_PlanFan&quot; database table, with each column mapped to a property of this class.
@@ -73,10 +75,11 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
             true);
     public static long PLANID_COLUMN_BITMASK = 1L;
     public static long USERID_COLUMN_BITMASK = 2L;
+    public static long ID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanFan"));
     private static ClassLoader _classLoader = PlanFan.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanFan.class
         };
     private long _id;
@@ -89,9 +92,8 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
     private boolean _setOriginalPlanId;
     private Date _created;
     private Date _deleted;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanFan _escapedModelProxy;
+    private PlanFan _escapedModel;
 
     public PlanFanModelImpl() {
     }
@@ -103,6 +105,10 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
      * @return the normal model instance
      */
     public static PlanFan toModel(PlanFanSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanFan model = new PlanFanImpl();
 
         model.setId(soapModel.getId());
@@ -121,6 +127,10 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
      * @return the normal model instances
      */
     public static List<PlanFan> toModels(PlanFanSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanFan> models = new ArrayList<PlanFan>(soapModels.length);
 
         for (PlanFanSoap soapModel : soapModels) {
@@ -130,35 +140,89 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanFan.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanFan.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("userId", getUserId());
+        attributes.put("planId", getPlanId());
+        attributes.put("created", getCreated());
+        attributes.put("deleted", getDeleted());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Date deleted = (Date) attributes.get("deleted");
+
+        if (deleted != null) {
+            setDeleted(deleted);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -166,10 +230,12 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -182,10 +248,12 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -195,10 +263,12 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -216,19 +286,23 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public Date getDeleted() {
         return _deleted;
     }
 
+    @Override
     public void setDeleted(Date deleted) {
         _deleted = deleted;
     }
@@ -238,29 +312,26 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
     }
 
     @Override
-    public PlanFan toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanFan) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanFan.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanFan.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanFan toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanFan) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -278,6 +349,7 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
         return planFanImpl;
     }
 
+    @Override
     public int compareTo(PlanFan planFan) {
         int value = 0;
 
@@ -298,17 +370,15 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanFan)) {
             return false;
         }
 
-        PlanFan planFan = null;
-
-        try {
-            planFan = (PlanFan) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanFan planFan = (PlanFan) obj;
 
         long primaryKey = planFan.getPrimaryKey();
 
@@ -387,6 +457,7 @@ public class PlanFanModelImpl extends BaseModelImpl<PlanFan>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanRelatedService}.
- * </p>
+ * Provides a wrapper for {@link PlanRelatedService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanRelatedService
+ * @author Brian Wing Shun Chan
+ * @see PlanRelatedService
  * @generated
  */
 public class PlanRelatedServiceWrapper implements PlanRelatedService,
@@ -20,24 +18,53 @@ public class PlanRelatedServiceWrapper implements PlanRelatedService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _planRelatedService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _planRelatedService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planRelatedService.invokeMethod(name, parameterTypes, arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanRelatedService getWrappedPlanRelatedService() {
         return _planRelatedService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanRelatedService(
         PlanRelatedService planRelatedService) {
         _planRelatedService = planRelatedService;
     }
 
+    @Override
     public PlanRelatedService getWrappedService() {
         return _planRelatedService;
     }
 
+    @Override
     public void setWrappedService(PlanRelatedService planRelatedService) {
         _planRelatedService = planRelatedService;
     }

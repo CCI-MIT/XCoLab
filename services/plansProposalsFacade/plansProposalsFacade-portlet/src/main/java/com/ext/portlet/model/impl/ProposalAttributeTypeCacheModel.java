@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ProposalAttributeType in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ProposalAttributeTypeCacheModel implements CacheModel<ProposalAttributeType>,
-    Serializable {
+    Externalizable {
     public String name;
     public boolean visibleInVersionHistory;
     public boolean copyOnPromote;
@@ -36,6 +39,7 @@ public class ProposalAttributeTypeCacheModel implements CacheModel<ProposalAttri
         return sb.toString();
     }
 
+    @Override
     public ProposalAttributeType toEntityModel() {
         ProposalAttributeTypeImpl proposalAttributeTypeImpl = new ProposalAttributeTypeImpl();
 
@@ -51,5 +55,25 @@ public class ProposalAttributeTypeCacheModel implements CacheModel<ProposalAttri
         proposalAttributeTypeImpl.resetOriginalValues();
 
         return proposalAttributeTypeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        name = objectInput.readUTF();
+        visibleInVersionHistory = objectInput.readBoolean();
+        copyOnPromote = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        objectOutput.writeBoolean(visibleInVersionHistory);
+        objectOutput.writeBoolean(copyOnPromote);
     }
 }

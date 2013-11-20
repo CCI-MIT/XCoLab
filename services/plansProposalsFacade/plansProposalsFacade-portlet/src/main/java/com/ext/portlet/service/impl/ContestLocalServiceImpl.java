@@ -2,7 +2,14 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
@@ -52,7 +59,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
-import com.liferay.portal.service.PermissionLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
@@ -175,9 +182,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         rolesActionsMap.put(moderator, moderatorActions);
 
         for (Role role : rolesActionsMap.keySet()) {
-            PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId,
+            ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
                     DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                    String.valueOf(group.getGroupId()), rolesActionsMap.get(role));
+                    String.valueOf(group.getGroupId()), role.getRoleId(), rolesActionsMap.get(role));
         }
 
         c.setGroupId(group.getGroupId());

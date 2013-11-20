@@ -25,6 +25,7 @@ public abstract class MessagingUserPreferencesBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a messaging user preferences model instance should use the {@link MessagingUserPreferences} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(this);

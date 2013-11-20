@@ -42,11 +42,13 @@ public class PlanTypeLocalServiceImpl extends PlanTypeLocalServiceBaseImpl {
     }
     
     public List<PlanTypeColumn> getColumnsByPlanTypeId(long planTypeId) throws SystemException {
-        return planTypePersistence.getPlanTypeColumns(planTypeId);
+        //return planTypePersistence.getPlanTypeColumns(planTypeId);
+        return null;
     }
     
     public List<PlanTypeAttribute> getAttributesByPlanTypeId(long planTypeId) throws SystemException {
-        return planTypePersistence.getPlanTypeAttributes(planTypeId);
+        //return planTypePersistence.getPlanTypeAttributes(planTypeId);
+    	return null;
     }
     
     public boolean isRegionalType(long planTypeId) throws SystemException {

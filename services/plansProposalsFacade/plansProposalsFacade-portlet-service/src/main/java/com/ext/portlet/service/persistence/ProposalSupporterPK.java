@@ -35,6 +35,7 @@ public class ProposalSupporterPK implements Comparable<ProposalSupporterPK>,
         this.userId = userId;
     }
 
+    @Override
     public int compareTo(ProposalSupporterPK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class ProposalSupporterPK implements Comparable<ProposalSupporterPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalSupporterPK)) {
             return false;
         }
 
-        ProposalSupporterPK pk = null;
-
-        try {
-            pk = (ProposalSupporterPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalSupporterPK pk = (ProposalSupporterPK) obj;
 
         if ((proposalId == pk.proposalId) && (userId == pk.userId)) {
             return true;

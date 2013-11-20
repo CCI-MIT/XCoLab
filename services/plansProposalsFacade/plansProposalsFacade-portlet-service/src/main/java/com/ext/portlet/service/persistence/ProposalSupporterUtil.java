@@ -49,7 +49,7 @@ public class ProposalSupporterUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,21 +83,345 @@ public class ProposalSupporterUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ProposalSupporter update(
-        ProposalSupporter proposalSupporter, boolean merge)
+    public static ProposalSupporter update(ProposalSupporter proposalSupporter)
         throws SystemException {
-        return getPersistence().update(proposalSupporter, merge);
+        return getPersistence().update(proposalSupporter);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ProposalSupporter update(
-        ProposalSupporter proposalSupporter, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(proposalSupporter, merge, serviceContext);
+        ProposalSupporter proposalSupporter, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(proposalSupporter, serviceContext);
+    }
+
+    /**
+    * Returns all the proposal supporters where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @return the matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByProposalId(proposalId);
+    }
+
+    /**
+    * Returns a range of all the proposal supporters where proposalId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param start the lower bound of the range of proposal supporters
+    * @param end the upper bound of the range of proposal supporters (not inclusive)
+    * @return the range of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
+        long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByProposalId(proposalId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the proposal supporters where proposalId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param start the lower bound of the range of proposal supporters
+    * @param end the upper bound of the range of proposal supporters (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
+        long proposalId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId(proposalId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal supporter in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter findByProposalId_First(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_First(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal supporter in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter fetchByProposalId_First(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_First(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal supporter in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter findByProposalId_Last(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_Last(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal supporter in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter fetchByProposalId_Last(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_Last(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal supporters before and after the current proposal supporter in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalSupporterPK the primary key of the current proposal supporter
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter[] findByProposalId_PrevAndNext(
+        ProposalSupporterPK proposalSupporterPK, long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_PrevAndNext(proposalSupporterPK,
+            proposalId, orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal supporters where proposalId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByProposalId(proposalId);
+    }
+
+    /**
+    * Returns the number of proposal supporters where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @return the number of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByProposalId(proposalId);
+    }
+
+    /**
+    * Returns all the proposal supporters where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @return the matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByUserId(userId);
+    }
+
+    /**
+    * Returns a range of all the proposal supporters where userId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param userId the user ID
+    * @param start the lower bound of the range of proposal supporters
+    * @param end the upper bound of the range of proposal supporters (not inclusive)
+    * @return the range of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
+        long userId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByUserId(userId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the proposal supporters where userId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param userId the user ID
+    * @param start the lower bound of the range of proposal supporters
+    * @param end the upper bound of the range of proposal supporters (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
+        long userId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByUserId(userId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal supporter in the ordered set where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter findByUserId_First(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByUserId_First(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal supporter in the ordered set where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter fetchByUserId_First(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByUserId_First(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal supporter in the ordered set where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter findByUserId_Last(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByUserId_Last(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal supporter in the ordered set where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter fetchByUserId_Last(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByUserId_Last(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal supporters before and after the current proposal supporter in the ordered set where userId = &#63;.
+    *
+    * @param proposalSupporterPK the primary key of the current proposal supporter
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next proposal supporter
+    * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalSupporter[] findByUserId_PrevAndNext(
+        ProposalSupporterPK proposalSupporterPK, long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposalSupporterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByUserId_PrevAndNext(proposalSupporterPK, userId,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal supporters where userId = &#63; from the database.
+    *
+    * @param userId the user ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByUserId(userId);
+    }
+
+    /**
+    * Returns the number of proposal supporters where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @return the number of matching proposal supporters
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByUserId(userId);
     }
 
     /**
@@ -147,9 +471,9 @@ public class ProposalSupporterUtil {
     }
 
     public static com.ext.portlet.model.ProposalSupporter updateImpl(
-        com.ext.portlet.model.ProposalSupporter proposalSupporter, boolean merge)
+        com.ext.portlet.model.ProposalSupporter proposalSupporter)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(proposalSupporter, merge);
+        return getPersistence().updateImpl(proposalSupporter);
     }
 
     /**
@@ -181,247 +505,6 @@ public class ProposalSupporterUtil {
     }
 
     /**
-    * Returns all the proposal supporters where proposalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @return the matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByProposalId(proposalId);
-    }
-
-    /**
-    * Returns a range of all the proposal supporters where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param start the lower bound of the range of proposal supporters
-    * @param end the upper bound of the range of proposal supporters (not inclusive)
-    * @return the range of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
-        long proposalId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByProposalId(proposalId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the proposal supporters where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param start the lower bound of the range of proposal supporters
-    * @param end the upper bound of the range of proposal supporters (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByProposalId(
-        long proposalId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId(proposalId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first proposal supporter in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter findByProposalId_First(
-        long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_First(proposalId, orderByComparator);
-    }
-
-    /**
-    * Returns the last proposal supporter in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter findByProposalId_Last(
-        long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_Last(proposalId, orderByComparator);
-    }
-
-    /**
-    * Returns the proposal supporters before and after the current proposal supporter in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalSupporterPK the primary key of the current proposal supporter
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter[] findByProposalId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_PrevAndNext(proposalSupporterPK,
-            proposalId, orderByComparator);
-    }
-
-    /**
-    * Returns all the proposal supporters where userId = &#63;.
-    *
-    * @param userId the user ID
-    * @return the matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
-        long userId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByUserId(userId);
-    }
-
-    /**
-    * Returns a range of all the proposal supporters where userId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param userId the user ID
-    * @param start the lower bound of the range of proposal supporters
-    * @param end the upper bound of the range of proposal supporters (not inclusive)
-    * @return the range of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
-        long userId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByUserId(userId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the proposal supporters where userId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param userId the user ID
-    * @param start the lower bound of the range of proposal supporters
-    * @param end the upper bound of the range of proposal supporters (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ProposalSupporter> findByUserId(
-        long userId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByUserId(userId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first proposal supporter in the ordered set where userId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param userId the user ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter findByUserId_First(
-        long userId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByUserId_First(userId, orderByComparator);
-    }
-
-    /**
-    * Returns the last proposal supporter in the ordered set where userId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param userId the user ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter findByUserId_Last(
-        long userId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByUserId_Last(userId, orderByComparator);
-    }
-
-    /**
-    * Returns the proposal supporters before and after the current proposal supporter in the ordered set where userId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalSupporterPK the primary key of the current proposal supporter
-    * @param userId the user ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next proposal supporter
-    * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalSupporter[] findByUserId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long userId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposalSupporterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByUserId_PrevAndNext(proposalSupporterPK, userId,
-            orderByComparator);
-    }
-
-    /**
     * Returns all the proposal supporters.
     *
     * @return the proposal supporters
@@ -436,7 +519,7 @@ public class ProposalSupporterUtil {
     * Returns a range of all the proposal supporters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal supporters
@@ -454,7 +537,7 @@ public class ProposalSupporterUtil {
     * Returns an ordered range of all the proposal supporters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal supporters
@@ -471,28 +554,6 @@ public class ProposalSupporterUtil {
     }
 
     /**
-    * Removes all the proposal supporters where proposalId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByProposalId(proposalId);
-    }
-
-    /**
-    * Removes all the proposal supporters where userId = &#63; from the database.
-    *
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByUserId(userId);
-    }
-
-    /**
     * Removes all the proposal supporters from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -500,30 +561,6 @@ public class ProposalSupporterUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of proposal supporters where proposalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @return the number of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByProposalId(proposalId);
-    }
-
-    /**
-    * Returns the number of proposal supporters where userId = &#63;.
-    *
-    * @param userId the user ID
-    * @return the number of matching proposal supporters
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByUserId(userId);
     }
 
     /**
@@ -549,10 +586,9 @@ public class ProposalSupporterUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ProposalSupporterPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ProposalSupporterUtil.class,
-            "_persistence");
     }
 }

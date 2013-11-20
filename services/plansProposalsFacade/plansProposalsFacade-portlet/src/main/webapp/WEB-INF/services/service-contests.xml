@@ -97,7 +97,7 @@
             <order-column name="PhaseStartDate" />
         </order>
 
-        <finder name="ContestIdStartEnd" return-type="ContestPhase">
+        <finder name="ContestIdStartEnd" return-type="Collection">
             <finder-column name="ContestPK" />
             <finder-column name="PhaseStartDate" comparator="&lt;=" />
             <finder-column name="PhaseEndDate" comparator="&gt;=" />

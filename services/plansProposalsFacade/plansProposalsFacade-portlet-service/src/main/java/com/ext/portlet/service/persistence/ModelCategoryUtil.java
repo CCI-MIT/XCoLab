@@ -49,7 +49,7 @@ public class ModelCategoryUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,19 @@ public class ModelCategoryUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ModelCategory update(ModelCategory modelCategory,
-        boolean merge) throws SystemException {
-        return getPersistence().update(modelCategory, merge);
+    public static ModelCategory update(ModelCategory modelCategory)
+        throws SystemException {
+        return getPersistence().update(modelCategory);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ModelCategory update(ModelCategory modelCategory,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(modelCategory, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(modelCategory, serviceContext);
     }
 
     /**
@@ -145,9 +145,9 @@ public class ModelCategoryUtil {
     }
 
     public static com.ext.portlet.model.ModelCategory updateImpl(
-        com.ext.portlet.model.ModelCategory modelCategory, boolean merge)
+        com.ext.portlet.model.ModelCategory modelCategory)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(modelCategory, merge);
+        return getPersistence().updateImpl(modelCategory);
     }
 
     /**
@@ -193,7 +193,7 @@ public class ModelCategoryUtil {
     * Returns a range of all the model categories.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model categories
@@ -211,7 +211,7 @@ public class ModelCategoryUtil {
     * Returns an ordered range of all the model categories.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model categories
@@ -260,10 +260,9 @@ public class ModelCategoryUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ModelCategoryPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ModelCategoryUtil.class,
-            "_persistence");
     }
 }

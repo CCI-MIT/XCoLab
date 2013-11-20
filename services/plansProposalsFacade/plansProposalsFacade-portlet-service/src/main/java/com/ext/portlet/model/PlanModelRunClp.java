@@ -1,17 +1,22 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
@@ -23,90 +28,304 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
     private long _version;
     private Date _created;
     private long _updateAuthorId;
+    private BaseModel<?> _planModelRunRemoteModel;
 
     public PlanModelRunClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanModelRun.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanModelRun.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("scenarioId", getScenarioId());
+        attributes.put("planVersion", getPlanVersion());
+        attributes.put("version", getVersion());
+        attributes.put("created", getCreated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long scenarioId = (Long) attributes.get("scenarioId");
+
+        if (scenarioId != null) {
+            setScenarioId(scenarioId);
+        }
+
+        Long planVersion = (Long) attributes.get("planVersion");
+
+        if (planVersion != null) {
+            setPlanVersion(planVersion);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+    }
+
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_planModelRunRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _planId = planId;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanId", long.class);
+
+                method.invoke(_planModelRunRemoteModel, planId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getScenarioId() {
         return _scenarioId;
     }
 
+    @Override
     public void setScenarioId(long scenarioId) {
         _scenarioId = scenarioId;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setScenarioId", long.class);
+
+                method.invoke(_planModelRunRemoteModel, scenarioId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getPlanVersion() {
         return _planVersion;
     }
 
+    @Override
     public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanVersion", long.class);
+
+                method.invoke(_planModelRunRemoteModel, planVersion);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(long version) {
         _version = version;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVersion", long.class);
+
+                method.invoke(_planModelRunRemoteModel, version);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCreated", Date.class);
+
+                method.invoke(_planModelRunRemoteModel, created);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
+
+        if (_planModelRunRemoteModel != null) {
+            try {
+                Class<?> clazz = _planModelRunRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setUpdateAuthorId", long.class);
+
+                method.invoke(_planModelRunRemoteModel, updateAuthorId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getPlanModelRunRemoteModel() {
+        return _planModelRunRemoteModel;
+    }
+
+    public void setPlanModelRunRemoteModel(BaseModel<?> planModelRunRemoteModel) {
+        _planModelRunRemoteModel = planModelRunRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _planModelRunRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_planModelRunRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanModelRunLocalServiceUtil.addPlanModelRun(this);
@@ -117,7 +336,7 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
 
     @Override
     public PlanModelRun toEscapedModel() {
-        return (PlanModelRun) Proxy.newProxyInstance(PlanModelRun.class.getClassLoader(),
+        return (PlanModelRun) ProxyUtil.newProxyInstance(PlanModelRun.class.getClassLoader(),
             new Class[] { PlanModelRun.class }, new AutoEscapeBeanHandler(this));
     }
 
@@ -136,6 +355,7 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
         return clone;
     }
 
+    @Override
     public int compareTo(PlanModelRun planModelRun) {
         int value = 0;
 
@@ -158,17 +378,15 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanModelRunClp)) {
             return false;
         }
 
-        PlanModelRunClp planModelRun = null;
-
-        try {
-            planModelRun = (PlanModelRunClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanModelRunClp planModelRun = (PlanModelRunClp) obj;
 
         long primaryKey = planModelRun.getPrimaryKey();
 
@@ -207,6 +425,7 @@ public class PlanModelRunClp extends BaseModelImpl<PlanModelRun>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

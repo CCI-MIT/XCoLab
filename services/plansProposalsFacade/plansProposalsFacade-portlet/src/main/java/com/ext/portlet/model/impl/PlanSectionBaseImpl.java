@@ -24,6 +24,7 @@ public abstract class PlanSectionBaseImpl extends PlanSectionModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan section model instance should use the {@link PlanSection} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionLocalServiceUtil.addPlanSection(this);

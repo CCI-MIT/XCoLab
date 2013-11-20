@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
@@ -19,74 +25,247 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
     private long _ontologySpaceId;
     private String _name;
     private String _descriptionUrl;
+    private BaseModel<?> _ontologyTermRemoteModel;
 
     public OntologyTermClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return OntologyTerm.class;
     }
 
+    @Override
     public String getModelClassName() {
         return OntologyTerm.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("parentId", getParentId());
+        attributes.put("ontologySpaceId", getOntologySpaceId());
+        attributes.put("name", getName());
+        attributes.put("descriptionUrl", getDescriptionUrl());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long parentId = (Long) attributes.get("parentId");
+
+        if (parentId != null) {
+            setParentId(parentId);
+        }
+
+        Long ontologySpaceId = (Long) attributes.get("ontologySpaceId");
+
+        if (ontologySpaceId != null) {
+            setOntologySpaceId(ontologySpaceId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String descriptionUrl = (String) attributes.get("descriptionUrl");
+
+        if (descriptionUrl != null) {
+            setDescriptionUrl(descriptionUrl);
+        }
+    }
+
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_ontologyTermRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getParentId() {
         return _parentId;
     }
 
+    @Override
     public void setParentId(long parentId) {
         _parentId = parentId;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setParentId", long.class);
+
+                method.invoke(_ontologyTermRemoteModel, parentId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getOntologySpaceId() {
         return _ontologySpaceId;
     }
 
+    @Override
     public void setOntologySpaceId(long ontologySpaceId) {
         _ontologySpaceId = ontologySpaceId;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOntologySpaceId", long.class);
+
+                method.invoke(_ontologyTermRemoteModel, ontologySpaceId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getName() {
         return _name;
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setName", String.class);
+
+                method.invoke(_ontologyTermRemoteModel, name);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getDescriptionUrl() {
         return _descriptionUrl;
     }
 
+    @Override
     public void setDescriptionUrl(String descriptionUrl) {
         _descriptionUrl = descriptionUrl;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDescriptionUrl",
+                        String.class);
+
+                method.invoke(_ontologyTermRemoteModel, descriptionUrl);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getOntologyTermRemoteModel() {
+        return _ontologyTermRemoteModel;
+    }
+
+    public void setOntologyTermRemoteModel(BaseModel<?> ontologyTermRemoteModel) {
+        _ontologyTermRemoteModel = ontologyTermRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _ontologyTermRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_ontologyTermRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             OntologyTermLocalServiceUtil.addOntologyTerm(this);
@@ -97,7 +276,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     @Override
     public OntologyTerm toEscapedModel() {
-        return (OntologyTerm) Proxy.newProxyInstance(OntologyTerm.class.getClassLoader(),
+        return (OntologyTerm) ProxyUtil.newProxyInstance(OntologyTerm.class.getClassLoader(),
             new Class[] { OntologyTerm.class }, new AutoEscapeBeanHandler(this));
     }
 
@@ -114,6 +293,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         return clone;
     }
 
+    @Override
     public int compareTo(OntologyTerm ontologyTerm) {
         long primaryKey = ontologyTerm.getPrimaryKey();
 
@@ -128,17 +308,15 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof OntologyTermClp)) {
             return false;
         }
 
-        OntologyTermClp ontologyTerm = null;
-
-        try {
-            ontologyTerm = (OntologyTermClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        OntologyTermClp ontologyTerm = (OntologyTermClp) obj;
 
         long primaryKey = ontologyTerm.getPrimaryKey();
 
@@ -173,6 +351,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

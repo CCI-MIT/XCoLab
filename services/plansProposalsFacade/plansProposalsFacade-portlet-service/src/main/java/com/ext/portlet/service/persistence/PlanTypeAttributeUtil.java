@@ -49,7 +49,7 @@ public class PlanTypeAttributeUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,101 +83,20 @@ public class PlanTypeAttributeUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlanTypeAttribute update(
-        PlanTypeAttribute planTypeAttribute, boolean merge)
+    public static PlanTypeAttribute update(PlanTypeAttribute planTypeAttribute)
         throws SystemException {
-        return getPersistence().update(planTypeAttribute, merge);
+        return getPersistence().update(planTypeAttribute);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static PlanTypeAttribute update(
-        PlanTypeAttribute planTypeAttribute, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planTypeAttribute, merge, serviceContext);
-    }
-
-    /**
-    * Caches the plan type attribute in the entity cache if it is enabled.
-    *
-    * @param planTypeAttribute the plan type attribute
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute) {
-        getPersistence().cacheResult(planTypeAttribute);
-    }
-
-    /**
-    * Caches the plan type attributes in the entity cache if it is enabled.
-    *
-    * @param planTypeAttributes the plan type attributes
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanTypeAttribute> planTypeAttributes) {
-        getPersistence().cacheResult(planTypeAttributes);
-    }
-
-    /**
-    * Creates a new plan type attribute with the primary key. Does not add the plan type attribute to the database.
-    *
-    * @param planTypeAttributeId the primary key for the new plan type attribute
-    * @return the new plan type attribute
-    */
-    public static com.ext.portlet.model.PlanTypeAttribute create(
-        long planTypeAttributeId) {
-        return getPersistence().create(planTypeAttributeId);
-    }
-
-    /**
-    * Removes the plan type attribute with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param planTypeAttributeId the primary key of the plan type attribute
-    * @return the plan type attribute that was removed
-    * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTypeAttribute remove(
-        long planTypeAttributeId)
-        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(planTypeAttributeId);
-    }
-
-    public static com.ext.portlet.model.PlanTypeAttribute updateImpl(
-        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planTypeAttribute, merge);
-    }
-
-    /**
-    * Returns the plan type attribute with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTypeAttributeException} if it could not be found.
-    *
-    * @param planTypeAttributeId the primary key of the plan type attribute
-    * @return the plan type attribute
-    * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTypeAttribute findByPrimaryKey(
-        long planTypeAttributeId)
-        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(planTypeAttributeId);
-    }
-
-    /**
-    * Returns the plan type attribute with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param planTypeAttributeId the primary key of the plan type attribute
-    * @return the plan type attribute, or <code>null</code> if a plan type attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTypeAttribute fetchByPrimaryKey(
-        long planTypeAttributeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(planTypeAttributeId);
+        PlanTypeAttribute planTypeAttribute, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(planTypeAttribute, serviceContext);
     }
 
     /**
@@ -231,6 +150,117 @@ public class PlanTypeAttributeUtil {
     }
 
     /**
+    * Removes the plan type attribute where planTypeId = &#63; and attributeName = &#63; from the database.
+    *
+    * @param planTypeId the plan type ID
+    * @param attributeName the attribute name
+    * @return the plan type attribute that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTypeAttribute removeByPlanTypeIdAttributeName(
+        long planTypeId, java.lang.String attributeName)
+        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByPlanTypeIdAttributeName(planTypeId, attributeName);
+    }
+
+    /**
+    * Returns the number of plan type attributes where planTypeId = &#63; and attributeName = &#63;.
+    *
+    * @param planTypeId the plan type ID
+    * @param attributeName the attribute name
+    * @return the number of matching plan type attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanTypeIdAttributeName(long planTypeId,
+        java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByPlanTypeIdAttributeName(planTypeId, attributeName);
+    }
+
+    /**
+    * Caches the plan type attribute in the entity cache if it is enabled.
+    *
+    * @param planTypeAttribute the plan type attribute
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute) {
+        getPersistence().cacheResult(planTypeAttribute);
+    }
+
+    /**
+    * Caches the plan type attributes in the entity cache if it is enabled.
+    *
+    * @param planTypeAttributes the plan type attributes
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanTypeAttribute> planTypeAttributes) {
+        getPersistence().cacheResult(planTypeAttributes);
+    }
+
+    /**
+    * Creates a new plan type attribute with the primary key. Does not add the plan type attribute to the database.
+    *
+    * @param planTypeAttributeId the primary key for the new plan type attribute
+    * @return the new plan type attribute
+    */
+    public static com.ext.portlet.model.PlanTypeAttribute create(
+        long planTypeAttributeId) {
+        return getPersistence().create(planTypeAttributeId);
+    }
+
+    /**
+    * Removes the plan type attribute with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planTypeAttributeId the primary key of the plan type attribute
+    * @return the plan type attribute that was removed
+    * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTypeAttribute remove(
+        long planTypeAttributeId)
+        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(planTypeAttributeId);
+    }
+
+    public static com.ext.portlet.model.PlanTypeAttribute updateImpl(
+        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(planTypeAttribute);
+    }
+
+    /**
+    * Returns the plan type attribute with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTypeAttributeException} if it could not be found.
+    *
+    * @param planTypeAttributeId the primary key of the plan type attribute
+    * @return the plan type attribute
+    * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTypeAttribute findByPrimaryKey(
+        long planTypeAttributeId)
+        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(planTypeAttributeId);
+    }
+
+    /**
+    * Returns the plan type attribute with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param planTypeAttributeId the primary key of the plan type attribute
+    * @return the plan type attribute, or <code>null</code> if a plan type attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTypeAttribute fetchByPrimaryKey(
+        long planTypeAttributeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(planTypeAttributeId);
+    }
+
+    /**
     * Returns all the plan type attributes.
     *
     * @return the plan type attributes
@@ -245,7 +275,7 @@ public class PlanTypeAttributeUtil {
     * Returns a range of all the plan type attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTypeAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan type attributes
@@ -263,7 +293,7 @@ public class PlanTypeAttributeUtil {
     * Returns an ordered range of all the plan type attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTypeAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan type attributes
@@ -280,21 +310,6 @@ public class PlanTypeAttributeUtil {
     }
 
     /**
-    * Removes the plan type attribute where planTypeId = &#63; and attributeName = &#63; from the database.
-    *
-    * @param planTypeId the plan type ID
-    * @param attributeName the attribute name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanTypeIdAttributeName(long planTypeId,
-        java.lang.String attributeName)
-        throws com.ext.portlet.NoSuchPlanTypeAttributeException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence()
-            .removeByPlanTypeIdAttributeName(planTypeId, attributeName);
-    }
-
-    /**
     * Removes all the plan type attributes from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -302,21 +317,6 @@ public class PlanTypeAttributeUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan type attributes where planTypeId = &#63; and attributeName = &#63;.
-    *
-    * @param planTypeId the plan type ID
-    * @param attributeName the attribute name
-    * @return the number of matching plan type attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanTypeIdAttributeName(long planTypeId,
-        java.lang.String attributeName)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .countByPlanTypeIdAttributeName(planTypeId, attributeName);
     }
 
     /**
@@ -342,10 +342,9 @@ public class PlanTypeAttributeUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanTypeAttributePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanTypeAttributeUtil.class,
-            "_persistence");
     }
 }

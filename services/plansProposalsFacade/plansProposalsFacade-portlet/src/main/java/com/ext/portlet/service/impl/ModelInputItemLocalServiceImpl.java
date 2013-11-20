@@ -92,9 +92,8 @@ public class ModelInputItemLocalServiceImpl
     public Map<String,String> getPropertyMap(ModelInputItem item) {
         return parseTypes(item.getProperties());
     }
-
-
-     public static Map<String,String> parseTypes(String props) {
+    
+     private static Map<String,String> parseTypes(String props) {
         if (props == null) return Collections.emptyMap();
         Map<String,String> result = new HashMap<String,String>();
         for (String type:props.split(";")) {

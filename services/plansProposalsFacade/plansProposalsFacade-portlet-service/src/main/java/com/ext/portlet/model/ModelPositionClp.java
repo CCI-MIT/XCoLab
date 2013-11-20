@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ModelPositionLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ModelPositionClp extends BaseModelImpl<ModelPosition>
@@ -17,58 +23,189 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
     private long _id;
     private long _positionId;
     private long _modelId;
+    private BaseModel<?> _modelPositionRemoteModel;
 
     public ModelPositionClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelPosition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelPosition.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("positionId", getPositionId());
+        attributes.put("modelId", getModelId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long positionId = (Long) attributes.get("positionId");
+
+        if (positionId != null) {
+            setPositionId(positionId);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+    }
+
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
+
+        if (_modelPositionRemoteModel != null) {
+            try {
+                Class<?> clazz = _modelPositionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_modelPositionRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getPositionId() {
         return _positionId;
     }
 
+    @Override
     public void setPositionId(long positionId) {
         _positionId = positionId;
+
+        if (_modelPositionRemoteModel != null) {
+            try {
+                Class<?> clazz = _modelPositionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPositionId", long.class);
+
+                method.invoke(_modelPositionRemoteModel, positionId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _modelId = modelId;
+
+        if (_modelPositionRemoteModel != null) {
+            try {
+                Class<?> clazz = _modelPositionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setModelId", long.class);
+
+                method.invoke(_modelPositionRemoteModel, modelId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getModelPositionRemoteModel() {
+        return _modelPositionRemoteModel;
+    }
+
+    public void setModelPositionRemoteModel(
+        BaseModel<?> modelPositionRemoteModel) {
+        _modelPositionRemoteModel = modelPositionRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _modelPositionRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_modelPositionRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelPositionLocalServiceUtil.addModelPosition(this);
@@ -79,7 +216,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
 
     @Override
     public ModelPosition toEscapedModel() {
-        return (ModelPosition) Proxy.newProxyInstance(ModelPosition.class.getClassLoader(),
+        return (ModelPosition) ProxyUtil.newProxyInstance(ModelPosition.class.getClassLoader(),
             new Class[] { ModelPosition.class }, new AutoEscapeBeanHandler(this));
     }
 
@@ -94,6 +231,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
         return clone;
     }
 
+    @Override
     public int compareTo(ModelPosition modelPosition) {
         long primaryKey = modelPosition.getPrimaryKey();
 
@@ -108,17 +246,15 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelPositionClp)) {
             return false;
         }
 
-        ModelPositionClp modelPosition = null;
-
-        try {
-            modelPosition = (ModelPositionClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelPositionClp modelPosition = (ModelPositionClp) obj;
 
         long primaryKey = modelPosition.getPrimaryKey();
 
@@ -149,6 +285,7 @@ public class ModelPositionClp extends BaseModelImpl<ModelPosition>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

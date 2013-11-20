@@ -24,67 +24,6 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
      */
 
     /**
-    * Caches the ontology space in the entity cache if it is enabled.
-    *
-    * @param ontologySpace the ontology space
-    */
-    public void cacheResult(com.ext.portlet.model.OntologySpace ontologySpace);
-
-    /**
-    * Caches the ontology spaces in the entity cache if it is enabled.
-    *
-    * @param ontologySpaces the ontology spaces
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.OntologySpace> ontologySpaces);
-
-    /**
-    * Creates a new ontology space with the primary key. Does not add the ontology space to the database.
-    *
-    * @param id the primary key for the new ontology space
-    * @return the new ontology space
-    */
-    public com.ext.portlet.model.OntologySpace create(long id);
-
-    /**
-    * Removes the ontology space with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param id the primary key of the ontology space
-    * @return the ontology space that was removed
-    * @throws com.ext.portlet.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.OntologySpace remove(long id)
-        throws com.ext.portlet.NoSuchOntologySpaceException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.OntologySpace updateImpl(
-        com.ext.portlet.model.OntologySpace ontologySpace, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the ontology space with the primary key or throws a {@link com.ext.portlet.NoSuchOntologySpaceException} if it could not be found.
-    *
-    * @param id the primary key of the ontology space
-    * @return the ontology space
-    * @throws com.ext.portlet.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.OntologySpace findByPrimaryKey(long id)
-        throws com.ext.portlet.NoSuchOntologySpaceException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the ontology space with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param id the primary key of the ontology space
-    * @return the ontology space, or <code>null</code> if a ontology space with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.OntologySpace fetchByPrimaryKey(long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns the ontology space where name = &#63; or throws a {@link com.ext.portlet.NoSuchOntologySpaceException} if it could not be found.
     *
     * @param name the name
@@ -120,6 +59,89 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the ontology space where name = &#63; from the database.
+    *
+    * @param name the name
+    * @return the ontology space that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.OntologySpace removeByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchOntologySpaceException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of ontology spaces where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching ontology spaces
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the ontology space in the entity cache if it is enabled.
+    *
+    * @param ontologySpace the ontology space
+    */
+    public void cacheResult(com.ext.portlet.model.OntologySpace ontologySpace);
+
+    /**
+    * Caches the ontology spaces in the entity cache if it is enabled.
+    *
+    * @param ontologySpaces the ontology spaces
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.OntologySpace> ontologySpaces);
+
+    /**
+    * Creates a new ontology space with the primary key. Does not add the ontology space to the database.
+    *
+    * @param id the primary key for the new ontology space
+    * @return the new ontology space
+    */
+    public com.ext.portlet.model.OntologySpace create(long id);
+
+    /**
+    * Removes the ontology space with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param id the primary key of the ontology space
+    * @return the ontology space that was removed
+    * @throws com.ext.portlet.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.OntologySpace remove(long id)
+        throws com.ext.portlet.NoSuchOntologySpaceException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.OntologySpace updateImpl(
+        com.ext.portlet.model.OntologySpace ontologySpace)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the ontology space with the primary key or throws a {@link com.ext.portlet.NoSuchOntologySpaceException} if it could not be found.
+    *
+    * @param id the primary key of the ontology space
+    * @return the ontology space
+    * @throws com.ext.portlet.NoSuchOntologySpaceException if a ontology space with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.OntologySpace findByPrimaryKey(long id)
+        throws com.ext.portlet.NoSuchOntologySpaceException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the ontology space with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param id the primary key of the ontology space
+    * @return the ontology space, or <code>null</code> if a ontology space with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.OntologySpace fetchByPrimaryKey(long id)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the ontology spaces.
     *
     * @return the ontology spaces
@@ -132,7 +154,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * Returns a range of all the ontology spaces.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologySpaceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of ontology spaces
@@ -148,7 +170,7 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
     * Returns an ordered range of all the ontology spaces.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologySpaceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of ontology spaces
@@ -163,31 +185,11 @@ public interface OntologySpacePersistence extends BasePersistence<OntologySpace>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes the ontology space where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchOntologySpaceException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the ontology spaces from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of ontology spaces where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching ontology spaces
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByName(java.lang.String name)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ModelDiscussionLocalService}.
- * </p>
+ * Provides a wrapper for {@link ModelDiscussionLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelDiscussionLocalService
+ * @author Brian Wing Shun Chan
+ * @see ModelDiscussionLocalService
  * @generated
  */
 public class ModelDiscussionLocalServiceWrapper
@@ -28,6 +26,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the model discussion that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelDiscussion addModelDiscussion(
         com.ext.portlet.model.ModelDiscussion modelDiscussion)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @param modelDiscussionId the primary key for the new model discussion
     * @return the new model discussion
     */
+    @Override
     public com.ext.portlet.model.ModelDiscussion createModelDiscussion(
         long modelDiscussionId) {
         return _modelDiscussionLocalService.createModelDiscussion(modelDiscussionId);
@@ -49,25 +49,35 @@ public class ModelDiscussionLocalServiceWrapper
     * Deletes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param modelDiscussionId the primary key of the model discussion
+    * @return the model discussion that was removed
     * @throws PortalException if a model discussion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelDiscussion(long modelDiscussionId)
+    @Override
+    public com.ext.portlet.model.ModelDiscussion deleteModelDiscussion(
+        long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _modelDiscussionLocalService.deleteModelDiscussion(modelDiscussionId);
+        return _modelDiscussionLocalService.deleteModelDiscussion(modelDiscussionId);
     }
 
     /**
     * Deletes the model discussion from the database. Also notifies the appropriate model listeners.
     *
     * @param modelDiscussion the model discussion
+    * @return the model discussion that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelDiscussion(
+    @Override
+    public com.ext.portlet.model.ModelDiscussion deleteModelDiscussion(
         com.ext.portlet.model.ModelDiscussion modelDiscussion)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _modelDiscussionLocalService.deleteModelDiscussion(modelDiscussion);
+        return _modelDiscussionLocalService.deleteModelDiscussion(modelDiscussion);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _modelDiscussionLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class ModelDiscussionLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class ModelDiscussionLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelDiscussionLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _modelDiscussionLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.ModelDiscussion fetchModelDiscussion(
         long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -156,6 +188,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @throws PortalException if a model discussion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelDiscussion getModelDiscussion(
         long modelDiscussionId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -163,6 +196,7 @@ public class ModelDiscussionLocalServiceWrapper
         return _modelDiscussionLocalService.getModelDiscussion(modelDiscussionId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -174,7 +208,7 @@ public class ModelDiscussionLocalServiceWrapper
     * Returns a range of all the model discussions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model discussions
@@ -182,6 +216,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the range of model discussions
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ModelDiscussion> getModelDiscussions(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -194,6 +229,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the number of model discussions
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getModelDiscussionsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelDiscussionLocalService.getModelDiscussionsCount();
@@ -206,6 +242,7 @@ public class ModelDiscussionLocalServiceWrapper
     * @return the model discussion that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelDiscussion updateModelDiscussion(
         com.ext.portlet.model.ModelDiscussion modelDiscussion)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -213,25 +250,11 @@ public class ModelDiscussionLocalServiceWrapper
     }
 
     /**
-    * Updates the model discussion in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param modelDiscussion the model discussion
-    * @param merge whether to merge the model discussion with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the model discussion that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelDiscussion updateModelDiscussion(
-        com.ext.portlet.model.ModelDiscussion modelDiscussion, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _modelDiscussionLocalService.updateModelDiscussion(modelDiscussion,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _modelDiscussionLocalService.getBeanIdentifier();
     }
@@ -241,29 +264,40 @@ public class ModelDiscussionLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _modelDiscussionLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _modelDiscussionLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ModelDiscussionLocalService getWrappedModelDiscussionLocalService() {
         return _modelDiscussionLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedModelDiscussionLocalService(
         ModelDiscussionLocalService modelDiscussionLocalService) {
         _modelDiscussionLocalService = modelDiscussionLocalService;
     }
 
+    @Override
     public ModelDiscussionLocalService getWrappedService() {
         return _modelDiscussionLocalService;
     }
 
+    @Override
     public void setWrappedService(
         ModelDiscussionLocalService modelDiscussionLocalService) {
         _modelDiscussionLocalService = modelDiscussionLocalService;

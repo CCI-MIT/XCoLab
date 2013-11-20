@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ContestPhase service. Represents a row in the &quot;xcolab_ContestPhase&quot; database table, with each column mapped to a property of this class.
@@ -88,7 +90,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhase"));
     private static ClassLoader _classLoader = ContestPhase.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ContestPhase.class
         };
     private long _ContestPhasePK;
@@ -113,9 +115,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     private Date _created;
     private Date _updated;
     private long _authorId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ContestPhase _escapedModelProxy;
+    private ContestPhase _escapedModel;
 
     public ContestPhaseModelImpl() {
     }
@@ -127,6 +128,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
      * @return the normal model instance
      */
     public static ContestPhase toModel(ContestPhaseSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ContestPhase model = new ContestPhaseImpl();
 
         model.setContestPhasePK(soapModel.getContestPhasePK());
@@ -153,6 +158,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
      * @return the normal model instances
      */
     public static List<ContestPhase> toModels(ContestPhaseSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ContestPhase> models = new ArrayList<ContestPhase>(soapModels.length);
 
         for (ContestPhaseSoap soapModel : soapModels) {
@@ -162,44 +171,161 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _ContestPhasePK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setContestPhasePK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_ContestPhasePK);
+        return _ContestPhasePK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhase.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhase.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("ContestPhasePK", getContestPhasePK());
+        attributes.put("ContestPK", getContestPK());
+        attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
+        attributes.put("ContestPhaseDescriptionOverride",
+            getContestPhaseDescriptionOverride());
+        attributes.put("phaseActiveOverride", getPhaseActiveOverride());
+        attributes.put("phaseInactiveOverride", getPhaseInactiveOverride());
+        attributes.put("PhaseStartDate", getPhaseStartDate());
+        attributes.put("PhaseEndDate", getPhaseEndDate());
+        attributes.put("nextStatus", getNextStatus());
+        attributes.put("created", getCreated());
+        attributes.put("updated", getUpdated());
+        attributes.put("authorId", getAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long ContestPhasePK = (Long) attributes.get("ContestPhasePK");
+
+        if (ContestPhasePK != null) {
+            setContestPhasePK(ContestPhasePK);
+        }
+
+        Long ContestPK = (Long) attributes.get("ContestPK");
+
+        if (ContestPK != null) {
+            setContestPK(ContestPK);
+        }
+
+        Long ContestPhaseType = (Long) attributes.get("ContestPhaseType");
+
+        if (ContestPhaseType != null) {
+            setContestPhaseType(ContestPhaseType);
+        }
+
+        String contestPhaseAutopromote = (String) attributes.get(
+                "contestPhaseAutopromote");
+
+        if (contestPhaseAutopromote != null) {
+            setContestPhaseAutopromote(contestPhaseAutopromote);
+        }
+
+        String ContestPhaseDescriptionOverride = (String) attributes.get(
+                "ContestPhaseDescriptionOverride");
+
+        if (ContestPhaseDescriptionOverride != null) {
+            setContestPhaseDescriptionOverride(ContestPhaseDescriptionOverride);
+        }
+
+        Boolean phaseActiveOverride = (Boolean) attributes.get(
+                "phaseActiveOverride");
+
+        if (phaseActiveOverride != null) {
+            setPhaseActiveOverride(phaseActiveOverride);
+        }
+
+        Boolean phaseInactiveOverride = (Boolean) attributes.get(
+                "phaseInactiveOverride");
+
+        if (phaseInactiveOverride != null) {
+            setPhaseInactiveOverride(phaseInactiveOverride);
+        }
+
+        Date PhaseStartDate = (Date) attributes.get("PhaseStartDate");
+
+        if (PhaseStartDate != null) {
+            setPhaseStartDate(PhaseStartDate);
+        }
+
+        Date PhaseEndDate = (Date) attributes.get("PhaseEndDate");
+
+        if (PhaseEndDate != null) {
+            setPhaseEndDate(PhaseEndDate);
+        }
+
+        String nextStatus = (String) attributes.get("nextStatus");
+
+        if (nextStatus != null) {
+            setNextStatus(nextStatus);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+    }
+
     @JSON
+    @Override
     public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
+    @Override
     public void setContestPhasePK(long ContestPhasePK) {
         _ContestPhasePK = ContestPhasePK;
     }
 
     @JSON
+    @Override
     public long getContestPK() {
         return _ContestPK;
     }
 
+    @Override
     public void setContestPK(long ContestPK) {
         _columnBitmask |= CONTESTPK_COLUMN_BITMASK;
 
@@ -217,15 +343,18 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public long getContestPhaseType() {
         return _ContestPhaseType;
     }
 
+    @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _ContestPhaseType = ContestPhaseType;
     }
 
     @JSON
+    @Override
     public String getContestPhaseAutopromote() {
         if (_contestPhaseAutopromote == null) {
             return StringPool.BLANK;
@@ -234,6 +363,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         }
     }
 
+    @Override
     public void setContestPhaseAutopromote(String contestPhaseAutopromote) {
         _columnBitmask |= CONTESTPHASEAUTOPROMOTE_COLUMN_BITMASK;
 
@@ -249,6 +379,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public String getContestPhaseDescriptionOverride() {
         if (_ContestPhaseDescriptionOverride == null) {
             return StringPool.BLANK;
@@ -257,20 +388,24 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         }
     }
 
+    @Override
     public void setContestPhaseDescriptionOverride(
         String ContestPhaseDescriptionOverride) {
         _ContestPhaseDescriptionOverride = ContestPhaseDescriptionOverride;
     }
 
     @JSON
+    @Override
     public boolean getPhaseActiveOverride() {
         return _phaseActiveOverride;
     }
 
+    @Override
     public boolean isPhaseActiveOverride() {
         return _phaseActiveOverride;
     }
 
+    @Override
     public void setPhaseActiveOverride(boolean phaseActiveOverride) {
         _columnBitmask |= PHASEACTIVEOVERRIDE_COLUMN_BITMASK;
 
@@ -288,14 +423,17 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public boolean getPhaseInactiveOverride() {
         return _phaseInactiveOverride;
     }
 
+    @Override
     public boolean isPhaseInactiveOverride() {
         return _phaseInactiveOverride;
     }
 
+    @Override
     public void setPhaseInactiveOverride(boolean phaseInactiveOverride) {
         _columnBitmask |= PHASEINACTIVEOVERRIDE_COLUMN_BITMASK;
 
@@ -313,10 +451,12 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public Date getPhaseStartDate() {
         return _PhaseStartDate;
     }
 
+    @Override
     public void setPhaseStartDate(Date PhaseStartDate) {
         _columnBitmask = -1L;
 
@@ -332,10 +472,12 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public Date getPhaseEndDate() {
         return _PhaseEndDate;
     }
 
+    @Override
     public void setPhaseEndDate(Date PhaseEndDate) {
         _columnBitmask |= PHASEENDDATE_COLUMN_BITMASK;
 
@@ -351,6 +493,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @JSON
+    @Override
     public String getNextStatus() {
         if (_nextStatus == null) {
             return StringPool.BLANK;
@@ -359,33 +502,40 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         }
     }
 
+    @Override
     public void setNextStatus(String nextStatus) {
         _nextStatus = nextStatus;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public Date getUpdated() {
         return _updated;
     }
 
+    @Override
     public void setUpdated(Date updated) {
         _updated = updated;
     }
 
     @JSON
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
@@ -395,29 +545,26 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     }
 
     @Override
-    public ContestPhase toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ContestPhase) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ContestPhase.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ContestPhase.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ContestPhase toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ContestPhase) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -443,6 +590,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         return contestPhaseImpl;
     }
 
+    @Override
     public int compareTo(ContestPhase contestPhase) {
         int value = 0;
 
@@ -458,17 +606,15 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhase)) {
             return false;
         }
 
-        ContestPhase contestPhase = null;
-
-        try {
-            contestPhase = (ContestPhase) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ContestPhase contestPhase = (ContestPhase) obj;
 
         long primaryKey = contestPhase.getPrimaryKey();
 
@@ -621,6 +767,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(43);
 

@@ -49,7 +49,7 @@ public class PlanPositionsUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,248 @@ public class PlanPositionsUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlanPositions update(PlanPositions planPositions,
-        boolean merge) throws SystemException {
-        return getPersistence().update(planPositions, merge);
+    public static PlanPositions update(PlanPositions planPositions)
+        throws SystemException {
+        return getPersistence().update(planPositions);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static PlanPositions update(PlanPositions planPositions,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planPositions, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(planPositions, serviceContext);
+    }
+
+    /**
+    * Returns the plan positions where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanPositionsException} if it could not be found.
+    *
+    * @param planId the plan ID
+    * @return the matching plan positions
+    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions findByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan positions where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param planId the plan ID
+    * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions fetchByCurrentByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan positions where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param planId the plan ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions fetchByCurrentByPlanId(
+        long planId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByCurrentByPlanId(planId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the plan positions where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @return the plan positions that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions removeByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan positionses where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan positionses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByCurrentByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns all the plan positionses where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the matching plan positionses
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns a range of all the plan positionses where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan positionses
+    * @param end the upper bound of the range of plan positionses (not inclusive)
+    * @return the range of matching plan positionses
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
+        long planId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the plan positionses where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan positionses
+    * @param end the upper bound of the range of plan positionses (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan positionses
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
+        long planId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId(planId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan positions in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan positions
+    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions findByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan positions in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan positions, or <code>null</code> if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions fetchByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan positions in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan positions
+    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions findByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan positions in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan positions, or <code>null</code> if a matching plan positions could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions fetchByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the plan positionses before and after the current plan positions in the ordered set where planId = &#63;.
+    *
+    * @param id the primary key of the current plan positions
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan positions
+    * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPositions[] findByAllByPlanId_PrevAndNext(
+        long id, long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanPositionsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
+    }
+
+    /**
+    * Removes all the plan positionses where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan positionses where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan positionses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByAllByPlanId(planId);
     }
 
     /**
@@ -143,9 +372,9 @@ public class PlanPositionsUtil {
     }
 
     public static com.ext.portlet.model.PlanPositions updateImpl(
-        com.ext.portlet.model.PlanPositions planPositions, boolean merge)
+        com.ext.portlet.model.PlanPositions planPositions)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planPositions, merge);
+        return getPersistence().updateImpl(planPositions);
     }
 
     /**
@@ -175,166 +404,6 @@ public class PlanPositionsUtil {
     }
 
     /**
-    * Returns the plan positions where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanPositionsException} if it could not be found.
-    *
-    * @param planId the plan ID
-    * @return the matching plan positions
-    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions findByCurrentByPlanId(
-        long planId)
-        throws com.ext.portlet.NoSuchPlanPositionsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan positions where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param planId the plan ID
-    * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions fetchByCurrentByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan positions where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param planId the plan ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions fetchByCurrentByPlanId(
-        long planId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByCurrentByPlanId(planId, retrieveFromCache);
-    }
-
-    /**
-    * Returns all the plan positionses where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the matching plan positionses
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId);
-    }
-
-    /**
-    * Returns a range of all the plan positionses where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan positionses
-    * @param end the upper bound of the range of plan positionses (not inclusive)
-    * @return the range of matching plan positionses
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
-        long planId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan positionses where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan positionses
-    * @param end the upper bound of the range of plan positionses (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan positionses
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanPositions> findByAllByPlanId(
-        long planId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId(planId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first plan positions in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan positions
-    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions findByAllByPlanId_First(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanPositionsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_First(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the last plan positions in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan positions
-    * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions findByAllByPlanId_Last(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanPositionsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the plan positionses before and after the current plan positions in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current plan positions
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan positions
-    * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPositions[] findByAllByPlanId_PrevAndNext(
-        long id, long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanPositionsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
-    }
-
-    /**
     * Returns all the plan positionses.
     *
     * @return the plan positionses
@@ -349,7 +418,7 @@ public class PlanPositionsUtil {
     * Returns a range of all the plan positionses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan positionses
@@ -367,7 +436,7 @@ public class PlanPositionsUtil {
     * Returns an ordered range of all the plan positionses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan positionses
@@ -384,29 +453,6 @@ public class PlanPositionsUtil {
     }
 
     /**
-    * Removes the plan positions where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByCurrentByPlanId(long planId)
-        throws com.ext.portlet.NoSuchPlanPositionsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Removes all the plan positionses where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByAllByPlanId(planId);
-    }
-
-    /**
     * Removes all the plan positionses from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -414,30 +460,6 @@ public class PlanPositionsUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan positionses where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan positionses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByCurrentByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the number of plan positionses where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan positionses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByAllByPlanId(planId);
     }
 
     /**
@@ -463,10 +485,9 @@ public class PlanPositionsUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanPositionsPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanPositionsUtil.class,
-            "_persistence");
     }
 }

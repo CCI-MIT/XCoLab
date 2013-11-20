@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class ProposalVersionCacheModel implements CacheModel<ProposalVersion>,
-    Serializable {
+    Externalizable {
     public long proposalId;
     public int version;
     public long authorId;
@@ -47,6 +50,7 @@ public class ProposalVersionCacheModel implements CacheModel<ProposalVersion>,
         return sb.toString();
     }
 
+    @Override
     public ProposalVersion toEntityModel() {
         ProposalVersionImpl proposalVersionImpl = new ProposalVersionImpl();
 
@@ -71,5 +75,32 @@ public class ProposalVersionCacheModel implements CacheModel<ProposalVersion>,
         proposalVersionImpl.resetOriginalValues();
 
         return proposalVersionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        proposalId = objectInput.readLong();
+        version = objectInput.readInt();
+        authorId = objectInput.readLong();
+        createDate = objectInput.readLong();
+        updateType = objectInput.readUTF();
+        updateAdditionalId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(proposalId);
+        objectOutput.writeInt(version);
+        objectOutput.writeLong(authorId);
+        objectOutput.writeLong(createDate);
+
+        if (updateType == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(updateType);
+        }
+
+        objectOutput.writeLong(updateAdditionalId);
     }
 }

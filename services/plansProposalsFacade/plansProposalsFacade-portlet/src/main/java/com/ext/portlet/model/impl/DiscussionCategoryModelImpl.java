@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the DiscussionCategory service. Represents a row in the &quot;xcolab_DiscussionCategory&quot; database table, with each column mapped to a property of this class.
@@ -79,10 +81,11 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
             true);
     public static long CATEGORYGROUPID_COLUMN_BITMASK = 1L;
     public static long CATEGORYID_COLUMN_BITMASK = 2L;
+    public static long CREATEDATE_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionCategory"));
     private static ClassLoader _classLoader = DiscussionCategory.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             DiscussionCategory.class
         };
     private long _pk;
@@ -100,9 +103,8 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
     private int _threadsCount;
     private Date _lastActivityDate;
     private long _lastActivityAuthorId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private DiscussionCategory _escapedModelProxy;
+    private DiscussionCategory _escapedModel;
 
     public DiscussionCategoryModelImpl() {
     }
@@ -114,6 +116,10 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
      * @return the normal model instance
      */
     public static DiscussionCategory toModel(DiscussionCategorySoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         DiscussionCategory model = new DiscussionCategoryImpl();
 
         model.setPk(soapModel.getPk());
@@ -139,6 +145,10 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
      */
     public static List<DiscussionCategory> toModels(
         DiscussionCategorySoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<DiscussionCategory> models = new ArrayList<DiscussionCategory>(soapModels.length);
 
         for (DiscussionCategorySoap soapModel : soapModels) {
@@ -148,44 +158,143 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _pk;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_pk);
+        return _pk;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return DiscussionCategory.class;
     }
 
+    @Override
     public String getModelClassName() {
         return DiscussionCategory.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("pk", getPk());
+        attributes.put("categoryId", getCategoryId());
+        attributes.put("categoryGroupId", getCategoryGroupId());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("deleted", getDeleted());
+        attributes.put("threadsCount", getThreadsCount());
+        attributes.put("lastActivityDate", getLastActivityDate());
+        attributes.put("lastActivityAuthorId", getLastActivityAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long pk = (Long) attributes.get("pk");
+
+        if (pk != null) {
+            setPk(pk);
+        }
+
+        Long categoryId = (Long) attributes.get("categoryId");
+
+        if (categoryId != null) {
+            setCategoryId(categoryId);
+        }
+
+        Long categoryGroupId = (Long) attributes.get("categoryGroupId");
+
+        if (categoryGroupId != null) {
+            setCategoryGroupId(categoryGroupId);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date deleted = (Date) attributes.get("deleted");
+
+        if (deleted != null) {
+            setDeleted(deleted);
+        }
+
+        Integer threadsCount = (Integer) attributes.get("threadsCount");
+
+        if (threadsCount != null) {
+            setThreadsCount(threadsCount);
+        }
+
+        Date lastActivityDate = (Date) attributes.get("lastActivityDate");
+
+        if (lastActivityDate != null) {
+            setLastActivityDate(lastActivityDate);
+        }
+
+        Long lastActivityAuthorId = (Long) attributes.get(
+                "lastActivityAuthorId");
+
+        if (lastActivityAuthorId != null) {
+            setLastActivityAuthorId(lastActivityAuthorId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPk() {
         return _pk;
     }
 
+    @Override
     public void setPk(long pk) {
         _pk = pk;
     }
 
     @JSON
+    @Override
     public long getCategoryId() {
         return _categoryId;
     }
 
+    @Override
     public void setCategoryId(long categoryId) {
         _columnBitmask |= CATEGORYID_COLUMN_BITMASK;
 
@@ -203,10 +312,12 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
     }
 
     @JSON
+    @Override
     public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
+    @Override
     public void setCategoryGroupId(long categoryGroupId) {
         _columnBitmask |= CATEGORYGROUPID_COLUMN_BITMASK;
 
@@ -224,15 +335,18 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
     }
 
     @JSON
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -241,11 +355,13 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -254,15 +370,18 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _columnBitmask = -1L;
 
@@ -270,37 +389,45 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
     }
 
     @JSON
+    @Override
     public Date getDeleted() {
         return _deleted;
     }
 
+    @Override
     public void setDeleted(Date deleted) {
         _deleted = deleted;
     }
 
     @JSON
+    @Override
     public int getThreadsCount() {
         return _threadsCount;
     }
 
+    @Override
     public void setThreadsCount(int threadsCount) {
         _threadsCount = threadsCount;
     }
 
     @JSON
+    @Override
     public Date getLastActivityDate() {
         return _lastActivityDate;
     }
 
+    @Override
     public void setLastActivityDate(Date lastActivityDate) {
         _lastActivityDate = lastActivityDate;
     }
 
     @JSON
+    @Override
     public long getLastActivityAuthorId() {
         return _lastActivityAuthorId;
     }
 
+    @Override
     public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _lastActivityAuthorId = lastActivityAuthorId;
     }
@@ -310,29 +437,26 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
     }
 
     @Override
-    public DiscussionCategory toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (DiscussionCategory) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    DiscussionCategory.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            DiscussionCategory.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public DiscussionCategory toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (DiscussionCategory) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -356,6 +480,7 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
         return discussionCategoryImpl;
     }
 
+    @Override
     public int compareTo(DiscussionCategory discussionCategory) {
         int value = 0;
 
@@ -373,17 +498,15 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof DiscussionCategory)) {
             return false;
         }
 
-        DiscussionCategory discussionCategory = null;
-
-        try {
-            discussionCategory = (DiscussionCategory) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        DiscussionCategory discussionCategory = (DiscussionCategory) obj;
 
         long primaryKey = discussionCategory.getPrimaryKey();
 
@@ -504,6 +627,7 @@ public class DiscussionCategoryModelImpl extends BaseModelImpl<DiscussionCategor
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(37);
 

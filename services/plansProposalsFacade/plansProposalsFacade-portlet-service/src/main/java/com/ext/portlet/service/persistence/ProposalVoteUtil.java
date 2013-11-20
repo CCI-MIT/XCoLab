@@ -49,7 +49,7 @@ public class ProposalVoteUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,99 +83,19 @@ public class ProposalVoteUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ProposalVote update(ProposalVote proposalVote, boolean merge)
+    public static ProposalVote update(ProposalVote proposalVote)
         throws SystemException {
-        return getPersistence().update(proposalVote, merge);
+        return getPersistence().update(proposalVote);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static ProposalVote update(ProposalVote proposalVote, boolean merge,
+    public static ProposalVote update(ProposalVote proposalVote,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(proposalVote, merge, serviceContext);
-    }
-
-    /**
-    * Caches the proposal vote in the entity cache if it is enabled.
-    *
-    * @param proposalVote the proposal vote
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.ProposalVote proposalVote) {
-        getPersistence().cacheResult(proposalVote);
-    }
-
-    /**
-    * Caches the proposal votes in the entity cache if it is enabled.
-    *
-    * @param proposalVotes the proposal votes
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.ProposalVote> proposalVotes) {
-        getPersistence().cacheResult(proposalVotes);
-    }
-
-    /**
-    * Creates a new proposal vote with the primary key. Does not add the proposal vote to the database.
-    *
-    * @param proposalVotePK the primary key for the new proposal vote
-    * @return the new proposal vote
-    */
-    public static com.ext.portlet.model.ProposalVote create(
-        ProposalVotePK proposalVotePK) {
-        return getPersistence().create(proposalVotePK);
-    }
-
-    /**
-    * Removes the proposal vote with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param proposalVotePK the primary key of the proposal vote
-    * @return the proposal vote that was removed
-    * @throws com.ext.portlet.NoSuchProposalVoteException if a proposal vote with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalVote remove(
-        ProposalVotePK proposalVotePK)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(proposalVotePK);
-    }
-
-    public static com.ext.portlet.model.ProposalVote updateImpl(
-        com.ext.portlet.model.ProposalVote proposalVote, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(proposalVote, merge);
-    }
-
-    /**
-    * Returns the proposal vote with the primary key or throws a {@link com.ext.portlet.NoSuchProposalVoteException} if it could not be found.
-    *
-    * @param proposalVotePK the primary key of the proposal vote
-    * @return the proposal vote
-    * @throws com.ext.portlet.NoSuchProposalVoteException if a proposal vote with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalVote findByPrimaryKey(
-        ProposalVotePK proposalVotePK)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(proposalVotePK);
-    }
-
-    /**
-    * Returns the proposal vote with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param proposalVotePK the primary key of the proposal vote
-    * @return the proposal vote, or <code>null</code> if a proposal vote with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ProposalVote fetchByPrimaryKey(
-        ProposalVotePK proposalVotePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(proposalVotePK);
+        return getPersistence().update(proposalVote, serviceContext);
     }
 
     /**
@@ -195,7 +115,7 @@ public class ProposalVoteUtil {
     * Returns a range of all the proposal votes where proposalId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -214,7 +134,7 @@ public class ProposalVoteUtil {
     * Returns an ordered range of all the proposal votes where proposalId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -235,10 +155,6 @@ public class ProposalVoteUtil {
     /**
     * Returns the first proposal vote in the ordered set where proposalId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param proposalId the proposal ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching proposal vote
@@ -255,11 +171,23 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the last proposal vote in the ordered set where proposalId = &#63;.
+    * Returns the first proposal vote in the ordered set where proposalId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByProposalId_First(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_First(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal vote in the ordered set where proposalId = &#63;.
     *
     * @param proposalId the proposal ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -277,11 +205,23 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the proposal votes before and after the current proposal vote in the ordered set where proposalId = &#63;.
+    * Returns the last proposal vote in the ordered set where proposalId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByProposalId_Last(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_Last(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal votes before and after the current proposal vote in the ordered set where proposalId = &#63;.
     *
     * @param proposalVotePK the primary key of the current proposal vote
     * @param proposalId the proposal ID
@@ -298,6 +238,29 @@ public class ProposalVoteUtil {
         return getPersistence()
                    .findByProposalId_PrevAndNext(proposalVotePK, proposalId,
             orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal votes where proposalId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByProposalId(proposalId);
+    }
+
+    /**
+    * Returns the number of proposal votes where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByProposalId(proposalId);
     }
 
     /**
@@ -319,7 +282,7 @@ public class ProposalVoteUtil {
     * Returns a range of all the proposal votes where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -341,7 +304,7 @@ public class ProposalVoteUtil {
     * Returns an ordered range of all the proposal votes where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -364,10 +327,6 @@ public class ProposalVoteUtil {
     /**
     * Returns the first proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param proposalId the proposal ID
     * @param contestPhaseId the contest phase ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -386,11 +345,25 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the last proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
+    * Returns the first proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByProposalIdContestPhaseId_First(
+        long proposalId, long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalIdContestPhaseId_First(proposalId,
+            contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * @param proposalId the proposal ID
     * @param contestPhaseId the contest phase ID
@@ -410,11 +383,25 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the proposal votes before and after the current proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
+    * Returns the last proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByProposalIdContestPhaseId_Last(
+        long proposalId, long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalIdContestPhaseId_Last(proposalId,
+            contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal votes before and after the current proposal vote in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * @param proposalVotePK the primary key of the current proposal vote
     * @param proposalId the proposal ID
@@ -435,6 +422,35 @@ public class ProposalVoteUtil {
     }
 
     /**
+    * Removes all the proposal votes where proposalId = &#63; and contestPhaseId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalIdContestPhaseId(long proposalId,
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence()
+            .removeByProposalIdContestPhaseId(proposalId, contestPhaseId);
+    }
+
+    /**
+    * Returns the number of proposal votes where proposalId = &#63; and contestPhaseId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalIdContestPhaseId(long proposalId,
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByProposalIdContestPhaseId(proposalId, contestPhaseId);
+    }
+
+    /**
     * Returns all the proposal votes where userId = &#63;.
     *
     * @param userId the user ID
@@ -450,7 +466,7 @@ public class ProposalVoteUtil {
     * Returns a range of all the proposal votes where userId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param userId the user ID
@@ -469,7 +485,7 @@ public class ProposalVoteUtil {
     * Returns an ordered range of all the proposal votes where userId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param userId the user ID
@@ -490,10 +506,6 @@ public class ProposalVoteUtil {
     /**
     * Returns the first proposal vote in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching proposal vote
@@ -509,11 +521,22 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the last proposal vote in the ordered set where userId = &#63;.
+    * Returns the first proposal vote in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByUserId_First(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByUserId_First(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal vote in the ordered set where userId = &#63;.
     *
     * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -530,11 +553,22 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Returns the proposal votes before and after the current proposal vote in the ordered set where userId = &#63;.
+    * Returns the last proposal vote in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByUserId_Last(
+        long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByUserId_Last(userId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal votes before and after the current proposal vote in the ordered set where userId = &#63;.
     *
     * @param proposalVotePK the primary key of the current proposal vote
     * @param userId the user ID
@@ -551,6 +585,29 @@ public class ProposalVoteUtil {
         return getPersistence()
                    .findByUserId_PrevAndNext(proposalVotePK, userId,
             orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal votes where userId = &#63; from the database.
+    *
+    * @param userId the user ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByUserId(userId);
+    }
+
+    /**
+    * Returns the number of proposal votes where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByUserId(userId);
     }
 
     /**
@@ -603,6 +660,116 @@ public class ProposalVoteUtil {
     }
 
     /**
+    * Removes the proposal vote where contestPhaseId = &#63; and userId = &#63; from the database.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @return the proposal vote that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote removeByContestPhaseIdUserId(
+        long contestPhaseId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
+    * Returns the number of proposal votes where contestPhaseId = &#63; and userId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param userId the user ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestPhaseIdUserId(long contestPhaseId,
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
+    * Caches the proposal vote in the entity cache if it is enabled.
+    *
+    * @param proposalVote the proposal vote
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.ProposalVote proposalVote) {
+        getPersistence().cacheResult(proposalVote);
+    }
+
+    /**
+    * Caches the proposal votes in the entity cache if it is enabled.
+    *
+    * @param proposalVotes the proposal votes
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.ProposalVote> proposalVotes) {
+        getPersistence().cacheResult(proposalVotes);
+    }
+
+    /**
+    * Creates a new proposal vote with the primary key. Does not add the proposal vote to the database.
+    *
+    * @param proposalVotePK the primary key for the new proposal vote
+    * @return the new proposal vote
+    */
+    public static com.ext.portlet.model.ProposalVote create(
+        ProposalVotePK proposalVotePK) {
+        return getPersistence().create(proposalVotePK);
+    }
+
+    /**
+    * Removes the proposal vote with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param proposalVotePK the primary key of the proposal vote
+    * @return the proposal vote that was removed
+    * @throws com.ext.portlet.NoSuchProposalVoteException if a proposal vote with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote remove(
+        ProposalVotePK proposalVotePK)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(proposalVotePK);
+    }
+
+    public static com.ext.portlet.model.ProposalVote updateImpl(
+        com.ext.portlet.model.ProposalVote proposalVote)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(proposalVote);
+    }
+
+    /**
+    * Returns the proposal vote with the primary key or throws a {@link com.ext.portlet.NoSuchProposalVoteException} if it could not be found.
+    *
+    * @param proposalVotePK the primary key of the proposal vote
+    * @return the proposal vote
+    * @throws com.ext.portlet.NoSuchProposalVoteException if a proposal vote with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote findByPrimaryKey(
+        ProposalVotePK proposalVotePK)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(proposalVotePK);
+    }
+
+    /**
+    * Returns the proposal vote with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param proposalVotePK the primary key of the proposal vote
+    * @return the proposal vote, or <code>null</code> if a proposal vote with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ProposalVote fetchByPrimaryKey(
+        ProposalVotePK proposalVotePK)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(proposalVotePK);
+    }
+
+    /**
     * Returns all the proposal votes.
     *
     * @return the proposal votes
@@ -617,7 +784,7 @@ public class ProposalVoteUtil {
     * Returns a range of all the proposal votes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal votes
@@ -635,7 +802,7 @@ public class ProposalVoteUtil {
     * Returns an ordered range of all the proposal votes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal votes
@@ -652,56 +819,6 @@ public class ProposalVoteUtil {
     }
 
     /**
-    * Removes all the proposal votes where proposalId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByProposalId(proposalId);
-    }
-
-    /**
-    * Removes all the proposal votes where proposalId = &#63; and contestPhaseId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByProposalIdContestPhaseId(long proposalId,
-        long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence()
-            .removeByProposalIdContestPhaseId(proposalId, contestPhaseId);
-    }
-
-    /**
-    * Removes all the proposal votes where userId = &#63; from the database.
-    *
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByUserId(userId);
-    }
-
-    /**
-    * Removes the proposal vote where contestPhaseId = &#63; and userId = &#63; from the database.
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByContestPhaseIdUserId(long contestPhaseId,
-        long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByContestPhaseIdUserId(contestPhaseId, userId);
-    }
-
-    /**
     * Removes all the proposal votes from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -709,59 +826,6 @@ public class ProposalVoteUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of proposal votes where proposalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @return the number of matching proposal votes
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByProposalId(proposalId);
-    }
-
-    /**
-    * Returns the number of proposal votes where proposalId = &#63; and contestPhaseId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @return the number of matching proposal votes
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByProposalIdContestPhaseId(long proposalId,
-        long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .countByProposalIdContestPhaseId(proposalId, contestPhaseId);
-    }
-
-    /**
-    * Returns the number of proposal votes where userId = &#63;.
-    *
-    * @param userId the user ID
-    * @return the number of matching proposal votes
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByUserId(userId);
-    }
-
-    /**
-    * Returns the number of proposal votes where contestPhaseId = &#63; and userId = &#63;.
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param userId the user ID
-    * @return the number of matching proposal votes
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByContestPhaseIdUserId(long contestPhaseId,
-        long userId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .countByContestPhaseIdUserId(contestPhaseId, userId);
     }
 
     /**
@@ -787,10 +851,9 @@ public class ProposalVoteUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ProposalVotePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ProposalVoteUtil.class,
-            "_persistence");
     }
 }

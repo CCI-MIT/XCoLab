@@ -6,6 +6,7 @@ import java.util.List;
 import com.liferay.counter.model.Counter;
 import com.liferay.counter.service.CounterLocalService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -32,18 +33,6 @@ public class CounterLocalServiceImplMock implements CounterLocalService {
     public Counter createCounter(String name) {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public void deleteCounter(String name) throws PortalException, SystemException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deleteCounter(Counter counter) throws SystemException {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -112,12 +101,6 @@ public class CounterLocalServiceImplMock implements CounterLocalService {
     }
 
     @Override
-    public Counter updateCounter(Counter counter, boolean merge) throws SystemException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public String getBeanIdentifier() {
         // TODO Auto-generated method stub
         return null;
@@ -171,5 +154,31 @@ public class CounterLocalServiceImplMock implements CounterLocalService {
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public DynamicQuery dynamicQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+			Projection projection) throws SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Counter deleteCounter(String name) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Counter deleteCounter(Counter counter) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

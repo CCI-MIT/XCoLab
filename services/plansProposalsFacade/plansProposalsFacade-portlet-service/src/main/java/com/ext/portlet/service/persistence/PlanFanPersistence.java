@@ -24,67 +24,6 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
      */
 
     /**
-    * Caches the plan fan in the entity cache if it is enabled.
-    *
-    * @param planFan the plan fan
-    */
-    public void cacheResult(com.ext.portlet.model.PlanFan planFan);
-
-    /**
-    * Caches the plan fans in the entity cache if it is enabled.
-    *
-    * @param planFans the plan fans
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanFan> planFans);
-
-    /**
-    * Creates a new plan fan with the primary key. Does not add the plan fan to the database.
-    *
-    * @param id the primary key for the new plan fan
-    * @return the new plan fan
-    */
-    public com.ext.portlet.model.PlanFan create(long id);
-
-    /**
-    * Removes the plan fan with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param id the primary key of the plan fan
-    * @return the plan fan that was removed
-    * @throws com.ext.portlet.NoSuchPlanFanException if a plan fan with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanFan remove(long id)
-        throws com.ext.portlet.NoSuchPlanFanException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.PlanFan updateImpl(
-        com.ext.portlet.model.PlanFan planFan, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan fan with the primary key or throws a {@link com.ext.portlet.NoSuchPlanFanException} if it could not be found.
-    *
-    * @param id the primary key of the plan fan
-    * @return the plan fan
-    * @throws com.ext.portlet.NoSuchPlanFanException if a plan fan with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanFan findByPrimaryKey(long id)
-        throws com.ext.portlet.NoSuchPlanFanException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan fan with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param id the primary key of the plan fan
-    * @return the plan fan, or <code>null</code> if a plan fan with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanFan fetchByPrimaryKey(long id)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the plan fans where planId = &#63;.
     *
     * @param planId the plan ID
@@ -98,7 +37,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns a range of all the plan fans where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -115,7 +54,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns an ordered range of all the plan fans where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -133,10 +72,6 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     /**
     * Returns the first plan fan in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching plan fan
@@ -149,11 +84,19 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last plan fan in the ordered set where planId = &#63;.
+    * Returns the first plan fan in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan fan, or <code>null</code> if a matching plan fan could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan fetchByPlanId_First(long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan fan in the ordered set where planId = &#63;.
     *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -167,11 +110,19 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the plan fans before and after the current plan fan in the ordered set where planId = &#63;.
+    * Returns the last plan fan in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan fan, or <code>null</code> if a matching plan fan could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan fetchByPlanId_Last(long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan fans before and after the current plan fan in the ordered set where planId = &#63;.
     *
     * @param id the primary key of the current plan fan
     * @param planId the plan ID
@@ -187,6 +138,25 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the plan fans where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan fans where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan fans
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the plan fans where userId = &#63;.
     *
     * @param userId the user ID
@@ -200,7 +170,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns a range of all the plan fans where userId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param userId the user ID
@@ -217,7 +187,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns an ordered range of all the plan fans where userId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param userId the user ID
@@ -235,10 +205,6 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     /**
     * Returns the first plan fan in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching plan fan
@@ -251,11 +217,19 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last plan fan in the ordered set where userId = &#63;.
+    * Returns the first plan fan in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan fan, or <code>null</code> if a matching plan fan could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan fetchByUserId_First(long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan fan in the ordered set where userId = &#63;.
     *
     * @param userId the user ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -269,11 +243,19 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the plan fans before and after the current plan fan in the ordered set where userId = &#63;.
+    * Returns the last plan fan in the ordered set where userId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param userId the user ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan fan, or <code>null</code> if a matching plan fan could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan fetchByUserId_Last(long userId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan fans before and after the current plan fan in the ordered set where userId = &#63;.
     *
     * @param id the primary key of the current plan fan
     * @param userId the user ID
@@ -287,6 +269,25 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanFanException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the plan fans where userId = &#63; from the database.
+    *
+    * @param userId the user ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan fans where userId = &#63;.
+    *
+    * @param userId the user ID
+    * @return the number of matching plan fans
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByUserId(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan fan where planId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanFanException} if it could not be found.
@@ -327,6 +328,91 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the plan fan where planId = &#63; and userId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @param userId the user ID
+    * @return the plan fan that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan removeByPlanIdUserId(long planId,
+        long userId)
+        throws com.ext.portlet.NoSuchPlanFanException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan fans where planId = &#63; and userId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param userId the user ID
+    * @return the number of matching plan fans
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByPlanIdUserId(long planId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the plan fan in the entity cache if it is enabled.
+    *
+    * @param planFan the plan fan
+    */
+    public void cacheResult(com.ext.portlet.model.PlanFan planFan);
+
+    /**
+    * Caches the plan fans in the entity cache if it is enabled.
+    *
+    * @param planFans the plan fans
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanFan> planFans);
+
+    /**
+    * Creates a new plan fan with the primary key. Does not add the plan fan to the database.
+    *
+    * @param id the primary key for the new plan fan
+    * @return the new plan fan
+    */
+    public com.ext.portlet.model.PlanFan create(long id);
+
+    /**
+    * Removes the plan fan with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param id the primary key of the plan fan
+    * @return the plan fan that was removed
+    * @throws com.ext.portlet.NoSuchPlanFanException if a plan fan with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan remove(long id)
+        throws com.ext.portlet.NoSuchPlanFanException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.PlanFan updateImpl(
+        com.ext.portlet.model.PlanFan planFan)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan fan with the primary key or throws a {@link com.ext.portlet.NoSuchPlanFanException} if it could not be found.
+    *
+    * @param id the primary key of the plan fan
+    * @return the plan fan
+    * @throws com.ext.portlet.NoSuchPlanFanException if a plan fan with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan findByPrimaryKey(long id)
+        throws com.ext.portlet.NoSuchPlanFanException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan fan with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param id the primary key of the plan fan
+    * @return the plan fan, or <code>null</code> if a plan fan with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanFan fetchByPrimaryKey(long id)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the plan fans.
     *
     * @return the plan fans
@@ -339,7 +425,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns a range of all the plan fans.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan fans
@@ -354,7 +440,7 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
     * Returns an ordered range of all the plan fans.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan fans
@@ -369,71 +455,11 @@ public interface PlanFanPersistence extends BasePersistence<PlanFan> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the plan fans where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the plan fans where userId = &#63; from the database.
-    *
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes the plan fan where planId = &#63; and userId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByPlanIdUserId(long planId, long userId)
-        throws com.ext.portlet.NoSuchPlanFanException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the plan fans from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan fans where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan fans
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan fans where userId = &#63;.
-    *
-    * @param userId the user ID
-    * @return the number of matching plan fans
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan fans where planId = &#63; and userId = &#63;.
-    *
-    * @param planId the plan ID
-    * @param userId the user ID
-    * @return the number of matching plan fans
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByPlanIdUserId(long planId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

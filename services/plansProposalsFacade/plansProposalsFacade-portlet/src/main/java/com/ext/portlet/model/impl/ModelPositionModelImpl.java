@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelPosition service. Represents a row in the &quot;xcolab_ModelPosition&quot; database table, with each column mapped to a property of this class.
@@ -52,6 +54,8 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelPosition (id_ LONG not null primary key,positionId LONG,modelId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelPosition";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelPosition.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelPosition.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -65,10 +69,11 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ModelPosition"),
             true);
     public static long MODELID_COLUMN_BITMASK = 1L;
+    public static long ID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelPosition"));
     private static ClassLoader _classLoader = ModelPosition.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelPosition.class
         };
     private long _id;
@@ -76,9 +81,8 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
     private long _modelId;
     private long _originalModelId;
     private boolean _setOriginalModelId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelPosition _escapedModelProxy;
+    private ModelPosition _escapedModel;
 
     public ModelPositionModelImpl() {
     }
@@ -90,6 +94,10 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
      * @return the normal model instance
      */
     public static ModelPosition toModel(ModelPositionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelPosition model = new ModelPositionImpl();
 
         model.setId(soapModel.getId());
@@ -106,6 +114,10 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
      * @return the normal model instances
      */
     public static List<ModelPosition> toModels(ModelPositionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelPosition> models = new ArrayList<ModelPosition>(soapModels.length);
 
         for (ModelPositionSoap soapModel : soapModels) {
@@ -115,53 +127,97 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelPosition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelPosition.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("positionId", getPositionId());
+        attributes.put("modelId", getModelId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long positionId = (Long) attributes.get("positionId");
+
+        if (positionId != null) {
+            setPositionId(positionId);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getPositionId() {
         return _positionId;
     }
 
+    @Override
     public void setPositionId(long positionId) {
         _positionId = positionId;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -183,29 +239,26 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
     }
 
     @Override
-    public ModelPosition toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelPosition) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelPosition.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelPosition.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelPosition toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelPosition) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -221,6 +274,7 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
         return modelPositionImpl;
     }
 
+    @Override
     public int compareTo(ModelPosition modelPosition) {
         long primaryKey = modelPosition.getPrimaryKey();
 
@@ -235,17 +289,15 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelPosition)) {
             return false;
         }
 
-        ModelPosition modelPosition = null;
-
-        try {
-            modelPosition = (ModelPosition) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelPosition modelPosition = (ModelPosition) obj;
 
         long primaryKey = modelPosition.getPrimaryKey();
 
@@ -300,6 +352,7 @@ public class ModelPositionModelImpl extends BaseModelImpl<ModelPosition>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

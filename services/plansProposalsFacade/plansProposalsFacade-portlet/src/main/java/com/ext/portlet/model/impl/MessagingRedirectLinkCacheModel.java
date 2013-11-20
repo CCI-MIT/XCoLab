@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class MessagingRedirectLinkCacheModel implements CacheModel<MessagingRedirectLink>,
-    Serializable {
+    Externalizable {
     public long redirectId;
     public String link;
     public long messageId;
@@ -41,6 +44,7 @@ public class MessagingRedirectLinkCacheModel implements CacheModel<MessagingRedi
         return sb.toString();
     }
 
+    @Override
     public MessagingRedirectLink toEntityModel() {
         MessagingRedirectLinkImpl messagingRedirectLinkImpl = new MessagingRedirectLinkImpl();
 
@@ -63,5 +67,28 @@ public class MessagingRedirectLinkCacheModel implements CacheModel<MessagingRedi
         messagingRedirectLinkImpl.resetOriginalValues();
 
         return messagingRedirectLinkImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        redirectId = objectInput.readLong();
+        link = objectInput.readUTF();
+        messageId = objectInput.readLong();
+        createDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(redirectId);
+
+        if (link == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(link);
+        }
+
+        objectOutput.writeLong(messageId);
+        objectOutput.writeLong(createDate);
     }
 }

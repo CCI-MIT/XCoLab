@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.OntologyTermEntityServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.OntologyTermEntityServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.OntologyTermEntityServiceSoap
  * @generated
  */
 public class OntologyTermEntitySoap implements Serializable {

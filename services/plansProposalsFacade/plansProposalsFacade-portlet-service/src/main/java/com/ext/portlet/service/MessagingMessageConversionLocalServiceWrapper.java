@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link MessagingMessageConversionLocalService}.
- * </p>
+ * Provides a wrapper for {@link MessagingMessageConversionLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       MessagingMessageConversionLocalService
+ * @author Brian Wing Shun Chan
+ * @see MessagingMessageConversionLocalService
  * @generated
  */
 public class MessagingMessageConversionLocalServiceWrapper
@@ -28,6 +26,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the messaging message conversion that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion addMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @param conversionId the primary key for the new messaging message conversion
     * @return the new messaging message conversion
     */
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion createMessagingMessageConversion(
         long conversionId) {
         return _messagingMessageConversionLocalService.createMessagingMessageConversion(conversionId);
@@ -49,25 +49,35 @@ public class MessagingMessageConversionLocalServiceWrapper
     * Deletes the messaging message conversion with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param conversionId the primary key of the messaging message conversion
+    * @return the messaging message conversion that was removed
     * @throws PortalException if a messaging message conversion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessagingMessageConversion(long conversionId)
+    @Override
+    public com.ext.portlet.model.MessagingMessageConversion deleteMessagingMessageConversion(
+        long conversionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _messagingMessageConversionLocalService.deleteMessagingMessageConversion(conversionId);
+        return _messagingMessageConversionLocalService.deleteMessagingMessageConversion(conversionId);
     }
 
     /**
     * Deletes the messaging message conversion from the database. Also notifies the appropriate model listeners.
     *
     * @param messagingMessageConversion the messaging message conversion
+    * @return the messaging message conversion that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessagingMessageConversion(
+    @Override
+    public com.ext.portlet.model.MessagingMessageConversion deleteMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _messagingMessageConversionLocalService.deleteMessagingMessageConversion(messagingMessageConversion);
+        return _messagingMessageConversionLocalService.deleteMessagingMessageConversion(messagingMessageConversion);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _messagingMessageConversionLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messagingMessageConversionLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _messagingMessageConversionLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion fetchMessagingMessageConversion(
         long conversionId)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -156,6 +188,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @throws PortalException if a messaging message conversion with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion getMessagingMessageConversion(
         long conversionId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -163,6 +196,7 @@ public class MessagingMessageConversionLocalServiceWrapper
         return _messagingMessageConversionLocalService.getMessagingMessageConversion(conversionId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -174,7 +208,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * Returns a range of all the messaging message conversions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging message conversions
@@ -182,6 +216,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the range of messaging message conversions
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.MessagingMessageConversion> getMessagingMessageConversions(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -195,6 +230,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the number of messaging message conversions
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getMessagingMessageConversionsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messagingMessageConversionLocalService.getMessagingMessageConversionsCount();
@@ -207,6 +243,7 @@ public class MessagingMessageConversionLocalServiceWrapper
     * @return the messaging message conversion that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion updateMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -214,26 +251,11 @@ public class MessagingMessageConversionLocalServiceWrapper
     }
 
     /**
-    * Updates the messaging message conversion in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param messagingMessageConversion the messaging message conversion
-    * @param merge whether to merge the messaging message conversion with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the messaging message conversion that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.MessagingMessageConversion updateMessagingMessageConversion(
-        com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messagingMessageConversionLocalService.updateMessagingMessageConversion(messagingMessageConversion,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _messagingMessageConversionLocalService.getBeanIdentifier();
     }
@@ -243,10 +265,20 @@ public class MessagingMessageConversionLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _messagingMessageConversionLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _messagingMessageConversionLocalService.invokeMethod(name,
+            parameterTypes, arguments);
+    }
+
+    @Override
     public int countByType(java.lang.Long messageId,
         com.ext.portlet.model.MessagingMessageConversionType type)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -254,12 +286,14 @@ public class MessagingMessageConversionLocalServiceWrapper
             type);
     }
 
+    @Override
     public int countByType(java.lang.Long messageId, java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messagingMessageConversionLocalService.countByType(messageId,
             typeName);
     }
 
+    @Override
     public void addConversion(java.lang.Long messageId,
         java.lang.String typeName, java.lang.String clientIP,
         java.lang.Object extraData, java.lang.Object extraData2)
@@ -269,6 +303,7 @@ public class MessagingMessageConversionLocalServiceWrapper
             typeName, clientIP, extraData, extraData2);
     }
 
+    @Override
     public int countConversionsByIP(java.lang.Long messageId,
         java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -276,6 +311,7 @@ public class MessagingMessageConversionLocalServiceWrapper
             typeName);
     }
 
+    @Override
     public int countConversionsByRecipient(java.lang.Long messageId,
         java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -284,24 +320,26 @@ public class MessagingMessageConversionLocalServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public MessagingMessageConversionLocalService getWrappedMessagingMessageConversionLocalService() {
         return _messagingMessageConversionLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedMessagingMessageConversionLocalService(
         MessagingMessageConversionLocalService messagingMessageConversionLocalService) {
         _messagingMessageConversionLocalService = messagingMessageConversionLocalService;
     }
 
+    @Override
     public MessagingMessageConversionLocalService getWrappedService() {
         return _messagingMessageConversionLocalService;
     }
 
+    @Override
     public void setWrappedService(
         MessagingMessageConversionLocalService messagingMessageConversionLocalService) {
         _messagingMessageConversionLocalService = messagingMessageConversionLocalService;

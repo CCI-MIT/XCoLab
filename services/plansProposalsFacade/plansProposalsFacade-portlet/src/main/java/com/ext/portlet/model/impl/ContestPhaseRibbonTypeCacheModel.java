@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ContestPhaseRibbonType in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhaseRibbonType>,
-    Serializable {
+    Externalizable {
     public long id;
     public int ribbon;
     public String hoverText;
@@ -42,6 +45,7 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         return sb.toString();
     }
 
+    @Override
     public ContestPhaseRibbonType toEntityModel() {
         ContestPhaseRibbonTypeImpl contestPhaseRibbonTypeImpl = new ContestPhaseRibbonTypeImpl();
 
@@ -65,5 +69,35 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         contestPhaseRibbonTypeImpl.resetOriginalValues();
 
         return contestPhaseRibbonTypeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        ribbon = objectInput.readInt();
+        hoverText = objectInput.readUTF();
+        description = objectInput.readUTF();
+        copyOnPromote = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeInt(ribbon);
+
+        if (hoverText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(hoverText);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
+        }
+
+        objectOutput.writeBoolean(copyOnPromote);
     }
 }

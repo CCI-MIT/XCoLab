@@ -24,7 +24,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ContestTeamMember service. Represents a row in the &quot;xcolab_ContestTeamMember&quot; database table, with each column mapped to a property of this class.
@@ -71,10 +73,11 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ContestTeamMember"),
             true);
     public static long CONTESTID_COLUMN_BITMASK = 1L;
+    public static long ID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestTeamMember"));
     private static ClassLoader _classLoader = ContestTeamMember.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ContestTeamMember.class
         };
     private long _id;
@@ -84,9 +87,8 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
     private long _userId;
     private String _userUuid;
     private String _role;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ContestTeamMember _escapedModelProxy;
+    private ContestTeamMember _escapedModel;
 
     public ContestTeamMemberModelImpl() {
     }
@@ -98,6 +100,10 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
      * @return the normal model instance
      */
     public static ContestTeamMember toModel(ContestTeamMemberSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ContestTeamMember model = new ContestTeamMemberImpl();
 
         model.setId(soapModel.getId());
@@ -116,6 +122,10 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
      */
     public static List<ContestTeamMember> toModels(
         ContestTeamMemberSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ContestTeamMember> models = new ArrayList<ContestTeamMember>(soapModels.length);
 
         for (ContestTeamMemberSoap soapModel : soapModels) {
@@ -125,35 +135,82 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestTeamMember.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestTeamMember.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("contestId", getContestId());
+        attributes.put("userId", getUserId());
+        attributes.put("role", getRole());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long contestId = (Long) attributes.get("contestId");
+
+        if (contestId != null) {
+            setContestId(contestId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String role = (String) attributes.get("role");
+
+        if (role != null) {
+            setRole(role);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -161,10 +218,12 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
     }
 
     @JSON
+    @Override
     public long getContestId() {
         return _contestId;
     }
 
+    @Override
     public void setContestId(long contestId) {
         _columnBitmask |= CONTESTID_COLUMN_BITMASK;
 
@@ -182,23 +241,28 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
 
     @JSON
+    @Override
     public String getRole() {
         if (_role == null) {
             return StringPool.BLANK;
@@ -207,6 +271,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         }
     }
 
+    @Override
     public void setRole(String role) {
         _role = role;
     }
@@ -216,29 +281,26 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
     }
 
     @Override
-    public ContestTeamMember toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ContestTeamMember) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ContestTeamMember.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ContestTeamMember.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ContestTeamMember toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ContestTeamMember) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -255,6 +317,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         return contestTeamMemberImpl;
     }
 
+    @Override
     public int compareTo(ContestTeamMember contestTeamMember) {
         int value = 0;
 
@@ -275,17 +338,15 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestTeamMember)) {
             return false;
         }
 
-        ContestTeamMember contestTeamMember = null;
-
-        try {
-            contestTeamMember = (ContestTeamMember) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ContestTeamMember contestTeamMember = (ContestTeamMember) obj;
 
         long primaryKey = contestTeamMember.getPrimaryKey();
 
@@ -350,6 +411,7 @@ public class ContestTeamMemberModelImpl extends BaseModelImpl<ContestTeamMember>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

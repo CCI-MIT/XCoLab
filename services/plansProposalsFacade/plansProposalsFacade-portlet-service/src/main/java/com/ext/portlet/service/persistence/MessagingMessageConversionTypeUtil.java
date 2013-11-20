@@ -50,7 +50,7 @@ public class MessagingMessageConversionTypeUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -84,22 +84,90 @@ public class MessagingMessageConversionTypeUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static MessagingMessageConversionType update(
-        MessagingMessageConversionType messagingMessageConversionType,
-        boolean merge) throws SystemException {
-        return getPersistence().update(messagingMessageConversionType, merge);
+        MessagingMessageConversionType messagingMessageConversionType)
+        throws SystemException {
+        return getPersistence().update(messagingMessageConversionType);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static MessagingMessageConversionType update(
         MessagingMessageConversionType messagingMessageConversionType,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
+        ServiceContext serviceContext) throws SystemException {
         return getPersistence()
-                   .update(messagingMessageConversionType, merge, serviceContext);
+                   .update(messagingMessageConversionType, serviceContext);
+    }
+
+    /**
+    * Returns the messaging message conversion type where name = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingMessageConversionTypeException} if it could not be found.
+    *
+    * @param name the name
+    * @return the matching messaging message conversion type
+    * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a matching messaging message conversion type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversionType findByfindByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByfindByName(name);
+    }
+
+    /**
+    * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param name the name
+    * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversionType fetchByfindByName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByName(name);
+    }
+
+    /**
+    * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param name the name
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversionType fetchByfindByName(
+        java.lang.String name, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByfindByName(name, retrieveFromCache);
+    }
+
+    /**
+    * Removes the messaging message conversion type where name = &#63; from the database.
+    *
+    * @param name the name
+    * @return the messaging message conversion type that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversionType removeByfindByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByfindByName(name);
+    }
+
+    /**
+    * Returns the number of messaging message conversion types where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching messaging message conversion types
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByfindByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByfindByName(name);
     }
 
     /**
@@ -149,10 +217,9 @@ public class MessagingMessageConversionTypeUtil {
     }
 
     public static com.ext.portlet.model.MessagingMessageConversionType updateImpl(
-        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType,
-        boolean merge)
+        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(messagingMessageConversionType, merge);
+        return getPersistence().updateImpl(messagingMessageConversionType);
     }
 
     /**
@@ -183,48 +250,6 @@ public class MessagingMessageConversionTypeUtil {
     }
 
     /**
-    * Returns the messaging message conversion type where name = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingMessageConversionTypeException} if it could not be found.
-    *
-    * @param name the name
-    * @return the matching messaging message conversion type
-    * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a matching messaging message conversion type could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversionType findByfindByName(
-        java.lang.String name)
-        throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByfindByName(name);
-    }
-
-    /**
-    * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param name the name
-    * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversionType fetchByfindByName(
-        java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByName(name);
-    }
-
-    /**
-    * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param name the name
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversionType fetchByfindByName(
-        java.lang.String name, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByfindByName(name, retrieveFromCache);
-    }
-
-    /**
     * Returns all the messaging message conversion types.
     *
     * @return the messaging message conversion types
@@ -239,7 +264,7 @@ public class MessagingMessageConversionTypeUtil {
     * Returns a range of all the messaging message conversion types.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging message conversion types
@@ -257,7 +282,7 @@ public class MessagingMessageConversionTypeUtil {
     * Returns an ordered range of all the messaging message conversion types.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging message conversion types
@@ -274,18 +299,6 @@ public class MessagingMessageConversionTypeUtil {
     }
 
     /**
-    * Removes the messaging message conversion type where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByfindByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByfindByName(name);
-    }
-
-    /**
     * Removes all the messaging message conversion types from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -293,18 +306,6 @@ public class MessagingMessageConversionTypeUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of messaging message conversion types where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching messaging message conversion types
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByfindByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByfindByName(name);
     }
 
     /**
@@ -330,11 +331,10 @@ public class MessagingMessageConversionTypeUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(
         MessagingMessageConversionTypePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(MessagingMessageConversionTypeUtil.class,
-            "_persistence");
     }
 }

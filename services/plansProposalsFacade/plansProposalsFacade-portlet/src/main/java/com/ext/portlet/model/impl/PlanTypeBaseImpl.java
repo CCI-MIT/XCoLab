@@ -24,6 +24,7 @@ public abstract class PlanTypeBaseImpl extends PlanTypeModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan type model instance should use the {@link PlanType} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTypeLocalServiceUtil.addPlanType(this);

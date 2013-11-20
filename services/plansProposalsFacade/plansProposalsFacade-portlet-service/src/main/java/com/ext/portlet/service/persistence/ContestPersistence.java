@@ -24,67 +24,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
      */
 
     /**
-    * Caches the contest in the entity cache if it is enabled.
-    *
-    * @param contest the contest
-    */
-    public void cacheResult(com.ext.portlet.model.Contest contest);
-
-    /**
-    * Caches the contests in the entity cache if it is enabled.
-    *
-    * @param contests the contests
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.Contest> contests);
-
-    /**
-    * Creates a new contest with the primary key. Does not add the contest to the database.
-    *
-    * @param ContestPK the primary key for the new contest
-    * @return the new contest
-    */
-    public com.ext.portlet.model.Contest create(long ContestPK);
-
-    /**
-    * Removes the contest with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param ContestPK the primary key of the contest
-    * @return the contest that was removed
-    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest remove(long ContestPK)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.Contest updateImpl(
-        com.ext.portlet.model.Contest contest, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the contest with the primary key or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
-    *
-    * @param ContestPK the primary key of the contest
-    * @return the contest
-    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest findByPrimaryKey(long ContestPK)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the contest with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param ContestPK the primary key of the contest
-    * @return the contest, or <code>null</code> if a contest with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest fetchByPrimaryKey(long ContestPK)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the contests where PlanTypeId = &#63;.
     *
     * @param PlanTypeId the plan type ID
@@ -99,7 +38,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns a range of all the contests where PlanTypeId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param PlanTypeId the plan type ID
@@ -116,7 +55,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns an ordered range of all the contests where PlanTypeId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param PlanTypeId the plan type ID
@@ -134,10 +73,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     /**
     * Returns the first contest in the ordered set where PlanTypeId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param PlanTypeId the plan type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest
@@ -150,11 +85,19 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the first contest in the ordered set where PlanTypeId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param PlanTypeId the plan type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByType_First(long PlanTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where PlanTypeId = &#63;.
     *
     * @param PlanTypeId the plan type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -168,11 +111,19 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the last contest in the ordered set where PlanTypeId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param PlanTypeId the plan type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByType_Last(long PlanTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where PlanTypeId = &#63;.
     *
     * @param ContestPK the primary key of the current contest
     * @param PlanTypeId the plan type ID
@@ -186,6 +137,25 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where PlanTypeId = &#63; from the database.
+    *
+    * @param PlanTypeId the plan type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByType(long PlanTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where PlanTypeId = &#63;.
+    *
+    * @param PlanTypeId the plan type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByType(long PlanTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the contest where contestActive = &#63; or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
@@ -224,6 +194,28 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the contest where contestActive = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @return the contest that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest removeBycontestActive(
+        boolean contestActive)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63;.
+    *
+    * @param contestActive the contest active
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countBycontestActive(boolean contestActive)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the contests where contestActive = &#63; and featured = &#63;.
     *
     * @param contestActive the contest active
@@ -239,7 +231,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns a range of all the contests where contestActive = &#63; and featured = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -257,7 +249,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns an ordered range of all the contests where contestActive = &#63; and featured = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -276,10 +268,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     /**
     * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param contestActive the contest active
     * @param featured the featured
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -294,11 +282,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63;.
+    * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeatured_First(
+        boolean contestActive, boolean featured,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63;.
     *
     * @param contestActive the contest active
     * @param featured the featured
@@ -314,11 +312,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and featured = &#63;.
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeatured_Last(
+        boolean contestActive, boolean featured,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and featured = &#63;.
     *
     * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
@@ -333,6 +341,27 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and featured = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFeatured(boolean contestActive, boolean featured)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and featured = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFeatured(boolean contestActive, boolean featured)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the contests where contestActive = &#63; and flag = &#63;.
@@ -350,7 +379,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns a range of all the contests where contestActive = &#63; and flag = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -368,7 +397,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns an ordered range of all the contests where contestActive = &#63; and flag = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -387,10 +416,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     /**
     * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param contestActive the contest active
     * @param flag the flag
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -405,11 +430,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63;.
+    * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlag_First(
+        boolean contestActive, int flag,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63;.
     *
     * @param contestActive the contest active
     * @param flag the flag
@@ -425,11 +460,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flag = &#63;.
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlag_Last(
+        boolean contestActive, int flag,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flag = &#63;.
     *
     * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
@@ -444,6 +489,27 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and flag = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFlag(boolean contestActive, int flag)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and flag = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFlag(boolean contestActive, int flag)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns all the contests where contestActive = &#63; and flagText = &#63;.
@@ -461,7 +527,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns a range of all the contests where contestActive = &#63; and flagText = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -479,7 +545,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns an ordered range of all the contests where contestActive = &#63; and flagText = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
@@ -498,10 +564,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     /**
     * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param contestActive the contest active
     * @param flagText the flag text
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -516,11 +578,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param flagText the flag text
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlagText_First(
+        boolean contestActive, java.lang.String flagText,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63;.
     *
     * @param contestActive the contest active
     * @param flagText the flag text
@@ -536,11 +608,21 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param contestActive the contest active
+    * @param flagText the flag text
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlagText_Last(
+        boolean contestActive, java.lang.String flagText,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flagText = &#63;.
     *
     * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
@@ -557,6 +639,90 @@ public interface ContestPersistence extends BasePersistence<Contest> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the contests where contestActive = &#63; and flagText = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param flagText the flag text
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFlagText(boolean contestActive,
+        java.lang.String flagText)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and flagText = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flagText the flag text
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFlagText(boolean contestActive,
+        java.lang.String flagText)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the contest in the entity cache if it is enabled.
+    *
+    * @param contest the contest
+    */
+    public void cacheResult(com.ext.portlet.model.Contest contest);
+
+    /**
+    * Caches the contests in the entity cache if it is enabled.
+    *
+    * @param contests the contests
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.Contest> contests);
+
+    /**
+    * Creates a new contest with the primary key. Does not add the contest to the database.
+    *
+    * @param ContestPK the primary key for the new contest
+    * @return the new contest
+    */
+    public com.ext.portlet.model.Contest create(long ContestPK);
+
+    /**
+    * Removes the contest with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param ContestPK the primary key of the contest
+    * @return the contest that was removed
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest remove(long ContestPK)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.Contest updateImpl(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest with the primary key or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
+    *
+    * @param ContestPK the primary key of the contest
+    * @return the contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByPrimaryKey(long ContestPK)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param ContestPK the primary key of the contest
+    * @return the contest, or <code>null</code> if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByPrimaryKey(long ContestPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the contests.
     *
     * @return the contests
@@ -569,7 +735,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns a range of all the contests.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contests
@@ -584,7 +750,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * Returns an ordered range of all the contests.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contests
@@ -599,115 +765,11 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the contests where PlanTypeId = &#63; from the database.
-    *
-    * @param PlanTypeId the plan type ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByType(long PlanTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes the contest where contestActive = &#63; from the database.
-    *
-    * @param contestActive the contest active
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeBycontestActive(boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the contests where contestActive = &#63; and featured = &#63; from the database.
-    *
-    * @param contestActive the contest active
-    * @param featured the featured
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByActiveFeatured(boolean contestActive, boolean featured)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the contests where contestActive = &#63; and flag = &#63; from the database.
-    *
-    * @param contestActive the contest active
-    * @param flag the flag
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByActiveFlag(boolean contestActive, int flag)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the contests where contestActive = &#63; and flagText = &#63; from the database.
-    *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByActiveFlagText(boolean contestActive,
-        java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the contests from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where PlanTypeId = &#63;.
-    *
-    * @param PlanTypeId the plan type ID
-    * @return the number of matching contests
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByType(long PlanTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where contestActive = &#63;.
-    *
-    * @param contestActive the contest active
-    * @return the number of matching contests
-    * @throws SystemException if a system exception occurred
-    */
-    public int countBycontestActive(boolean contestActive)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where contestActive = &#63; and featured = &#63;.
-    *
-    * @param contestActive the contest active
-    * @param featured the featured
-    * @return the number of matching contests
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByActiveFeatured(boolean contestActive, boolean featured)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where contestActive = &#63; and flag = &#63;.
-    *
-    * @param contestActive the contest active
-    * @param flag the flag
-    * @return the number of matching contests
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByActiveFlag(boolean contestActive, int flag)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where contestActive = &#63; and flagText = &#63;.
-    *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @return the number of matching contests
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByActiveFlagText(boolean contestActive,
-        java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelInputGroup service. Represents a row in the &quot;xcolab_ModelInputGroup&quot; database table, with each column mapped to a property of this class.
@@ -58,6 +60,8 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputGroup (modelInputGroupPK LONG not null primary key,modelId LONG,nameAndDescriptionMetaDataId LONG,name VARCHAR(1024) null,description TEXT null,displayItemOrder INTEGER,groupType VARCHAR(256) null,parentGroupPK LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelInputGroup";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelInputGroup.modelInputGroupPK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelInputGroup.modelInputGroupPK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -72,10 +76,11 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
             true);
     public static long MODELID_COLUMN_BITMASK = 1L;
     public static long PARENTGROUPPK_COLUMN_BITMASK = 2L;
+    public static long MODELINPUTGROUPPK_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelInputGroup"));
     private static ClassLoader _classLoader = ModelInputGroup.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelInputGroup.class
         };
     private long _modelInputGroupPK;
@@ -90,9 +95,8 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
     private long _parentGroupPK;
     private long _originalParentGroupPK;
     private boolean _setOriginalParentGroupPK;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelInputGroup _escapedModelProxy;
+    private ModelInputGroup _escapedModel;
 
     public ModelInputGroupModelImpl() {
     }
@@ -104,6 +108,10 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
      * @return the normal model instance
      */
     public static ModelInputGroup toModel(ModelInputGroupSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelInputGroup model = new ModelInputGroupImpl();
 
         model.setModelInputGroupPK(soapModel.getModelInputGroupPK());
@@ -126,6 +134,10 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
      */
     public static List<ModelInputGroup> toModels(
         ModelInputGroupSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelInputGroup> models = new ArrayList<ModelInputGroup>(soapModels.length);
 
         for (ModelInputGroupSoap soapModel : soapModels) {
@@ -135,44 +147,123 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelInputGroupPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelInputGroupPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelInputGroupPK);
+        return _modelInputGroupPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelInputGroup.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelInputGroup.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelInputGroupPK", getModelInputGroupPK());
+        attributes.put("modelId", getModelId());
+        attributes.put("nameAndDescriptionMetaDataId",
+            getNameAndDescriptionMetaDataId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("displayItemOrder", getDisplayItemOrder());
+        attributes.put("groupType", getGroupType());
+        attributes.put("parentGroupPK", getParentGroupPK());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelInputGroupPK = (Long) attributes.get("modelInputGroupPK");
+
+        if (modelInputGroupPK != null) {
+            setModelInputGroupPK(modelInputGroupPK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Long nameAndDescriptionMetaDataId = (Long) attributes.get(
+                "nameAndDescriptionMetaDataId");
+
+        if (nameAndDescriptionMetaDataId != null) {
+            setNameAndDescriptionMetaDataId(nameAndDescriptionMetaDataId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Integer displayItemOrder = (Integer) attributes.get("displayItemOrder");
+
+        if (displayItemOrder != null) {
+            setDisplayItemOrder(displayItemOrder);
+        }
+
+        String groupType = (String) attributes.get("groupType");
+
+        if (groupType != null) {
+            setGroupType(groupType);
+        }
+
+        Long parentGroupPK = (Long) attributes.get("parentGroupPK");
+
+        if (parentGroupPK != null) {
+            setParentGroupPK(parentGroupPK);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelInputGroupPK() {
         return _modelInputGroupPK;
     }
 
+    @Override
     public void setModelInputGroupPK(long modelInputGroupPK) {
         _modelInputGroupPK = modelInputGroupPK;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -190,16 +281,19 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
     }
 
     @JSON
+    @Override
     public long getNameAndDescriptionMetaDataId() {
         return _nameAndDescriptionMetaDataId;
     }
 
+    @Override
     public void setNameAndDescriptionMetaDataId(
         long nameAndDescriptionMetaDataId) {
         _nameAndDescriptionMetaDataId = nameAndDescriptionMetaDataId;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -208,11 +302,13 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -221,20 +317,24 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
+    @Override
     public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 
     @JSON
+    @Override
     public String getGroupType() {
         if (_groupType == null) {
             return StringPool.BLANK;
@@ -243,15 +343,18 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         }
     }
 
+    @Override
     public void setGroupType(String groupType) {
         _groupType = groupType;
     }
 
     @JSON
+    @Override
     public long getParentGroupPK() {
         return _parentGroupPK;
     }
 
+    @Override
     public void setParentGroupPK(long parentGroupPK) {
         _columnBitmask |= PARENTGROUPPK_COLUMN_BITMASK;
 
@@ -273,29 +376,26 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
     }
 
     @Override
-    public ModelInputGroup toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelInputGroup) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelInputGroup.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelInputGroup.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelInputGroup toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelInputGroup) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -316,6 +416,7 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         return modelInputGroupImpl;
     }
 
+    @Override
     public int compareTo(ModelInputGroup modelInputGroup) {
         long primaryKey = modelInputGroup.getPrimaryKey();
 
@@ -330,17 +431,15 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelInputGroup)) {
             return false;
         }
 
-        ModelInputGroup modelInputGroup = null;
-
-        try {
-            modelInputGroup = (ModelInputGroup) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelInputGroup modelInputGroup = (ModelInputGroup) obj;
 
         long primaryKey = modelInputGroup.getPrimaryKey();
 
@@ -437,6 +536,7 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(28);
 

@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelOutputChartOrder service. Represents a row in the &quot;xcolab_ModelOutputChartOrder&quot; database table, with each column mapped to a property of this class.
@@ -59,6 +61,8 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputChartOrder (modelOutputChartOrderPK LONG not null primary key,modelId LONG,modelOutputLabel VARCHAR(1024) null,modelOutputChartOrder INTEGER,modelIndexRangePolicy VARCHAR(2048) null,modelIndexRangeMessage VARCHAR(2048) null,modelIndexErrorPolicy VARCHAR(2048) null,modelIndexErrorMessage VARCHAR(2048) null,modelChartIsVisible BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelOutputChartOrder";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelOutputChartOrder.modelOutputChartOrderPK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelOutputChartOrder.modelOutputChartOrderPK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -73,10 +77,11 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
             true);
     public static long MODELID_COLUMN_BITMASK = 1L;
     public static long MODELOUTPUTLABEL_COLUMN_BITMASK = 2L;
+    public static long MODELOUTPUTCHARTORDERPK_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelOutputChartOrder"));
     private static ClassLoader _classLoader = ModelOutputChartOrder.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelOutputChartOrder.class
         };
     private long _modelOutputChartOrderPK;
@@ -91,9 +96,8 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
     private String _modelIndexErrorPolicy;
     private String _modelIndexErrorMessage;
     private boolean _modelChartIsVisible;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelOutputChartOrder _escapedModelProxy;
+    private ModelOutputChartOrder _escapedModel;
 
     public ModelOutputChartOrderModelImpl() {
     }
@@ -106,6 +110,10 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
      */
     public static ModelOutputChartOrder toModel(
         ModelOutputChartOrderSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelOutputChartOrder model = new ModelOutputChartOrderImpl();
 
         model.setModelOutputChartOrderPK(soapModel.getModelOutputChartOrderPK());
@@ -129,6 +137,10 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
      */
     public static List<ModelOutputChartOrder> toModels(
         ModelOutputChartOrderSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelOutputChartOrder> models = new ArrayList<ModelOutputChartOrder>(soapModels.length);
 
         for (ModelOutputChartOrderSoap soapModel : soapModels) {
@@ -138,44 +150,135 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelOutputChartOrderPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelOutputChartOrderPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelOutputChartOrderPK);
+        return _modelOutputChartOrderPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelOutputChartOrder.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelOutputChartOrder.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelOutputChartOrderPK", getModelOutputChartOrderPK());
+        attributes.put("modelId", getModelId());
+        attributes.put("modelOutputLabel", getModelOutputLabel());
+        attributes.put("modelOutputChartOrder", getModelOutputChartOrder());
+        attributes.put("modelIndexRangePolicy", getModelIndexRangePolicy());
+        attributes.put("modelIndexRangeMessage", getModelIndexRangeMessage());
+        attributes.put("modelIndexErrorPolicy", getModelIndexErrorPolicy());
+        attributes.put("modelIndexErrorMessage", getModelIndexErrorMessage());
+        attributes.put("modelChartIsVisible", getModelChartIsVisible());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelOutputChartOrderPK = (Long) attributes.get(
+                "modelOutputChartOrderPK");
+
+        if (modelOutputChartOrderPK != null) {
+            setModelOutputChartOrderPK(modelOutputChartOrderPK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        String modelOutputLabel = (String) attributes.get("modelOutputLabel");
+
+        if (modelOutputLabel != null) {
+            setModelOutputLabel(modelOutputLabel);
+        }
+
+        Integer modelOutputChartOrder = (Integer) attributes.get(
+                "modelOutputChartOrder");
+
+        if (modelOutputChartOrder != null) {
+            setModelOutputChartOrder(modelOutputChartOrder);
+        }
+
+        String modelIndexRangePolicy = (String) attributes.get(
+                "modelIndexRangePolicy");
+
+        if (modelIndexRangePolicy != null) {
+            setModelIndexRangePolicy(modelIndexRangePolicy);
+        }
+
+        String modelIndexRangeMessage = (String) attributes.get(
+                "modelIndexRangeMessage");
+
+        if (modelIndexRangeMessage != null) {
+            setModelIndexRangeMessage(modelIndexRangeMessage);
+        }
+
+        String modelIndexErrorPolicy = (String) attributes.get(
+                "modelIndexErrorPolicy");
+
+        if (modelIndexErrorPolicy != null) {
+            setModelIndexErrorPolicy(modelIndexErrorPolicy);
+        }
+
+        String modelIndexErrorMessage = (String) attributes.get(
+                "modelIndexErrorMessage");
+
+        if (modelIndexErrorMessage != null) {
+            setModelIndexErrorMessage(modelIndexErrorMessage);
+        }
+
+        Boolean modelChartIsVisible = (Boolean) attributes.get(
+                "modelChartIsVisible");
+
+        if (modelChartIsVisible != null) {
+            setModelChartIsVisible(modelChartIsVisible);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelOutputChartOrderPK() {
         return _modelOutputChartOrderPK;
     }
 
+    @Override
     public void setModelOutputChartOrderPK(long modelOutputChartOrderPK) {
         _modelOutputChartOrderPK = modelOutputChartOrderPK;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -193,6 +296,7 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
     }
 
     @JSON
+    @Override
     public String getModelOutputLabel() {
         if (_modelOutputLabel == null) {
             return StringPool.BLANK;
@@ -201,6 +305,7 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         }
     }
 
+    @Override
     public void setModelOutputLabel(String modelOutputLabel) {
         _columnBitmask |= MODELOUTPUTLABEL_COLUMN_BITMASK;
 
@@ -216,15 +321,18 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
     }
 
     @JSON
+    @Override
     public int getModelOutputChartOrder() {
         return _modelOutputChartOrder;
     }
 
+    @Override
     public void setModelOutputChartOrder(int modelOutputChartOrder) {
         _modelOutputChartOrder = modelOutputChartOrder;
     }
 
     @JSON
+    @Override
     public String getModelIndexRangePolicy() {
         if (_modelIndexRangePolicy == null) {
             return StringPool.BLANK;
@@ -233,11 +341,13 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         }
     }
 
+    @Override
     public void setModelIndexRangePolicy(String modelIndexRangePolicy) {
         _modelIndexRangePolicy = modelIndexRangePolicy;
     }
 
     @JSON
+    @Override
     public String getModelIndexRangeMessage() {
         if (_modelIndexRangeMessage == null) {
             return StringPool.BLANK;
@@ -246,11 +356,13 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         }
     }
 
+    @Override
     public void setModelIndexRangeMessage(String modelIndexRangeMessage) {
         _modelIndexRangeMessage = modelIndexRangeMessage;
     }
 
     @JSON
+    @Override
     public String getModelIndexErrorPolicy() {
         if (_modelIndexErrorPolicy == null) {
             return StringPool.BLANK;
@@ -259,11 +371,13 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         }
     }
 
+    @Override
     public void setModelIndexErrorPolicy(String modelIndexErrorPolicy) {
         _modelIndexErrorPolicy = modelIndexErrorPolicy;
     }
 
     @JSON
+    @Override
     public String getModelIndexErrorMessage() {
         if (_modelIndexErrorMessage == null) {
             return StringPool.BLANK;
@@ -272,19 +386,23 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         }
     }
 
+    @Override
     public void setModelIndexErrorMessage(String modelIndexErrorMessage) {
         _modelIndexErrorMessage = modelIndexErrorMessage;
     }
 
     @JSON
+    @Override
     public boolean getModelChartIsVisible() {
         return _modelChartIsVisible;
     }
 
+    @Override
     public boolean isModelChartIsVisible() {
         return _modelChartIsVisible;
     }
 
+    @Override
     public void setModelChartIsVisible(boolean modelChartIsVisible) {
         _modelChartIsVisible = modelChartIsVisible;
     }
@@ -294,29 +412,26 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
     }
 
     @Override
-    public ModelOutputChartOrder toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelOutputChartOrder) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelOutputChartOrder.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelOutputChartOrder.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelOutputChartOrder toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelOutputChartOrder) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -338,6 +453,7 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         return modelOutputChartOrderImpl;
     }
 
+    @Override
     public int compareTo(ModelOutputChartOrder modelOutputChartOrder) {
         long primaryKey = modelOutputChartOrder.getPrimaryKey();
 
@@ -352,17 +468,15 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelOutputChartOrder)) {
             return false;
         }
 
-        ModelOutputChartOrder modelOutputChartOrder = null;
-
-        try {
-            modelOutputChartOrder = (ModelOutputChartOrder) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelOutputChartOrder modelOutputChartOrder = (ModelOutputChartOrder) obj;
 
         long primaryKey = modelOutputChartOrder.getPrimaryKey();
 
@@ -477,6 +591,7 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

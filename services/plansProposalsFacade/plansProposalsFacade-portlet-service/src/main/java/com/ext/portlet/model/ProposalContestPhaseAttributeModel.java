@@ -157,36 +157,61 @@ public interface ProposalContestPhaseAttributeModel extends BaseModel<ProposalCo
      */
     public void setRealValue(double realValue);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(
         ProposalContestPhaseAttribute proposalContestPhaseAttribute);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<ProposalContestPhaseAttribute> toCacheModel();
 
+    @Override
     public ProposalContestPhaseAttribute toEscapedModel();
 
+    @Override
+    public ProposalContestPhaseAttribute toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

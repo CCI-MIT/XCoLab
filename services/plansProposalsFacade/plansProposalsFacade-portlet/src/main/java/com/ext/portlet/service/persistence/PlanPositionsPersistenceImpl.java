@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanPositionsException;
 import com.ext.portlet.model.PlanPositions;
 import com.ext.portlet.model.impl.PlanPositionsImpl;
 import com.ext.portlet.model.impl.PlanPositionsModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -54,34 +55,10 @@ import com.ext.portlet.service.persistence.PlanMetaPersistence;
 import com.ext.portlet.service.persistence.PlanModelRunPersistence;
 import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
 import com.ext.portlet.service.persistence.PlanPositionPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +75,13 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +89,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the plan positions service.
@@ -138,6 +115,17 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
+            PlanPositionsImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
+            PlanPositionsImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_CURRENTBYPLANID = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
             PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
             PlanPositionsImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -147,6 +135,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
             PlanPositionsModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByCurrentByPlanId", new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_CURRENTBYPLANID_PLANID_2 = "planPositions.planId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ALLBYPLANID =
         new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
             PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
@@ -155,8 +144,8 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID =
         new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
@@ -168,29 +157,20 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
             PlanPositionsModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAllByPlanId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
-            PlanPositionsImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsModelImpl.FINDER_CACHE_ENABLED,
-            PlanPositionsImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_ALLBYPLANID_PLANID_2 = "planPositions.planId = ?";
     private static final String _SQL_SELECT_PLANPOSITIONS = "SELECT planPositions FROM PlanPositions planPositions";
     private static final String _SQL_SELECT_PLANPOSITIONS_WHERE = "SELECT planPositions FROM PlanPositions planPositions WHERE ";
     private static final String _SQL_COUNT_PLANPOSITIONS = "SELECT COUNT(planPositions) FROM PlanPositions planPositions";
     private static final String _SQL_COUNT_PLANPOSITIONS_WHERE = "SELECT COUNT(planPositions) FROM PlanPositions planPositions WHERE ";
-    private static final String _FINDER_COLUMN_CURRENTBYPLANID_PLANID_2 = "planPositions.planId = ?";
-    private static final String _FINDER_COLUMN_ALLBYPLANID_PLANID_2 = "planPositions.planId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planPositions.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanPositions exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanPositions exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(PlanPositionsPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id"
+            });
     private static PlanPositions _nullPlanPositions = new PlanPositionsImpl() {
             @Override
             public Object clone() {
@@ -204,11 +184,13 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
         };
 
     private static CacheModel<PlanPositions> _nullPlanPositionsCacheModel = new CacheModel<PlanPositions>() {
+            @Override
             public PlanPositions toEntityModel() {
                 return _nullPlanPositions;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -363,380 +345,11 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan positions in the entity cache if it is enabled.
-     *
-     * @param planPositions the plan positions
-     */
-    public void cacheResult(PlanPositions planPositions) {
-        EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsImpl.class, planPositions.getPrimaryKey(),
-            planPositions);
-
-        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-            new Object[] { Long.valueOf(planPositions.getPlanId()) },
-            planPositions);
-
-        planPositions.resetOriginalValues();
+=======
+    public PlanPositionsPersistenceImpl() {
+        setModelClass(PlanPositions.class);
     }
-
-    /**
-     * Caches the plan positionses in the entity cache if it is enabled.
-     *
-     * @param planPositionses the plan positionses
-     */
-    public void cacheResult(List<PlanPositions> planPositionses) {
-        for (PlanPositions planPositions : planPositionses) {
-            if (EntityCacheUtil.getResult(
-                        PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanPositionsImpl.class, planPositions.getPrimaryKey()) == null) {
-                cacheResult(planPositions);
-            } else {
-                planPositions.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan positionses.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanPositionsImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanPositionsImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan positions.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanPositions planPositions) {
-        EntityCacheUtil.removeResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsImpl.class, planPositions.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        clearUniqueFindersCache(planPositions);
-    }
-
-    @Override
-    public void clearCache(List<PlanPositions> planPositionses) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanPositions planPositions : planPositionses) {
-            EntityCacheUtil.removeResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-                PlanPositionsImpl.class, planPositions.getPrimaryKey());
-
-            clearUniqueFindersCache(planPositions);
-        }
-    }
-
-    protected void clearUniqueFindersCache(PlanPositions planPositions) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-            new Object[] { Long.valueOf(planPositions.getPlanId()) });
-    }
-
-    /**
-     * Creates a new plan positions with the primary key. Does not add the plan positions to the database.
-     *
-     * @param id the primary key for the new plan positions
-     * @return the new plan positions
-     */
-    public PlanPositions create(long id) {
-        PlanPositions planPositions = new PlanPositionsImpl();
-
-        planPositions.setNew(true);
-        planPositions.setPrimaryKey(id);
-
-        return planPositions;
-    }
-
-    /**
-     * Removes the plan positions with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param id the primary key of the plan positions
-     * @return the plan positions that was removed
-     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanPositions remove(long id)
-        throws NoSuchPlanPositionsException, SystemException {
-        return remove(Long.valueOf(id));
-    }
-
-    /**
-     * Removes the plan positions with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan positions
-     * @return the plan positions that was removed
-     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanPositions remove(Serializable primaryKey)
-        throws NoSuchPlanPositionsException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanPositions planPositions = (PlanPositions) session.get(PlanPositionsImpl.class,
-                    primaryKey);
-
-            if (planPositions == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanPositionsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planPositions);
-        } catch (NoSuchPlanPositionsException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanPositions removeImpl(PlanPositions planPositions)
-        throws SystemException {
-        planPositions = toUnwrappedModel(planPositions);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planPositions);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planPositions);
-
-        return planPositions;
-    }
-
-    @Override
-    public PlanPositions updateImpl(
-        com.ext.portlet.model.PlanPositions planPositions, boolean merge)
-        throws SystemException {
-        planPositions = toUnwrappedModel(planPositions);
-
-        boolean isNew = planPositions.isNew();
-
-        PlanPositionsModelImpl planPositionsModelImpl = (PlanPositionsModelImpl) planPositions;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planPositions, merge);
-
-            planPositions.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanPositionsModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planPositionsModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planPositionsModelImpl.getOriginalPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planPositionsModelImpl.getPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-            PlanPositionsImpl.class, planPositions.getPrimaryKey(),
-            planPositions);
-
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-                new Object[] { Long.valueOf(planPositions.getPlanId()) },
-                planPositions);
-        } else {
-            if ((planPositionsModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_CURRENTBYPLANID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planPositionsModelImpl.getOriginalPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-                    new Object[] { Long.valueOf(planPositions.getPlanId()) },
-                    planPositions);
-            }
-        }
-
-        return planPositions;
-    }
-
-    protected PlanPositions toUnwrappedModel(PlanPositions planPositions) {
-        if (planPositions instanceof PlanPositionsImpl) {
-            return planPositions;
-        }
-
-        PlanPositionsImpl planPositionsImpl = new PlanPositionsImpl();
-
-        planPositionsImpl.setNew(planPositions.isNew());
-        planPositionsImpl.setPrimaryKey(planPositions.getPrimaryKey());
-
-        planPositionsImpl.setId(planPositions.getId());
-        planPositionsImpl.setPlanId(planPositions.getPlanId());
-        planPositionsImpl.setPlanVersion(planPositions.getPlanVersion());
-        planPositionsImpl.setVersion(planPositions.getVersion());
-        planPositionsImpl.setCreated(planPositions.getCreated());
-        planPositionsImpl.setUpdateAuthorId(planPositions.getUpdateAuthorId());
-
-        return planPositionsImpl;
-    }
-
-    /**
-     * Returns the plan positions with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan positions
-     * @return the plan positions
-     * @throws com.liferay.portal.NoSuchModelException if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanPositions findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan positions with the primary key or throws a {@link com.ext.portlet.NoSuchPlanPositionsException} if it could not be found.
-     *
-     * @param id the primary key of the plan positions
-     * @return the plan positions
-     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanPositions findByPrimaryKey(long id)
-        throws NoSuchPlanPositionsException, SystemException {
-        PlanPositions planPositions = fetchByPrimaryKey(id);
-
-        if (planPositions == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
-            }
-
-            throw new NoSuchPlanPositionsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                id);
-        }
-
-        return planPositions;
-    }
-
-    /**
-     * Returns the plan positions with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan positions
-     * @return the plan positions, or <code>null</code> if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanPositions fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan positions with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param id the primary key of the plan positions
-     * @return the plan positions, or <code>null</code> if a plan positions with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanPositions fetchByPrimaryKey(long id) throws SystemException {
-        PlanPositions planPositions = (PlanPositions) EntityCacheUtil.getResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-                PlanPositionsImpl.class, id);
-
-        if (planPositions == _nullPlanPositions) {
-            return null;
-        }
-
-        if (planPositions == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planPositions = (PlanPositions) session.get(PlanPositionsImpl.class,
-                        Long.valueOf(id));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planPositions != null) {
-                    cacheResult(planPositions);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanPositionsImpl.class, id, _nullPlanPositions);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planPositions;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns the plan positions where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanPositionsException} if it could not be found.
@@ -746,6 +359,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions findByCurrentByPlanId(long planId)
         throws NoSuchPlanPositionsException, SystemException {
         PlanPositions planPositions = fetchByCurrentByPlanId(planId);
@@ -777,6 +391,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions fetchByCurrentByPlanId(long planId)
         throws SystemException {
         return fetchByCurrentByPlanId(planId, true);
@@ -790,6 +405,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positions, or <code>null</code> if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions fetchByCurrentByPlanId(long planId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId };
@@ -801,14 +417,20 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
                     finderArgs, this);
         }
 
+        if (result instanceof PlanPositions) {
+            PlanPositions planPositions = (PlanPositions) result;
+
+            if ((planId != planPositions.getPlanId())) {
+                result = null;
+            }
+        }
+
         if (result == null) {
             StringBundler query = new StringBundler(3);
 
             query.append(_SQL_SELECT_PLANPOSITIONS_WHERE);
 
             query.append(_FINDER_COLUMN_CURRENTBYPLANID_PLANID_2);
-
-            query.append(PlanPositionsModelImpl.ORDER_BY_JPQL);
 
             String sql = query.toString();
 
@@ -825,15 +447,20 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 List<PlanPositions> list = q.list();
 
-                result = list;
-
-                PlanPositions planPositions = null;
-
                 if (list.isEmpty()) {
                     FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
                         finderArgs, list);
                 } else {
-                    planPositions = list.get(0);
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PlanPositionsPersistenceImpl.fetchByCurrentByPlanId(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PlanPositions planPositions = list.get(0);
+
+                    result = planPositions;
 
                     cacheResult(planPositions);
 
@@ -842,25 +469,87 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
                             finderArgs, planPositions);
                     }
                 }
-
-                return planPositions;
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
+                    finderArgs);
+
                 throw processException(e);
             } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
-                        finderArgs);
-                }
-
                 closeSession(session);
             }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
         } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (PlanPositions) result;
+            return (PlanPositions) result;
+        }
+    }
+
+    /**
+     * Removes the plan positions where planId = &#63; from the database.
+     *
+     * @param planId the plan ID
+     * @return the plan positions that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions removeByCurrentByPlanId(long planId)
+        throws NoSuchPlanPositionsException, SystemException {
+        PlanPositions planPositions = findByCurrentByPlanId(planId);
+
+        return remove(planPositions);
+    }
+
+    /**
+     * Returns the number of plan positionses where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @return the number of matching plan positionses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByCurrentByPlanId(long planId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_CURRENTBYPLANID;
+
+        Object[] finderArgs = new Object[] { planId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANPOSITIONS_WHERE);
+
+            query.append(_FINDER_COLUMN_CURRENTBYPLANID_PLANID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
             }
         }
+
+        return count.intValue();
     }
 
     /**
@@ -870,6 +559,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the matching plan positionses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanPositions> findByAllByPlanId(long planId)
         throws SystemException {
         return findByAllByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -880,7 +570,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * Returns a range of all the plan positionses where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -889,6 +579,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the range of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanPositions> findByAllByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByAllByPlanId(planId, start, end, null);
@@ -898,7 +589,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * Returns an ordered range of all the plan positionses where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -908,13 +599,16 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the ordered range of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanPositions> findByAllByPlanId(long planId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID;
             finderArgs = new Object[] { planId };
         } else {
@@ -924,6 +618,16 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
         List<PlanPositions> list = (List<PlanPositions>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanPositions planPositions : list) {
+                if ((planId != planPositions.getPlanId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
 
         if (list == null) {
             StringBundler query = null;
@@ -942,8 +646,8 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
-            }
-            else {
+            } else
+             if (pagination) {
                 query.append(PlanPositionsModelImpl.ORDER_BY_JPQL);
             }
 
@@ -960,19 +664,26 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 qPos.add(planId);
 
-                list = (List<PlanPositions>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanPositions>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanPositions>(list);
+                } else {
+                    list = (List<PlanPositions>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -983,44 +694,58 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     /**
      * Returns the first plan positions in the ordered set where planId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan positions
      * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions findByAllByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
+        PlanPositions planPositions = fetchByAllByPlanId_First(planId,
+                orderByComparator);
+
+        if (planPositions != null) {
+            return planPositions;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanPositionsException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan positions in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan positions, or <code>null</code> if a matching plan positions could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions fetchByAllByPlanId_First(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanPositions> list = findByAllByPlanId(planId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanPositionsException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan positions in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1028,36 +753,58 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.NoSuchPlanPositionsException if a matching plan positions could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions findByAllByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
+        PlanPositions planPositions = fetchByAllByPlanId_Last(planId,
+                orderByComparator);
+
+        if (planPositions != null) {
+            return planPositions;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanPositionsException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan positions in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan positions, or <code>null</code> if a matching plan positions could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions fetchByAllByPlanId_Last(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByAllByPlanId(planId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanPositions> list = findByAllByPlanId(planId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanPositionsException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan positionses before and after the current plan positions in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current plan positions
      * @param planId the plan ID
@@ -1066,6 +813,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanPositions[] findByAllByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanPositionsException, SystemException {
@@ -1158,8 +906,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
                     }
                 }
             }
-        }
-        else {
+        } else {
             query.append(PlanPositionsModelImpl.ORDER_BY_JPQL);
         }
 
@@ -1192,146 +939,15 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     }
 
     /**
-     * Returns all the plan positionses.
-     *
-     * @return the plan positionses
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanPositions> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan positionses.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan positionses
-     * @param end the upper bound of the range of plan positionses (not inclusive)
-     * @return the range of plan positionses
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanPositions> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan positionses.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan positionses
-     * @param end the upper bound of the range of plan positionses (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan positionses
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanPositions> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanPositions> list = (List<PlanPositions>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANPOSITIONS);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANPOSITIONS.concat(PlanPositionsModelImpl.ORDER_BY_JPQL);
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanPositions>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanPositions>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Removes the plan positions where planId = &#63; from the database.
-     *
-     * @param planId the plan ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByCurrentByPlanId(long planId)
-        throws NoSuchPlanPositionsException, SystemException {
-        PlanPositions planPositions = findByCurrentByPlanId(planId);
-
-        remove(planPositions);
-    }
-
-    /**
      * Removes all the plan positionses where planId = &#63; from the database.
      *
      * @param planId the plan ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByAllByPlanId(long planId) throws SystemException {
-        for (PlanPositions planPositions : findByAllByPlanId(planId)) {
-            remove(planPositions);
-        }
-    }
-
-    /**
-     * Removes all the plan positionses from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanPositions planPositions : findAll()) {
+        for (PlanPositions planPositions : findByAllByPlanId(planId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(planPositions);
         }
     }
@@ -1343,62 +959,14 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
      * @return the number of matching plan positionses
      * @throws SystemException if a system exception occurred
      */
-    public int countByCurrentByPlanId(long planId) throws SystemException {
-        Object[] finderArgs = new Object[] { planId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PLANPOSITIONS_WHERE);
-
-            query.append(_FINDER_COLUMN_CURRENTBYPLANID_PLANID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(planId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of plan positionses where planId = &#63;.
-     *
-     * @param planId the plan ID
-     * @return the number of matching plan positionses
-     * @throws SystemException if a system exception occurred
-     */
+    @Override
     public int countByAllByPlanId(long planId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_ALLBYPLANID;
+
         Object[] finderArgs = new Object[] { planId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1421,16 +989,13 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
                 qPos.add(planId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1439,11 +1004,549 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     }
 
     /**
+     * Caches the plan positions in the entity cache if it is enabled.
+     *
+     * @param planPositions the plan positions
+     */
+    @Override
+    public void cacheResult(PlanPositions planPositions) {
+        EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsImpl.class, planPositions.getPrimaryKey(),
+            planPositions);
+
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
+            new Object[] { planPositions.getPlanId() }, planPositions);
+
+        planPositions.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan positionses in the entity cache if it is enabled.
+     *
+     * @param planPositionses the plan positionses
+     */
+    @Override
+    public void cacheResult(List<PlanPositions> planPositionses) {
+        for (PlanPositions planPositions : planPositionses) {
+            if (EntityCacheUtil.getResult(
+                        PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanPositionsImpl.class, planPositions.getPrimaryKey()) == null) {
+                cacheResult(planPositions);
+            } else {
+                planPositions.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan positionses.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanPositionsImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanPositionsImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan positions.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanPositions planPositions) {
+        EntityCacheUtil.removeResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsImpl.class, planPositions.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(planPositions);
+    }
+
+    @Override
+    public void clearCache(List<PlanPositions> planPositionses) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanPositions planPositions : planPositionses) {
+            EntityCacheUtil.removeResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+                PlanPositionsImpl.class, planPositions.getPrimaryKey());
+
+            clearUniqueFindersCache(planPositions);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(PlanPositions planPositions) {
+        if (planPositions.isNew()) {
+            Object[] args = new Object[] { planPositions.getPlanId() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
+                args, planPositions);
+        } else {
+            PlanPositionsModelImpl planPositionsModelImpl = (PlanPositionsModelImpl) planPositions;
+
+            if ((planPositionsModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_CURRENTBYPLANID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] { planPositions.getPlanId() };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
+                    args, planPositions);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(PlanPositions planPositions) {
+        PlanPositionsModelImpl planPositionsModelImpl = (PlanPositionsModelImpl) planPositions;
+
+        Object[] args = new Object[] { planPositions.getPlanId() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID, args);
+
+        if ((planPositionsModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_CURRENTBYPLANID.getColumnBitmask()) != 0) {
+            args = new Object[] { planPositionsModelImpl.getOriginalPlanId() };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CURRENTBYPLANID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CURRENTBYPLANID,
+                args);
+        }
+    }
+
+    /**
+     * Creates a new plan positions with the primary key. Does not add the plan positions to the database.
+     *
+     * @param id the primary key for the new plan positions
+     * @return the new plan positions
+     */
+    @Override
+    public PlanPositions create(long id) {
+        PlanPositions planPositions = new PlanPositionsImpl();
+
+        planPositions.setNew(true);
+        planPositions.setPrimaryKey(id);
+
+        return planPositions;
+    }
+
+    /**
+     * Removes the plan positions with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param id the primary key of the plan positions
+     * @return the plan positions that was removed
+     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions remove(long id)
+        throws NoSuchPlanPositionsException, SystemException {
+        return remove((Serializable) id);
+    }
+
+    /**
+     * Removes the plan positions with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan positions
+     * @return the plan positions that was removed
+     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions remove(Serializable primaryKey)
+        throws NoSuchPlanPositionsException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanPositions planPositions = (PlanPositions) session.get(PlanPositionsImpl.class,
+                    primaryKey);
+
+            if (planPositions == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanPositionsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planPositions);
+        } catch (NoSuchPlanPositionsException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanPositions removeImpl(PlanPositions planPositions)
+        throws SystemException {
+        planPositions = toUnwrappedModel(planPositions);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planPositions)) {
+                planPositions = (PlanPositions) session.get(PlanPositionsImpl.class,
+                        planPositions.getPrimaryKeyObj());
+            }
+
+            if (planPositions != null) {
+                session.delete(planPositions);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planPositions != null) {
+            clearCache(planPositions);
+        }
+
+        return planPositions;
+    }
+
+    @Override
+    public PlanPositions updateImpl(
+        com.ext.portlet.model.PlanPositions planPositions)
+        throws SystemException {
+        planPositions = toUnwrappedModel(planPositions);
+
+        boolean isNew = planPositions.isNew();
+
+        PlanPositionsModelImpl planPositionsModelImpl = (PlanPositionsModelImpl) planPositions;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planPositions.isNew()) {
+                session.save(planPositions);
+
+                planPositions.setNew(false);
+            } else {
+                session.merge(planPositions);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanPositionsModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planPositionsModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planPositionsModelImpl.getOriginalPlanId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID,
+                    args);
+
+                args = new Object[] { planPositionsModelImpl.getPlanId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ALLBYPLANID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ALLBYPLANID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+            PlanPositionsImpl.class, planPositions.getPrimaryKey(),
+            planPositions);
+
+        clearUniqueFindersCache(planPositions);
+        cacheUniqueFindersCache(planPositions);
+
+        return planPositions;
+    }
+
+    protected PlanPositions toUnwrappedModel(PlanPositions planPositions) {
+        if (planPositions instanceof PlanPositionsImpl) {
+            return planPositions;
+        }
+
+        PlanPositionsImpl planPositionsImpl = new PlanPositionsImpl();
+
+        planPositionsImpl.setNew(planPositions.isNew());
+        planPositionsImpl.setPrimaryKey(planPositions.getPrimaryKey());
+
+        planPositionsImpl.setId(planPositions.getId());
+        planPositionsImpl.setPlanId(planPositions.getPlanId());
+        planPositionsImpl.setPlanVersion(planPositions.getPlanVersion());
+        planPositionsImpl.setVersion(planPositions.getVersion());
+        planPositionsImpl.setCreated(planPositions.getCreated());
+        planPositionsImpl.setUpdateAuthorId(planPositions.getUpdateAuthorId());
+
+        return planPositionsImpl;
+    }
+
+    /**
+     * Returns the plan positions with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan positions
+     * @return the plan positions
+     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanPositionsException, SystemException {
+        PlanPositions planPositions = fetchByPrimaryKey(primaryKey);
+
+        if (planPositions == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanPositionsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planPositions;
+    }
+
+    /**
+     * Returns the plan positions with the primary key or throws a {@link com.ext.portlet.NoSuchPlanPositionsException} if it could not be found.
+     *
+     * @param id the primary key of the plan positions
+     * @return the plan positions
+     * @throws com.ext.portlet.NoSuchPlanPositionsException if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions findByPrimaryKey(long id)
+        throws NoSuchPlanPositionsException, SystemException {
+        return findByPrimaryKey((Serializable) id);
+    }
+
+    /**
+     * Returns the plan positions with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan positions
+     * @return the plan positions, or <code>null</code> if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanPositions planPositions = (PlanPositions) EntityCacheUtil.getResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+                PlanPositionsImpl.class, primaryKey);
+
+        if (planPositions == _nullPlanPositions) {
+            return null;
+        }
+
+        if (planPositions == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planPositions = (PlanPositions) session.get(PlanPositionsImpl.class,
+                        primaryKey);
+
+                if (planPositions != null) {
+                    cacheResult(planPositions);
+                } else {
+                    EntityCacheUtil.putResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanPositionsImpl.class, primaryKey, _nullPlanPositions);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanPositionsModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanPositionsImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planPositions;
+    }
+
+    /**
+     * Returns the plan positions with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param id the primary key of the plan positions
+     * @return the plan positions, or <code>null</code> if a plan positions with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanPositions fetchByPrimaryKey(long id) throws SystemException {
+        return fetchByPrimaryKey((Serializable) id);
+    }
+
+    /**
+     * Returns all the plan positionses.
+     *
+     * @return the plan positionses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanPositions> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan positionses.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan positionses
+     * @param end the upper bound of the range of plan positionses (not inclusive)
+     * @return the range of plan positionses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanPositions> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan positionses.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPositionsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan positionses
+     * @param end the upper bound of the range of plan positionses (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan positionses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanPositions> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanPositions> list = (List<PlanPositions>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANPOSITIONS);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANPOSITIONS;
+
+                if (pagination) {
+                    sql = sql.concat(PlanPositionsModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanPositions>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanPositions>(list);
+                } else {
+                    list = (List<PlanPositions>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan positionses from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanPositions planPositions : findAll()) {
+            remove(planPositions);
+        }
+    }
+
+    /**
      * Returns the number of plan positionses.
      *
      * @return the number of plan positionses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1457,21 +1560,25 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
                 Query q = session.createQuery(_SQL_COUNT_PLANPOSITIONS);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -1488,7 +1595,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanPositions>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1501,6 +1608,7 @@ public class PlanPositionsPersistenceImpl extends BasePersistenceImpl<PlanPositi
     public void destroy() {
         EntityCacheUtil.removeCache(PlanPositionsImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

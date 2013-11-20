@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link Contest}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Contest
+ * @author Brian Wing Shun Chan
+ * @see Contest
  * @generated
  */
 public class ContestWrapper implements Contest, ModelWrapper<Contest> {
@@ -18,12 +23,213 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         _contest = contest;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Contest.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Contest.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("ContestPK", getContestPK());
+        attributes.put("ContestName", getContestName());
+        attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestDescription", getContestDescription());
+        attributes.put("ContestModelDescription", getContestModelDescription());
+        attributes.put("ContestPositionsDescription",
+            getContestPositionsDescription());
+        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
+        attributes.put("PlanTypeId", getPlanTypeId());
+        attributes.put("created", getCreated());
+        attributes.put("updated", getUpdated());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("contestActive", getContestActive());
+        attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("contestLogoId", getContestLogoId());
+        attributes.put("featured", getFeatured());
+        attributes.put("plansOpenByDefault", getPlansOpenByDefault());
+        attributes.put("sponsorLogoId", getSponsorLogoId());
+        attributes.put("sponsorText", getSponsorText());
+        attributes.put("flag", getFlag());
+        attributes.put("flagText", getFlagText());
+        attributes.put("flagTooltip", getFlagTooltip());
+        attributes.put("groupId", getGroupId());
+        attributes.put("discussionGroupId", getDiscussionGroupId());
+        attributes.put("weight", getWeight());
+        attributes.put("resourcesUrl", getResourcesUrl());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long ContestPK = (Long) attributes.get("ContestPK");
+
+        if (ContestPK != null) {
+            setContestPK(ContestPK);
+        }
+
+        String ContestName = (String) attributes.get("ContestName");
+
+        if (ContestName != null) {
+            setContestName(ContestName);
+        }
+
+        String ContestShortName = (String) attributes.get("ContestShortName");
+
+        if (ContestShortName != null) {
+            setContestShortName(ContestShortName);
+        }
+
+        String ContestDescription = (String) attributes.get(
+                "ContestDescription");
+
+        if (ContestDescription != null) {
+            setContestDescription(ContestDescription);
+        }
+
+        String ContestModelDescription = (String) attributes.get(
+                "ContestModelDescription");
+
+        if (ContestModelDescription != null) {
+            setContestModelDescription(ContestModelDescription);
+        }
+
+        String ContestPositionsDescription = (String) attributes.get(
+                "ContestPositionsDescription");
+
+        if (ContestPositionsDescription != null) {
+            setContestPositionsDescription(ContestPositionsDescription);
+        }
+
+        String defaultPlanDescription = (String) attributes.get(
+                "defaultPlanDescription");
+
+        if (defaultPlanDescription != null) {
+            setDefaultPlanDescription(defaultPlanDescription);
+        }
+
+        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
+
+        if (PlanTypeId != null) {
+            setPlanTypeId(PlanTypeId);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        Boolean contestActive = (Boolean) attributes.get("contestActive");
+
+        if (contestActive != null) {
+            setContestActive(contestActive);
+        }
+
+        Long planTemplateId = (Long) attributes.get("planTemplateId");
+
+        if (planTemplateId != null) {
+            setPlanTemplateId(planTemplateId);
+        }
+
+        Long focusAreaId = (Long) attributes.get("focusAreaId");
+
+        if (focusAreaId != null) {
+            setFocusAreaId(focusAreaId);
+        }
+
+        Long contestLogoId = (Long) attributes.get("contestLogoId");
+
+        if (contestLogoId != null) {
+            setContestLogoId(contestLogoId);
+        }
+
+        Boolean featured = (Boolean) attributes.get("featured");
+
+        if (featured != null) {
+            setFeatured(featured);
+        }
+
+        Boolean plansOpenByDefault = (Boolean) attributes.get(
+                "plansOpenByDefault");
+
+        if (plansOpenByDefault != null) {
+            setPlansOpenByDefault(plansOpenByDefault);
+        }
+
+        Long sponsorLogoId = (Long) attributes.get("sponsorLogoId");
+
+        if (sponsorLogoId != null) {
+            setSponsorLogoId(sponsorLogoId);
+        }
+
+        String sponsorText = (String) attributes.get("sponsorText");
+
+        if (sponsorText != null) {
+            setSponsorText(sponsorText);
+        }
+
+        Integer flag = (Integer) attributes.get("flag");
+
+        if (flag != null) {
+            setFlag(flag);
+        }
+
+        String flagText = (String) attributes.get("flagText");
+
+        if (flagText != null) {
+            setFlagText(flagText);
+        }
+
+        String flagTooltip = (String) attributes.get("flagTooltip");
+
+        if (flagTooltip != null) {
+            setFlagTooltip(flagTooltip);
+        }
+
+        Long groupId = (Long) attributes.get("groupId");
+
+        if (groupId != null) {
+            setGroupId(groupId);
+        }
+
+        Long discussionGroupId = (Long) attributes.get("discussionGroupId");
+
+        if (discussionGroupId != null) {
+            setDiscussionGroupId(discussionGroupId);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        String resourcesUrl = (String) attributes.get("resourcesUrl");
+
+        if (resourcesUrl != null) {
+            setResourcesUrl(resourcesUrl);
+        }
     }
 
     /**
@@ -31,6 +237,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the primary key of this contest
     */
+    @Override
     public long getPrimaryKey() {
         return _contest.getPrimaryKey();
     }
@@ -40,6 +247,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param primaryKey the primary key of this contest
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _contest.setPrimaryKey(primaryKey);
     }
@@ -49,6 +257,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest p k of this contest
     */
+    @Override
     public long getContestPK() {
         return _contest.getContestPK();
     }
@@ -58,6 +267,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestPK the contest p k of this contest
     */
+    @Override
     public void setContestPK(long ContestPK) {
         _contest.setContestPK(ContestPK);
     }
@@ -67,6 +277,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest name of this contest
     */
+    @Override
     public java.lang.String getContestName() {
         return _contest.getContestName();
     }
@@ -76,6 +287,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestName the contest name of this contest
     */
+    @Override
     public void setContestName(java.lang.String ContestName) {
         _contest.setContestName(ContestName);
     }
@@ -85,6 +297,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest short name of this contest
     */
+    @Override
     public java.lang.String getContestShortName() {
         return _contest.getContestShortName();
     }
@@ -94,6 +307,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestShortName the contest short name of this contest
     */
+    @Override
     public void setContestShortName(java.lang.String ContestShortName) {
         _contest.setContestShortName(ContestShortName);
     }
@@ -103,6 +317,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest description of this contest
     */
+    @Override
     public java.lang.String getContestDescription() {
         return _contest.getContestDescription();
     }
@@ -112,6 +327,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestDescription the contest description of this contest
     */
+    @Override
     public void setContestDescription(java.lang.String ContestDescription) {
         _contest.setContestDescription(ContestDescription);
     }
@@ -121,6 +337,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest model description of this contest
     */
+    @Override
     public java.lang.String getContestModelDescription() {
         return _contest.getContestModelDescription();
     }
@@ -130,6 +347,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestModelDescription the contest model description of this contest
     */
+    @Override
     public void setContestModelDescription(
         java.lang.String ContestModelDescription) {
         _contest.setContestModelDescription(ContestModelDescription);
@@ -140,6 +358,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest positions description of this contest
     */
+    @Override
     public java.lang.String getContestPositionsDescription() {
         return _contest.getContestPositionsDescription();
     }
@@ -149,6 +368,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param ContestPositionsDescription the contest positions description of this contest
     */
+    @Override
     public void setContestPositionsDescription(
         java.lang.String ContestPositionsDescription) {
         _contest.setContestPositionsDescription(ContestPositionsDescription);
@@ -159,6 +379,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the default plan description of this contest
     */
+    @Override
     public java.lang.String getDefaultPlanDescription() {
         return _contest.getDefaultPlanDescription();
     }
@@ -168,6 +389,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param defaultPlanDescription the default plan description of this contest
     */
+    @Override
     public void setDefaultPlanDescription(
         java.lang.String defaultPlanDescription) {
         _contest.setDefaultPlanDescription(defaultPlanDescription);
@@ -178,6 +400,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plan type ID of this contest
     */
+    @Override
     public long getPlanTypeId() {
         return _contest.getPlanTypeId();
     }
@@ -187,6 +410,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param PlanTypeId the plan type ID of this contest
     */
+    @Override
     public void setPlanTypeId(long PlanTypeId) {
         _contest.setPlanTypeId(PlanTypeId);
     }
@@ -196,6 +420,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the created of this contest
     */
+    @Override
     public java.util.Date getCreated() {
         return _contest.getCreated();
     }
@@ -205,6 +430,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param created the created of this contest
     */
+    @Override
     public void setCreated(java.util.Date created) {
         _contest.setCreated(created);
     }
@@ -214,6 +440,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the updated of this contest
     */
+    @Override
     public java.util.Date getUpdated() {
         return _contest.getUpdated();
     }
@@ -223,6 +450,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param updated the updated of this contest
     */
+    @Override
     public void setUpdated(java.util.Date updated) {
         _contest.setUpdated(updated);
     }
@@ -232,6 +460,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the author ID of this contest
     */
+    @Override
     public long getAuthorId() {
         return _contest.getAuthorId();
     }
@@ -241,6 +470,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param authorId the author ID of this contest
     */
+    @Override
     public void setAuthorId(long authorId) {
         _contest.setAuthorId(authorId);
     }
@@ -250,6 +480,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest active of this contest
     */
+    @Override
     public boolean getContestActive() {
         return _contest.getContestActive();
     }
@@ -259,6 +490,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return <code>true</code> if this contest is contest active; <code>false</code> otherwise
     */
+    @Override
     public boolean isContestActive() {
         return _contest.isContestActive();
     }
@@ -268,6 +500,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param contestActive the contest active of this contest
     */
+    @Override
     public void setContestActive(boolean contestActive) {
         _contest.setContestActive(contestActive);
     }
@@ -277,6 +510,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plan template ID of this contest
     */
+    @Override
     public long getPlanTemplateId() {
         return _contest.getPlanTemplateId();
     }
@@ -286,6 +520,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param planTemplateId the plan template ID of this contest
     */
+    @Override
     public void setPlanTemplateId(long planTemplateId) {
         _contest.setPlanTemplateId(planTemplateId);
     }
@@ -295,6 +530,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the focus area ID of this contest
     */
+    @Override
     public long getFocusAreaId() {
         return _contest.getFocusAreaId();
     }
@@ -304,6 +540,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param focusAreaId the focus area ID of this contest
     */
+    @Override
     public void setFocusAreaId(long focusAreaId) {
         _contest.setFocusAreaId(focusAreaId);
     }
@@ -313,6 +550,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the contest logo ID of this contest
     */
+    @Override
     public long getContestLogoId() {
         return _contest.getContestLogoId();
     }
@@ -322,6 +560,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param contestLogoId the contest logo ID of this contest
     */
+    @Override
     public void setContestLogoId(long contestLogoId) {
         _contest.setContestLogoId(contestLogoId);
     }
@@ -331,6 +570,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the featured of this contest
     */
+    @Override
     public boolean getFeatured() {
         return _contest.getFeatured();
     }
@@ -340,6 +580,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return <code>true</code> if this contest is featured; <code>false</code> otherwise
     */
+    @Override
     public boolean isFeatured() {
         return _contest.isFeatured();
     }
@@ -349,6 +590,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param featured the featured of this contest
     */
+    @Override
     public void setFeatured(boolean featured) {
         _contest.setFeatured(featured);
     }
@@ -358,6 +600,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the plans open by default of this contest
     */
+    @Override
     public boolean getPlansOpenByDefault() {
         return _contest.getPlansOpenByDefault();
     }
@@ -367,6 +610,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return <code>true</code> if this contest is plans open by default; <code>false</code> otherwise
     */
+    @Override
     public boolean isPlansOpenByDefault() {
         return _contest.isPlansOpenByDefault();
     }
@@ -376,6 +620,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param plansOpenByDefault the plans open by default of this contest
     */
+    @Override
     public void setPlansOpenByDefault(boolean plansOpenByDefault) {
         _contest.setPlansOpenByDefault(plansOpenByDefault);
     }
@@ -385,6 +630,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the sponsor logo ID of this contest
     */
+    @Override
     public long getSponsorLogoId() {
         return _contest.getSponsorLogoId();
     }
@@ -394,6 +640,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param sponsorLogoId the sponsor logo ID of this contest
     */
+    @Override
     public void setSponsorLogoId(long sponsorLogoId) {
         _contest.setSponsorLogoId(sponsorLogoId);
     }
@@ -403,6 +650,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the sponsor text of this contest
     */
+    @Override
     public java.lang.String getSponsorText() {
         return _contest.getSponsorText();
     }
@@ -412,6 +660,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param sponsorText the sponsor text of this contest
     */
+    @Override
     public void setSponsorText(java.lang.String sponsorText) {
         _contest.setSponsorText(sponsorText);
     }
@@ -421,6 +670,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the flag of this contest
     */
+    @Override
     public int getFlag() {
         return _contest.getFlag();
     }
@@ -430,6 +680,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param flag the flag of this contest
     */
+    @Override
     public void setFlag(int flag) {
         _contest.setFlag(flag);
     }
@@ -439,6 +690,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the flag text of this contest
     */
+    @Override
     public java.lang.String getFlagText() {
         return _contest.getFlagText();
     }
@@ -448,6 +700,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param flagText the flag text of this contest
     */
+    @Override
     public void setFlagText(java.lang.String flagText) {
         _contest.setFlagText(flagText);
     }
@@ -457,6 +710,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the flag tooltip of this contest
     */
+    @Override
     public java.lang.String getFlagTooltip() {
         return _contest.getFlagTooltip();
     }
@@ -466,6 +720,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param flagTooltip the flag tooltip of this contest
     */
+    @Override
     public void setFlagTooltip(java.lang.String flagTooltip) {
         _contest.setFlagTooltip(flagTooltip);
     }
@@ -475,6 +730,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the group ID of this contest
     */
+    @Override
     public long getGroupId() {
         return _contest.getGroupId();
     }
@@ -484,6 +740,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param groupId the group ID of this contest
     */
+    @Override
     public void setGroupId(long groupId) {
         _contest.setGroupId(groupId);
     }
@@ -493,6 +750,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the discussion group ID of this contest
     */
+    @Override
     public long getDiscussionGroupId() {
         return _contest.getDiscussionGroupId();
     }
@@ -502,6 +760,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param discussionGroupId the discussion group ID of this contest
     */
+    @Override
     public void setDiscussionGroupId(long discussionGroupId) {
         _contest.setDiscussionGroupId(discussionGroupId);
     }
@@ -511,6 +770,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the weight of this contest
     */
+    @Override
     public int getWeight() {
         return _contest.getWeight();
     }
@@ -520,6 +780,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param weight the weight of this contest
     */
+    @Override
     public void setWeight(int weight) {
         _contest.setWeight(weight);
     }
@@ -529,6 +790,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @return the resources url of this contest
     */
+    @Override
     public java.lang.String getResourcesUrl() {
         return _contest.getResourcesUrl();
     }
@@ -538,42 +800,64 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     *
     * @param resourcesUrl the resources url of this contest
     */
+    @Override
     public void setResourcesUrl(java.lang.String resourcesUrl) {
         _contest.setResourcesUrl(resourcesUrl);
     }
 
+    @Override
     public boolean isNew() {
         return _contest.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _contest.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _contest.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _contest.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _contest.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _contest.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _contest.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _contest.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _contest.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _contest.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _contest.setExpandoBridgeAttributes(serviceContext);
@@ -584,6 +868,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         return new ContestWrapper((Contest) _contest.clone());
     }
 
+    @Override
     public int compareTo(Contest contest) {
         return _contest.compareTo(contest);
     }
@@ -593,12 +878,19 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         return _contest.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<Contest> toCacheModel() {
         return _contest.toCacheModel();
     }
 
+    @Override
     public Contest toEscapedModel() {
         return new ContestWrapper(_contest.toEscapedModel());
+    }
+
+    @Override
+    public Contest toUnescapedModel() {
+        return new ContestWrapper(_contest.toUnescapedModel());
     }
 
     @Override
@@ -606,26 +898,49 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         return _contest.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _contest.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contest.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestWrapper)) {
+            return false;
+        }
+
+        ContestWrapper contestWrapper = (ContestWrapper) obj;
+
+        if (Validator.equals(_contest, contestWrapper._contest)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public Contest getWrappedContest() {
         return _contest;
     }
 
+    @Override
     public Contest getWrappedModel() {
         return _contest;
     }
 
+    @Override
     public void resetOriginalValues() {
         _contest.resetOriginalValues();
     }

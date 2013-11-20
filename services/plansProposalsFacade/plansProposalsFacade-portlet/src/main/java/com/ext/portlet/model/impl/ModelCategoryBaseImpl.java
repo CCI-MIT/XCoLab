@@ -24,6 +24,7 @@ public abstract class ModelCategoryBaseImpl extends ModelCategoryModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a model category model instance should use the {@link ModelCategory} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelCategoryLocalServiceUtil.addModelCategory(this);

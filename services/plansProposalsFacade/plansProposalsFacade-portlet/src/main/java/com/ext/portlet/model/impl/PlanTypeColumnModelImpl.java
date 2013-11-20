@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanTypeColumn service. Represents a row in the &quot;xcolab_PlanTypeColumn&quot; database table, with each column mapped to a property of this class.
@@ -70,7 +72,7 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanTypeColumn"));
     private static ClassLoader _classLoader = PlanTypeColumn.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanTypeColumn.class
         };
     private long _planTypeColumnId;
@@ -78,8 +80,7 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
     private int _weight;
     private String _columnName;
     private boolean _visibleByDefault;
-    private transient ExpandoBridge _expandoBridge;
-    private PlanTypeColumn _escapedModelProxy;
+    private PlanTypeColumn _escapedModel;
 
     public PlanTypeColumnModelImpl() {
     }
@@ -91,6 +92,10 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
      * @return the normal model instance
      */
     public static PlanTypeColumn toModel(PlanTypeColumnSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanTypeColumn model = new PlanTypeColumnImpl();
 
         model.setPlanTypeColumnId(soapModel.getPlanTypeColumnId());
@@ -109,6 +114,10 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
      * @return the normal model instances
      */
     public static List<PlanTypeColumn> toModels(PlanTypeColumnSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanTypeColumn> models = new ArrayList<PlanTypeColumn>(soapModels.length);
 
         for (PlanTypeColumnSoap soapModel : soapModels) {
@@ -118,58 +127,117 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planTypeColumnId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanTypeColumnId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planTypeColumnId);
+        return _planTypeColumnId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTypeColumn.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTypeColumn.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTypeColumnId", getPlanTypeColumnId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("weight", getWeight());
+        attributes.put("columnName", getColumnName());
+        attributes.put("visibleByDefault", getVisibleByDefault());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTypeColumnId = (Long) attributes.get("planTypeColumnId");
+
+        if (planTypeColumnId != null) {
+            setPlanTypeColumnId(planTypeColumnId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        String columnName = (String) attributes.get("columnName");
+
+        if (columnName != null) {
+            setColumnName(columnName);
+        }
+
+        Boolean visibleByDefault = (Boolean) attributes.get("visibleByDefault");
+
+        if (visibleByDefault != null) {
+            setVisibleByDefault(visibleByDefault);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanTypeColumnId() {
         return _planTypeColumnId;
     }
 
+    @Override
     public void setPlanTypeColumnId(long planTypeColumnId) {
         _planTypeColumnId = planTypeColumnId;
     }
 
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
     @JSON
+    @Override
     public int getWeight() {
         return _weight;
     }
 
+    @Override
     public void setWeight(int weight) {
         _weight = weight;
     }
 
     @JSON
+    @Override
     public String getColumnName() {
         if (_columnName == null) {
             return StringPool.BLANK;
@@ -178,47 +246,48 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
         }
     }
 
+    @Override
     public void setColumnName(String columnName) {
         _columnName = columnName;
     }
 
     @JSON
+    @Override
     public boolean getVisibleByDefault() {
         return _visibleByDefault;
     }
 
+    @Override
     public boolean isVisibleByDefault() {
         return _visibleByDefault;
     }
 
+    @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
         _visibleByDefault = visibleByDefault;
     }
 
     @Override
-    public PlanTypeColumn toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanTypeColumn) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanTypeColumn.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanTypeColumn.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanTypeColumn toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanTypeColumn) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -236,6 +305,7 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
         return planTypeColumnImpl;
     }
 
+    @Override
     public int compareTo(PlanTypeColumn planTypeColumn) {
         int value = 0;
 
@@ -251,8 +321,8 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
             return value;
         }
 
-        value = getColumnName().toLowerCase()
-                    .compareTo(planTypeColumn.getColumnName().toLowerCase());
+        value = getColumnName()
+                    .compareToIgnoreCase(planTypeColumn.getColumnName());
 
         if (value != 0) {
             return value;
@@ -263,17 +333,15 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTypeColumn)) {
             return false;
         }
 
-        PlanTypeColumn planTypeColumn = null;
-
-        try {
-            planTypeColumn = (PlanTypeColumn) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTypeColumn planTypeColumn = (PlanTypeColumn) obj;
 
         long primaryKey = planTypeColumn.getPrimaryKey();
 
@@ -335,6 +403,7 @@ public class PlanTypeColumnModelImpl extends BaseModelImpl<PlanTypeColumn>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

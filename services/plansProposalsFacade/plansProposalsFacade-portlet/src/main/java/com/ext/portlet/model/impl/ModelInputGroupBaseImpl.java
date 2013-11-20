@@ -24,6 +24,7 @@ public abstract class ModelInputGroupBaseImpl extends ModelInputGroupModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a model input group model instance should use the {@link ModelInputGroup} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelInputGroupLocalServiceUtil.addModelInputGroup(this);

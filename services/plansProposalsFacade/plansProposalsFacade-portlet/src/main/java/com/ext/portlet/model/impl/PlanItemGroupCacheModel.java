@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanItemGroup;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanItemGroup in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanItemGroupCacheModel implements CacheModel<PlanItemGroup>,
-    Serializable {
+    Externalizable {
     public long planId;
     public long groupId;
 
@@ -32,6 +35,7 @@ public class PlanItemGroupCacheModel implements CacheModel<PlanItemGroup>,
         return sb.toString();
     }
 
+    @Override
     public PlanItemGroup toEntityModel() {
         PlanItemGroupImpl planItemGroupImpl = new PlanItemGroupImpl();
 
@@ -41,5 +45,18 @@ public class PlanItemGroupCacheModel implements CacheModel<PlanItemGroup>,
         planItemGroupImpl.resetOriginalValues();
 
         return planItemGroupImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planId = objectInput.readLong();
+        groupId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(groupId);
     }
 }

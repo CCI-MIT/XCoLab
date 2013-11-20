@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalContestPhaseAttributeType service. Represents a row in the &quot;xcolab_ProposalContestPhaseAttributeType&quot; database table, with each column mapped to a property of this class.
@@ -48,6 +50,8 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalContestPhaseAttributeType (name VARCHAR(75) not null primary key,copyOnPromote BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalContestPhaseAttributeType";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalContestPhaseAttributeType.name ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalContestPhaseAttributeType.name ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -61,12 +65,12 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalContestPhaseAttributeType"));
     private static ClassLoader _classLoader = ProposalContestPhaseAttributeType.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalContestPhaseAttributeType.class
         };
     private String _name;
     private boolean _copyOnPromote;
-    private ProposalContestPhaseAttributeType _escapedModelProxy;
+    private ProposalContestPhaseAttributeType _escapedModel;
 
     public ProposalContestPhaseAttributeTypeModelImpl() {
     }
@@ -79,6 +83,10 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
      */
     public static ProposalContestPhaseAttributeType toModel(
         ProposalContestPhaseAttributeTypeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalContestPhaseAttributeType model = new ProposalContestPhaseAttributeTypeImpl();
 
         model.setName(soapModel.getName());
@@ -95,6 +103,10 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
      */
     public static List<ProposalContestPhaseAttributeType> toModels(
         ProposalContestPhaseAttributeTypeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalContestPhaseAttributeType> models = new ArrayList<ProposalContestPhaseAttributeType>(soapModels.length);
 
         for (ProposalContestPhaseAttributeTypeSoap soapModel : soapModels) {
@@ -104,31 +116,63 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
         return models;
     }
 
+    @Override
     public String getPrimaryKey() {
         return _name;
     }
 
+    @Override
     public void setPrimaryKey(String primaryKey) {
         setName(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return _name;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((String) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalContestPhaseAttributeType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalContestPhaseAttributeType.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("name", getName());
+        attributes.put("copyOnPromote", getCopyOnPromote());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Boolean copyOnPromote = (Boolean) attributes.get("copyOnPromote");
+
+        if (copyOnPromote != null) {
+            setCopyOnPromote(copyOnPromote);
+        }
+    }
+
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -137,32 +181,35 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public boolean getCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public boolean isCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public void setCopyOnPromote(boolean copyOnPromote) {
         _copyOnPromote = copyOnPromote;
     }
 
     @Override
     public ProposalContestPhaseAttributeType toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalContestPhaseAttributeType) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalContestPhaseAttributeType) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -178,6 +225,7 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
         return proposalContestPhaseAttributeTypeImpl;
     }
 
+    @Override
     public int compareTo(
         ProposalContestPhaseAttributeType proposalContestPhaseAttributeType) {
         String primaryKey = proposalContestPhaseAttributeType.getPrimaryKey();
@@ -187,17 +235,15 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalContestPhaseAttributeType)) {
             return false;
         }
 
-        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = null;
-
-        try {
-            proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) obj;
 
         String primaryKey = proposalContestPhaseAttributeType.getPrimaryKey();
 
@@ -248,6 +294,7 @@ public class ProposalContestPhaseAttributeTypeModelImpl extends BaseModelImpl<Pr
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

@@ -1,153 +1,232 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class PlanDescriptionLocalServiceClp
     implements PlanDescriptionLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addPlanDescriptionMethodKey0;
-    private MethodKey _createPlanDescriptionMethodKey1;
-    private MethodKey _deletePlanDescriptionMethodKey2;
-    private MethodKey _deletePlanDescriptionMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchPlanDescriptionMethodKey8;
-    private MethodKey _getPlanDescriptionMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getPlanDescriptionsMethodKey11;
-    private MethodKey _getPlanDescriptionsCountMethodKey12;
-    private MethodKey _updatePlanDescriptionMethodKey13;
-    private MethodKey _updatePlanDescriptionMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _createPlanDescriptionMethodKey17;
-    private MethodKey _createPlanDescriptionMethodKey18;
-    private MethodKey _getCurrentForPlanMethodKey19;
-    private MethodKey _getForPlanMethodKey20;
-    private MethodKey _getAllForPlanMethodKey21;
-    private MethodKey _createNewVersionForPlanMethodKey22;
-    private MethodKey _createNewVersionForPlanMethodKey23;
-    private MethodKey _createNewVersionForPlanFromMethodKey24;
-    private MethodKey _storeMethodKey25;
-    private MethodKey _getUpdateAuthorMethodKey26;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
 
-    public PlanDescriptionLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+    public PlanDescriptionLocalServiceClp(
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addPlanDescriptionMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addPlanDescription",
-                com.ext.portlet.model.PlanDescription.class);
+        _methodName0 = "addPlanDescription";
 
-        _createPlanDescriptionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanDescription", long.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.PlanDescription"
+            };
 
-        _deletePlanDescriptionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanDescription", long.class);
+        _methodName1 = "createPlanDescription";
 
-        _deletePlanDescriptionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deletePlanDescription",
-                com.ext.portlet.model.PlanDescription.class);
+        _methodParameterTypes1 = new String[] { "long" };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deletePlanDescription";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] { "long" };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deletePlanDescription";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.PlanDescription"
+            };
 
-        _fetchPlanDescriptionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchPlanDescription", long.class);
+        _methodName4 = "dynamicQuery";
 
-        _getPlanDescriptionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanDescription", long.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getPlanDescriptionsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanDescriptions", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getPlanDescriptionsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPlanDescriptionsCount");
+        _methodName6 = "dynamicQuery";
 
-        _updatePlanDescriptionMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updatePlanDescription",
-                com.ext.portlet.model.PlanDescription.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updatePlanDescriptionMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updatePlanDescription",
-                com.ext.portlet.model.PlanDescription.class, boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _createPlanDescriptionMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanDescription", com.ext.portlet.model.PlanItem.class,
-                java.lang.String.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _createPlanDescriptionMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createPlanDescription", com.ext.portlet.model.PlanItem.class,
-                java.lang.String.class, boolean.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _getCurrentForPlanMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCurrentForPlan", com.ext.portlet.model.PlanItem.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _getForPlanMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getForPlan", com.ext.portlet.model.PlanItem.class);
+        _methodName10 = "fetchPlanDescription";
 
-        _getAllForPlanMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getAllForPlan", com.ext.portlet.model.PlanItem.class);
+        _methodParameterTypes10 = new String[] { "long" };
 
-        _createNewVersionForPlanMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createNewVersionForPlan", com.ext.portlet.model.PlanItem.class);
+        _methodName11 = "getPlanDescription";
 
-        _createNewVersionForPlanMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createNewVersionForPlan",
-                com.ext.portlet.model.PlanItem.class, boolean.class);
+        _methodParameterTypes11 = new String[] { "long" };
 
-        _createNewVersionForPlanFromMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createNewVersionForPlanFrom",
-                com.ext.portlet.model.PlanItem.class,
-                com.ext.portlet.model.PlanDescription.class, boolean.class);
+        _methodName12 = "getPersistedModel";
 
-        _storeMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
-                "store", com.ext.portlet.model.PlanDescription.class);
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-        _getUpdateAuthorMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getUpdateAuthor", com.ext.portlet.model.PlanDescription.class);
+        _methodName13 = "getPlanDescriptions";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getPlanDescriptionsCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updatePlanDescription";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.PlanDescription"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "createPlanDescription";
+
+        _methodParameterTypes19 = new String[] {
+                "com.ext.portlet.model.PlanItem", "java.lang.String"
+            };
+
+        _methodName20 = "createPlanDescription";
+
+        _methodParameterTypes20 = new String[] {
+                "com.ext.portlet.model.PlanItem", "java.lang.String", "boolean"
+            };
+
+        _methodName21 = "getCurrentForPlan";
+
+        _methodParameterTypes21 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName22 = "getForPlan";
+
+        _methodParameterTypes22 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName23 = "getAllForPlan";
+
+        _methodParameterTypes23 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName24 = "createNewVersionForPlan";
+
+        _methodParameterTypes24 = new String[] { "com.ext.portlet.model.PlanItem" };
+
+        _methodName25 = "createNewVersionForPlan";
+
+        _methodParameterTypes25 = new String[] {
+                "com.ext.portlet.model.PlanItem", "boolean"
+            };
+
+        _methodName26 = "createNewVersionForPlanFrom";
+
+        _methodParameterTypes26 = new String[] {
+                "com.ext.portlet.model.PlanItem",
+                "com.ext.portlet.model.PlanDescription", "boolean"
+            };
+
+        _methodName27 = "store";
+
+        _methodParameterTypes27 = new String[] {
+                "com.ext.portlet.model.PlanDescription"
+            };
+
+        _methodName28 = "getUpdateAuthor";
+
+        _methodParameterTypes28 = new String[] {
+                "com.ext.portlet.model.PlanDescription"
+            };
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription addPlanDescription(
         com.ext.portlet.model.PlanDescription planDescription)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addPlanDescriptionMethodKey0,
-                ClpSerializer.translateInput(planDescription));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] { ClpSerializer.translateInput(planDescription) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -163,15 +242,16 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription createPlanDescription(long id) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createPlanDescriptionMethodKey1,
-                id);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1, new Object[] { id });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -183,15 +263,18 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanDescription(long id)
+    @Override
+    public com.ext.portlet.model.PlanDescription deletePlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deletePlanDescriptionMethodKey2,
-                id);
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2, new Object[] { id });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -207,17 +290,23 @@ public class PlanDescriptionLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deletePlanDescription(
+    @Override
+    public com.ext.portlet.model.PlanDescription deletePlanDescription(
         com.ext.portlet.model.PlanDescription planDescription)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deletePlanDescriptionMethodKey3,
-                ClpSerializer.translateInput(planDescription));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] { ClpSerializer.translateInput(planDescription) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -229,20 +318,45 @@ public class PlanDescriptionLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -258,18 +372,26 @@ public class PlanDescriptionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -285,6 +407,7 @@ public class PlanDescriptionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -293,13 +416,21 @@ public class PlanDescriptionLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -315,17 +446,19 @@ public class PlanDescriptionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -341,16 +474,50 @@ public class PlanDescriptionLocalServiceClp
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.PlanDescription fetchPlanDescription(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchPlanDescriptionMethodKey8,
-                id);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10, new Object[] { id });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -366,17 +533,18 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription getPlanDescription(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPlanDescriptionMethodKey9,
-                id);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11, new Object[] { id });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -396,18 +564,20 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -427,17 +597,18 @@ public class PlanDescriptionLocalServiceClp
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanDescription> getPlanDescriptions(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPlanDescriptionsMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -453,15 +624,17 @@ public class PlanDescriptionLocalServiceClp
         return (java.util.List<com.ext.portlet.model.PlanDescription>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getPlanDescriptionsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPlanDescriptionsCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -477,17 +650,19 @@ public class PlanDescriptionLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription updatePlanDescription(
         com.ext.portlet.model.PlanDescription planDescription)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updatePlanDescriptionMethodKey13,
-                ClpSerializer.translateInput(planDescription));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] { ClpSerializer.translateInput(planDescription) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -503,40 +678,16 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.PlanDescription updatePlanDescription(
-        com.ext.portlet.model.PlanDescription planDescription, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updatePlanDescriptionMethodKey14,
-                ClpSerializer.translateInput(planDescription), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -548,13 +699,15 @@ public class PlanDescriptionLocalServiceClp
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -564,18 +717,30 @@ public class PlanDescriptionLocalServiceClp
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public com.ext.portlet.model.PlanDescription createPlanDescription(
         com.ext.portlet.model.PlanItem plan, java.lang.String name)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createPlanDescriptionMethodKey17,
-                ClpSerializer.translateInput(plan),
-                ClpSerializer.translateInput(name));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] {
+                        ClpSerializer.translateInput(plan),
+                        
+                    ClpSerializer.translateInput(name)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -591,19 +756,26 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription createPlanDescription(
         com.ext.portlet.model.PlanItem plan, java.lang.String name,
         boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createPlanDescriptionMethodKey18,
-                ClpSerializer.translateInput(plan),
-                ClpSerializer.translateInput(name), store);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        ClpSerializer.translateInput(plan),
+                        
+                    ClpSerializer.translateInput(name),
+                        
+                    store
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -619,17 +791,19 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription getCurrentForPlan(
         com.ext.portlet.model.PlanItem plan)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCurrentForPlanMethodKey19,
-                ClpSerializer.translateInput(plan));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
+                    new Object[] { ClpSerializer.translateInput(plan) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -645,17 +819,19 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription getForPlan(
         com.ext.portlet.model.PlanItem plan)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getForPlanMethodKey20,
-                ClpSerializer.translateInput(plan));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] { ClpSerializer.translateInput(plan) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -671,17 +847,19 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanDescription> getAllForPlan(
         com.ext.portlet.model.PlanItem plan)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAllForPlanMethodKey21,
-                ClpSerializer.translateInput(plan));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] { ClpSerializer.translateInput(plan) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -697,17 +875,19 @@ public class PlanDescriptionLocalServiceClp
         return (java.util.List<com.ext.portlet.model.PlanDescription>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription createNewVersionForPlan(
         com.ext.portlet.model.PlanItem plan)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createNewVersionForPlanMethodKey22,
-                ClpSerializer.translateInput(plan));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { ClpSerializer.translateInput(plan) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -723,17 +903,19 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription createNewVersionForPlan(
         com.ext.portlet.model.PlanItem plan, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createNewVersionForPlanMethodKey23,
-                ClpSerializer.translateInput(plan), store);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] { ClpSerializer.translateInput(plan), store });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -749,19 +931,26 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.PlanDescription createNewVersionForPlanFrom(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanDescription from, boolean store)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createNewVersionForPlanFromMethodKey24,
-                ClpSerializer.translateInput(plan),
-                ClpSerializer.translateInput(from), store);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
+                    new Object[] {
+                        ClpSerializer.translateInput(plan),
+                        
+                    ClpSerializer.translateInput(from),
+                        
+                    store
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -777,14 +966,16 @@ public class PlanDescriptionLocalServiceClp
         return (com.ext.portlet.model.PlanDescription) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void store(com.ext.portlet.model.PlanDescription pd)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_storeMethodKey25,
-                ClpSerializer.translateInput(pd));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName27,
+                _methodParameterTypes27,
+                new Object[] { ClpSerializer.translateInput(pd) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -798,18 +989,20 @@ public class PlanDescriptionLocalServiceClp
         }
     }
 
+    @Override
     public com.liferay.portal.model.User getUpdateAuthor(
         com.ext.portlet.model.PlanDescription pd)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getUpdateAuthorMethodKey26,
-                ClpSerializer.translateInput(pd));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28,
+                    new Object[] { ClpSerializer.translateInput(pd) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -827,9 +1020,5 @@ public class PlanDescriptionLocalServiceClp
         }
 
         return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

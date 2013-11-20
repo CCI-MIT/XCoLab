@@ -143,35 +143,60 @@ public interface ModelInputItemModel extends BaseModel<ModelInputItem> {
      */
     public void setProperties(String properties);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(ModelInputItem modelInputItem);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<ModelInputItem> toCacheModel();
 
+    @Override
     public ModelInputItem toEscapedModel();
 
+    @Override
+    public ModelInputItem toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

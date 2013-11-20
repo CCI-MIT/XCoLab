@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the DiscussionCategoryGroup service. Represents a row in the &quot;xcolab_DiscussionCategoryGroup&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_DiscussionCategoryGroup (id_ LONG not null primary key,description TEXT null,url VARCHAR(1024) null,commentsThread LONG,isQuiet BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_DiscussionCategoryGroup";
+    public static final String ORDER_BY_JPQL = " ORDER BY discussionCategoryGroup.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_DiscussionCategoryGroup.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -68,7 +72,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionCategoryGroup"));
     private static ClassLoader _classLoader = DiscussionCategoryGroup.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             DiscussionCategoryGroup.class
         };
     private long _id;
@@ -76,8 +80,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
     private String _url;
     private long _commentsThread;
     private boolean _isQuiet;
-    private transient ExpandoBridge _expandoBridge;
-    private DiscussionCategoryGroup _escapedModelProxy;
+    private DiscussionCategoryGroup _escapedModel;
 
     public DiscussionCategoryGroupModelImpl() {
     }
@@ -90,6 +93,10 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
      */
     public static DiscussionCategoryGroup toModel(
         DiscussionCategoryGroupSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         DiscussionCategoryGroup model = new DiscussionCategoryGroupImpl();
 
         model.setId(soapModel.getId());
@@ -109,6 +116,10 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
      */
     public static List<DiscussionCategoryGroup> toModels(
         DiscussionCategoryGroupSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<DiscussionCategoryGroup> models = new ArrayList<DiscussionCategoryGroup>(soapModels.length);
 
         for (DiscussionCategoryGroupSoap soapModel : soapModels) {
@@ -118,40 +129,95 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return DiscussionCategoryGroup.class;
     }
 
+    @Override
     public String getModelClassName() {
         return DiscussionCategoryGroup.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("description", getDescription());
+        attributes.put("url", getUrl());
+        attributes.put("commentsThread", getCommentsThread());
+        attributes.put("isQuiet", getIsQuiet());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        String url = (String) attributes.get("url");
+
+        if (url != null) {
+            setUrl(url);
+        }
+
+        Long commentsThread = (Long) attributes.get("commentsThread");
+
+        if (commentsThread != null) {
+            setCommentsThread(commentsThread);
+        }
+
+        Boolean isQuiet = (Boolean) attributes.get("isQuiet");
+
+        if (isQuiet != null) {
+            setIsQuiet(isQuiet);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -160,11 +226,13 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public String getUrl() {
         if (_url == null) {
             return StringPool.BLANK;
@@ -173,56 +241,59 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         }
     }
 
+    @Override
     public void setUrl(String url) {
         _url = url;
     }
 
     @JSON
+    @Override
     public long getCommentsThread() {
         return _commentsThread;
     }
 
+    @Override
     public void setCommentsThread(long commentsThread) {
         _commentsThread = commentsThread;
     }
 
     @JSON
+    @Override
     public boolean getIsQuiet() {
         return _isQuiet;
     }
 
+    @Override
     public boolean isIsQuiet() {
         return _isQuiet;
     }
 
+    @Override
     public void setIsQuiet(boolean isQuiet) {
         _isQuiet = isQuiet;
     }
 
     @Override
-    public DiscussionCategoryGroup toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (DiscussionCategoryGroup) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    DiscussionCategoryGroup.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            DiscussionCategoryGroup.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public DiscussionCategoryGroup toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (DiscussionCategoryGroup) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -240,6 +311,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         return discussionCategoryGroupImpl;
     }
 
+    @Override
     public int compareTo(DiscussionCategoryGroup discussionCategoryGroup) {
         long primaryKey = discussionCategoryGroup.getPrimaryKey();
 
@@ -254,17 +326,15 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof DiscussionCategoryGroup)) {
             return false;
         }
 
-        DiscussionCategoryGroup discussionCategoryGroup = null;
-
-        try {
-            discussionCategoryGroup = (DiscussionCategoryGroup) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        DiscussionCategoryGroup discussionCategoryGroup = (DiscussionCategoryGroup) obj;
 
         long primaryKey = discussionCategoryGroup.getPrimaryKey();
 
@@ -332,6 +402,7 @@ public class DiscussionCategoryGroupModelImpl extends BaseModelImpl<DiscussionCa
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

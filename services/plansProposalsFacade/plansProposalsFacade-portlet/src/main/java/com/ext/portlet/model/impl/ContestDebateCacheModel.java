@@ -5,7 +5,10 @@ import com.ext.portlet.model.ContestDebate;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ContestDebate in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ContestDebateCacheModel implements CacheModel<ContestDebate>,
-    Serializable {
+    Externalizable {
     public long id;
     public long debateId;
     public long ContestPK;
@@ -35,6 +38,7 @@ public class ContestDebateCacheModel implements CacheModel<ContestDebate>,
         return sb.toString();
     }
 
+    @Override
     public ContestDebate toEntityModel() {
         ContestDebateImpl contestDebateImpl = new ContestDebateImpl();
 
@@ -45,5 +49,20 @@ public class ContestDebateCacheModel implements CacheModel<ContestDebate>,
         contestDebateImpl.resetOriginalValues();
 
         return contestDebateImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        debateId = objectInput.readLong();
+        ContestPK = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(debateId);
+        objectOutput.writeLong(ContestPK);
     }
 }

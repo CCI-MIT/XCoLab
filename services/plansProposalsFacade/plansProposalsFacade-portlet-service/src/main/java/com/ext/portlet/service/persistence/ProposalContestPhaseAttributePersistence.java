@@ -25,70 +25,6 @@ public interface ProposalContestPhaseAttributePersistence
      */
 
     /**
-    * Caches the proposal contest phase attribute in the entity cache if it is enabled.
-    *
-    * @param proposalContestPhaseAttribute the proposal contest phase attribute
-    */
-    public void cacheResult(
-        com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute);
-
-    /**
-    * Caches the proposal contest phase attributes in the entity cache if it is enabled.
-    *
-    * @param proposalContestPhaseAttributes the proposal contest phase attributes
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> proposalContestPhaseAttributes);
-
-    /**
-    * Creates a new proposal contest phase attribute with the primary key. Does not add the proposal contest phase attribute to the database.
-    *
-    * @param id the primary key for the new proposal contest phase attribute
-    * @return the new proposal contest phase attribute
-    */
-    public com.ext.portlet.model.ProposalContestPhaseAttribute create(long id);
-
-    /**
-    * Removes the proposal contest phase attribute with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param id the primary key of the proposal contest phase attribute
-    * @return the proposal contest phase attribute that was removed
-    * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a proposal contest phase attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ProposalContestPhaseAttribute remove(long id)
-        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.ProposalContestPhaseAttribute updateImpl(
-        com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the proposal contest phase attribute with the primary key or throws a {@link com.ext.portlet.NoSuchProposalContestPhaseAttributeException} if it could not be found.
-    *
-    * @param id the primary key of the proposal contest phase attribute
-    * @return the proposal contest phase attribute
-    * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a proposal contest phase attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ProposalContestPhaseAttribute findByPrimaryKey(
-        long id)
-        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the proposal contest phase attribute with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param id the primary key of the proposal contest phase attribute
-    * @return the proposal contest phase attribute, or <code>null</code> if a proposal contest phase attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ProposalContestPhaseAttribute fetchByPrimaryKey(
-        long id) throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns the proposal contest phase attribute where proposalId = &#63; and contestPhaseId = &#63; and name = &#63; and additionalId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalContestPhaseAttributeException} if it could not be found.
     *
     * @param proposalId the proposal ID
@@ -137,6 +73,37 @@ public interface ProposalContestPhaseAttributePersistence
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the proposal contest phase attribute where proposalId = &#63; and contestPhaseId = &#63; and name = &#63; and additionalId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param name the name
+    * @param additionalId the additional ID
+    * @return the proposal contest phase attribute that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute removeByProposalIdContestPhaseIdNameAdditionalId(
+        long proposalId, long contestPhaseId, java.lang.String name,
+        long additionalId)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63; and name = &#63; and additionalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param name the name
+    * @param additionalId the additional ID
+    * @return the number of matching proposal contest phase attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByProposalIdContestPhaseIdNameAdditionalId(
+        long proposalId, long contestPhaseId, java.lang.String name,
+        long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * @param proposalId the proposal ID
@@ -152,7 +119,7 @@ public interface ProposalContestPhaseAttributePersistence
     * Returns a range of all the proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -170,7 +137,7 @@ public interface ProposalContestPhaseAttributePersistence
     * Returns an ordered range of all the proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param proposalId the proposal ID
@@ -189,10 +156,6 @@ public interface ProposalContestPhaseAttributePersistence
     /**
     * Returns the first proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param proposalId the proposal ID
     * @param contestPhaseId the contest phase ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -207,11 +170,21 @@ public interface ProposalContestPhaseAttributePersistence
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
+    * Returns the first proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal contest phase attribute, or <code>null</code> if a matching proposal contest phase attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute fetchByProposalIdContestPhaseId_First(
+        long proposalId, long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * @param proposalId the proposal ID
     * @param contestPhaseId the contest phase ID
@@ -227,11 +200,21 @@ public interface ProposalContestPhaseAttributePersistence
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the proposal contest phase attributes before and after the current proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
+    * Returns the last proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal contest phase attribute, or <code>null</code> if a matching proposal contest phase attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute fetchByProposalIdContestPhaseId_Last(
+        long proposalId, long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the proposal contest phase attributes before and after the current proposal contest phase attribute in the ordered set where proposalId = &#63; and contestPhaseId = &#63;.
     *
     * @param id the primary key of the current proposal contest phase attribute
     * @param proposalId the proposal ID
@@ -248,6 +231,92 @@ public interface ProposalContestPhaseAttributePersistence
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByProposalIdContestPhaseId(long proposalId,
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param contestPhaseId the contest phase ID
+    * @return the number of matching proposal contest phase attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByProposalIdContestPhaseId(long proposalId,
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the proposal contest phase attribute in the entity cache if it is enabled.
+    *
+    * @param proposalContestPhaseAttribute the proposal contest phase attribute
+    */
+    public void cacheResult(
+        com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute);
+
+    /**
+    * Caches the proposal contest phase attributes in the entity cache if it is enabled.
+    *
+    * @param proposalContestPhaseAttributes the proposal contest phase attributes
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> proposalContestPhaseAttributes);
+
+    /**
+    * Creates a new proposal contest phase attribute with the primary key. Does not add the proposal contest phase attribute to the database.
+    *
+    * @param id the primary key for the new proposal contest phase attribute
+    * @return the new proposal contest phase attribute
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute create(long id);
+
+    /**
+    * Removes the proposal contest phase attribute with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param id the primary key of the proposal contest phase attribute
+    * @return the proposal contest phase attribute that was removed
+    * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a proposal contest phase attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute remove(long id)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.ProposalContestPhaseAttribute updateImpl(
+        com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the proposal contest phase attribute with the primary key or throws a {@link com.ext.portlet.NoSuchProposalContestPhaseAttributeException} if it could not be found.
+    *
+    * @param id the primary key of the proposal contest phase attribute
+    * @return the proposal contest phase attribute
+    * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a proposal contest phase attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute findByPrimaryKey(
+        long id)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the proposal contest phase attribute with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param id the primary key of the proposal contest phase attribute
+    * @return the proposal contest phase attribute, or <code>null</code> if a proposal contest phase attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalContestPhaseAttribute fetchByPrimaryKey(
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the proposal contest phase attributes.
     *
     * @return the proposal contest phase attributes
@@ -260,7 +329,7 @@ public interface ProposalContestPhaseAttributePersistence
     * Returns a range of all the proposal contest phase attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal contest phase attributes
@@ -276,7 +345,7 @@ public interface ProposalContestPhaseAttributePersistence
     * Returns an ordered range of all the proposal contest phase attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal contest phase attributes
@@ -291,64 +360,11 @@ public interface ProposalContestPhaseAttributePersistence
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes the proposal contest phase attribute where proposalId = &#63; and contestPhaseId = &#63; and name = &#63; and additionalId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @param name the name
-    * @param additionalId the additional ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByProposalIdContestPhaseIdNameAdditionalId(
-        long proposalId, long contestPhaseId, java.lang.String name,
-        long additionalId)
-        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByProposalIdContestPhaseId(long proposalId,
-        long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the proposal contest phase attributes from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63; and name = &#63; and additionalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @param name the name
-    * @param additionalId the additional ID
-    * @return the number of matching proposal contest phase attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByProposalIdContestPhaseIdNameAdditionalId(
-        long proposalId, long contestPhaseId, java.lang.String name,
-        long additionalId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of proposal contest phase attributes where proposalId = &#63; and contestPhaseId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @param contestPhaseId the contest phase ID
-    * @return the number of matching proposal contest phase attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByProposalIdContestPhaseId(long proposalId,
-        long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

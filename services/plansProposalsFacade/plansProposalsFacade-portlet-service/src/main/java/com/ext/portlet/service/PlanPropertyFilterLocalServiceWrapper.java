@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanPropertyFilterLocalService}.
- * </p>
+ * Provides a wrapper for {@link PlanPropertyFilterLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanPropertyFilterLocalService
+ * @author Brian Wing Shun Chan
+ * @see PlanPropertyFilterLocalService
  * @generated
  */
 public class PlanPropertyFilterLocalServiceWrapper
@@ -28,6 +26,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the plan property filter that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter addPlanPropertyFilter(
         com.ext.portlet.model.PlanPropertyFilter planPropertyFilter)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @param planPropertyFilterId the primary key for the new plan property filter
     * @return the new plan property filter
     */
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter createPlanPropertyFilter(
         long planPropertyFilterId) {
         return _planPropertyFilterLocalService.createPlanPropertyFilter(planPropertyFilterId);
@@ -49,25 +49,35 @@ public class PlanPropertyFilterLocalServiceWrapper
     * Deletes the plan property filter with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param planPropertyFilterId the primary key of the plan property filter
+    * @return the plan property filter that was removed
     * @throws PortalException if a plan property filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanPropertyFilter(long planPropertyFilterId)
+    @Override
+    public com.ext.portlet.model.PlanPropertyFilter deletePlanPropertyFilter(
+        long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _planPropertyFilterLocalService.deletePlanPropertyFilter(planPropertyFilterId);
+        return _planPropertyFilterLocalService.deletePlanPropertyFilter(planPropertyFilterId);
     }
 
     /**
     * Deletes the plan property filter from the database. Also notifies the appropriate model listeners.
     *
     * @param planPropertyFilter the plan property filter
+    * @return the plan property filter that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanPropertyFilter(
+    @Override
+    public com.ext.portlet.model.PlanPropertyFilter deletePlanPropertyFilter(
         com.ext.portlet.model.PlanPropertyFilter planPropertyFilter)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _planPropertyFilterLocalService.deletePlanPropertyFilter(planPropertyFilter);
+        return _planPropertyFilterLocalService.deletePlanPropertyFilter(planPropertyFilter);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _planPropertyFilterLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPropertyFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPropertyFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planPropertyFilterLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planPropertyFilterLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter fetchPlanPropertyFilter(
         long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -156,6 +188,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @throws PortalException if a plan property filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter getPlanPropertyFilter(
         long planPropertyFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -163,6 +196,7 @@ public class PlanPropertyFilterLocalServiceWrapper
         return _planPropertyFilterLocalService.getPlanPropertyFilter(planPropertyFilterId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -174,7 +208,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * Returns a range of all the plan property filters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPropertyFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan property filters
@@ -182,6 +216,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the range of plan property filters
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.PlanPropertyFilter> getPlanPropertyFilters(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -194,6 +229,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the number of plan property filters
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlanPropertyFiltersCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planPropertyFilterLocalService.getPlanPropertyFiltersCount();
@@ -206,6 +242,7 @@ public class PlanPropertyFilterLocalServiceWrapper
     * @return the plan property filter that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter updatePlanPropertyFilter(
         com.ext.portlet.model.PlanPropertyFilter planPropertyFilter)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -213,26 +250,11 @@ public class PlanPropertyFilterLocalServiceWrapper
     }
 
     /**
-    * Updates the plan property filter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planPropertyFilter the plan property filter
-    * @param merge whether to merge the plan property filter with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan property filter that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanPropertyFilter updatePlanPropertyFilter(
-        com.ext.portlet.model.PlanPropertyFilter planPropertyFilter,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planPropertyFilterLocalService.updatePlanPropertyFilter(planPropertyFilter,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _planPropertyFilterLocalService.getBeanIdentifier();
     }
@@ -242,10 +264,20 @@ public class PlanPropertyFilterLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planPropertyFilterLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planPropertyFilterLocalService.invokeMethod(name,
+            parameterTypes, arguments);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanPropertyFilter getByPlanPlanUserSettingsIdPropertyName(
         java.lang.Long planUserSettingsId, java.lang.String propertyName)
         throws com.ext.portlet.NoSuchPlanPropertyFilterException,
@@ -255,24 +287,26 @@ public class PlanPropertyFilterLocalServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanPropertyFilterLocalService getWrappedPlanPropertyFilterLocalService() {
         return _planPropertyFilterLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanPropertyFilterLocalService(
         PlanPropertyFilterLocalService planPropertyFilterLocalService) {
         _planPropertyFilterLocalService = planPropertyFilterLocalService;
     }
 
+    @Override
     public PlanPropertyFilterLocalService getWrappedService() {
         return _planPropertyFilterLocalService;
     }
 
+    @Override
     public void setWrappedService(
         PlanPropertyFilterLocalService planPropertyFilterLocalService) {
         _planPropertyFilterLocalService = planPropertyFilterLocalService;

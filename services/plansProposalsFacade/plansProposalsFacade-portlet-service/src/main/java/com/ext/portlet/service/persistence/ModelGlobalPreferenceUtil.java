@@ -49,7 +49,7 @@ public class ModelGlobalPreferenceUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,22 +83,259 @@ public class ModelGlobalPreferenceUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static ModelGlobalPreference update(
-        ModelGlobalPreference modelGlobalPreference, boolean merge)
-        throws SystemException {
-        return getPersistence().update(modelGlobalPreference, merge);
+        ModelGlobalPreference modelGlobalPreference) throws SystemException {
+        return getPersistence().update(modelGlobalPreference);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ModelGlobalPreference update(
-        ModelGlobalPreference modelGlobalPreference, boolean merge,
+        ModelGlobalPreference modelGlobalPreference,
         ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(modelGlobalPreference, serviceContext);
+    }
+
+    /**
+    * Returns the model global preference where modelId = &#63; or throws a {@link com.ext.portlet.NoSuchModelGlobalPreferenceException} if it could not be found.
+    *
+    * @param modelId the model ID
+    * @return the matching model global preference
+    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference findByModelId(
+        long modelId)
+        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelId(modelId);
+    }
+
+    /**
+    * Returns the model global preference where modelId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param modelId the model ID
+    * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByModelId(modelId);
+    }
+
+    /**
+    * Returns the model global preference where modelId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param modelId the model ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelId(
+        long modelId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByModelId(modelId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the model global preference where modelId = &#63; from the database.
+    *
+    * @param modelId the model ID
+    * @return the model global preference that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference removeByModelId(
+        long modelId)
+        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByModelId(modelId);
+    }
+
+    /**
+    * Returns the number of model global preferences where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @return the number of matching model global preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByModelId(long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByModelId(modelId);
+    }
+
+    /**
+    * Returns all the model global preferences where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @return the matching model global preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
+        long modelCategoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelCategoryId(modelCategoryId);
+    }
+
+    /**
+    * Returns a range of all the model global preferences where modelCategoryId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelGlobalPreferenceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelCategoryId the model category ID
+    * @param start the lower bound of the range of model global preferences
+    * @param end the upper bound of the range of model global preferences (not inclusive)
+    * @return the range of matching model global preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
+        long modelCategoryId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
-                   .update(modelGlobalPreference, merge, serviceContext);
+                   .findByModelCategoryId(modelCategoryId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the model global preferences where modelCategoryId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelGlobalPreferenceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelCategoryId the model category ID
+    * @param start the lower bound of the range of model global preferences
+    * @param end the upper bound of the range of model global preferences (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching model global preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
+        long modelCategoryId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelCategoryId(modelCategoryId, start, end,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first model global preference in the ordered set where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model global preference
+    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference findByModelCategoryId_First(
+        long modelCategoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelCategoryId_First(modelCategoryId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first model global preference in the ordered set where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model global preference, or <code>null</code> if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelCategoryId_First(
+        long modelCategoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByModelCategoryId_First(modelCategoryId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last model global preference in the ordered set where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model global preference
+    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference findByModelCategoryId_Last(
+        long modelCategoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelCategoryId_Last(modelCategoryId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last model global preference in the ordered set where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model global preference, or <code>null</code> if a matching model global preference could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelCategoryId_Last(
+        long modelCategoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByModelCategoryId_Last(modelCategoryId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the model global preferences before and after the current model global preference in the ordered set where modelCategoryId = &#63;.
+    *
+    * @param modelGlobalPreferencePK the primary key of the current model global preference
+    * @param modelCategoryId the model category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next model global preference
+    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a model global preference with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelGlobalPreference[] findByModelCategoryId_PrevAndNext(
+        long modelGlobalPreferencePK, long modelCategoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelCategoryId_PrevAndNext(modelGlobalPreferencePK,
+            modelCategoryId, orderByComparator);
+    }
+
+    /**
+    * Removes all the model global preferences where modelCategoryId = &#63; from the database.
+    *
+    * @param modelCategoryId the model category ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByModelCategoryId(long modelCategoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByModelCategoryId(modelCategoryId);
+    }
+
+    /**
+    * Returns the number of model global preferences where modelCategoryId = &#63;.
+    *
+    * @param modelCategoryId the model category ID
+    * @return the number of matching model global preferences
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByModelCategoryId(long modelCategoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByModelCategoryId(modelCategoryId);
     }
 
     /**
@@ -148,10 +385,9 @@ public class ModelGlobalPreferenceUtil {
     }
 
     public static com.ext.portlet.model.ModelGlobalPreference updateImpl(
-        com.ext.portlet.model.ModelGlobalPreference modelGlobalPreference,
-        boolean merge)
+        com.ext.portlet.model.ModelGlobalPreference modelGlobalPreference)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(modelGlobalPreference, merge);
+        return getPersistence().updateImpl(modelGlobalPreference);
     }
 
     /**
@@ -183,174 +419,6 @@ public class ModelGlobalPreferenceUtil {
     }
 
     /**
-    * Returns the model global preference where modelId = &#63; or throws a {@link com.ext.portlet.NoSuchModelGlobalPreferenceException} if it could not be found.
-    *
-    * @param modelId the model ID
-    * @return the matching model global preference
-    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference findByModelId(
-        long modelId)
-        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelId(modelId);
-    }
-
-    /**
-    * Returns the model global preference where modelId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param modelId the model ID
-    * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelId(
-        long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByModelId(modelId);
-    }
-
-    /**
-    * Returns the model global preference where modelId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param modelId the model ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching model global preference, or <code>null</code> if a matching model global preference could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference fetchByModelId(
-        long modelId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByModelId(modelId, retrieveFromCache);
-    }
-
-    /**
-    * Returns all the model global preferences where modelCategoryId = &#63;.
-    *
-    * @param modelCategoryId the model category ID
-    * @return the matching model global preferences
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
-        long modelCategoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelCategoryId(modelCategoryId);
-    }
-
-    /**
-    * Returns a range of all the model global preferences where modelCategoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelCategoryId the model category ID
-    * @param start the lower bound of the range of model global preferences
-    * @param end the upper bound of the range of model global preferences (not inclusive)
-    * @return the range of matching model global preferences
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
-        long modelCategoryId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelCategoryId(modelCategoryId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the model global preferences where modelCategoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelCategoryId the model category ID
-    * @param start the lower bound of the range of model global preferences
-    * @param end the upper bound of the range of model global preferences (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching model global preferences
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelGlobalPreference> findByModelCategoryId(
-        long modelCategoryId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelCategoryId(modelCategoryId, start, end,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the first model global preference in the ordered set where modelCategoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelCategoryId the model category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching model global preference
-    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference findByModelCategoryId_First(
-        long modelCategoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelCategoryId_First(modelCategoryId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the last model global preference in the ordered set where modelCategoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelCategoryId the model category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching model global preference
-    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a matching model global preference could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference findByModelCategoryId_Last(
-        long modelCategoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelCategoryId_Last(modelCategoryId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the model global preferences before and after the current model global preference in the ordered set where modelCategoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelGlobalPreferencePK the primary key of the current model global preference
-    * @param modelCategoryId the model category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next model global preference
-    * @throws com.ext.portlet.NoSuchModelGlobalPreferenceException if a model global preference with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelGlobalPreference[] findByModelCategoryId_PrevAndNext(
-        long modelGlobalPreferencePK, long modelCategoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelCategoryId_PrevAndNext(modelGlobalPreferencePK,
-            modelCategoryId, orderByComparator);
-    }
-
-    /**
     * Returns all the model global preferences.
     *
     * @return the model global preferences
@@ -365,7 +433,7 @@ public class ModelGlobalPreferenceUtil {
     * Returns a range of all the model global preferences.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelGlobalPreferenceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model global preferences
@@ -383,7 +451,7 @@ public class ModelGlobalPreferenceUtil {
     * Returns an ordered range of all the model global preferences.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelGlobalPreferenceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model global preferences
@@ -400,29 +468,6 @@ public class ModelGlobalPreferenceUtil {
     }
 
     /**
-    * Removes the model global preference where modelId = &#63; from the database.
-    *
-    * @param modelId the model ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByModelId(long modelId)
-        throws com.ext.portlet.NoSuchModelGlobalPreferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByModelId(modelId);
-    }
-
-    /**
-    * Removes all the model global preferences where modelCategoryId = &#63; from the database.
-    *
-    * @param modelCategoryId the model category ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByModelCategoryId(long modelCategoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByModelCategoryId(modelCategoryId);
-    }
-
-    /**
     * Removes all the model global preferences from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -430,30 +475,6 @@ public class ModelGlobalPreferenceUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of model global preferences where modelId = &#63;.
-    *
-    * @param modelId the model ID
-    * @return the number of matching model global preferences
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByModelId(long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByModelId(modelId);
-    }
-
-    /**
-    * Returns the number of model global preferences where modelCategoryId = &#63;.
-    *
-    * @param modelCategoryId the model category ID
-    * @return the number of matching model global preferences
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByModelCategoryId(long modelCategoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByModelCategoryId(modelCategoryId);
     }
 
     /**
@@ -479,10 +500,9 @@ public class ModelGlobalPreferenceUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ModelGlobalPreferencePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ModelGlobalPreferenceUtil.class,
-            "_persistence");
     }
 }

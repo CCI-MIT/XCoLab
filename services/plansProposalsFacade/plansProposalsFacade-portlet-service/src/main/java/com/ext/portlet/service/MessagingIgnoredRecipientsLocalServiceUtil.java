@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the messaging ignored recipients local service. This utility wraps {@link com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for MessagingIgnoredRecipients. This utility wraps
+ * {@link com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see MessagingIgnoredRecipientsLocalService
@@ -56,25 +56,33 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     * Deletes the messaging ignored recipients with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param ignoredRecipientId the primary key of the messaging ignored recipients
+    * @return the messaging ignored recipients that was removed
     * @throws PortalException if a messaging ignored recipients with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteMessagingIgnoredRecipients(long ignoredRecipientId)
+    public static com.ext.portlet.model.MessagingIgnoredRecipients deleteMessagingIgnoredRecipients(
+        long ignoredRecipientId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteMessagingIgnoredRecipients(ignoredRecipientId);
+        return getService().deleteMessagingIgnoredRecipients(ignoredRecipientId);
     }
 
     /**
     * Deletes the messaging ignored recipients from the database. Also notifies the appropriate model listeners.
     *
     * @param messagingIgnoredRecipients the messaging ignored recipients
+    * @return the messaging ignored recipients that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteMessagingIgnoredRecipients(
+    public static com.ext.portlet.model.MessagingIgnoredRecipients deleteMessagingIgnoredRecipients(
         com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteMessagingIgnoredRecipients(messagingIgnoredRecipients);
+        return getService()
+                   .deleteMessagingIgnoredRecipients(messagingIgnoredRecipients);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -95,7 +103,7 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -115,7 +123,7 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -146,6 +154,21 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().dynamicQueryCount(dynamicQuery);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
     }
 
     public static com.ext.portlet.model.MessagingIgnoredRecipients fetchMessagingIgnoredRecipients(
@@ -180,7 +203,7 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     * Returns a range of all the messaging ignored recipientses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging ignored recipientses
@@ -220,23 +243,6 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     }
 
     /**
-    * Updates the messaging ignored recipients in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param messagingIgnoredRecipients the messaging ignored recipients
-    * @param merge whether to merge the messaging ignored recipients with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the messaging ignored recipients that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingIgnoredRecipients updateMessagingIgnoredRecipients(
-        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .updateMessagingIgnoredRecipients(messagingIgnoredRecipients,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -252,6 +258,12 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
     public static com.ext.portlet.model.MessagingIgnoredRecipients findByUserId(
@@ -274,34 +286,25 @@ public class MessagingIgnoredRecipientsLocalServiceUtil {
 
     public static MessagingIgnoredRecipientsLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     MessagingIgnoredRecipientsLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    MessagingIgnoredRecipientsLocalService.class.getName(),
-                    portletClassLoader);
-
-            _service = new MessagingIgnoredRecipientsLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof MessagingIgnoredRecipientsLocalService) {
+                _service = (MessagingIgnoredRecipientsLocalService) invokableLocalService;
+            } else {
+                _service = new MessagingIgnoredRecipientsLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(MessagingIgnoredRecipientsLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(MessagingIgnoredRecipientsLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(MessagingIgnoredRecipientsLocalService service) {
-        MethodCache.remove(MessagingIgnoredRecipientsLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(MessagingIgnoredRecipientsLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(MessagingIgnoredRecipientsLocalService.class);
     }
 }

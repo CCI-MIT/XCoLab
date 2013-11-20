@@ -49,7 +49,7 @@ public class PlanPropertyFilterUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,102 +83,20 @@ public class PlanPropertyFilterUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static PlanPropertyFilter update(
-        PlanPropertyFilter planPropertyFilter, boolean merge)
+        PlanPropertyFilter planPropertyFilter) throws SystemException {
+        return getPersistence().update(planPropertyFilter);
+    }
+
+    /**
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+     */
+    public static PlanPropertyFilter update(
+        PlanPropertyFilter planPropertyFilter, ServiceContext serviceContext)
         throws SystemException {
-        return getPersistence().update(planPropertyFilter, merge);
-    }
-
-    /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
-     */
-    public static PlanPropertyFilter update(
-        PlanPropertyFilter planPropertyFilter, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planPropertyFilter, merge, serviceContext);
-    }
-
-    /**
-    * Caches the plan property filter in the entity cache if it is enabled.
-    *
-    * @param planPropertyFilter the plan property filter
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.PlanPropertyFilter planPropertyFilter) {
-        getPersistence().cacheResult(planPropertyFilter);
-    }
-
-    /**
-    * Caches the plan property filters in the entity cache if it is enabled.
-    *
-    * @param planPropertyFilters the plan property filters
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanPropertyFilter> planPropertyFilters) {
-        getPersistence().cacheResult(planPropertyFilters);
-    }
-
-    /**
-    * Creates a new plan property filter with the primary key. Does not add the plan property filter to the database.
-    *
-    * @param planPropertyFilterId the primary key for the new plan property filter
-    * @return the new plan property filter
-    */
-    public static com.ext.portlet.model.PlanPropertyFilter create(
-        long planPropertyFilterId) {
-        return getPersistence().create(planPropertyFilterId);
-    }
-
-    /**
-    * Removes the plan property filter with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param planPropertyFilterId the primary key of the plan property filter
-    * @return the plan property filter that was removed
-    * @throws com.ext.portlet.NoSuchPlanPropertyFilterException if a plan property filter with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPropertyFilter remove(
-        long planPropertyFilterId)
-        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(planPropertyFilterId);
-    }
-
-    public static com.ext.portlet.model.PlanPropertyFilter updateImpl(
-        com.ext.portlet.model.PlanPropertyFilter planPropertyFilter,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planPropertyFilter, merge);
-    }
-
-    /**
-    * Returns the plan property filter with the primary key or throws a {@link com.ext.portlet.NoSuchPlanPropertyFilterException} if it could not be found.
-    *
-    * @param planPropertyFilterId the primary key of the plan property filter
-    * @return the plan property filter
-    * @throws com.ext.portlet.NoSuchPlanPropertyFilterException if a plan property filter with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPropertyFilter findByPrimaryKey(
-        long planPropertyFilterId)
-        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(planPropertyFilterId);
-    }
-
-    /**
-    * Returns the plan property filter with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param planPropertyFilterId the primary key of the plan property filter
-    * @return the plan property filter, or <code>null</code> if a plan property filter with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanPropertyFilter fetchByPrimaryKey(
-        long planPropertyFilterId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(planPropertyFilterId);
+        return getPersistence().update(planPropertyFilter, serviceContext);
     }
 
     /**
@@ -234,6 +152,119 @@ public class PlanPropertyFilterUtil {
     }
 
     /**
+    * Removes the plan property filter where planUserSettingsId = &#63; and propertyName = &#63; from the database.
+    *
+    * @param planUserSettingsId the plan user settings ID
+    * @param propertyName the property name
+    * @return the plan property filter that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPropertyFilter removeByPlanUserSettingsIdPropertyName(
+        long planUserSettingsId, java.lang.String propertyName)
+        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByPlanUserSettingsIdPropertyName(planUserSettingsId,
+            propertyName);
+    }
+
+    /**
+    * Returns the number of plan property filters where planUserSettingsId = &#63; and propertyName = &#63;.
+    *
+    * @param planUserSettingsId the plan user settings ID
+    * @param propertyName the property name
+    * @return the number of matching plan property filters
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanUserSettingsIdPropertyName(
+        long planUserSettingsId, java.lang.String propertyName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByPlanUserSettingsIdPropertyName(planUserSettingsId,
+            propertyName);
+    }
+
+    /**
+    * Caches the plan property filter in the entity cache if it is enabled.
+    *
+    * @param planPropertyFilter the plan property filter
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.PlanPropertyFilter planPropertyFilter) {
+        getPersistence().cacheResult(planPropertyFilter);
+    }
+
+    /**
+    * Caches the plan property filters in the entity cache if it is enabled.
+    *
+    * @param planPropertyFilters the plan property filters
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanPropertyFilter> planPropertyFilters) {
+        getPersistence().cacheResult(planPropertyFilters);
+    }
+
+    /**
+    * Creates a new plan property filter with the primary key. Does not add the plan property filter to the database.
+    *
+    * @param planPropertyFilterId the primary key for the new plan property filter
+    * @return the new plan property filter
+    */
+    public static com.ext.portlet.model.PlanPropertyFilter create(
+        long planPropertyFilterId) {
+        return getPersistence().create(planPropertyFilterId);
+    }
+
+    /**
+    * Removes the plan property filter with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planPropertyFilterId the primary key of the plan property filter
+    * @return the plan property filter that was removed
+    * @throws com.ext.portlet.NoSuchPlanPropertyFilterException if a plan property filter with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPropertyFilter remove(
+        long planPropertyFilterId)
+        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(planPropertyFilterId);
+    }
+
+    public static com.ext.portlet.model.PlanPropertyFilter updateImpl(
+        com.ext.portlet.model.PlanPropertyFilter planPropertyFilter)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(planPropertyFilter);
+    }
+
+    /**
+    * Returns the plan property filter with the primary key or throws a {@link com.ext.portlet.NoSuchPlanPropertyFilterException} if it could not be found.
+    *
+    * @param planPropertyFilterId the primary key of the plan property filter
+    * @return the plan property filter
+    * @throws com.ext.portlet.NoSuchPlanPropertyFilterException if a plan property filter with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPropertyFilter findByPrimaryKey(
+        long planPropertyFilterId)
+        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(planPropertyFilterId);
+    }
+
+    /**
+    * Returns the plan property filter with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param planPropertyFilterId the primary key of the plan property filter
+    * @return the plan property filter, or <code>null</code> if a plan property filter with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanPropertyFilter fetchByPrimaryKey(
+        long planPropertyFilterId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(planPropertyFilterId);
+    }
+
+    /**
     * Returns all the plan property filters.
     *
     * @return the plan property filters
@@ -248,7 +279,7 @@ public class PlanPropertyFilterUtil {
     * Returns a range of all the plan property filters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPropertyFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan property filters
@@ -266,7 +297,7 @@ public class PlanPropertyFilterUtil {
     * Returns an ordered range of all the plan property filters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanPropertyFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan property filters
@@ -283,22 +314,6 @@ public class PlanPropertyFilterUtil {
     }
 
     /**
-    * Removes the plan property filter where planUserSettingsId = &#63; and propertyName = &#63; from the database.
-    *
-    * @param planUserSettingsId the plan user settings ID
-    * @param propertyName the property name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanUserSettingsIdPropertyName(
-        long planUserSettingsId, java.lang.String propertyName)
-        throws com.ext.portlet.NoSuchPlanPropertyFilterException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence()
-            .removeByPlanUserSettingsIdPropertyName(planUserSettingsId,
-            propertyName);
-    }
-
-    /**
     * Removes all the plan property filters from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -306,22 +321,6 @@ public class PlanPropertyFilterUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan property filters where planUserSettingsId = &#63; and propertyName = &#63;.
-    *
-    * @param planUserSettingsId the plan user settings ID
-    * @param propertyName the property name
-    * @return the number of matching plan property filters
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanUserSettingsIdPropertyName(
-        long planUserSettingsId, java.lang.String propertyName)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .countByPlanUserSettingsIdPropertyName(planUserSettingsId,
-            propertyName);
     }
 
     /**
@@ -347,10 +346,9 @@ public class PlanPropertyFilterUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanPropertyFilterPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanPropertyFilterUtil.class,
-            "_persistence");
     }
 }

@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanTypeAttributeException;
 import com.ext.portlet.model.PlanTypeAttribute;
 import com.ext.portlet.model.impl.PlanTypeAttributeImpl;
 import com.ext.portlet.model.impl.PlanTypeAttributeModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -63,25 +64,10 @@ import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
 import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
 import com.ext.portlet.service.persistence.PlanTemplatePersistence;
 import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +87,10 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +123,17 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED,
+            PlanTypeAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED,
+            PlanTypeAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
             PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED,
             PlanTypeAttributeImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -150,21 +146,6 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByPlanTypeIdAttributeName",
             new String[] { Long.class.getName(), String.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED,
-            PlanTypeAttributeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED,
-            PlanTypeAttributeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTypeAttributeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-    private static final String _SQL_SELECT_PLANTYPEATTRIBUTE = "SELECT planTypeAttribute FROM PlanTypeAttribute planTypeAttribute";
-    private static final String _SQL_SELECT_PLANTYPEATTRIBUTE_WHERE = "SELECT planTypeAttribute FROM PlanTypeAttribute planTypeAttribute WHERE ";
-    private static final String _SQL_COUNT_PLANTYPEATTRIBUTE = "SELECT COUNT(planTypeAttribute) FROM PlanTypeAttribute planTypeAttribute";
-    private static final String _SQL_COUNT_PLANTYPEATTRIBUTE_WHERE = "SELECT COUNT(planTypeAttribute) FROM PlanTypeAttribute planTypeAttribute WHERE ";
     private static final String _FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_PLANTYPEID_2 =
         "planTypeAttribute.planTypeId = ? AND ";
     private static final String _FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_1 =
@@ -172,7 +153,11 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     private static final String _FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_2 =
         "planTypeAttribute.attributeName = ?";
     private static final String _FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_3 =
-        "(planTypeAttribute.attributeName IS NULL OR planTypeAttribute.attributeName = ?)";
+        "(planTypeAttribute.attributeName IS NULL OR planTypeAttribute.attributeName = '')";
+    private static final String _SQL_SELECT_PLANTYPEATTRIBUTE = "SELECT planTypeAttribute FROM PlanTypeAttribute planTypeAttribute";
+    private static final String _SQL_SELECT_PLANTYPEATTRIBUTE_WHERE = "SELECT planTypeAttribute FROM PlanTypeAttribute planTypeAttribute WHERE ";
+    private static final String _SQL_COUNT_PLANTYPEATTRIBUTE = "SELECT COUNT(planTypeAttribute) FROM PlanTypeAttribute planTypeAttribute";
+    private static final String _SQL_COUNT_PLANTYPEATTRIBUTE_WHERE = "SELECT COUNT(planTypeAttribute) FROM PlanTypeAttribute planTypeAttribute WHERE ";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planTypeAttribute.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanTypeAttribute exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanTypeAttribute exists with the key {";
@@ -193,11 +178,13 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
     private static CacheModel<PlanTypeAttribute> _nullPlanTypeAttributeCacheModel =
         new CacheModel<PlanTypeAttribute>() {
+            @Override
             public PlanTypeAttribute toEntityModel() {
                 return _nullPlanTypeAttribute;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -352,12 +339,270 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public PlanTypeAttributePersistenceImpl() {
+        setModelClass(PlanTypeAttribute.class);
+    }
+
+    /**
+     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or throws a {@link com.ext.portlet.NoSuchPlanTypeAttributeException} if it could not be found.
+     *
+     * @param planTypeId the plan type ID
+     * @param attributeName the attribute name
+     * @return the matching plan type attribute
+     * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a matching plan type attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTypeAttribute findByPlanTypeIdAttributeName(long planTypeId,
+        String attributeName)
+        throws NoSuchPlanTypeAttributeException, SystemException {
+        PlanTypeAttribute planTypeAttribute = fetchByPlanTypeIdAttributeName(planTypeId,
+                attributeName);
+
+        if (planTypeAttribute == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("planTypeId=");
+            msg.append(planTypeId);
+
+            msg.append(", attributeName=");
+            msg.append(attributeName);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchPlanTypeAttributeException(msg.toString());
+        }
+
+        return planTypeAttribute;
+    }
+
+    /**
+     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param planTypeId the plan type ID
+     * @param attributeName the attribute name
+     * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
+        String attributeName) throws SystemException {
+        return fetchByPlanTypeIdAttributeName(planTypeId, attributeName, true);
+    }
+
+    /**
+     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param planTypeId the plan type ID
+     * @param attributeName the attribute name
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
+        String attributeName, boolean retrieveFromCache)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { planTypeId, attributeName };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                    finderArgs, this);
+        }
+
+        if (result instanceof PlanTypeAttribute) {
+            PlanTypeAttribute planTypeAttribute = (PlanTypeAttribute) result;
+
+            if ((planTypeId != planTypeAttribute.getPlanTypeId()) ||
+                    !Validator.equals(attributeName,
+                        planTypeAttribute.getAttributeName())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_SELECT_PLANTYPEATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_PLANTYPEID_2);
+
+            boolean bindAttributeName = false;
+
+            if (attributeName == null) {
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_1);
+            } else if (attributeName.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_3);
+            } else {
+                bindAttributeName = true;
+
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planTypeId);
+
+                if (bindAttributeName) {
+                    qPos.add(attributeName);
+                }
+
+                List<PlanTypeAttribute> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PlanTypeAttributePersistenceImpl.fetchByPlanTypeIdAttributeName(long, String, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PlanTypeAttribute planTypeAttribute = list.get(0);
+
+                    result = planTypeAttribute;
+
+                    cacheResult(planTypeAttribute);
+
+                    if ((planTypeAttribute.getPlanTypeId() != planTypeId) ||
+                            (planTypeAttribute.getAttributeName() == null) ||
+                            !planTypeAttribute.getAttributeName()
+                                                  .equals(attributeName)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                            finderArgs, planTypeAttribute);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (PlanTypeAttribute) result;
+        }
+    }
+
+    /**
+     * Removes the plan type attribute where planTypeId = &#63; and attributeName = &#63; from the database.
+     *
+     * @param planTypeId the plan type ID
+     * @param attributeName the attribute name
+     * @return the plan type attribute that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTypeAttribute removeByPlanTypeIdAttributeName(long planTypeId,
+        String attributeName)
+        throws NoSuchPlanTypeAttributeException, SystemException {
+        PlanTypeAttribute planTypeAttribute = findByPlanTypeIdAttributeName(planTypeId,
+                attributeName);
+
+        return remove(planTypeAttribute);
+    }
+
+    /**
+     * Returns the number of plan type attributes where planTypeId = &#63; and attributeName = &#63;.
+     *
+     * @param planTypeId the plan type ID
+     * @param attributeName the attribute name
+     * @return the number of matching plan type attributes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByPlanTypeIdAttributeName(long planTypeId,
+        String attributeName) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME;
+
+        Object[] finderArgs = new Object[] { planTypeId, attributeName };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_PLANTYPEATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_PLANTYPEID_2);
+
+            boolean bindAttributeName = false;
+
+            if (attributeName == null) {
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_1);
+            } else if (attributeName.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_3);
+            } else {
+                bindAttributeName = true;
+
+                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planTypeId);
+
+                if (bindAttributeName) {
+                    qPos.add(attributeName);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the plan type attribute in the entity cache if it is enabled.
      *
      * @param planTypeAttribute the plan type attribute
      */
+    @Override
     public void cacheResult(PlanTypeAttribute planTypeAttribute) {
         EntityCacheUtil.putResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
             PlanTypeAttributeImpl.class, planTypeAttribute.getPrimaryKey(),
@@ -365,9 +610,8 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
             new Object[] {
-                Long.valueOf(planTypeAttribute.getPlanTypeId()),
-                
-            planTypeAttribute.getAttributeName()
+                planTypeAttribute.getPlanTypeId(),
+                planTypeAttribute.getAttributeName()
             }, planTypeAttribute);
 
         planTypeAttribute.resetOriginalValues();
@@ -378,6 +622,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      *
      * @param planTypeAttributes the plan type attributes
      */
+    @Override
     public void cacheResult(List<PlanTypeAttribute> planTypeAttributes) {
         for (PlanTypeAttribute planTypeAttribute : planTypeAttributes) {
             if (EntityCacheUtil.getResult(
@@ -442,13 +687,60 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
         }
     }
 
+    protected void cacheUniqueFindersCache(PlanTypeAttribute planTypeAttribute) {
+        if (planTypeAttribute.isNew()) {
+            Object[] args = new Object[] {
+                    planTypeAttribute.getPlanTypeId(),
+                    planTypeAttribute.getAttributeName()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                args, planTypeAttribute);
+        } else {
+            PlanTypeAttributeModelImpl planTypeAttributeModelImpl = (PlanTypeAttributeModelImpl) planTypeAttribute;
+
+            if ((planTypeAttributeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planTypeAttribute.getPlanTypeId(),
+                        planTypeAttribute.getAttributeName()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                    args, planTypeAttribute);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(PlanTypeAttribute planTypeAttribute) {
+        PlanTypeAttributeModelImpl planTypeAttributeModelImpl = (PlanTypeAttributeModelImpl) planTypeAttribute;
+
+        Object[] args = new Object[] {
+                planTypeAttribute.getPlanTypeId(),
+                planTypeAttribute.getAttributeName()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
+            args);
         FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-            new Object[] {
-                Long.valueOf(planTypeAttribute.getPlanTypeId()),
-                
-            planTypeAttribute.getAttributeName()
-            });
+            args);
+
+        if ((planTypeAttributeModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    planTypeAttributeModelImpl.getOriginalPlanTypeId(),
+                    planTypeAttributeModelImpl.getOriginalAttributeName()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
+                args);
+        }
     }
 
     /**
@@ -457,6 +749,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @param planTypeAttributeId the primary key for the new plan type attribute
      * @return the new plan type attribute
      */
+    @Override
     public PlanTypeAttribute create(long planTypeAttributeId) {
         PlanTypeAttribute planTypeAttribute = new PlanTypeAttributeImpl();
 
@@ -474,9 +767,10 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTypeAttribute remove(long planTypeAttributeId)
         throws NoSuchPlanTypeAttributeException, SystemException {
-        return remove(Long.valueOf(planTypeAttributeId));
+        return remove((Serializable) planTypeAttributeId);
     }
 
     /**
@@ -527,36 +821,47 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, planTypeAttribute);
+            if (!session.contains(planTypeAttribute)) {
+                planTypeAttribute = (PlanTypeAttribute) session.get(PlanTypeAttributeImpl.class,
+                        planTypeAttribute.getPrimaryKeyObj());
+            }
+
+            if (planTypeAttribute != null) {
+                session.delete(planTypeAttribute);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(planTypeAttribute);
+        if (planTypeAttribute != null) {
+            clearCache(planTypeAttribute);
+        }
 
         return planTypeAttribute;
     }
 
     @Override
     public PlanTypeAttribute updateImpl(
-        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute, boolean merge)
+        com.ext.portlet.model.PlanTypeAttribute planTypeAttribute)
         throws SystemException {
         planTypeAttribute = toUnwrappedModel(planTypeAttribute);
 
         boolean isNew = planTypeAttribute.isNew();
-
-        PlanTypeAttributeModelImpl planTypeAttributeModelImpl = (PlanTypeAttributeModelImpl) planTypeAttribute;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, planTypeAttribute, merge);
+            if (planTypeAttribute.isNew()) {
+                session.save(planTypeAttribute);
 
-            planTypeAttribute.setNew(false);
+                planTypeAttribute.setNew(false);
+            } else {
+                session.merge(planTypeAttribute);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -573,35 +878,8 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
             PlanTypeAttributeImpl.class, planTypeAttribute.getPrimaryKey(),
             planTypeAttribute);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                new Object[] {
-                    Long.valueOf(planTypeAttribute.getPlanTypeId()),
-                    
-                planTypeAttribute.getAttributeName()
-                }, planTypeAttribute);
-        } else {
-            if ((planTypeAttributeModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planTypeAttributeModelImpl.getOriginalPlanTypeId()),
-                        
-                        planTypeAttributeModelImpl.getOriginalAttributeName()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                    new Object[] {
-                        Long.valueOf(planTypeAttribute.getPlanTypeId()),
-                        
-                    planTypeAttribute.getAttributeName()
-                    }, planTypeAttribute);
-            }
-        }
+        clearUniqueFindersCache(planTypeAttribute);
+        cacheUniqueFindersCache(planTypeAttribute);
 
         return planTypeAttribute;
     }
@@ -629,13 +907,24 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      *
      * @param primaryKey the primary key of the plan type attribute
      * @return the plan type attribute
-     * @throws com.liferay.portal.NoSuchModelException if a plan type attribute with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlanTypeAttribute findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchPlanTypeAttributeException, SystemException {
+        PlanTypeAttribute planTypeAttribute = fetchByPrimaryKey(primaryKey);
+
+        if (planTypeAttribute == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanTypeAttributeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planTypeAttribute;
     }
 
     /**
@@ -646,21 +935,10 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTypeAttribute findByPrimaryKey(long planTypeAttributeId)
         throws NoSuchPlanTypeAttributeException, SystemException {
-        PlanTypeAttribute planTypeAttribute = fetchByPrimaryKey(planTypeAttributeId);
-
-        if (planTypeAttribute == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    planTypeAttributeId);
-            }
-
-            throw new NoSuchPlanTypeAttributeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planTypeAttributeId);
-        }
-
-        return planTypeAttribute;
+        return findByPrimaryKey((Serializable) planTypeAttributeId);
     }
 
     /**
@@ -673,7 +951,40 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     @Override
     public PlanTypeAttribute fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        PlanTypeAttribute planTypeAttribute = (PlanTypeAttribute) EntityCacheUtil.getResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+                PlanTypeAttributeImpl.class, primaryKey);
+
+        if (planTypeAttribute == _nullPlanTypeAttribute) {
+            return null;
+        }
+
+        if (planTypeAttribute == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planTypeAttribute = (PlanTypeAttribute) session.get(PlanTypeAttributeImpl.class,
+                        primaryKey);
+
+                if (planTypeAttribute != null) {
+                    cacheResult(planTypeAttribute);
+                } else {
+                    EntityCacheUtil.putResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanTypeAttributeImpl.class, primaryKey,
+                        _nullPlanTypeAttribute);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanTypeAttributeImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planTypeAttribute;
     }
 
     /**
@@ -683,192 +994,10 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the plan type attribute, or <code>null</code> if a plan type attribute with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTypeAttribute fetchByPrimaryKey(long planTypeAttributeId)
         throws SystemException {
-        PlanTypeAttribute planTypeAttribute = (PlanTypeAttribute) EntityCacheUtil.getResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
-                PlanTypeAttributeImpl.class, planTypeAttributeId);
-
-        if (planTypeAttribute == _nullPlanTypeAttribute) {
-            return null;
-        }
-
-        if (planTypeAttribute == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planTypeAttribute = (PlanTypeAttribute) session.get(PlanTypeAttributeImpl.class,
-                        Long.valueOf(planTypeAttributeId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planTypeAttribute != null) {
-                    cacheResult(planTypeAttribute);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanTypeAttributeModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanTypeAttributeImpl.class, planTypeAttributeId,
-                        _nullPlanTypeAttribute);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planTypeAttribute;
-    }
-
-    /**
-     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or throws a {@link com.ext.portlet.NoSuchPlanTypeAttributeException} if it could not be found.
-     *
-     * @param planTypeId the plan type ID
-     * @param attributeName the attribute name
-     * @return the matching plan type attribute
-     * @throws com.ext.portlet.NoSuchPlanTypeAttributeException if a matching plan type attribute could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTypeAttribute findByPlanTypeIdAttributeName(long planTypeId,
-        String attributeName)
-        throws NoSuchPlanTypeAttributeException, SystemException {
-        PlanTypeAttribute planTypeAttribute = fetchByPlanTypeIdAttributeName(planTypeId,
-                attributeName);
-
-        if (planTypeAttribute == null) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planTypeId=");
-            msg.append(planTypeId);
-
-            msg.append(", attributeName=");
-            msg.append(attributeName);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchPlanTypeAttributeException(msg.toString());
-        }
-
-        return planTypeAttribute;
-    }
-
-    /**
-     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param planTypeId the plan type ID
-     * @param attributeName the attribute name
-     * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
-        String attributeName) throws SystemException {
-        return fetchByPlanTypeIdAttributeName(planTypeId, attributeName, true);
-    }
-
-    /**
-     * Returns the plan type attribute where planTypeId = &#63; and attributeName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param planTypeId the plan type ID
-     * @param attributeName the attribute name
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching plan type attribute, or <code>null</code> if a matching plan type attribute could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTypeAttribute fetchByPlanTypeIdAttributeName(long planTypeId,
-        String attributeName, boolean retrieveFromCache)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { planTypeId, attributeName };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_PLANTYPEATTRIBUTE_WHERE);
-
-            query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_PLANTYPEID_2);
-
-            if (attributeName == null) {
-                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_1);
-            } else {
-                if (attributeName.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(planTypeId);
-
-                if (attributeName != null) {
-                    qPos.add(attributeName);
-                }
-
-                List<PlanTypeAttribute> list = q.list();
-
-                result = list;
-
-                PlanTypeAttribute planTypeAttribute = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                        finderArgs, list);
-                } else {
-                    planTypeAttribute = list.get(0);
-
-                    cacheResult(planTypeAttribute);
-
-                    if ((planTypeAttribute.getPlanTypeId() != planTypeId) ||
-                            (planTypeAttribute.getAttributeName() == null) ||
-                            !planTypeAttribute.getAttributeName()
-                                                  .equals(attributeName)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                            finderArgs, planTypeAttribute);
-                    }
-                }
-
-                return planTypeAttribute;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_PLANTYPEIDATTRIBUTENAME,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (PlanTypeAttribute) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) planTypeAttributeId);
     }
 
     /**
@@ -877,6 +1006,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the plan type attributes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTypeAttribute> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -885,7 +1015,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * Returns a range of all the plan type attributes.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTypeAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plan type attributes
@@ -893,6 +1023,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the range of plan type attributes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTypeAttribute> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -902,7 +1033,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * Returns an ordered range of all the plan type attributes.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTypeAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plan type attributes
@@ -911,17 +1042,20 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the ordered range of plan type attributes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTypeAttribute> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -944,6 +1078,10 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_PLANTYPEATTRIBUTE;
+
+                if (pagination) {
+                    sql = sql.concat(PlanTypeAttributeModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -953,26 +1091,26 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<PlanTypeAttribute>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTypeAttribute>(list);
                 } else {
                     list = (List<PlanTypeAttribute>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -981,97 +1119,15 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     }
 
     /**
-     * Removes the plan type attribute where planTypeId = &#63; and attributeName = &#63; from the database.
-     *
-     * @param planTypeId the plan type ID
-     * @param attributeName the attribute name
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByPlanTypeIdAttributeName(long planTypeId,
-        String attributeName)
-        throws NoSuchPlanTypeAttributeException, SystemException {
-        PlanTypeAttribute planTypeAttribute = findByPlanTypeIdAttributeName(planTypeId,
-                attributeName);
-
-        remove(planTypeAttribute);
-    }
-
-    /**
      * Removes all the plan type attributes from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (PlanTypeAttribute planTypeAttribute : findAll()) {
             remove(planTypeAttribute);
         }
-    }
-
-    /**
-     * Returns the number of plan type attributes where planTypeId = &#63; and attributeName = &#63;.
-     *
-     * @param planTypeId the plan type ID
-     * @param attributeName the attribute name
-     * @return the number of matching plan type attributes
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByPlanTypeIdAttributeName(long planTypeId,
-        String attributeName) throws SystemException {
-        Object[] finderArgs = new Object[] { planTypeId, attributeName };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_COUNT_PLANTYPEATTRIBUTE_WHERE);
-
-            query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_PLANTYPEID_2);
-
-            if (attributeName == null) {
-                query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_1);
-            } else {
-                if (attributeName.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_PLANTYPEIDATTRIBUTENAME_ATTRIBUTENAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(planTypeId);
-
-                if (attributeName != null) {
-                    qPos.add(attributeName);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANTYPEIDATTRIBUTENAME,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1080,6 +1136,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
      * @return the number of plan type attributes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1093,16 +1150,15 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
                 Query q = session.createQuery(_SQL_COUNT_PLANTYPEATTRIBUTE);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1124,7 +1180,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanTypeAttribute>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1137,6 +1193,7 @@ public class PlanTypeAttributePersistenceImpl extends BasePersistenceImpl<PlanTy
     public void destroy() {
         EntityCacheUtil.removeCache(PlanTypeAttributeImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

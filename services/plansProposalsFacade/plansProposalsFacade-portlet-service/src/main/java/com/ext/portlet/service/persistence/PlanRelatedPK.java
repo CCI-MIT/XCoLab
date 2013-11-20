@@ -34,6 +34,7 @@ public class PlanRelatedPK implements Comparable<PlanRelatedPK>, Serializable {
         this.relatedPlanId = relatedPlanId;
     }
 
+    @Override
     public int compareTo(PlanRelatedPK pk) {
         if (pk == null) {
             return -1;
@@ -70,17 +71,15 @@ public class PlanRelatedPK implements Comparable<PlanRelatedPK>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanRelatedPK)) {
             return false;
         }
 
-        PlanRelatedPK pk = null;
-
-        try {
-            pk = (PlanRelatedPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanRelatedPK pk = (PlanRelatedPK) obj;
 
         if ((sectionId == pk.sectionId) && (relatedPlanId == pk.relatedPlanId)) {
             return true;

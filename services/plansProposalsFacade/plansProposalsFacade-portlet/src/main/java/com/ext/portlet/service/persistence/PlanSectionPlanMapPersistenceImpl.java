@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanSectionPlanMapException;
 import com.ext.portlet.model.PlanSectionPlanMap;
 import com.ext.portlet.model.impl.PlanSectionPlanMapImpl;
 import com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -59,29 +60,10 @@ import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
 import com.ext.portlet.service.persistence.PlanRelatedPersistence;
 import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
 import com.ext.portlet.service.persistence.PlanSectionPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +83,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +118,17 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
+            PlanSectionPlanMapImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
+            PlanSectionPlanMapImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANID = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
             PlanSectionPlanMapImpl.class,
@@ -145,8 +136,8 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID =
         new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
@@ -159,6 +150,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PLANID_RELATEDPLANID_2 = "planSectionPlanMap.id.relatedPlanId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_SECTIONID =
         new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
@@ -167,8 +159,8 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID =
         new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
@@ -181,23 +173,11 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySectionId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
-            PlanSectionPlanMapImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED,
-            PlanSectionPlanMapImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_SECTIONID_SECTIONID_2 = "planSectionPlanMap.id.sectionId = ?";
     private static final String _SQL_SELECT_PLANSECTIONPLANMAP = "SELECT planSectionPlanMap FROM PlanSectionPlanMap planSectionPlanMap";
     private static final String _SQL_SELECT_PLANSECTIONPLANMAP_WHERE = "SELECT planSectionPlanMap FROM PlanSectionPlanMap planSectionPlanMap WHERE ";
     private static final String _SQL_COUNT_PLANSECTIONPLANMAP = "SELECT COUNT(planSectionPlanMap) FROM PlanSectionPlanMap planSectionPlanMap";
     private static final String _SQL_COUNT_PLANSECTIONPLANMAP_WHERE = "SELECT COUNT(planSectionPlanMap) FROM PlanSectionPlanMap planSectionPlanMap WHERE ";
-    private static final String _FINDER_COLUMN_PLANID_RELATEDPLANID_2 = "planSectionPlanMap.id.relatedPlanId = ?";
-    private static final String _FINDER_COLUMN_SECTIONID_SECTIONID_2 = "planSectionPlanMap.id.sectionId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planSectionPlanMap.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanSectionPlanMap exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanSectionPlanMap exists with the key {";
@@ -218,11 +198,13 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
     private static CacheModel<PlanSectionPlanMap> _nullPlanSectionPlanMapCacheModel =
         new CacheModel<PlanSectionPlanMap>() {
+            @Override
             public PlanSectionPlanMap toEntityModel() {
                 return _nullPlanSectionPlanMap;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -377,366 +359,11 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan section plan map in the entity cache if it is enabled.
-     *
-     * @param planSectionPlanMap the plan section plan map
-     */
-    public void cacheResult(PlanSectionPlanMap planSectionPlanMap) {
-        EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey(),
-            planSectionPlanMap);
-
-        planSectionPlanMap.resetOriginalValues();
+=======
+    public PlanSectionPlanMapPersistenceImpl() {
+        setModelClass(PlanSectionPlanMap.class);
     }
-
-    /**
-     * Caches the plan section plan maps in the entity cache if it is enabled.
-     *
-     * @param planSectionPlanMaps the plan section plan maps
-     */
-    public void cacheResult(List<PlanSectionPlanMap> planSectionPlanMaps) {
-        for (PlanSectionPlanMap planSectionPlanMap : planSectionPlanMaps) {
-            if (EntityCacheUtil.getResult(
-                        PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanSectionPlanMapImpl.class,
-                        planSectionPlanMap.getPrimaryKey()) == null) {
-                cacheResult(planSectionPlanMap);
-            } else {
-                planSectionPlanMap.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan section plan maps.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanSectionPlanMapImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanSectionPlanMapImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan section plan map.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanSectionPlanMap planSectionPlanMap) {
-        EntityCacheUtil.removeResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<PlanSectionPlanMap> planSectionPlanMaps) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanSectionPlanMap planSectionPlanMap : planSectionPlanMaps) {
-            EntityCacheUtil.removeResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-                PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new plan section plan map with the primary key. Does not add the plan section plan map to the database.
-     *
-     * @param planSectionPlanMapPK the primary key for the new plan section plan map
-     * @return the new plan section plan map
-     */
-    public PlanSectionPlanMap create(PlanSectionPlanMapPK planSectionPlanMapPK) {
-        PlanSectionPlanMap planSectionPlanMap = new PlanSectionPlanMapImpl();
-
-        planSectionPlanMap.setNew(true);
-        planSectionPlanMap.setPrimaryKey(planSectionPlanMapPK);
-
-        return planSectionPlanMap;
-    }
-
-    /**
-     * Removes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param planSectionPlanMapPK the primary key of the plan section plan map
-     * @return the plan section plan map that was removed
-     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanSectionPlanMap remove(PlanSectionPlanMapPK planSectionPlanMapPK)
-        throws NoSuchPlanSectionPlanMapException, SystemException {
-        return remove((Serializable) planSectionPlanMapPK);
-    }
-
-    /**
-     * Removes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan section plan map
-     * @return the plan section plan map that was removed
-     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanSectionPlanMap remove(Serializable primaryKey)
-        throws NoSuchPlanSectionPlanMapException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanSectionPlanMap planSectionPlanMap = (PlanSectionPlanMap) session.get(PlanSectionPlanMapImpl.class,
-                    primaryKey);
-
-            if (planSectionPlanMap == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanSectionPlanMapException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planSectionPlanMap);
-        } catch (NoSuchPlanSectionPlanMapException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanSectionPlanMap removeImpl(
-        PlanSectionPlanMap planSectionPlanMap) throws SystemException {
-        planSectionPlanMap = toUnwrappedModel(planSectionPlanMap);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planSectionPlanMap);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planSectionPlanMap);
-
-        return planSectionPlanMap;
-    }
-
-    @Override
-    public PlanSectionPlanMap updateImpl(
-        com.ext.portlet.model.PlanSectionPlanMap planSectionPlanMap,
-        boolean merge) throws SystemException {
-        planSectionPlanMap = toUnwrappedModel(planSectionPlanMap);
-
-        boolean isNew = planSectionPlanMap.isNew();
-
-        PlanSectionPlanMapModelImpl planSectionPlanMapModelImpl = (PlanSectionPlanMapModelImpl) planSectionPlanMap;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planSectionPlanMap, merge);
-
-            planSectionPlanMap.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanSectionPlanMapModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planSectionPlanMapModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planSectionPlanMapModelImpl.getOriginalRelatedPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planSectionPlanMapModelImpl.getRelatedPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-            }
-
-            if ((planSectionPlanMapModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planSectionPlanMapModelImpl.getOriginalSectionId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SECTIONID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planSectionPlanMapModelImpl.getSectionId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SECTIONID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey(),
-            planSectionPlanMap);
-
-        return planSectionPlanMap;
-    }
-
-    protected PlanSectionPlanMap toUnwrappedModel(
-        PlanSectionPlanMap planSectionPlanMap) {
-        if (planSectionPlanMap instanceof PlanSectionPlanMapImpl) {
-            return planSectionPlanMap;
-        }
-
-        PlanSectionPlanMapImpl planSectionPlanMapImpl = new PlanSectionPlanMapImpl();
-
-        planSectionPlanMapImpl.setNew(planSectionPlanMap.isNew());
-        planSectionPlanMapImpl.setPrimaryKey(planSectionPlanMap.getPrimaryKey());
-
-        planSectionPlanMapImpl.setSectionId(planSectionPlanMap.getSectionId());
-        planSectionPlanMapImpl.setRelatedPlanId(planSectionPlanMap.getRelatedPlanId());
-
-        return planSectionPlanMapImpl;
-    }
-
-    /**
-     * Returns the plan section plan map with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan section plan map
-     * @return the plan section plan map
-     * @throws com.liferay.portal.NoSuchModelException if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanSectionPlanMap findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((PlanSectionPlanMapPK) primaryKey);
-    }
-
-    /**
-     * Returns the plan section plan map with the primary key or throws a {@link com.ext.portlet.NoSuchPlanSectionPlanMapException} if it could not be found.
-     *
-     * @param planSectionPlanMapPK the primary key of the plan section plan map
-     * @return the plan section plan map
-     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanSectionPlanMap findByPrimaryKey(
-        PlanSectionPlanMapPK planSectionPlanMapPK)
-        throws NoSuchPlanSectionPlanMapException, SystemException {
-        PlanSectionPlanMap planSectionPlanMap = fetchByPrimaryKey(planSectionPlanMapPK);
-
-        if (planSectionPlanMap == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    planSectionPlanMapPK);
-            }
-
-            throw new NoSuchPlanSectionPlanMapException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planSectionPlanMapPK);
-        }
-
-        return planSectionPlanMap;
-    }
-
-    /**
-     * Returns the plan section plan map with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan section plan map
-     * @return the plan section plan map, or <code>null</code> if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanSectionPlanMap fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((PlanSectionPlanMapPK) primaryKey);
-    }
-
-    /**
-     * Returns the plan section plan map with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param planSectionPlanMapPK the primary key of the plan section plan map
-     * @return the plan section plan map, or <code>null</code> if a plan section plan map with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanSectionPlanMap fetchByPrimaryKey(
-        PlanSectionPlanMapPK planSectionPlanMapPK) throws SystemException {
-        PlanSectionPlanMap planSectionPlanMap = (PlanSectionPlanMap) EntityCacheUtil.getResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-                PlanSectionPlanMapImpl.class, planSectionPlanMapPK);
-
-        if (planSectionPlanMap == _nullPlanSectionPlanMap) {
-            return null;
-        }
-
-        if (planSectionPlanMap == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planSectionPlanMap = (PlanSectionPlanMap) session.get(PlanSectionPlanMapImpl.class,
-                        planSectionPlanMapPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planSectionPlanMap != null) {
-                    cacheResult(planSectionPlanMap);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanSectionPlanMapImpl.class, planSectionPlanMapPK,
-                        _nullPlanSectionPlanMap);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planSectionPlanMap;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the plan section plan maps where relatedPlanId = &#63;.
@@ -745,6 +372,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId)
         throws SystemException {
         return findByPlanId(relatedPlanId, QueryUtil.ALL_POS,
@@ -755,7 +383,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * Returns a range of all the plan section plan maps where relatedPlanId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param relatedPlanId the related plan ID
@@ -764,6 +392,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId, int start,
         int end) throws SystemException {
         return findByPlanId(relatedPlanId, start, end, null);
@@ -773,7 +402,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * Returns an ordered range of all the plan section plan maps where relatedPlanId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param relatedPlanId the related plan ID
@@ -783,13 +412,16 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the ordered range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findByPlanId(long relatedPlanId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID;
             finderArgs = new Object[] { relatedPlanId };
         } else {
@@ -804,6 +436,16 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
         List<PlanSectionPlanMap> list = (List<PlanSectionPlanMap>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanSectionPlanMap planSectionPlanMap : list) {
+                if ((relatedPlanId != planSectionPlanMap.getRelatedPlanId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -811,7 +453,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLANSECTIONPLANMAP_WHERE);
@@ -821,6 +463,9 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanSectionPlanMapModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -836,19 +481,26 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 qPos.add(relatedPlanId);
 
-                list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanSectionPlanMap>(list);
+                } else {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -859,44 +511,58 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     /**
      * Returns the first plan section plan map in the ordered set where relatedPlanId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param relatedPlanId the related plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan section plan map
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap findByPlanId_First(long relatedPlanId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
+        PlanSectionPlanMap planSectionPlanMap = fetchByPlanId_First(relatedPlanId,
+                orderByComparator);
+
+        if (planSectionPlanMap != null) {
+            return planSectionPlanMap;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("relatedPlanId=");
+        msg.append(relatedPlanId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanSectionPlanMapException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan section plan map in the ordered set where relatedPlanId = &#63;.
+     *
+     * @param relatedPlanId the related plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan section plan map, or <code>null</code> if a matching plan section plan map could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchByPlanId_First(long relatedPlanId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanSectionPlanMap> list = findByPlanId(relatedPlanId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("relatedPlanId=");
-            msg.append(relatedPlanId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanSectionPlanMapException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan section plan map in the ordered set where relatedPlanId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param relatedPlanId the related plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -904,36 +570,58 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap findByPlanId_Last(long relatedPlanId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
+        PlanSectionPlanMap planSectionPlanMap = fetchByPlanId_Last(relatedPlanId,
+                orderByComparator);
+
+        if (planSectionPlanMap != null) {
+            return planSectionPlanMap;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("relatedPlanId=");
+        msg.append(relatedPlanId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanSectionPlanMapException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan section plan map in the ordered set where relatedPlanId = &#63;.
+     *
+     * @param relatedPlanId the related plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan section plan map, or <code>null</code> if a matching plan section plan map could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchByPlanId_Last(long relatedPlanId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByPlanId(relatedPlanId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanSectionPlanMap> list = findByPlanId(relatedPlanId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("relatedPlanId=");
-            msg.append(relatedPlanId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanSectionPlanMapException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan section plan maps before and after the current plan section plan map in the ordered set where relatedPlanId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planSectionPlanMapPK the primary key of the current plan section plan map
      * @param relatedPlanId the related plan ID
@@ -942,6 +630,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap[] findByPlanId_PrevAndNext(
         PlanSectionPlanMapPK planSectionPlanMapPK, long relatedPlanId,
         OrderByComparator orderByComparator)
@@ -1035,6 +724,8 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                     }
                 }
             }
+        } else {
+            query.append(PlanSectionPlanMapModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1066,12 +757,78 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     }
 
     /**
+     * Removes all the plan section plan maps where relatedPlanId = &#63; from the database.
+     *
+     * @param relatedPlanId the related plan ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByPlanId(long relatedPlanId) throws SystemException {
+        for (PlanSectionPlanMap planSectionPlanMap : findByPlanId(
+                relatedPlanId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(planSectionPlanMap);
+        }
+    }
+
+    /**
+     * Returns the number of plan section plan maps where relatedPlanId = &#63;.
+     *
+     * @param relatedPlanId the related plan ID
+     * @return the number of matching plan section plan maps
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByPlanId(long relatedPlanId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANID;
+
+        Object[] finderArgs = new Object[] { relatedPlanId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANSECTIONPLANMAP_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANID_RELATEDPLANID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(relatedPlanId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the plan section plan maps where sectionId = &#63;.
      *
      * @param sectionId the section ID
      * @return the matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findBySectionId(long sectionId)
         throws SystemException {
         return findBySectionId(sectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -1082,7 +839,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * Returns a range of all the plan section plan maps where sectionId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param sectionId the section ID
@@ -1091,6 +848,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findBySectionId(long sectionId, int start,
         int end) throws SystemException {
         return findBySectionId(sectionId, start, end, null);
@@ -1100,7 +858,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * Returns an ordered range of all the plan section plan maps where sectionId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param sectionId the section ID
@@ -1110,13 +868,16 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the ordered range of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionPlanMap> findBySectionId(long sectionId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID;
             finderArgs = new Object[] { sectionId };
         } else {
@@ -1127,6 +888,16 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
         List<PlanSectionPlanMap> list = (List<PlanSectionPlanMap>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanSectionPlanMap planSectionPlanMap : list) {
+                if ((sectionId != planSectionPlanMap.getSectionId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1134,7 +905,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLANSECTIONPLANMAP_WHERE);
@@ -1144,6 +915,9 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanSectionPlanMapModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1159,19 +933,26 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 qPos.add(sectionId);
 
-                list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanSectionPlanMap>(list);
+                } else {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1182,44 +963,58 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     /**
      * Returns the first plan section plan map in the ordered set where sectionId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param sectionId the section ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan section plan map
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap findBySectionId_First(long sectionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
+        PlanSectionPlanMap planSectionPlanMap = fetchBySectionId_First(sectionId,
+                orderByComparator);
+
+        if (planSectionPlanMap != null) {
+            return planSectionPlanMap;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("sectionId=");
+        msg.append(sectionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanSectionPlanMapException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan section plan map in the ordered set where sectionId = &#63;.
+     *
+     * @param sectionId the section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan section plan map, or <code>null</code> if a matching plan section plan map could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchBySectionId_First(long sectionId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanSectionPlanMap> list = findBySectionId(sectionId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("sectionId=");
-            msg.append(sectionId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanSectionPlanMapException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan section plan map in the ordered set where sectionId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param sectionId the section ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1227,36 +1022,58 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a matching plan section plan map could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap findBySectionId_Last(long sectionId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanSectionPlanMapException, SystemException {
+        PlanSectionPlanMap planSectionPlanMap = fetchBySectionId_Last(sectionId,
+                orderByComparator);
+
+        if (planSectionPlanMap != null) {
+            return planSectionPlanMap;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("sectionId=");
+        msg.append(sectionId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanSectionPlanMapException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan section plan map in the ordered set where sectionId = &#63;.
+     *
+     * @param sectionId the section ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan section plan map, or <code>null</code> if a matching plan section plan map could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchBySectionId_Last(long sectionId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countBySectionId(sectionId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanSectionPlanMap> list = findBySectionId(sectionId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("sectionId=");
-            msg.append(sectionId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanSectionPlanMapException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan section plan maps before and after the current plan section plan map in the ordered set where sectionId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planSectionPlanMapPK the primary key of the current plan section plan map
      * @param sectionId the section ID
@@ -1265,6 +1082,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionPlanMap[] findBySectionId_PrevAndNext(
         PlanSectionPlanMapPK planSectionPlanMapPK, long sectionId,
         OrderByComparator orderByComparator)
@@ -1358,6 +1176,8 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                     }
                 }
             }
+        } else {
+            query.append(PlanSectionPlanMapModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1389,198 +1209,17 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     }
 
     /**
-     * Returns all the plan section plan maps.
-     *
-     * @return the plan section plan maps
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanSectionPlanMap> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan section plan maps.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan section plan maps
-     * @param end the upper bound of the range of plan section plan maps (not inclusive)
-     * @return the range of plan section plan maps
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanSectionPlanMap> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan section plan maps.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan section plan maps
-     * @param end the upper bound of the range of plan section plan maps (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan section plan maps
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanSectionPlanMap> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanSectionPlanMap> list = (List<PlanSectionPlanMap>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANSECTIONPLANMAP);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANSECTIONPLANMAP;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Removes all the plan section plan maps where relatedPlanId = &#63; from the database.
-     *
-     * @param relatedPlanId the related plan ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByPlanId(long relatedPlanId) throws SystemException {
-        for (PlanSectionPlanMap planSectionPlanMap : findByPlanId(relatedPlanId)) {
-            remove(planSectionPlanMap);
-        }
-    }
-
-    /**
      * Removes all the plan section plan maps where sectionId = &#63; from the database.
      *
      * @param sectionId the section ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeBySectionId(long sectionId) throws SystemException {
-        for (PlanSectionPlanMap planSectionPlanMap : findBySectionId(sectionId)) {
+        for (PlanSectionPlanMap planSectionPlanMap : findBySectionId(
+                sectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(planSectionPlanMap);
         }
-    }
-
-    /**
-     * Removes all the plan section plan maps from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanSectionPlanMap planSectionPlanMap : findAll()) {
-            remove(planSectionPlanMap);
-        }
-    }
-
-    /**
-     * Returns the number of plan section plan maps where relatedPlanId = &#63;.
-     *
-     * @param relatedPlanId the related plan ID
-     * @return the number of matching plan section plan maps
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByPlanId(long relatedPlanId) throws SystemException {
-        Object[] finderArgs = new Object[] { relatedPlanId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PLANSECTIONPLANMAP_WHERE);
-
-            query.append(_FINDER_COLUMN_PLANID_RELATEDPLANID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(relatedPlanId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1590,11 +1229,14 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
      * @return the number of matching plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countBySectionId(long sectionId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_SECTIONID;
+
         Object[] finderArgs = new Object[] { sectionId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_SECTIONID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1617,16 +1259,13 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                 qPos.add(sectionId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_SECTIONID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1635,11 +1274,517 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     }
 
     /**
+     * Caches the plan section plan map in the entity cache if it is enabled.
+     *
+     * @param planSectionPlanMap the plan section plan map
+     */
+    @Override
+    public void cacheResult(PlanSectionPlanMap planSectionPlanMap) {
+        EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey(),
+            planSectionPlanMap);
+
+        planSectionPlanMap.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan section plan maps in the entity cache if it is enabled.
+     *
+     * @param planSectionPlanMaps the plan section plan maps
+     */
+    @Override
+    public void cacheResult(List<PlanSectionPlanMap> planSectionPlanMaps) {
+        for (PlanSectionPlanMap planSectionPlanMap : planSectionPlanMaps) {
+            if (EntityCacheUtil.getResult(
+                        PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanSectionPlanMapImpl.class,
+                        planSectionPlanMap.getPrimaryKey()) == null) {
+                cacheResult(planSectionPlanMap);
+            } else {
+                planSectionPlanMap.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan section plan maps.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanSectionPlanMapImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanSectionPlanMapImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan section plan map.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanSectionPlanMap planSectionPlanMap) {
+        EntityCacheUtil.removeResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<PlanSectionPlanMap> planSectionPlanMaps) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanSectionPlanMap planSectionPlanMap : planSectionPlanMaps) {
+            EntityCacheUtil.removeResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+                PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new plan section plan map with the primary key. Does not add the plan section plan map to the database.
+     *
+     * @param planSectionPlanMapPK the primary key for the new plan section plan map
+     * @return the new plan section plan map
+     */
+    @Override
+    public PlanSectionPlanMap create(PlanSectionPlanMapPK planSectionPlanMapPK) {
+        PlanSectionPlanMap planSectionPlanMap = new PlanSectionPlanMapImpl();
+
+        planSectionPlanMap.setNew(true);
+        planSectionPlanMap.setPrimaryKey(planSectionPlanMapPK);
+
+        return planSectionPlanMap;
+    }
+
+    /**
+     * Removes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param planSectionPlanMapPK the primary key of the plan section plan map
+     * @return the plan section plan map that was removed
+     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap remove(PlanSectionPlanMapPK planSectionPlanMapPK)
+        throws NoSuchPlanSectionPlanMapException, SystemException {
+        return remove((Serializable) planSectionPlanMapPK);
+    }
+
+    /**
+     * Removes the plan section plan map with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan section plan map
+     * @return the plan section plan map that was removed
+     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap remove(Serializable primaryKey)
+        throws NoSuchPlanSectionPlanMapException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanSectionPlanMap planSectionPlanMap = (PlanSectionPlanMap) session.get(PlanSectionPlanMapImpl.class,
+                    primaryKey);
+
+            if (planSectionPlanMap == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanSectionPlanMapException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planSectionPlanMap);
+        } catch (NoSuchPlanSectionPlanMapException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanSectionPlanMap removeImpl(
+        PlanSectionPlanMap planSectionPlanMap) throws SystemException {
+        planSectionPlanMap = toUnwrappedModel(planSectionPlanMap);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planSectionPlanMap)) {
+                planSectionPlanMap = (PlanSectionPlanMap) session.get(PlanSectionPlanMapImpl.class,
+                        planSectionPlanMap.getPrimaryKeyObj());
+            }
+
+            if (planSectionPlanMap != null) {
+                session.delete(planSectionPlanMap);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planSectionPlanMap != null) {
+            clearCache(planSectionPlanMap);
+        }
+
+        return planSectionPlanMap;
+    }
+
+    @Override
+    public PlanSectionPlanMap updateImpl(
+        com.ext.portlet.model.PlanSectionPlanMap planSectionPlanMap)
+        throws SystemException {
+        planSectionPlanMap = toUnwrappedModel(planSectionPlanMap);
+
+        boolean isNew = planSectionPlanMap.isNew();
+
+        PlanSectionPlanMapModelImpl planSectionPlanMapModelImpl = (PlanSectionPlanMapModelImpl) planSectionPlanMap;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planSectionPlanMap.isNew()) {
+                session.save(planSectionPlanMap);
+
+                planSectionPlanMap.setNew(false);
+            } else {
+                session.merge(planSectionPlanMap);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanSectionPlanMapModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planSectionPlanMapModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planSectionPlanMapModelImpl.getOriginalRelatedPlanId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+
+                args = new Object[] {
+                        planSectionPlanMapModelImpl.getRelatedPlanId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+            }
+
+            if ((planSectionPlanMapModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planSectionPlanMapModelImpl.getOriginalSectionId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SECTIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID,
+                    args);
+
+                args = new Object[] { planSectionPlanMapModelImpl.getSectionId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SECTIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SECTIONID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+            PlanSectionPlanMapImpl.class, planSectionPlanMap.getPrimaryKey(),
+            planSectionPlanMap);
+
+        return planSectionPlanMap;
+    }
+
+    protected PlanSectionPlanMap toUnwrappedModel(
+        PlanSectionPlanMap planSectionPlanMap) {
+        if (planSectionPlanMap instanceof PlanSectionPlanMapImpl) {
+            return planSectionPlanMap;
+        }
+
+        PlanSectionPlanMapImpl planSectionPlanMapImpl = new PlanSectionPlanMapImpl();
+
+        planSectionPlanMapImpl.setNew(planSectionPlanMap.isNew());
+        planSectionPlanMapImpl.setPrimaryKey(planSectionPlanMap.getPrimaryKey());
+
+        planSectionPlanMapImpl.setSectionId(planSectionPlanMap.getSectionId());
+        planSectionPlanMapImpl.setRelatedPlanId(planSectionPlanMap.getRelatedPlanId());
+
+        return planSectionPlanMapImpl;
+    }
+
+    /**
+     * Returns the plan section plan map with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan section plan map
+     * @return the plan section plan map
+     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanSectionPlanMapException, SystemException {
+        PlanSectionPlanMap planSectionPlanMap = fetchByPrimaryKey(primaryKey);
+
+        if (planSectionPlanMap == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanSectionPlanMapException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planSectionPlanMap;
+    }
+
+    /**
+     * Returns the plan section plan map with the primary key or throws a {@link com.ext.portlet.NoSuchPlanSectionPlanMapException} if it could not be found.
+     *
+     * @param planSectionPlanMapPK the primary key of the plan section plan map
+     * @return the plan section plan map
+     * @throws com.ext.portlet.NoSuchPlanSectionPlanMapException if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap findByPrimaryKey(
+        PlanSectionPlanMapPK planSectionPlanMapPK)
+        throws NoSuchPlanSectionPlanMapException, SystemException {
+        return findByPrimaryKey((Serializable) planSectionPlanMapPK);
+    }
+
+    /**
+     * Returns the plan section plan map with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan section plan map
+     * @return the plan section plan map, or <code>null</code> if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanSectionPlanMap planSectionPlanMap = (PlanSectionPlanMap) EntityCacheUtil.getResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+                PlanSectionPlanMapImpl.class, primaryKey);
+
+        if (planSectionPlanMap == _nullPlanSectionPlanMap) {
+            return null;
+        }
+
+        if (planSectionPlanMap == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planSectionPlanMap = (PlanSectionPlanMap) session.get(PlanSectionPlanMapImpl.class,
+                        primaryKey);
+
+                if (planSectionPlanMap != null) {
+                    cacheResult(planSectionPlanMap);
+                } else {
+                    EntityCacheUtil.putResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanSectionPlanMapImpl.class, primaryKey,
+                        _nullPlanSectionPlanMap);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanSectionPlanMapModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanSectionPlanMapImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planSectionPlanMap;
+    }
+
+    /**
+     * Returns the plan section plan map with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param planSectionPlanMapPK the primary key of the plan section plan map
+     * @return the plan section plan map, or <code>null</code> if a plan section plan map with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanSectionPlanMap fetchByPrimaryKey(
+        PlanSectionPlanMapPK planSectionPlanMapPK) throws SystemException {
+        return fetchByPrimaryKey((Serializable) planSectionPlanMapPK);
+    }
+
+    /**
+     * Returns all the plan section plan maps.
+     *
+     * @return the plan section plan maps
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanSectionPlanMap> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan section plan maps.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan section plan maps
+     * @param end the upper bound of the range of plan section plan maps (not inclusive)
+     * @return the range of plan section plan maps
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanSectionPlanMap> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan section plan maps.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionPlanMapModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan section plan maps
+     * @param end the upper bound of the range of plan section plan maps (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan section plan maps
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanSectionPlanMap> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanSectionPlanMap> list = (List<PlanSectionPlanMap>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANSECTIONPLANMAP);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANSECTIONPLANMAP;
+
+                if (pagination) {
+                    sql = sql.concat(PlanSectionPlanMapModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanSectionPlanMap>(list);
+                } else {
+                    list = (List<PlanSectionPlanMap>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan section plan maps from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanSectionPlanMap planSectionPlanMap : findAll()) {
+            remove(planSectionPlanMap);
+        }
+    }
+
+    /**
      * Returns the number of plan section plan maps.
      *
      * @return the number of plan section plan maps
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1653,16 +1798,15 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
                 Query q = session.createQuery(_SQL_COUNT_PLANSECTIONPLANMAP);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1684,7 +1828,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanSectionPlanMap>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1697,6 +1841,7 @@ public class PlanSectionPlanMapPersistenceImpl extends BasePersistenceImpl<PlanS
     public void destroy() {
         EntityCacheUtil.removeCache(PlanSectionPlanMapImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

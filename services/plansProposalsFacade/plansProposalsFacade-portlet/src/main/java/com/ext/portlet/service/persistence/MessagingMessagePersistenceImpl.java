@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchMessagingMessageException;
 import com.ext.portlet.model.MessagingMessage;
 import com.ext.portlet.model.impl.MessagingMessageImpl;
 import com.ext.portlet.model.impl.MessagingMessageModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -27,61 +28,10 @@ import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -99,11 +49,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,12 +86,12 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
         ".List2";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
             MessagingMessageModelImpl.FINDER_CACHE_ENABLED,
-            MessagingMessageImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingMessageModelImpl.FINDER_CACHE_ENABLED,
             MessagingMessageImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
             "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingMessageModelImpl.FINDER_CACHE_ENABLED,
+            MessagingMessageImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
             MessagingMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
@@ -167,11 +115,13 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
         };
 
     private static CacheModel<MessagingMessage> _nullMessagingMessageCacheModel = new CacheModel<MessagingMessage>() {
+            @Override
             public MessagingMessage toEntityModel() {
                 return _nullMessagingMessage;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -326,12 +276,18 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public MessagingMessagePersistenceImpl() {
+        setModelClass(MessagingMessage.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the messaging message in the entity cache if it is enabled.
      *
      * @param messagingMessage the messaging message
      */
+    @Override
     public void cacheResult(MessagingMessage messagingMessage) {
         EntityCacheUtil.putResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
             MessagingMessageImpl.class, messagingMessage.getPrimaryKey(),
@@ -345,6 +301,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      *
      * @param messagingMessages the messaging messages
      */
+    @Override
     public void cacheResult(List<MessagingMessage> messagingMessages) {
         for (MessagingMessage messagingMessage : messagingMessages) {
             if (EntityCacheUtil.getResult(
@@ -411,6 +368,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @param messageId the primary key for the new messaging message
      * @return the new messaging message
      */
+    @Override
     public MessagingMessage create(long messageId) {
         MessagingMessage messagingMessage = new MessagingMessageImpl();
 
@@ -428,9 +386,10 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @throws com.ext.portlet.NoSuchMessagingMessageException if a messaging message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessage remove(long messageId)
         throws NoSuchMessagingMessageException, SystemException {
-        return remove(Long.valueOf(messageId));
+        return remove((Serializable) messageId);
     }
 
     /**
@@ -481,32 +440,47 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, messagingMessage);
+            if (!session.contains(messagingMessage)) {
+                messagingMessage = (MessagingMessage) session.get(MessagingMessageImpl.class,
+                        messagingMessage.getPrimaryKeyObj());
+            }
+
+            if (messagingMessage != null) {
+                session.delete(messagingMessage);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(messagingMessage);
+        if (messagingMessage != null) {
+            clearCache(messagingMessage);
+        }
 
         return messagingMessage;
     }
 
     @Override
     public MessagingMessage updateImpl(
-        com.ext.portlet.model.MessagingMessage messagingMessage, boolean merge)
+        com.ext.portlet.model.MessagingMessage messagingMessage)
         throws SystemException {
         messagingMessage = toUnwrappedModel(messagingMessage);
+
+        boolean isNew = messagingMessage.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, messagingMessage, merge);
+            if (messagingMessage.isNew()) {
+                session.save(messagingMessage);
 
-            messagingMessage.setNew(false);
+                messagingMessage.setNew(false);
+            } else {
+                session.merge(messagingMessage);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -514,6 +488,10 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
             MessagingMessageImpl.class, messagingMessage.getPrimaryKey(),
@@ -554,13 +532,24 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      *
      * @param primaryKey the primary key of the messaging message
      * @return the messaging message
-     * @throws com.liferay.portal.NoSuchModelException if a messaging message with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchMessagingMessageException if a messaging message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingMessage findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchMessagingMessageException, SystemException {
+        MessagingMessage messagingMessage = fetchByPrimaryKey(primaryKey);
+
+        if (messagingMessage == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchMessagingMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return messagingMessage;
     }
 
     /**
@@ -571,20 +560,10 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @throws com.ext.portlet.NoSuchMessagingMessageException if a messaging message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessage findByPrimaryKey(long messageId)
         throws NoSuchMessagingMessageException, SystemException {
-        MessagingMessage messagingMessage = fetchByPrimaryKey(messageId);
-
-        if (messagingMessage == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + messageId);
-            }
-
-            throw new NoSuchMessagingMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                messageId);
-        }
-
-        return messagingMessage;
+        return findByPrimaryKey((Serializable) messageId);
     }
 
     /**
@@ -597,7 +576,40 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
     @Override
     public MessagingMessage fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        MessagingMessage messagingMessage = (MessagingMessage) EntityCacheUtil.getResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
+                MessagingMessageImpl.class, primaryKey);
+
+        if (messagingMessage == _nullMessagingMessage) {
+            return null;
+        }
+
+        if (messagingMessage == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                messagingMessage = (MessagingMessage) session.get(MessagingMessageImpl.class,
+                        primaryKey);
+
+                if (messagingMessage != null) {
+                    cacheResult(messagingMessage);
+                } else {
+                    EntityCacheUtil.putResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
+                        MessagingMessageImpl.class, primaryKey,
+                        _nullMessagingMessage);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
+                    MessagingMessageImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return messagingMessage;
     }
 
     /**
@@ -607,43 +619,10 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @return the messaging message, or <code>null</code> if a messaging message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessage fetchByPrimaryKey(long messageId)
         throws SystemException {
-        MessagingMessage messagingMessage = (MessagingMessage) EntityCacheUtil.getResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
-                MessagingMessageImpl.class, messageId);
-
-        if (messagingMessage == _nullMessagingMessage) {
-            return null;
-        }
-
-        if (messagingMessage == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                messagingMessage = (MessagingMessage) session.get(MessagingMessageImpl.class,
-                        Long.valueOf(messageId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (messagingMessage != null) {
-                    cacheResult(messagingMessage);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(MessagingMessageModelImpl.ENTITY_CACHE_ENABLED,
-                        MessagingMessageImpl.class, messageId,
-                        _nullMessagingMessage);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return messagingMessage;
+        return fetchByPrimaryKey((Serializable) messageId);
     }
 
     /**
@@ -652,6 +631,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @return the messaging messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessage> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -660,7 +640,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * Returns a range of all the messaging messages.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging messages
@@ -668,6 +648,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @return the range of messaging messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessage> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -677,7 +658,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * Returns an ordered range of all the messaging messages.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging messages
@@ -686,17 +667,20 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @return the ordered range of messaging messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessage> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -718,7 +702,11 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
 
                 sql = query.toString();
             } else {
-                sql = _SQL_SELECT_MESSAGINGMESSAGE.concat(MessagingMessageModelImpl.ORDER_BY_JPQL);
+                sql = _SQL_SELECT_MESSAGINGMESSAGE;
+
+                if (pagination) {
+                    sql = sql.concat(MessagingMessageModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -728,26 +716,26 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<MessagingMessage>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<MessagingMessage>(list);
                 } else {
                     list = (List<MessagingMessage>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -760,6 +748,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (MessagingMessage messagingMessage : findAll()) {
             remove(messagingMessage);
@@ -772,6 +761,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
      * @return the number of messaging messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -785,16 +775,15 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
                 Query q = session.createQuery(_SQL_COUNT_MESSAGINGMESSAGE);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -816,7 +805,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<MessagingMessage>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -829,6 +818,7 @@ public class MessagingMessagePersistenceImpl extends BasePersistenceImpl<Messagi
     public void destroy() {
         EntityCacheUtil.removeCache(MessagingMessageImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

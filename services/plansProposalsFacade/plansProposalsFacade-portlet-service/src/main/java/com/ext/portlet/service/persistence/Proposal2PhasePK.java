@@ -35,6 +35,7 @@ public class Proposal2PhasePK implements Comparable<Proposal2PhasePK>,
         this.contestPhaseId = contestPhaseId;
     }
 
+    @Override
     public int compareTo(Proposal2PhasePK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class Proposal2PhasePK implements Comparable<Proposal2PhasePK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Proposal2PhasePK)) {
             return false;
         }
 
-        Proposal2PhasePK pk = null;
-
-        try {
-            pk = (Proposal2PhasePK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Proposal2PhasePK pk = (Proposal2PhasePK) obj;
 
         if ((proposalId == pk.proposalId) &&
                 (contestPhaseId == pk.contestPhaseId)) {

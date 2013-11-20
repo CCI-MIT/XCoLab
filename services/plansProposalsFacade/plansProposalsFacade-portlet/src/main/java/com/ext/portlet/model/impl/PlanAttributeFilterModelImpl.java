@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanAttributeFilter service. Represents a row in the &quot;xcolab_PlanAttributeFilter&quot; database table, with each column mapped to a property of this class.
@@ -56,6 +58,8 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanAttributeFilter (planAttributeFilterId LONG not null primary key,attributeName VARCHAR(75) null,planUserSettingsId LONG,max DOUBLE,min DOUBLE,stringVal VARCHAR(2048) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanAttributeFilter";
+    public static final String ORDER_BY_JPQL = " ORDER BY planAttributeFilter.planAttributeFilterId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanAttributeFilter.planAttributeFilterId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -70,10 +74,11 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
             true);
     public static long ATTRIBUTENAME_COLUMN_BITMASK = 1L;
     public static long PLANUSERSETTINGSID_COLUMN_BITMASK = 2L;
+    public static long PLANATTRIBUTEFILTERID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanAttributeFilter"));
     private static ClassLoader _classLoader = PlanAttributeFilter.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanAttributeFilter.class
         };
     private long _planAttributeFilterId;
@@ -85,9 +90,8 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
     private Double _max;
     private Double _min;
     private String _stringVal;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanAttributeFilter _escapedModelProxy;
+    private PlanAttributeFilter _escapedModel;
 
     public PlanAttributeFilterModelImpl() {
     }
@@ -99,6 +103,10 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
      * @return the normal model instance
      */
     public static PlanAttributeFilter toModel(PlanAttributeFilterSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanAttributeFilter model = new PlanAttributeFilterImpl();
 
         model.setPlanAttributeFilterId(soapModel.getPlanAttributeFilterId());
@@ -119,6 +127,10 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
      */
     public static List<PlanAttributeFilter> toModels(
         PlanAttributeFilterSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanAttributeFilter> models = new ArrayList<PlanAttributeFilter>(soapModels.length);
 
         for (PlanAttributeFilterSoap soapModel : soapModels) {
@@ -128,40 +140,103 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planAttributeFilterId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanAttributeFilterId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planAttributeFilterId);
+        return _planAttributeFilterId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanAttributeFilter.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanAttributeFilter.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planAttributeFilterId", getPlanAttributeFilterId());
+        attributes.put("attributeName", getAttributeName());
+        attributes.put("planUserSettingsId", getPlanUserSettingsId());
+        attributes.put("max", getMax());
+        attributes.put("min", getMin());
+        attributes.put("stringVal", getStringVal());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planAttributeFilterId = (Long) attributes.get(
+                "planAttributeFilterId");
+
+        if (planAttributeFilterId != null) {
+            setPlanAttributeFilterId(planAttributeFilterId);
+        }
+
+        String attributeName = (String) attributes.get("attributeName");
+
+        if (attributeName != null) {
+            setAttributeName(attributeName);
+        }
+
+        Long planUserSettingsId = (Long) attributes.get("planUserSettingsId");
+
+        if (planUserSettingsId != null) {
+            setPlanUserSettingsId(planUserSettingsId);
+        }
+
+        Double max = (Double) attributes.get("max");
+
+        if (max != null) {
+            setMax(max);
+        }
+
+        Double min = (Double) attributes.get("min");
+
+        if (min != null) {
+            setMin(min);
+        }
+
+        String stringVal = (String) attributes.get("stringVal");
+
+        if (stringVal != null) {
+            setStringVal(stringVal);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanAttributeFilterId() {
         return _planAttributeFilterId;
     }
 
+    @Override
     public void setPlanAttributeFilterId(long planAttributeFilterId) {
         _planAttributeFilterId = planAttributeFilterId;
     }
 
     @JSON
+    @Override
     public String getAttributeName() {
         if (_attributeName == null) {
             return StringPool.BLANK;
@@ -170,6 +245,7 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         }
     }
 
+    @Override
     public void setAttributeName(String attributeName) {
         _columnBitmask |= ATTRIBUTENAME_COLUMN_BITMASK;
 
@@ -185,10 +261,12 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
     }
 
     @JSON
+    @Override
     public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
+    @Override
     public void setPlanUserSettingsId(long planUserSettingsId) {
         _columnBitmask |= PLANUSERSETTINGSID_COLUMN_BITMASK;
 
@@ -206,24 +284,29 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
     }
 
     @JSON
+    @Override
     public Double getMax() {
         return _max;
     }
 
+    @Override
     public void setMax(Double max) {
         _max = max;
     }
 
     @JSON
+    @Override
     public Double getMin() {
         return _min;
     }
 
+    @Override
     public void setMin(Double min) {
         _min = min;
     }
 
     @JSON
+    @Override
     public String getStringVal() {
         if (_stringVal == null) {
             return StringPool.BLANK;
@@ -232,6 +315,7 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         }
     }
 
+    @Override
     public void setStringVal(String stringVal) {
         _stringVal = stringVal;
     }
@@ -241,29 +325,26 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
     }
 
     @Override
-    public PlanAttributeFilter toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanAttributeFilter) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanAttributeFilter.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanAttributeFilter.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanAttributeFilter toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanAttributeFilter) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -282,6 +363,7 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         return planAttributeFilterImpl;
     }
 
+    @Override
     public int compareTo(PlanAttributeFilter planAttributeFilter) {
         long primaryKey = planAttributeFilter.getPrimaryKey();
 
@@ -296,17 +378,15 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanAttributeFilter)) {
             return false;
         }
 
-        PlanAttributeFilter planAttributeFilter = null;
-
-        try {
-            planAttributeFilter = (PlanAttributeFilter) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanAttributeFilter planAttributeFilter = (PlanAttributeFilter) obj;
 
         long primaryKey = planAttributeFilter.getPrimaryKey();
 
@@ -387,6 +467,7 @@ public class PlanAttributeFilterModelImpl extends BaseModelImpl<PlanAttributeFil
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

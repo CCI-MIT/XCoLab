@@ -24,6 +24,7 @@ public abstract class PlansFilterPositionBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plans filter position model instance should use the {@link PlansFilterPosition} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlansFilterPositionLocalServiceUtil.addPlansFilterPosition(this);

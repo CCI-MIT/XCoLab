@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanTemplateLocalService}.
- * </p>
+ * Provides a wrapper for {@link PlanTemplateLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanTemplateLocalService
+ * @author Brian Wing Shun Chan
+ * @see PlanTemplateLocalService
  * @generated
  */
 public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService,
@@ -27,6 +25,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the plan template that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanTemplate addPlanTemplate(
         com.ext.portlet.model.PlanTemplate planTemplate)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -39,6 +38,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @param id the primary key for the new plan template
     * @return the new plan template
     */
+    @Override
     public com.ext.portlet.model.PlanTemplate createPlanTemplate(long id) {
         return _planTemplateLocalService.createPlanTemplate(id);
     }
@@ -47,25 +47,34 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * Deletes the plan template with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the plan template
+    * @return the plan template that was removed
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTemplate(long id)
+    @Override
+    public com.ext.portlet.model.PlanTemplate deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.deletePlanTemplate(id);
+        return _planTemplateLocalService.deletePlanTemplate(id);
     }
 
     /**
     * Deletes the plan template from the database. Also notifies the appropriate model listeners.
     *
     * @param planTemplate the plan template
+    * @return the plan template that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanTemplate(
+    @Override
+    public com.ext.portlet.model.PlanTemplate deletePlanTemplate(
         com.ext.portlet.model.PlanTemplate planTemplate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.deletePlanTemplate(planTemplate);
+        return _planTemplateLocalService.deletePlanTemplate(planTemplate);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _planTemplateLocalService.dynamicQuery();
     }
 
     /**
@@ -75,6 +84,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -86,7 +96,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -95,6 +105,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -106,7 +117,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -116,6 +127,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -133,12 +145,31 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planTemplateLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanTemplate fetchPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.fetchPlanTemplate(id);
@@ -152,12 +183,14 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanTemplate getPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.getPlanTemplate(id);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -169,7 +202,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * Returns a range of all the plan templates.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan templates
@@ -177,6 +210,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the range of plan templates
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.PlanTemplate> getPlanTemplates(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -189,6 +223,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the number of plan templates
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlanTemplatesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planTemplateLocalService.getPlanTemplatesCount();
@@ -201,6 +236,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     * @return the plan template that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanTemplate updatePlanTemplate(
         com.ext.portlet.model.PlanTemplate planTemplate)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -208,24 +244,11 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     }
 
     /**
-    * Updates the plan template in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planTemplate the plan template
-    * @param merge whether to merge the plan template with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan template that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanTemplate updatePlanTemplate(
-        com.ext.portlet.model.PlanTemplate planTemplate, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplateLocalService.updatePlanTemplate(planTemplate, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _planTemplateLocalService.getBeanIdentifier();
     }
@@ -235,15 +258,26 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planTemplateLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planTemplateLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    @Override
     public void store(com.ext.portlet.model.PlanTemplate template)
         throws com.liferay.portal.kernel.exception.SystemException {
         _planTemplateLocalService.store(template);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanSectionDefinition> getSections(
         com.ext.portlet.model.PlanTemplate template)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -251,6 +285,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
         return _planTemplateLocalService.getSections(template);
     }
 
+    @Override
     public void addSection(com.ext.portlet.model.PlanTemplate template,
         com.ext.portlet.model.PlanSectionDefinition section)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -258,6 +293,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
         _planTemplateLocalService.addSection(template, section);
     }
 
+    @Override
     public void removeSection(com.ext.portlet.model.PlanTemplate template,
         com.ext.portlet.model.PlanSectionDefinition section)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -265,6 +301,7 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
         _planTemplateLocalService.removeSection(template, section);
     }
 
+    @Override
     public void updateSectionWeight(
         com.ext.portlet.model.PlanTemplate template,
         com.ext.portlet.model.PlanSectionDefinition section, int weight)
@@ -274,24 +311,26 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanTemplateLocalService getWrappedPlanTemplateLocalService() {
         return _planTemplateLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanTemplateLocalService(
         PlanTemplateLocalService planTemplateLocalService) {
         _planTemplateLocalService = planTemplateLocalService;
     }
 
+    @Override
     public PlanTemplateLocalService getWrappedService() {
         return _planTemplateLocalService;
     }
 
+    @Override
     public void setWrappedService(
         PlanTemplateLocalService planTemplateLocalService) {
         _planTemplateLocalService = planTemplateLocalService;

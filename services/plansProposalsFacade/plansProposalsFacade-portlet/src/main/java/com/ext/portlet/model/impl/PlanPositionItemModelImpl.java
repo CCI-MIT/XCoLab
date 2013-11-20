@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanPositionItem service. Represents a row in the &quot;xcolab_PlanPositionItem&quot; database table, with each column mapped to a property of this class.
@@ -48,6 +50,8 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanPositionItem (planPositionsId LONG not null,positionId LONG not null,primary key (planPositionsId, positionId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanPositionItem";
+    public static final String ORDER_BY_JPQL = " ORDER BY planPositionItem.id.planPositionsId ASC, planPositionItem.id.positionId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanPositionItem.planPositionsId ASC, xcolab_PlanPositionItem.positionId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -61,10 +65,11 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanPositionItem"),
             true);
     public static long PLANPOSITIONSID_COLUMN_BITMASK = 1L;
+    public static long POSITIONID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanPositionItem"));
     private static ClassLoader _classLoader = PlanPositionItem.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanPositionItem.class
         };
     private long _planPositionsId;
@@ -72,7 +77,7 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
     private boolean _setOriginalPlanPositionsId;
     private long _positionId;
     private long _columnBitmask;
-    private PlanPositionItem _escapedModelProxy;
+    private PlanPositionItem _escapedModel;
 
     public PlanPositionItemModelImpl() {
     }
@@ -84,6 +89,10 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
      * @return the normal model instance
      */
     public static PlanPositionItem toModel(PlanPositionItemSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanPositionItem model = new PlanPositionItemImpl();
 
         model.setPlanPositionsId(soapModel.getPlanPositionsId());
@@ -100,6 +109,10 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
      */
     public static List<PlanPositionItem> toModels(
         PlanPositionItemSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanPositionItem> models = new ArrayList<PlanPositionItem>(soapModels.length);
 
         for (PlanPositionItemSoap soapModel : soapModels) {
@@ -109,36 +122,69 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
         return models;
     }
 
+    @Override
     public PlanPositionItemPK getPrimaryKey() {
         return new PlanPositionItemPK(_planPositionsId, _positionId);
     }
 
+    @Override
     public void setPrimaryKey(PlanPositionItemPK primaryKey) {
         setPlanPositionsId(primaryKey.planPositionsId);
         setPositionId(primaryKey.positionId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanPositionItemPK(_planPositionsId, _positionId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanPositionItemPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanPositionItem.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanPositionItem.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planPositionsId", getPlanPositionsId());
+        attributes.put("positionId", getPositionId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planPositionsId = (Long) attributes.get("planPositionsId");
+
+        if (planPositionsId != null) {
+            setPlanPositionsId(planPositionsId);
+        }
+
+        Long positionId = (Long) attributes.get("positionId");
+
+        if (positionId != null) {
+            setPositionId(positionId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanPositionsId() {
         return _planPositionsId;
     }
 
+    @Override
     public void setPlanPositionsId(long planPositionsId) {
         _columnBitmask |= PLANPOSITIONSID_COLUMN_BITMASK;
 
@@ -156,10 +202,12 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
     }
 
     @JSON
+    @Override
     public long getPositionId() {
         return _positionId;
     }
 
+    @Override
     public void setPositionId(long positionId) {
         _positionId = positionId;
     }
@@ -170,13 +218,12 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
 
     @Override
     public PlanPositionItem toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanPositionItem) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlanPositionItem) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -191,6 +238,7 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
         return planPositionItemImpl;
     }
 
+    @Override
     public int compareTo(PlanPositionItem planPositionItem) {
         PlanPositionItemPK primaryKey = planPositionItem.getPrimaryKey();
 
@@ -199,17 +247,15 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanPositionItem)) {
             return false;
         }
 
-        PlanPositionItem planPositionItem = null;
-
-        try {
-            planPositionItem = (PlanPositionItem) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanPositionItem planPositionItem = (PlanPositionItem) obj;
 
         PlanPositionItemPK primaryKey = planPositionItem.getPrimaryKey();
 
@@ -260,6 +306,7 @@ public class PlanPositionItemModelImpl extends BaseModelImpl<PlanPositionItem>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanPropertyFilter in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanPropertyFilterCacheModel implements CacheModel<PlanPropertyFilter>,
-    Serializable {
+    Externalizable {
     public long planPropertyFilterId;
     public String propertyName;
     public long planUserSettingsId;
@@ -39,6 +42,7 @@ public class PlanPropertyFilterCacheModel implements CacheModel<PlanPropertyFilt
         return sb.toString();
     }
 
+    @Override
     public PlanPropertyFilter toEntityModel() {
         PlanPropertyFilterImpl planPropertyFilterImpl = new PlanPropertyFilterImpl();
 
@@ -61,5 +65,33 @@ public class PlanPropertyFilterCacheModel implements CacheModel<PlanPropertyFilt
         planPropertyFilterImpl.resetOriginalValues();
 
         return planPropertyFilterImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planPropertyFilterId = objectInput.readLong();
+        propertyName = objectInput.readUTF();
+        planUserSettingsId = objectInput.readLong();
+        value = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planPropertyFilterId);
+
+        if (propertyName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(propertyName);
+        }
+
+        objectOutput.writeLong(planUserSettingsId);
+
+        if (value == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(value);
+        }
     }
 }

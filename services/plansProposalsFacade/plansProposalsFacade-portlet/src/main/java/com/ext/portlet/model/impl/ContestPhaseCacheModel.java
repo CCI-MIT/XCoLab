@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
-    Serializable {
+    Externalizable {
     public long ContestPhasePK;
     public long ContestPK;
     public long ContestPhaseType;
@@ -68,6 +71,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         return sb.toString();
     }
 
+    @Override
     public ContestPhase toEntityModel() {
         ContestPhaseImpl contestPhaseImpl = new ContestPhaseImpl();
 
@@ -125,5 +129,57 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         contestPhaseImpl.resetOriginalValues();
 
         return contestPhaseImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        ContestPhasePK = objectInput.readLong();
+        ContestPK = objectInput.readLong();
+        ContestPhaseType = objectInput.readLong();
+        contestPhaseAutopromote = objectInput.readUTF();
+        ContestPhaseDescriptionOverride = objectInput.readUTF();
+        phaseActiveOverride = objectInput.readBoolean();
+        phaseInactiveOverride = objectInput.readBoolean();
+        PhaseStartDate = objectInput.readLong();
+        PhaseEndDate = objectInput.readLong();
+        nextStatus = objectInput.readUTF();
+        created = objectInput.readLong();
+        updated = objectInput.readLong();
+        authorId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(ContestPhasePK);
+        objectOutput.writeLong(ContestPK);
+        objectOutput.writeLong(ContestPhaseType);
+
+        if (contestPhaseAutopromote == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(contestPhaseAutopromote);
+        }
+
+        if (ContestPhaseDescriptionOverride == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestPhaseDescriptionOverride);
+        }
+
+        objectOutput.writeBoolean(phaseActiveOverride);
+        objectOutput.writeBoolean(phaseInactiveOverride);
+        objectOutput.writeLong(PhaseStartDate);
+        objectOutput.writeLong(PhaseEndDate);
+
+        if (nextStatus == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(nextStatus);
+        }
+
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updated);
+        objectOutput.writeLong(authorId);
     }
 }

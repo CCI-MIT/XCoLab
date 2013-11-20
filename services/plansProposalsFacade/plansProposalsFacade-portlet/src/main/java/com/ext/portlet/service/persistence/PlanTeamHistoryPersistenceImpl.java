@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanTeamHistoryException;
 import com.ext.portlet.model.PlanTeamHistory;
 import com.ext.portlet.model.impl.PlanTeamHistoryImpl;
 import com.ext.portlet.model.impl.PlanTeamHistoryModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -60,28 +61,10 @@ import com.ext.portlet.service.persistence.PlanRelatedPersistence;
 import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
 import com.ext.portlet.service.persistence.PlanSectionPersistence;
 import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +81,13 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +95,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the plan team history service.
@@ -138,6 +121,17 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
+            PlanTeamHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
+            PlanTeamHistoryImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANID = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
             PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
             PlanTeamHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -145,8 +139,8 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID =
         new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
@@ -159,6 +153,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
             PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PLANID_PLANID_2 = "planTeamHistory.planId = ?";
     public static final FinderPath FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
             PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
             PlanTeamHistoryImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -171,30 +166,21 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByLastUserActionInPlan",
             new String[] { Long.class.getName(), Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
-            PlanTeamHistoryImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED,
-            PlanTeamHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_LASTUSERACTIONINPLAN_PLANID_2 = "planTeamHistory.planId = ? AND ";
+    private static final String _FINDER_COLUMN_LASTUSERACTIONINPLAN_USERID_2 = "planTeamHistory.userId = ?";
     private static final String _SQL_SELECT_PLANTEAMHISTORY = "SELECT planTeamHistory FROM PlanTeamHistory planTeamHistory";
     private static final String _SQL_SELECT_PLANTEAMHISTORY_WHERE = "SELECT planTeamHistory FROM PlanTeamHistory planTeamHistory WHERE ";
     private static final String _SQL_COUNT_PLANTEAMHISTORY = "SELECT COUNT(planTeamHistory) FROM PlanTeamHistory planTeamHistory";
     private static final String _SQL_COUNT_PLANTEAMHISTORY_WHERE = "SELECT COUNT(planTeamHistory) FROM PlanTeamHistory planTeamHistory WHERE ";
-    private static final String _FINDER_COLUMN_PLANID_PLANID_2 = "planTeamHistory.planId = ?";
-    private static final String _FINDER_COLUMN_LASTUSERACTIONINPLAN_PLANID_2 = "planTeamHistory.planId = ? AND ";
-    private static final String _FINDER_COLUMN_LASTUSERACTIONINPLAN_USERID_2 = "planTeamHistory.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planTeamHistory.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanTeamHistory exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanTeamHistory exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(PlanTeamHistoryPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id"
+            });
     private static PlanTeamHistory _nullPlanTeamHistory = new PlanTeamHistoryImpl() {
             @Override
             public Object clone() {
@@ -208,11 +194,13 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
         };
 
     private static CacheModel<PlanTeamHistory> _nullPlanTeamHistoryCacheModel = new CacheModel<PlanTeamHistory>() {
+            @Override
             public PlanTeamHistory toEntityModel() {
                 return _nullPlanTeamHistory;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -367,390 +355,11 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan team history in the entity cache if it is enabled.
-     *
-     * @param planTeamHistory the plan team history
-     */
-    public void cacheResult(PlanTeamHistory planTeamHistory) {
-        EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey(),
-            planTeamHistory);
-
-        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-            new Object[] {
-                Long.valueOf(planTeamHistory.getPlanId()),
-                Long.valueOf(planTeamHistory.getUserId())
-            }, planTeamHistory);
-
-        planTeamHistory.resetOriginalValues();
+=======
+    public PlanTeamHistoryPersistenceImpl() {
+        setModelClass(PlanTeamHistory.class);
     }
-
-    /**
-     * Caches the plan team histories in the entity cache if it is enabled.
-     *
-     * @param planTeamHistories the plan team histories
-     */
-    public void cacheResult(List<PlanTeamHistory> planTeamHistories) {
-        for (PlanTeamHistory planTeamHistory : planTeamHistories) {
-            if (EntityCacheUtil.getResult(
-                        PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanTeamHistoryImpl.class,
-                        planTeamHistory.getPrimaryKey()) == null) {
-                cacheResult(planTeamHistory);
-            } else {
-                planTeamHistory.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan team histories.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanTeamHistoryImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanTeamHistoryImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan team history.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanTeamHistory planTeamHistory) {
-        EntityCacheUtil.removeResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        clearUniqueFindersCache(planTeamHistory);
-    }
-
-    @Override
-    public void clearCache(List<PlanTeamHistory> planTeamHistories) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanTeamHistory planTeamHistory : planTeamHistories) {
-            EntityCacheUtil.removeResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-                PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey());
-
-            clearUniqueFindersCache(planTeamHistory);
-        }
-    }
-
-    protected void clearUniqueFindersCache(PlanTeamHistory planTeamHistory) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-            new Object[] {
-                Long.valueOf(planTeamHistory.getPlanId()),
-                Long.valueOf(planTeamHistory.getUserId())
-            });
-    }
-
-    /**
-     * Creates a new plan team history with the primary key. Does not add the plan team history to the database.
-     *
-     * @param id the primary key for the new plan team history
-     * @return the new plan team history
-     */
-    public PlanTeamHistory create(long id) {
-        PlanTeamHistory planTeamHistory = new PlanTeamHistoryImpl();
-
-        planTeamHistory.setNew(true);
-        planTeamHistory.setPrimaryKey(id);
-
-        return planTeamHistory;
-    }
-
-    /**
-     * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param id the primary key of the plan team history
-     * @return the plan team history that was removed
-     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTeamHistory remove(long id)
-        throws NoSuchPlanTeamHistoryException, SystemException {
-        return remove(Long.valueOf(id));
-    }
-
-    /**
-     * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan team history
-     * @return the plan team history that was removed
-     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTeamHistory remove(Serializable primaryKey)
-        throws NoSuchPlanTeamHistoryException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanTeamHistory planTeamHistory = (PlanTeamHistory) session.get(PlanTeamHistoryImpl.class,
-                    primaryKey);
-
-            if (planTeamHistory == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanTeamHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planTeamHistory);
-        } catch (NoSuchPlanTeamHistoryException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanTeamHistory removeImpl(PlanTeamHistory planTeamHistory)
-        throws SystemException {
-        planTeamHistory = toUnwrappedModel(planTeamHistory);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planTeamHistory);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planTeamHistory);
-
-        return planTeamHistory;
-    }
-
-    @Override
-    public PlanTeamHistory updateImpl(
-        com.ext.portlet.model.PlanTeamHistory planTeamHistory, boolean merge)
-        throws SystemException {
-        planTeamHistory = toUnwrappedModel(planTeamHistory);
-
-        boolean isNew = planTeamHistory.isNew();
-
-        PlanTeamHistoryModelImpl planTeamHistoryModelImpl = (PlanTeamHistoryModelImpl) planTeamHistory;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planTeamHistory, merge);
-
-            planTeamHistory.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanTeamHistoryModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planTeamHistoryModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planTeamHistoryModelImpl.getOriginalPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planTeamHistoryModelImpl.getPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey(),
-            planTeamHistory);
-
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-                new Object[] {
-                    Long.valueOf(planTeamHistory.getPlanId()),
-                    Long.valueOf(planTeamHistory.getUserId())
-                }, planTeamHistory);
-        } else {
-            if ((planTeamHistoryModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planTeamHistoryModelImpl.getOriginalPlanId()),
-                        Long.valueOf(planTeamHistoryModelImpl.getOriginalUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-                    new Object[] {
-                        Long.valueOf(planTeamHistory.getPlanId()),
-                        Long.valueOf(planTeamHistory.getUserId())
-                    }, planTeamHistory);
-            }
-        }
-
-        return planTeamHistory;
-    }
-
-    protected PlanTeamHistory toUnwrappedModel(PlanTeamHistory planTeamHistory) {
-        if (planTeamHistory instanceof PlanTeamHistoryImpl) {
-            return planTeamHistory;
-        }
-
-        PlanTeamHistoryImpl planTeamHistoryImpl = new PlanTeamHistoryImpl();
-
-        planTeamHistoryImpl.setNew(planTeamHistory.isNew());
-        planTeamHistoryImpl.setPrimaryKey(planTeamHistory.getPrimaryKey());
-
-        planTeamHistoryImpl.setId(planTeamHistory.getId());
-        planTeamHistoryImpl.setPlanId(planTeamHistory.getPlanId());
-        planTeamHistoryImpl.setUserId(planTeamHistory.getUserId());
-        planTeamHistoryImpl.setAction(planTeamHistory.getAction());
-        planTeamHistoryImpl.setPayload(planTeamHistory.getPayload());
-        planTeamHistoryImpl.setCreated(planTeamHistory.getCreated());
-        planTeamHistoryImpl.setUpdateAuthorId(planTeamHistory.getUpdateAuthorId());
-
-        return planTeamHistoryImpl;
-    }
-
-    /**
-     * Returns the plan team history with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan team history
-     * @return the plan team history
-     * @throws com.liferay.portal.NoSuchModelException if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTeamHistory findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan team history with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTeamHistoryException} if it could not be found.
-     *
-     * @param id the primary key of the plan team history
-     * @return the plan team history
-     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTeamHistory findByPrimaryKey(long id)
-        throws NoSuchPlanTeamHistoryException, SystemException {
-        PlanTeamHistory planTeamHistory = fetchByPrimaryKey(id);
-
-        if (planTeamHistory == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
-            }
-
-            throw new NoSuchPlanTeamHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                id);
-        }
-
-        return planTeamHistory;
-    }
-
-    /**
-     * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan team history
-     * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTeamHistory fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param id the primary key of the plan team history
-     * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTeamHistory fetchByPrimaryKey(long id) throws SystemException {
-        PlanTeamHistory planTeamHistory = (PlanTeamHistory) EntityCacheUtil.getResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-                PlanTeamHistoryImpl.class, id);
-
-        if (planTeamHistory == _nullPlanTeamHistory) {
-            return null;
-        }
-
-        if (planTeamHistory == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planTeamHistory = (PlanTeamHistory) session.get(PlanTeamHistoryImpl.class,
-                        Long.valueOf(id));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planTeamHistory != null) {
-                    cacheResult(planTeamHistory);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanTeamHistoryImpl.class, id, _nullPlanTeamHistory);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planTeamHistory;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the plan team histories where planId = &#63;.
@@ -759,6 +368,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team histories
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTeamHistory> findByPlanId(long planId)
         throws SystemException {
         return findByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -768,7 +378,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * Returns a range of all the plan team histories where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -777,6 +387,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the range of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTeamHistory> findByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByPlanId(planId, start, end, null);
@@ -786,7 +397,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * Returns an ordered range of all the plan team histories where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -796,13 +407,16 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the ordered range of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTeamHistory> findByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID;
             finderArgs = new Object[] { planId };
         } else {
@@ -812,6 +426,16 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
         List<PlanTeamHistory> list = (List<PlanTeamHistory>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanTeamHistory planTeamHistory : list) {
+                if ((planId != planTeamHistory.getPlanId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
 
         if (list == null) {
             StringBundler query = null;
@@ -830,8 +454,8 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
-            }
-            else {
+            } else
+             if (pagination) {
                 query.append(PlanTeamHistoryModelImpl.ORDER_BY_JPQL);
             }
 
@@ -848,19 +472,26 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 qPos.add(planId);
 
-                list = (List<PlanTeamHistory>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTeamHistory>(list);
+                } else {
+                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -871,44 +502,58 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     /**
      * Returns the first plan team history in the ordered set where planId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan team history
      * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory findByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
+        PlanTeamHistory planTeamHistory = fetchByPlanId_First(planId,
+                orderByComparator);
+
+        if (planTeamHistory != null) {
+            return planTeamHistory;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTeamHistoryException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan team history in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan team history, or <code>null</code> if a matching plan team history could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory fetchByPlanId_First(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanTeamHistory> list = findByPlanId(planId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanTeamHistoryException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan team history in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -916,36 +561,58 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory findByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
+        PlanTeamHistory planTeamHistory = fetchByPlanId_Last(planId,
+                orderByComparator);
+
+        if (planTeamHistory != null) {
+            return planTeamHistory;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTeamHistoryException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan team history in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan team history, or <code>null</code> if a matching plan team history could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory fetchByPlanId_Last(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByPlanId(planId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanTeamHistory> list = findByPlanId(planId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanTeamHistoryException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan team histories before and after the current plan team history in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current plan team history
      * @param planId the plan ID
@@ -954,6 +621,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory[] findByPlanId_PrevAndNext(long id, long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTeamHistoryException, SystemException {
@@ -1046,8 +714,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
                     }
                 }
             }
-        }
-        else {
+        } else {
             query.append(PlanTeamHistoryModelImpl.ORDER_BY_JPQL);
         }
 
@@ -1080,6 +747,71 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     }
 
     /**
+     * Removes all the plan team histories where planId = &#63; from the database.
+     *
+     * @param planId the plan ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByPlanId(long planId) throws SystemException {
+        for (PlanTeamHistory planTeamHistory : findByPlanId(planId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(planTeamHistory);
+        }
+    }
+
+    /**
+     * Returns the number of plan team histories where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @return the number of matching plan team histories
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByPlanId(long planId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANID;
+
+        Object[] finderArgs = new Object[] { planId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANTEAMHISTORY_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANID_PLANID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns the plan team history where planId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanTeamHistoryException} if it could not be found.
      *
      * @param planId the plan ID
@@ -1088,6 +820,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory findByLastUserActionInPlan(long planId, long userId)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = fetchByLastUserActionInPlan(planId,
@@ -1124,6 +857,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team history, or <code>null</code> if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory fetchByLastUserActionInPlan(long planId, long userId)
         throws SystemException {
         return fetchByLastUserActionInPlan(planId, userId, true);
@@ -1138,6 +872,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the matching plan team history, or <code>null</code> if a matching plan team history could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTeamHistory fetchByLastUserActionInPlan(long planId,
         long userId, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { planId, userId };
@@ -1149,6 +884,15 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
                     finderArgs, this);
         }
 
+        if (result instanceof PlanTeamHistory) {
+            PlanTeamHistory planTeamHistory = (PlanTeamHistory) result;
+
+            if ((planId != planTeamHistory.getPlanId()) ||
+                    (userId != planTeamHistory.getUserId())) {
+                result = null;
+            }
+        }
+
         if (result == null) {
             StringBundler query = new StringBundler(4);
 
@@ -1157,8 +901,6 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
             query.append(_FINDER_COLUMN_LASTUSERACTIONINPLAN_PLANID_2);
 
             query.append(_FINDER_COLUMN_LASTUSERACTIONINPLAN_USERID_2);
-
-            query.append(PlanTeamHistoryModelImpl.ORDER_BY_JPQL);
 
             String sql = query.toString();
 
@@ -1177,15 +919,20 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 List<PlanTeamHistory> list = q.list();
 
-                result = list;
-
-                PlanTeamHistory planTeamHistory = null;
-
                 if (list.isEmpty()) {
                     FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
                         finderArgs, list);
                 } else {
-                    planTeamHistory = list.get(0);
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PlanTeamHistoryPersistenceImpl.fetchByLastUserActionInPlan(long, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PlanTeamHistory planTeamHistory = list.get(0);
+
+                    result = planTeamHistory;
 
                     cacheResult(planTeamHistory);
 
@@ -1195,145 +942,20 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
                             finderArgs, planTeamHistory);
                     }
                 }
-
-                return planTeamHistory;
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+                    finderArgs);
+
                 throw processException(e);
             } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (PlanTeamHistory) result;
-            }
-        }
-    }
-
-    /**
-     * Returns all the plan team histories.
-     *
-     * @return the plan team histories
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTeamHistory> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan team histories.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan team histories
-     * @param end the upper bound of the range of plan team histories (not inclusive)
-     * @return the range of plan team histories
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTeamHistory> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan team histories.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan team histories
-     * @param end the upper bound of the range of plan team histories (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan team histories
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTeamHistory> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanTeamHistory> list = (List<PlanTeamHistory>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANTEAMHISTORY);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANTEAMHISTORY.concat(PlanTeamHistoryModelImpl.ORDER_BY_JPQL);
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
 
-        return list;
-    }
-
-    /**
-     * Removes all the plan team histories where planId = &#63; from the database.
-     *
-     * @param planId the plan ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByPlanId(long planId) throws SystemException {
-        for (PlanTeamHistory planTeamHistory : findByPlanId(planId)) {
-            remove(planTeamHistory);
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (PlanTeamHistory) result;
         }
     }
 
@@ -1342,76 +964,16 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      *
      * @param planId the plan ID
      * @param userId the user ID
+     * @return the plan team history that was removed
      * @throws SystemException if a system exception occurred
      */
-    public void removeByLastUserActionInPlan(long planId, long userId)
+    @Override
+    public PlanTeamHistory removeByLastUserActionInPlan(long planId, long userId)
         throws NoSuchPlanTeamHistoryException, SystemException {
         PlanTeamHistory planTeamHistory = findByLastUserActionInPlan(planId,
                 userId);
 
-        remove(planTeamHistory);
-    }
-
-    /**
-     * Removes all the plan team histories from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanTeamHistory planTeamHistory : findAll()) {
-            remove(planTeamHistory);
-        }
-    }
-
-    /**
-     * Returns the number of plan team histories where planId = &#63;.
-     *
-     * @param planId the plan ID
-     * @return the number of matching plan team histories
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByPlanId(long planId) throws SystemException {
-        Object[] finderArgs = new Object[] { planId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PLANTEAMHISTORY_WHERE);
-
-            query.append(_FINDER_COLUMN_PLANID_PLANID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(planId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
+        return remove(planTeamHistory);
     }
 
     /**
@@ -1422,12 +984,15 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
      * @return the number of matching plan team histories
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByLastUserActionInPlan(long planId, long userId)
         throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN;
+
         Object[] finderArgs = new Object[] { planId, userId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(3);
@@ -1454,16 +1019,13 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
                 qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1472,11 +1034,563 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     }
 
     /**
+     * Caches the plan team history in the entity cache if it is enabled.
+     *
+     * @param planTeamHistory the plan team history
+     */
+    @Override
+    public void cacheResult(PlanTeamHistory planTeamHistory) {
+        EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey(),
+            planTeamHistory);
+
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+            new Object[] {
+                planTeamHistory.getPlanId(), planTeamHistory.getUserId()
+            }, planTeamHistory);
+
+        planTeamHistory.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan team histories in the entity cache if it is enabled.
+     *
+     * @param planTeamHistories the plan team histories
+     */
+    @Override
+    public void cacheResult(List<PlanTeamHistory> planTeamHistories) {
+        for (PlanTeamHistory planTeamHistory : planTeamHistories) {
+            if (EntityCacheUtil.getResult(
+                        PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanTeamHistoryImpl.class,
+                        planTeamHistory.getPrimaryKey()) == null) {
+                cacheResult(planTeamHistory);
+            } else {
+                planTeamHistory.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan team histories.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanTeamHistoryImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanTeamHistoryImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan team history.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanTeamHistory planTeamHistory) {
+        EntityCacheUtil.removeResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(planTeamHistory);
+    }
+
+    @Override
+    public void clearCache(List<PlanTeamHistory> planTeamHistories) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanTeamHistory planTeamHistory : planTeamHistories) {
+            EntityCacheUtil.removeResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+                PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey());
+
+            clearUniqueFindersCache(planTeamHistory);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(PlanTeamHistory planTeamHistory) {
+        if (planTeamHistory.isNew()) {
+            Object[] args = new Object[] {
+                    planTeamHistory.getPlanId(), planTeamHistory.getUserId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+                args, planTeamHistory);
+        } else {
+            PlanTeamHistoryModelImpl planTeamHistoryModelImpl = (PlanTeamHistoryModelImpl) planTeamHistory;
+
+            if ((planTeamHistoryModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planTeamHistory.getPlanId(), planTeamHistory.getUserId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+                    args, planTeamHistory);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(PlanTeamHistory planTeamHistory) {
+        PlanTeamHistoryModelImpl planTeamHistoryModelImpl = (PlanTeamHistoryModelImpl) planTeamHistory;
+
+        Object[] args = new Object[] {
+                planTeamHistory.getPlanId(), planTeamHistory.getUserId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
+            args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+            args);
+
+        if ((planTeamHistoryModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    planTeamHistoryModelImpl.getOriginalPlanId(),
+                    planTeamHistoryModelImpl.getOriginalUserId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_LASTUSERACTIONINPLAN,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_LASTUSERACTIONINPLAN,
+                args);
+        }
+    }
+
+    /**
+     * Creates a new plan team history with the primary key. Does not add the plan team history to the database.
+     *
+     * @param id the primary key for the new plan team history
+     * @return the new plan team history
+     */
+    @Override
+    public PlanTeamHistory create(long id) {
+        PlanTeamHistory planTeamHistory = new PlanTeamHistoryImpl();
+
+        planTeamHistory.setNew(true);
+        planTeamHistory.setPrimaryKey(id);
+
+        return planTeamHistory;
+    }
+
+    /**
+     * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param id the primary key of the plan team history
+     * @return the plan team history that was removed
+     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory remove(long id)
+        throws NoSuchPlanTeamHistoryException, SystemException {
+        return remove((Serializable) id);
+    }
+
+    /**
+     * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan team history
+     * @return the plan team history that was removed
+     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory remove(Serializable primaryKey)
+        throws NoSuchPlanTeamHistoryException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanTeamHistory planTeamHistory = (PlanTeamHistory) session.get(PlanTeamHistoryImpl.class,
+                    primaryKey);
+
+            if (planTeamHistory == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanTeamHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planTeamHistory);
+        } catch (NoSuchPlanTeamHistoryException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanTeamHistory removeImpl(PlanTeamHistory planTeamHistory)
+        throws SystemException {
+        planTeamHistory = toUnwrappedModel(planTeamHistory);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planTeamHistory)) {
+                planTeamHistory = (PlanTeamHistory) session.get(PlanTeamHistoryImpl.class,
+                        planTeamHistory.getPrimaryKeyObj());
+            }
+
+            if (planTeamHistory != null) {
+                session.delete(planTeamHistory);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planTeamHistory != null) {
+            clearCache(planTeamHistory);
+        }
+
+        return planTeamHistory;
+    }
+
+    @Override
+    public PlanTeamHistory updateImpl(
+        com.ext.portlet.model.PlanTeamHistory planTeamHistory)
+        throws SystemException {
+        planTeamHistory = toUnwrappedModel(planTeamHistory);
+
+        boolean isNew = planTeamHistory.isNew();
+
+        PlanTeamHistoryModelImpl planTeamHistoryModelImpl = (PlanTeamHistoryModelImpl) planTeamHistory;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planTeamHistory.isNew()) {
+                session.save(planTeamHistory);
+
+                planTeamHistory.setNew(false);
+            } else {
+                session.merge(planTeamHistory);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanTeamHistoryModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planTeamHistoryModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planTeamHistoryModelImpl.getOriginalPlanId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+
+                args = new Object[] { planTeamHistoryModelImpl.getPlanId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTeamHistoryImpl.class, planTeamHistory.getPrimaryKey(),
+            planTeamHistory);
+
+        clearUniqueFindersCache(planTeamHistory);
+        cacheUniqueFindersCache(planTeamHistory);
+
+        return planTeamHistory;
+    }
+
+    protected PlanTeamHistory toUnwrappedModel(PlanTeamHistory planTeamHistory) {
+        if (planTeamHistory instanceof PlanTeamHistoryImpl) {
+            return planTeamHistory;
+        }
+
+        PlanTeamHistoryImpl planTeamHistoryImpl = new PlanTeamHistoryImpl();
+
+        planTeamHistoryImpl.setNew(planTeamHistory.isNew());
+        planTeamHistoryImpl.setPrimaryKey(planTeamHistory.getPrimaryKey());
+
+        planTeamHistoryImpl.setId(planTeamHistory.getId());
+        planTeamHistoryImpl.setPlanId(planTeamHistory.getPlanId());
+        planTeamHistoryImpl.setUserId(planTeamHistory.getUserId());
+        planTeamHistoryImpl.setAction(planTeamHistory.getAction());
+        planTeamHistoryImpl.setPayload(planTeamHistory.getPayload());
+        planTeamHistoryImpl.setCreated(planTeamHistory.getCreated());
+        planTeamHistoryImpl.setUpdateAuthorId(planTeamHistory.getUpdateAuthorId());
+
+        return planTeamHistoryImpl;
+    }
+
+    /**
+     * Returns the plan team history with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan team history
+     * @return the plan team history
+     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanTeamHistoryException, SystemException {
+        PlanTeamHistory planTeamHistory = fetchByPrimaryKey(primaryKey);
+
+        if (planTeamHistory == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanTeamHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planTeamHistory;
+    }
+
+    /**
+     * Returns the plan team history with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTeamHistoryException} if it could not be found.
+     *
+     * @param id the primary key of the plan team history
+     * @return the plan team history
+     * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory findByPrimaryKey(long id)
+        throws NoSuchPlanTeamHistoryException, SystemException {
+        return findByPrimaryKey((Serializable) id);
+    }
+
+    /**
+     * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan team history
+     * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanTeamHistory planTeamHistory = (PlanTeamHistory) EntityCacheUtil.getResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+                PlanTeamHistoryImpl.class, primaryKey);
+
+        if (planTeamHistory == _nullPlanTeamHistory) {
+            return null;
+        }
+
+        if (planTeamHistory == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planTeamHistory = (PlanTeamHistory) session.get(PlanTeamHistoryImpl.class,
+                        primaryKey);
+
+                if (planTeamHistory != null) {
+                    cacheResult(planTeamHistory);
+                } else {
+                    EntityCacheUtil.putResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanTeamHistoryImpl.class, primaryKey,
+                        _nullPlanTeamHistory);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanTeamHistoryModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanTeamHistoryImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planTeamHistory;
+    }
+
+    /**
+     * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param id the primary key of the plan team history
+     * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTeamHistory fetchByPrimaryKey(long id) throws SystemException {
+        return fetchByPrimaryKey((Serializable) id);
+    }
+
+    /**
+     * Returns all the plan team histories.
+     *
+     * @return the plan team histories
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTeamHistory> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan team histories.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan team histories
+     * @param end the upper bound of the range of plan team histories (not inclusive)
+     * @return the range of plan team histories
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTeamHistory> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan team histories.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan team histories
+     * @param end the upper bound of the range of plan team histories (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan team histories
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTeamHistory> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanTeamHistory> list = (List<PlanTeamHistory>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANTEAMHISTORY);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANTEAMHISTORY;
+
+                if (pagination) {
+                    sql = sql.concat(PlanTeamHistoryModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTeamHistory>(list);
+                } else {
+                    list = (List<PlanTeamHistory>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan team histories from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanTeamHistory planTeamHistory : findAll()) {
+            remove(planTeamHistory);
+        }
+    }
+
+    /**
      * Returns the number of plan team histories.
      *
      * @return the number of plan team histories
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1490,21 +1604,25 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
                 Query q = session.createQuery(_SQL_COUNT_PLANTEAMHISTORY);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -1521,7 +1639,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanTeamHistory>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1534,6 +1652,7 @@ public class PlanTeamHistoryPersistenceImpl extends BasePersistenceImpl<PlanTeam
     public void destroy() {
         EntityCacheUtil.removeCache(PlanTeamHistoryImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

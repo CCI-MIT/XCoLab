@@ -49,7 +49,7 @@ public class PlanColumnSettingsUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,102 +83,20 @@ public class PlanColumnSettingsUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static PlanColumnSettings update(
-        PlanColumnSettings planColumnSettings, boolean merge)
+        PlanColumnSettings planColumnSettings) throws SystemException {
+        return getPersistence().update(planColumnSettings);
+    }
+
+    /**
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+     */
+    public static PlanColumnSettings update(
+        PlanColumnSettings planColumnSettings, ServiceContext serviceContext)
         throws SystemException {
-        return getPersistence().update(planColumnSettings, merge);
-    }
-
-    /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
-     */
-    public static PlanColumnSettings update(
-        PlanColumnSettings planColumnSettings, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planColumnSettings, merge, serviceContext);
-    }
-
-    /**
-    * Caches the plan column settings in the entity cache if it is enabled.
-    *
-    * @param planColumnSettings the plan column settings
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.PlanColumnSettings planColumnSettings) {
-        getPersistence().cacheResult(planColumnSettings);
-    }
-
-    /**
-    * Caches the plan column settingses in the entity cache if it is enabled.
-    *
-    * @param planColumnSettingses the plan column settingses
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanColumnSettings> planColumnSettingses) {
-        getPersistence().cacheResult(planColumnSettingses);
-    }
-
-    /**
-    * Creates a new plan column settings with the primary key. Does not add the plan column settings to the database.
-    *
-    * @param planColumnSettingsId the primary key for the new plan column settings
-    * @return the new plan column settings
-    */
-    public static com.ext.portlet.model.PlanColumnSettings create(
-        long planColumnSettingsId) {
-        return getPersistence().create(planColumnSettingsId);
-    }
-
-    /**
-    * Removes the plan column settings with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param planColumnSettingsId the primary key of the plan column settings
-    * @return the plan column settings that was removed
-    * @throws com.ext.portlet.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanColumnSettings remove(
-        long planColumnSettingsId)
-        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(planColumnSettingsId);
-    }
-
-    public static com.ext.portlet.model.PlanColumnSettings updateImpl(
-        com.ext.portlet.model.PlanColumnSettings planColumnSettings,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planColumnSettings, merge);
-    }
-
-    /**
-    * Returns the plan column settings with the primary key or throws a {@link com.ext.portlet.NoSuchPlanColumnSettingsException} if it could not be found.
-    *
-    * @param planColumnSettingsId the primary key of the plan column settings
-    * @return the plan column settings
-    * @throws com.ext.portlet.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanColumnSettings findByPrimaryKey(
-        long planColumnSettingsId)
-        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(planColumnSettingsId);
-    }
-
-    /**
-    * Returns the plan column settings with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param planColumnSettingsId the primary key of the plan column settings
-    * @return the plan column settings, or <code>null</code> if a plan column settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanColumnSettings fetchByPrimaryKey(
-        long planColumnSettingsId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(planColumnSettingsId);
+        return getPersistence().update(planColumnSettings, serviceContext);
     }
 
     /**
@@ -234,6 +152,119 @@ public class PlanColumnSettingsUtil {
     }
 
     /**
+    * Removes the plan column settings where planUserSettingsId = &#63; and columnName = &#63; from the database.
+    *
+    * @param planUserSettingsId the plan user settings ID
+    * @param columnName the column name
+    * @return the plan column settings that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanColumnSettings removeByPlanUserSettingsIdColumnName(
+        long planUserSettingsId, java.lang.String columnName)
+        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .removeByPlanUserSettingsIdColumnName(planUserSettingsId,
+            columnName);
+    }
+
+    /**
+    * Returns the number of plan column settingses where planUserSettingsId = &#63; and columnName = &#63;.
+    *
+    * @param planUserSettingsId the plan user settings ID
+    * @param columnName the column name
+    * @return the number of matching plan column settingses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanUserSettingsIdColumnName(
+        long planUserSettingsId, java.lang.String columnName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .countByPlanUserSettingsIdColumnName(planUserSettingsId,
+            columnName);
+    }
+
+    /**
+    * Caches the plan column settings in the entity cache if it is enabled.
+    *
+    * @param planColumnSettings the plan column settings
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.PlanColumnSettings planColumnSettings) {
+        getPersistence().cacheResult(planColumnSettings);
+    }
+
+    /**
+    * Caches the plan column settingses in the entity cache if it is enabled.
+    *
+    * @param planColumnSettingses the plan column settingses
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanColumnSettings> planColumnSettingses) {
+        getPersistence().cacheResult(planColumnSettingses);
+    }
+
+    /**
+    * Creates a new plan column settings with the primary key. Does not add the plan column settings to the database.
+    *
+    * @param planColumnSettingsId the primary key for the new plan column settings
+    * @return the new plan column settings
+    */
+    public static com.ext.portlet.model.PlanColumnSettings create(
+        long planColumnSettingsId) {
+        return getPersistence().create(planColumnSettingsId);
+    }
+
+    /**
+    * Removes the plan column settings with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planColumnSettingsId the primary key of the plan column settings
+    * @return the plan column settings that was removed
+    * @throws com.ext.portlet.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanColumnSettings remove(
+        long planColumnSettingsId)
+        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(planColumnSettingsId);
+    }
+
+    public static com.ext.portlet.model.PlanColumnSettings updateImpl(
+        com.ext.portlet.model.PlanColumnSettings planColumnSettings)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(planColumnSettings);
+    }
+
+    /**
+    * Returns the plan column settings with the primary key or throws a {@link com.ext.portlet.NoSuchPlanColumnSettingsException} if it could not be found.
+    *
+    * @param planColumnSettingsId the primary key of the plan column settings
+    * @return the plan column settings
+    * @throws com.ext.portlet.NoSuchPlanColumnSettingsException if a plan column settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanColumnSettings findByPrimaryKey(
+        long planColumnSettingsId)
+        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(planColumnSettingsId);
+    }
+
+    /**
+    * Returns the plan column settings with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param planColumnSettingsId the primary key of the plan column settings
+    * @return the plan column settings, or <code>null</code> if a plan column settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanColumnSettings fetchByPrimaryKey(
+        long planColumnSettingsId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(planColumnSettingsId);
+    }
+
+    /**
     * Returns all the plan column settingses.
     *
     * @return the plan column settingses
@@ -248,7 +279,7 @@ public class PlanColumnSettingsUtil {
     * Returns a range of all the plan column settingses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanColumnSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan column settingses
@@ -266,7 +297,7 @@ public class PlanColumnSettingsUtil {
     * Returns an ordered range of all the plan column settingses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanColumnSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan column settingses
@@ -283,21 +314,6 @@ public class PlanColumnSettingsUtil {
     }
 
     /**
-    * Removes the plan column settings where planUserSettingsId = &#63; and columnName = &#63; from the database.
-    *
-    * @param planUserSettingsId the plan user settings ID
-    * @param columnName the column name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanUserSettingsIdColumnName(
-        long planUserSettingsId, java.lang.String columnName)
-        throws com.ext.portlet.NoSuchPlanColumnSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence()
-            .removeByPlanUserSettingsIdColumnName(planUserSettingsId, columnName);
-    }
-
-    /**
     * Removes all the plan column settingses from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -305,22 +321,6 @@ public class PlanColumnSettingsUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan column settingses where planUserSettingsId = &#63; and columnName = &#63;.
-    *
-    * @param planUserSettingsId the plan user settings ID
-    * @param columnName the column name
-    * @return the number of matching plan column settingses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanUserSettingsIdColumnName(
-        long planUserSettingsId, java.lang.String columnName)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .countByPlanUserSettingsIdColumnName(planUserSettingsId,
-            columnName);
     }
 
     /**
@@ -346,10 +346,9 @@ public class PlanColumnSettingsUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanColumnSettingsPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanColumnSettingsUtil.class,
-            "_persistence");
     }
 }

@@ -24,6 +24,7 @@ public abstract class ModelGlobalPreferenceBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a model global preference model instance should use the {@link ModelGlobalPreference} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelGlobalPreferenceLocalServiceUtil.addModelGlobalPreference(this);

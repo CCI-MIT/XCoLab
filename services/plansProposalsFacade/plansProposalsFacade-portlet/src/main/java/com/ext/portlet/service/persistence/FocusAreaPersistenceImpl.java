@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchFocusAreaException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.impl.FocusAreaImpl;
 import com.ext.portlet.model.impl.FocusAreaModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -20,68 +21,10 @@ import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
-import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
-import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +41,14 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +56,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the focus area service.
@@ -138,6 +82,15 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaModelImpl.FINDER_CACHE_ENABLED, FocusAreaImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaModelImpl.FINDER_CACHE_ENABLED, FocusAreaImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+            FocusAreaModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_NAME = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             FocusAreaModelImpl.FINDER_CACHE_ENABLED, FocusAreaImpl.class,
             FINDER_CLASS_NAME_ENTITY, "fetchByName",
@@ -147,28 +100,22 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
             FocusAreaModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
             new String[] { String.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaModelImpl.FINDER_CACHE_ENABLED, FocusAreaImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaModelImpl.FINDER_CACHE_ENABLED, FocusAreaImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
-            FocusAreaModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_NAME_NAME_1 = "focusArea.name IS NULL";
+    private static final String _FINDER_COLUMN_NAME_NAME_2 = "focusArea.name = ?";
+    private static final String _FINDER_COLUMN_NAME_NAME_3 = "(focusArea.name IS NULL OR focusArea.name = '')";
     private static final String _SQL_SELECT_FOCUSAREA = "SELECT focusArea FROM FocusArea focusArea";
     private static final String _SQL_SELECT_FOCUSAREA_WHERE = "SELECT focusArea FROM FocusArea focusArea WHERE ";
     private static final String _SQL_COUNT_FOCUSAREA = "SELECT COUNT(focusArea) FROM FocusArea focusArea";
     private static final String _SQL_COUNT_FOCUSAREA_WHERE = "SELECT COUNT(focusArea) FROM FocusArea focusArea WHERE ";
-    private static final String _FINDER_COLUMN_NAME_NAME_1 = "focusArea.name IS NULL";
-    private static final String _FINDER_COLUMN_NAME_NAME_2 = "focusArea.name = ?";
-    private static final String _FINDER_COLUMN_NAME_NAME_3 = "(focusArea.name IS NULL OR focusArea.name = ?)";
     private static final String _ORDER_BY_ENTITY_ALIAS = "focusArea.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No FocusArea exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No FocusArea exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(FocusAreaPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id", "order"
+            });
     private static FocusArea _nullFocusArea = new FocusAreaImpl() {
             @Override
             public Object clone() {
@@ -182,11 +129,13 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         };
 
     private static CacheModel<FocusArea> _nullFocusAreaCacheModel = new CacheModel<FocusArea>() {
+            @Override
             public FocusArea toEntityModel() {
                 return _nullFocusArea;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -341,12 +290,243 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public FocusAreaPersistenceImpl() {
+        setModelClass(FocusArea.class);
+    }
+
+    /**
+     * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
+     *
+     * @param name the name
+     * @return the matching focus area
+     * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusArea findByName(String name)
+        throws NoSuchFocusAreaException, SystemException {
+        FocusArea focusArea = fetchByName(name);
+
+        if (focusArea == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("name=");
+            msg.append(name);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchFocusAreaException(msg.toString());
+        }
+
+        return focusArea;
+    }
+
+    /**
+     * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param name the name
+     * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusArea fetchByName(String name) throws SystemException {
+        return fetchByName(name, true);
+    }
+
+    /**
+     * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param name the name
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusArea fetchByName(String name, boolean retrieveFromCache)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { name };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_NAME,
+                    finderArgs, this);
+        }
+
+        if (result instanceof FocusArea) {
+            FocusArea focusArea = (FocusArea) result;
+
+            if (!Validator.equals(name, focusArea.getName())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_FOCUSAREA_WHERE);
+
+            boolean bindName = false;
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_NAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_NAME_NAME_3);
+            } else {
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_NAME_NAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindName) {
+                    qPos.add(name);
+                }
+
+                List<FocusArea> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "FocusAreaPersistenceImpl.fetchByName(String, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    FocusArea focusArea = list.get(0);
+
+                    result = focusArea;
+
+                    cacheResult(focusArea);
+
+                    if ((focusArea.getName() == null) ||
+                            !focusArea.getName().equals(name)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
+                            finderArgs, focusArea);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (FocusArea) result;
+        }
+    }
+
+    /**
+     * Removes the focus area where name = &#63; from the database.
+     *
+     * @param name the name
+     * @return the focus area that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public FocusArea removeByName(String name)
+        throws NoSuchFocusAreaException, SystemException {
+        FocusArea focusArea = findByName(name);
+
+        return remove(focusArea);
+    }
+
+    /**
+     * Returns the number of focus areas where name = &#63;.
+     *
+     * @param name the name
+     * @return the number of matching focus areas
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByName(String name) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_NAME;
+
+        Object[] finderArgs = new Object[] { name };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_FOCUSAREA_WHERE);
+
+            boolean bindName = false;
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_NAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_NAME_NAME_3);
+            } else {
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_NAME_NAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindName) {
+                    qPos.add(name);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the focus area in the entity cache if it is enabled.
      *
      * @param focusArea the focus area
      */
+    @Override
     public void cacheResult(FocusArea focusArea) {
         EntityCacheUtil.putResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             FocusAreaImpl.class, focusArea.getPrimaryKey(), focusArea);
@@ -362,6 +542,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      *
      * @param focusAreas the focus areas
      */
+    @Override
     public void cacheResult(List<FocusArea> focusAreas) {
         for (FocusArea focusArea : focusAreas) {
             if (EntityCacheUtil.getResult(
@@ -425,9 +606,43 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         }
     }
 
+    protected void cacheUniqueFindersCache(FocusArea focusArea) {
+        if (focusArea.isNew()) {
+            Object[] args = new Object[] { focusArea.getName() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_NAME, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME, args, focusArea);
+        } else {
+            FocusAreaModelImpl focusAreaModelImpl = (FocusAreaModelImpl) focusArea;
+
+            if ((focusAreaModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_NAME.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] { focusArea.getName() };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_NAME, args,
+                    Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME, args,
+                    focusArea);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(FocusArea focusArea) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME,
-            new Object[] { focusArea.getName() });
+        FocusAreaModelImpl focusAreaModelImpl = (FocusAreaModelImpl) focusArea;
+
+        Object[] args = new Object[] { focusArea.getName() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
+
+        if ((focusAreaModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_NAME.getColumnBitmask()) != 0) {
+            args = new Object[] { focusAreaModelImpl.getOriginalName() };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
+        }
     }
 
     /**
@@ -436,6 +651,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @param id the primary key for the new focus area
      * @return the new focus area
      */
+    @Override
     public FocusArea create(long id) {
         FocusArea focusArea = new FocusAreaImpl();
 
@@ -453,9 +669,10 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @throws com.ext.portlet.NoSuchFocusAreaException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusArea remove(long id)
         throws NoSuchFocusAreaException, SystemException {
-        return remove(Long.valueOf(id));
+        return remove((Serializable) id);
     }
 
     /**
@@ -506,35 +723,46 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, focusArea);
+            if (!session.contains(focusArea)) {
+                focusArea = (FocusArea) session.get(FocusAreaImpl.class,
+                        focusArea.getPrimaryKeyObj());
+            }
+
+            if (focusArea != null) {
+                session.delete(focusArea);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(focusArea);
+        if (focusArea != null) {
+            clearCache(focusArea);
+        }
 
         return focusArea;
     }
 
     @Override
-    public FocusArea updateImpl(com.ext.portlet.model.FocusArea focusArea,
-        boolean merge) throws SystemException {
+    public FocusArea updateImpl(com.ext.portlet.model.FocusArea focusArea)
+        throws SystemException {
         focusArea = toUnwrappedModel(focusArea);
 
         boolean isNew = focusArea.isNew();
-
-        FocusAreaModelImpl focusAreaModelImpl = (FocusAreaModelImpl) focusArea;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, focusArea, merge);
+            if (focusArea.isNew()) {
+                session.save(focusArea);
 
-            focusArea.setNew(false);
+                focusArea.setNew(false);
+            } else {
+                session.merge(focusArea);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -550,23 +778,8 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
         EntityCacheUtil.putResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
             FocusAreaImpl.class, focusArea.getPrimaryKey(), focusArea);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
-                new Object[] { focusArea.getName() }, focusArea);
-        } else {
-            if ((focusAreaModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_NAME.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        focusAreaModelImpl.getOriginalName()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME, args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
-                    new Object[] { focusArea.getName() }, focusArea);
-            }
-        }
+        clearUniqueFindersCache(focusArea);
+        cacheUniqueFindersCache(focusArea);
 
         return focusArea;
     }
@@ -593,13 +806,24 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      *
      * @param primaryKey the primary key of the focus area
      * @return the focus area
-     * @throws com.liferay.portal.NoSuchModelException if a focus area with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchFocusAreaException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public FocusArea findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchFocusAreaException, SystemException {
+        FocusArea focusArea = fetchByPrimaryKey(primaryKey);
+
+        if (focusArea == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchFocusAreaException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return focusArea;
     }
 
     /**
@@ -610,20 +834,10 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @throws com.ext.portlet.NoSuchFocusAreaException if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusArea findByPrimaryKey(long id)
         throws NoSuchFocusAreaException, SystemException {
-        FocusArea focusArea = fetchByPrimaryKey(id);
-
-        if (focusArea == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
-            }
-
-            throw new NoSuchFocusAreaException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                id);
-        }
-
-        return focusArea;
+        return findByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -636,7 +850,39 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     @Override
     public FocusArea fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        FocusArea focusArea = (FocusArea) EntityCacheUtil.getResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+                FocusAreaImpl.class, primaryKey);
+
+        if (focusArea == _nullFocusArea) {
+            return null;
+        }
+
+        if (focusArea == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                focusArea = (FocusArea) session.get(FocusAreaImpl.class,
+                        primaryKey);
+
+                if (focusArea != null) {
+                    cacheResult(focusArea);
+                } else {
+                    EntityCacheUtil.putResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+                        FocusAreaImpl.class, primaryKey, _nullFocusArea);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
+                    FocusAreaImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return focusArea;
     }
 
     /**
@@ -646,176 +892,9 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the focus area, or <code>null</code> if a focus area with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public FocusArea fetchByPrimaryKey(long id) throws SystemException {
-        FocusArea focusArea = (FocusArea) EntityCacheUtil.getResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
-                FocusAreaImpl.class, id);
-
-        if (focusArea == _nullFocusArea) {
-            return null;
-        }
-
-        if (focusArea == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                focusArea = (FocusArea) session.get(FocusAreaImpl.class,
-                        Long.valueOf(id));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (focusArea != null) {
-                    cacheResult(focusArea);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(FocusAreaModelImpl.ENTITY_CACHE_ENABLED,
-                        FocusAreaImpl.class, id, _nullFocusArea);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return focusArea;
-    }
-
-    /**
-     * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
-     *
-     * @param name the name
-     * @return the matching focus area
-     * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusArea findByName(String name)
-        throws NoSuchFocusAreaException, SystemException {
-        FocusArea focusArea = fetchByName(name);
-
-        if (focusArea == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("name=");
-            msg.append(name);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchFocusAreaException(msg.toString());
-        }
-
-        return focusArea;
-    }
-
-    /**
-     * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param name the name
-     * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusArea fetchByName(String name) throws SystemException {
-        return fetchByName(name, true);
-    }
-
-    /**
-     * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param name the name
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public FocusArea fetchByName(String name, boolean retrieveFromCache)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { name };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_NAME,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_FOCUSAREA_WHERE);
-
-            if (name == null) {
-                query.append(_FINDER_COLUMN_NAME_NAME_1);
-            } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_NAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_NAME_NAME_2);
-                }
-            }
-
-            query.append(FocusAreaModelImpl.ORDER_BY_JPQL);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (name != null) {
-                    qPos.add(name);
-                }
-
-                List<FocusArea> list = q.list();
-
-                result = list;
-
-                FocusArea focusArea = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
-                        finderArgs, list);
-                } else {
-                    focusArea = list.get(0);
-
-                    cacheResult(focusArea);
-
-                    if ((focusArea.getName() == null) ||
-                            !focusArea.getName().equals(name)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_NAME,
-                            finderArgs, focusArea);
-                    }
-                }
-
-                return focusArea;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_NAME,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (FocusArea) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -824,6 +903,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the focus areas
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusArea> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -832,7 +912,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * Returns a range of all the focus areas.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of focus areas
@@ -840,6 +920,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the range of focus areas
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusArea> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -849,7 +930,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * Returns an ordered range of all the focus areas.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of focus areas
@@ -858,17 +939,20 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the ordered range of focus areas
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<FocusArea> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -890,7 +974,11 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
 
                 sql = query.toString();
             } else {
-                sql = _SQL_SELECT_FOCUSAREA.concat(FocusAreaModelImpl.ORDER_BY_JPQL);
+                sql = _SQL_SELECT_FOCUSAREA;
+
+                if (pagination) {
+                    sql = sql.concat(FocusAreaModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -900,26 +988,26 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<FocusArea>) QueryUtil.list(q, getDialect(),
                             start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<FocusArea>(list);
                 } else {
                     list = (List<FocusArea>) QueryUtil.list(q, getDialect(),
                             start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -928,88 +1016,15 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     }
 
     /**
-     * Removes the focus area where name = &#63; from the database.
-     *
-     * @param name the name
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByName(String name)
-        throws NoSuchFocusAreaException, SystemException {
-        FocusArea focusArea = findByName(name);
-
-        remove(focusArea);
-    }
-
-    /**
      * Removes all the focus areas from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (FocusArea focusArea : findAll()) {
             remove(focusArea);
         }
-    }
-
-    /**
-     * Returns the number of focus areas where name = &#63;.
-     *
-     * @param name the name
-     * @return the number of matching focus areas
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByName(String name) throws SystemException {
-        Object[] finderArgs = new Object[] { name };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_NAME,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_FOCUSAREA_WHERE);
-
-            if (name == null) {
-                query.append(_FINDER_COLUMN_NAME_NAME_1);
-            } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_NAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_NAME_NAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (name != null) {
-                    qPos.add(name);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_NAME,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1018,6 +1033,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
      * @return the number of focus areas
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1031,21 +1047,25 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
                 Query q = session.createQuery(_SQL_COUNT_FOCUSAREA);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -1062,7 +1082,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<FocusArea>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1075,6 +1095,7 @@ public class FocusAreaPersistenceImpl extends BasePersistenceImpl<FocusArea>
     public void destroy() {
         EntityCacheUtil.removeCache(FocusAreaImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

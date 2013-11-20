@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.impl.ProposalSupporterImpl;
 import com.ext.portlet.model.impl.ProposalSupporterModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -76,12 +77,10 @@ import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +100,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +135,17 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
+            ProposalSupporterImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
+            ProposalSupporterImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
             ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +154,8 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
@@ -160,6 +168,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             ProposalSupporterModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByProposalId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PROPOSALID_PROPOSALID_2 = "proposalSupporter.id.proposalId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
             ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
             ProposalSupporterImpl.class,
@@ -167,8 +176,8 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID =
         new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
@@ -181,23 +190,11 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             ProposalSupporterModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
-            ProposalSupporterImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED,
-            ProposalSupporterImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-            ProposalSupporterModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_USERID_USERID_2 = "proposalSupporter.id.userId = ?";
     private static final String _SQL_SELECT_PROPOSALSUPPORTER = "SELECT proposalSupporter FROM ProposalSupporter proposalSupporter";
     private static final String _SQL_SELECT_PROPOSALSUPPORTER_WHERE = "SELECT proposalSupporter FROM ProposalSupporter proposalSupporter WHERE ";
     private static final String _SQL_COUNT_PROPOSALSUPPORTER = "SELECT COUNT(proposalSupporter) FROM ProposalSupporter proposalSupporter";
     private static final String _SQL_COUNT_PROPOSALSUPPORTER_WHERE = "SELECT COUNT(proposalSupporter) FROM ProposalSupporter proposalSupporter WHERE ";
-    private static final String _FINDER_COLUMN_PROPOSALID_PROPOSALID_2 = "proposalSupporter.id.proposalId = ?";
-    private static final String _FINDER_COLUMN_USERID_USERID_2 = "proposalSupporter.id.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposalSupporter.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ProposalSupporter exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ProposalSupporter exists with the key {";
@@ -218,11 +215,13 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
 
     private static CacheModel<ProposalSupporter> _nullProposalSupporterCacheModel =
         new CacheModel<ProposalSupporter>() {
+            @Override
             public ProposalSupporter toEntityModel() {
                 return _nullProposalSupporter;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -389,354 +388,10 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             proposalSupporter);
 
         proposalSupporter.resetOriginalValues();
-    }
-
-    /**
-     * Caches the proposal supporters in the entity cache if it is enabled.
-     *
-     * @param proposalSupporters the proposal supporters
-     */
-    public void cacheResult(List<ProposalSupporter> proposalSupporters) {
-        for (ProposalSupporter proposalSupporter : proposalSupporters) {
-            if (EntityCacheUtil.getResult(
-                        ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-                        ProposalSupporterImpl.class,
-                        proposalSupporter.getPrimaryKey()) == null) {
-                cacheResult(proposalSupporter);
-            } else {
-                proposalSupporter.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all proposal supporters.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(ProposalSupporterImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(ProposalSupporterImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the proposal supporter.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(ProposalSupporter proposalSupporter) {
-        EntityCacheUtil.removeResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-            ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<ProposalSupporter> proposalSupporters) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (ProposalSupporter proposalSupporter : proposalSupporters) {
-            EntityCacheUtil.removeResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-                ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new proposal supporter with the primary key. Does not add the proposal supporter to the database.
-     *
-     * @param proposalSupporterPK the primary key for the new proposal supporter
-     * @return the new proposal supporter
-     */
-    public ProposalSupporter create(ProposalSupporterPK proposalSupporterPK) {
-        ProposalSupporter proposalSupporter = new ProposalSupporterImpl();
-
-        proposalSupporter.setNew(true);
-        proposalSupporter.setPrimaryKey(proposalSupporterPK);
-
-        return proposalSupporter;
-    }
-
-    /**
-     * Removes the proposal supporter with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param proposalSupporterPK the primary key of the proposal supporter
-     * @return the proposal supporter that was removed
-     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ProposalSupporter remove(ProposalSupporterPK proposalSupporterPK)
-        throws NoSuchProposalSupporterException, SystemException {
-        return remove((Serializable) proposalSupporterPK);
-    }
-
-    /**
-     * Removes the proposal supporter with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the proposal supporter
-     * @return the proposal supporter that was removed
-     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ProposalSupporter remove(Serializable primaryKey)
-        throws NoSuchProposalSupporterException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            ProposalSupporter proposalSupporter = (ProposalSupporter) session.get(ProposalSupporterImpl.class,
-                    primaryKey);
-
-            if (proposalSupporter == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchProposalSupporterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(proposalSupporter);
-        } catch (NoSuchProposalSupporterException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected ProposalSupporter removeImpl(ProposalSupporter proposalSupporter)
-        throws SystemException {
-        proposalSupporter = toUnwrappedModel(proposalSupporter);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, proposalSupporter);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(proposalSupporter);
-
-        return proposalSupporter;
-    }
-
-    @Override
-    public ProposalSupporter updateImpl(
-        com.ext.portlet.model.ProposalSupporter proposalSupporter, boolean merge)
-        throws SystemException {
-        proposalSupporter = toUnwrappedModel(proposalSupporter);
-
-        boolean isNew = proposalSupporter.isNew();
-
-        ProposalSupporterModelImpl proposalSupporterModelImpl = (ProposalSupporterModelImpl) proposalSupporter;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, proposalSupporter, merge);
-
-            proposalSupporter.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !ProposalSupporterModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((proposalSupporterModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(proposalSupporterModelImpl.getOriginalProposalId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(proposalSupporterModelImpl.getProposalId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                    args);
-            }
-
-            if ((proposalSupporterModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(proposalSupporterModelImpl.getOriginalUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(proposalSupporterModelImpl.getUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-            ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey(),
-            proposalSupporter);
-
-        return proposalSupporter;
-    }
-
-    protected ProposalSupporter toUnwrappedModel(
-        ProposalSupporter proposalSupporter) {
-        if (proposalSupporter instanceof ProposalSupporterImpl) {
-            return proposalSupporter;
-        }
-
-        ProposalSupporterImpl proposalSupporterImpl = new ProposalSupporterImpl();
-
-        proposalSupporterImpl.setNew(proposalSupporter.isNew());
-        proposalSupporterImpl.setPrimaryKey(proposalSupporter.getPrimaryKey());
-
-        proposalSupporterImpl.setProposalId(proposalSupporter.getProposalId());
-        proposalSupporterImpl.setUserId(proposalSupporter.getUserId());
-        proposalSupporterImpl.setCreateDate(proposalSupporter.getCreateDate());
-
-        return proposalSupporterImpl;
-    }
-
-    /**
-     * Returns the proposal supporter with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the proposal supporter
-     * @return the proposal supporter
-     * @throws com.liferay.portal.NoSuchModelException if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ProposalSupporter findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((ProposalSupporterPK) primaryKey);
-    }
-
-    /**
-     * Returns the proposal supporter with the primary key or throws a {@link com.ext.portlet.NoSuchProposalSupporterException} if it could not be found.
-     *
-     * @param proposalSupporterPK the primary key of the proposal supporter
-     * @return the proposal supporter
-     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ProposalSupporter findByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK)
-        throws NoSuchProposalSupporterException, SystemException {
-        ProposalSupporter proposalSupporter = fetchByPrimaryKey(proposalSupporterPK);
-
-        if (proposalSupporter == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    proposalSupporterPK);
-            }
-
-            throw new NoSuchProposalSupporterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                proposalSupporterPK);
-        }
-
-        return proposalSupporter;
-    }
-
-    /**
-     * Returns the proposal supporter with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the proposal supporter
-     * @return the proposal supporter, or <code>null</code> if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ProposalSupporter fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((ProposalSupporterPK) primaryKey);
-    }
-
-    /**
-     * Returns the proposal supporter with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param proposalSupporterPK the primary key of the proposal supporter
-     * @return the proposal supporter, or <code>null</code> if a proposal supporter with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ProposalSupporter fetchByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK) throws SystemException {
-        ProposalSupporter proposalSupporter = (ProposalSupporter) EntityCacheUtil.getResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-                ProposalSupporterImpl.class, proposalSupporterPK);
-
-        if (proposalSupporter == _nullProposalSupporter) {
-            return null;
-        }
-
-        if (proposalSupporter == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                proposalSupporter = (ProposalSupporter) session.get(ProposalSupporterImpl.class,
-                        proposalSupporterPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (proposalSupporter != null) {
-                    cacheResult(proposalSupporter);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
-                        ProposalSupporterImpl.class, proposalSupporterPK,
-                        _nullProposalSupporter);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return proposalSupporter;
+=======
+    public ProposalSupporterPersistenceImpl() {
+        setModelClass(ProposalSupporter.class);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
     /**
@@ -746,6 +401,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByProposalId(long proposalId)
         throws SystemException {
         return findByProposalId(proposalId, QueryUtil.ALL_POS,
@@ -756,7 +412,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * Returns a range of all the proposal supporters where proposalId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param proposalId the proposal ID
@@ -765,6 +421,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the range of matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByProposalId(long proposalId, int start,
         int end) throws SystemException {
         return findByProposalId(proposalId, start, end, null);
@@ -774,7 +431,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * Returns an ordered range of all the proposal supporters where proposalId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param proposalId the proposal ID
@@ -784,13 +441,16 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the ordered range of matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByProposalId(long proposalId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID;
             finderArgs = new Object[] { proposalId };
         } else {
@@ -801,6 +461,16 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
         List<ProposalSupporter> list = (List<ProposalSupporter>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (ProposalSupporter proposalSupporter : list) {
+                if ((proposalId != proposalSupporter.getProposalId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -808,7 +478,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PROPOSALSUPPORTER_WHERE);
@@ -818,6 +488,9 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ProposalSupporterModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -833,19 +506,26 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
 
                 qPos.add(proposalId);
 
-                list = (List<ProposalSupporter>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ProposalSupporter>(list);
+                } else {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -856,44 +536,58 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     /**
      * Returns the first proposal supporter in the ordered set where proposalId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param proposalId the proposal ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching proposal supporter
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter findByProposalId_First(long proposalId,
         OrderByComparator orderByComparator)
         throws NoSuchProposalSupporterException, SystemException {
+        ProposalSupporter proposalSupporter = fetchByProposalId_First(proposalId,
+                orderByComparator);
+
+        if (proposalSupporter != null) {
+            return proposalSupporter;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("proposalId=");
+        msg.append(proposalId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalSupporterException(msg.toString());
+    }
+
+    /**
+     * Returns the first proposal supporter in the ordered set where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByProposalId_First(long proposalId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<ProposalSupporter> list = findByProposalId(proposalId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("proposalId=");
-            msg.append(proposalId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchProposalSupporterException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last proposal supporter in the ordered set where proposalId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param proposalId the proposal ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -901,36 +595,58 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter findByProposalId_Last(long proposalId,
         OrderByComparator orderByComparator)
         throws NoSuchProposalSupporterException, SystemException {
+        ProposalSupporter proposalSupporter = fetchByProposalId_Last(proposalId,
+                orderByComparator);
+
+        if (proposalSupporter != null) {
+            return proposalSupporter;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("proposalId=");
+        msg.append(proposalId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalSupporterException(msg.toString());
+    }
+
+    /**
+     * Returns the last proposal supporter in the ordered set where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByProposalId_Last(long proposalId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByProposalId(proposalId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<ProposalSupporter> list = findByProposalId(proposalId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("proposalId=");
-            msg.append(proposalId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchProposalSupporterException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the proposal supporters before and after the current proposal supporter in the ordered set where proposalId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param proposalSupporterPK the primary key of the current proposal supporter
      * @param proposalId the proposal ID
@@ -939,6 +655,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter[] findByProposalId_PrevAndNext(
         ProposalSupporterPK proposalSupporterPK, long proposalId,
         OrderByComparator orderByComparator)
@@ -1032,6 +749,8 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                     }
                 }
             }
+        } else {
+            query.append(ProposalSupporterModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1063,12 +782,78 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     }
 
     /**
+     * Removes all the proposal supporters where proposalId = &#63; from the database.
+     *
+     * @param proposalId the proposal ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByProposalId(long proposalId) throws SystemException {
+        for (ProposalSupporter proposalSupporter : findByProposalId(
+                proposalId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(proposalSupporter);
+        }
+    }
+
+    /**
+     * Returns the number of proposal supporters where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @return the number of matching proposal supporters
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByProposalId(long proposalId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PROPOSALID;
+
+        Object[] finderArgs = new Object[] { proposalId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PROPOSALSUPPORTER_WHERE);
+
+            query.append(_FINDER_COLUMN_PROPOSALID_PROPOSALID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(proposalId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the proposal supporters where userId = &#63;.
      *
      * @param userId the user ID
      * @return the matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByUserId(long userId)
         throws SystemException {
         return findByUserId(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -1078,7 +863,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * Returns a range of all the proposal supporters where userId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param userId the user ID
@@ -1087,6 +872,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the range of matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByUserId(long userId, int start, int end)
         throws SystemException {
         return findByUserId(userId, start, end, null);
@@ -1096,7 +882,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * Returns an ordered range of all the proposal supporters where userId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param userId the user ID
@@ -1106,13 +892,16 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the ordered range of matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalSupporter> findByUserId(long userId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID;
             finderArgs = new Object[] { userId };
         } else {
@@ -1123,6 +912,16 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
         List<ProposalSupporter> list = (List<ProposalSupporter>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (ProposalSupporter proposalSupporter : list) {
+                if ((userId != proposalSupporter.getUserId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1130,7 +929,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PROPOSALSUPPORTER_WHERE);
@@ -1140,6 +939,9 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ProposalSupporterModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1155,19 +957,26 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
 
                 qPos.add(userId);
 
-                list = (List<ProposalSupporter>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ProposalSupporter>(list);
+                } else {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1178,44 +987,58 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     /**
      * Returns the first proposal supporter in the ordered set where userId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching proposal supporter
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter findByUserId_First(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchProposalSupporterException, SystemException {
+        ProposalSupporter proposalSupporter = fetchByUserId_First(userId,
+                orderByComparator);
+
+        if (proposalSupporter != null) {
+            return proposalSupporter;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("userId=");
+        msg.append(userId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalSupporterException(msg.toString());
+    }
+
+    /**
+     * Returns the first proposal supporter in the ordered set where userId = &#63;.
+     *
+     * @param userId the user ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByUserId_First(long userId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<ProposalSupporter> list = findByUserId(userId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchProposalSupporterException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last proposal supporter in the ordered set where userId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param userId the user ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1223,36 +1046,58 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a matching proposal supporter could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter findByUserId_Last(long userId,
         OrderByComparator orderByComparator)
         throws NoSuchProposalSupporterException, SystemException {
+        ProposalSupporter proposalSupporter = fetchByUserId_Last(userId,
+                orderByComparator);
+
+        if (proposalSupporter != null) {
+            return proposalSupporter;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("userId=");
+        msg.append(userId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalSupporterException(msg.toString());
+    }
+
+    /**
+     * Returns the last proposal supporter in the ordered set where userId = &#63;.
+     *
+     * @param userId the user ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal supporter, or <code>null</code> if a matching proposal supporter could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByUserId_Last(long userId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByUserId(userId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<ProposalSupporter> list = findByUserId(userId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchProposalSupporterException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the proposal supporters before and after the current proposal supporter in the ordered set where userId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param proposalSupporterPK the primary key of the current proposal supporter
      * @param userId the user ID
@@ -1261,6 +1106,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalSupporter[] findByUserId_PrevAndNext(
         ProposalSupporterPK proposalSupporterPK, long userId,
         OrderByComparator orderByComparator)
@@ -1354,6 +1200,8 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                     }
                 }
             }
+        } else {
+            query.append(ProposalSupporterModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1385,198 +1233,17 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     }
 
     /**
-     * Returns all the proposal supporters.
-     *
-     * @return the proposal supporters
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ProposalSupporter> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the proposal supporters.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of proposal supporters
-     * @param end the upper bound of the range of proposal supporters (not inclusive)
-     * @return the range of proposal supporters
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ProposalSupporter> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the proposal supporters.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of proposal supporters
-     * @param end the upper bound of the range of proposal supporters (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of proposal supporters
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ProposalSupporter> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<ProposalSupporter> list = (List<ProposalSupporter>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PROPOSALSUPPORTER);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PROPOSALSUPPORTER;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<ProposalSupporter>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<ProposalSupporter>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Removes all the proposal supporters where proposalId = &#63; from the database.
-     *
-     * @param proposalId the proposal ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByProposalId(long proposalId) throws SystemException {
-        for (ProposalSupporter proposalSupporter : findByProposalId(proposalId)) {
-            remove(proposalSupporter);
-        }
-    }
-
-    /**
      * Removes all the proposal supporters where userId = &#63; from the database.
      *
      * @param userId the user ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByUserId(long userId) throws SystemException {
-        for (ProposalSupporter proposalSupporter : findByUserId(userId)) {
+        for (ProposalSupporter proposalSupporter : findByUserId(userId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(proposalSupporter);
         }
-    }
-
-    /**
-     * Removes all the proposal supporters from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (ProposalSupporter proposalSupporter : findAll()) {
-            remove(proposalSupporter);
-        }
-    }
-
-    /**
-     * Returns the number of proposal supporters where proposalId = &#63;.
-     *
-     * @param proposalId the proposal ID
-     * @return the number of matching proposal supporters
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByProposalId(long proposalId) throws SystemException {
-        Object[] finderArgs = new Object[] { proposalId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PROPOSALSUPPORTER_WHERE);
-
-            query.append(_FINDER_COLUMN_PROPOSALID_PROPOSALID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(proposalId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1586,11 +1253,14 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
      * @return the number of matching proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByUserId(long userId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
+
         Object[] finderArgs = new Object[] { userId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1613,16 +1283,13 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                 qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1631,11 +1298,516 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     }
 
     /**
+     * Caches the proposal supporter in the entity cache if it is enabled.
+     *
+     * @param proposalSupporter the proposal supporter
+     */
+    @Override
+    public void cacheResult(ProposalSupporter proposalSupporter) {
+        EntityCacheUtil.putResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey(),
+            proposalSupporter);
+
+        proposalSupporter.resetOriginalValues();
+    }
+
+    /**
+     * Caches the proposal supporters in the entity cache if it is enabled.
+     *
+     * @param proposalSupporters the proposal supporters
+     */
+    @Override
+    public void cacheResult(List<ProposalSupporter> proposalSupporters) {
+        for (ProposalSupporter proposalSupporter : proposalSupporters) {
+            if (EntityCacheUtil.getResult(
+                        ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+                        ProposalSupporterImpl.class,
+                        proposalSupporter.getPrimaryKey()) == null) {
+                cacheResult(proposalSupporter);
+            } else {
+                proposalSupporter.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all proposal supporters.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(ProposalSupporterImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(ProposalSupporterImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the proposal supporter.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(ProposalSupporter proposalSupporter) {
+        EntityCacheUtil.removeResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<ProposalSupporter> proposalSupporters) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (ProposalSupporter proposalSupporter : proposalSupporters) {
+            EntityCacheUtil.removeResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+                ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new proposal supporter with the primary key. Does not add the proposal supporter to the database.
+     *
+     * @param proposalSupporterPK the primary key for the new proposal supporter
+     * @return the new proposal supporter
+     */
+    @Override
+    public ProposalSupporter create(ProposalSupporterPK proposalSupporterPK) {
+        ProposalSupporter proposalSupporter = new ProposalSupporterImpl();
+
+        proposalSupporter.setNew(true);
+        proposalSupporter.setPrimaryKey(proposalSupporterPK);
+
+        return proposalSupporter;
+    }
+
+    /**
+     * Removes the proposal supporter with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param proposalSupporterPK the primary key of the proposal supporter
+     * @return the proposal supporter that was removed
+     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter remove(ProposalSupporterPK proposalSupporterPK)
+        throws NoSuchProposalSupporterException, SystemException {
+        return remove((Serializable) proposalSupporterPK);
+    }
+
+    /**
+     * Removes the proposal supporter with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the proposal supporter
+     * @return the proposal supporter that was removed
+     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter remove(Serializable primaryKey)
+        throws NoSuchProposalSupporterException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ProposalSupporter proposalSupporter = (ProposalSupporter) session.get(ProposalSupporterImpl.class,
+                    primaryKey);
+
+            if (proposalSupporter == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchProposalSupporterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(proposalSupporter);
+        } catch (NoSuchProposalSupporterException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected ProposalSupporter removeImpl(ProposalSupporter proposalSupporter)
+        throws SystemException {
+        proposalSupporter = toUnwrappedModel(proposalSupporter);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(proposalSupporter)) {
+                proposalSupporter = (ProposalSupporter) session.get(ProposalSupporterImpl.class,
+                        proposalSupporter.getPrimaryKeyObj());
+            }
+
+            if (proposalSupporter != null) {
+                session.delete(proposalSupporter);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (proposalSupporter != null) {
+            clearCache(proposalSupporter);
+        }
+
+        return proposalSupporter;
+    }
+
+    @Override
+    public ProposalSupporter updateImpl(
+        com.ext.portlet.model.ProposalSupporter proposalSupporter)
+        throws SystemException {
+        proposalSupporter = toUnwrappedModel(proposalSupporter);
+
+        boolean isNew = proposalSupporter.isNew();
+
+        ProposalSupporterModelImpl proposalSupporterModelImpl = (ProposalSupporterModelImpl) proposalSupporter;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (proposalSupporter.isNew()) {
+                session.save(proposalSupporter);
+
+                proposalSupporter.setNew(false);
+            } else {
+                session.merge(proposalSupporter);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !ProposalSupporterModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((proposalSupporterModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalSupporterModelImpl.getOriginalProposalId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+
+                args = new Object[] { proposalSupporterModelImpl.getProposalId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+            }
+
+            if ((proposalSupporterModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalSupporterModelImpl.getOriginalUserId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+                    args);
+
+                args = new Object[] { proposalSupporterModelImpl.getUserId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalSupporterImpl.class, proposalSupporter.getPrimaryKey(),
+            proposalSupporter);
+
+        return proposalSupporter;
+    }
+
+    protected ProposalSupporter toUnwrappedModel(
+        ProposalSupporter proposalSupporter) {
+        if (proposalSupporter instanceof ProposalSupporterImpl) {
+            return proposalSupporter;
+        }
+
+        ProposalSupporterImpl proposalSupporterImpl = new ProposalSupporterImpl();
+
+        proposalSupporterImpl.setNew(proposalSupporter.isNew());
+        proposalSupporterImpl.setPrimaryKey(proposalSupporter.getPrimaryKey());
+
+        proposalSupporterImpl.setProposalId(proposalSupporter.getProposalId());
+        proposalSupporterImpl.setUserId(proposalSupporter.getUserId());
+        proposalSupporterImpl.setCreateDate(proposalSupporter.getCreateDate());
+
+        return proposalSupporterImpl;
+    }
+
+    /**
+     * Returns the proposal supporter with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the proposal supporter
+     * @return the proposal supporter
+     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchProposalSupporterException, SystemException {
+        ProposalSupporter proposalSupporter = fetchByPrimaryKey(primaryKey);
+
+        if (proposalSupporter == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchProposalSupporterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return proposalSupporter;
+    }
+
+    /**
+     * Returns the proposal supporter with the primary key or throws a {@link com.ext.portlet.NoSuchProposalSupporterException} if it could not be found.
+     *
+     * @param proposalSupporterPK the primary key of the proposal supporter
+     * @return the proposal supporter
+     * @throws com.ext.portlet.NoSuchProposalSupporterException if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter findByPrimaryKey(
+        ProposalSupporterPK proposalSupporterPK)
+        throws NoSuchProposalSupporterException, SystemException {
+        return findByPrimaryKey((Serializable) proposalSupporterPK);
+    }
+
+    /**
+     * Returns the proposal supporter with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the proposal supporter
+     * @return the proposal supporter, or <code>null</code> if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        ProposalSupporter proposalSupporter = (ProposalSupporter) EntityCacheUtil.getResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+                ProposalSupporterImpl.class, primaryKey);
+
+        if (proposalSupporter == _nullProposalSupporter) {
+            return null;
+        }
+
+        if (proposalSupporter == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                proposalSupporter = (ProposalSupporter) session.get(ProposalSupporterImpl.class,
+                        primaryKey);
+
+                if (proposalSupporter != null) {
+                    cacheResult(proposalSupporter);
+                } else {
+                    EntityCacheUtil.putResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+                        ProposalSupporterImpl.class, primaryKey,
+                        _nullProposalSupporter);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(ProposalSupporterModelImpl.ENTITY_CACHE_ENABLED,
+                    ProposalSupporterImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return proposalSupporter;
+    }
+
+    /**
+     * Returns the proposal supporter with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param proposalSupporterPK the primary key of the proposal supporter
+     * @return the proposal supporter, or <code>null</code> if a proposal supporter with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalSupporter fetchByPrimaryKey(
+        ProposalSupporterPK proposalSupporterPK) throws SystemException {
+        return fetchByPrimaryKey((Serializable) proposalSupporterPK);
+    }
+
+    /**
+     * Returns all the proposal supporters.
+     *
+     * @return the proposal supporters
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalSupporter> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the proposal supporters.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of proposal supporters
+     * @param end the upper bound of the range of proposal supporters (not inclusive)
+     * @return the range of proposal supporters
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalSupporter> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the proposal supporters.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalSupporterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of proposal supporters
+     * @param end the upper bound of the range of proposal supporters (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of proposal supporters
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalSupporter> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<ProposalSupporter> list = (List<ProposalSupporter>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PROPOSALSUPPORTER);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PROPOSALSUPPORTER;
+
+                if (pagination) {
+                    sql = sql.concat(ProposalSupporterModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ProposalSupporter>(list);
+                } else {
+                    list = (List<ProposalSupporter>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the proposal supporters from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (ProposalSupporter proposalSupporter : findAll()) {
+            remove(proposalSupporter);
+        }
+    }
+
+    /**
      * Returns the number of proposal supporters.
      *
      * @return the number of proposal supporters
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1649,16 +1821,15 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
                 Query q = session.createQuery(_SQL_COUNT_PROPOSALSUPPORTER);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1680,7 +1851,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<ProposalSupporter>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1693,6 +1864,7 @@ public class ProposalSupporterPersistenceImpl extends BasePersistenceImpl<Propos
     public void destroy() {
         EntityCacheUtil.removeCache(ProposalSupporterImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

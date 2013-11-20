@@ -49,7 +49,7 @@ public class OntologySpaceUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,87 @@ public class OntologySpaceUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static OntologySpace update(OntologySpace ontologySpace,
-        boolean merge) throws SystemException {
-        return getPersistence().update(ontologySpace, merge);
+    public static OntologySpace update(OntologySpace ontologySpace)
+        throws SystemException {
+        return getPersistence().update(ontologySpace);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static OntologySpace update(OntologySpace ontologySpace,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(ontologySpace, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(ontologySpace, serviceContext);
+    }
+
+    /**
+    * Returns the ontology space where name = &#63; or throws a {@link com.ext.portlet.NoSuchOntologySpaceException} if it could not be found.
+    *
+    * @param name the name
+    * @return the matching ontology space
+    * @throws com.ext.portlet.NoSuchOntologySpaceException if a matching ontology space could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.OntologySpace findByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchOntologySpaceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByName(name);
+    }
+
+    /**
+    * Returns the ontology space where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param name the name
+    * @return the matching ontology space, or <code>null</code> if a matching ontology space could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.OntologySpace fetchByName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByName(name);
+    }
+
+    /**
+    * Returns the ontology space where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param name the name
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching ontology space, or <code>null</code> if a matching ontology space could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.OntologySpace fetchByName(
+        java.lang.String name, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByName(name, retrieveFromCache);
+    }
+
+    /**
+    * Removes the ontology space where name = &#63; from the database.
+    *
+    * @param name the name
+    * @return the ontology space that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.OntologySpace removeByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchOntologySpaceException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByName(name);
+    }
+
+    /**
+    * Returns the number of ontology spaces where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching ontology spaces
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByName(name);
     }
 
     /**
@@ -143,9 +211,9 @@ public class OntologySpaceUtil {
     }
 
     public static com.ext.portlet.model.OntologySpace updateImpl(
-        com.ext.portlet.model.OntologySpace ontologySpace, boolean merge)
+        com.ext.portlet.model.OntologySpace ontologySpace)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(ontologySpace, merge);
+        return getPersistence().updateImpl(ontologySpace);
     }
 
     /**
@@ -175,48 +243,6 @@ public class OntologySpaceUtil {
     }
 
     /**
-    * Returns the ontology space where name = &#63; or throws a {@link com.ext.portlet.NoSuchOntologySpaceException} if it could not be found.
-    *
-    * @param name the name
-    * @return the matching ontology space
-    * @throws com.ext.portlet.NoSuchOntologySpaceException if a matching ontology space could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.OntologySpace findByName(
-        java.lang.String name)
-        throws com.ext.portlet.NoSuchOntologySpaceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByName(name);
-    }
-
-    /**
-    * Returns the ontology space where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param name the name
-    * @return the matching ontology space, or <code>null</code> if a matching ontology space could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.OntologySpace fetchByName(
-        java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByName(name);
-    }
-
-    /**
-    * Returns the ontology space where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param name the name
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching ontology space, or <code>null</code> if a matching ontology space could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.OntologySpace fetchByName(
-        java.lang.String name, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByName(name, retrieveFromCache);
-    }
-
-    /**
     * Returns all the ontology spaces.
     *
     * @return the ontology spaces
@@ -231,7 +257,7 @@ public class OntologySpaceUtil {
     * Returns a range of all the ontology spaces.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologySpaceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of ontology spaces
@@ -249,7 +275,7 @@ public class OntologySpaceUtil {
     * Returns an ordered range of all the ontology spaces.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologySpaceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of ontology spaces
@@ -266,18 +292,6 @@ public class OntologySpaceUtil {
     }
 
     /**
-    * Removes the ontology space where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchOntologySpaceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByName(name);
-    }
-
-    /**
     * Removes all the ontology spaces from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -285,18 +299,6 @@ public class OntologySpaceUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of ontology spaces where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching ontology spaces
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByName(name);
     }
 
     /**
@@ -322,10 +324,9 @@ public class OntologySpaceUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(OntologySpacePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(OntologySpaceUtil.class,
-            "_persistence");
     }
 }

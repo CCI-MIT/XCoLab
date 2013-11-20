@@ -24,6 +24,7 @@ public abstract class BalloonStatsEntryBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a balloon stats entry model instance should use the {@link BalloonStatsEntry} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             BalloonStatsEntryLocalServiceUtil.addBalloonStatsEntry(this);

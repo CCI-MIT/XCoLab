@@ -35,6 +35,7 @@ public class PlanPositionItemPK implements Comparable<PlanPositionItemPK>,
         this.positionId = positionId;
     }
 
+    @Override
     public int compareTo(PlanPositionItemPK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class PlanPositionItemPK implements Comparable<PlanPositionItemPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanPositionItemPK)) {
             return false;
         }
 
-        PlanPositionItemPK pk = null;
-
-        try {
-            pk = (PlanPositionItemPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanPositionItemPK pk = (PlanPositionItemPK) obj;
 
         if ((planPositionsId == pk.planPositionsId) &&
                 (positionId == pk.positionId)) {

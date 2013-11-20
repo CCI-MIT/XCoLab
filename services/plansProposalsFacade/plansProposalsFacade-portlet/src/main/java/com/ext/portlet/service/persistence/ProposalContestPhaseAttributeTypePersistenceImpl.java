@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException;
 import com.ext.portlet.model.ProposalContestPhaseAttributeType;
 import com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl;
 import com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -74,14 +75,10 @@ import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -99,11 +96,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -140,11 +135,11 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeModelImpl.FINDER_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeModelImpl.FINDER_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeModelImpl.FINDER_CACHE_ENABLED,
             Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
@@ -171,11 +166,13 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
 
     private static CacheModel<ProposalContestPhaseAttributeType> _nullProposalContestPhaseAttributeTypeCacheModel =
         new CacheModel<ProposalContestPhaseAttributeType>() {
+            @Override
             public ProposalContestPhaseAttributeType toEntityModel() {
                 return _nullProposalContestPhaseAttributeType;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -330,12 +327,18 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public ProposalContestPhaseAttributeTypePersistenceImpl() {
+        setModelClass(ProposalContestPhaseAttributeType.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the proposal contest phase attribute type in the entity cache if it is enabled.
      *
      * @param proposalContestPhaseAttributeType the proposal contest phase attribute type
      */
+    @Override
     public void cacheResult(
         ProposalContestPhaseAttributeType proposalContestPhaseAttributeType) {
         EntityCacheUtil.putResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
@@ -351,6 +354,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      *
      * @param proposalContestPhaseAttributeTypes the proposal contest phase attribute types
      */
+    @Override
     public void cacheResult(
         List<ProposalContestPhaseAttributeType> proposalContestPhaseAttributeTypes) {
         for (ProposalContestPhaseAttributeType proposalContestPhaseAttributeType : proposalContestPhaseAttributeTypes) {
@@ -422,6 +426,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @param name the primary key for the new proposal contest phase attribute type
      * @return the new proposal contest phase attribute type
      */
+    @Override
     public ProposalContestPhaseAttributeType create(String name) {
         ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = new ProposalContestPhaseAttributeTypeImpl();
 
@@ -439,6 +444,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException if a proposal contest phase attribute type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalContestPhaseAttributeType remove(String name)
         throws NoSuchProposalContestPhaseAttributeTypeException, SystemException {
         return remove((Serializable) name);
@@ -493,33 +499,47 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, proposalContestPhaseAttributeType);
+            if (!session.contains(proposalContestPhaseAttributeType)) {
+                proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) session.get(ProposalContestPhaseAttributeTypeImpl.class,
+                        proposalContestPhaseAttributeType.getPrimaryKeyObj());
+            }
+
+            if (proposalContestPhaseAttributeType != null) {
+                session.delete(proposalContestPhaseAttributeType);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(proposalContestPhaseAttributeType);
+        if (proposalContestPhaseAttributeType != null) {
+            clearCache(proposalContestPhaseAttributeType);
+        }
 
         return proposalContestPhaseAttributeType;
     }
 
     @Override
     public ProposalContestPhaseAttributeType updateImpl(
-        com.ext.portlet.model.ProposalContestPhaseAttributeType proposalContestPhaseAttributeType,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.ProposalContestPhaseAttributeType proposalContestPhaseAttributeType)
+        throws SystemException {
         proposalContestPhaseAttributeType = toUnwrappedModel(proposalContestPhaseAttributeType);
+
+        boolean isNew = proposalContestPhaseAttributeType.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, proposalContestPhaseAttributeType,
-                merge);
+            if (proposalContestPhaseAttributeType.isNew()) {
+                session.save(proposalContestPhaseAttributeType);
 
-            proposalContestPhaseAttributeType.setNew(false);
+                proposalContestPhaseAttributeType.setNew(false);
+            } else {
+                session.merge(proposalContestPhaseAttributeType);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -527,6 +547,10 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
             ProposalContestPhaseAttributeTypeImpl.class,
@@ -559,13 +583,25 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      *
      * @param primaryKey the primary key of the proposal contest phase attribute type
      * @return the proposal contest phase attribute type
-     * @throws com.liferay.portal.NoSuchModelException if a proposal contest phase attribute type with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException if a proposal contest phase attribute type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public ProposalContestPhaseAttributeType findByPrimaryKey(
-        Serializable primaryKey) throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((String) primaryKey);
+        Serializable primaryKey)
+        throws NoSuchProposalContestPhaseAttributeTypeException, SystemException {
+        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = fetchByPrimaryKey(primaryKey);
+
+        if (proposalContestPhaseAttributeType == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchProposalContestPhaseAttributeTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return proposalContestPhaseAttributeType;
     }
 
     /**
@@ -576,20 +612,10 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException if a proposal contest phase attribute type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalContestPhaseAttributeType findByPrimaryKey(String name)
         throws NoSuchProposalContestPhaseAttributeTypeException, SystemException {
-        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = fetchByPrimaryKey(name);
-
-        if (proposalContestPhaseAttributeType == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + name);
-            }
-
-            throw new NoSuchProposalContestPhaseAttributeTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                name);
-        }
-
-        return proposalContestPhaseAttributeType;
+        return findByPrimaryKey((Serializable) name);
     }
 
     /**
@@ -602,7 +628,40 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
     @Override
     public ProposalContestPhaseAttributeType fetchByPrimaryKey(
         Serializable primaryKey) throws SystemException {
-        return fetchByPrimaryKey((String) primaryKey);
+        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) EntityCacheUtil.getResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
+                ProposalContestPhaseAttributeTypeImpl.class, primaryKey);
+
+        if (proposalContestPhaseAttributeType == _nullProposalContestPhaseAttributeType) {
+            return null;
+        }
+
+        if (proposalContestPhaseAttributeType == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) session.get(ProposalContestPhaseAttributeTypeImpl.class,
+                        primaryKey);
+
+                if (proposalContestPhaseAttributeType != null) {
+                    cacheResult(proposalContestPhaseAttributeType);
+                } else {
+                    EntityCacheUtil.putResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
+                        ProposalContestPhaseAttributeTypeImpl.class,
+                        primaryKey, _nullProposalContestPhaseAttributeType);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
+                    ProposalContestPhaseAttributeTypeImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return proposalContestPhaseAttributeType;
     }
 
     /**
@@ -612,43 +671,10 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @return the proposal contest phase attribute type, or <code>null</code> if a proposal contest phase attribute type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ProposalContestPhaseAttributeType fetchByPrimaryKey(String name)
         throws SystemException {
-        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) EntityCacheUtil.getResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
-                ProposalContestPhaseAttributeTypeImpl.class, name);
-
-        if (proposalContestPhaseAttributeType == _nullProposalContestPhaseAttributeType) {
-            return null;
-        }
-
-        if (proposalContestPhaseAttributeType == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                proposalContestPhaseAttributeType = (ProposalContestPhaseAttributeType) session.get(ProposalContestPhaseAttributeTypeImpl.class,
-                        name);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (proposalContestPhaseAttributeType != null) {
-                    cacheResult(proposalContestPhaseAttributeType);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(ProposalContestPhaseAttributeTypeModelImpl.ENTITY_CACHE_ENABLED,
-                        ProposalContestPhaseAttributeTypeImpl.class, name,
-                        _nullProposalContestPhaseAttributeType);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return proposalContestPhaseAttributeType;
+        return fetchByPrimaryKey((Serializable) name);
     }
 
     /**
@@ -657,6 +683,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @return the proposal contest phase attribute types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalContestPhaseAttributeType> findAll()
         throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -666,7 +693,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * Returns a range of all the proposal contest phase attribute types.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of proposal contest phase attribute types
@@ -674,6 +701,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @return the range of proposal contest phase attribute types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalContestPhaseAttributeType> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -683,7 +711,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * Returns an ordered range of all the proposal contest phase attribute types.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of proposal contest phase attribute types
@@ -692,17 +720,20 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @return the ordered range of proposal contest phase attribute types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ProposalContestPhaseAttributeType> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -725,6 +756,10 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_PROPOSALCONTESTPHASEATTRIBUTETYPE;
+
+                if (pagination) {
+                    sql = sql.concat(ProposalContestPhaseAttributeTypeModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -734,26 +769,26 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<ProposalContestPhaseAttributeType>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<ProposalContestPhaseAttributeType>(list);
                 } else {
                     list = (List<ProposalContestPhaseAttributeType>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -766,6 +801,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (ProposalContestPhaseAttributeType proposalContestPhaseAttributeType : findAll()) {
             remove(proposalContestPhaseAttributeType);
@@ -778,6 +814,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
      * @return the number of proposal contest phase attribute types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -791,16 +828,15 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
                 Query q = session.createQuery(_SQL_COUNT_PROPOSALCONTESTPHASEATTRIBUTETYPE);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -823,7 +859,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<ProposalContestPhaseAttributeType>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -836,6 +872,7 @@ public class ProposalContestPhaseAttributeTypePersistenceImpl
     public void destroy() {
         EntityCacheUtil.removeCache(ProposalContestPhaseAttributeTypeImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

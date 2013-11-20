@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalContestPhaseAttribute service. Represents a row in the &quot;xcolab_ProposalContestPhaseAttribute&quot; database table, with each column mapped to a property of this class.
@@ -58,6 +60,8 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalContestPhaseAttribute (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,name VARCHAR(75) null,additionalId LONG,numericValue LONG,stringValue VARCHAR(75) null,realValue DOUBLE)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalContestPhaseAttribute";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalContestPhaseAttribute.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalContestPhaseAttribute.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -74,10 +78,11 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     public static long CONTESTPHASEID_COLUMN_BITMASK = 2L;
     public static long NAME_COLUMN_BITMASK = 4L;
     public static long PROPOSALID_COLUMN_BITMASK = 8L;
+    public static long ID_COLUMN_BITMASK = 16L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalContestPhaseAttribute"));
     private static ClassLoader _classLoader = ProposalContestPhaseAttribute.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalContestPhaseAttribute.class
         };
     private long _id;
@@ -95,9 +100,8 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     private long _numericValue;
     private String _stringValue;
     private double _realValue;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ProposalContestPhaseAttribute _escapedModelProxy;
+    private ProposalContestPhaseAttribute _escapedModel;
 
     public ProposalContestPhaseAttributeModelImpl() {
     }
@@ -110,6 +114,10 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
      */
     public static ProposalContestPhaseAttribute toModel(
         ProposalContestPhaseAttributeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalContestPhaseAttribute model = new ProposalContestPhaseAttributeImpl();
 
         model.setId(soapModel.getId());
@@ -132,6 +140,10 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
      */
     public static List<ProposalContestPhaseAttribute> toModels(
         ProposalContestPhaseAttributeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalContestPhaseAttribute> models = new ArrayList<ProposalContestPhaseAttribute>(soapModels.length);
 
         for (ProposalContestPhaseAttributeSoap soapModel : soapModels) {
@@ -141,44 +153,121 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalContestPhaseAttribute.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalContestPhaseAttribute.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("proposalId", getProposalId());
+        attributes.put("contestPhaseId", getContestPhaseId());
+        attributes.put("name", getName());
+        attributes.put("additionalId", getAdditionalId());
+        attributes.put("numericValue", getNumericValue());
+        attributes.put("stringValue", getStringValue());
+        attributes.put("realValue", getRealValue());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Long contestPhaseId = (Long) attributes.get("contestPhaseId");
+
+        if (contestPhaseId != null) {
+            setContestPhaseId(contestPhaseId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Long additionalId = (Long) attributes.get("additionalId");
+
+        if (additionalId != null) {
+            setAdditionalId(additionalId);
+        }
+
+        Long numericValue = (Long) attributes.get("numericValue");
+
+        if (numericValue != null) {
+            setNumericValue(numericValue);
+        }
+
+        String stringValue = (String) attributes.get("stringValue");
+
+        if (stringValue != null) {
+            setStringValue(stringValue);
+        }
+
+        Double realValue = (Double) attributes.get("realValue");
+
+        if (realValue != null) {
+            setRealValue(realValue);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -196,10 +285,12 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     }
 
     @JSON
+    @Override
     public long getContestPhaseId() {
         return _contestPhaseId;
     }
 
+    @Override
     public void setContestPhaseId(long contestPhaseId) {
         _columnBitmask |= CONTESTPHASEID_COLUMN_BITMASK;
 
@@ -217,6 +308,7 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -225,6 +317,7 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         }
     }
 
+    @Override
     public void setName(String name) {
         _columnBitmask |= NAME_COLUMN_BITMASK;
 
@@ -240,10 +333,12 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     }
 
     @JSON
+    @Override
     public long getAdditionalId() {
         return _additionalId;
     }
 
+    @Override
     public void setAdditionalId(long additionalId) {
         _columnBitmask |= ADDITIONALID_COLUMN_BITMASK;
 
@@ -261,15 +356,18 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     }
 
     @JSON
+    @Override
     public long getNumericValue() {
         return _numericValue;
     }
 
+    @Override
     public void setNumericValue(long numericValue) {
         _numericValue = numericValue;
     }
 
     @JSON
+    @Override
     public String getStringValue() {
         if (_stringValue == null) {
             return StringPool.BLANK;
@@ -278,15 +376,18 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         }
     }
 
+    @Override
     public void setStringValue(String stringValue) {
         _stringValue = stringValue;
     }
 
     @JSON
+    @Override
     public double getRealValue() {
         return _realValue;
     }
 
+    @Override
     public void setRealValue(double realValue) {
         _realValue = realValue;
     }
@@ -296,30 +397,26 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
     }
 
     @Override
-    public ProposalContestPhaseAttribute toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalContestPhaseAttribute) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ProposalContestPhaseAttribute.class.getName(),
-                    getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ProposalContestPhaseAttribute.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ProposalContestPhaseAttribute toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalContestPhaseAttribute) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -340,6 +437,7 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         return proposalContestPhaseAttributeImpl;
     }
 
+    @Override
     public int compareTo(
         ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         long primaryKey = proposalContestPhaseAttribute.getPrimaryKey();
@@ -355,17 +453,15 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalContestPhaseAttribute)) {
             return false;
         }
 
-        ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
-
-        try {
-            proposalContestPhaseAttribute = (ProposalContestPhaseAttribute) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = (ProposalContestPhaseAttribute) obj;
 
         long primaryKey = proposalContestPhaseAttribute.getPrimaryKey();
 
@@ -464,6 +560,7 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(28);
 

@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscription>,
-    Serializable {
+    Externalizable {
     public long pk;
     public long classNameId;
     public long classPK;
@@ -56,6 +59,7 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
         return sb.toString();
     }
 
+    @Override
     public ActivitySubscription toEntityModel() {
         ActivitySubscriptionImpl activitySubscriptionImpl = new ActivitySubscriptionImpl();
 
@@ -88,5 +92,38 @@ public class ActivitySubscriptionCacheModel implements CacheModel<ActivitySubscr
         activitySubscriptionImpl.resetOriginalValues();
 
         return activitySubscriptionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        pk = objectInput.readLong();
+        classNameId = objectInput.readLong();
+        classPK = objectInput.readLong();
+        type = objectInput.readInt();
+        automaticSubscriptionCounter = objectInput.readInt();
+        extraData = objectInput.readUTF();
+        receiverId = objectInput.readLong();
+        createDate = objectInput.readLong();
+        modifiedDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(pk);
+        objectOutput.writeLong(classNameId);
+        objectOutput.writeLong(classPK);
+        objectOutput.writeInt(type);
+        objectOutput.writeInt(automaticSubscriptionCounter);
+
+        if (extraData == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(extraData);
+        }
+
+        objectOutput.writeLong(receiverId);
+        objectOutput.writeLong(createDate);
+        objectOutput.writeLong(modifiedDate);
     }
 }

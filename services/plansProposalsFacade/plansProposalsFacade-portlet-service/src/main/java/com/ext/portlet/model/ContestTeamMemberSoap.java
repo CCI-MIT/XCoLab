@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.ContestTeamMemberServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.ContestTeamMemberServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.ContestTeamMemberServiceSoap
  * @generated
  */
 public class ContestTeamMemberSoap implements Serializable {

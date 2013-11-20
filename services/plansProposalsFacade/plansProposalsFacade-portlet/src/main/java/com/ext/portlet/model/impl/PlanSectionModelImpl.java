@@ -23,7 +23,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanSection service. Represents a row in the &quot;xcolab_PlanSection&quot; database table, with each column mapped to a property of this class.
@@ -77,10 +79,11 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     public static long PLANID_COLUMN_BITMASK = 1L;
     public static long PLANSECTIONDEFINITIONID_COLUMN_BITMASK = 2L;
     public static long PLANVERSION_COLUMN_BITMASK = 4L;
+    public static long ID_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanSection"));
     private static ClassLoader _classLoader = PlanSection.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanSection.class
         };
     private long _id;
@@ -98,9 +101,8 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     private long _originalPlanVersion;
     private boolean _setOriginalPlanVersion;
     private long _updateAuthorId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanSection _escapedModelProxy;
+    private PlanSection _escapedModel;
 
     public PlanSectionModelImpl() {
     }
@@ -112,6 +114,10 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
      * @return the normal model instance
      */
     public static PlanSection toModel(PlanSectionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanSection model = new PlanSectionImpl();
 
         model.setId(soapModel.getId());
@@ -134,6 +140,10 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
      * @return the normal model instances
      */
     public static List<PlanSection> toModels(PlanSectionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanSection> models = new ArrayList<PlanSection>(soapModels.length);
 
         for (PlanSectionSoap soapModel : soapModels) {
@@ -143,35 +153,118 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanSection.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanSection.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planSectionDefinitionId", getPlanSectionDefinitionId());
+        attributes.put("planId", getPlanId());
+        attributes.put("content", getContent());
+        attributes.put("numericValue", getNumericValue());
+        attributes.put("created", getCreated());
+        attributes.put("version", getVersion());
+        attributes.put("planVersion", getPlanVersion());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planSectionDefinitionId = (Long) attributes.get(
+                "planSectionDefinitionId");
+
+        if (planSectionDefinitionId != null) {
+            setPlanSectionDefinitionId(planSectionDefinitionId);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        String content = (String) attributes.get("content");
+
+        if (content != null) {
+            setContent(content);
+        }
+
+        Long numericValue = (Long) attributes.get("numericValue");
+
+        if (numericValue != null) {
+            setNumericValue(numericValue);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Long planVersion = (Long) attributes.get("planVersion");
+
+        if (planVersion != null) {
+            setPlanVersion(planVersion);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -179,10 +272,12 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @JSON
+    @Override
     public long getPlanSectionDefinitionId() {
         return _planSectionDefinitionId;
     }
 
+    @Override
     public void setPlanSectionDefinitionId(long planSectionDefinitionId) {
         _columnBitmask |= PLANSECTIONDEFINITIONID_COLUMN_BITMASK;
 
@@ -200,10 +295,12 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -221,6 +318,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @JSON
+    @Override
     public String getContent() {
         if (_content == null) {
             return StringPool.BLANK;
@@ -229,42 +327,51 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         }
     }
 
+    @Override
     public void setContent(String content) {
         _content = content;
     }
 
     @JSON
+    @Override
     public long getNumericValue() {
         return _numericValue;
     }
 
+    @Override
     public void setNumericValue(long numericValue) {
         _numericValue = numericValue;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public long getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(long version) {
         _version = version;
     }
 
     @JSON
+    @Override
     public long getPlanVersion() {
         return _planVersion;
     }
 
+    @Override
     public void setPlanVersion(long planVersion) {
         _columnBitmask |= PLANVERSION_COLUMN_BITMASK;
 
@@ -282,10 +389,12 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @JSON
+    @Override
     public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
@@ -295,29 +404,26 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
     }
 
     @Override
-    public PlanSection toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanSection) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanSection.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanSection.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanSection toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanSection) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -339,6 +445,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         return planSectionImpl;
     }
 
+    @Override
     public int compareTo(PlanSection planSection) {
         int value = 0;
 
@@ -361,17 +468,15 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanSection)) {
             return false;
         }
 
-        PlanSection planSection = null;
-
-        try {
-            planSection = (PlanSection) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanSection planSection = (PlanSection) obj;
 
         long primaryKey = planSection.getPrimaryKey();
 
@@ -470,6 +575,7 @@ public class PlanSectionModelImpl extends BaseModelImpl<PlanSection>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

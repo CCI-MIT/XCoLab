@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.PlanPositionServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.PlanPositionServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.PlanPositionServiceSoap
  * @generated
  */
 public class PlanPositionSoap implements Serializable {

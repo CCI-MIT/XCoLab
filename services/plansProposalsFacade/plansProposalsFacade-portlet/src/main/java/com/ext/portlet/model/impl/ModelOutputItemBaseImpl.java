@@ -24,6 +24,7 @@ public abstract class ModelOutputItemBaseImpl extends ModelOutputItemModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a model output item model instance should use the {@link ModelOutputItem} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelOutputItemLocalServiceUtil.addModelOutputItem(this);

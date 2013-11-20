@@ -24,6 +24,7 @@ public abstract class PlanTemplateSectionBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan template section model instance should use the {@link PlanTemplateSection} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(this);

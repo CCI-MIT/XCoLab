@@ -1,18 +1,23 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
@@ -28,122 +33,425 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
     private int _threadsCount;
     private Date _lastActivityDate;
     private long _lastActivityAuthorId;
+    private BaseModel<?> _discussionCategoryRemoteModel;
 
     public DiscussionCategoryClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return DiscussionCategory.class;
     }
 
+    @Override
     public String getModelClassName() {
         return DiscussionCategory.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _pk;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_pk);
+        return _pk;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("pk", getPk());
+        attributes.put("categoryId", getCategoryId());
+        attributes.put("categoryGroupId", getCategoryGroupId());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("deleted", getDeleted());
+        attributes.put("threadsCount", getThreadsCount());
+        attributes.put("lastActivityDate", getLastActivityDate());
+        attributes.put("lastActivityAuthorId", getLastActivityAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long pk = (Long) attributes.get("pk");
+
+        if (pk != null) {
+            setPk(pk);
+        }
+
+        Long categoryId = (Long) attributes.get("categoryId");
+
+        if (categoryId != null) {
+            setCategoryId(categoryId);
+        }
+
+        Long categoryGroupId = (Long) attributes.get("categoryGroupId");
+
+        if (categoryGroupId != null) {
+            setCategoryGroupId(categoryGroupId);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date deleted = (Date) attributes.get("deleted");
+
+        if (deleted != null) {
+            setDeleted(deleted);
+        }
+
+        Integer threadsCount = (Integer) attributes.get("threadsCount");
+
+        if (threadsCount != null) {
+            setThreadsCount(threadsCount);
+        }
+
+        Date lastActivityDate = (Date) attributes.get("lastActivityDate");
+
+        if (lastActivityDate != null) {
+            setLastActivityDate(lastActivityDate);
+        }
+
+        Long lastActivityAuthorId = (Long) attributes.get(
+                "lastActivityAuthorId");
+
+        if (lastActivityAuthorId != null) {
+            setLastActivityAuthorId(lastActivityAuthorId);
+        }
+    }
+
+    @Override
     public long getPk() {
         return _pk;
     }
 
+    @Override
     public void setPk(long pk) {
         _pk = pk;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPk", long.class);
+
+                method.invoke(_discussionCategoryRemoteModel, pk);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getCategoryId() {
         return _categoryId;
     }
 
+    @Override
     public void setCategoryId(long categoryId) {
         _categoryId = categoryId;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCategoryId", long.class);
+
+                method.invoke(_discussionCategoryRemoteModel, categoryId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getCategoryGroupId() {
         return _categoryGroupId;
     }
 
+    @Override
     public void setCategoryGroupId(long categoryGroupId) {
         _categoryGroupId = categoryGroupId;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCategoryGroupId", long.class);
+
+                method.invoke(_discussionCategoryRemoteModel, categoryGroupId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAuthorId", long.class);
+
+                method.invoke(_discussionCategoryRemoteModel, authorId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getName() {
         return _name;
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setName", String.class);
+
+                method.invoke(_discussionCategoryRemoteModel, name);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getDescription() {
         return _description;
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDescription", String.class);
+
+                method.invoke(_discussionCategoryRemoteModel, description);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCreateDate", Date.class);
+
+                method.invoke(_discussionCategoryRemoteModel, createDate);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public Date getDeleted() {
         return _deleted;
     }
 
+    @Override
     public void setDeleted(Date deleted) {
         _deleted = deleted;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDeleted", Date.class);
+
+                method.invoke(_discussionCategoryRemoteModel, deleted);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public int getThreadsCount() {
         return _threadsCount;
     }
 
+    @Override
     public void setThreadsCount(int threadsCount) {
         _threadsCount = threadsCount;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setThreadsCount", int.class);
+
+                method.invoke(_discussionCategoryRemoteModel, threadsCount);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public Date getLastActivityDate() {
         return _lastActivityDate;
     }
 
+    @Override
     public void setLastActivityDate(Date lastActivityDate) {
         _lastActivityDate = lastActivityDate;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setLastActivityDate",
+                        Date.class);
+
+                method.invoke(_discussionCategoryRemoteModel, lastActivityDate);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getLastActivityAuthorId() {
         return _lastActivityAuthorId;
     }
 
+    @Override
     public void setLastActivityAuthorId(long lastActivityAuthorId) {
         _lastActivityAuthorId = lastActivityAuthorId;
+
+        if (_discussionCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _discussionCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setLastActivityAuthorId",
+                        long.class);
+
+                method.invoke(_discussionCategoryRemoteModel,
+                    lastActivityAuthorId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getDiscussionCategoryRemoteModel() {
+        return _discussionCategoryRemoteModel;
+    }
+
+    public void setDiscussionCategoryRemoteModel(
+        BaseModel<?> discussionCategoryRemoteModel) {
+        _discussionCategoryRemoteModel = discussionCategoryRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _discussionCategoryRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_discussionCategoryRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             DiscussionCategoryLocalServiceUtil.addDiscussionCategory(this);
@@ -154,7 +462,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
 
     @Override
     public DiscussionCategory toEscapedModel() {
-        return (DiscussionCategory) Proxy.newProxyInstance(DiscussionCategory.class.getClassLoader(),
+        return (DiscussionCategory) ProxyUtil.newProxyInstance(DiscussionCategory.class.getClassLoader(),
             new Class[] { DiscussionCategory.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -178,6 +486,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         return clone;
     }
 
+    @Override
     public int compareTo(DiscussionCategory discussionCategory) {
         int value = 0;
 
@@ -195,17 +504,15 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof DiscussionCategoryClp)) {
             return false;
         }
 
-        DiscussionCategoryClp discussionCategory = null;
-
-        try {
-            discussionCategory = (DiscussionCategoryClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        DiscussionCategoryClp discussionCategory = (DiscussionCategoryClp) obj;
 
         long primaryKey = discussionCategory.getPrimaryKey();
 
@@ -252,6 +559,7 @@ public class DiscussionCategoryClp extends BaseModelImpl<DiscussionCategory>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(37);
 

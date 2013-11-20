@@ -63,7 +63,8 @@ public class PlanSectionLocalServiceImpl extends PlanSectionLocalServiceBaseImpl
                 ps = this.planSectionPersistence.findByCurrentPlanIdSectionDefinitionId(plan.getPlanId(), def.getId());
             }
             else {
-                ps = this.planSectionPersistence.findByPlanIdPlanVersion(plan.getPlanId(), def.getId(), plan.getVersion());
+                List<PlanSection> sections = this.planSectionPersistence.findByPlanIdPlanVersion(plan.getPlanId(), def.getId(), plan.getVersion());
+                if (! sections.isEmpty()) ps = sections.get(0);
             }
         }
         catch (NoSuchPlanSectionException e) {

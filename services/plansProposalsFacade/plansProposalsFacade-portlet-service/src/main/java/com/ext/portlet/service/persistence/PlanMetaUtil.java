@@ -49,7 +49,7 @@ public class PlanMetaUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,247 @@ public class PlanMetaUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlanMeta update(PlanMeta planMeta, boolean merge)
-        throws SystemException {
-        return getPersistence().update(planMeta, merge);
+    public static PlanMeta update(PlanMeta planMeta) throws SystemException {
+        return getPersistence().update(planMeta);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static PlanMeta update(PlanMeta planMeta, boolean merge,
+    public static PlanMeta update(PlanMeta planMeta,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planMeta, merge, serviceContext);
+        return getPersistence().update(planMeta, serviceContext);
+    }
+
+    /**
+    * Returns the plan meta where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanMetaException} if it could not be found.
+    *
+    * @param planId the plan ID
+    * @return the matching plan meta
+    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta findByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanMetaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan meta where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param planId the plan ID
+    * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta fetchByCurrentByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the plan meta where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param planId the plan ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta fetchByCurrentByPlanId(
+        long planId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByCurrentByPlanId(planId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the plan meta where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @return the plan meta that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta removeByCurrentByPlanId(
+        long planId)
+        throws com.ext.portlet.NoSuchPlanMetaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan metas where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan metas
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByCurrentByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByCurrentByPlanId(planId);
+    }
+
+    /**
+    * Returns all the plan metas where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the matching plan metas
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
+        long planId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns a range of all the plan metas where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanMetaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan metas
+    * @param end the upper bound of the range of plan metas (not inclusive)
+    * @return the range of matching plan metas
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
+        long planId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId(planId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the plan metas where planId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanMetaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param planId the plan ID
+    * @param start the lower bound of the range of plan metas
+    * @param end the upper bound of the range of plan metas (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan metas
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
+        long planId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId(planId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan meta in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan meta
+    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta findByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanMetaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan meta in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan meta, or <code>null</code> if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta fetchByAllByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan meta in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan meta
+    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta findByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanMetaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan meta in the ordered set where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan meta, or <code>null</code> if a matching plan meta could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta fetchByAllByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByAllByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the plan metas before and after the current plan meta in the ordered set where planId = &#63;.
+    *
+    * @param id the primary key of the current plan meta
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan meta
+    * @throws com.ext.portlet.NoSuchPlanMetaException if a plan meta with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanMeta[] findByAllByPlanId_PrevAndNext(
+        long id, long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanMetaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
+    }
+
+    /**
+    * Removes all the plan metas where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByAllByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan metas where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan metas
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByAllByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByAllByPlanId(planId);
     }
 
     /**
@@ -142,9 +370,9 @@ public class PlanMetaUtil {
     }
 
     public static com.ext.portlet.model.PlanMeta updateImpl(
-        com.ext.portlet.model.PlanMeta planMeta, boolean merge)
+        com.ext.portlet.model.PlanMeta planMeta)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planMeta, merge);
+        return getPersistence().updateImpl(planMeta);
     }
 
     /**
@@ -174,166 +402,6 @@ public class PlanMetaUtil {
     }
 
     /**
-    * Returns the plan meta where planId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanMetaException} if it could not be found.
-    *
-    * @param planId the plan ID
-    * @return the matching plan meta
-    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta findByCurrentByPlanId(
-        long planId)
-        throws com.ext.portlet.NoSuchPlanMetaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan meta where planId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param planId the plan ID
-    * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta fetchByCurrentByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the plan meta where planId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param planId the plan ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching plan meta, or <code>null</code> if a matching plan meta could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta fetchByCurrentByPlanId(
-        long planId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByCurrentByPlanId(planId, retrieveFromCache);
-    }
-
-    /**
-    * Returns all the plan metas where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the matching plan metas
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
-        long planId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId);
-    }
-
-    /**
-    * Returns a range of all the plan metas where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan metas
-    * @param end the upper bound of the range of plan metas (not inclusive)
-    * @return the range of matching plan metas
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
-        long planId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId(planId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan metas where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param start the lower bound of the range of plan metas
-    * @param end the upper bound of the range of plan metas (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan metas
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanMeta> findByAllByPlanId(
-        long planId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId(planId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first plan meta in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan meta
-    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta findByAllByPlanId_First(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanMetaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_First(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the last plan meta in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan meta
-    * @throws com.ext.portlet.NoSuchPlanMetaException if a matching plan meta could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta findByAllByPlanId_Last(
-        long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanMetaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByAllByPlanId_Last(planId, orderByComparator);
-    }
-
-    /**
-    * Returns the plan metas before and after the current plan meta in the ordered set where planId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current plan meta
-    * @param planId the plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan meta
-    * @throws com.ext.portlet.NoSuchPlanMetaException if a plan meta with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanMeta[] findByAllByPlanId_PrevAndNext(
-        long id, long planId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanMetaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByAllByPlanId_PrevAndNext(id, planId, orderByComparator);
-    }
-
-    /**
     * Returns all the plan metas.
     *
     * @return the plan metas
@@ -348,7 +416,7 @@ public class PlanMetaUtil {
     * Returns a range of all the plan metas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanMetaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan metas
@@ -366,7 +434,7 @@ public class PlanMetaUtil {
     * Returns an ordered range of all the plan metas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanMetaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan metas
@@ -383,29 +451,6 @@ public class PlanMetaUtil {
     }
 
     /**
-    * Removes the plan meta where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByCurrentByPlanId(long planId)
-        throws com.ext.portlet.NoSuchPlanMetaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Removes all the plan metas where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByAllByPlanId(planId);
-    }
-
-    /**
     * Removes all the plan metas from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -413,30 +458,6 @@ public class PlanMetaUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan metas where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan metas
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByCurrentByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByCurrentByPlanId(planId);
-    }
-
-    /**
-    * Returns the number of plan metas where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan metas
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByAllByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByAllByPlanId(planId);
     }
 
     /**
@@ -462,9 +483,9 @@ public class PlanMetaUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanMetaPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanMetaUtil.class, "_persistence");
     }
 }

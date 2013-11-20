@@ -24,6 +24,7 @@ public abstract class DiscussionCategoryBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a discussion category model instance should use the {@link DiscussionCategory} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             DiscussionCategoryLocalServiceUtil.addDiscussionCategory(this);

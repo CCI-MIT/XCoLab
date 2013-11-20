@@ -24,6 +24,7 @@ public abstract class FocusAreaBaseImpl extends FocusAreaModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a focus area model instance should use the {@link FocusArea} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             FocusAreaLocalServiceUtil.addFocusArea(this);

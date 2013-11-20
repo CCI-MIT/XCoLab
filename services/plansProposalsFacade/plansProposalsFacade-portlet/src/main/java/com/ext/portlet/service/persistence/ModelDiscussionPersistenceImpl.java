@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchModelDiscussionException;
 import com.ext.portlet.model.ModelDiscussion;
 import com.ext.portlet.model.impl.ModelDiscussionImpl;
 import com.ext.portlet.model.impl.ModelDiscussionModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -32,56 +33,10 @@ import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
 import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
 import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
 import com.ext.portlet.service.persistence.ModelCategoryPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +56,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +91,17 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
+            ModelDiscussionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
+            ModelDiscussionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_MODELID = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
             ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
             ModelDiscussionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -145,8 +109,8 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID =
         new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
@@ -159,6 +123,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             ModelDiscussionModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModelId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_MODELID_MODELID_2 = "modelDiscussion.modelId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_DISCUSSIONID =
         new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
             ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
@@ -167,8 +132,8 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID =
         new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
@@ -181,23 +146,11 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             ModelDiscussionModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDiscussionId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
-            ModelDiscussionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED,
-            ModelDiscussionImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-            ModelDiscussionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_DISCUSSIONID_CATEGORYID_2 = "modelDiscussion.categoryId = ?";
     private static final String _SQL_SELECT_MODELDISCUSSION = "SELECT modelDiscussion FROM ModelDiscussion modelDiscussion";
     private static final String _SQL_SELECT_MODELDISCUSSION_WHERE = "SELECT modelDiscussion FROM ModelDiscussion modelDiscussion WHERE ";
     private static final String _SQL_COUNT_MODELDISCUSSION = "SELECT COUNT(modelDiscussion) FROM ModelDiscussion modelDiscussion";
     private static final String _SQL_COUNT_MODELDISCUSSION_WHERE = "SELECT COUNT(modelDiscussion) FROM ModelDiscussion modelDiscussion WHERE ";
-    private static final String _FINDER_COLUMN_MODELID_MODELID_2 = "modelDiscussion.modelId = ?";
-    private static final String _FINDER_COLUMN_DISCUSSIONID_CATEGORYID_2 = "modelDiscussion.categoryId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "modelDiscussion.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ModelDiscussion exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ModelDiscussion exists with the key {";
@@ -217,11 +170,13 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
         };
 
     private static CacheModel<ModelDiscussion> _nullModelDiscussionCacheModel = new CacheModel<ModelDiscussion>() {
+            @Override
             public ModelDiscussion toEntityModel() {
                 return _nullModelDiscussion;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -388,351 +343,10 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             modelDiscussion);
 
         modelDiscussion.resetOriginalValues();
-    }
-
-    /**
-     * Caches the model discussions in the entity cache if it is enabled.
-     *
-     * @param modelDiscussions the model discussions
-     */
-    public void cacheResult(List<ModelDiscussion> modelDiscussions) {
-        for (ModelDiscussion modelDiscussion : modelDiscussions) {
-            if (EntityCacheUtil.getResult(
-                        ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-                        ModelDiscussionImpl.class,
-                        modelDiscussion.getPrimaryKey()) == null) {
-                cacheResult(modelDiscussion);
-            } else {
-                modelDiscussion.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all model discussions.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(ModelDiscussionImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(ModelDiscussionImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the model discussion.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(ModelDiscussion modelDiscussion) {
-        EntityCacheUtil.removeResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-            ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<ModelDiscussion> modelDiscussions) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (ModelDiscussion modelDiscussion : modelDiscussions) {
-            EntityCacheUtil.removeResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-                ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new model discussion with the primary key. Does not add the model discussion to the database.
-     *
-     * @param modelDiscussionId the primary key for the new model discussion
-     * @return the new model discussion
-     */
-    public ModelDiscussion create(long modelDiscussionId) {
-        ModelDiscussion modelDiscussion = new ModelDiscussionImpl();
-
-        modelDiscussion.setNew(true);
-        modelDiscussion.setPrimaryKey(modelDiscussionId);
-
-        return modelDiscussion;
-    }
-
-    /**
-     * Removes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param modelDiscussionId the primary key of the model discussion
-     * @return the model discussion that was removed
-     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelDiscussion remove(long modelDiscussionId)
-        throws NoSuchModelDiscussionException, SystemException {
-        return remove(Long.valueOf(modelDiscussionId));
-    }
-
-    /**
-     * Removes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the model discussion
-     * @return the model discussion that was removed
-     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ModelDiscussion remove(Serializable primaryKey)
-        throws NoSuchModelDiscussionException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            ModelDiscussion modelDiscussion = (ModelDiscussion) session.get(ModelDiscussionImpl.class,
-                    primaryKey);
-
-            if (modelDiscussion == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchModelDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(modelDiscussion);
-        } catch (NoSuchModelDiscussionException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected ModelDiscussion removeImpl(ModelDiscussion modelDiscussion)
-        throws SystemException {
-        modelDiscussion = toUnwrappedModel(modelDiscussion);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, modelDiscussion);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(modelDiscussion);
-
-        return modelDiscussion;
-    }
-
-    @Override
-    public ModelDiscussion updateImpl(
-        com.ext.portlet.model.ModelDiscussion modelDiscussion, boolean merge)
-        throws SystemException {
-        modelDiscussion = toUnwrappedModel(modelDiscussion);
-
-        boolean isNew = modelDiscussion.isNew();
-
-        ModelDiscussionModelImpl modelDiscussionModelImpl = (ModelDiscussionModelImpl) modelDiscussion;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, modelDiscussion, merge);
-
-            modelDiscussion.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !ModelDiscussionModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((modelDiscussionModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(modelDiscussionModelImpl.getOriginalModelId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(modelDiscussionModelImpl.getModelId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID,
-                    args);
-            }
-
-            if ((modelDiscussionModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(modelDiscussionModelImpl.getOriginalCategoryId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(modelDiscussionModelImpl.getCategoryId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-            ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey(),
-            modelDiscussion);
-
-        return modelDiscussion;
-    }
-
-    protected ModelDiscussion toUnwrappedModel(ModelDiscussion modelDiscussion) {
-        if (modelDiscussion instanceof ModelDiscussionImpl) {
-            return modelDiscussion;
-        }
-
-        ModelDiscussionImpl modelDiscussionImpl = new ModelDiscussionImpl();
-
-        modelDiscussionImpl.setNew(modelDiscussion.isNew());
-        modelDiscussionImpl.setPrimaryKey(modelDiscussion.getPrimaryKey());
-
-        modelDiscussionImpl.setModelDiscussionId(modelDiscussion.getModelDiscussionId());
-        modelDiscussionImpl.setModelId(modelDiscussion.getModelId());
-        modelDiscussionImpl.setCategoryId(modelDiscussion.getCategoryId());
-
-        return modelDiscussionImpl;
-    }
-
-    /**
-     * Returns the model discussion with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the model discussion
-     * @return the model discussion
-     * @throws com.liferay.portal.NoSuchModelException if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ModelDiscussion findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the model discussion with the primary key or throws a {@link com.ext.portlet.NoSuchModelDiscussionException} if it could not be found.
-     *
-     * @param modelDiscussionId the primary key of the model discussion
-     * @return the model discussion
-     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelDiscussion findByPrimaryKey(long modelDiscussionId)
-        throws NoSuchModelDiscussionException, SystemException {
-        ModelDiscussion modelDiscussion = fetchByPrimaryKey(modelDiscussionId);
-
-        if (modelDiscussion == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + modelDiscussionId);
-            }
-
-            throw new NoSuchModelDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                modelDiscussionId);
-        }
-
-        return modelDiscussion;
-    }
-
-    /**
-     * Returns the model discussion with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the model discussion
-     * @return the model discussion, or <code>null</code> if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public ModelDiscussion fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the model discussion with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param modelDiscussionId the primary key of the model discussion
-     * @return the model discussion, or <code>null</code> if a model discussion with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelDiscussion fetchByPrimaryKey(long modelDiscussionId)
-        throws SystemException {
-        ModelDiscussion modelDiscussion = (ModelDiscussion) EntityCacheUtil.getResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-                ModelDiscussionImpl.class, modelDiscussionId);
-
-        if (modelDiscussion == _nullModelDiscussion) {
-            return null;
-        }
-
-        if (modelDiscussion == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                modelDiscussion = (ModelDiscussion) session.get(ModelDiscussionImpl.class,
-                        Long.valueOf(modelDiscussionId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (modelDiscussion != null) {
-                    cacheResult(modelDiscussion);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-                        ModelDiscussionImpl.class, modelDiscussionId,
-                        _nullModelDiscussion);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return modelDiscussion;
+=======
+    public ModelDiscussionPersistenceImpl() {
+        setModelClass(ModelDiscussion.class);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
     /**
@@ -742,6 +356,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByModelId(long modelId)
         throws SystemException {
         return findByModelId(modelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -751,7 +366,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * Returns a range of all the model discussions where modelId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param modelId the model ID
@@ -760,6 +375,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByModelId(long modelId, int start, int end)
         throws SystemException {
         return findByModelId(modelId, start, end, null);
@@ -769,7 +385,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * Returns an ordered range of all the model discussions where modelId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param modelId the model ID
@@ -779,13 +395,16 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the ordered range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByModelId(long modelId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID;
             finderArgs = new Object[] { modelId };
         } else {
@@ -796,6 +415,16 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
         List<ModelDiscussion> list = (List<ModelDiscussion>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (ModelDiscussion modelDiscussion : list) {
+                if ((modelId != modelDiscussion.getModelId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -803,7 +432,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_MODELDISCUSSION_WHERE);
@@ -813,6 +442,9 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ModelDiscussionModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -828,19 +460,26 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 qPos.add(modelId);
 
-                list = (List<ModelDiscussion>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ModelDiscussion>(list);
+                } else {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -851,44 +490,58 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     /**
      * Returns the first model discussion in the ordered set where modelId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param modelId the model ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching model discussion
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion findByModelId_First(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
+        ModelDiscussion modelDiscussion = fetchByModelId_First(modelId,
+                orderByComparator);
+
+        if (modelDiscussion != null) {
+            return modelDiscussion;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("modelId=");
+        msg.append(modelId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchModelDiscussionException(msg.toString());
+    }
+
+    /**
+     * Returns the first model discussion in the ordered set where modelId = &#63;.
+     *
+     * @param modelId the model ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching model discussion, or <code>null</code> if a matching model discussion could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByModelId_First(long modelId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<ModelDiscussion> list = findByModelId(modelId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("modelId=");
-            msg.append(modelId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchModelDiscussionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last model discussion in the ordered set where modelId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param modelId the model ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -896,36 +549,58 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion findByModelId_Last(long modelId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
+        ModelDiscussion modelDiscussion = fetchByModelId_Last(modelId,
+                orderByComparator);
+
+        if (modelDiscussion != null) {
+            return modelDiscussion;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("modelId=");
+        msg.append(modelId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchModelDiscussionException(msg.toString());
+    }
+
+    /**
+     * Returns the last model discussion in the ordered set where modelId = &#63;.
+     *
+     * @param modelId the model ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching model discussion, or <code>null</code> if a matching model discussion could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByModelId_Last(long modelId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByModelId(modelId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<ModelDiscussion> list = findByModelId(modelId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("modelId=");
-            msg.append(modelId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchModelDiscussionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the model discussions before and after the current model discussion in the ordered set where modelId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param modelDiscussionId the primary key of the current model discussion
      * @param modelId the model ID
@@ -934,6 +609,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion[] findByModelId_PrevAndNext(long modelDiscussionId,
         long modelId, OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
@@ -1026,6 +702,8 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                     }
                 }
             }
+        } else {
+            query.append(ModelDiscussionModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1057,12 +735,78 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     }
 
     /**
+     * Removes all the model discussions where modelId = &#63; from the database.
+     *
+     * @param modelId the model ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByModelId(long modelId) throws SystemException {
+        for (ModelDiscussion modelDiscussion : findByModelId(modelId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(modelDiscussion);
+        }
+    }
+
+    /**
+     * Returns the number of model discussions where modelId = &#63;.
+     *
+     * @param modelId the model ID
+     * @return the number of matching model discussions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByModelId(long modelId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MODELID;
+
+        Object[] finderArgs = new Object[] { modelId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MODELDISCUSSION_WHERE);
+
+            query.append(_FINDER_COLUMN_MODELID_MODELID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(modelId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the model discussions where categoryId = &#63;.
      *
      * @param categoryId the category ID
      * @return the matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByDiscussionId(long categoryId)
         throws SystemException {
         return findByDiscussionId(categoryId, QueryUtil.ALL_POS,
@@ -1073,7 +817,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * Returns a range of all the model discussions where categoryId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param categoryId the category ID
@@ -1082,6 +826,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByDiscussionId(long categoryId, int start,
         int end) throws SystemException {
         return findByDiscussionId(categoryId, start, end, null);
@@ -1091,7 +836,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * Returns an ordered range of all the model discussions where categoryId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param categoryId the category ID
@@ -1101,13 +846,16 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the ordered range of matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelDiscussion> findByDiscussionId(long categoryId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID;
             finderArgs = new Object[] { categoryId };
         } else {
@@ -1118,6 +866,16 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
         List<ModelDiscussion> list = (List<ModelDiscussion>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (ModelDiscussion modelDiscussion : list) {
+                if ((categoryId != modelDiscussion.getCategoryId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1125,7 +883,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_MODELDISCUSSION_WHERE);
@@ -1135,6 +893,9 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ModelDiscussionModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1150,19 +911,26 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 qPos.add(categoryId);
 
-                list = (List<ModelDiscussion>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ModelDiscussion>(list);
+                } else {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1173,44 +941,58 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     /**
      * Returns the first model discussion in the ordered set where categoryId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param categoryId the category ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching model discussion
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion findByDiscussionId_First(long categoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
+        ModelDiscussion modelDiscussion = fetchByDiscussionId_First(categoryId,
+                orderByComparator);
+
+        if (modelDiscussion != null) {
+            return modelDiscussion;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("categoryId=");
+        msg.append(categoryId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchModelDiscussionException(msg.toString());
+    }
+
+    /**
+     * Returns the first model discussion in the ordered set where categoryId = &#63;.
+     *
+     * @param categoryId the category ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching model discussion, or <code>null</code> if a matching model discussion could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByDiscussionId_First(long categoryId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<ModelDiscussion> list = findByDiscussionId(categoryId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("categoryId=");
-            msg.append(categoryId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchModelDiscussionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last model discussion in the ordered set where categoryId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param categoryId the category ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1218,36 +1000,58 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion findByDiscussionId_Last(long categoryId,
         OrderByComparator orderByComparator)
         throws NoSuchModelDiscussionException, SystemException {
+        ModelDiscussion modelDiscussion = fetchByDiscussionId_Last(categoryId,
+                orderByComparator);
+
+        if (modelDiscussion != null) {
+            return modelDiscussion;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("categoryId=");
+        msg.append(categoryId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchModelDiscussionException(msg.toString());
+    }
+
+    /**
+     * Returns the last model discussion in the ordered set where categoryId = &#63;.
+     *
+     * @param categoryId the category ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching model discussion, or <code>null</code> if a matching model discussion could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByDiscussionId_Last(long categoryId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByDiscussionId(categoryId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<ModelDiscussion> list = findByDiscussionId(categoryId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("categoryId=");
-            msg.append(categoryId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchModelDiscussionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the model discussions before and after the current model discussion in the ordered set where categoryId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param modelDiscussionId the primary key of the current model discussion
      * @param categoryId the category ID
@@ -1256,6 +1060,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelDiscussion[] findByDiscussionId_PrevAndNext(
         long modelDiscussionId, long categoryId,
         OrderByComparator orderByComparator)
@@ -1349,6 +1154,8 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                     }
                 }
             }
+        } else {
+            query.append(ModelDiscussionModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1380,198 +1187,17 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     }
 
     /**
-     * Returns all the model discussions.
-     *
-     * @return the model discussions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ModelDiscussion> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the model discussions.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of model discussions
-     * @param end the upper bound of the range of model discussions (not inclusive)
-     * @return the range of model discussions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ModelDiscussion> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the model discussions.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of model discussions
-     * @param end the upper bound of the range of model discussions (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of model discussions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<ModelDiscussion> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<ModelDiscussion> list = (List<ModelDiscussion>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_MODELDISCUSSION);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_MODELDISCUSSION;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<ModelDiscussion>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<ModelDiscussion>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Removes all the model discussions where modelId = &#63; from the database.
-     *
-     * @param modelId the model ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByModelId(long modelId) throws SystemException {
-        for (ModelDiscussion modelDiscussion : findByModelId(modelId)) {
-            remove(modelDiscussion);
-        }
-    }
-
-    /**
      * Removes all the model discussions where categoryId = &#63; from the database.
      *
      * @param categoryId the category ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByDiscussionId(long categoryId) throws SystemException {
-        for (ModelDiscussion modelDiscussion : findByDiscussionId(categoryId)) {
+        for (ModelDiscussion modelDiscussion : findByDiscussionId(categoryId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(modelDiscussion);
         }
-    }
-
-    /**
-     * Removes all the model discussions from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (ModelDiscussion modelDiscussion : findAll()) {
-            remove(modelDiscussion);
-        }
-    }
-
-    /**
-     * Returns the number of model discussions where modelId = &#63;.
-     *
-     * @param modelId the model ID
-     * @return the number of matching model discussions
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByModelId(long modelId) throws SystemException {
-        Object[] finderArgs = new Object[] { modelId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MODELDISCUSSION_WHERE);
-
-            query.append(_FINDER_COLUMN_MODELID_MODELID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(modelId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MODELID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1581,11 +1207,14 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
      * @return the number of matching model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByDiscussionId(long categoryId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_DISCUSSIONID;
+
         Object[] finderArgs = new Object[] { categoryId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1608,16 +1237,13 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                 qPos.add(categoryId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1626,11 +1252,514 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     }
 
     /**
+     * Caches the model discussion in the entity cache if it is enabled.
+     *
+     * @param modelDiscussion the model discussion
+     */
+    @Override
+    public void cacheResult(ModelDiscussion modelDiscussion) {
+        EntityCacheUtil.putResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey(),
+            modelDiscussion);
+
+        modelDiscussion.resetOriginalValues();
+    }
+
+    /**
+     * Caches the model discussions in the entity cache if it is enabled.
+     *
+     * @param modelDiscussions the model discussions
+     */
+    @Override
+    public void cacheResult(List<ModelDiscussion> modelDiscussions) {
+        for (ModelDiscussion modelDiscussion : modelDiscussions) {
+            if (EntityCacheUtil.getResult(
+                        ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+                        ModelDiscussionImpl.class,
+                        modelDiscussion.getPrimaryKey()) == null) {
+                cacheResult(modelDiscussion);
+            } else {
+                modelDiscussion.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all model discussions.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(ModelDiscussionImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(ModelDiscussionImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the model discussion.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(ModelDiscussion modelDiscussion) {
+        EntityCacheUtil.removeResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<ModelDiscussion> modelDiscussions) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (ModelDiscussion modelDiscussion : modelDiscussions) {
+            EntityCacheUtil.removeResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+                ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new model discussion with the primary key. Does not add the model discussion to the database.
+     *
+     * @param modelDiscussionId the primary key for the new model discussion
+     * @return the new model discussion
+     */
+    @Override
+    public ModelDiscussion create(long modelDiscussionId) {
+        ModelDiscussion modelDiscussion = new ModelDiscussionImpl();
+
+        modelDiscussion.setNew(true);
+        modelDiscussion.setPrimaryKey(modelDiscussionId);
+
+        return modelDiscussion;
+    }
+
+    /**
+     * Removes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param modelDiscussionId the primary key of the model discussion
+     * @return the model discussion that was removed
+     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion remove(long modelDiscussionId)
+        throws NoSuchModelDiscussionException, SystemException {
+        return remove((Serializable) modelDiscussionId);
+    }
+
+    /**
+     * Removes the model discussion with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the model discussion
+     * @return the model discussion that was removed
+     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion remove(Serializable primaryKey)
+        throws NoSuchModelDiscussionException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ModelDiscussion modelDiscussion = (ModelDiscussion) session.get(ModelDiscussionImpl.class,
+                    primaryKey);
+
+            if (modelDiscussion == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchModelDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(modelDiscussion);
+        } catch (NoSuchModelDiscussionException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected ModelDiscussion removeImpl(ModelDiscussion modelDiscussion)
+        throws SystemException {
+        modelDiscussion = toUnwrappedModel(modelDiscussion);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(modelDiscussion)) {
+                modelDiscussion = (ModelDiscussion) session.get(ModelDiscussionImpl.class,
+                        modelDiscussion.getPrimaryKeyObj());
+            }
+
+            if (modelDiscussion != null) {
+                session.delete(modelDiscussion);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (modelDiscussion != null) {
+            clearCache(modelDiscussion);
+        }
+
+        return modelDiscussion;
+    }
+
+    @Override
+    public ModelDiscussion updateImpl(
+        com.ext.portlet.model.ModelDiscussion modelDiscussion)
+        throws SystemException {
+        modelDiscussion = toUnwrappedModel(modelDiscussion);
+
+        boolean isNew = modelDiscussion.isNew();
+
+        ModelDiscussionModelImpl modelDiscussionModelImpl = (ModelDiscussionModelImpl) modelDiscussion;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (modelDiscussion.isNew()) {
+                session.save(modelDiscussion);
+
+                modelDiscussion.setNew(false);
+            } else {
+                session.merge(modelDiscussion);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !ModelDiscussionModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((modelDiscussionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        modelDiscussionModelImpl.getOriginalModelId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID,
+                    args);
+
+                args = new Object[] { modelDiscussionModelImpl.getModelId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODELID,
+                    args);
+            }
+
+            if ((modelDiscussionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        modelDiscussionModelImpl.getOriginalCategoryId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID,
+                    args);
+
+                args = new Object[] { modelDiscussionModelImpl.getCategoryId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_DISCUSSIONID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DISCUSSIONID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+            ModelDiscussionImpl.class, modelDiscussion.getPrimaryKey(),
+            modelDiscussion);
+
+        return modelDiscussion;
+    }
+
+    protected ModelDiscussion toUnwrappedModel(ModelDiscussion modelDiscussion) {
+        if (modelDiscussion instanceof ModelDiscussionImpl) {
+            return modelDiscussion;
+        }
+
+        ModelDiscussionImpl modelDiscussionImpl = new ModelDiscussionImpl();
+
+        modelDiscussionImpl.setNew(modelDiscussion.isNew());
+        modelDiscussionImpl.setPrimaryKey(modelDiscussion.getPrimaryKey());
+
+        modelDiscussionImpl.setModelDiscussionId(modelDiscussion.getModelDiscussionId());
+        modelDiscussionImpl.setModelId(modelDiscussion.getModelId());
+        modelDiscussionImpl.setCategoryId(modelDiscussion.getCategoryId());
+
+        return modelDiscussionImpl;
+    }
+
+    /**
+     * Returns the model discussion with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the model discussion
+     * @return the model discussion
+     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchModelDiscussionException, SystemException {
+        ModelDiscussion modelDiscussion = fetchByPrimaryKey(primaryKey);
+
+        if (modelDiscussion == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchModelDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return modelDiscussion;
+    }
+
+    /**
+     * Returns the model discussion with the primary key or throws a {@link com.ext.portlet.NoSuchModelDiscussionException} if it could not be found.
+     *
+     * @param modelDiscussionId the primary key of the model discussion
+     * @return the model discussion
+     * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion findByPrimaryKey(long modelDiscussionId)
+        throws NoSuchModelDiscussionException, SystemException {
+        return findByPrimaryKey((Serializable) modelDiscussionId);
+    }
+
+    /**
+     * Returns the model discussion with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the model discussion
+     * @return the model discussion, or <code>null</code> if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        ModelDiscussion modelDiscussion = (ModelDiscussion) EntityCacheUtil.getResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+                ModelDiscussionImpl.class, primaryKey);
+
+        if (modelDiscussion == _nullModelDiscussion) {
+            return null;
+        }
+
+        if (modelDiscussion == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                modelDiscussion = (ModelDiscussion) session.get(ModelDiscussionImpl.class,
+                        primaryKey);
+
+                if (modelDiscussion != null) {
+                    cacheResult(modelDiscussion);
+                } else {
+                    EntityCacheUtil.putResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+                        ModelDiscussionImpl.class, primaryKey,
+                        _nullModelDiscussion);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(ModelDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+                    ModelDiscussionImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return modelDiscussion;
+    }
+
+    /**
+     * Returns the model discussion with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param modelDiscussionId the primary key of the model discussion
+     * @return the model discussion, or <code>null</code> if a model discussion with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelDiscussion fetchByPrimaryKey(long modelDiscussionId)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) modelDiscussionId);
+    }
+
+    /**
+     * Returns all the model discussions.
+     *
+     * @return the model discussions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ModelDiscussion> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the model discussions.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of model discussions
+     * @param end the upper bound of the range of model discussions (not inclusive)
+     * @return the range of model discussions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ModelDiscussion> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the model discussions.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of model discussions
+     * @param end the upper bound of the range of model discussions (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of model discussions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ModelDiscussion> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<ModelDiscussion> list = (List<ModelDiscussion>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_MODELDISCUSSION);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_MODELDISCUSSION;
+
+                if (pagination) {
+                    sql = sql.concat(ModelDiscussionModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ModelDiscussion>(list);
+                } else {
+                    list = (List<ModelDiscussion>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the model discussions from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (ModelDiscussion modelDiscussion : findAll()) {
+            remove(modelDiscussion);
+        }
+    }
+
+    /**
      * Returns the number of model discussions.
      *
      * @return the number of model discussions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1644,16 +1773,15 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
                 Query q = session.createQuery(_SQL_COUNT_MODELDISCUSSION);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1675,7 +1803,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<ModelDiscussion>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1688,6 +1816,7 @@ public class ModelDiscussionPersistenceImpl extends BasePersistenceImpl<ModelDis
     public void destroy() {
         EntityCacheUtil.removeCache(ModelDiscussionImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

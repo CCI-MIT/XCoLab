@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @see Message
  * @generated
  */
-public class MessageCacheModel implements CacheModel<Message>, Serializable {
+public class MessageCacheModel implements CacheModel<Message>, Externalizable {
     public long messageId;
     public long fromId;
     public long repliesTo;
@@ -46,6 +49,7 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public Message toEntityModel() {
         MessageImpl messageImpl = new MessageImpl();
 
@@ -74,5 +78,36 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
         messageImpl.resetOriginalValues();
 
         return messageImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        messageId = objectInput.readLong();
+        fromId = objectInput.readLong();
+        repliesTo = objectInput.readLong();
+        createDate = objectInput.readLong();
+        subject = objectInput.readUTF();
+        content = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(messageId);
+        objectOutput.writeLong(fromId);
+        objectOutput.writeLong(repliesTo);
+        objectOutput.writeLong(createDate);
+
+        if (subject == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(subject);
+        }
+
+        if (content == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(content);
+        }
     }
 }

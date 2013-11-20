@@ -1,137 +1,215 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class FocusAreaOntologyTermLocalServiceClp
     implements FocusAreaOntologyTermLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addFocusAreaOntologyTermMethodKey0;
-    private MethodKey _createFocusAreaOntologyTermMethodKey1;
-    private MethodKey _deleteFocusAreaOntologyTermMethodKey2;
-    private MethodKey _deleteFocusAreaOntologyTermMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchFocusAreaOntologyTermMethodKey8;
-    private MethodKey _getFocusAreaOntologyTermMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getFocusAreaOntologyTermsMethodKey11;
-    private MethodKey _getFocusAreaOntologyTermsCountMethodKey12;
-    private MethodKey _updateFocusAreaOntologyTermMethodKey13;
-    private MethodKey _updateFocusAreaOntologyTermMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _findTermsByFocusAreaMethodKey17;
-    private MethodKey _addAreaTermMethodKey18;
-    private MethodKey _removeAreaTermMethodKey19;
-    private MethodKey _storeMethodKey20;
-    private MethodKey _getTermMethodKey21;
-    private MethodKey _getAreaMethodKey22;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
 
     public FocusAreaOntologyTermLocalServiceClp(
-        ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addFocusAreaOntologyTermMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addFocusAreaOntologyTerm",
-                com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodName0 = "addFocusAreaOntologyTerm";
 
-        _createFocusAreaOntologyTermMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createFocusAreaOntologyTerm",
-                com.ext.portlet.service.persistence.FocusAreaOntologyTermPK.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
 
-        _deleteFocusAreaOntologyTermMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteFocusAreaOntologyTerm",
-                com.ext.portlet.service.persistence.FocusAreaOntologyTermPK.class);
+        _methodName1 = "createFocusAreaOntologyTerm";
 
-        _deleteFocusAreaOntologyTermMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteFocusAreaOntologyTerm",
-                com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodParameterTypes1 = new String[] {
+                "com.ext.portlet.service.persistence.FocusAreaOntologyTermPK"
+            };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteFocusAreaOntologyTerm";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] {
+                "com.ext.portlet.service.persistence.FocusAreaOntologyTermPK"
+            };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteFocusAreaOntologyTerm";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
 
-        _fetchFocusAreaOntologyTermMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchFocusAreaOntologyTerm",
-                com.ext.portlet.service.persistence.FocusAreaOntologyTermPK.class);
+        _methodName4 = "dynamicQuery";
 
-        _getFocusAreaOntologyTermMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getFocusAreaOntologyTerm",
-                com.ext.portlet.service.persistence.FocusAreaOntologyTermPK.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getFocusAreaOntologyTermsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getFocusAreaOntologyTerms", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getFocusAreaOntologyTermsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getFocusAreaOntologyTermsCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateFocusAreaOntologyTermMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateFocusAreaOntologyTerm",
-                com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateFocusAreaOntologyTermMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateFocusAreaOntologyTerm",
-                com.ext.portlet.model.FocusAreaOntologyTerm.class, boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _findTermsByFocusAreaMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findTermsByFocusArea", java.lang.Long.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _addAreaTermMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addAreaTerm", java.lang.Long.class, java.lang.Long.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _removeAreaTermMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "removeAreaTerm", java.lang.Long.class, java.lang.Long.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _storeMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "store", com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodName10 = "fetchFocusAreaOntologyTerm";
 
-        _getTermMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getTerm", com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodParameterTypes10 = new String[] {
+                "com.ext.portlet.service.persistence.FocusAreaOntologyTermPK"
+            };
 
-        _getAreaMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getArea", com.ext.portlet.model.FocusAreaOntologyTerm.class);
+        _methodName11 = "getFocusAreaOntologyTerm";
+
+        _methodParameterTypes11 = new String[] {
+                "com.ext.portlet.service.persistence.FocusAreaOntologyTermPK"
+            };
+
+        _methodName12 = "getPersistedModel";
+
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
+
+        _methodName13 = "getFocusAreaOntologyTerms";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getFocusAreaOntologyTermsCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updateFocusAreaOntologyTerm";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "findTermsByFocusArea";
+
+        _methodParameterTypes19 = new String[] { "java.lang.Long" };
+
+        _methodName20 = "addAreaTerm";
+
+        _methodParameterTypes20 = new String[] {
+                "java.lang.Long", "java.lang.Long"
+            };
+
+        _methodName21 = "removeAreaTerm";
+
+        _methodParameterTypes21 = new String[] {
+                "java.lang.Long", "java.lang.Long"
+            };
+
+        _methodName22 = "store";
+
+        _methodParameterTypes22 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
+
+        _methodName23 = "getTerm";
+
+        _methodParameterTypes23 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
+
+        _methodName24 = "getArea";
+
+        _methodParameterTypes24 = new String[] {
+                "com.ext.portlet.model.FocusAreaOntologyTerm"
+            };
     }
 
+    @Override
     public com.ext.portlet.model.FocusAreaOntologyTerm addFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addFocusAreaOntologyTermMethodKey0,
-                ClpSerializer.translateInput(focusAreaOntologyTerm));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTerm)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -147,16 +225,20 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.FocusAreaOntologyTerm createFocusAreaOntologyTerm(
         com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createFocusAreaOntologyTermMethodKey1,
-                ClpSerializer.translateInput(focusAreaOntologyTermPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTermPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -168,16 +250,22 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteFocusAreaOntologyTerm(
+    @Override
+    public com.ext.portlet.model.FocusAreaOntologyTerm deleteFocusAreaOntologyTerm(
         com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteFocusAreaOntologyTermMethodKey2,
-                ClpSerializer.translateInput(focusAreaOntologyTermPK));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTermPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -193,17 +281,25 @@ public class FocusAreaOntologyTermLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteFocusAreaOntologyTerm(
+    @Override
+    public com.ext.portlet.model.FocusAreaOntologyTerm deleteFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteFocusAreaOntologyTermMethodKey3,
-                ClpSerializer.translateInput(focusAreaOntologyTerm));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTerm)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -215,20 +311,45 @@ public class FocusAreaOntologyTermLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -244,18 +365,26 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -271,6 +400,7 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -279,13 +409,21 @@ public class FocusAreaOntologyTermLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -301,17 +439,19 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -327,17 +467,54 @@ public class FocusAreaOntologyTermLocalServiceClp
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.FocusAreaOntologyTerm fetchFocusAreaOntologyTerm(
         com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchFocusAreaOntologyTermMethodKey8,
-                ClpSerializer.translateInput(focusAreaOntologyTermPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTermPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -353,18 +530,22 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.FocusAreaOntologyTerm getFocusAreaOntologyTerm(
         com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getFocusAreaOntologyTermMethodKey9,
-                ClpSerializer.translateInput(focusAreaOntologyTermPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTermPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -384,18 +565,20 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -415,17 +598,18 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.FocusAreaOntologyTerm> getFocusAreaOntologyTerms(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getFocusAreaOntologyTermsMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -441,15 +625,17 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.util.List<com.ext.portlet.model.FocusAreaOntologyTerm>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getFocusAreaOntologyTermsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getFocusAreaOntologyTermsCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -465,17 +651,21 @@ public class FocusAreaOntologyTermLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.FocusAreaOntologyTerm updateFocusAreaOntologyTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateFocusAreaOntologyTermMethodKey13,
-                ClpSerializer.translateInput(focusAreaOntologyTerm));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] {
+                        ClpSerializer.translateInput(focusAreaOntologyTerm)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -491,41 +681,16 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.FocusAreaOntologyTerm updateFocusAreaOntologyTerm(
-        com.ext.portlet.model.FocusAreaOntologyTerm focusAreaOntologyTerm,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateFocusAreaOntologyTermMethodKey14,
-                ClpSerializer.translateInput(focusAreaOntologyTerm), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.FocusAreaOntologyTerm) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -537,13 +702,15 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -553,17 +720,26 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.FocusAreaOntologyTerm> findTermsByFocusArea(
         java.lang.Long focusAreaId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_findTermsByFocusAreaMethodKey17,
-                ClpSerializer.translateInput(focusAreaId));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { ClpSerializer.translateInput(focusAreaId) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -579,16 +755,21 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (java.util.List<com.ext.portlet.model.FocusAreaOntologyTerm>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void addAreaTerm(java.lang.Long focusAreaId, java.lang.Long termId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addAreaTermMethodKey18,
-                ClpSerializer.translateInput(focusAreaId),
-                ClpSerializer.translateInput(termId));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName20,
+                _methodParameterTypes20,
+                new Object[] {
+                    ClpSerializer.translateInput(focusAreaId),
+                    
+                ClpSerializer.translateInput(termId)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -606,16 +787,21 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
     }
 
+    @Override
     public void removeAreaTerm(java.lang.Long focusAreaId, java.lang.Long termId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_removeAreaTermMethodKey19,
-                ClpSerializer.translateInput(focusAreaId),
-                ClpSerializer.translateInput(termId));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21,
+                new Object[] {
+                    ClpSerializer.translateInput(focusAreaId),
+                    
+                ClpSerializer.translateInput(termId)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -633,14 +819,16 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
     }
 
+    @Override
     public void store(com.ext.portlet.model.FocusAreaOntologyTerm faot)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_storeMethodKey20,
-                ClpSerializer.translateInput(faot));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName22,
+                _methodParameterTypes22,
+                new Object[] { ClpSerializer.translateInput(faot) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -654,18 +842,20 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
     }
 
+    @Override
     public com.ext.portlet.model.OntologyTerm getTerm(
         com.ext.portlet.model.FocusAreaOntologyTerm faot)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getTermMethodKey21,
-                ClpSerializer.translateInput(faot));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] { ClpSerializer.translateInput(faot) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -685,18 +875,20 @@ public class FocusAreaOntologyTermLocalServiceClp
         return (com.ext.portlet.model.OntologyTerm) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.FocusArea getArea(
         com.ext.portlet.model.FocusAreaOntologyTerm faot)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAreaMethodKey22,
-                ClpSerializer.translateInput(faot));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] { ClpSerializer.translateInput(faot) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -714,9 +906,5 @@ public class FocusAreaOntologyTermLocalServiceClp
         }
 
         return (com.ext.portlet.model.FocusArea) ClpSerializer.translateOutput(returnObj);
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

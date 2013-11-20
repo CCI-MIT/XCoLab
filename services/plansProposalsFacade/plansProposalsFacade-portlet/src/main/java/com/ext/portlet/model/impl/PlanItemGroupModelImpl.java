@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanItemGroup service. Represents a row in the &quot;xcolab_PlanItemGroup&quot; database table, with each column mapped to a property of this class.
@@ -51,6 +53,8 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanItemGroup (planId LONG not null primary key,groupId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanItemGroup";
+    public static final String ORDER_BY_JPQL = " ORDER BY planItemGroup.planId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanItemGroup.planId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -64,19 +68,19 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanItemGroup"),
             true);
     public static long GROUPID_COLUMN_BITMASK = 1L;
+    public static long PLANID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanItemGroup"));
     private static ClassLoader _classLoader = PlanItemGroup.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanItemGroup.class
         };
     private long _planId;
     private long _groupId;
     private long _originalGroupId;
     private boolean _setOriginalGroupId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanItemGroup _escapedModelProxy;
+    private PlanItemGroup _escapedModel;
 
     public PlanItemGroupModelImpl() {
     }
@@ -88,6 +92,10 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
      * @return the normal model instance
      */
     public static PlanItemGroup toModel(PlanItemGroupSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanItemGroup model = new PlanItemGroupImpl();
 
         model.setPlanId(soapModel.getPlanId());
@@ -103,6 +111,10 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
      * @return the normal model instances
      */
     public static List<PlanItemGroup> toModels(PlanItemGroupSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanItemGroup> models = new ArrayList<PlanItemGroup>(soapModels.length);
 
         for (PlanItemGroupSoap soapModel : soapModels) {
@@ -112,44 +124,79 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planId);
+        return _planId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanItemGroup.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanItemGroup.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planId", getPlanId());
+        attributes.put("groupId", getGroupId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long groupId = (Long) attributes.get("groupId");
+
+        if (groupId != null) {
+            setGroupId(groupId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _planId = planId;
     }
 
     @JSON
+    @Override
     public long getGroupId() {
         return _groupId;
     }
 
+    @Override
     public void setGroupId(long groupId) {
         _columnBitmask |= GROUPID_COLUMN_BITMASK;
 
@@ -171,29 +218,26 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
     }
 
     @Override
-    public PlanItemGroup toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanItemGroup) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanItemGroup.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanItemGroup.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanItemGroup toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanItemGroup) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -208,6 +252,7 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
         return planItemGroupImpl;
     }
 
+    @Override
     public int compareTo(PlanItemGroup planItemGroup) {
         long primaryKey = planItemGroup.getPrimaryKey();
 
@@ -222,17 +267,15 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanItemGroup)) {
             return false;
         }
 
-        PlanItemGroup planItemGroup = null;
-
-        try {
-            planItemGroup = (PlanItemGroup) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanItemGroup planItemGroup = (PlanItemGroup) obj;
 
         long primaryKey = planItemGroup.getPrimaryKey();
 
@@ -283,6 +326,7 @@ public class PlanItemGroupModelImpl extends BaseModelImpl<PlanItemGroup>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

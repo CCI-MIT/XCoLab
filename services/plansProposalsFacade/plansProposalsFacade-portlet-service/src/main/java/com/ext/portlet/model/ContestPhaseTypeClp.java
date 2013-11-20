@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
@@ -18,66 +24,218 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
     private String _name;
     private String _description;
     private String _status;
+    private BaseModel<?> _contestPhaseTypeRemoteModel;
 
     public ContestPhaseTypeClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhaseType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhaseType.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("status", getStatus());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        String status = (String) attributes.get("status");
+
+        if (status != null) {
+            setStatus(status);
+        }
+    }
+
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getName() {
         return _name;
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setName", String.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, name);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getDescription() {
         return _description;
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDescription", String.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, description);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getStatus() {
         return _status;
     }
 
+    @Override
     public void setStatus(String status) {
         _status = status;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setStatus", String.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, status);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getContestPhaseTypeRemoteModel() {
+        return _contestPhaseTypeRemoteModel;
+    }
+
+    public void setContestPhaseTypeRemoteModel(
+        BaseModel<?> contestPhaseTypeRemoteModel) {
+        _contestPhaseTypeRemoteModel = contestPhaseTypeRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _contestPhaseTypeRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_contestPhaseTypeRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ContestPhaseTypeLocalServiceUtil.addContestPhaseType(this);
@@ -88,7 +246,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public ContestPhaseType toEscapedModel() {
-        return (ContestPhaseType) Proxy.newProxyInstance(ContestPhaseType.class.getClassLoader(),
+        return (ContestPhaseType) ProxyUtil.newProxyInstance(ContestPhaseType.class.getClassLoader(),
             new Class[] { ContestPhaseType.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -105,6 +263,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         return clone;
     }
 
+    @Override
     public int compareTo(ContestPhaseType contestPhaseType) {
         long primaryKey = contestPhaseType.getPrimaryKey();
 
@@ -119,17 +278,15 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhaseTypeClp)) {
             return false;
         }
 
-        ContestPhaseTypeClp contestPhaseType = null;
-
-        try {
-            contestPhaseType = (ContestPhaseTypeClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ContestPhaseTypeClp contestPhaseType = (ContestPhaseTypeClp) obj;
 
         long primaryKey = contestPhaseType.getPrimaryKey();
 
@@ -162,6 +319,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

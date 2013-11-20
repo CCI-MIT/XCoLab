@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanModelRun;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @generated
  */
 public class PlanModelRunCacheModel implements CacheModel<PlanModelRun>,
-    Serializable {
+    Externalizable {
     public long id;
     public long planId;
     public long scenarioId;
@@ -49,6 +52,7 @@ public class PlanModelRunCacheModel implements CacheModel<PlanModelRun>,
         return sb.toString();
     }
 
+    @Override
     public PlanModelRun toEntityModel() {
         PlanModelRunImpl planModelRunImpl = new PlanModelRunImpl();
 
@@ -69,5 +73,28 @@ public class PlanModelRunCacheModel implements CacheModel<PlanModelRun>,
         planModelRunImpl.resetOriginalValues();
 
         return planModelRunImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planId = objectInput.readLong();
+        scenarioId = objectInput.readLong();
+        planVersion = objectInput.readLong();
+        version = objectInput.readLong();
+        created = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(scenarioId);
+        objectOutput.writeLong(planVersion);
+        objectOutput.writeLong(version);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updateAuthorId);
     }
 }

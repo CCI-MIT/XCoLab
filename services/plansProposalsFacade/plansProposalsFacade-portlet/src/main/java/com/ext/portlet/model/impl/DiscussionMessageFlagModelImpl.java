@@ -25,7 +25,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the DiscussionMessageFlag service. Represents a row in the &quot;xcolab_DiscussionMessageFlag&quot; database table, with each column mapped to a property of this class.
@@ -59,6 +61,8 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_DiscussionMessageFlag (pk LONG not null primary key,messageId LONG,flagType VARCHAR(75) null,data_ VARCHAR(2048) null,created DATE null,userId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_DiscussionMessageFlag";
+    public static final String ORDER_BY_JPQL = " ORDER BY discussionMessageFlag.pk ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_DiscussionMessageFlag.pk ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -73,10 +77,11 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
             true);
     public static long FLAGTYPE_COLUMN_BITMASK = 1L;
     public static long MESSAGEID_COLUMN_BITMASK = 2L;
+    public static long PK_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionMessageFlag"));
     private static ClassLoader _classLoader = DiscussionMessageFlag.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             DiscussionMessageFlag.class
         };
     private long _pk;
@@ -89,9 +94,8 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     private Date _created;
     private long _userId;
     private String _userUuid;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private DiscussionMessageFlag _escapedModelProxy;
+    private DiscussionMessageFlag _escapedModel;
 
     public DiscussionMessageFlagModelImpl() {
     }
@@ -104,6 +108,10 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
      */
     public static DiscussionMessageFlag toModel(
         DiscussionMessageFlagSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         DiscussionMessageFlag model = new DiscussionMessageFlagImpl();
 
         model.setPk(soapModel.getPk());
@@ -124,6 +132,10 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
      */
     public static List<DiscussionMessageFlag> toModels(
         DiscussionMessageFlagSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<DiscussionMessageFlag> models = new ArrayList<DiscussionMessageFlag>(soapModels.length);
 
         for (DiscussionMessageFlagSoap soapModel : soapModels) {
@@ -133,44 +145,107 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _pk;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_pk);
+        return _pk;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return DiscussionMessageFlag.class;
     }
 
+    @Override
     public String getModelClassName() {
         return DiscussionMessageFlag.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("pk", getPk());
+        attributes.put("messageId", getMessageId());
+        attributes.put("flagType", getFlagType());
+        attributes.put("data", getData());
+        attributes.put("created", getCreated());
+        attributes.put("userId", getUserId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long pk = (Long) attributes.get("pk");
+
+        if (pk != null) {
+            setPk(pk);
+        }
+
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        String flagType = (String) attributes.get("flagType");
+
+        if (flagType != null) {
+            setFlagType(flagType);
+        }
+
+        String data = (String) attributes.get("data");
+
+        if (data != null) {
+            setData(data);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPk() {
         return _pk;
     }
 
+    @Override
     public void setPk(long pk) {
         _pk = pk;
     }
 
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _columnBitmask |= MESSAGEID_COLUMN_BITMASK;
 
@@ -188,6 +263,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     }
 
     @JSON
+    @Override
     public String getFlagType() {
         if (_flagType == null) {
             return StringPool.BLANK;
@@ -196,6 +272,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         }
     }
 
+    @Override
     public void setFlagType(String flagType) {
         _columnBitmask |= FLAGTYPE_COLUMN_BITMASK;
 
@@ -211,6 +288,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     }
 
     @JSON
+    @Override
     public String getData() {
         if (_data == null) {
             return StringPool.BLANK;
@@ -219,32 +297,39 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         }
     }
 
+    @Override
     public void setData(String data) {
         _data = data;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -254,29 +339,26 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
     }
 
     @Override
-    public DiscussionMessageFlag toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (DiscussionMessageFlag) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    DiscussionMessageFlag.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            DiscussionMessageFlag.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public DiscussionMessageFlag toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (DiscussionMessageFlag) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -295,6 +377,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         return discussionMessageFlagImpl;
     }
 
+    @Override
     public int compareTo(DiscussionMessageFlag discussionMessageFlag) {
         long primaryKey = discussionMessageFlag.getPrimaryKey();
 
@@ -309,17 +392,15 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof DiscussionMessageFlag)) {
             return false;
         }
 
-        DiscussionMessageFlag discussionMessageFlag = null;
-
-        try {
-            discussionMessageFlag = (DiscussionMessageFlag) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) obj;
 
         long primaryKey = discussionMessageFlag.getPrimaryKey();
 
@@ -406,6 +487,7 @@ public class DiscussionMessageFlagModelImpl extends BaseModelImpl<DiscussionMess
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

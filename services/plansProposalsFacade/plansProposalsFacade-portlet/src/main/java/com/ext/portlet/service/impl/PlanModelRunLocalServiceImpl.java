@@ -3,6 +3,7 @@ package com.ext.portlet.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.ext.portlet.NoSuchPlanModelRunException;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanModelRun;
 import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
@@ -57,7 +58,8 @@ public class PlanModelRunLocalServiceImpl
     }
     
     public PlanModelRun getForPlan(PlanItem plan) throws SystemException {
-        return this.planModelRunPersistence.fetchByPlanIdPlanVersion(plan.getPlanId(), plan.getVersion());
+        List<PlanModelRun> runs = this.planModelRunPersistence.findByPlanIdPlanVersion(plan.getPlanId(), plan.getVersion());
+        return runs.isEmpty() ? null : runs.get(0); 
      }
     
 

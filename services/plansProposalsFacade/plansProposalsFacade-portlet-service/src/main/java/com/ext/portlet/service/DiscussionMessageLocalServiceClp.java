@@ -1,222 +1,347 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class DiscussionMessageLocalServiceClp
     implements DiscussionMessageLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addDiscussionMessageMethodKey0;
-    private MethodKey _createDiscussionMessageMethodKey1;
-    private MethodKey _deleteDiscussionMessageMethodKey2;
-    private MethodKey _deleteDiscussionMessageMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchDiscussionMessageMethodKey8;
-    private MethodKey _getDiscussionMessageMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getDiscussionMessagesMethodKey11;
-    private MethodKey _getDiscussionMessagesCountMethodKey12;
-    private MethodKey _updateDiscussionMessageMethodKey13;
-    private MethodKey _updateDiscussionMessageMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _getThreadsByCategoryMethodKey17;
-    private MethodKey _getThreadMessagesMethodKey18;
-    private MethodKey _getThreadMessagesCountMethodKey19;
-    private MethodKey _getThreadByThreadIdMethodKey20;
-    private MethodKey _addThreadMethodKey21;
-    private MethodKey _addMessageMethodKey22;
-    private MethodKey _searchMethodKey23;
-    private MethodKey _getMessageByMessageIdMethodKey24;
-    private MethodKey _reIndexMethodKey25;
-    private MethodKey _reIndexMethodKey26;
-    private MethodKey _getThreadMessagesMethodKey27;
-    private MethodKey _getThreadMessagesCountMethodKey28;
-    private MethodKey _storeMethodKey29;
-    private MethodKey _addThreadMessageMethodKey30;
-    private MethodKey _getAuthorMethodKey31;
-    private MethodKey _getLastActivityAuthorMethodKey32;
-    private MethodKey _deleteMethodKey33;
-    private MethodKey _updateMethodKey34;
-    private MethodKey _getCategoryMethodKey35;
-    private MethodKey _getCategoryGroupMethodKey36;
-    private MethodKey _getThreadMethodKey37;
-    private MethodKey _getFlagsMethodKey38;
-    private MethodKey _addFlagMethodKey39;
-    private MethodKey _removeFlagMethodKey40;
-    private MethodKey _hasFlagMethodKey41;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
+    private String _methodName29;
+    private String[] _methodParameterTypes29;
+    private String _methodName30;
+    private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
+    private String _methodName33;
+    private String[] _methodParameterTypes33;
+    private String _methodName34;
+    private String[] _methodParameterTypes34;
+    private String _methodName35;
+    private String[] _methodParameterTypes35;
+    private String _methodName36;
+    private String[] _methodParameterTypes36;
+    private String _methodName37;
+    private String[] _methodParameterTypes37;
+    private String _methodName38;
+    private String[] _methodParameterTypes38;
+    private String _methodName39;
+    private String[] _methodParameterTypes39;
+    private String _methodName40;
+    private String[] _methodParameterTypes40;
+    private String _methodName41;
+    private String[] _methodParameterTypes41;
+    private String _methodName42;
+    private String[] _methodParameterTypes42;
+    private String _methodName43;
+    private String[] _methodParameterTypes43;
 
-    public DiscussionMessageLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+    public DiscussionMessageLocalServiceClp(
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addDiscussionMessageMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addDiscussionMessage",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodName0 = "addDiscussionMessage";
 
-        _createDiscussionMessageMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createDiscussionMessage", long.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
 
-        _deleteDiscussionMessageMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteDiscussionMessage", long.class);
+        _methodName1 = "createDiscussionMessage";
 
-        _deleteDiscussionMessageMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteDiscussionMessage",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes1 = new String[] { "long" };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteDiscussionMessage";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] { "long" };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteDiscussionMessage";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
 
-        _fetchDiscussionMessageMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchDiscussionMessage", long.class);
+        _methodName4 = "dynamicQuery";
 
-        _getDiscussionMessageMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionMessage", long.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getDiscussionMessagesMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionMessages", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getDiscussionMessagesCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDiscussionMessagesCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateDiscussionMessageMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateDiscussionMessage",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateDiscussionMessageMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateDiscussionMessage",
-                com.ext.portlet.model.DiscussionMessage.class, boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _getThreadsByCategoryMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadsByCategory", long.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getThreadMessagesMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessages", long.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _getThreadMessagesCountMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessagesCount", long.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _getThreadByThreadIdMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadByThreadId", long.class);
+        _methodName10 = "fetchDiscussionMessage";
 
-        _addThreadMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addThread", long.class, long.class, java.lang.String.class,
-                java.lang.String.class, com.liferay.portal.model.User.class);
+        _methodParameterTypes10 = new String[] { "long" };
 
-        _addMessageMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addMessage", long.class, long.class, long.class,
-                java.lang.String.class, java.lang.String.class,
-                com.liferay.portal.model.User.class);
+        _methodName11 = "getDiscussionMessage";
 
-        _searchMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
-                "search", java.lang.String.class, long.class);
+        _methodParameterTypes11 = new String[] { "long" };
 
-        _getMessageByMessageIdMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessageByMessageId", long.class);
+        _methodName12 = "getPersistedModel";
 
-        _reIndexMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
-                "reIndex");
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-        _reIndexMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
-                "reIndex", long.class);
+        _methodName13 = "getDiscussionMessages";
 
-        _getThreadMessagesMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessages",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes13 = new String[] { "int", "int" };
 
-        _getThreadMessagesCountMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThreadMessagesCount",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodName14 = "getDiscussionMessagesCount";
 
-        _storeMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
-                "store", com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes14 = new String[] {  };
 
-        _addThreadMessageMethodKey30 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addThreadMessage",
-                com.ext.portlet.model.DiscussionMessage.class,
-                java.lang.String.class, java.lang.String.class,
-                com.liferay.portal.model.User.class);
+        _methodName15 = "updateDiscussionMessage";
 
-        _getAuthorMethodKey31 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getAuthor", com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
 
-        _getLastActivityAuthorMethodKey32 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getLastActivityAuthor",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodName16 = "getBeanIdentifier";
 
-        _deleteMethodKey33 = new MethodKey(_classLoaderProxy.getClassName(),
-                "delete", com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes16 = new String[] {  };
 
-        _updateMethodKey34 = new MethodKey(_classLoaderProxy.getClassName(),
-                "update", com.ext.portlet.model.DiscussionMessage.class,
-                java.lang.String.class, java.lang.String.class);
+        _methodName17 = "setBeanIdentifier";
 
-        _getCategoryMethodKey35 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCategory", com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
 
-        _getCategoryGroupMethodKey36 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCategoryGroup",
-                com.ext.portlet.model.DiscussionMessage.class);
+        _methodName19 = "getThreadsByCategory";
 
-        _getThreadMethodKey37 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getThread", com.ext.portlet.model.DiscussionMessage.class);
+        _methodParameterTypes19 = new String[] { "long" };
 
-        _getFlagsMethodKey38 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getFlags", com.ext.portlet.model.DiscussionMessage.class);
+        _methodName20 = "getThreadMessages";
 
-        _addFlagMethodKey39 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addFlag", com.ext.portlet.model.DiscussionMessage.class,
-                java.lang.String.class, java.lang.String.class,
-                com.liferay.portal.model.User.class);
+        _methodParameterTypes20 = new String[] { "long" };
 
-        _removeFlagMethodKey40 = new MethodKey(_classLoaderProxy.getClassName(),
-                "removeFlag", com.ext.portlet.model.DiscussionMessage.class,
-                java.lang.String.class);
+        _methodName21 = "getThreadMessagesCount";
 
-        _hasFlagMethodKey41 = new MethodKey(_classLoaderProxy.getClassName(),
-                "hasFlag", long.class, java.lang.String.class);
+        _methodParameterTypes21 = new String[] { "long" };
+
+        _methodName22 = "getThreadByThreadId";
+
+        _methodParameterTypes22 = new String[] { "long" };
+
+        _methodName23 = "addThread";
+
+        _methodParameterTypes23 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String",
+                "com.liferay.portal.model.User"
+            };
+
+        _methodName24 = "addMessage";
+
+        _methodParameterTypes24 = new String[] {
+                "long", "long", "long", "java.lang.String", "java.lang.String",
+                "com.liferay.portal.model.User"
+            };
+
+        _methodName25 = "search";
+
+        _methodParameterTypes25 = new String[] { "java.lang.String", "long" };
+
+        _methodName26 = "getMessageByMessageId";
+
+        _methodParameterTypes26 = new String[] { "long" };
+
+        _methodName27 = "reIndex";
+
+        _methodParameterTypes27 = new String[] {  };
+
+        _methodName28 = "reIndex";
+
+        _methodParameterTypes28 = new String[] { "long" };
+
+        _methodName29 = "getThreadMessages";
+
+        _methodParameterTypes29 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName30 = "getThreadMessagesCount";
+
+        _methodParameterTypes30 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName31 = "store";
+
+        _methodParameterTypes31 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName32 = "addThreadMessage";
+
+        _methodParameterTypes32 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
+                "java.lang.String", "com.liferay.portal.model.User"
+            };
+
+        _methodName33 = "getAuthor";
+
+        _methodParameterTypes33 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName34 = "getLastActivityAuthor";
+
+        _methodParameterTypes34 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName35 = "delete";
+
+        _methodParameterTypes35 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName36 = "update";
+
+        _methodParameterTypes36 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
+                "java.lang.String"
+            };
+
+        _methodName37 = "getCategory";
+
+        _methodParameterTypes37 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName38 = "getCategoryGroup";
+
+        _methodParameterTypes38 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName39 = "getThread";
+
+        _methodParameterTypes39 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName40 = "getFlags";
+
+        _methodParameterTypes40 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage"
+            };
+
+        _methodName41 = "addFlag";
+
+        _methodParameterTypes41 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String",
+                "java.lang.String", "com.liferay.portal.model.User"
+            };
+
+        _methodName42 = "removeFlag";
+
+        _methodParameterTypes42 = new String[] {
+                "com.ext.portlet.model.DiscussionMessage", "java.lang.String"
+            };
+
+        _methodName43 = "hasFlag";
+
+        _methodParameterTypes43 = new String[] { "long", "java.lang.String" };
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage addDiscussionMessage(
         com.ext.portlet.model.DiscussionMessage discussionMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addDiscussionMessageMethodKey0,
-                ClpSerializer.translateInput(discussionMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] { ClpSerializer.translateInput(
+                            discussionMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -232,16 +357,17 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage createDiscussionMessage(
         long pk) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createDiscussionMessageMethodKey1,
-                pk);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1, new Object[] { pk });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -253,15 +379,19 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteDiscussionMessage(long pk)
+    @Override
+    public com.ext.portlet.model.DiscussionMessage deleteDiscussionMessage(
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteDiscussionMessageMethodKey2,
-                pk);
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2, new Object[] { pk });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -277,17 +407,24 @@ public class DiscussionMessageLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteDiscussionMessage(
+    @Override
+    public com.ext.portlet.model.DiscussionMessage deleteDiscussionMessage(
         com.ext.portlet.model.DiscussionMessage discussionMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteDiscussionMessageMethodKey3,
-                ClpSerializer.translateInput(discussionMessage));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] { ClpSerializer.translateInput(
+                            discussionMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -299,20 +436,45 @@ public class DiscussionMessageLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -328,18 +490,26 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -355,6 +525,7 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -363,13 +534,21 @@ public class DiscussionMessageLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -385,17 +564,19 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -411,16 +592,50 @@ public class DiscussionMessageLocalServiceClp
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.DiscussionMessage fetchDiscussionMessage(
         long pk) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchDiscussionMessageMethodKey8,
-                pk);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10, new Object[] { pk });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -436,17 +651,18 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage getDiscussionMessage(long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDiscussionMessageMethodKey9,
-                pk);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11, new Object[] { pk });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -466,18 +682,20 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -497,17 +715,18 @@ public class DiscussionMessageLocalServiceClp
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getDiscussionMessages(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDiscussionMessagesMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -523,15 +742,17 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getDiscussionMessagesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getDiscussionMessagesCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -547,17 +768,20 @@ public class DiscussionMessageLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage updateDiscussionMessage(
         com.ext.portlet.model.DiscussionMessage discussionMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateDiscussionMessageMethodKey13,
-                ClpSerializer.translateInput(discussionMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] { ClpSerializer.translateInput(
+                            discussionMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -573,40 +797,16 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.DiscussionMessage updateDiscussionMessage(
-        com.ext.portlet.model.DiscussionMessage discussionMessage, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateDiscussionMessageMethodKey14,
-                ClpSerializer.translateInput(discussionMessage), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -618,13 +818,15 @@ public class DiscussionMessageLocalServiceClp
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -634,17 +836,25 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getThreadsByCategory(
         long categoryId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadsByCategoryMethodKey17,
-                categoryId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19, new Object[] { categoryId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -660,17 +870,18 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getThreadMessages(
         long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadMessagesMethodKey18,
-                threadId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20, new Object[] { threadId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -686,16 +897,17 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getThreadMessagesCount(long threadId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadMessagesCountMethodKey19,
-                threadId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21, new Object[] { threadId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -711,18 +923,19 @@ public class DiscussionMessageLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage getThreadByThreadId(
         long threadId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadByThreadIdMethodKey20,
-                threadId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22, new Object[] { threadId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchDiscussionMessageException) {
                 throw (com.ext.portlet.NoSuchDiscussionMessageException) t;
             }
@@ -742,21 +955,30 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage addThread(
         long categoryGroupId, long categoryId, java.lang.String subject,
         java.lang.String body, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addThreadMethodKey21,
-                categoryGroupId, categoryId,
-                ClpSerializer.translateInput(subject),
-                ClpSerializer.translateInput(body),
-                ClpSerializer.translateInput(author));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] {
+                        categoryGroupId,
+                        
+                    categoryId,
+                        
+                    ClpSerializer.translateInput(subject),
+                        
+                    ClpSerializer.translateInput(body),
+                        
+                    ClpSerializer.translateInput(author)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -772,6 +994,7 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage addMessage(
         long categoryGroupId, long categoryId, long threadId,
         java.lang.String subject, java.lang.String body,
@@ -779,15 +1002,25 @@ public class DiscussionMessageLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addMessageMethodKey22,
-                categoryGroupId, categoryId, threadId,
-                ClpSerializer.translateInput(subject),
-                ClpSerializer.translateInput(body),
-                ClpSerializer.translateInput(author));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] {
+                        categoryGroupId,
+                        
+                    categoryId,
+                        
+                    threadId,
+                        
+                    ClpSerializer.translateInput(subject),
+                        
+                    ClpSerializer.translateInput(body),
+                        
+                    ClpSerializer.translateInput(author)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -803,17 +1036,23 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessage> search(
         java.lang.String query, long categoryGroupId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_searchMethodKey23,
-                ClpSerializer.translateInput(query), categoryGroupId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] {
+                        ClpSerializer.translateInput(query),
+                        
+                    categoryGroupId
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -829,18 +1068,19 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage getMessageByMessageId(
         long messageId)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMessageByMessageIdMethodKey24,
-                messageId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26, new Object[] { messageId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchDiscussionMessageException) {
                 throw (com.ext.portlet.NoSuchDiscussionMessageException) t;
             }
@@ -860,13 +1100,15 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void reIndex()
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_reIndexMethodKey25);
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName27,
+                _methodParameterTypes27, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -880,14 +1122,15 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public void reIndex(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_reIndexMethodKey26,
-                messageId);
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName28,
+                _methodParameterTypes28, new Object[] { messageId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -901,17 +1144,19 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getThreadMessages(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadMessagesMethodKey27,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -927,17 +1172,19 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getThreadMessagesCount(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadMessagesCountMethodKey28,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName30,
+                    _methodParameterTypes30,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -953,14 +1200,16 @@ public class DiscussionMessageLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public void store(com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_storeMethodKey29,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName31,
+                _methodParameterTypes31,
+                new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -974,6 +1223,7 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
         com.ext.portlet.model.DiscussionMessage dMessage,
         java.lang.String subject, java.lang.String body,
@@ -982,15 +1232,21 @@ public class DiscussionMessageLocalServiceClp
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addThreadMessageMethodKey30,
-                ClpSerializer.translateInput(dMessage),
-                ClpSerializer.translateInput(subject),
-                ClpSerializer.translateInput(body),
-                ClpSerializer.translateInput(author));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName32,
+                    _methodParameterTypes32,
+                    new Object[] {
+                        ClpSerializer.translateInput(dMessage),
+                        
+                    ClpSerializer.translateInput(subject),
+                        
+                    ClpSerializer.translateInput(body),
+                        
+                    ClpSerializer.translateInput(author)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchDiscussionCategoryException) {
                 throw (com.ext.portlet.NoSuchDiscussionCategoryException) t;
             }
@@ -1010,18 +1266,20 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.User getAuthor(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAuthorMethodKey31,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName33,
+                    _methodParameterTypes33,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1041,18 +1299,20 @@ public class DiscussionMessageLocalServiceClp
         return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.User getLastActivityAuthor(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getLastActivityAuthorMethodKey32,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName34,
+                    _methodParameterTypes34,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1072,15 +1332,17 @@ public class DiscussionMessageLocalServiceClp
         return (com.liferay.portal.model.User) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void delete(com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteMethodKey33,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName35,
+                _methodParameterTypes35,
+                new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1098,17 +1360,23 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public void update(com.ext.portlet.model.DiscussionMessage dMessage,
         java.lang.String subject, java.lang.String body)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_updateMethodKey34,
-                ClpSerializer.translateInput(dMessage),
-                ClpSerializer.translateInput(subject),
-                ClpSerializer.translateInput(body));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName36,
+                _methodParameterTypes36,
+                new Object[] {
+                    ClpSerializer.translateInput(dMessage),
+                    
+                ClpSerializer.translateInput(subject),
+                    
+                ClpSerializer.translateInput(body)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1122,18 +1390,20 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionCategory getCategory(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCategoryMethodKey35,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName37,
+                    _methodParameterTypes37,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchDiscussionCategoryException) {
                 throw (com.ext.portlet.NoSuchDiscussionCategoryException) t;
             }
@@ -1153,18 +1423,20 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionCategory) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionCategoryGroup getCategoryGroup(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCategoryGroupMethodKey36,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName38,
+                    _methodParameterTypes38,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1184,18 +1456,20 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionCategoryGroup) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.DiscussionMessage getThread(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.ext.portlet.NoSuchDiscussionMessageException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getThreadMethodKey37,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName39,
+                    _methodParameterTypes39,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchDiscussionMessageException) {
                 throw (com.ext.portlet.NoSuchDiscussionMessageException) t;
             }
@@ -1215,17 +1489,19 @@ public class DiscussionMessageLocalServiceClp
         return (com.ext.portlet.model.DiscussionMessage) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.DiscussionMessageFlag> getFlags(
         com.ext.portlet.model.DiscussionMessage dMessage)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getFlagsMethodKey38,
-                ClpSerializer.translateInput(dMessage));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName40,
+                    _methodParameterTypes40,
+                    new Object[] { ClpSerializer.translateInput(dMessage) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1241,19 +1517,26 @@ public class DiscussionMessageLocalServiceClp
         return (java.util.List<com.ext.portlet.model.DiscussionMessageFlag>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void addFlag(com.ext.portlet.model.DiscussionMessage dMessage,
         java.lang.String flagType, java.lang.String data,
         com.liferay.portal.model.User user)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addFlagMethodKey39,
-                ClpSerializer.translateInput(dMessage),
-                ClpSerializer.translateInput(flagType),
-                ClpSerializer.translateInput(data),
-                ClpSerializer.translateInput(user));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName41,
+                _methodParameterTypes41,
+                new Object[] {
+                    ClpSerializer.translateInput(dMessage),
+                    
+                ClpSerializer.translateInput(flagType),
+                    
+                ClpSerializer.translateInput(data),
+                    
+                ClpSerializer.translateInput(user)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1267,16 +1550,21 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public void removeFlag(com.ext.portlet.model.DiscussionMessage dMessage,
         java.lang.String flagType)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_removeFlagMethodKey40,
-                ClpSerializer.translateInput(dMessage),
-                ClpSerializer.translateInput(flagType));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName42,
+                _methodParameterTypes42,
+                new Object[] {
+                    ClpSerializer.translateInput(dMessage),
+                    
+                ClpSerializer.translateInput(flagType)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1290,16 +1578,18 @@ public class DiscussionMessageLocalServiceClp
         }
     }
 
+    @Override
     public boolean hasFlag(long messageId, java.lang.String flag)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_hasFlagMethodKey41,
-                messageId, ClpSerializer.translateInput(flag));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName43,
+                    _methodParameterTypes43,
+                    new Object[] { messageId, ClpSerializer.translateInput(flag) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1313,9 +1603,5 @@ public class DiscussionMessageLocalServiceClp
         }
 
         return ((Boolean) returnObj).booleanValue();
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

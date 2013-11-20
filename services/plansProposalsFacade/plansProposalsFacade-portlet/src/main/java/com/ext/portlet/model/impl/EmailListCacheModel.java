@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing EmailList in entity cache.
@@ -15,7 +18,8 @@ import java.io.Serializable;
  * @see EmailList
  * @generated
  */
-public class EmailListCacheModel implements CacheModel<EmailList>, Serializable {
+public class EmailListCacheModel implements CacheModel<EmailList>,
+    Externalizable {
     public long id;
     public String name;
     public String email;
@@ -35,6 +39,7 @@ public class EmailListCacheModel implements CacheModel<EmailList>, Serializable 
         return sb.toString();
     }
 
+    @Override
     public EmailList toEntityModel() {
         EmailListImpl emailListImpl = new EmailListImpl();
 
@@ -55,5 +60,30 @@ public class EmailListCacheModel implements CacheModel<EmailList>, Serializable 
         emailListImpl.resetOriginalValues();
 
         return emailListImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        name = objectInput.readUTF();
+        email = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        if (email == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(email);
+        }
     }
 }

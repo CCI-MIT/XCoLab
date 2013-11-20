@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the Contest service. Represents a row in the &quot;xcolab_Contest&quot; database table, with each column mapped to a property of this class.
@@ -97,10 +99,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static long FEATURED_COLUMN_BITMASK = 4L;
     public static long FLAG_COLUMN_BITMASK = 8L;
     public static long FLAGTEXT_COLUMN_BITMASK = 16L;
+    public static long WEIGHT_COLUMN_BITMASK = 32L;
+    public static long CREATED_COLUMN_BITMASK = 64L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             Contest.class
         };
     private long _ContestPK;
@@ -138,9 +142,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private long _discussionGroupId;
     private int _weight;
     private String _resourcesUrl;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private Contest _escapedModelProxy;
+    private Contest _escapedModel;
 
     public ContestModelImpl() {
     }
@@ -152,6 +155,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
      * @return the normal model instance
      */
     public static Contest toModel(ContestSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         Contest model = new ContestImpl();
 
         model.setContestPK(soapModel.getContestPK());
@@ -191,6 +198,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
      * @return the normal model instances
      */
     public static List<Contest> toModels(ContestSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<Contest> models = new ArrayList<Contest>(soapModels.length);
 
         for (ContestSoap soapModel : soapModels) {
@@ -200,40 +211,248 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _ContestPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setContestPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_ContestPK);
+        return _ContestPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Contest.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Contest.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("ContestPK", getContestPK());
+        attributes.put("ContestName", getContestName());
+        attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestDescription", getContestDescription());
+        attributes.put("ContestModelDescription", getContestModelDescription());
+        attributes.put("ContestPositionsDescription",
+            getContestPositionsDescription());
+        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
+        attributes.put("PlanTypeId", getPlanTypeId());
+        attributes.put("created", getCreated());
+        attributes.put("updated", getUpdated());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("contestActive", getContestActive());
+        attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("contestLogoId", getContestLogoId());
+        attributes.put("featured", getFeatured());
+        attributes.put("plansOpenByDefault", getPlansOpenByDefault());
+        attributes.put("sponsorLogoId", getSponsorLogoId());
+        attributes.put("sponsorText", getSponsorText());
+        attributes.put("flag", getFlag());
+        attributes.put("flagText", getFlagText());
+        attributes.put("flagTooltip", getFlagTooltip());
+        attributes.put("groupId", getGroupId());
+        attributes.put("discussionGroupId", getDiscussionGroupId());
+        attributes.put("weight", getWeight());
+        attributes.put("resourcesUrl", getResourcesUrl());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long ContestPK = (Long) attributes.get("ContestPK");
+
+        if (ContestPK != null) {
+            setContestPK(ContestPK);
+        }
+
+        String ContestName = (String) attributes.get("ContestName");
+
+        if (ContestName != null) {
+            setContestName(ContestName);
+        }
+
+        String ContestShortName = (String) attributes.get("ContestShortName");
+
+        if (ContestShortName != null) {
+            setContestShortName(ContestShortName);
+        }
+
+        String ContestDescription = (String) attributes.get(
+                "ContestDescription");
+
+        if (ContestDescription != null) {
+            setContestDescription(ContestDescription);
+        }
+
+        String ContestModelDescription = (String) attributes.get(
+                "ContestModelDescription");
+
+        if (ContestModelDescription != null) {
+            setContestModelDescription(ContestModelDescription);
+        }
+
+        String ContestPositionsDescription = (String) attributes.get(
+                "ContestPositionsDescription");
+
+        if (ContestPositionsDescription != null) {
+            setContestPositionsDescription(ContestPositionsDescription);
+        }
+
+        String defaultPlanDescription = (String) attributes.get(
+                "defaultPlanDescription");
+
+        if (defaultPlanDescription != null) {
+            setDefaultPlanDescription(defaultPlanDescription);
+        }
+
+        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
+
+        if (PlanTypeId != null) {
+            setPlanTypeId(PlanTypeId);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        Boolean contestActive = (Boolean) attributes.get("contestActive");
+
+        if (contestActive != null) {
+            setContestActive(contestActive);
+        }
+
+        Long planTemplateId = (Long) attributes.get("planTemplateId");
+
+        if (planTemplateId != null) {
+            setPlanTemplateId(planTemplateId);
+        }
+
+        Long focusAreaId = (Long) attributes.get("focusAreaId");
+
+        if (focusAreaId != null) {
+            setFocusAreaId(focusAreaId);
+        }
+
+        Long contestLogoId = (Long) attributes.get("contestLogoId");
+
+        if (contestLogoId != null) {
+            setContestLogoId(contestLogoId);
+        }
+
+        Boolean featured = (Boolean) attributes.get("featured");
+
+        if (featured != null) {
+            setFeatured(featured);
+        }
+
+        Boolean plansOpenByDefault = (Boolean) attributes.get(
+                "plansOpenByDefault");
+
+        if (plansOpenByDefault != null) {
+            setPlansOpenByDefault(plansOpenByDefault);
+        }
+
+        Long sponsorLogoId = (Long) attributes.get("sponsorLogoId");
+
+        if (sponsorLogoId != null) {
+            setSponsorLogoId(sponsorLogoId);
+        }
+
+        String sponsorText = (String) attributes.get("sponsorText");
+
+        if (sponsorText != null) {
+            setSponsorText(sponsorText);
+        }
+
+        Integer flag = (Integer) attributes.get("flag");
+
+        if (flag != null) {
+            setFlag(flag);
+        }
+
+        String flagText = (String) attributes.get("flagText");
+
+        if (flagText != null) {
+            setFlagText(flagText);
+        }
+
+        String flagTooltip = (String) attributes.get("flagTooltip");
+
+        if (flagTooltip != null) {
+            setFlagTooltip(flagTooltip);
+        }
+
+        Long groupId = (Long) attributes.get("groupId");
+
+        if (groupId != null) {
+            setGroupId(groupId);
+        }
+
+        Long discussionGroupId = (Long) attributes.get("discussionGroupId");
+
+        if (discussionGroupId != null) {
+            setDiscussionGroupId(discussionGroupId);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        String resourcesUrl = (String) attributes.get("resourcesUrl");
+
+        if (resourcesUrl != null) {
+            setResourcesUrl(resourcesUrl);
+        }
+    }
+
     @JSON
+    @Override
     public long getContestPK() {
         return _ContestPK;
     }
 
+    @Override
     public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
     }
 
     @JSON
+    @Override
     public String getContestName() {
         if (_ContestName == null) {
             return StringPool.BLANK;
@@ -242,11 +461,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setContestName(String ContestName) {
         _ContestName = ContestName;
     }
 
     @JSON
+    @Override
     public String getContestShortName() {
         if (_ContestShortName == null) {
             return StringPool.BLANK;
@@ -255,11 +476,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setContestShortName(String ContestShortName) {
         _ContestShortName = ContestShortName;
     }
 
     @JSON
+    @Override
     public String getContestDescription() {
         if (_ContestDescription == null) {
             return StringPool.BLANK;
@@ -268,11 +491,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setContestDescription(String ContestDescription) {
         _ContestDescription = ContestDescription;
     }
 
     @JSON
+    @Override
     public String getContestModelDescription() {
         if (_ContestModelDescription == null) {
             return StringPool.BLANK;
@@ -281,11 +506,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setContestModelDescription(String ContestModelDescription) {
         _ContestModelDescription = ContestModelDescription;
     }
 
     @JSON
+    @Override
     public String getContestPositionsDescription() {
         if (_ContestPositionsDescription == null) {
             return StringPool.BLANK;
@@ -294,12 +521,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setContestPositionsDescription(
         String ContestPositionsDescription) {
         _ContestPositionsDescription = ContestPositionsDescription;
     }
 
     @JSON
+    @Override
     public String getDefaultPlanDescription() {
         if (_defaultPlanDescription == null) {
             return StringPool.BLANK;
@@ -308,15 +537,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setDefaultPlanDescription(String defaultPlanDescription) {
         _defaultPlanDescription = defaultPlanDescription;
     }
 
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _PlanTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long PlanTypeId) {
         _columnBitmask |= PLANTYPEID_COLUMN_BITMASK;
 
@@ -334,10 +566,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _columnBitmask = -1L;
 
@@ -345,32 +579,39 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public Date getUpdated() {
         return _updated;
     }
 
+    @Override
     public void setUpdated(Date updated) {
         _updated = updated;
     }
 
     @JSON
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
     @JSON
+    @Override
     public boolean getContestActive() {
         return _contestActive;
     }
 
+    @Override
     public boolean isContestActive() {
         return _contestActive;
     }
 
+    @Override
     public void setContestActive(boolean contestActive) {
         _columnBitmask |= CONTESTACTIVE_COLUMN_BITMASK;
 
@@ -388,41 +629,50 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public long getPlanTemplateId() {
         return _planTemplateId;
     }
 
+    @Override
     public void setPlanTemplateId(long planTemplateId) {
         _planTemplateId = planTemplateId;
     }
 
     @JSON
+    @Override
     public long getFocusAreaId() {
         return _focusAreaId;
     }
 
+    @Override
     public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
     @JSON
+    @Override
     public long getContestLogoId() {
         return _contestLogoId;
     }
 
+    @Override
     public void setContestLogoId(long contestLogoId) {
         _contestLogoId = contestLogoId;
     }
 
     @JSON
+    @Override
     public boolean getFeatured() {
         return _featured;
     }
 
+    @Override
     public boolean isFeatured() {
         return _featured;
     }
 
+    @Override
     public void setFeatured(boolean featured) {
         _columnBitmask |= FEATURED_COLUMN_BITMASK;
 
@@ -440,28 +690,34 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public boolean getPlansOpenByDefault() {
         return _plansOpenByDefault;
     }
 
+    @Override
     public boolean isPlansOpenByDefault() {
         return _plansOpenByDefault;
     }
 
+    @Override
     public void setPlansOpenByDefault(boolean plansOpenByDefault) {
         _plansOpenByDefault = plansOpenByDefault;
     }
 
     @JSON
+    @Override
     public long getSponsorLogoId() {
         return _sponsorLogoId;
     }
 
+    @Override
     public void setSponsorLogoId(long sponsorLogoId) {
         _sponsorLogoId = sponsorLogoId;
     }
 
     @JSON
+    @Override
     public String getSponsorText() {
         if (_sponsorText == null) {
             return StringPool.BLANK;
@@ -470,15 +726,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setSponsorText(String sponsorText) {
         _sponsorText = sponsorText;
     }
 
     @JSON
+    @Override
     public int getFlag() {
         return _flag;
     }
 
+    @Override
     public void setFlag(int flag) {
         _columnBitmask |= FLAG_COLUMN_BITMASK;
 
@@ -496,6 +755,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public String getFlagText() {
         if (_flagText == null) {
             return StringPool.BLANK;
@@ -504,6 +764,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setFlagText(String flagText) {
         _columnBitmask |= FLAGTEXT_COLUMN_BITMASK;
 
@@ -519,6 +780,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public String getFlagTooltip() {
         if (_flagTooltip == null) {
             return StringPool.BLANK;
@@ -527,33 +789,40 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setFlagTooltip(String flagTooltip) {
         _flagTooltip = flagTooltip;
     }
 
     @JSON
+    @Override
     public long getGroupId() {
         return _groupId;
     }
 
+    @Override
     public void setGroupId(long groupId) {
         _groupId = groupId;
     }
 
     @JSON
+    @Override
     public long getDiscussionGroupId() {
         return _discussionGroupId;
     }
 
+    @Override
     public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
     }
 
     @JSON
+    @Override
     public int getWeight() {
         return _weight;
     }
 
+    @Override
     public void setWeight(int weight) {
         _columnBitmask = -1L;
 
@@ -561,6 +830,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @JSON
+    @Override
     public String getResourcesUrl() {
         if (_resourcesUrl == null) {
             return StringPool.BLANK;
@@ -569,6 +839,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         }
     }
 
+    @Override
     public void setResourcesUrl(String resourcesUrl) {
         _resourcesUrl = resourcesUrl;
     }
@@ -578,29 +849,26 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     }
 
     @Override
-    public Contest toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (Contest) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    Contest.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            Contest.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public Contest toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (Contest) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -639,6 +907,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         return contestImpl;
     }
 
+    @Override
     public int compareTo(Contest contest) {
         int value = 0;
 
@@ -665,17 +934,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Contest)) {
             return false;
         }
 
-        Contest contest = null;
-
-        try {
-            contest = (Contest) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Contest contest = (Contest) obj;
 
         long primaryKey = contest.getPrimaryKey();
 
@@ -911,6 +1178,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(82);
 

@@ -274,7 +274,7 @@
             <finder-column name="planId" />
         </finder>
         
-        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+        <finder name="PlanIdPlanVersion" return-type="Collection">
             <finder-column name="planId" />
             <finder-column name="planVersion" comparator="&lt;=" />
         </finder>
@@ -344,7 +344,7 @@
             <finder-column name="planId" />
         </finder>
         
-        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+        <finder name="PlanIdPlanVersion" return-type="Collection">
             <finder-column name="planId" />
             <finder-column name="planVersion" comparator="&lt;=" />
         </finder>
@@ -469,7 +469,7 @@
             <finder-column name="planSectionDefinitionId" />
         </finder>
         
-        <finder name="PlanIdPlanVersion" return-type="PlanDescription">
+        <finder name="PlanIdPlanVersion" return-type="Collection">
             <finder-column name="planId" />
             <finder-column name="planSectionDefinitionId" />
             <finder-column name="planVersion" comparator="&lt;=" />

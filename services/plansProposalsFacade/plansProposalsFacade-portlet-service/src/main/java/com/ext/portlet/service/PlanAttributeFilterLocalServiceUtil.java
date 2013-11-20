@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the plan attribute filter local service. This utility wraps {@link com.ext.portlet.service.impl.PlanAttributeFilterLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for PlanAttributeFilter. This utility wraps
+ * {@link com.ext.portlet.service.impl.PlanAttributeFilterLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see PlanAttributeFilterLocalService
@@ -55,25 +55,32 @@ public class PlanAttributeFilterLocalServiceUtil {
     * Deletes the plan attribute filter with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param planAttributeFilterId the primary key of the plan attribute filter
+    * @return the plan attribute filter that was removed
     * @throws PortalException if a plan attribute filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanAttributeFilter(long planAttributeFilterId)
+    public static com.ext.portlet.model.PlanAttributeFilter deletePlanAttributeFilter(
+        long planAttributeFilterId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deletePlanAttributeFilter(planAttributeFilterId);
+        return getService().deletePlanAttributeFilter(planAttributeFilterId);
     }
 
     /**
     * Deletes the plan attribute filter from the database. Also notifies the appropriate model listeners.
     *
     * @param planAttributeFilter the plan attribute filter
+    * @return the plan attribute filter that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanAttributeFilter(
+    public static com.ext.portlet.model.PlanAttributeFilter deletePlanAttributeFilter(
         com.ext.portlet.model.PlanAttributeFilter planAttributeFilter)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deletePlanAttributeFilter(planAttributeFilter);
+        return getService().deletePlanAttributeFilter(planAttributeFilter);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -94,7 +101,7 @@ public class PlanAttributeFilterLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,7 +121,7 @@ public class PlanAttributeFilterLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -145,6 +152,21 @@ public class PlanAttributeFilterLocalServiceUtil {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().dynamicQueryCount(dynamicQuery);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
     }
 
     public static com.ext.portlet.model.PlanAttributeFilter fetchPlanAttributeFilter(
@@ -179,7 +201,7 @@ public class PlanAttributeFilterLocalServiceUtil {
     * Returns a range of all the plan attribute filters.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeFilterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan attribute filters
@@ -218,21 +240,6 @@ public class PlanAttributeFilterLocalServiceUtil {
     }
 
     /**
-    * Updates the plan attribute filter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planAttributeFilter the plan attribute filter
-    * @param merge whether to merge the plan attribute filter with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan attribute filter that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanAttributeFilter updatePlanAttributeFilter(
-        com.ext.portlet.model.PlanAttributeFilter planAttributeFilter,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().updatePlanAttributeFilter(planAttributeFilter, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -250,6 +257,12 @@ public class PlanAttributeFilterLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
+    }
+
     public static com.ext.portlet.model.PlanAttributeFilter getByPlansUserSettingsIdAttributeName(
         java.lang.Long planUserSettingsId, java.lang.String attributeName)
         throws com.ext.portlet.NoSuchPlanAttributeFilterException,
@@ -265,34 +278,25 @@ public class PlanAttributeFilterLocalServiceUtil {
 
     public static PlanAttributeFilterLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     PlanAttributeFilterLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    PlanAttributeFilterLocalService.class.getName(),
-                    portletClassLoader);
-
-            _service = new PlanAttributeFilterLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof PlanAttributeFilterLocalService) {
+                _service = (PlanAttributeFilterLocalService) invokableLocalService;
+            } else {
+                _service = new PlanAttributeFilterLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(PlanAttributeFilterLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(PlanAttributeFilterLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(PlanAttributeFilterLocalService service) {
-        MethodCache.remove(PlanAttributeFilterLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(PlanAttributeFilterLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(PlanAttributeFilterLocalService.class);
     }
 }

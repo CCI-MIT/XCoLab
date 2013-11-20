@@ -24,6 +24,7 @@ public abstract class PlanColumnSettingsBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan column settings model instance should use the {@link PlanColumnSettings} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanColumnSettingsLocalServiceUtil.addPlanColumnSettings(this);

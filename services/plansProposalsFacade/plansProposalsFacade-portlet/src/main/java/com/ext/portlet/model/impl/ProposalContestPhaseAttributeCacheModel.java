@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ProposalContestPhaseAttribute in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ProposalContestPhaseAttributeCacheModel implements CacheModel<ProposalContestPhaseAttribute>,
-    Serializable {
+    Externalizable {
     public long id;
     public long proposalId;
     public long contestPhaseId;
@@ -51,6 +54,7 @@ public class ProposalContestPhaseAttributeCacheModel implements CacheModel<Propo
         return sb.toString();
     }
 
+    @Override
     public ProposalContestPhaseAttribute toEntityModel() {
         ProposalContestPhaseAttributeImpl proposalContestPhaseAttributeImpl = new ProposalContestPhaseAttributeImpl();
 
@@ -78,5 +82,42 @@ public class ProposalContestPhaseAttributeCacheModel implements CacheModel<Propo
         proposalContestPhaseAttributeImpl.resetOriginalValues();
 
         return proposalContestPhaseAttributeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        proposalId = objectInput.readLong();
+        contestPhaseId = objectInput.readLong();
+        name = objectInput.readUTF();
+        additionalId = objectInput.readLong();
+        numericValue = objectInput.readLong();
+        stringValue = objectInput.readUTF();
+        realValue = objectInput.readDouble();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(proposalId);
+        objectOutput.writeLong(contestPhaseId);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        objectOutput.writeLong(additionalId);
+        objectOutput.writeLong(numericValue);
+
+        if (stringValue == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(stringValue);
+        }
+
+        objectOutput.writeDouble(realValue);
     }
 }

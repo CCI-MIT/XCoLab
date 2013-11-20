@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanFanService}.
- * </p>
+ * Provides a wrapper for {@link PlanFanService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanFanService
+ * @author Brian Wing Shun Chan
+ * @see PlanFanService
  * @generated
  */
 public class PlanFanServiceWrapper implements PlanFanService,
@@ -20,23 +18,52 @@ public class PlanFanServiceWrapper implements PlanFanService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _planFanService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _planFanService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planFanService.invokeMethod(name, parameterTypes, arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanFanService getWrappedPlanFanService() {
         return _planFanService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanFanService(PlanFanService planFanService) {
         _planFanService = planFanService;
     }
 
+    @Override
     public PlanFanService getWrappedService() {
         return _planFanService;
     }
 
+    @Override
     public void setWrappedService(PlanFanService planFanService) {
         _planFanService = planFanService;
     }

@@ -24,6 +24,7 @@ public abstract class DiscussionMessageFlagBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a discussion message flag model instance should use the {@link DiscussionMessageFlag} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             DiscussionMessageFlagLocalServiceUtil.addDiscussionMessageFlag(this);

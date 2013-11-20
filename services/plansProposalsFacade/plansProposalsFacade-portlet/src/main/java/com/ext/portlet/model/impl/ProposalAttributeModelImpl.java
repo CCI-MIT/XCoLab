@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalAttribute service. Represents a row in the &quot;xcolab_ProposalAttribute&quot; database table, with each column mapped to a property of this class.
@@ -59,6 +61,8 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalAttribute (id_ LONG not null primary key,proposalId LONG,version INTEGER,versionWhenCreated INTEGER,name VARCHAR(75) null,additionalId LONG,numericValue LONG,stringValue TEXT null,realValue DOUBLE)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalAttribute";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalAttribute.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalAttribute.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -76,10 +80,11 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     public static long PROPOSALID_COLUMN_BITMASK = 4L;
     public static long VERSION_COLUMN_BITMASK = 8L;
     public static long VERSIONWHENCREATED_COLUMN_BITMASK = 16L;
+    public static long ID_COLUMN_BITMASK = 32L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalAttribute"));
     private static ClassLoader _classLoader = ProposalAttribute.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalAttribute.class
         };
     private long _id;
@@ -100,9 +105,8 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     private long _numericValue;
     private String _stringValue;
     private double _realValue;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ProposalAttribute _escapedModelProxy;
+    private ProposalAttribute _escapedModel;
 
     public ProposalAttributeModelImpl() {
     }
@@ -114,6 +118,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
      * @return the normal model instance
      */
     public static ProposalAttribute toModel(ProposalAttributeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalAttribute model = new ProposalAttributeImpl();
 
         model.setId(soapModel.getId());
@@ -137,6 +145,10 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
      */
     public static List<ProposalAttribute> toModels(
         ProposalAttributeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalAttribute> models = new ArrayList<ProposalAttribute>(soapModels.length);
 
         for (ProposalAttributeSoap soapModel : soapModels) {
@@ -146,44 +158,129 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalAttribute.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalAttribute.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("proposalId", getProposalId());
+        attributes.put("version", getVersion());
+        attributes.put("versionWhenCreated", getVersionWhenCreated());
+        attributes.put("name", getName());
+        attributes.put("additionalId", getAdditionalId());
+        attributes.put("numericValue", getNumericValue());
+        attributes.put("stringValue", getStringValue());
+        attributes.put("realValue", getRealValue());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Integer version = (Integer) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Integer versionWhenCreated = (Integer) attributes.get(
+                "versionWhenCreated");
+
+        if (versionWhenCreated != null) {
+            setVersionWhenCreated(versionWhenCreated);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Long additionalId = (Long) attributes.get("additionalId");
+
+        if (additionalId != null) {
+            setAdditionalId(additionalId);
+        }
+
+        Long numericValue = (Long) attributes.get("numericValue");
+
+        if (numericValue != null) {
+            setNumericValue(numericValue);
+        }
+
+        String stringValue = (String) attributes.get("stringValue");
+
+        if (stringValue != null) {
+            setStringValue(stringValue);
+        }
+
+        Double realValue = (Double) attributes.get("realValue");
+
+        if (realValue != null) {
+            setRealValue(realValue);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -201,10 +298,12 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @JSON
+    @Override
     public int getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(int version) {
         _columnBitmask |= VERSION_COLUMN_BITMASK;
 
@@ -222,10 +321,12 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @JSON
+    @Override
     public int getVersionWhenCreated() {
         return _versionWhenCreated;
     }
 
+    @Override
     public void setVersionWhenCreated(int versionWhenCreated) {
         _columnBitmask |= VERSIONWHENCREATED_COLUMN_BITMASK;
 
@@ -243,6 +344,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -251,6 +353,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         }
     }
 
+    @Override
     public void setName(String name) {
         _columnBitmask |= NAME_COLUMN_BITMASK;
 
@@ -266,10 +369,12 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @JSON
+    @Override
     public long getAdditionalId() {
         return _additionalId;
     }
 
+    @Override
     public void setAdditionalId(long additionalId) {
         _columnBitmask |= ADDITIONALID_COLUMN_BITMASK;
 
@@ -287,15 +392,18 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @JSON
+    @Override
     public long getNumericValue() {
         return _numericValue;
     }
 
+    @Override
     public void setNumericValue(long numericValue) {
         _numericValue = numericValue;
     }
 
     @JSON
+    @Override
     public String getStringValue() {
         if (_stringValue == null) {
             return StringPool.BLANK;
@@ -304,15 +412,18 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         }
     }
 
+    @Override
     public void setStringValue(String stringValue) {
         _stringValue = stringValue;
     }
 
     @JSON
+    @Override
     public double getRealValue() {
         return _realValue;
     }
 
+    @Override
     public void setRealValue(double realValue) {
         _realValue = realValue;
     }
@@ -322,29 +433,26 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
     }
 
     @Override
-    public ProposalAttribute toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalAttribute) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ProposalAttribute.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ProposalAttribute.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ProposalAttribute toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalAttribute) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -366,6 +474,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         return proposalAttributeImpl;
     }
 
+    @Override
     public int compareTo(ProposalAttribute proposalAttribute) {
         long primaryKey = proposalAttribute.getPrimaryKey();
 
@@ -380,17 +489,15 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalAttribute)) {
             return false;
         }
 
-        ProposalAttribute proposalAttribute = null;
-
-        try {
-            proposalAttribute = (ProposalAttribute) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalAttribute proposalAttribute = (ProposalAttribute) obj;
 
         long primaryKey = proposalAttribute.getPrimaryKey();
 
@@ -495,6 +602,7 @@ public class ProposalAttributeModelImpl extends BaseModelImpl<ProposalAttribute>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

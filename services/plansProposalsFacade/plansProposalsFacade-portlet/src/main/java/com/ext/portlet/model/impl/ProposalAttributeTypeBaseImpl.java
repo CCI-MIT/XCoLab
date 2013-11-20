@@ -24,6 +24,7 @@ public abstract class ProposalAttributeTypeBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal attribute type model instance should use the {@link ProposalAttributeType} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ProposalAttributeTypeLocalServiceUtil.addProposalAttributeType(this);

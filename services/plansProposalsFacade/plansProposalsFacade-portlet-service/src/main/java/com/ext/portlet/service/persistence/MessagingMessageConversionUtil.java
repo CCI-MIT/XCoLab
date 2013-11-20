@@ -50,7 +50,7 @@ public class MessagingMessageConversionUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -84,22 +84,203 @@ public class MessagingMessageConversionUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static MessagingMessageConversion update(
-        MessagingMessageConversion messagingMessageConversion, boolean merge)
+        MessagingMessageConversion messagingMessageConversion)
         throws SystemException {
-        return getPersistence().update(messagingMessageConversion, merge);
+        return getPersistence().update(messagingMessageConversion);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static MessagingMessageConversion update(
-        MessagingMessageConversion messagingMessageConversion, boolean merge,
+        MessagingMessageConversion messagingMessageConversion,
         ServiceContext serviceContext) throws SystemException {
         return getPersistence()
-                   .update(messagingMessageConversion, merge, serviceContext);
+                   .update(messagingMessageConversion, serviceContext);
+    }
+
+    /**
+    * Returns all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @return the matching messaging message conversions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
+        long messageId, long conversionTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByfindByType(messageId, conversionTypeId);
+    }
+
+    /**
+    * Returns a range of all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param start the lower bound of the range of messaging message conversions
+    * @param end the upper bound of the range of messaging message conversions (not inclusive)
+    * @return the range of matching messaging message conversions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
+        long messageId, long conversionTypeId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByfindByType(messageId, conversionTypeId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param start the lower bound of the range of messaging message conversions
+    * @param end the upper bound of the range of messaging message conversions (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching messaging message conversions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
+        long messageId, long conversionTypeId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByfindByType(messageId, conversionTypeId, start, end,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching messaging message conversion
+    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a matching messaging message conversion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversion findByfindByType_First(
+        long messageId, long conversionTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByfindByType_First(messageId, conversionTypeId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching messaging message conversion, or <code>null</code> if a matching messaging message conversion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversion fetchByfindByType_First(
+        long messageId, long conversionTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByfindByType_First(messageId, conversionTypeId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching messaging message conversion
+    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a matching messaging message conversion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversion findByfindByType_Last(
+        long messageId, long conversionTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByfindByType_Last(messageId, conversionTypeId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching messaging message conversion, or <code>null</code> if a matching messaging message conversion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversion fetchByfindByType_Last(
+        long messageId, long conversionTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByfindByType_Last(messageId, conversionTypeId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the messaging message conversions before and after the current messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param conversionId the primary key of the current messaging message conversion
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next messaging message conversion
+    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a messaging message conversion with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.MessagingMessageConversion[] findByfindByType_PrevAndNext(
+        long conversionId, long messageId, long conversionTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByfindByType_PrevAndNext(conversionId, messageId,
+            conversionTypeId, orderByComparator);
+    }
+
+    /**
+    * Removes all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63; from the database.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByfindByType(long messageId, long conversionTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByfindByType(messageId, conversionTypeId);
+    }
+
+    /**
+    * Returns the number of messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
+    *
+    * @param messageId the message ID
+    * @param conversionTypeId the conversion type ID
+    * @return the number of matching messaging message conversions
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByfindByType(long messageId, long conversionTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByfindByType(messageId, conversionTypeId);
     }
 
     /**
@@ -149,10 +330,9 @@ public class MessagingMessageConversionUtil {
     }
 
     public static com.ext.portlet.model.MessagingMessageConversion updateImpl(
-        com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion,
-        boolean merge)
+        com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(messagingMessageConversion, merge);
+        return getPersistence().updateImpl(messagingMessageConversion);
     }
 
     /**
@@ -184,138 +364,6 @@ public class MessagingMessageConversionUtil {
     }
 
     /**
-    * Returns all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @return the matching messaging message conversions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
-        long messageId, long conversionTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByfindByType(messageId, conversionTypeId);
-    }
-
-    /**
-    * Returns a range of all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @param start the lower bound of the range of messaging message conversions
-    * @param end the upper bound of the range of messaging message conversions (not inclusive)
-    * @return the range of matching messaging message conversions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
-        long messageId, long conversionTypeId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByfindByType(messageId, conversionTypeId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @param start the lower bound of the range of messaging message conversions
-    * @param end the upper bound of the range of messaging message conversions (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching messaging message conversions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.MessagingMessageConversion> findByfindByType(
-        long messageId, long conversionTypeId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByfindByType(messageId, conversionTypeId, start, end,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the first messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching messaging message conversion
-    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a matching messaging message conversion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversion findByfindByType_First(
-        long messageId, long conversionTypeId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByfindByType_First(messageId, conversionTypeId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the last messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching messaging message conversion
-    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a matching messaging message conversion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversion findByfindByType_Last(
-        long messageId, long conversionTypeId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByfindByType_Last(messageId, conversionTypeId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the messaging message conversions before and after the current messaging message conversion in the ordered set where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param conversionId the primary key of the current messaging message conversion
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next messaging message conversion
-    * @throws com.ext.portlet.NoSuchMessagingMessageConversionException if a messaging message conversion with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.MessagingMessageConversion[] findByfindByType_PrevAndNext(
-        long conversionId, long messageId, long conversionTypeId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessagingMessageConversionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByfindByType_PrevAndNext(conversionId, messageId,
-            conversionTypeId, orderByComparator);
-    }
-
-    /**
     * Returns all the messaging message conversions.
     *
     * @return the messaging message conversions
@@ -330,7 +378,7 @@ public class MessagingMessageConversionUtil {
     * Returns a range of all the messaging message conversions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging message conversions
@@ -348,7 +396,7 @@ public class MessagingMessageConversionUtil {
     * Returns an ordered range of all the messaging message conversions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging message conversions
@@ -365,18 +413,6 @@ public class MessagingMessageConversionUtil {
     }
 
     /**
-    * Removes all the messaging message conversions where messageId = &#63; and conversionTypeId = &#63; from the database.
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByfindByType(long messageId, long conversionTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByfindByType(messageId, conversionTypeId);
-    }
-
-    /**
     * Removes all the messaging message conversions from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -384,19 +420,6 @@ public class MessagingMessageConversionUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of messaging message conversions where messageId = &#63; and conversionTypeId = &#63;.
-    *
-    * @param messageId the message ID
-    * @param conversionTypeId the conversion type ID
-    * @return the number of matching messaging message conversions
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByfindByType(long messageId, long conversionTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByfindByType(messageId, conversionTypeId);
     }
 
     /**
@@ -422,11 +445,10 @@ public class MessagingMessageConversionUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(
         MessagingMessageConversionPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(MessagingMessageConversionUtil.class,
-            "_persistence");
     }
 }

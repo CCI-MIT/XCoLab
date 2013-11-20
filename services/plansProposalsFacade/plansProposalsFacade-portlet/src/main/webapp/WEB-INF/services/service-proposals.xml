@@ -68,7 +68,7 @@
     		<finder-column name="additionalId" />
     	</finder>
     	
-		<finder return-type="ProposalAttribute" name="ProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId">
+		<finder return-type="Collection" name="ProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId">
     		<finder-column name="proposalId" />
     		<finder-column name="version" comparator="&gt;="/>
     		<finder-column name="versionWhenCreated" comparator="&lt;=" />

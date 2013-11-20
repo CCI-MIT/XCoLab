@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanPositionItem;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanPositionItem in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanPositionItemCacheModel implements CacheModel<PlanPositionItem>,
-    Serializable {
+    Externalizable {
     public long planPositionsId;
     public long positionId;
 
@@ -32,6 +35,7 @@ public class PlanPositionItemCacheModel implements CacheModel<PlanPositionItem>,
         return sb.toString();
     }
 
+    @Override
     public PlanPositionItem toEntityModel() {
         PlanPositionItemImpl planPositionItemImpl = new PlanPositionItemImpl();
 
@@ -41,5 +45,18 @@ public class PlanPositionItemCacheModel implements CacheModel<PlanPositionItem>,
         planPositionItemImpl.resetOriginalValues();
 
         return planPositionItemImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planPositionsId = objectInput.readLong();
+        positionId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planPositionsId);
+        objectOutput.writeLong(positionId);
     }
 }

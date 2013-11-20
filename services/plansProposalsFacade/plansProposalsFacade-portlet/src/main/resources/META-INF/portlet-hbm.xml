@@ -582,7 +582,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="planId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="state" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="state" type="com.liferay.portal.dao.orm.hibernate.StringType" column="state_" />
 		<property name="updated" type="org.hibernate.type.TimestampType" />
 		<property name="updateAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="updateType" type="com.liferay.portal.dao.orm.hibernate.StringType" />

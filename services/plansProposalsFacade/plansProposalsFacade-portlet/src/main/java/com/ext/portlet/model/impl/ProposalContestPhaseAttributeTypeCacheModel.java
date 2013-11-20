@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ProposalContestPhaseAttributeType in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ProposalContestPhaseAttributeTypeCacheModel implements CacheModel<ProposalContestPhaseAttributeType>,
-    Serializable {
+    Externalizable {
     public String name;
     public boolean copyOnPromote;
 
@@ -33,6 +36,7 @@ public class ProposalContestPhaseAttributeTypeCacheModel implements CacheModel<P
         return sb.toString();
     }
 
+    @Override
     public ProposalContestPhaseAttributeType toEntityModel() {
         ProposalContestPhaseAttributeTypeImpl proposalContestPhaseAttributeTypeImpl =
             new ProposalContestPhaseAttributeTypeImpl();
@@ -48,5 +52,23 @@ public class ProposalContestPhaseAttributeTypeCacheModel implements CacheModel<P
         proposalContestPhaseAttributeTypeImpl.resetOriginalValues();
 
         return proposalContestPhaseAttributeTypeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        name = objectInput.readUTF();
+        copyOnPromote = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        objectOutput.writeBoolean(copyOnPromote);
     }
 }

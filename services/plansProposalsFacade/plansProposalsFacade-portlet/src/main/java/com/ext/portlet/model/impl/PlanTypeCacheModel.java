@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanType in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @see PlanType
  * @generated
  */
-public class PlanTypeCacheModel implements CacheModel<PlanType>, Serializable {
+public class PlanTypeCacheModel implements CacheModel<PlanType>, Externalizable {
     public long planTypeId;
     public String name;
     public String description;
@@ -56,6 +59,7 @@ public class PlanTypeCacheModel implements CacheModel<PlanType>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public PlanType toEntityModel() {
         PlanTypeImpl planTypeImpl = new PlanTypeImpl();
 
@@ -90,5 +94,51 @@ public class PlanTypeCacheModel implements CacheModel<PlanType>, Serializable {
         planTypeImpl.resetOriginalValues();
 
         return planTypeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planTypeId = objectInput.readLong();
+        name = objectInput.readUTF();
+        description = objectInput.readUTF();
+        modelId = objectInput.readLong();
+        modelTypeName = objectInput.readUTF();
+        published = objectInput.readBoolean();
+        publishedCounterpartId = objectInput.readLong();
+        isDefault = objectInput.readBoolean();
+        defaultModelId = objectInput.readLong();
+        defaultScenarioId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planTypeId);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
+        }
+
+        objectOutput.writeLong(modelId);
+
+        if (modelTypeName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelTypeName);
+        }
+
+        objectOutput.writeBoolean(published);
+        objectOutput.writeLong(publishedCounterpartId);
+        objectOutput.writeBoolean(isDefault);
+        objectOutput.writeLong(defaultModelId);
+        objectOutput.writeLong(defaultScenarioId);
     }
 }

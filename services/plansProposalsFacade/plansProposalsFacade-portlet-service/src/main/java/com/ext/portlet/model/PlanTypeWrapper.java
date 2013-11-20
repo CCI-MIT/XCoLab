@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link PlanType}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanType
+ * @author Brian Wing Shun Chan
+ * @see PlanType
  * @generated
  */
 public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
@@ -18,12 +22,96 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
         _planType = planType;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanType.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("modelId", getModelId());
+        attributes.put("modelTypeName", getModelTypeName());
+        attributes.put("published", getPublished());
+        attributes.put("publishedCounterpartId", getPublishedCounterpartId());
+        attributes.put("isDefault", getIsDefault());
+        attributes.put("defaultModelId", getDefaultModelId());
+        attributes.put("defaultScenarioId", getDefaultScenarioId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        String modelTypeName = (String) attributes.get("modelTypeName");
+
+        if (modelTypeName != null) {
+            setModelTypeName(modelTypeName);
+        }
+
+        Boolean published = (Boolean) attributes.get("published");
+
+        if (published != null) {
+            setPublished(published);
+        }
+
+        Long publishedCounterpartId = (Long) attributes.get(
+                "publishedCounterpartId");
+
+        if (publishedCounterpartId != null) {
+            setPublishedCounterpartId(publishedCounterpartId);
+        }
+
+        Boolean isDefault = (Boolean) attributes.get("isDefault");
+
+        if (isDefault != null) {
+            setIsDefault(isDefault);
+        }
+
+        Long defaultModelId = (Long) attributes.get("defaultModelId");
+
+        if (defaultModelId != null) {
+            setDefaultModelId(defaultModelId);
+        }
+
+        Long defaultScenarioId = (Long) attributes.get("defaultScenarioId");
+
+        if (defaultScenarioId != null) {
+            setDefaultScenarioId(defaultScenarioId);
+        }
     }
 
     /**
@@ -31,6 +119,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the primary key of this plan type
     */
+    @Override
     public long getPrimaryKey() {
         return _planType.getPrimaryKey();
     }
@@ -40,6 +129,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param primaryKey the primary key of this plan type
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _planType.setPrimaryKey(primaryKey);
     }
@@ -49,6 +139,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the plan type ID of this plan type
     */
+    @Override
     public long getPlanTypeId() {
         return _planType.getPlanTypeId();
     }
@@ -58,6 +149,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param planTypeId the plan type ID of this plan type
     */
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planType.setPlanTypeId(planTypeId);
     }
@@ -67,6 +159,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the name of this plan type
     */
+    @Override
     public java.lang.String getName() {
         return _planType.getName();
     }
@@ -76,6 +169,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param name the name of this plan type
     */
+    @Override
     public void setName(java.lang.String name) {
         _planType.setName(name);
     }
@@ -85,6 +179,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the description of this plan type
     */
+    @Override
     public java.lang.String getDescription() {
         return _planType.getDescription();
     }
@@ -94,6 +189,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param description the description of this plan type
     */
+    @Override
     public void setDescription(java.lang.String description) {
         _planType.setDescription(description);
     }
@@ -103,6 +199,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the model ID of this plan type
     */
+    @Override
     public long getModelId() {
         return _planType.getModelId();
     }
@@ -112,6 +209,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param modelId the model ID of this plan type
     */
+    @Override
     public void setModelId(long modelId) {
         _planType.setModelId(modelId);
     }
@@ -121,6 +219,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the model type name of this plan type
     */
+    @Override
     public java.lang.String getModelTypeName() {
         return _planType.getModelTypeName();
     }
@@ -130,6 +229,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param modelTypeName the model type name of this plan type
     */
+    @Override
     public void setModelTypeName(java.lang.String modelTypeName) {
         _planType.setModelTypeName(modelTypeName);
     }
@@ -139,6 +239,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the published of this plan type
     */
+    @Override
     public boolean getPublished() {
         return _planType.getPublished();
     }
@@ -148,6 +249,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return <code>true</code> if this plan type is published; <code>false</code> otherwise
     */
+    @Override
     public boolean isPublished() {
         return _planType.isPublished();
     }
@@ -157,6 +259,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param published the published of this plan type
     */
+    @Override
     public void setPublished(boolean published) {
         _planType.setPublished(published);
     }
@@ -166,6 +269,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the published counterpart ID of this plan type
     */
+    @Override
     public long getPublishedCounterpartId() {
         return _planType.getPublishedCounterpartId();
     }
@@ -175,6 +279,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param publishedCounterpartId the published counterpart ID of this plan type
     */
+    @Override
     public void setPublishedCounterpartId(long publishedCounterpartId) {
         _planType.setPublishedCounterpartId(publishedCounterpartId);
     }
@@ -184,6 +289,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the is default of this plan type
     */
+    @Override
     public boolean getIsDefault() {
         return _planType.getIsDefault();
     }
@@ -193,6 +299,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return <code>true</code> if this plan type is is default; <code>false</code> otherwise
     */
+    @Override
     public boolean isIsDefault() {
         return _planType.isIsDefault();
     }
@@ -202,6 +309,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param isDefault the is default of this plan type
     */
+    @Override
     public void setIsDefault(boolean isDefault) {
         _planType.setIsDefault(isDefault);
     }
@@ -211,6 +319,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the default model ID of this plan type
     */
+    @Override
     public long getDefaultModelId() {
         return _planType.getDefaultModelId();
     }
@@ -220,6 +329,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param defaultModelId the default model ID of this plan type
     */
+    @Override
     public void setDefaultModelId(long defaultModelId) {
         _planType.setDefaultModelId(defaultModelId);
     }
@@ -229,6 +339,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @return the default scenario ID of this plan type
     */
+    @Override
     public long getDefaultScenarioId() {
         return _planType.getDefaultScenarioId();
     }
@@ -238,42 +349,64 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
     *
     * @param defaultScenarioId the default scenario ID of this plan type
     */
+    @Override
     public void setDefaultScenarioId(long defaultScenarioId) {
         _planType.setDefaultScenarioId(defaultScenarioId);
     }
 
+    @Override
     public boolean isNew() {
         return _planType.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _planType.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _planType.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _planType.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _planType.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _planType.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _planType.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _planType.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _planType.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _planType.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _planType.setExpandoBridgeAttributes(serviceContext);
@@ -284,6 +417,7 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
         return new PlanTypeWrapper((PlanType) _planType.clone());
     }
 
+    @Override
     public int compareTo(PlanType planType) {
         return _planType.compareTo(planType);
     }
@@ -293,12 +427,19 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
         return _planType.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<PlanType> toCacheModel() {
         return _planType.toCacheModel();
     }
 
+    @Override
     public PlanType toEscapedModel() {
         return new PlanTypeWrapper(_planType.toEscapedModel());
+    }
+
+    @Override
+    public PlanType toUnescapedModel() {
+        return new PlanTypeWrapper(_planType.toUnescapedModel());
     }
 
     @Override
@@ -306,26 +447,49 @@ public class PlanTypeWrapper implements PlanType, ModelWrapper<PlanType> {
         return _planType.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _planType.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planType.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTypeWrapper)) {
+            return false;
+        }
+
+        PlanTypeWrapper planTypeWrapper = (PlanTypeWrapper) obj;
+
+        if (Validator.equals(_planType, planTypeWrapper._planType)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public PlanType getWrappedPlanType() {
         return _planType;
     }
 
+    @Override
     public PlanType getWrappedModel() {
         return _planType;
     }
 
+    @Override
     public void resetOriginalValues() {
         _planType.resetOriginalValues();
     }

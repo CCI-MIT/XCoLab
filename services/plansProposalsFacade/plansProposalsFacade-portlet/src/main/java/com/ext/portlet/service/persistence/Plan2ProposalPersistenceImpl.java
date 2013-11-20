@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlan2ProposalException;
 import com.ext.portlet.model.Plan2Proposal;
 import com.ext.portlet.model.impl.Plan2ProposalImpl;
 import com.ext.portlet.model.impl.Plan2ProposalModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -42,46 +43,10 @@ import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +66,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +101,17 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED,
+            Plan2ProposalImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED,
+            Plan2ProposalImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
             Plan2ProposalModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +120,8 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
@@ -159,22 +133,11 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
             Plan2ProposalModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByProposalId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED,
-            Plan2ProposalImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED,
-            Plan2ProposalImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_PROPOSALID_PROPOSALID_2 = "plan2Proposal.proposalId = ?";
     private static final String _SQL_SELECT_PLAN2PROPOSAL = "SELECT plan2Proposal FROM Plan2Proposal plan2Proposal";
     private static final String _SQL_SELECT_PLAN2PROPOSAL_WHERE = "SELECT plan2Proposal FROM Plan2Proposal plan2Proposal WHERE ";
     private static final String _SQL_COUNT_PLAN2PROPOSAL = "SELECT COUNT(plan2Proposal) FROM Plan2Proposal plan2Proposal";
     private static final String _SQL_COUNT_PLAN2PROPOSAL_WHERE = "SELECT COUNT(plan2Proposal) FROM Plan2Proposal plan2Proposal WHERE ";
-    private static final String _FINDER_COLUMN_PROPOSALID_PROPOSALID_2 = "plan2Proposal.proposalId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "plan2Proposal.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Plan2Proposal exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Plan2Proposal exists with the key {";
@@ -194,11 +157,13 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
         };
 
     private static CacheModel<Plan2Proposal> _nullPlan2ProposalCacheModel = new CacheModel<Plan2Proposal>() {
+            @Override
             public Plan2Proposal toEntityModel() {
                 return _nullPlan2Proposal;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -353,342 +318,11 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan2 proposal in the entity cache if it is enabled.
-     *
-     * @param plan2Proposal the plan2 proposal
-     */
-    public void cacheResult(Plan2Proposal plan2Proposal) {
-        EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey(),
-            plan2Proposal);
-
-        plan2Proposal.resetOriginalValues();
+=======
+    public Plan2ProposalPersistenceImpl() {
+        setModelClass(Plan2Proposal.class);
     }
-
-    /**
-     * Caches the plan2 proposals in the entity cache if it is enabled.
-     *
-     * @param plan2Proposals the plan2 proposals
-     */
-    public void cacheResult(List<Plan2Proposal> plan2Proposals) {
-        for (Plan2Proposal plan2Proposal : plan2Proposals) {
-            if (EntityCacheUtil.getResult(
-                        Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                        Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey()) == null) {
-                cacheResult(plan2Proposal);
-            } else {
-                plan2Proposal.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan2 proposals.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(Plan2ProposalImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(Plan2ProposalImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan2 proposal.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(Plan2Proposal plan2Proposal) {
-        EntityCacheUtil.removeResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<Plan2Proposal> plan2Proposals) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (Plan2Proposal plan2Proposal : plan2Proposals) {
-            EntityCacheUtil.removeResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new plan2 proposal with the primary key. Does not add the plan2 proposal to the database.
-     *
-     * @param planId the primary key for the new plan2 proposal
-     * @return the new plan2 proposal
-     */
-    public Plan2Proposal create(long planId) {
-        Plan2Proposal plan2Proposal = new Plan2ProposalImpl();
-
-        plan2Proposal.setNew(true);
-        plan2Proposal.setPrimaryKey(planId);
-
-        return plan2Proposal;
-    }
-
-    /**
-     * Removes the plan2 proposal with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param planId the primary key of the plan2 proposal
-     * @return the plan2 proposal that was removed
-     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public Plan2Proposal remove(long planId)
-        throws NoSuchPlan2ProposalException, SystemException {
-        return remove(Long.valueOf(planId));
-    }
-
-    /**
-     * Removes the plan2 proposal with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan2 proposal
-     * @return the plan2 proposal that was removed
-     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Plan2Proposal remove(Serializable primaryKey)
-        throws NoSuchPlan2ProposalException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            Plan2Proposal plan2Proposal = (Plan2Proposal) session.get(Plan2ProposalImpl.class,
-                    primaryKey);
-
-            if (plan2Proposal == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlan2ProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(plan2Proposal);
-        } catch (NoSuchPlan2ProposalException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected Plan2Proposal removeImpl(Plan2Proposal plan2Proposal)
-        throws SystemException {
-        plan2Proposal = toUnwrappedModel(plan2Proposal);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, plan2Proposal);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(plan2Proposal);
-
-        return plan2Proposal;
-    }
-
-    @Override
-    public Plan2Proposal updateImpl(
-        com.ext.portlet.model.Plan2Proposal plan2Proposal, boolean merge)
-        throws SystemException {
-        plan2Proposal = toUnwrappedModel(plan2Proposal);
-
-        boolean isNew = plan2Proposal.isNew();
-
-        Plan2ProposalModelImpl plan2ProposalModelImpl = (Plan2ProposalModelImpl) plan2Proposal;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, plan2Proposal, merge);
-
-            plan2Proposal.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !Plan2ProposalModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((plan2ProposalModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(plan2ProposalModelImpl.getOriginalProposalId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(plan2ProposalModelImpl.getProposalId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey(),
-            plan2Proposal);
-
-        return plan2Proposal;
-    }
-
-    protected Plan2Proposal toUnwrappedModel(Plan2Proposal plan2Proposal) {
-        if (plan2Proposal instanceof Plan2ProposalImpl) {
-            return plan2Proposal;
-        }
-
-        Plan2ProposalImpl plan2ProposalImpl = new Plan2ProposalImpl();
-
-        plan2ProposalImpl.setNew(plan2Proposal.isNew());
-        plan2ProposalImpl.setPrimaryKey(plan2Proposal.getPrimaryKey());
-
-        plan2ProposalImpl.setPlanId(plan2Proposal.getPlanId());
-        plan2ProposalImpl.setProposalId(plan2Proposal.getProposalId());
-
-        return plan2ProposalImpl;
-    }
-
-    /**
-     * Returns the plan2 proposal with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan2 proposal
-     * @return the plan2 proposal
-     * @throws com.liferay.portal.NoSuchModelException if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Plan2Proposal findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan2 proposal with the primary key or throws a {@link com.ext.portlet.NoSuchPlan2ProposalException} if it could not be found.
-     *
-     * @param planId the primary key of the plan2 proposal
-     * @return the plan2 proposal
-     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public Plan2Proposal findByPrimaryKey(long planId)
-        throws NoSuchPlan2ProposalException, SystemException {
-        Plan2Proposal plan2Proposal = fetchByPrimaryKey(planId);
-
-        if (plan2Proposal == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + planId);
-            }
-
-            throw new NoSuchPlan2ProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planId);
-        }
-
-        return plan2Proposal;
-    }
-
-    /**
-     * Returns the plan2 proposal with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan2 proposal
-     * @return the plan2 proposal, or <code>null</code> if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Plan2Proposal fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan2 proposal with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param planId the primary key of the plan2 proposal
-     * @return the plan2 proposal, or <code>null</code> if a plan2 proposal with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public Plan2Proposal fetchByPrimaryKey(long planId)
-        throws SystemException {
-        Plan2Proposal plan2Proposal = (Plan2Proposal) EntityCacheUtil.getResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                Plan2ProposalImpl.class, planId);
-
-        if (plan2Proposal == _nullPlan2Proposal) {
-            return null;
-        }
-
-        if (plan2Proposal == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                plan2Proposal = (Plan2Proposal) session.get(Plan2ProposalImpl.class,
-                        Long.valueOf(planId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (plan2Proposal != null) {
-                    cacheResult(plan2Proposal);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                        Plan2ProposalImpl.class, planId, _nullPlan2Proposal);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return plan2Proposal;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the plan2 proposals where proposalId = &#63;.
@@ -697,6 +331,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @return the matching plan2 proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Plan2Proposal> findByProposalId(long proposalId)
         throws SystemException {
         return findByProposalId(proposalId, QueryUtil.ALL_POS,
@@ -707,7 +342,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * Returns a range of all the plan2 proposals where proposalId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param proposalId the proposal ID
@@ -716,6 +351,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @return the range of matching plan2 proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Plan2Proposal> findByProposalId(long proposalId, int start,
         int end) throws SystemException {
         return findByProposalId(proposalId, start, end, null);
@@ -725,7 +361,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * Returns an ordered range of all the plan2 proposals where proposalId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param proposalId the proposal ID
@@ -735,13 +371,16 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @return the ordered range of matching plan2 proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Plan2Proposal> findByProposalId(long proposalId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID;
             finderArgs = new Object[] { proposalId };
         } else {
@@ -752,6 +391,16 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
         List<Plan2Proposal> list = (List<Plan2Proposal>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (Plan2Proposal plan2Proposal : list) {
+                if ((proposalId != plan2Proposal.getProposalId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -759,7 +408,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLAN2PROPOSAL_WHERE);
@@ -769,6 +418,9 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(Plan2ProposalModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -784,19 +436,26 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
 
                 qPos.add(proposalId);
 
-                list = (List<Plan2Proposal>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<Plan2Proposal>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<Plan2Proposal>(list);
+                } else {
+                    list = (List<Plan2Proposal>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -807,44 +466,58 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
     /**
      * Returns the first plan2 proposal in the ordered set where proposalId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param proposalId the proposal ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan2 proposal
      * @throws com.ext.portlet.NoSuchPlan2ProposalException if a matching plan2 proposal could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Plan2Proposal findByProposalId_First(long proposalId,
         OrderByComparator orderByComparator)
         throws NoSuchPlan2ProposalException, SystemException {
+        Plan2Proposal plan2Proposal = fetchByProposalId_First(proposalId,
+                orderByComparator);
+
+        if (plan2Proposal != null) {
+            return plan2Proposal;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("proposalId=");
+        msg.append(proposalId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlan2ProposalException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan2 proposal in the ordered set where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan2 proposal, or <code>null</code> if a matching plan2 proposal could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal fetchByProposalId_First(long proposalId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<Plan2Proposal> list = findByProposalId(proposalId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("proposalId=");
-            msg.append(proposalId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlan2ProposalException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan2 proposal in the ordered set where proposalId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param proposalId the proposal ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -852,36 +525,58 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @throws com.ext.portlet.NoSuchPlan2ProposalException if a matching plan2 proposal could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Plan2Proposal findByProposalId_Last(long proposalId,
         OrderByComparator orderByComparator)
         throws NoSuchPlan2ProposalException, SystemException {
+        Plan2Proposal plan2Proposal = fetchByProposalId_Last(proposalId,
+                orderByComparator);
+
+        if (plan2Proposal != null) {
+            return plan2Proposal;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("proposalId=");
+        msg.append(proposalId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlan2ProposalException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan2 proposal in the ordered set where proposalId = &#63;.
+     *
+     * @param proposalId the proposal ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan2 proposal, or <code>null</code> if a matching plan2 proposal could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal fetchByProposalId_Last(long proposalId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByProposalId(proposalId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<Plan2Proposal> list = findByProposalId(proposalId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("proposalId=");
-            msg.append(proposalId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlan2ProposalException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan2 proposals before and after the current plan2 proposal in the ordered set where proposalId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planId the primary key of the current plan2 proposal
      * @param proposalId the proposal ID
@@ -890,6 +585,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Plan2Proposal[] findByProposalId_PrevAndNext(long planId,
         long proposalId, OrderByComparator orderByComparator)
         throws NoSuchPlan2ProposalException, SystemException {
@@ -982,6 +678,8 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
                     }
                 }
             }
+        } else {
+            query.append(Plan2ProposalModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1013,133 +711,15 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
     }
 
     /**
-     * Returns all the plan2 proposals.
-     *
-     * @return the plan2 proposals
-     * @throws SystemException if a system exception occurred
-     */
-    public List<Plan2Proposal> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan2 proposals.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan2 proposals
-     * @param end the upper bound of the range of plan2 proposals (not inclusive)
-     * @return the range of plan2 proposals
-     * @throws SystemException if a system exception occurred
-     */
-    public List<Plan2Proposal> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan2 proposals.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan2 proposals
-     * @param end the upper bound of the range of plan2 proposals (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan2 proposals
-     * @throws SystemException if a system exception occurred
-     */
-    public List<Plan2Proposal> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<Plan2Proposal> list = (List<Plan2Proposal>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLAN2PROPOSAL);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLAN2PROPOSAL;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<Plan2Proposal>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<Plan2Proposal>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
      * Removes all the plan2 proposals where proposalId = &#63; from the database.
      *
      * @param proposalId the proposal ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByProposalId(long proposalId) throws SystemException {
-        for (Plan2Proposal plan2Proposal : findByProposalId(proposalId)) {
-            remove(plan2Proposal);
-        }
-    }
-
-    /**
-     * Removes all the plan2 proposals from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (Plan2Proposal plan2Proposal : findAll()) {
+        for (Plan2Proposal plan2Proposal : findByProposalId(proposalId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(plan2Proposal);
         }
     }
@@ -1151,11 +731,14 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
      * @return the number of matching plan2 proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByProposalId(long proposalId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PROPOSALID;
+
         Object[] finderArgs = new Object[] { proposalId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1178,16 +761,13 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
                 qPos.add(proposalId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PROPOSALID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1196,11 +776,494 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
     }
 
     /**
+     * Caches the plan2 proposal in the entity cache if it is enabled.
+     *
+     * @param plan2Proposal the plan2 proposal
+     */
+    @Override
+    public void cacheResult(Plan2Proposal plan2Proposal) {
+        EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey(),
+            plan2Proposal);
+
+        plan2Proposal.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan2 proposals in the entity cache if it is enabled.
+     *
+     * @param plan2Proposals the plan2 proposals
+     */
+    @Override
+    public void cacheResult(List<Plan2Proposal> plan2Proposals) {
+        for (Plan2Proposal plan2Proposal : plan2Proposals) {
+            if (EntityCacheUtil.getResult(
+                        Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                        Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey()) == null) {
+                cacheResult(plan2Proposal);
+            } else {
+                plan2Proposal.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan2 proposals.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(Plan2ProposalImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(Plan2ProposalImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan2 proposal.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(Plan2Proposal plan2Proposal) {
+        EntityCacheUtil.removeResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<Plan2Proposal> plan2Proposals) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (Plan2Proposal plan2Proposal : plan2Proposals) {
+            EntityCacheUtil.removeResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new plan2 proposal with the primary key. Does not add the plan2 proposal to the database.
+     *
+     * @param planId the primary key for the new plan2 proposal
+     * @return the new plan2 proposal
+     */
+    @Override
+    public Plan2Proposal create(long planId) {
+        Plan2Proposal plan2Proposal = new Plan2ProposalImpl();
+
+        plan2Proposal.setNew(true);
+        plan2Proposal.setPrimaryKey(planId);
+
+        return plan2Proposal;
+    }
+
+    /**
+     * Removes the plan2 proposal with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param planId the primary key of the plan2 proposal
+     * @return the plan2 proposal that was removed
+     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal remove(long planId)
+        throws NoSuchPlan2ProposalException, SystemException {
+        return remove((Serializable) planId);
+    }
+
+    /**
+     * Removes the plan2 proposal with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan2 proposal
+     * @return the plan2 proposal that was removed
+     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal remove(Serializable primaryKey)
+        throws NoSuchPlan2ProposalException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            Plan2Proposal plan2Proposal = (Plan2Proposal) session.get(Plan2ProposalImpl.class,
+                    primaryKey);
+
+            if (plan2Proposal == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlan2ProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(plan2Proposal);
+        } catch (NoSuchPlan2ProposalException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected Plan2Proposal removeImpl(Plan2Proposal plan2Proposal)
+        throws SystemException {
+        plan2Proposal = toUnwrappedModel(plan2Proposal);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(plan2Proposal)) {
+                plan2Proposal = (Plan2Proposal) session.get(Plan2ProposalImpl.class,
+                        plan2Proposal.getPrimaryKeyObj());
+            }
+
+            if (plan2Proposal != null) {
+                session.delete(plan2Proposal);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (plan2Proposal != null) {
+            clearCache(plan2Proposal);
+        }
+
+        return plan2Proposal;
+    }
+
+    @Override
+    public Plan2Proposal updateImpl(
+        com.ext.portlet.model.Plan2Proposal plan2Proposal)
+        throws SystemException {
+        plan2Proposal = toUnwrappedModel(plan2Proposal);
+
+        boolean isNew = plan2Proposal.isNew();
+
+        Plan2ProposalModelImpl plan2ProposalModelImpl = (Plan2ProposalModelImpl) plan2Proposal;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (plan2Proposal.isNew()) {
+                session.save(plan2Proposal);
+
+                plan2Proposal.setNew(false);
+            } else {
+                session.merge(plan2Proposal);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !Plan2ProposalModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((plan2ProposalModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        plan2ProposalModelImpl.getOriginalProposalId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+
+                args = new Object[] { plan2ProposalModelImpl.getProposalId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+            Plan2ProposalImpl.class, plan2Proposal.getPrimaryKey(),
+            plan2Proposal);
+
+        return plan2Proposal;
+    }
+
+    protected Plan2Proposal toUnwrappedModel(Plan2Proposal plan2Proposal) {
+        if (plan2Proposal instanceof Plan2ProposalImpl) {
+            return plan2Proposal;
+        }
+
+        Plan2ProposalImpl plan2ProposalImpl = new Plan2ProposalImpl();
+
+        plan2ProposalImpl.setNew(plan2Proposal.isNew());
+        plan2ProposalImpl.setPrimaryKey(plan2Proposal.getPrimaryKey());
+
+        plan2ProposalImpl.setPlanId(plan2Proposal.getPlanId());
+        plan2ProposalImpl.setProposalId(plan2Proposal.getProposalId());
+
+        return plan2ProposalImpl;
+    }
+
+    /**
+     * Returns the plan2 proposal with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan2 proposal
+     * @return the plan2 proposal
+     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlan2ProposalException, SystemException {
+        Plan2Proposal plan2Proposal = fetchByPrimaryKey(primaryKey);
+
+        if (plan2Proposal == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlan2ProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return plan2Proposal;
+    }
+
+    /**
+     * Returns the plan2 proposal with the primary key or throws a {@link com.ext.portlet.NoSuchPlan2ProposalException} if it could not be found.
+     *
+     * @param planId the primary key of the plan2 proposal
+     * @return the plan2 proposal
+     * @throws com.ext.portlet.NoSuchPlan2ProposalException if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal findByPrimaryKey(long planId)
+        throws NoSuchPlan2ProposalException, SystemException {
+        return findByPrimaryKey((Serializable) planId);
+    }
+
+    /**
+     * Returns the plan2 proposal with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan2 proposal
+     * @return the plan2 proposal, or <code>null</code> if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        Plan2Proposal plan2Proposal = (Plan2Proposal) EntityCacheUtil.getResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                Plan2ProposalImpl.class, primaryKey);
+
+        if (plan2Proposal == _nullPlan2Proposal) {
+            return null;
+        }
+
+        if (plan2Proposal == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                plan2Proposal = (Plan2Proposal) session.get(Plan2ProposalImpl.class,
+                        primaryKey);
+
+                if (plan2Proposal != null) {
+                    cacheResult(plan2Proposal);
+                } else {
+                    EntityCacheUtil.putResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                        Plan2ProposalImpl.class, primaryKey, _nullPlan2Proposal);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(Plan2ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                    Plan2ProposalImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return plan2Proposal;
+    }
+
+    /**
+     * Returns the plan2 proposal with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param planId the primary key of the plan2 proposal
+     * @return the plan2 proposal, or <code>null</code> if a plan2 proposal with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Plan2Proposal fetchByPrimaryKey(long planId)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) planId);
+    }
+
+    /**
+     * Returns all the plan2 proposals.
+     *
+     * @return the plan2 proposals
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<Plan2Proposal> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan2 proposals.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan2 proposals
+     * @param end the upper bound of the range of plan2 proposals (not inclusive)
+     * @return the range of plan2 proposals
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<Plan2Proposal> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan2 proposals.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan2 proposals
+     * @param end the upper bound of the range of plan2 proposals (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan2 proposals
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<Plan2Proposal> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<Plan2Proposal> list = (List<Plan2Proposal>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLAN2PROPOSAL);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLAN2PROPOSAL;
+
+                if (pagination) {
+                    sql = sql.concat(Plan2ProposalModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<Plan2Proposal>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<Plan2Proposal>(list);
+                } else {
+                    list = (List<Plan2Proposal>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan2 proposals from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (Plan2Proposal plan2Proposal : findAll()) {
+            remove(plan2Proposal);
+        }
+    }
+
+    /**
      * Returns the number of plan2 proposals.
      *
      * @return the number of plan2 proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1214,16 +1277,15 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
                 Query q = session.createQuery(_SQL_COUNT_PLAN2PROPOSAL);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1245,7 +1307,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<Plan2Proposal>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1258,6 +1320,7 @@ public class Plan2ProposalPersistenceImpl extends BasePersistenceImpl<Plan2Propo
     public void destroy() {
         EntityCacheUtil.removeCache(Plan2ProposalImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

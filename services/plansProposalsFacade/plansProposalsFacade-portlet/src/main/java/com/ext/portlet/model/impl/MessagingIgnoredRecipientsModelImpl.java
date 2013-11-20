@@ -25,7 +25,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingIgnoredRecipients service. Represents a row in the &quot;xcolab_MessagingIgnoredRecipients&quot; database table, with each column mapped to a property of this class.
@@ -77,7 +79,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingIgnoredRecipients"));
     private static ClassLoader _classLoader = MessagingIgnoredRecipients.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingIgnoredRecipients.class
         };
     private long _ignoredRecipientId;
@@ -89,9 +91,8 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
     private long _originalUserId;
     private boolean _setOriginalUserId;
     private Date _createDate;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private MessagingIgnoredRecipients _escapedModelProxy;
+    private MessagingIgnoredRecipients _escapedModel;
 
     public MessagingIgnoredRecipientsModelImpl() {
     }
@@ -104,6 +105,10 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
      */
     public static MessagingIgnoredRecipients toModel(
         MessagingIgnoredRecipientsSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingIgnoredRecipients model = new MessagingIgnoredRecipientsImpl();
 
         model.setIgnoredRecipientId(soapModel.getIgnoredRecipientId());
@@ -123,6 +128,10 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
      */
     public static List<MessagingIgnoredRecipients> toModels(
         MessagingIgnoredRecipientsSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingIgnoredRecipients> models = new ArrayList<MessagingIgnoredRecipients>(soapModels.length);
 
         for (MessagingIgnoredRecipientsSoap soapModel : soapModels) {
@@ -132,40 +141,95 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _ignoredRecipientId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setIgnoredRecipientId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_ignoredRecipientId);
+        return _ignoredRecipientId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingIgnoredRecipients.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingIgnoredRecipients.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("ignoredRecipientId", getIgnoredRecipientId());
+        attributes.put("email", getEmail());
+        attributes.put("name", getName());
+        attributes.put("userId", getUserId());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long ignoredRecipientId = (Long) attributes.get("ignoredRecipientId");
+
+        if (ignoredRecipientId != null) {
+            setIgnoredRecipientId(ignoredRecipientId);
+        }
+
+        String email = (String) attributes.get("email");
+
+        if (email != null) {
+            setEmail(email);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getIgnoredRecipientId() {
         return _ignoredRecipientId;
     }
 
+    @Override
     public void setIgnoredRecipientId(long ignoredRecipientId) {
         _ignoredRecipientId = ignoredRecipientId;
     }
 
     @JSON
+    @Override
     public String getEmail() {
         if (_email == null) {
             return StringPool.BLANK;
@@ -174,6 +238,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         }
     }
 
+    @Override
     public void setEmail(String email) {
         _columnBitmask = -1L;
 
@@ -189,6 +254,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -197,15 +263,18 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -218,10 +287,12 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -231,10 +302,12 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
@@ -244,29 +317,26 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
     }
 
     @Override
-    public MessagingIgnoredRecipients toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingIgnoredRecipients) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingIgnoredRecipients.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingIgnoredRecipients.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingIgnoredRecipients toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingIgnoredRecipients) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -284,6 +354,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         return messagingIgnoredRecipientsImpl;
     }
 
+    @Override
     public int compareTo(MessagingIgnoredRecipients messagingIgnoredRecipients) {
         int value = 0;
 
@@ -298,17 +369,15 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingIgnoredRecipients)) {
             return false;
         }
 
-        MessagingIgnoredRecipients messagingIgnoredRecipients = null;
-
-        try {
-            messagingIgnoredRecipients = (MessagingIgnoredRecipients) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingIgnoredRecipients messagingIgnoredRecipients = (MessagingIgnoredRecipients) obj;
 
         long primaryKey = messagingIgnoredRecipients.getPrimaryKey();
 
@@ -392,6 +461,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

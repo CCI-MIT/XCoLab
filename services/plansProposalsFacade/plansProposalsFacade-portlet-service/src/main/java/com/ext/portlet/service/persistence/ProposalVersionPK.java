@@ -35,6 +35,7 @@ public class ProposalVersionPK implements Comparable<ProposalVersionPK>,
         this.version = version;
     }
 
+    @Override
     public int compareTo(ProposalVersionPK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class ProposalVersionPK implements Comparable<ProposalVersionPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalVersionPK)) {
             return false;
         }
 
-        ProposalVersionPK pk = null;
-
-        try {
-            pk = (ProposalVersionPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalVersionPK pk = (ProposalVersionPK) obj;
 
         if ((proposalId == pk.proposalId) && (version == pk.version)) {
             return true;

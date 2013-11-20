@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelInputItem in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelInputItemCacheModel implements CacheModel<ModelInputItem>,
-    Serializable {
+    Externalizable {
     public long modelInputItemPK;
     public long modelId;
     public long modelInputItemID;
@@ -48,6 +51,7 @@ public class ModelInputItemCacheModel implements CacheModel<ModelInputItem>,
         return sb.toString();
     }
 
+    @Override
     public ModelInputItem toEntityModel() {
         ModelInputItemImpl modelInputItemImpl = new ModelInputItemImpl();
 
@@ -72,5 +76,38 @@ public class ModelInputItemCacheModel implements CacheModel<ModelInputItem>,
         modelInputItemImpl.resetOriginalValues();
 
         return modelInputItemImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelInputItemPK = objectInput.readLong();
+        modelId = objectInput.readLong();
+        modelInputItemID = objectInput.readLong();
+        modelGroupId = objectInput.readLong();
+        displayItemOrder = objectInput.readInt();
+        type = objectInput.readUTF();
+        properties = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelInputItemPK);
+        objectOutput.writeLong(modelId);
+        objectOutput.writeLong(modelInputItemID);
+        objectOutput.writeLong(modelGroupId);
+        objectOutput.writeInt(displayItemOrder);
+
+        if (type == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(type);
+        }
+
+        if (properties == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(properties);
+        }
     }
 }

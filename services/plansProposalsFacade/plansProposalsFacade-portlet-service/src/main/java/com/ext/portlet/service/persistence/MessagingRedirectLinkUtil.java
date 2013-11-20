@@ -49,7 +49,7 @@ public class MessagingRedirectLinkUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,22 +83,20 @@ public class MessagingRedirectLinkUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static MessagingRedirectLink update(
-        MessagingRedirectLink messagingRedirectLink, boolean merge)
-        throws SystemException {
-        return getPersistence().update(messagingRedirectLink, merge);
+        MessagingRedirectLink messagingRedirectLink) throws SystemException {
+        return getPersistence().update(messagingRedirectLink);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static MessagingRedirectLink update(
-        MessagingRedirectLink messagingRedirectLink, boolean merge,
+        MessagingRedirectLink messagingRedirectLink,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence()
-                   .update(messagingRedirectLink, merge, serviceContext);
+        return getPersistence().update(messagingRedirectLink, serviceContext);
     }
 
     /**
@@ -148,10 +146,9 @@ public class MessagingRedirectLinkUtil {
     }
 
     public static com.ext.portlet.model.MessagingRedirectLink updateImpl(
-        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink,
-        boolean merge)
+        com.ext.portlet.model.MessagingRedirectLink messagingRedirectLink)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(messagingRedirectLink, merge);
+        return getPersistence().updateImpl(messagingRedirectLink);
     }
 
     /**
@@ -197,7 +194,7 @@ public class MessagingRedirectLinkUtil {
     * Returns a range of all the messaging redirect links.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingRedirectLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging redirect links
@@ -215,7 +212,7 @@ public class MessagingRedirectLinkUtil {
     * Returns an ordered range of all the messaging redirect links.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingRedirectLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messaging redirect links
@@ -264,10 +261,9 @@ public class MessagingRedirectLinkUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(MessagingRedirectLinkPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(MessagingRedirectLinkUtil.class,
-            "_persistence");
     }
 }

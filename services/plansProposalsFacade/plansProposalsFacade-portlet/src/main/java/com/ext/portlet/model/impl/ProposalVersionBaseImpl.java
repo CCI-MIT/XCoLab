@@ -24,6 +24,7 @@ public abstract class ProposalVersionBaseImpl extends ProposalVersionModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal version model instance should use the {@link ProposalVersion} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ProposalVersionLocalServiceUtil.addProposalVersion(this);

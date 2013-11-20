@@ -5,7 +5,10 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @generated
  */
 public class ProposalSupporterCacheModel implements CacheModel<ProposalSupporter>,
-    Serializable {
+    Externalizable {
     public long proposalId;
     public long userId;
     public long createDate;
@@ -37,6 +40,7 @@ public class ProposalSupporterCacheModel implements CacheModel<ProposalSupporter
         return sb.toString();
     }
 
+    @Override
     public ProposalSupporter toEntityModel() {
         ProposalSupporterImpl proposalSupporterImpl = new ProposalSupporterImpl();
 
@@ -52,5 +56,20 @@ public class ProposalSupporterCacheModel implements CacheModel<ProposalSupporter
         proposalSupporterImpl.resetOriginalValues();
 
         return proposalSupporterImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        proposalId = objectInput.readLong();
+        userId = objectInput.readLong();
+        createDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(proposalId);
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(createDate);
     }
 }

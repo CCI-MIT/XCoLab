@@ -24,6 +24,7 @@ public abstract class OntologyTermBaseImpl extends OntologyTermModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a ontology term model instance should use the {@link OntologyTerm} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             OntologyTermLocalServiceUtil.addOntologyTerm(this);

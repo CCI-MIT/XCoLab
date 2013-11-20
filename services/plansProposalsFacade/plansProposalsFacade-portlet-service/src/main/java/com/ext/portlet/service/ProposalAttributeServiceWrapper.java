@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ProposalAttributeService}.
- * </p>
+ * Provides a wrapper for {@link ProposalAttributeService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ProposalAttributeService
+ * @author Brian Wing Shun Chan
+ * @see ProposalAttributeService
  * @generated
  */
 public class ProposalAttributeServiceWrapper implements ProposalAttributeService,
@@ -21,24 +19,54 @@ public class ProposalAttributeServiceWrapper implements ProposalAttributeService
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _proposalAttributeService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _proposalAttributeService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _proposalAttributeService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalAttributeService getWrappedProposalAttributeService() {
         return _proposalAttributeService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedProposalAttributeService(
         ProposalAttributeService proposalAttributeService) {
         _proposalAttributeService = proposalAttributeService;
     }
 
+    @Override
     public ProposalAttributeService getWrappedService() {
         return _proposalAttributeService;
     }
 
+    @Override
     public void setWrappedService(
         ProposalAttributeService proposalAttributeService) {
         _proposalAttributeService = proposalAttributeService;

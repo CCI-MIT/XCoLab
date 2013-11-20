@@ -147,7 +147,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     public ContestPhase getActivePhaseForContest(Contest contest) throws NoSuchContestPhaseException, SystemException {
         Date now = new Date();
         try {
-            contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
+            return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
                     new OrderByComparator() {
 
                         private final String[] ORDERY_BY_FIELDS = new String[]{"PhaseStartDate"};
@@ -169,7 +169,11 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         } catch (NoSuchContestPhaseException e) {
             // ignore
         }
-        return contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
+        List<ContestPhase> phases = contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
+        if (phases.isEmpty()) {
+        	throw new NoSuchContestPhaseException("Can't find active contest phase for contest" + contest.getContestPK());
+        }
+        return phases.get(0);
     }
 
     /**

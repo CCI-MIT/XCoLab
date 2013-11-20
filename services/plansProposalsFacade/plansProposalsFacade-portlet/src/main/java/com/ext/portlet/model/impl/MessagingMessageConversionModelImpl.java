@@ -23,7 +23,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingMessageConversion service. Represents a row in the &quot;xcolab_MessagingMessageConversion&quot; database table, with each column mapped to a property of this class.
@@ -58,6 +60,8 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageConversion (conversionId LONG not null primary key,conversionTypeId LONG,messageId LONG,ipAddress VARCHAR(75) null,extraData VARCHAR(2048) null,extraData2 VARCHAR(2048) null,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessageConversion";
+    public static final String ORDER_BY_JPQL = " ORDER BY messagingMessageConversion.conversionId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessageConversion.conversionId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -72,10 +76,11 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
             true);
     public static long CONVERSIONTYPEID_COLUMN_BITMASK = 1L;
     public static long MESSAGEID_COLUMN_BITMASK = 2L;
+    public static long CONVERSIONID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingMessageConversion"));
     private static ClassLoader _classLoader = MessagingMessageConversion.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingMessageConversion.class
         };
     private long _conversionId;
@@ -89,9 +94,8 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
     private String _extraData;
     private String _extraData2;
     private Date _createDate;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private MessagingMessageConversion _escapedModelProxy;
+    private MessagingMessageConversion _escapedModel;
 
     public MessagingMessageConversionModelImpl() {
     }
@@ -104,6 +108,10 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
      */
     public static MessagingMessageConversion toModel(
         MessagingMessageConversionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingMessageConversion model = new MessagingMessageConversionImpl();
 
         model.setConversionId(soapModel.getConversionId());
@@ -125,6 +133,10 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
      */
     public static List<MessagingMessageConversion> toModels(
         MessagingMessageConversionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingMessageConversion> models = new ArrayList<MessagingMessageConversion>(soapModels.length);
 
         for (MessagingMessageConversionSoap soapModel : soapModels) {
@@ -134,44 +146,114 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _conversionId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setConversionId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_conversionId);
+        return _conversionId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingMessageConversion.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingMessageConversion.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("conversionId", getConversionId());
+        attributes.put("conversionTypeId", getConversionTypeId());
+        attributes.put("messageId", getMessageId());
+        attributes.put("ipAddress", getIpAddress());
+        attributes.put("extraData", getExtraData());
+        attributes.put("extraData2", getExtraData2());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long conversionId = (Long) attributes.get("conversionId");
+
+        if (conversionId != null) {
+            setConversionId(conversionId);
+        }
+
+        Long conversionTypeId = (Long) attributes.get("conversionTypeId");
+
+        if (conversionTypeId != null) {
+            setConversionTypeId(conversionTypeId);
+        }
+
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        String ipAddress = (String) attributes.get("ipAddress");
+
+        if (ipAddress != null) {
+            setIpAddress(ipAddress);
+        }
+
+        String extraData = (String) attributes.get("extraData");
+
+        if (extraData != null) {
+            setExtraData(extraData);
+        }
+
+        String extraData2 = (String) attributes.get("extraData2");
+
+        if (extraData2 != null) {
+            setExtraData2(extraData2);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getConversionId() {
         return _conversionId;
     }
 
+    @Override
     public void setConversionId(long conversionId) {
         _conversionId = conversionId;
     }
 
     @JSON
+    @Override
     public long getConversionTypeId() {
         return _conversionTypeId;
     }
 
+    @Override
     public void setConversionTypeId(long conversionTypeId) {
         _columnBitmask |= CONVERSIONTYPEID_COLUMN_BITMASK;
 
@@ -189,10 +271,12 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
     }
 
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _columnBitmask |= MESSAGEID_COLUMN_BITMASK;
 
@@ -210,6 +294,7 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
     }
 
     @JSON
+    @Override
     public String getIpAddress() {
         if (_ipAddress == null) {
             return StringPool.BLANK;
@@ -218,11 +303,13 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         }
     }
 
+    @Override
     public void setIpAddress(String ipAddress) {
         _ipAddress = ipAddress;
     }
 
     @JSON
+    @Override
     public String getExtraData() {
         if (_extraData == null) {
             return StringPool.BLANK;
@@ -231,11 +318,13 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         }
     }
 
+    @Override
     public void setExtraData(String extraData) {
         _extraData = extraData;
     }
 
     @JSON
+    @Override
     public String getExtraData2() {
         if (_extraData2 == null) {
             return StringPool.BLANK;
@@ -244,15 +333,18 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         }
     }
 
+    @Override
     public void setExtraData2(String extraData2) {
         _extraData2 = extraData2;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
@@ -262,29 +354,26 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
     }
 
     @Override
-    public MessagingMessageConversion toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingMessageConversion) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingMessageConversion.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingMessageConversion.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingMessageConversion toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingMessageConversion) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -304,6 +393,7 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         return messagingMessageConversionImpl;
     }
 
+    @Override
     public int compareTo(MessagingMessageConversion messagingMessageConversion) {
         long primaryKey = messagingMessageConversion.getPrimaryKey();
 
@@ -318,17 +408,15 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingMessageConversion)) {
             return false;
         }
 
-        MessagingMessageConversion messagingMessageConversion = null;
-
-        try {
-            messagingMessageConversion = (MessagingMessageConversion) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingMessageConversion messagingMessageConversion = (MessagingMessageConversion) obj;
 
         long primaryKey = messagingMessageConversion.getPrimaryKey();
 
@@ -428,6 +516,7 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

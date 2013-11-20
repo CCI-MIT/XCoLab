@@ -24,6 +24,7 @@ public abstract class ContestDebateBaseImpl extends ContestDebateModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a contest debate model instance should use the {@link ContestDebate} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ContestDebateLocalServiceUtil.addContestDebate(this);

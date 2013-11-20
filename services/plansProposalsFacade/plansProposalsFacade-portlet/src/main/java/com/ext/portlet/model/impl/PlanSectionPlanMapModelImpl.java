@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanSectionPlanMap service. Represents a row in the &quot;xcolab_PlanSectionPlanMap&quot; database table, with each column mapped to a property of this class.
@@ -48,6 +50,8 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionPlanMap (sectionId LONG not null,relatedPlanId LONG not null,primary key (sectionId, relatedPlanId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionPlanMap";
+    public static final String ORDER_BY_JPQL = " ORDER BY planSectionPlanMap.id.sectionId ASC, planSectionPlanMap.id.relatedPlanId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionPlanMap.sectionId ASC, xcolab_PlanSectionPlanMap.relatedPlanId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -65,7 +69,7 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanSectionPlanMap"));
     private static ClassLoader _classLoader = PlanSectionPlanMap.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanSectionPlanMap.class
         };
     private long _sectionId;
@@ -75,7 +79,7 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
     private long _originalRelatedPlanId;
     private boolean _setOriginalRelatedPlanId;
     private long _columnBitmask;
-    private PlanSectionPlanMap _escapedModelProxy;
+    private PlanSectionPlanMap _escapedModel;
 
     public PlanSectionPlanMapModelImpl() {
     }
@@ -87,6 +91,10 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
      * @return the normal model instance
      */
     public static PlanSectionPlanMap toModel(PlanSectionPlanMapSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanSectionPlanMap model = new PlanSectionPlanMapImpl();
 
         model.setSectionId(soapModel.getSectionId());
@@ -103,6 +111,10 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
      */
     public static List<PlanSectionPlanMap> toModels(
         PlanSectionPlanMapSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanSectionPlanMap> models = new ArrayList<PlanSectionPlanMap>(soapModels.length);
 
         for (PlanSectionPlanMapSoap soapModel : soapModels) {
@@ -112,36 +124,69 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
         return models;
     }
 
+    @Override
     public PlanSectionPlanMapPK getPrimaryKey() {
         return new PlanSectionPlanMapPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKey(PlanSectionPlanMapPK primaryKey) {
         setSectionId(primaryKey.sectionId);
         setRelatedPlanId(primaryKey.relatedPlanId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanSectionPlanMapPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanSectionPlanMapPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanSectionPlanMap.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanSectionPlanMap.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("sectionId", getSectionId());
+        attributes.put("relatedPlanId", getRelatedPlanId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long sectionId = (Long) attributes.get("sectionId");
+
+        if (sectionId != null) {
+            setSectionId(sectionId);
+        }
+
+        Long relatedPlanId = (Long) attributes.get("relatedPlanId");
+
+        if (relatedPlanId != null) {
+            setRelatedPlanId(relatedPlanId);
+        }
+    }
+
     @JSON
+    @Override
     public long getSectionId() {
         return _sectionId;
     }
 
+    @Override
     public void setSectionId(long sectionId) {
         _columnBitmask |= SECTIONID_COLUMN_BITMASK;
 
@@ -159,10 +204,12 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
     }
 
     @JSON
+    @Override
     public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
+    @Override
     public void setRelatedPlanId(long relatedPlanId) {
         _columnBitmask |= RELATEDPLANID_COLUMN_BITMASK;
 
@@ -185,13 +232,12 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
 
     @Override
     public PlanSectionPlanMap toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanSectionPlanMap) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlanSectionPlanMap) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -206,6 +252,7 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
         return planSectionPlanMapImpl;
     }
 
+    @Override
     public int compareTo(PlanSectionPlanMap planSectionPlanMap) {
         PlanSectionPlanMapPK primaryKey = planSectionPlanMap.getPrimaryKey();
 
@@ -214,17 +261,15 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanSectionPlanMap)) {
             return false;
         }
 
-        PlanSectionPlanMap planSectionPlanMap = null;
-
-        try {
-            planSectionPlanMap = (PlanSectionPlanMap) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanSectionPlanMap planSectionPlanMap = (PlanSectionPlanMap) obj;
 
         PlanSectionPlanMapPK primaryKey = planSectionPlanMap.getPrimaryKey();
 
@@ -279,6 +324,7 @@ public class PlanSectionPlanMapModelImpl extends BaseModelImpl<PlanSectionPlanMa
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

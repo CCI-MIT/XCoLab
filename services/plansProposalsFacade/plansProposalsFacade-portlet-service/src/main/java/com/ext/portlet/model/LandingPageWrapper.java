@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link LandingPage}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       LandingPage
+ * @author Brian Wing Shun Chan
+ * @see LandingPage
  * @generated
  */
 public class LandingPageWrapper implements LandingPage,
@@ -19,12 +24,53 @@ public class LandingPageWrapper implements LandingPage,
         _landingPage = landingPage;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return LandingPage.class;
     }
 
+    @Override
     public String getModelClassName() {
         return LandingPage.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("baseUrl", getBaseUrl());
+        attributes.put("targetUrl", getTargetUrl());
+        attributes.put("updated", getUpdated());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String baseUrl = (String) attributes.get("baseUrl");
+
+        if (baseUrl != null) {
+            setBaseUrl(baseUrl);
+        }
+
+        String targetUrl = (String) attributes.get("targetUrl");
+
+        if (targetUrl != null) {
+            setTargetUrl(targetUrl);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
     }
 
     /**
@@ -32,6 +78,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @return the primary key of this landing page
     */
+    @Override
     public long getPrimaryKey() {
         return _landingPage.getPrimaryKey();
     }
@@ -41,6 +88,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @param primaryKey the primary key of this landing page
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _landingPage.setPrimaryKey(primaryKey);
     }
@@ -50,6 +98,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @return the ID of this landing page
     */
+    @Override
     public long getId() {
         return _landingPage.getId();
     }
@@ -59,6 +108,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @param id the ID of this landing page
     */
+    @Override
     public void setId(long id) {
         _landingPage.setId(id);
     }
@@ -68,6 +118,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @return the base url of this landing page
     */
+    @Override
     public java.lang.String getBaseUrl() {
         return _landingPage.getBaseUrl();
     }
@@ -77,6 +128,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @param baseUrl the base url of this landing page
     */
+    @Override
     public void setBaseUrl(java.lang.String baseUrl) {
         _landingPage.setBaseUrl(baseUrl);
     }
@@ -86,6 +138,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @return the target url of this landing page
     */
+    @Override
     public java.lang.String getTargetUrl() {
         return _landingPage.getTargetUrl();
     }
@@ -95,6 +148,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @param targetUrl the target url of this landing page
     */
+    @Override
     public void setTargetUrl(java.lang.String targetUrl) {
         _landingPage.setTargetUrl(targetUrl);
     }
@@ -104,6 +158,7 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @return the updated of this landing page
     */
+    @Override
     public java.util.Date getUpdated() {
         return _landingPage.getUpdated();
     }
@@ -113,42 +168,64 @@ public class LandingPageWrapper implements LandingPage,
     *
     * @param updated the updated of this landing page
     */
+    @Override
     public void setUpdated(java.util.Date updated) {
         _landingPage.setUpdated(updated);
     }
 
+    @Override
     public boolean isNew() {
         return _landingPage.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _landingPage.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _landingPage.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _landingPage.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _landingPage.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _landingPage.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _landingPage.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _landingPage.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _landingPage.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _landingPage.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _landingPage.setExpandoBridgeAttributes(serviceContext);
@@ -159,6 +236,7 @@ public class LandingPageWrapper implements LandingPage,
         return new LandingPageWrapper((LandingPage) _landingPage.clone());
     }
 
+    @Override
     public int compareTo(LandingPage landingPage) {
         return _landingPage.compareTo(landingPage);
     }
@@ -168,12 +246,19 @@ public class LandingPageWrapper implements LandingPage,
         return _landingPage.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<LandingPage> toCacheModel() {
         return _landingPage.toCacheModel();
     }
 
+    @Override
     public LandingPage toEscapedModel() {
         return new LandingPageWrapper(_landingPage.toEscapedModel());
+    }
+
+    @Override
+    public LandingPage toUnescapedModel() {
+        return new LandingPageWrapper(_landingPage.toUnescapedModel());
     }
 
     @Override
@@ -181,26 +266,49 @@ public class LandingPageWrapper implements LandingPage,
         return _landingPage.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _landingPage.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _landingPage.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof LandingPageWrapper)) {
+            return false;
+        }
+
+        LandingPageWrapper landingPageWrapper = (LandingPageWrapper) obj;
+
+        if (Validator.equals(_landingPage, landingPageWrapper._landingPage)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public LandingPage getWrappedLandingPage() {
         return _landingPage;
     }
 
+    @Override
     public LandingPage getWrappedModel() {
         return _landingPage;
     }
 
+    @Override
     public void resetOriginalValues() {
         _landingPage.resetOriginalValues();
     }

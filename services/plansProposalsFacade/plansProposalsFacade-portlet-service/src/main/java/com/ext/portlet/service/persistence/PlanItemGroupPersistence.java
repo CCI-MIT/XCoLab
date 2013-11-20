@@ -24,6 +24,144 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
      */
 
     /**
+    * Returns all the plan item groups where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @return the matching plan item groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
+        long groupId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the plan item groups where groupId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param groupId the group ID
+    * @param start the lower bound of the range of plan item groups
+    * @param end the upper bound of the range of plan item groups (not inclusive)
+    * @return the range of matching plan item groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
+        long groupId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the plan item groups where groupId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param groupId the group ID
+    * @param start the lower bound of the range of plan item groups
+    * @param end the upper bound of the range of plan item groups (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan item groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
+        long groupId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan item group in the ordered set where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan item group
+    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanItemGroup findByGroupId_First(
+        long groupId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first plan item group in the ordered set where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan item group, or <code>null</code> if a matching plan item group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanItemGroup fetchByGroupId_First(
+        long groupId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan item group in the ordered set where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan item group
+    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanItemGroup findByGroupId_Last(
+        long groupId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan item group in the ordered set where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan item group, or <code>null</code> if a matching plan item group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanItemGroup fetchByGroupId_Last(
+        long groupId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan item groups before and after the current plan item group in the ordered set where groupId = &#63;.
+    *
+    * @param planId the primary key of the current plan item group
+    * @param groupId the group ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan item group
+    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanItemGroup[] findByGroupId_PrevAndNext(
+        long planId, long groupId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanItemGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the plan item groups where groupId = &#63; from the database.
+    *
+    * @param groupId the group ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByGroupId(long groupId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan item groups where groupId = &#63;.
+    *
+    * @param groupId the group ID
+    * @return the number of matching plan item groups
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByGroupId(long groupId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Caches the plan item group in the entity cache if it is enabled.
     *
     * @param planItemGroup the plan item group
@@ -59,7 +197,7 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.PlanItemGroup updateImpl(
-        com.ext.portlet.model.PlanItemGroup planItemGroup, boolean merge)
+        com.ext.portlet.model.PlanItemGroup planItemGroup)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -85,111 +223,6 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns all the plan item groups where groupId = &#63;.
-    *
-    * @param groupId the group ID
-    * @return the matching plan item groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
-        long groupId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns a range of all the plan item groups where groupId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param groupId the group ID
-    * @param start the lower bound of the range of plan item groups
-    * @param end the upper bound of the range of plan item groups (not inclusive)
-    * @return the range of matching plan item groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
-        long groupId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns an ordered range of all the plan item groups where groupId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param groupId the group ID
-    * @param start the lower bound of the range of plan item groups
-    * @param end the upper bound of the range of plan item groups (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan item groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.PlanItemGroup> findByGroupId(
-        long groupId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the first plan item group in the ordered set where groupId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param groupId the group ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan item group
-    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanItemGroup findByGroupId_First(
-        long groupId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the last plan item group in the ordered set where groupId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param groupId the group ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan item group
-    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanItemGroup findByGroupId_Last(
-        long groupId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan item groups before and after the current plan item group in the ordered set where groupId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planId the primary key of the current plan item group
-    * @param groupId the group ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan item group
-    * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanItemGroup[] findByGroupId_PrevAndNext(
-        long planId, long groupId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanItemGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the plan item groups.
     *
     * @return the plan item groups
@@ -202,7 +235,7 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
     * Returns a range of all the plan item groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan item groups
@@ -218,7 +251,7 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
     * Returns an ordered range of all the plan item groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan item groups
@@ -233,30 +266,11 @@ public interface PlanItemGroupPersistence extends BasePersistence<PlanItemGroup>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the plan item groups where groupId = &#63; from the database.
-    *
-    * @param groupId the group ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByGroupId(long groupId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the plan item groups from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan item groups where groupId = &#63;.
-    *
-    * @param groupId the group ID
-    * @return the number of matching plan item groups
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByGroupId(long groupId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

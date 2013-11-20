@@ -24,6 +24,7 @@ public abstract class PlanTypeAttributeBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan type attribute model instance should use the {@link PlanTypeAttribute} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTypeAttributeLocalServiceUtil.addPlanTypeAttribute(this);

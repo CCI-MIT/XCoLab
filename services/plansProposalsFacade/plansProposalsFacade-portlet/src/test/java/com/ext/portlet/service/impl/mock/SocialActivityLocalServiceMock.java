@@ -1,9 +1,15 @@
 package com.ext.portlet.service.impl.mock;
 
+import java.util.Date;
+import java.util.List;
+
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalService;
 
 /**
@@ -20,10 +26,6 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
      */
     
     public SocialActivityLocalServiceMock() {
-        System.out.println("create");
-        System.out.println("create");
-        System.out.println("create");
-        System.out.println("create");
         
     }
 
@@ -49,29 +51,6 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
     public com.liferay.portlet.social.model.SocialActivity createSocialActivity(
         long activityId) {
         return null;
-    }
-
-    /**
-    * Deletes the social activity with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param activityId the primary key of the social activity
-    * @throws PortalException if a social activity with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public void deleteSocialActivity(long activityId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-    }
-
-    /**
-    * Deletes the social activity from the database. Also notifies the appropriate model listeners.
-    *
-    * @param socialActivity the social activity
-    * @throws SystemException if a system exception occurred
-    */
-    public void deleteSocialActivity(
-        com.liferay.portlet.social.model.SocialActivity socialActivity)
-        throws com.liferay.portal.kernel.exception.SystemException {
     }
 
     /**
@@ -1075,5 +1054,52 @@ public class SocialActivityLocalServiceMock implements SocialActivityLocalServic
         throws com.liferay.portal.kernel.exception.SystemException {
         return 0;
     }
+
+	@Override
+	public DynamicQuery dynamicQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteActivities(long groupId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+			Projection projection) throws SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public SocialActivity fetchFirstActivity(String className, long classPK,
+			int type) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<SocialActivity> getActivitySetActivities(long activitySetId,
+			int start, int end) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocialActivity deleteSocialActivity(long activityId)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SocialActivity deleteSocialActivity(SocialActivity socialActivity)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the Plan2Proposal service. Represents a row in the &quot;xcolab_Plan2Proposal&quot; database table, with each column mapped to a property of this class.
@@ -51,6 +53,8 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_Plan2Proposal (planId LONG not null primary key,proposalId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Plan2Proposal";
+    public static final String ORDER_BY_JPQL = " ORDER BY plan2Proposal.planId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_Plan2Proposal.planId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -64,19 +68,19 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.Plan2Proposal"),
             true);
     public static long PROPOSALID_COLUMN_BITMASK = 1L;
+    public static long PLANID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Plan2Proposal"));
     private static ClassLoader _classLoader = Plan2Proposal.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             Plan2Proposal.class
         };
     private long _planId;
     private long _proposalId;
     private long _originalProposalId;
     private boolean _setOriginalProposalId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private Plan2Proposal _escapedModelProxy;
+    private Plan2Proposal _escapedModel;
 
     public Plan2ProposalModelImpl() {
     }
@@ -88,6 +92,10 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
      * @return the normal model instance
      */
     public static Plan2Proposal toModel(Plan2ProposalSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         Plan2Proposal model = new Plan2ProposalImpl();
 
         model.setPlanId(soapModel.getPlanId());
@@ -103,6 +111,10 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
      * @return the normal model instances
      */
     public static List<Plan2Proposal> toModels(Plan2ProposalSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<Plan2Proposal> models = new ArrayList<Plan2Proposal>(soapModels.length);
 
         for (Plan2ProposalSoap soapModel : soapModels) {
@@ -112,44 +124,79 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planId);
+        return _planId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Plan2Proposal.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Plan2Proposal.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planId", getPlanId());
+        attributes.put("proposalId", getProposalId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _planId = planId;
     }
 
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -171,29 +218,26 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
     }
 
     @Override
-    public Plan2Proposal toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (Plan2Proposal) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    Plan2Proposal.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            Plan2Proposal.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public Plan2Proposal toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (Plan2Proposal) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -208,6 +252,7 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
         return plan2ProposalImpl;
     }
 
+    @Override
     public int compareTo(Plan2Proposal plan2Proposal) {
         long primaryKey = plan2Proposal.getPrimaryKey();
 
@@ -222,17 +267,15 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Plan2Proposal)) {
             return false;
         }
 
-        Plan2Proposal plan2Proposal = null;
-
-        try {
-            plan2Proposal = (Plan2Proposal) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Plan2Proposal plan2Proposal = (Plan2Proposal) obj;
 
         long primaryKey = plan2Proposal.getPrimaryKey();
 
@@ -283,6 +326,7 @@ public class Plan2ProposalModelImpl extends BaseModelImpl<Plan2Proposal>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

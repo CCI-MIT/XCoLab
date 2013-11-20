@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelOutputChartOrder in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelOutputChartOrderCacheModel implements CacheModel<ModelOutputChartOrder>,
-    Serializable {
+    Externalizable {
     public long modelOutputChartOrderPK;
     public long modelId;
     public String modelOutputLabel;
@@ -54,6 +57,7 @@ public class ModelOutputChartOrderCacheModel implements CacheModel<ModelOutputCh
         return sb.toString();
     }
 
+    @Override
     public ModelOutputChartOrder toEntityModel() {
         ModelOutputChartOrderImpl modelOutputChartOrderImpl = new ModelOutputChartOrderImpl();
 
@@ -97,5 +101,59 @@ public class ModelOutputChartOrderCacheModel implements CacheModel<ModelOutputCh
         modelOutputChartOrderImpl.resetOriginalValues();
 
         return modelOutputChartOrderImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelOutputChartOrderPK = objectInput.readLong();
+        modelId = objectInput.readLong();
+        modelOutputLabel = objectInput.readUTF();
+        modelOutputChartOrder = objectInput.readInt();
+        modelIndexRangePolicy = objectInput.readUTF();
+        modelIndexRangeMessage = objectInput.readUTF();
+        modelIndexErrorPolicy = objectInput.readUTF();
+        modelIndexErrorMessage = objectInput.readUTF();
+        modelChartIsVisible = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelOutputChartOrderPK);
+        objectOutput.writeLong(modelId);
+
+        if (modelOutputLabel == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelOutputLabel);
+        }
+
+        objectOutput.writeInt(modelOutputChartOrder);
+
+        if (modelIndexRangePolicy == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelIndexRangePolicy);
+        }
+
+        if (modelIndexRangeMessage == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelIndexRangeMessage);
+        }
+
+        if (modelIndexErrorPolicy == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelIndexErrorPolicy);
+        }
+
+        if (modelIndexErrorMessage == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelIndexErrorMessage);
+        }
+
+        objectOutput.writeBoolean(modelChartIsVisible);
     }
 }

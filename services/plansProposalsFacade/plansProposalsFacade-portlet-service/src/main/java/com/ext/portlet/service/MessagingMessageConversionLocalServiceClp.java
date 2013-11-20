@@ -1,135 +1,203 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class MessagingMessageConversionLocalServiceClp
     implements MessagingMessageConversionLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addMessagingMessageConversionMethodKey0;
-    private MethodKey _createMessagingMessageConversionMethodKey1;
-    private MethodKey _deleteMessagingMessageConversionMethodKey2;
-    private MethodKey _deleteMessagingMessageConversionMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchMessagingMessageConversionMethodKey8;
-    private MethodKey _getMessagingMessageConversionMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getMessagingMessageConversionsMethodKey11;
-    private MethodKey _getMessagingMessageConversionsCountMethodKey12;
-    private MethodKey _updateMessagingMessageConversionMethodKey13;
-    private MethodKey _updateMessagingMessageConversionMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _countByTypeMethodKey17;
-    private MethodKey _countByTypeMethodKey18;
-    private MethodKey _addConversionMethodKey19;
-    private MethodKey _countConversionsByIPMethodKey20;
-    private MethodKey _countConversionsByRecipientMethodKey21;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
 
     public MessagingMessageConversionLocalServiceClp(
-        ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addMessagingMessageConversionMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addMessagingMessageConversion",
-                com.ext.portlet.model.MessagingMessageConversion.class);
+        _methodName0 = "addMessagingMessageConversion";
 
-        _createMessagingMessageConversionMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createMessagingMessageConversion", long.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.MessagingMessageConversion"
+            };
 
-        _deleteMessagingMessageConversionMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteMessagingMessageConversion", long.class);
+        _methodName1 = "createMessagingMessageConversion";
 
-        _deleteMessagingMessageConversionMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteMessagingMessageConversion",
-                com.ext.portlet.model.MessagingMessageConversion.class);
+        _methodParameterTypes1 = new String[] { "long" };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteMessagingMessageConversion";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] { "long" };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteMessagingMessageConversion";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.MessagingMessageConversion"
+            };
 
-        _fetchMessagingMessageConversionMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchMessagingMessageConversion", long.class);
+        _methodName4 = "dynamicQuery";
 
-        _getMessagingMessageConversionMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessagingMessageConversion", long.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getMessagingMessageConversionsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessagingMessageConversions", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getMessagingMessageConversionsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getMessagingMessageConversionsCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateMessagingMessageConversionMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateMessagingMessageConversion",
-                com.ext.portlet.model.MessagingMessageConversion.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateMessagingMessageConversionMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateMessagingMessageConversion",
-                com.ext.portlet.model.MessagingMessageConversion.class,
-                boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _countByTypeMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countByType", java.lang.Long.class,
-                com.ext.portlet.model.MessagingMessageConversionType.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _countByTypeMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countByType", java.lang.Long.class, java.lang.String.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _addConversionMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addConversion", java.lang.Long.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Object.class,
-                java.lang.Object.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _countConversionsByIPMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countConversionsByIP", java.lang.Long.class,
-                java.lang.String.class);
+        _methodName10 = "fetchMessagingMessageConversion";
 
-        _countConversionsByRecipientMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countConversionsByRecipient", java.lang.Long.class,
-                java.lang.String.class);
+        _methodParameterTypes10 = new String[] { "long" };
+
+        _methodName11 = "getMessagingMessageConversion";
+
+        _methodParameterTypes11 = new String[] { "long" };
+
+        _methodName12 = "getPersistedModel";
+
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
+
+        _methodName13 = "getMessagingMessageConversions";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getMessagingMessageConversionsCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updateMessagingMessageConversion";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.MessagingMessageConversion"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "countByType";
+
+        _methodParameterTypes19 = new String[] {
+                "java.lang.Long",
+                "com.ext.portlet.model.MessagingMessageConversionType"
+            };
+
+        _methodName20 = "countByType";
+
+        _methodParameterTypes20 = new String[] {
+                "java.lang.Long", "java.lang.String"
+            };
+
+        _methodName21 = "addConversion";
+
+        _methodParameterTypes21 = new String[] {
+                "java.lang.Long", "java.lang.String", "java.lang.String",
+                "java.lang.Object", "java.lang.Object"
+            };
+
+        _methodName22 = "countConversionsByIP";
+
+        _methodParameterTypes22 = new String[] {
+                "java.lang.Long", "java.lang.String"
+            };
+
+        _methodName23 = "countConversionsByRecipient";
+
+        _methodParameterTypes23 = new String[] {
+                "java.lang.Long", "java.lang.String"
+            };
     }
 
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion addMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addMessagingMessageConversionMethodKey0,
-                ClpSerializer.translateInput(messagingMessageConversion));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] {
+                        ClpSerializer.translateInput(messagingMessageConversion)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -145,16 +213,17 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion createMessagingMessageConversion(
         long conversionId) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createMessagingMessageConversionMethodKey1,
-                conversionId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1, new Object[] { conversionId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -166,15 +235,19 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteMessagingMessageConversion(long conversionId)
+    @Override
+    public com.ext.portlet.model.MessagingMessageConversion deleteMessagingMessageConversion(
+        long conversionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteMessagingMessageConversionMethodKey2,
-                conversionId);
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2, new Object[] { conversionId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -190,17 +263,25 @@ public class MessagingMessageConversionLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteMessagingMessageConversion(
+    @Override
+    public com.ext.portlet.model.MessagingMessageConversion deleteMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteMessagingMessageConversionMethodKey3,
-                ClpSerializer.translateInput(messagingMessageConversion));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] {
+                        ClpSerializer.translateInput(messagingMessageConversion)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -212,20 +293,45 @@ public class MessagingMessageConversionLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -241,18 +347,26 @@ public class MessagingMessageConversionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -268,6 +382,7 @@ public class MessagingMessageConversionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -276,13 +391,21 @@ public class MessagingMessageConversionLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -298,17 +421,19 @@ public class MessagingMessageConversionLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -324,17 +449,51 @@ public class MessagingMessageConversionLocalServiceClp
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion fetchMessagingMessageConversion(
         long conversionId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchMessagingMessageConversionMethodKey8,
-                conversionId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10, new Object[] { conversionId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -350,18 +509,19 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion getMessagingMessageConversion(
         long conversionId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMessagingMessageConversionMethodKey9,
-                conversionId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11, new Object[] { conversionId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -381,18 +541,20 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -412,17 +574,18 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.MessagingMessageConversion> getMessagingMessageConversions(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMessagingMessageConversionsMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -438,15 +601,17 @@ public class MessagingMessageConversionLocalServiceClp
         return (java.util.List<com.ext.portlet.model.MessagingMessageConversion>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getMessagingMessageConversionsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getMessagingMessageConversionsCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -462,17 +627,21 @@ public class MessagingMessageConversionLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.MessagingMessageConversion updateMessagingMessageConversion(
         com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateMessagingMessageConversionMethodKey13,
-                ClpSerializer.translateInput(messagingMessageConversion));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] {
+                        ClpSerializer.translateInput(messagingMessageConversion)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -488,41 +657,16 @@ public class MessagingMessageConversionLocalServiceClp
         return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.MessagingMessageConversion updateMessagingMessageConversion(
-        com.ext.portlet.model.MessagingMessageConversion messagingMessageConversion,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateMessagingMessageConversionMethodKey14,
-                ClpSerializer.translateInput(messagingMessageConversion), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.MessagingMessageConversion) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -534,13 +678,15 @@ public class MessagingMessageConversionLocalServiceClp
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -550,18 +696,30 @@ public class MessagingMessageConversionLocalServiceClp
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public int countByType(java.lang.Long messageId,
         com.ext.portlet.model.MessagingMessageConversionType type)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countByTypeMethodKey17,
-                ClpSerializer.translateInput(messageId),
-                ClpSerializer.translateInput(type));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] {
+                        ClpSerializer.translateInput(messageId),
+                        
+                    ClpSerializer.translateInput(type)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -577,17 +735,22 @@ public class MessagingMessageConversionLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public int countByType(java.lang.Long messageId, java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countByTypeMethodKey18,
-                ClpSerializer.translateInput(messageId),
-                ClpSerializer.translateInput(typeName));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        ClpSerializer.translateInput(messageId),
+                        
+                    ClpSerializer.translateInput(typeName)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -603,21 +766,29 @@ public class MessagingMessageConversionLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public void addConversion(java.lang.Long messageId,
         java.lang.String typeName, java.lang.String clientIP,
         java.lang.Object extraData, java.lang.Object extraData2)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_addConversionMethodKey19,
-                ClpSerializer.translateInput(messageId),
-                ClpSerializer.translateInput(typeName),
-                ClpSerializer.translateInput(clientIP),
-                ClpSerializer.translateInput(extraData),
-                ClpSerializer.translateInput(extraData2));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21,
+                new Object[] {
+                    ClpSerializer.translateInput(messageId),
+                    
+                ClpSerializer.translateInput(typeName),
+                    
+                ClpSerializer.translateInput(clientIP),
+                    
+                ClpSerializer.translateInput(extraData),
+                    
+                ClpSerializer.translateInput(extraData2)
+                });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -635,18 +806,23 @@ public class MessagingMessageConversionLocalServiceClp
         }
     }
 
+    @Override
     public int countConversionsByIP(java.lang.Long messageId,
         java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countConversionsByIPMethodKey20,
-                ClpSerializer.translateInput(messageId),
-                ClpSerializer.translateInput(typeName));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] {
+                        ClpSerializer.translateInput(messageId),
+                        
+                    ClpSerializer.translateInput(typeName)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -662,18 +838,23 @@ public class MessagingMessageConversionLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public int countConversionsByRecipient(java.lang.Long messageId,
         java.lang.String typeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countConversionsByRecipientMethodKey21,
-                ClpSerializer.translateInput(messageId),
-                ClpSerializer.translateInput(typeName));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
+                    new Object[] {
+                        ClpSerializer.translateInput(messageId),
+                        
+                    ClpSerializer.translateInput(typeName)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -687,9 +868,5 @@ public class MessagingMessageConversionLocalServiceClp
         }
 
         return ((Integer) returnObj).intValue();
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

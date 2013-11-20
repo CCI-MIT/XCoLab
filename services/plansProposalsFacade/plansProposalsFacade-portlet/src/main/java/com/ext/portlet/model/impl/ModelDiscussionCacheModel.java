@@ -5,7 +5,10 @@ import com.ext.portlet.model.ModelDiscussion;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelDiscussion in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelDiscussionCacheModel implements CacheModel<ModelDiscussion>,
-    Serializable {
+    Externalizable {
     public long modelDiscussionId;
     public long modelId;
     public long categoryId;
@@ -35,6 +38,7 @@ public class ModelDiscussionCacheModel implements CacheModel<ModelDiscussion>,
         return sb.toString();
     }
 
+    @Override
     public ModelDiscussion toEntityModel() {
         ModelDiscussionImpl modelDiscussionImpl = new ModelDiscussionImpl();
 
@@ -45,5 +49,20 @@ public class ModelDiscussionCacheModel implements CacheModel<ModelDiscussion>,
         modelDiscussionImpl.resetOriginalValues();
 
         return modelDiscussionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelDiscussionId = objectInput.readLong();
+        modelId = objectInput.readLong();
+        categoryId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelDiscussionId);
+        objectOutput.writeLong(modelId);
+        objectOutput.writeLong(categoryId);
     }
 }

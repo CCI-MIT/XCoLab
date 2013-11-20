@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanRelated service. Represents a row in the &quot;xcolab_PlanRelated&quot; database table, with each column mapped to a property of this class.
@@ -48,6 +50,8 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanRelated (sectionId LONG not null,relatedPlanId LONG not null,primary key (sectionId, relatedPlanId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanRelated";
+    public static final String ORDER_BY_JPQL = " ORDER BY planRelated.id.sectionId ASC, planRelated.id.relatedPlanId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanRelated.sectionId ASC, xcolab_PlanRelated.relatedPlanId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -61,10 +65,11 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanRelated"),
             true);
     public static long RELATEDPLANID_COLUMN_BITMASK = 1L;
+    public static long SECTIONID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanRelated"));
     private static ClassLoader _classLoader = PlanRelated.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanRelated.class
         };
     private long _sectionId;
@@ -72,7 +77,7 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
     private long _originalRelatedPlanId;
     private boolean _setOriginalRelatedPlanId;
     private long _columnBitmask;
-    private PlanRelated _escapedModelProxy;
+    private PlanRelated _escapedModel;
 
     public PlanRelatedModelImpl() {
     }
@@ -84,6 +89,10 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
      * @return the normal model instance
      */
     public static PlanRelated toModel(PlanRelatedSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanRelated model = new PlanRelatedImpl();
 
         model.setSectionId(soapModel.getSectionId());
@@ -99,6 +108,10 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
      * @return the normal model instances
      */
     public static List<PlanRelated> toModels(PlanRelatedSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanRelated> models = new ArrayList<PlanRelated>(soapModels.length);
 
         for (PlanRelatedSoap soapModel : soapModels) {
@@ -108,45 +121,80 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
         return models;
     }
 
+    @Override
     public PlanRelatedPK getPrimaryKey() {
         return new PlanRelatedPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKey(PlanRelatedPK primaryKey) {
         setSectionId(primaryKey.sectionId);
         setRelatedPlanId(primaryKey.relatedPlanId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanRelatedPK(_sectionId, _relatedPlanId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanRelatedPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanRelated.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanRelated.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("sectionId", getSectionId());
+        attributes.put("relatedPlanId", getRelatedPlanId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long sectionId = (Long) attributes.get("sectionId");
+
+        if (sectionId != null) {
+            setSectionId(sectionId);
+        }
+
+        Long relatedPlanId = (Long) attributes.get("relatedPlanId");
+
+        if (relatedPlanId != null) {
+            setRelatedPlanId(relatedPlanId);
+        }
+    }
+
     @JSON
+    @Override
     public long getSectionId() {
         return _sectionId;
     }
 
+    @Override
     public void setSectionId(long sectionId) {
         _sectionId = sectionId;
     }
 
     @JSON
+    @Override
     public long getRelatedPlanId() {
         return _relatedPlanId;
     }
 
+    @Override
     public void setRelatedPlanId(long relatedPlanId) {
         _columnBitmask |= RELATEDPLANID_COLUMN_BITMASK;
 
@@ -169,13 +217,12 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
 
     @Override
     public PlanRelated toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanRelated) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlanRelated) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -190,6 +237,7 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
         return planRelatedImpl;
     }
 
+    @Override
     public int compareTo(PlanRelated planRelated) {
         PlanRelatedPK primaryKey = planRelated.getPrimaryKey();
 
@@ -198,17 +246,15 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanRelated)) {
             return false;
         }
 
-        PlanRelated planRelated = null;
-
-        try {
-            planRelated = (PlanRelated) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanRelated planRelated = (PlanRelated) obj;
 
         PlanRelatedPK primaryKey = planRelated.getPrimaryKey();
 
@@ -259,6 +305,7 @@ public class PlanRelatedModelImpl extends BaseModelImpl<PlanRelated>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

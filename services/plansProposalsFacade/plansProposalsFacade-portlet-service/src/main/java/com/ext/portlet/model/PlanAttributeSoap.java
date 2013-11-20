@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.PlanAttributeServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.PlanAttributeServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.PlanAttributeServiceSoap
  * @generated
  */
 public class PlanAttributeSoap implements Serializable {

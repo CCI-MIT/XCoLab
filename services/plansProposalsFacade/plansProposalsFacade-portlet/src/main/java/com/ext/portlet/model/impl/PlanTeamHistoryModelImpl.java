@@ -25,7 +25,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanTeamHistory service. Represents a row in the &quot;xcolab_PlanTeamHistory&quot; database table, with each column mapped to a property of this class.
@@ -76,10 +78,11 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
             true);
     public static long PLANID_COLUMN_BITMASK = 1L;
     public static long USERID_COLUMN_BITMASK = 2L;
+    public static long ID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanTeamHistory"));
     private static ClassLoader _classLoader = PlanTeamHistory.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanTeamHistory.class
         };
     private long _id;
@@ -94,9 +97,8 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
     private String _payload;
     private Date _created;
     private long _updateAuthorId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanTeamHistory _escapedModelProxy;
+    private PlanTeamHistory _escapedModel;
 
     public PlanTeamHistoryModelImpl() {
     }
@@ -108,6 +110,10 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
      * @return the normal model instance
      */
     public static PlanTeamHistory toModel(PlanTeamHistorySoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanTeamHistory model = new PlanTeamHistoryImpl();
 
         model.setId(soapModel.getId());
@@ -129,6 +135,10 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
      */
     public static List<PlanTeamHistory> toModels(
         PlanTeamHistorySoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanTeamHistory> models = new ArrayList<PlanTeamHistory>(soapModels.length);
 
         for (PlanTeamHistorySoap soapModel : soapModels) {
@@ -138,35 +148,103 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTeamHistory.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTeamHistory.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("userId", getUserId());
+        attributes.put("action", getAction());
+        attributes.put("payload", getPayload());
+        attributes.put("created", getCreated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String action = (String) attributes.get("action");
+
+        if (action != null) {
+            setAction(action);
+        }
+
+        String payload = (String) attributes.get("payload");
+
+        if (payload != null) {
+            setPayload(payload);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -174,10 +252,12 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -195,10 +275,12 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -211,10 +293,12 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -224,6 +308,7 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
     }
 
     @JSON
+    @Override
     public String getAction() {
         if (_action == null) {
             return StringPool.BLANK;
@@ -232,11 +317,13 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         }
     }
 
+    @Override
     public void setAction(String action) {
         _action = action;
     }
 
     @JSON
+    @Override
     public String getPayload() {
         if (_payload == null) {
             return StringPool.BLANK;
@@ -245,24 +332,29 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         }
     }
 
+    @Override
     public void setPayload(String payload) {
         _payload = payload;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
@@ -272,29 +364,26 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
     }
 
     @Override
-    public PlanTeamHistory toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanTeamHistory) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanTeamHistory.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanTeamHistory.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanTeamHistory toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanTeamHistory) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -314,6 +403,7 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         return planTeamHistoryImpl;
     }
 
+    @Override
     public int compareTo(PlanTeamHistory planTeamHistory) {
         int value = 0;
 
@@ -334,17 +424,15 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTeamHistory)) {
             return false;
         }
 
-        PlanTeamHistory planTeamHistory = null;
-
-        try {
-            planTeamHistory = (PlanTeamHistory) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTeamHistory planTeamHistory = (PlanTeamHistory) obj;
 
         long primaryKey = planTeamHistory.getPrimaryKey();
 
@@ -437,6 +525,7 @@ public class PlanTeamHistoryModelImpl extends BaseModelImpl<PlanTeamHistory>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelOutputItem in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelOutputItemCacheModel implements CacheModel<ModelOutputItem>,
-    Serializable {
+    Externalizable {
     public long modelOutputItemModifierPK;
     public long modelId;
     public long modelOutputItemId;
@@ -63,6 +66,7 @@ public class ModelOutputItemCacheModel implements CacheModel<ModelOutputItem>,
         return sb.toString();
     }
 
+    @Override
     public ModelOutputItem toEntityModel() {
         ModelOutputItemImpl modelOutputItemImpl = new ModelOutputItemImpl();
 
@@ -114,5 +118,70 @@ public class ModelOutputItemCacheModel implements CacheModel<ModelOutputItem>,
         modelOutputItemImpl.resetOriginalValues();
 
         return modelOutputItemImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelOutputItemModifierPK = objectInput.readLong();
+        modelId = objectInput.readLong();
+        modelOutputItemId = objectInput.readLong();
+        modelOutputItemOrder = objectInput.readInt();
+        modelItemRangePolicy = objectInput.readUTF();
+        modelItemRangeMessage = objectInput.readUTF();
+        modelItemErrorPolicy = objectInput.readUTF();
+        modelItemErrorMessage = objectInput.readUTF();
+        modelItemLabelFormat = objectInput.readUTF();
+        modelItemIsVisible = objectInput.readBoolean();
+        itemType = objectInput.readUTF();
+        relatedOutputItem = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelOutputItemModifierPK);
+        objectOutput.writeLong(modelId);
+        objectOutput.writeLong(modelOutputItemId);
+        objectOutput.writeInt(modelOutputItemOrder);
+
+        if (modelItemRangePolicy == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelItemRangePolicy);
+        }
+
+        if (modelItemRangeMessage == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelItemRangeMessage);
+        }
+
+        if (modelItemErrorPolicy == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelItemErrorPolicy);
+        }
+
+        if (modelItemErrorMessage == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelItemErrorMessage);
+        }
+
+        if (modelItemLabelFormat == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelItemLabelFormat);
+        }
+
+        objectOutput.writeBoolean(modelItemIsVisible);
+
+        if (itemType == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(itemType);
+        }
+
+        objectOutput.writeLong(relatedOutputItem);
     }
 }

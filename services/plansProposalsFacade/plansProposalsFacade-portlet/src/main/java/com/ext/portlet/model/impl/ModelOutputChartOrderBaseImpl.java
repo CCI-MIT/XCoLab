@@ -24,6 +24,7 @@ public abstract class ModelOutputChartOrderBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a model output chart order model instance should use the {@link ModelOutputChartOrder} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelOutputChartOrderLocalServiceUtil.addModelOutputChartOrder(this);

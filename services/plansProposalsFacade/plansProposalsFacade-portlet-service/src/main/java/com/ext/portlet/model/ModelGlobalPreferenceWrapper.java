@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link ModelGlobalPreference}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelGlobalPreference
+ * @author Brian Wing Shun Chan
+ * @see ModelGlobalPreference
  * @generated
  */
 public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
@@ -20,12 +24,69 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
         _modelGlobalPreference = modelGlobalPreference;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelGlobalPreference.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelGlobalPreference.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelGlobalPreferencePK", getModelGlobalPreferencePK());
+        attributes.put("modelId", getModelId());
+        attributes.put("visible", getVisible());
+        attributes.put("weight", getWeight());
+        attributes.put("expertEvaluationPageId", getExpertEvaluationPageId());
+        attributes.put("modelCategoryId", getModelCategoryId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelGlobalPreferencePK = (Long) attributes.get(
+                "modelGlobalPreferencePK");
+
+        if (modelGlobalPreferencePK != null) {
+            setModelGlobalPreferencePK(modelGlobalPreferencePK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Boolean visible = (Boolean) attributes.get("visible");
+
+        if (visible != null) {
+            setVisible(visible);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        Long expertEvaluationPageId = (Long) attributes.get(
+                "expertEvaluationPageId");
+
+        if (expertEvaluationPageId != null) {
+            setExpertEvaluationPageId(expertEvaluationPageId);
+        }
+
+        Long modelCategoryId = (Long) attributes.get("modelCategoryId");
+
+        if (modelCategoryId != null) {
+            setModelCategoryId(modelCategoryId);
+        }
     }
 
     /**
@@ -33,6 +94,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the primary key of this model global preference
     */
+    @Override
     public long getPrimaryKey() {
         return _modelGlobalPreference.getPrimaryKey();
     }
@@ -42,6 +104,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param primaryKey the primary key of this model global preference
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _modelGlobalPreference.setPrimaryKey(primaryKey);
     }
@@ -51,6 +114,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model global preference p k of this model global preference
     */
+    @Override
     public long getModelGlobalPreferencePK() {
         return _modelGlobalPreference.getModelGlobalPreferencePK();
     }
@@ -60,6 +124,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelGlobalPreferencePK the model global preference p k of this model global preference
     */
+    @Override
     public void setModelGlobalPreferencePK(long modelGlobalPreferencePK) {
         _modelGlobalPreference.setModelGlobalPreferencePK(modelGlobalPreferencePK);
     }
@@ -69,6 +134,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model ID of this model global preference
     */
+    @Override
     public long getModelId() {
         return _modelGlobalPreference.getModelId();
     }
@@ -78,6 +144,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelId the model ID of this model global preference
     */
+    @Override
     public void setModelId(long modelId) {
         _modelGlobalPreference.setModelId(modelId);
     }
@@ -87,6 +154,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the visible of this model global preference
     */
+    @Override
     public boolean getVisible() {
         return _modelGlobalPreference.getVisible();
     }
@@ -96,6 +164,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return <code>true</code> if this model global preference is visible; <code>false</code> otherwise
     */
+    @Override
     public boolean isVisible() {
         return _modelGlobalPreference.isVisible();
     }
@@ -105,6 +174,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param visible the visible of this model global preference
     */
+    @Override
     public void setVisible(boolean visible) {
         _modelGlobalPreference.setVisible(visible);
     }
@@ -114,6 +184,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the weight of this model global preference
     */
+    @Override
     public int getWeight() {
         return _modelGlobalPreference.getWeight();
     }
@@ -123,6 +194,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param weight the weight of this model global preference
     */
+    @Override
     public void setWeight(int weight) {
         _modelGlobalPreference.setWeight(weight);
     }
@@ -132,6 +204,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the expert evaluation page ID of this model global preference
     */
+    @Override
     public long getExpertEvaluationPageId() {
         return _modelGlobalPreference.getExpertEvaluationPageId();
     }
@@ -141,6 +214,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param expertEvaluationPageId the expert evaluation page ID of this model global preference
     */
+    @Override
     public void setExpertEvaluationPageId(long expertEvaluationPageId) {
         _modelGlobalPreference.setExpertEvaluationPageId(expertEvaluationPageId);
     }
@@ -150,6 +224,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @return the model category ID of this model global preference
     */
+    @Override
     public long getModelCategoryId() {
         return _modelGlobalPreference.getModelCategoryId();
     }
@@ -159,42 +234,64 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     *
     * @param modelCategoryId the model category ID of this model global preference
     */
+    @Override
     public void setModelCategoryId(long modelCategoryId) {
         _modelGlobalPreference.setModelCategoryId(modelCategoryId);
     }
 
+    @Override
     public boolean isNew() {
         return _modelGlobalPreference.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _modelGlobalPreference.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _modelGlobalPreference.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _modelGlobalPreference.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _modelGlobalPreference.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _modelGlobalPreference.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _modelGlobalPreference.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _modelGlobalPreference.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _modelGlobalPreference.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _modelGlobalPreference.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _modelGlobalPreference.setExpandoBridgeAttributes(serviceContext);
@@ -205,6 +302,7 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
         return new ModelGlobalPreferenceWrapper((ModelGlobalPreference) _modelGlobalPreference.clone());
     }
 
+    @Override
     public int compareTo(ModelGlobalPreference modelGlobalPreference) {
         return _modelGlobalPreference.compareTo(modelGlobalPreference);
     }
@@ -214,12 +312,19 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
         return _modelGlobalPreference.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<ModelGlobalPreference> toCacheModel() {
         return _modelGlobalPreference.toCacheModel();
     }
 
+    @Override
     public ModelGlobalPreference toEscapedModel() {
         return new ModelGlobalPreferenceWrapper(_modelGlobalPreference.toEscapedModel());
+    }
+
+    @Override
+    public ModelGlobalPreference toUnescapedModel() {
+        return new ModelGlobalPreferenceWrapper(_modelGlobalPreference.toUnescapedModel());
     }
 
     @Override
@@ -227,26 +332,50 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
         return _modelGlobalPreference.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _modelGlobalPreference.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelGlobalPreference.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelGlobalPreferenceWrapper)) {
+            return false;
+        }
+
+        ModelGlobalPreferenceWrapper modelGlobalPreferenceWrapper = (ModelGlobalPreferenceWrapper) obj;
+
+        if (Validator.equals(_modelGlobalPreference,
+                    modelGlobalPreferenceWrapper._modelGlobalPreference)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public ModelGlobalPreference getWrappedModelGlobalPreference() {
         return _modelGlobalPreference;
     }
 
+    @Override
     public ModelGlobalPreference getWrappedModel() {
         return _modelGlobalPreference;
     }
 
+    @Override
     public void resetOriginalValues() {
         _modelGlobalPreference.resetOriginalValues();
     }

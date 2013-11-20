@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchMessagingUserPreferencesException;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.model.impl.MessagingUserPreferencesImpl;
 import com.ext.portlet.model.impl.MessagingUserPreferencesModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -30,58 +31,10 @@ import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersist
 import com.ext.portlet.service.persistence.MessagingMessagePersistence;
 import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
 import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +54,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +89,17 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED,
+            MessagingUserPreferencesImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED,
+            MessagingUserPreferencesImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
             MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED,
             MessagingUserPreferencesImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -148,22 +110,11 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
             MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countBymessagingPreferences", new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED,
-            MessagingUserPreferencesImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED,
-            MessagingUserPreferencesImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingUserPreferencesModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2 = "messagingUserPreferences.userId = ?";
     private static final String _SQL_SELECT_MESSAGINGUSERPREFERENCES = "SELECT messagingUserPreferences FROM MessagingUserPreferences messagingUserPreferences";
     private static final String _SQL_SELECT_MESSAGINGUSERPREFERENCES_WHERE = "SELECT messagingUserPreferences FROM MessagingUserPreferences messagingUserPreferences WHERE ";
     private static final String _SQL_COUNT_MESSAGINGUSERPREFERENCES = "SELECT COUNT(messagingUserPreferences) FROM MessagingUserPreferences messagingUserPreferences";
     private static final String _SQL_COUNT_MESSAGINGUSERPREFERENCES_WHERE = "SELECT COUNT(messagingUserPreferences) FROM MessagingUserPreferences messagingUserPreferences WHERE ";
-    private static final String _FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2 = "messagingUserPreferences.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "messagingUserPreferences.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MessagingUserPreferences exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MessagingUserPreferences exists with the key {";
@@ -184,11 +135,13 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
     private static CacheModel<MessagingUserPreferences> _nullMessagingUserPreferencesCacheModel =
         new CacheModel<MessagingUserPreferences>() {
+            @Override
             public MessagingUserPreferences toEntityModel() {
                 return _nullMessagingUserPreferences;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -343,19 +296,227 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public MessagingUserPreferencesPersistenceImpl() {
+        setModelClass(MessagingUserPreferences.class);
+    }
+
+    /**
+     * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingUserPreferencesException} if it could not be found.
+     *
+     * @param userId the user ID
+     * @return the matching messaging user preferences
+     * @throws com.ext.portlet.NoSuchMessagingUserPreferencesException if a matching messaging user preferences could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingUserPreferences findBymessagingPreferences(long userId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
+        MessagingUserPreferences messagingUserPreferences = fetchBymessagingPreferences(userId);
+
+        if (messagingUserPreferences == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("userId=");
+            msg.append(userId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchMessagingUserPreferencesException(msg.toString());
+        }
+
+        return messagingUserPreferences;
+    }
+
+    /**
+     * Returns the messaging user preferences where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param userId the user ID
+     * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingUserPreferences fetchBymessagingPreferences(long userId)
+        throws SystemException {
+        return fetchBymessagingPreferences(userId, true);
+    }
+
+    /**
+     * Returns the messaging user preferences where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param userId the user ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingUserPreferences fetchBymessagingPreferences(long userId,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { userId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                    finderArgs, this);
+        }
+
+        if (result instanceof MessagingUserPreferences) {
+            MessagingUserPreferences messagingUserPreferences = (MessagingUserPreferences) result;
+
+            if ((userId != messagingUserPreferences.getUserId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_MESSAGINGUSERPREFERENCES_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                List<MessagingUserPreferences> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "MessagingUserPreferencesPersistenceImpl.fetchBymessagingPreferences(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    MessagingUserPreferences messagingUserPreferences = list.get(0);
+
+                    result = messagingUserPreferences;
+
+                    cacheResult(messagingUserPreferences);
+
+                    if ((messagingUserPreferences.getUserId() != userId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                            finderArgs, messagingUserPreferences);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (MessagingUserPreferences) result;
+        }
+    }
+
+    /**
+     * Removes the messaging user preferences where userId = &#63; from the database.
+     *
+     * @param userId the user ID
+     * @return the messaging user preferences that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingUserPreferences removeBymessagingPreferences(long userId)
+        throws NoSuchMessagingUserPreferencesException, SystemException {
+        MessagingUserPreferences messagingUserPreferences = findBymessagingPreferences(userId);
+
+        return remove(messagingUserPreferences);
+    }
+
+    /**
+     * Returns the number of messaging user preferenceses where userId = &#63;.
+     *
+     * @param userId the user ID
+     * @return the number of matching messaging user preferenceses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countBymessagingPreferences(long userId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES;
+
+        Object[] finderArgs = new Object[] { userId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MESSAGINGUSERPREFERENCES_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the messaging user preferences in the entity cache if it is enabled.
      *
      * @param messagingUserPreferences the messaging user preferences
      */
+    @Override
     public void cacheResult(MessagingUserPreferences messagingUserPreferences) {
         EntityCacheUtil.putResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
             MessagingUserPreferencesImpl.class,
             messagingUserPreferences.getPrimaryKey(), messagingUserPreferences);
 
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-            new Object[] { Long.valueOf(messagingUserPreferences.getUserId()) },
+            new Object[] { messagingUserPreferences.getUserId() },
             messagingUserPreferences);
 
         messagingUserPreferences.resetOriginalValues();
@@ -366,6 +527,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      *
      * @param messagingUserPreferenceses the messaging user preferenceses
      */
+    @Override
     public void cacheResult(
         List<MessagingUserPreferences> messagingUserPreferenceses) {
         for (MessagingUserPreferences messagingUserPreferences : messagingUserPreferenceses) {
@@ -434,10 +596,54 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
         }
     }
 
+    protected void cacheUniqueFindersCache(
+        MessagingUserPreferences messagingUserPreferences) {
+        if (messagingUserPreferences.isNew()) {
+            Object[] args = new Object[] { messagingUserPreferences.getUserId() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                args, messagingUserPreferences);
+        } else {
+            MessagingUserPreferencesModelImpl messagingUserPreferencesModelImpl = (MessagingUserPreferencesModelImpl) messagingUserPreferences;
+
+            if ((messagingUserPreferencesModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        messagingUserPreferences.getUserId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                    args, messagingUserPreferences);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(
         MessagingUserPreferences messagingUserPreferences) {
+        MessagingUserPreferencesModelImpl messagingUserPreferencesModelImpl = (MessagingUserPreferencesModelImpl) messagingUserPreferences;
+
+        Object[] args = new Object[] { messagingUserPreferences.getUserId() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
+            args);
         FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-            new Object[] { Long.valueOf(messagingUserPreferences.getUserId()) });
+            args);
+
+        if ((messagingUserPreferencesModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    messagingUserPreferencesModelImpl.getOriginalUserId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
+                args);
+        }
     }
 
     /**
@@ -446,6 +652,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @param messagingPreferencesId the primary key for the new messaging user preferences
      * @return the new messaging user preferences
      */
+    @Override
     public MessagingUserPreferences create(long messagingPreferencesId) {
         MessagingUserPreferences messagingUserPreferences = new MessagingUserPreferencesImpl();
 
@@ -463,9 +670,10 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingUserPreferences remove(long messagingPreferencesId)
         throws NoSuchMessagingUserPreferencesException, SystemException {
-        return remove(Long.valueOf(messagingPreferencesId));
+        return remove((Serializable) messagingPreferencesId);
     }
 
     /**
@@ -517,36 +725,47 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, messagingUserPreferences);
+            if (!session.contains(messagingUserPreferences)) {
+                messagingUserPreferences = (MessagingUserPreferences) session.get(MessagingUserPreferencesImpl.class,
+                        messagingUserPreferences.getPrimaryKeyObj());
+            }
+
+            if (messagingUserPreferences != null) {
+                session.delete(messagingUserPreferences);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(messagingUserPreferences);
+        if (messagingUserPreferences != null) {
+            clearCache(messagingUserPreferences);
+        }
 
         return messagingUserPreferences;
     }
 
     @Override
     public MessagingUserPreferences updateImpl(
-        com.ext.portlet.model.MessagingUserPreferences messagingUserPreferences,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.MessagingUserPreferences messagingUserPreferences)
+        throws SystemException {
         messagingUserPreferences = toUnwrappedModel(messagingUserPreferences);
 
         boolean isNew = messagingUserPreferences.isNew();
-
-        MessagingUserPreferencesModelImpl messagingUserPreferencesModelImpl = (MessagingUserPreferencesModelImpl) messagingUserPreferences;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, messagingUserPreferences, merge);
+            if (messagingUserPreferences.isNew()) {
+                session.save(messagingUserPreferences);
 
-            messagingUserPreferences.setNew(false);
+                messagingUserPreferences.setNew(false);
+            } else {
+                session.merge(messagingUserPreferences);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -563,29 +782,8 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
             MessagingUserPreferencesImpl.class,
             messagingUserPreferences.getPrimaryKey(), messagingUserPreferences);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                new Object[] { Long.valueOf(
-                        messagingUserPreferences.getUserId()) },
-                messagingUserPreferences);
-        } else {
-            if ((messagingUserPreferencesModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(messagingUserPreferencesModelImpl.getOriginalUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                    new Object[] {
-                        Long.valueOf(messagingUserPreferences.getUserId())
-                    }, messagingUserPreferences);
-            }
-        }
+        clearUniqueFindersCache(messagingUserPreferences);
+        cacheUniqueFindersCache(messagingUserPreferences);
 
         return messagingUserPreferences;
     }
@@ -615,13 +813,24 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      *
      * @param primaryKey the primary key of the messaging user preferences
      * @return the messaging user preferences
-     * @throws com.liferay.portal.NoSuchModelException if a messaging user preferences with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingUserPreferences findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchMessagingUserPreferencesException, SystemException {
+        MessagingUserPreferences messagingUserPreferences = fetchByPrimaryKey(primaryKey);
+
+        if (messagingUserPreferences == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchMessagingUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return messagingUserPreferences;
     }
 
     /**
@@ -632,22 +841,11 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingUserPreferencesException if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingUserPreferences findByPrimaryKey(
         long messagingPreferencesId)
         throws NoSuchMessagingUserPreferencesException, SystemException {
-        MessagingUserPreferences messagingUserPreferences = fetchByPrimaryKey(messagingPreferencesId);
-
-        if (messagingUserPreferences == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    messagingPreferencesId);
-            }
-
-            throw new NoSuchMessagingUserPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                messagingPreferencesId);
-        }
-
-        return messagingUserPreferences;
+        return findByPrimaryKey((Serializable) messagingPreferencesId);
     }
 
     /**
@@ -660,7 +858,40 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     @Override
     public MessagingUserPreferences fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        MessagingUserPreferences messagingUserPreferences = (MessagingUserPreferences) EntityCacheUtil.getResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+                MessagingUserPreferencesImpl.class, primaryKey);
+
+        if (messagingUserPreferences == _nullMessagingUserPreferences) {
+            return null;
+        }
+
+        if (messagingUserPreferences == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                messagingUserPreferences = (MessagingUserPreferences) session.get(MessagingUserPreferencesImpl.class,
+                        primaryKey);
+
+                if (messagingUserPreferences != null) {
+                    cacheResult(messagingUserPreferences);
+                } else {
+                    EntityCacheUtil.putResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+                        MessagingUserPreferencesImpl.class, primaryKey,
+                        _nullMessagingUserPreferences);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
+                    MessagingUserPreferencesImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return messagingUserPreferences;
     }
 
     /**
@@ -670,166 +901,10 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the messaging user preferences, or <code>null</code> if a messaging user preferences with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingUserPreferences fetchByPrimaryKey(
         long messagingPreferencesId) throws SystemException {
-        MessagingUserPreferences messagingUserPreferences = (MessagingUserPreferences) EntityCacheUtil.getResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-                MessagingUserPreferencesImpl.class, messagingPreferencesId);
-
-        if (messagingUserPreferences == _nullMessagingUserPreferences) {
-            return null;
-        }
-
-        if (messagingUserPreferences == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                messagingUserPreferences = (MessagingUserPreferences) session.get(MessagingUserPreferencesImpl.class,
-                        Long.valueOf(messagingPreferencesId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (messagingUserPreferences != null) {
-                    cacheResult(messagingUserPreferences);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(MessagingUserPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-                        MessagingUserPreferencesImpl.class,
-                        messagingPreferencesId, _nullMessagingUserPreferences);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return messagingUserPreferences;
-    }
-
-    /**
-     * Returns the messaging user preferences where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingUserPreferencesException} if it could not be found.
-     *
-     * @param userId the user ID
-     * @return the matching messaging user preferences
-     * @throws com.ext.portlet.NoSuchMessagingUserPreferencesException if a matching messaging user preferences could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingUserPreferences findBymessagingPreferences(long userId)
-        throws NoSuchMessagingUserPreferencesException, SystemException {
-        MessagingUserPreferences messagingUserPreferences = fetchBymessagingPreferences(userId);
-
-        if (messagingUserPreferences == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchMessagingUserPreferencesException(msg.toString());
-        }
-
-        return messagingUserPreferences;
-    }
-
-    /**
-     * Returns the messaging user preferences where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param userId the user ID
-     * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingUserPreferences fetchBymessagingPreferences(long userId)
-        throws SystemException {
-        return fetchBymessagingPreferences(userId, true);
-    }
-
-    /**
-     * Returns the messaging user preferences where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param userId the user ID
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching messaging user preferences, or <code>null</code> if a matching messaging user preferences could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingUserPreferences fetchBymessagingPreferences(long userId,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { userId };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_SELECT_MESSAGINGUSERPREFERENCES_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                List<MessagingUserPreferences> list = q.list();
-
-                result = list;
-
-                MessagingUserPreferences messagingUserPreferences = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                        finderArgs, list);
-                } else {
-                    messagingUserPreferences = list.get(0);
-
-                    cacheResult(messagingUserPreferences);
-
-                    if ((messagingUserPreferences.getUserId() != userId)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                            finderArgs, messagingUserPreferences);
-                    }
-                }
-
-                return messagingUserPreferences;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGINGPREFERENCES,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (MessagingUserPreferences) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) messagingPreferencesId);
     }
 
     /**
@@ -838,6 +913,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the messaging user preferenceses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingUserPreferences> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -846,7 +922,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * Returns a range of all the messaging user preferenceses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingUserPreferencesModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging user preferenceses
@@ -854,6 +930,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the range of messaging user preferenceses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingUserPreferences> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -863,7 +940,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * Returns an ordered range of all the messaging user preferenceses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingUserPreferencesModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging user preferenceses
@@ -872,17 +949,20 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the ordered range of messaging user preferenceses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingUserPreferences> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -905,6 +985,10 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_MESSAGINGUSERPREFERENCES;
+
+                if (pagination) {
+                    sql = sql.concat(MessagingUserPreferencesModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -914,26 +998,26 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<MessagingUserPreferences>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<MessagingUserPreferences>(list);
                 } else {
                     list = (List<MessagingUserPreferences>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -942,79 +1026,15 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     }
 
     /**
-     * Removes the messaging user preferences where userId = &#63; from the database.
-     *
-     * @param userId the user ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeBymessagingPreferences(long userId)
-        throws NoSuchMessagingUserPreferencesException, SystemException {
-        MessagingUserPreferences messagingUserPreferences = findBymessagingPreferences(userId);
-
-        remove(messagingUserPreferences);
-    }
-
-    /**
      * Removes all the messaging user preferenceses from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (MessagingUserPreferences messagingUserPreferences : findAll()) {
             remove(messagingUserPreferences);
         }
-    }
-
-    /**
-     * Returns the number of messaging user preferenceses where userId = &#63;.
-     *
-     * @param userId the user ID
-     * @return the number of matching messaging user preferenceses
-     * @throws SystemException if a system exception occurred
-     */
-    public int countBymessagingPreferences(long userId)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { userId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MESSAGINGUSERPREFERENCES_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGINGPREFERENCES_USERID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGINGPREFERENCES,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1023,6 +1043,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
      * @return the number of messaging user preferenceses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1036,16 +1057,15 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
                 Query q = session.createQuery(_SQL_COUNT_MESSAGINGUSERPREFERENCES);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1067,7 +1087,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<MessagingUserPreferences>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1080,6 +1100,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
     public void destroy() {
         EntityCacheUtil.removeCache(MessagingUserPreferencesImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

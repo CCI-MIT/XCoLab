@@ -22,7 +22,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the Proposal service. Represents a row in the &quot;xcolab_Proposal&quot; database table, with each column mapped to a property of this class.
@@ -61,6 +63,8 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal (proposalId LONG not null primary key,createDate DATE null,updatedDate DATE null,currentVersion INTEGER,authorId LONG,visible BOOLEAN,discussionId LONG,judgeDiscussionId LONG,fellowDiscussionId LONG,advisorDiscussionId LONG,groupId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Proposal";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposal.proposalId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_Proposal.proposalId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -74,7 +78,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Proposal"));
     private static ClassLoader _classLoader = Proposal.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             Proposal.class
         };
     private long _proposalId;
@@ -88,8 +92,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     private long _fellowDiscussionId;
     private long _advisorDiscussionId;
     private long _groupId;
-    private transient ExpandoBridge _expandoBridge;
-    private Proposal _escapedModelProxy;
+    private Proposal _escapedModel;
 
     public ProposalModelImpl() {
     }
@@ -101,6 +104,10 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
      * @return the normal model instance
      */
     public static Proposal toModel(ProposalSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         Proposal model = new ProposalImpl();
 
         model.setProposalId(soapModel.getProposalId());
@@ -125,6 +132,10 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
      * @return the normal model instances
      */
     public static List<Proposal> toModels(ProposalSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<Proposal> models = new ArrayList<Proposal>(soapModels.length);
 
         for (ProposalSoap soapModel : soapModels) {
@@ -134,157 +145,271 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _proposalId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setProposalId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_proposalId);
+        return _proposalId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Proposal.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Proposal.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("updatedDate", getUpdatedDate());
+        attributes.put("currentVersion", getCurrentVersion());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("visible", getVisible());
+        attributes.put("discussionId", getDiscussionId());
+        attributes.put("judgeDiscussionId", getJudgeDiscussionId());
+        attributes.put("fellowDiscussionId", getFellowDiscussionId());
+        attributes.put("advisorDiscussionId", getAdvisorDiscussionId());
+        attributes.put("groupId", getGroupId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date updatedDate = (Date) attributes.get("updatedDate");
+
+        if (updatedDate != null) {
+            setUpdatedDate(updatedDate);
+        }
+
+        Integer currentVersion = (Integer) attributes.get("currentVersion");
+
+        if (currentVersion != null) {
+            setCurrentVersion(currentVersion);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        Boolean visible = (Boolean) attributes.get("visible");
+
+        if (visible != null) {
+            setVisible(visible);
+        }
+
+        Long discussionId = (Long) attributes.get("discussionId");
+
+        if (discussionId != null) {
+            setDiscussionId(discussionId);
+        }
+
+        Long judgeDiscussionId = (Long) attributes.get("judgeDiscussionId");
+
+        if (judgeDiscussionId != null) {
+            setJudgeDiscussionId(judgeDiscussionId);
+        }
+
+        Long fellowDiscussionId = (Long) attributes.get("fellowDiscussionId");
+
+        if (fellowDiscussionId != null) {
+            setFellowDiscussionId(fellowDiscussionId);
+        }
+
+        Long advisorDiscussionId = (Long) attributes.get("advisorDiscussionId");
+
+        if (advisorDiscussionId != null) {
+            setAdvisorDiscussionId(advisorDiscussionId);
+        }
+
+        Long groupId = (Long) attributes.get("groupId");
+
+        if (groupId != null) {
+            setGroupId(groupId);
+        }
+    }
+
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _proposalId = proposalId;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
 
     @JSON
+    @Override
     public Date getUpdatedDate() {
         return _updatedDate;
     }
 
+    @Override
     public void setUpdatedDate(Date updatedDate) {
         _updatedDate = updatedDate;
     }
 
     @JSON
+    @Override
     public int getCurrentVersion() {
         return _currentVersion;
     }
 
+    @Override
     public void setCurrentVersion(int currentVersion) {
         _currentVersion = currentVersion;
     }
 
     @JSON
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
     @JSON
+    @Override
     public boolean getVisible() {
         return _visible;
     }
 
+    @Override
     public boolean isVisible() {
         return _visible;
     }
 
+    @Override
     public void setVisible(boolean visible) {
         _visible = visible;
     }
 
     @JSON
+    @Override
     public long getDiscussionId() {
         return _discussionId;
     }
 
+    @Override
     public void setDiscussionId(long discussionId) {
         _discussionId = discussionId;
     }
 
     @JSON
+    @Override
     public long getJudgeDiscussionId() {
         return _judgeDiscussionId;
     }
 
+    @Override
     public void setJudgeDiscussionId(long judgeDiscussionId) {
         _judgeDiscussionId = judgeDiscussionId;
     }
 
     @JSON
+    @Override
     public long getFellowDiscussionId() {
         return _fellowDiscussionId;
     }
 
+    @Override
     public void setFellowDiscussionId(long fellowDiscussionId) {
         _fellowDiscussionId = fellowDiscussionId;
     }
 
     @JSON
+    @Override
     public long getAdvisorDiscussionId() {
         return _advisorDiscussionId;
     }
 
+    @Override
     public void setAdvisorDiscussionId(long advisorDiscussionId) {
         _advisorDiscussionId = advisorDiscussionId;
     }
 
     @JSON
+    @Override
     public long getGroupId() {
         return _groupId;
     }
 
+    @Override
     public void setGroupId(long groupId) {
         _groupId = groupId;
     }
 
     @Override
-    public Proposal toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (Proposal) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    Proposal.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            Proposal.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public Proposal toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (Proposal) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -308,6 +433,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         return proposalImpl;
     }
 
+    @Override
     public int compareTo(Proposal proposal) {
         long primaryKey = proposal.getPrimaryKey();
 
@@ -322,17 +448,15 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Proposal)) {
             return false;
         }
 
-        Proposal proposal = null;
-
-        try {
-            proposal = (Proposal) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Proposal proposal = (Proposal) obj;
 
         long primaryKey = proposal.getPrimaryKey();
 
@@ -424,6 +548,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(37);
 

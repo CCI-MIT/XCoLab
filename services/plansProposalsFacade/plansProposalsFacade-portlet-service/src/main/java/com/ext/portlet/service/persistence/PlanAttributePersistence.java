@@ -24,69 +24,6 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
      */
 
     /**
-    * Caches the plan attribute in the entity cache if it is enabled.
-    *
-    * @param planAttribute the plan attribute
-    */
-    public void cacheResult(com.ext.portlet.model.PlanAttribute planAttribute);
-
-    /**
-    * Caches the plan attributes in the entity cache if it is enabled.
-    *
-    * @param planAttributes the plan attributes
-    */
-    public void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanAttribute> planAttributes);
-
-    /**
-    * Creates a new plan attribute with the primary key. Does not add the plan attribute to the database.
-    *
-    * @param attributeId the primary key for the new plan attribute
-    * @return the new plan attribute
-    */
-    public com.ext.portlet.model.PlanAttribute create(long attributeId);
-
-    /**
-    * Removes the plan attribute with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param attributeId the primary key of the plan attribute
-    * @return the plan attribute that was removed
-    * @throws com.ext.portlet.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanAttribute remove(long attributeId)
-        throws com.ext.portlet.NoSuchPlanAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.PlanAttribute updateImpl(
-        com.ext.portlet.model.PlanAttribute planAttribute, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan attribute with the primary key or throws a {@link com.ext.portlet.NoSuchPlanAttributeException} if it could not be found.
-    *
-    * @param attributeId the primary key of the plan attribute
-    * @return the plan attribute
-    * @throws com.ext.portlet.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanAttribute findByPrimaryKey(
-        long attributeId)
-        throws com.ext.portlet.NoSuchPlanAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the plan attribute with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param attributeId the primary key of the plan attribute
-    * @return the plan attribute, or <code>null</code> if a plan attribute with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanAttribute fetchByPrimaryKey(
-        long attributeId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the plan attributes where planId = &#63;.
     *
     * @param planId the plan ID
@@ -100,7 +37,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns a range of all the plan attributes where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -117,7 +54,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns an ordered range of all the plan attributes where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -135,10 +72,6 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     /**
     * Returns the first plan attribute in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching plan attribute
@@ -152,11 +85,20 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last plan attribute in the ordered set where planId = &#63;.
+    * Returns the first plan attribute in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute fetchByplanAttributes_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan attribute in the ordered set where planId = &#63;.
     *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -171,11 +113,20 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the plan attributes before and after the current plan attribute in the ordered set where planId = &#63;.
+    * Returns the last plan attribute in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute fetchByplanAttributes_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan attributes before and after the current plan attribute in the ordered set where planId = &#63;.
     *
     * @param attributeId the primary key of the current plan attribute
     * @param planId the plan ID
@@ -189,6 +140,25 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the plan attributes where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByplanAttributes(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan attributes where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByplanAttributes(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the plan attribute where planId = &#63; and attributeName = &#63; or throws a {@link com.ext.portlet.NoSuchPlanAttributeException} if it could not be found.
@@ -230,6 +200,31 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes the plan attribute where planId = &#63; and attributeName = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @param attributeName the attribute name
+    * @return the plan attribute that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute removeByattributeForPlan(
+        long planId, java.lang.String attributeName)
+        throws com.ext.portlet.NoSuchPlanAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan attributes where planId = &#63; and attributeName = &#63;.
+    *
+    * @param planId the plan ID
+    * @param attributeName the attribute name
+    * @return the number of matching plan attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByattributeForPlan(long planId,
+        java.lang.String attributeName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the plan attributes where attributeName = &#63; and attributeValue = &#63;.
     *
     * @param attributeName the attribute name
@@ -245,7 +240,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns a range of all the plan attributes where attributeName = &#63; and attributeValue = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param attributeName the attribute name
@@ -264,7 +259,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns an ordered range of all the plan attributes where attributeName = &#63; and attributeValue = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param attributeName the attribute name
@@ -284,10 +279,6 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     /**
     * Returns the first plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param attributeName the attribute name
     * @param attributeValue the attribute value
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -302,11 +293,21 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
+    * Returns the first plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param attributeName the attribute name
+    * @param attributeValue the attribute value
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute fetchByattributeByNameValue_First(
+        java.lang.String attributeName, java.lang.String attributeValue,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
     *
     * @param attributeName the attribute name
     * @param attributeValue the attribute value
@@ -322,11 +323,21 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the plan attributes before and after the current plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
+    * Returns the last plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param attributeName the attribute name
+    * @param attributeValue the attribute value
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan attribute, or <code>null</code> if a matching plan attribute could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute fetchByattributeByNameValue_Last(
+        java.lang.String attributeName, java.lang.String attributeValue,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan attributes before and after the current plan attribute in the ordered set where attributeName = &#63; and attributeValue = &#63;.
     *
     * @param attributeId the primary key of the current plan attribute
     * @param attributeName the attribute name
@@ -344,6 +355,92 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the plan attributes where attributeName = &#63; and attributeValue = &#63; from the database.
+    *
+    * @param attributeName the attribute name
+    * @param attributeValue the attribute value
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByattributeByNameValue(java.lang.String attributeName,
+        java.lang.String attributeValue)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of plan attributes where attributeName = &#63; and attributeValue = &#63;.
+    *
+    * @param attributeName the attribute name
+    * @param attributeValue the attribute value
+    * @return the number of matching plan attributes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByattributeByNameValue(java.lang.String attributeName,
+        java.lang.String attributeValue)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Caches the plan attribute in the entity cache if it is enabled.
+    *
+    * @param planAttribute the plan attribute
+    */
+    public void cacheResult(com.ext.portlet.model.PlanAttribute planAttribute);
+
+    /**
+    * Caches the plan attributes in the entity cache if it is enabled.
+    *
+    * @param planAttributes the plan attributes
+    */
+    public void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanAttribute> planAttributes);
+
+    /**
+    * Creates a new plan attribute with the primary key. Does not add the plan attribute to the database.
+    *
+    * @param attributeId the primary key for the new plan attribute
+    * @return the new plan attribute
+    */
+    public com.ext.portlet.model.PlanAttribute create(long attributeId);
+
+    /**
+    * Removes the plan attribute with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param attributeId the primary key of the plan attribute
+    * @return the plan attribute that was removed
+    * @throws com.ext.portlet.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute remove(long attributeId)
+        throws com.ext.portlet.NoSuchPlanAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.PlanAttribute updateImpl(
+        com.ext.portlet.model.PlanAttribute planAttribute)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan attribute with the primary key or throws a {@link com.ext.portlet.NoSuchPlanAttributeException} if it could not be found.
+    *
+    * @param attributeId the primary key of the plan attribute
+    * @return the plan attribute
+    * @throws com.ext.portlet.NoSuchPlanAttributeException if a plan attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute findByPrimaryKey(
+        long attributeId)
+        throws com.ext.portlet.NoSuchPlanAttributeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the plan attribute with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param attributeId the primary key of the plan attribute
+    * @return the plan attribute, or <code>null</code> if a plan attribute with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.PlanAttribute fetchByPrimaryKey(
+        long attributeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the plan attributes.
     *
     * @return the plan attributes
@@ -356,7 +453,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns a range of all the plan attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan attributes
@@ -372,7 +469,7 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
     * Returns an ordered range of all the plan attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan attributes
@@ -387,77 +484,11 @@ public interface PlanAttributePersistence extends BasePersistence<PlanAttribute>
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the plan attributes where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByplanAttributes(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes the plan attribute where planId = &#63; and attributeName = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @param attributeName the attribute name
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByattributeForPlan(long planId,
-        java.lang.String attributeName)
-        throws com.ext.portlet.NoSuchPlanAttributeException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the plan attributes where attributeName = &#63; and attributeValue = &#63; from the database.
-    *
-    * @param attributeName the attribute name
-    * @param attributeValue the attribute value
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByattributeByNameValue(java.lang.String attributeName,
-        java.lang.String attributeValue)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the plan attributes from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan attributes where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByplanAttributes(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan attributes where planId = &#63; and attributeName = &#63;.
-    *
-    * @param planId the plan ID
-    * @param attributeName the attribute name
-    * @return the number of matching plan attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByattributeForPlan(long planId,
-        java.lang.String attributeName)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of plan attributes where attributeName = &#63; and attributeValue = &#63;.
-    *
-    * @param attributeName the attribute name
-    * @param attributeValue the attribute value
-    * @return the number of matching plan attributes
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByattributeByNameValue(java.lang.String attributeName,
-        java.lang.String attributeValue)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

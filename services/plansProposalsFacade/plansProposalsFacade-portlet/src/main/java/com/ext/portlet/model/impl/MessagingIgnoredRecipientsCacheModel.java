@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class MessagingIgnoredRecipientsCacheModel implements CacheModel<MessagingIgnoredRecipients>,
-    Serializable {
+    Externalizable {
     public long ignoredRecipientId;
     public String email;
     public String name;
@@ -44,6 +47,7 @@ public class MessagingIgnoredRecipientsCacheModel implements CacheModel<Messagin
         return sb.toString();
     }
 
+    @Override
     public MessagingIgnoredRecipients toEntityModel() {
         MessagingIgnoredRecipientsImpl messagingIgnoredRecipientsImpl = new MessagingIgnoredRecipientsImpl();
 
@@ -72,5 +76,35 @@ public class MessagingIgnoredRecipientsCacheModel implements CacheModel<Messagin
         messagingIgnoredRecipientsImpl.resetOriginalValues();
 
         return messagingIgnoredRecipientsImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        ignoredRecipientId = objectInput.readLong();
+        email = objectInput.readUTF();
+        name = objectInput.readUTF();
+        userId = objectInput.readLong();
+        createDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(ignoredRecipientId);
+
+        if (email == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(email);
+        }
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(createDate);
     }
 }

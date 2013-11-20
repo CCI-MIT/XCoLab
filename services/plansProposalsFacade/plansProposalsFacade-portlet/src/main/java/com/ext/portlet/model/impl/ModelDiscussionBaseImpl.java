@@ -24,6 +24,7 @@ public abstract class ModelDiscussionBaseImpl extends ModelDiscussionModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a model discussion model instance should use the {@link ModelDiscussion} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ModelDiscussionLocalServiceUtil.addModelDiscussion(this);

@@ -86,35 +86,60 @@ public interface PlanTypeAttributeModel extends BaseModel<PlanTypeAttribute> {
      */
     public void setAttributeName(String attributeName);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(PlanTypeAttribute planTypeAttribute);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<PlanTypeAttribute> toCacheModel();
 
+    @Override
     public PlanTypeAttribute toEscapedModel();
 
+    @Override
+    public PlanTypeAttribute toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

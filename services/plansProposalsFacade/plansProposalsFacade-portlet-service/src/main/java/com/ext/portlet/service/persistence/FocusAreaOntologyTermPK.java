@@ -35,6 +35,7 @@ public class FocusAreaOntologyTermPK implements Comparable<FocusAreaOntologyTerm
         this.ontologyTermId = ontologyTermId;
     }
 
+    @Override
     public int compareTo(FocusAreaOntologyTermPK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class FocusAreaOntologyTermPK implements Comparable<FocusAreaOntologyTerm
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FocusAreaOntologyTermPK)) {
             return false;
         }
 
-        FocusAreaOntologyTermPK pk = null;
-
-        try {
-            pk = (FocusAreaOntologyTermPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        FocusAreaOntologyTermPK pk = (FocusAreaOntologyTermPK) obj;
 
         if ((focusAreaId == pk.focusAreaId) &&
                 (ontologyTermId == pk.ontologyTermId)) {

@@ -24,6 +24,7 @@ public abstract class ProposalBaseImpl extends ProposalModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal model instance should use the {@link Proposal} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ProposalLocalServiceUtil.addProposal(this);

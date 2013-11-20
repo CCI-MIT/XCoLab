@@ -25,6 +25,7 @@ public abstract class MessagingMessageConversionBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a messaging message conversion model instance should use the {@link MessagingMessageConversion} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             MessagingMessageConversionLocalServiceUtil.addMessagingMessageConversion(this);

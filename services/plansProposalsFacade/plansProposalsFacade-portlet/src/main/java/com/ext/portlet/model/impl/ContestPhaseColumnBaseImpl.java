@@ -24,6 +24,7 @@ public abstract class ContestPhaseColumnBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a contest phase column model instance should use the {@link ContestPhaseColumn} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ContestPhaseColumnLocalServiceUtil.addContestPhaseColumn(this);

@@ -24,6 +24,7 @@ public abstract class ContestPhaseRibbonTypeBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a contest phase ribbon type model instance should use the {@link ContestPhaseRibbonType} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ContestPhaseRibbonTypeLocalServiceUtil.addContestPhaseRibbonType(this);

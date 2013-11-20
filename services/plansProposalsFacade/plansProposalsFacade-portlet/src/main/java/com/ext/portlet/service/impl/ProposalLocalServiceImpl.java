@@ -35,7 +35,6 @@ import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
-import com.ext.utils.PortalServicesHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -57,7 +56,10 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -97,15 +99,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
 
-    /**
-     * Service helper for accessing external services
-     */
-    @BeanReference(type = PortalServicesHelper.class)
-    private PortalServicesHelper portalServicesHelper;
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
 
+    @BeanReference(type = GroupService.class)
+    private GroupService groupService;
+    
+
+    @BeanReference(type = RoleLocalService.class)
+    private RoleLocalService roleLocalService;
+    
     public ProposalLocalServiceImpl() {
     }
 
@@ -134,7 +138,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Transactional
     public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
-        long proposalId = portalServicesHelper.getCounterLocalService().increment(Proposal.class.getName());
+        long proposalId = counterLocalService.increment(Proposal.class.getName());
         return create(authorId, contestPhaseId, proposalId, true);
     }
 
@@ -492,9 +496,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @author janusz
      */
     public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId) throws NoSuchProposalAttributeException, SystemException {
-        return proposalAttributePersistence.
+        List<ProposalAttribute> attribute = proposalAttributePersistence.
                 findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
                         proposalId, version, version, attributeName, additionalId);
+        
+        if (attribute.isEmpty()) throw new NoSuchProposalAttributeException("Can't find attribute [" + 
+        		"proposalId: " + proposalId + ", " +
+        		"version: " + version + ", " +
+        		"attributeName: " + attributeName + ", " +
+        		"additionalId: " + additionalId + "]");
+        
+        return attribute.get(0);
     }
 
     /**
@@ -1107,18 +1119,18 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         groupServiceContext.setUserId(authorId);
         String groupName = "Proposal_" + proposalId;
 
-        Group group = portalServicesHelper.getGroupService().addGroup(StringUtils.substring(groupName, 0, 80),
+        Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
         // set up permissions
         Long companyId = group.getCompanyId();
-        Role owner = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.SITE_OWNER);
-        Role admin = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.SITE_ADMINISTRATOR);
-        Role member = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.SITE_MEMBER);
-        Role userRole = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.USER);
-        Role guest = portalServicesHelper.getRoleLocalService().getRole(companyId, RoleConstants.GUEST);
-        Role moderator = portalServicesHelper.getRoleLocalService().getRole(companyId, "Moderator");
+        Role owner = roleLocalService.getRole(companyId, RoleConstants.SITE_OWNER);
+        Role admin = roleLocalService.getRole(companyId, RoleConstants.SITE_ADMINISTRATOR);
+        Role member = roleLocalService.getRole(companyId, RoleConstants.SITE_MEMBER);
+        Role userRole = roleLocalService.getRole(companyId, RoleConstants.USER);
+        Role guest = roleLocalService.getRole(companyId, RoleConstants.GUEST);
+        Role moderator = roleLocalService.getRole(companyId, "Moderator");
 
         String[] ownerActions = {DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
                 DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
@@ -1141,20 +1153,20 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String[] guestActions = {};
 
-        Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
+        Map<Long, String[]> rolesActionsMap = new HashMap<Long, String[]>();
 
-        rolesActionsMap.put(owner, ownerActions);
-        rolesActionsMap.put(admin, adminActions);
-        rolesActionsMap.put(member, memberActions);
-        rolesActionsMap.put(userRole, userActions);
-        rolesActionsMap.put(guest, guestActions);
-        rolesActionsMap.put(moderator, moderatorActions);
+        rolesActionsMap.put(owner.getRoleId(), ownerActions);
+        rolesActionsMap.put(admin.getRoleId(), adminActions);
+        rolesActionsMap.put(member.getRoleId(), memberActions);
+        rolesActionsMap.put(userRole.getRoleId(), userActions);
+        rolesActionsMap.put(guest.getRoleId(), guestActions);
+        rolesActionsMap.put(moderator.getRoleId(), moderatorActions);
 
-        for (Role role : rolesActionsMap.keySet()) {
-            portalServicesHelper.getPermissionLocalService().setRolePermissions(role.getRoleId(), companyId,
-                    DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                    String.valueOf(group.getGroupId()), rolesActionsMap.get(role));
-        }
+        
+        ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId, 
+        		DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
+        		String.valueOf(group.getGroupId()), rolesActionsMap);
+        
 
         return group;
     }

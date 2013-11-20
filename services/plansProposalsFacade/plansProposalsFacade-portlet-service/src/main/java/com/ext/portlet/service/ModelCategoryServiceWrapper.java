@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ModelCategoryService}.
- * </p>
+ * Provides a wrapper for {@link ModelCategoryService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelCategoryService
+ * @author Brian Wing Shun Chan
+ * @see ModelCategoryService
  * @generated
  */
 public class ModelCategoryServiceWrapper implements ModelCategoryService,
@@ -21,24 +19,54 @@ public class ModelCategoryServiceWrapper implements ModelCategoryService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _modelCategoryService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _modelCategoryService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _modelCategoryService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ModelCategoryService getWrappedModelCategoryService() {
         return _modelCategoryService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedModelCategoryService(
         ModelCategoryService modelCategoryService) {
         _modelCategoryService = modelCategoryService;
     }
 
+    @Override
     public ModelCategoryService getWrappedService() {
         return _modelCategoryService;
     }
 
+    @Override
     public void setWrappedService(ModelCategoryService modelCategoryService) {
         _modelCategoryService = modelCategoryService;
     }

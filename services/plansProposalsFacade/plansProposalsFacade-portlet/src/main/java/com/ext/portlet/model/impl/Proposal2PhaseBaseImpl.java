@@ -24,6 +24,7 @@ public abstract class Proposal2PhaseBaseImpl extends Proposal2PhaseModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal2 phase model instance should use the {@link Proposal2Phase} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             Proposal2PhaseLocalServiceUtil.addProposal2Phase(this);

@@ -49,7 +49,7 @@ public class MessageUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,181 @@ public class MessageUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static Message update(Message message, boolean merge)
-        throws SystemException {
-        return getPersistence().update(message, merge);
+    public static Message update(Message message) throws SystemException {
+        return getPersistence().update(message);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static Message update(Message message, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(message, merge, serviceContext);
+    public static Message update(Message message, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(message, serviceContext);
+    }
+
+    /**
+    * Returns all the messages where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @return the matching messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
+        long fromId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findBySendingUser(fromId);
+    }
+
+    /**
+    * Returns a range of all the messages where fromId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param fromId the from ID
+    * @param start the lower bound of the range of messages
+    * @param end the upper bound of the range of messages (not inclusive)
+    * @return the range of matching messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
+        long fromId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findBySendingUser(fromId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the messages where fromId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param fromId the from ID
+    * @param start the lower bound of the range of messages
+    * @param end the upper bound of the range of messages (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
+        long fromId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findBySendingUser(fromId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first message in the ordered set where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching message
+    * @throws com.ext.portlet.NoSuchMessageException if a matching message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Message findBySendingUser_First(
+        long fromId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findBySendingUser_First(fromId, orderByComparator);
+    }
+
+    /**
+    * Returns the first message in the ordered set where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching message, or <code>null</code> if a matching message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Message fetchBySendingUser_First(
+        long fromId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchBySendingUser_First(fromId, orderByComparator);
+    }
+
+    /**
+    * Returns the last message in the ordered set where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching message
+    * @throws com.ext.portlet.NoSuchMessageException if a matching message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Message findBySendingUser_Last(
+        long fromId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findBySendingUser_Last(fromId, orderByComparator);
+    }
+
+    /**
+    * Returns the last message in the ordered set where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching message, or <code>null</code> if a matching message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Message fetchBySendingUser_Last(
+        long fromId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchBySendingUser_Last(fromId, orderByComparator);
+    }
+
+    /**
+    * Returns the messages before and after the current message in the ordered set where fromId = &#63;.
+    *
+    * @param messageId the primary key of the current message
+    * @param fromId the from ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next message
+    * @throws com.ext.portlet.NoSuchMessageException if a message with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Message[] findBySendingUser_PrevAndNext(
+        long messageId, long fromId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findBySendingUser_PrevAndNext(messageId, fromId,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the messages where fromId = &#63; from the database.
+    *
+    * @param fromId the from ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeBySendingUser(long fromId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeBySendingUser(fromId);
+    }
+
+    /**
+    * Returns the number of messages where fromId = &#63;.
+    *
+    * @param fromId the from ID
+    * @return the number of matching messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countBySendingUser(long fromId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countBySendingUser(fromId);
     }
 
     /**
@@ -142,9 +304,9 @@ public class MessageUtil {
     }
 
     public static com.ext.portlet.model.Message updateImpl(
-        com.ext.portlet.model.Message message, boolean merge)
+        com.ext.portlet.model.Message message)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(message, merge);
+        return getPersistence().updateImpl(message);
     }
 
     /**
@@ -175,126 +337,6 @@ public class MessageUtil {
     }
 
     /**
-    * Returns all the messages where fromId = &#63;.
-    *
-    * @param fromId the from ID
-    * @return the matching messages
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
-        long fromId) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findBySendingUser(fromId);
-    }
-
-    /**
-    * Returns a range of all the messages where fromId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param fromId the from ID
-    * @param start the lower bound of the range of messages
-    * @param end the upper bound of the range of messages (not inclusive)
-    * @return the range of matching messages
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
-        long fromId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findBySendingUser(fromId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the messages where fromId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param fromId the from ID
-    * @param start the lower bound of the range of messages
-    * @param end the upper bound of the range of messages (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching messages
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Message> findBySendingUser(
-        long fromId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findBySendingUser(fromId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first message in the ordered set where fromId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param fromId the from ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching message
-    * @throws com.ext.portlet.NoSuchMessageException if a matching message could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Message findBySendingUser_First(
-        long fromId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessageException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findBySendingUser_First(fromId, orderByComparator);
-    }
-
-    /**
-    * Returns the last message in the ordered set where fromId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param fromId the from ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching message
-    * @throws com.ext.portlet.NoSuchMessageException if a matching message could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Message findBySendingUser_Last(
-        long fromId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessageException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findBySendingUser_Last(fromId, orderByComparator);
-    }
-
-    /**
-    * Returns the messages before and after the current message in the ordered set where fromId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param messageId the primary key of the current message
-    * @param fromId the from ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next message
-    * @throws com.ext.portlet.NoSuchMessageException if a message with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Message[] findBySendingUser_PrevAndNext(
-        long messageId, long fromId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchMessageException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findBySendingUser_PrevAndNext(messageId, fromId,
-            orderByComparator);
-    }
-
-    /**
     * Returns all the messages.
     *
     * @return the messages
@@ -309,7 +351,7 @@ public class MessageUtil {
     * Returns a range of all the messages.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messages
@@ -327,7 +369,7 @@ public class MessageUtil {
     * Returns an ordered range of all the messages.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messages
@@ -344,17 +386,6 @@ public class MessageUtil {
     }
 
     /**
-    * Removes all the messages where fromId = &#63; from the database.
-    *
-    * @param fromId the from ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeBySendingUser(long fromId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeBySendingUser(fromId);
-    }
-
-    /**
     * Removes all the messages from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -362,18 +393,6 @@ public class MessageUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of messages where fromId = &#63;.
-    *
-    * @param fromId the from ID
-    * @return the number of matching messages
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countBySendingUser(long fromId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countBySendingUser(fromId);
     }
 
     /**
@@ -399,9 +418,9 @@ public class MessageUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(MessagePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(MessageUtil.class, "_persistence");
     }
 }

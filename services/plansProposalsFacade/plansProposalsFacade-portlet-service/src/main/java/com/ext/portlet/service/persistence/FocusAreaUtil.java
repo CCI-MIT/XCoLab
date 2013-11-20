@@ -49,7 +49,7 @@ public class FocusAreaUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,87 @@ public class FocusAreaUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static FocusArea update(FocusArea focusArea, boolean merge)
+    public static FocusArea update(FocusArea focusArea)
         throws SystemException {
-        return getPersistence().update(focusArea, merge);
+        return getPersistence().update(focusArea);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static FocusArea update(FocusArea focusArea, boolean merge,
+    public static FocusArea update(FocusArea focusArea,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(focusArea, merge, serviceContext);
+        return getPersistence().update(focusArea, serviceContext);
+    }
+
+    /**
+    * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
+    *
+    * @param name the name
+    * @return the matching focus area
+    * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.FocusArea findByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchFocusAreaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByName(name);
+    }
+
+    /**
+    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param name the name
+    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.FocusArea fetchByName(
+        java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByName(name);
+    }
+
+    /**
+    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param name the name
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.FocusArea fetchByName(
+        java.lang.String name, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByName(name, retrieveFromCache);
+    }
+
+    /**
+    * Removes the focus area where name = &#63; from the database.
+    *
+    * @param name the name
+    * @return the focus area that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.FocusArea removeByName(
+        java.lang.String name)
+        throws com.ext.portlet.NoSuchFocusAreaException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByName(name);
+    }
+
+    /**
+    * Returns the number of focus areas where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching focus areas
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByName(name);
     }
 
     /**
@@ -142,9 +210,9 @@ public class FocusAreaUtil {
     }
 
     public static com.ext.portlet.model.FocusArea updateImpl(
-        com.ext.portlet.model.FocusArea focusArea, boolean merge)
+        com.ext.portlet.model.FocusArea focusArea)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(focusArea, merge);
+        return getPersistence().updateImpl(focusArea);
     }
 
     /**
@@ -174,48 +242,6 @@ public class FocusAreaUtil {
     }
 
     /**
-    * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
-    *
-    * @param name the name
-    * @return the matching focus area
-    * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.FocusArea findByName(
-        java.lang.String name)
-        throws com.ext.portlet.NoSuchFocusAreaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByName(name);
-    }
-
-    /**
-    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param name the name
-    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.FocusArea fetchByName(
-        java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByName(name);
-    }
-
-    /**
-    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param name the name
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.FocusArea fetchByName(
-        java.lang.String name, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByName(name, retrieveFromCache);
-    }
-
-    /**
     * Returns all the focus areas.
     *
     * @return the focus areas
@@ -230,7 +256,7 @@ public class FocusAreaUtil {
     * Returns a range of all the focus areas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of focus areas
@@ -248,7 +274,7 @@ public class FocusAreaUtil {
     * Returns an ordered range of all the focus areas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of focus areas
@@ -265,18 +291,6 @@ public class FocusAreaUtil {
     }
 
     /**
-    * Removes the focus area where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchFocusAreaException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByName(name);
-    }
-
-    /**
     * Removes all the focus areas from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -284,18 +298,6 @@ public class FocusAreaUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of focus areas where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching focus areas
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByName(name);
     }
 
     /**
@@ -321,9 +323,9 @@ public class FocusAreaUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(FocusAreaPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(FocusAreaUtil.class, "_persistence");
     }
 }

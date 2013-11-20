@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlansFilterPosition;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlansFilterPosition in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlansFilterPositionCacheModel implements CacheModel<PlansFilterPosition>,
-    Serializable {
+    Externalizable {
     public long userId;
     public long planTypeId;
     public long positionId;
@@ -35,6 +38,7 @@ public class PlansFilterPositionCacheModel implements CacheModel<PlansFilterPosi
         return sb.toString();
     }
 
+    @Override
     public PlansFilterPosition toEntityModel() {
         PlansFilterPositionImpl plansFilterPositionImpl = new PlansFilterPositionImpl();
 
@@ -45,5 +49,20 @@ public class PlansFilterPositionCacheModel implements CacheModel<PlansFilterPosi
         plansFilterPositionImpl.resetOriginalValues();
 
         return plansFilterPositionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        userId = objectInput.readLong();
+        planTypeId = objectInput.readLong();
+        positionId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(planTypeId);
+        objectOutput.writeLong(positionId);
     }
 }

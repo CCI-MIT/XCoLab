@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class PlanSectionCacheModel implements CacheModel<PlanSection>,
-    Serializable {
+    Externalizable {
     public long id;
     public long planSectionDefinitionId;
     public long planId;
@@ -56,6 +59,7 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
         return sb.toString();
     }
 
+    @Override
     public PlanSection toEntityModel() {
         PlanSectionImpl planSectionImpl = new PlanSectionImpl();
 
@@ -84,5 +88,38 @@ public class PlanSectionCacheModel implements CacheModel<PlanSection>,
         planSectionImpl.resetOriginalValues();
 
         return planSectionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planSectionDefinitionId = objectInput.readLong();
+        planId = objectInput.readLong();
+        content = objectInput.readUTF();
+        numericValue = objectInput.readLong();
+        created = objectInput.readLong();
+        version = objectInput.readLong();
+        planVersion = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planSectionDefinitionId);
+        objectOutput.writeLong(planId);
+
+        if (content == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(content);
+        }
+
+        objectOutput.writeLong(numericValue);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(version);
+        objectOutput.writeLong(planVersion);
+        objectOutput.writeLong(updateAuthorId);
     }
 }

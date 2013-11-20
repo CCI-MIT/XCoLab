@@ -5,7 +5,10 @@ import com.ext.portlet.model.ModelGlobalPreference;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelGlobalPreference in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPreference>,
-    Serializable {
+    Externalizable {
     public long modelGlobalPreferencePK;
     public long modelId;
     public boolean visible;
@@ -44,6 +47,7 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         return sb.toString();
     }
 
+    @Override
     public ModelGlobalPreference toEntityModel() {
         ModelGlobalPreferenceImpl modelGlobalPreferenceImpl = new ModelGlobalPreferenceImpl();
 
@@ -57,5 +61,26 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         modelGlobalPreferenceImpl.resetOriginalValues();
 
         return modelGlobalPreferenceImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelGlobalPreferencePK = objectInput.readLong();
+        modelId = objectInput.readLong();
+        visible = objectInput.readBoolean();
+        weight = objectInput.readInt();
+        expertEvaluationPageId = objectInput.readLong();
+        modelCategoryId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelGlobalPreferencePK);
+        objectOutput.writeLong(modelId);
+        objectOutput.writeBoolean(visible);
+        objectOutput.writeInt(weight);
+        objectOutput.writeLong(expertEvaluationPageId);
+        objectOutput.writeLong(modelCategoryId);
     }
 }

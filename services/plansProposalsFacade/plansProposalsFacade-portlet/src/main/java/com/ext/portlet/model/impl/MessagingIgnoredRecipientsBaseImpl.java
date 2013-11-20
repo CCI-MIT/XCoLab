@@ -25,6 +25,7 @@ public abstract class MessagingIgnoredRecipientsBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a messaging ignored recipients model instance should use the {@link MessagingIgnoredRecipients} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             MessagingIgnoredRecipientsLocalServiceUtil.addMessagingIgnoredRecipients(this);

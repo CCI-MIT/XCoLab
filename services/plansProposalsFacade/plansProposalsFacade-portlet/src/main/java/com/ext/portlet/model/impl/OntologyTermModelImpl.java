@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the OntologyTerm service. Represents a row in the &quot;xcolab_OntologyTerm&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_OntologyTerm (id_ LONG not null primary key,parentId LONG,ontologySpaceId LONG,name VARCHAR(256) null,descriptionUrl VARCHAR(1024) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_OntologyTerm";
+    public static final String ORDER_BY_JPQL = " ORDER BY ontologyTerm.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologyTerm.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -70,10 +74,11 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     public static long NAME_COLUMN_BITMASK = 1L;
     public static long ONTOLOGYSPACEID_COLUMN_BITMASK = 2L;
     public static long PARENTID_COLUMN_BITMASK = 4L;
+    public static long ID_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.OntologyTerm"));
     private static ClassLoader _classLoader = OntologyTerm.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             OntologyTerm.class
         };
     private long _id;
@@ -86,9 +91,8 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     private String _name;
     private String _originalName;
     private String _descriptionUrl;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private OntologyTerm _escapedModelProxy;
+    private OntologyTerm _escapedModel;
 
     public OntologyTermModelImpl() {
     }
@@ -100,6 +104,10 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
      * @return the normal model instance
      */
     public static OntologyTerm toModel(OntologyTermSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         OntologyTerm model = new OntologyTermImpl();
 
         model.setId(soapModel.getId());
@@ -118,6 +126,10 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
      * @return the normal model instances
      */
     public static List<OntologyTerm> toModels(OntologyTermSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<OntologyTerm> models = new ArrayList<OntologyTerm>(soapModels.length);
 
         for (OntologyTermSoap soapModel : soapModels) {
@@ -127,44 +139,100 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return OntologyTerm.class;
     }
 
+    @Override
     public String getModelClassName() {
         return OntologyTerm.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("parentId", getParentId());
+        attributes.put("ontologySpaceId", getOntologySpaceId());
+        attributes.put("name", getName());
+        attributes.put("descriptionUrl", getDescriptionUrl());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long parentId = (Long) attributes.get("parentId");
+
+        if (parentId != null) {
+            setParentId(parentId);
+        }
+
+        Long ontologySpaceId = (Long) attributes.get("ontologySpaceId");
+
+        if (ontologySpaceId != null) {
+            setOntologySpaceId(ontologySpaceId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String descriptionUrl = (String) attributes.get("descriptionUrl");
+
+        if (descriptionUrl != null) {
+            setDescriptionUrl(descriptionUrl);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getParentId() {
         return _parentId;
     }
 
+    @Override
     public void setParentId(long parentId) {
         _columnBitmask |= PARENTID_COLUMN_BITMASK;
 
@@ -182,10 +250,12 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     }
 
     @JSON
+    @Override
     public long getOntologySpaceId() {
         return _ontologySpaceId;
     }
 
+    @Override
     public void setOntologySpaceId(long ontologySpaceId) {
         _columnBitmask |= ONTOLOGYSPACEID_COLUMN_BITMASK;
 
@@ -203,6 +273,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -211,6 +282,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         }
     }
 
+    @Override
     public void setName(String name) {
         _columnBitmask |= NAME_COLUMN_BITMASK;
 
@@ -226,6 +298,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     }
 
     @JSON
+    @Override
     public String getDescriptionUrl() {
         if (_descriptionUrl == null) {
             return StringPool.BLANK;
@@ -234,6 +307,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         }
     }
 
+    @Override
     public void setDescriptionUrl(String descriptionUrl) {
         _descriptionUrl = descriptionUrl;
     }
@@ -243,29 +317,26 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     }
 
     @Override
-    public OntologyTerm toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (OntologyTerm) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    OntologyTerm.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            OntologyTerm.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public OntologyTerm toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (OntologyTerm) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -283,6 +354,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         return ontologyTermImpl;
     }
 
+    @Override
     public int compareTo(OntologyTerm ontologyTerm) {
         long primaryKey = ontologyTerm.getPrimaryKey();
 
@@ -297,17 +369,15 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof OntologyTerm)) {
             return false;
         }
 
-        OntologyTerm ontologyTerm = null;
-
-        try {
-            ontologyTerm = (OntologyTerm) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        OntologyTerm ontologyTerm = (OntologyTerm) obj;
 
         long primaryKey = ontologyTerm.getPrimaryKey();
 
@@ -388,6 +458,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

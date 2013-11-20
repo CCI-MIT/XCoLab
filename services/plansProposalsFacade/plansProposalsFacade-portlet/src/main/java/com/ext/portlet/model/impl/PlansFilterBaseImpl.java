@@ -24,6 +24,7 @@ public abstract class PlansFilterBaseImpl extends PlansFilterModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plans filter model instance should use the {@link PlansFilter} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlansFilterLocalServiceUtil.addPlansFilter(this);

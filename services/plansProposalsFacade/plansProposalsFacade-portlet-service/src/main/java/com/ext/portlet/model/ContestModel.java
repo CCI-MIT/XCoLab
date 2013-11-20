@@ -441,35 +441,60 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setResourcesUrl(String resourcesUrl);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(Contest contest);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<Contest> toCacheModel();
 
+    @Override
     public Contest toEscapedModel();
 
+    @Override
+    public Contest toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

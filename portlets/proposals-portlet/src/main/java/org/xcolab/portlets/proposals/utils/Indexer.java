@@ -12,6 +12,7 @@ import javax.portlet.PortletURL;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchPlanItemException;
@@ -154,13 +155,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             throws SearchException {
         return null;
     }
-
-    @Override
-    public boolean hasPermission(PermissionChecker permissionChecker, long entryClassPK, String actionId)
-            throws Exception {
-        return false;
-    }
-
+    
     @Override
     public boolean isFilterSearch() {
         return false;
@@ -261,5 +256,33 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     public String[] getClassNames() {
         return _CLASS_NAMES;
     }
+
+	@Override
+	public void addRelatedEntryFields(Document document, Object obj)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getSortField(String orderByCol, int sortType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasPermission(PermissionChecker permissionChecker,
+			String entryClassName, long entryClassPK, String actionId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void reindexDDMStructures(List<Long> ddmStructureIds)
+			throws SearchException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

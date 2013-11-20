@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanFan;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -16,7 +19,7 @@ import java.util.Date;
  * @see PlanFan
  * @generated
  */
-public class PlanFanCacheModel implements CacheModel<PlanFan>, Serializable {
+public class PlanFanCacheModel implements CacheModel<PlanFan>, Externalizable {
     public long id;
     public long userId;
     public long planId;
@@ -42,6 +45,7 @@ public class PlanFanCacheModel implements CacheModel<PlanFan>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public PlanFan toEntityModel() {
         PlanFanImpl planFanImpl = new PlanFanImpl();
 
@@ -64,5 +68,24 @@ public class PlanFanCacheModel implements CacheModel<PlanFan>, Serializable {
         planFanImpl.resetOriginalValues();
 
         return planFanImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        userId = objectInput.readLong();
+        planId = objectInput.readLong();
+        created = objectInput.readLong();
+        deleted = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(deleted);
     }
 }

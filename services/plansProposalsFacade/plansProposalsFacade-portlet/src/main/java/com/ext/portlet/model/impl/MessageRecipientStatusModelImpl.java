@@ -23,7 +23,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessageRecipientStatus service. Represents a row in the &quot;xcolab_MessageRecipientStatus&quot; database table, with each column mapped to a property of this class.
@@ -76,7 +78,7 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessageRecipientStatus"));
     private static ClassLoader _classLoader = MessageRecipientStatus.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessageRecipientStatus.class
         };
     private long _messageRecipientId;
@@ -91,9 +93,8 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
     private boolean _archived;
     private boolean _originalArchived;
     private boolean _setOriginalArchived;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private MessageRecipientStatus _escapedModelProxy;
+    private MessageRecipientStatus _escapedModel;
 
     public MessageRecipientStatusModelImpl() {
     }
@@ -106,6 +107,10 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
      */
     public static MessageRecipientStatus toModel(
         MessageRecipientStatusSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessageRecipientStatus model = new MessageRecipientStatusImpl();
 
         model.setMessageRecipientId(soapModel.getMessageRecipientId());
@@ -125,6 +130,10 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
      */
     public static List<MessageRecipientStatus> toModels(
         MessageRecipientStatusSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessageRecipientStatus> models = new ArrayList<MessageRecipientStatus>(soapModels.length);
 
         for (MessageRecipientStatusSoap soapModel : soapModels) {
@@ -134,44 +143,100 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _messageRecipientId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setMessageRecipientId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_messageRecipientId);
+        return _messageRecipientId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessageRecipientStatus.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessageRecipientStatus.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("messageRecipientId", getMessageRecipientId());
+        attributes.put("messageId", getMessageId());
+        attributes.put("userId", getUserId());
+        attributes.put("opened", getOpened());
+        attributes.put("archived", getArchived());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long messageRecipientId = (Long) attributes.get("messageRecipientId");
+
+        if (messageRecipientId != null) {
+            setMessageRecipientId(messageRecipientId);
+        }
+
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Boolean opened = (Boolean) attributes.get("opened");
+
+        if (opened != null) {
+            setOpened(opened);
+        }
+
+        Boolean archived = (Boolean) attributes.get("archived");
+
+        if (archived != null) {
+            setArchived(archived);
+        }
+    }
+
     @JSON
+    @Override
     public long getMessageRecipientId() {
         return _messageRecipientId;
     }
 
+    @Override
     public void setMessageRecipientId(long messageRecipientId) {
         _messageRecipientId = messageRecipientId;
     }
 
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _columnBitmask = -1L;
 
@@ -189,10 +254,12 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -205,10 +272,12 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -218,27 +287,33 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
     }
 
     @JSON
+    @Override
     public boolean getOpened() {
         return _opened;
     }
 
+    @Override
     public boolean isOpened() {
         return _opened;
     }
 
+    @Override
     public void setOpened(boolean opened) {
         _opened = opened;
     }
 
     @JSON
+    @Override
     public boolean getArchived() {
         return _archived;
     }
 
+    @Override
     public boolean isArchived() {
         return _archived;
     }
 
+    @Override
     public void setArchived(boolean archived) {
         _columnBitmask |= ARCHIVED_COLUMN_BITMASK;
 
@@ -260,29 +335,26 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
     }
 
     @Override
-    public MessageRecipientStatus toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessageRecipientStatus) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessageRecipientStatus.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessageRecipientStatus.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessageRecipientStatus toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessageRecipientStatus) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -300,6 +372,7 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
         return messageRecipientStatusImpl;
     }
 
+    @Override
     public int compareTo(MessageRecipientStatus messageRecipientStatus) {
         int value = 0;
 
@@ -322,17 +395,15 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessageRecipientStatus)) {
             return false;
         }
 
-        MessageRecipientStatus messageRecipientStatus = null;
-
-        try {
-            messageRecipientStatus = (MessageRecipientStatus) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessageRecipientStatus messageRecipientStatus = (MessageRecipientStatus) obj;
 
         long primaryKey = messageRecipientStatus.getPrimaryKey();
 
@@ -403,6 +474,7 @@ public class MessageRecipientStatusModelImpl extends BaseModelImpl<MessageRecipi
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ProposalLocalService}.
- * </p>
+ * Provides a wrapper for {@link ProposalLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ProposalLocalService
+ * @author Brian Wing Shun Chan
+ * @see ProposalLocalService
  * @generated
  */
 public class ProposalLocalServiceWrapper implements ProposalLocalService,
@@ -27,6 +25,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the proposal that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Proposal addProposal(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -39,6 +38,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param proposalId the primary key for the new proposal
     * @return the new proposal
     */
+    @Override
     public com.ext.portlet.model.Proposal createProposal(long proposalId) {
         return _proposalLocalService.createProposal(proposalId);
     }
@@ -47,24 +47,34 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Deletes the proposal with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param proposalId the primary key of the proposal
+    * @return the proposal that was removed
     * @throws PortalException if a proposal with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposal(long proposalId)
+    @Override
+    public com.ext.portlet.model.Proposal deleteProposal(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _proposalLocalService.deleteProposal(proposalId);
+        return _proposalLocalService.deleteProposal(proposalId);
     }
 
     /**
     * Deletes the proposal from the database. Also notifies the appropriate model listeners.
     *
     * @param proposal the proposal
+    * @return the proposal that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposal(com.ext.portlet.model.Proposal proposal)
+    @Override
+    public com.ext.portlet.model.Proposal deleteProposal(
+        com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _proposalLocalService.deleteProposal(proposal);
+        return _proposalLocalService.deleteProposal(proposal);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _proposalLocalService.dynamicQuery();
     }
 
     /**
@@ -74,6 +84,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -85,7 +96,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -94,6 +105,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -105,7 +117,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -115,6 +127,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -132,12 +145,30 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.dynamicQueryCount(dynamicQuery, projection);
+    }
+
+    @Override
     public com.ext.portlet.model.Proposal fetchProposal(long proposalId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.fetchProposal(proposalId);
@@ -151,12 +182,14 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException if a proposal with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Proposal getProposal(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getProposal(proposalId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -168,7 +201,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * Returns a range of all the proposals.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposals
@@ -176,6 +209,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the range of proposals
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.Proposal> getProposals(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -188,6 +222,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the number of proposals
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getProposalsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getProposalsCount();
@@ -200,6 +235,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return the proposal that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Proposal updateProposal(
         com.ext.portlet.model.Proposal proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -207,24 +243,11 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-    * Updates the proposal in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param proposal the proposal
-    * @param merge whether to merge the proposal with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the proposal that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Proposal updateProposal(
-        com.ext.portlet.model.Proposal proposal, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.updateProposal(proposal, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _proposalLocalService.getBeanIdentifier();
     }
@@ -234,8 +257,17 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _proposalLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _proposalLocalService.invokeMethod(name, parameterTypes,
+            arguments);
     }
 
     /**
@@ -261,6 +293,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of a Liferay error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.Proposal create(long authorId,
         long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -291,6 +324,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of a Liferay error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.Proposal create(long authorId,
         long contestPhaseId, long proposalId, boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -299,6 +333,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
             proposalId, publishActivity);
     }
 
+    @Override
     public void setVisibility(java.lang.Long proposalId,
         java.lang.Boolean visibility, java.lang.Long authorId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -328,6 +363,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue)
@@ -360,6 +396,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author patrickhiesel
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue, long numericValue, double realValue,
@@ -383,6 +420,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName,
         java.lang.String stringValue, long numericValue, double realValue)
@@ -405,6 +443,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         java.lang.String stringValue)
@@ -426,6 +465,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName,
         java.lang.String stringValue)
@@ -448,6 +488,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         long numericValue)
@@ -469,6 +510,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long numericValue)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -490,6 +532,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, long additionalId,
         double realValue)
@@ -511,6 +554,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException
     * @throws SystemException
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute setAttribute(long authorId,
         long proposalId, java.lang.String attributeName, double realValue)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -528,6 +572,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -545,6 +590,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalAttribute> getAttributes(
         long proposalId, int version)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -563,6 +609,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, java.lang.String attributeName, long additionalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -583,6 +630,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.ProposalAttribute getAttribute(
         long proposalId, int version, java.lang.String attributeName,
         long additionalId)
@@ -601,6 +649,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalVersion> getProposalVersions(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -618,6 +667,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @author janusz
     */
+    @Override
     public com.ext.portlet.model.ProposalVersion getProposalVersion(
         long proposalId, int version)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -633,6 +683,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
         long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -640,6 +691,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.getProposalsInContestPhase(contestPhaseId);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContestPhase(
         long contestPhaseId, java.lang.String sortProperty,
         boolean sortAscending, int start, int end)
@@ -657,6 +709,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public long countProposalsInContestPhase(long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -671,6 +724,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public java.util.List<com.liferay.portal.model.User> getMembers(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -686,6 +740,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public java.util.List<com.liferay.portal.model.User> getSupporters(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -701,6 +756,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public int getSupportersCount(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -715,6 +771,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public boolean isSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -729,6 +786,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @Override
     public void addSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -743,6 +801,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @Override
     public void addSupporter(long proposalId, long userId,
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -758,6 +817,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     * @throws PortalException
     */
+    @Override
     public void removeSupporter(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -773,6 +833,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public java.util.List<com.liferay.portal.model.User> getVoters(
         long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -789,6 +850,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public long getVotesCount(long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getVotesCount(proposalId, contestPhaseId);
@@ -805,6 +867,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public void addVote(long proposalId, long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -822,6 +885,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public void addVote(long proposalId, long contestPhaseId, long userId,
         boolean publishActivity)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -838,6 +902,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public void removeVote(long contestPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -852,6 +917,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public long getCommentsCount(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -867,6 +933,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public boolean isUserAMember(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -881,6 +948,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of an LR error
     * @throws SystemException in case of an LR error
     */
+    @Override
     public boolean isOpen(long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -895,6 +963,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of LR error
     * @throws PortalException in case of LR error
     */
+    @Override
     public java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -911,6 +980,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void addMembershipRequest(long proposalId, long userId,
         java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -926,6 +996,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void removeUserFromTeam(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -940,6 +1011,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void dennyMembershipRequest(long proposalId, long userId,
         long membershipRequestId, java.lang.String reply, long updateAuthorId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -956,6 +1028,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void approveMembershipRequest(long proposalId,
         java.lang.Long userId,
         com.liferay.portal.model.MembershipRequest request,
@@ -975,6 +1048,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public boolean hasUserRequestedMembership(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -990,6 +1064,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void joinIfNotAMemberAndProposalIsOpen(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1006,6 +1081,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public boolean isSubscribed(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1020,6 +1096,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void subscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1037,6 +1114,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void subscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1051,6 +1129,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void unsubscribe(long proposalId, long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1069,6 +1148,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
+    @Override
     public void unsubscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -1084,6 +1164,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return true if user has voted for proposal in context of a contest phase
     * @throws SystemException
     */
+    @Override
     public boolean hasUserVoted(long proposalId, long contestPhaseId,
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.hasUserVoted(proposalId, contestPhaseId,
@@ -1091,6 +1172,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+<<<<<<< HEAD
     * Returns number of proposals that user supports
     *
     * @param userId
@@ -1116,23 +1198,28 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
 
     /**
      * @deprecated Renamed to {@link #getWrappedService}
+=======
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
      */
     public ProposalLocalService getWrappedProposalLocalService() {
         return _proposalLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedProposalLocalService(
         ProposalLocalService proposalLocalService) {
         _proposalLocalService = proposalLocalService;
     }
 
+    @Override
     public ProposalLocalService getWrappedService() {
         return _proposalLocalService;
     }
 
+    @Override
     public void setWrappedService(ProposalLocalService proposalLocalService) {
         _proposalLocalService = proposalLocalService;
     }

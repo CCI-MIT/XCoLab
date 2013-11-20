@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlansUserSettingsException;
 import com.ext.portlet.model.PlansUserSettings;
 import com.ext.portlet.model.impl.PlansUserSettingsImpl;
 import com.ext.portlet.model.impl.PlansUserSettingsModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -69,30 +70,17 @@ import com.ext.portlet.service.persistence.PlanTypePersistence;
 import com.ext.portlet.service.persistence.PlanVotePersistence;
 import com.ext.portlet.service.persistence.PlansFilterPersistence;
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
-import com.liferay.portal.kernel.dao.jdbc.MappingSqlQuery;
-import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.jdbc.RowMapper;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -105,11 +93,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -142,6 +128,17 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED,
+            PlansUserSettingsImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED,
+            PlansUserSettingsImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_USERIDPLANTYPEID = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
             PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED,
             PlansUserSettingsImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -154,69 +151,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByuserIdPlanTypeId",
             new String[] { Long.class.getName(), Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED,
-            PlansUserSettingsImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED,
-            PlansUserSettingsImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            PlansUserSettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-    public static final FinderPath FINDER_PATH_GET_PLANATTRIBUTEFILTERS = new FinderPath(com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterImpl.class,
-            com.ext.portlet.service.persistence.PlanAttributeFilterPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "getPlanAttributeFilters",
-            new String[] {
-                Long.class.getName(), "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
-            });
-    public static final FinderPath FINDER_PATH_GET_PLANATTRIBUTEFILTERS_SIZE = new FinderPath(com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterImpl.class,
-            com.ext.portlet.service.persistence.PlanAttributeFilterPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "getPlanAttributeFiltersSize", new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_CONTAINS_PLANATTRIBUTEFILTER = new FinderPath(com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanAttributeFilterImpl.class,
-            com.ext.portlet.service.persistence.PlanAttributeFilterPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "containsPlanAttributeFilter",
-            new String[] { Long.class.getName(), Long.class.getName() });
-    public static final FinderPath FINDER_PATH_GET_PLANCOLUMNSETTINGSES = new FinderPath(com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsImpl.class,
-            com.ext.portlet.service.persistence.PlanColumnSettingsPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "getPlanColumnSettingses",
-            new String[] {
-                Long.class.getName(), "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
-            });
-    public static final FinderPath FINDER_PATH_GET_PLANCOLUMNSETTINGSES_SIZE = new FinderPath(com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsImpl.class,
-            com.ext.portlet.service.persistence.PlanColumnSettingsPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "getPlanColumnSettingsesSize", new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_CONTAINS_PLANCOLUMNSETTINGS = new FinderPath(com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.ENTITY_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsModelImpl.FINDER_CACHE_ENABLED,
-            com.ext.portlet.model.impl.PlanColumnSettingsImpl.class,
-            com.ext.portlet.service.persistence.PlanColumnSettingsPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "containsPlanColumnSettings",
-            new String[] { Long.class.getName(), Long.class.getName() });
+    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_USERID_2 = "plansUserSettings.userId = ? AND ";
+    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2 = "plansUserSettings.planTypeId = ?";
     private static final String _SQL_SELECT_PLANSUSERSETTINGS = "SELECT plansUserSettings FROM PlansUserSettings plansUserSettings";
     private static final String _SQL_SELECT_PLANSUSERSETTINGS_WHERE = "SELECT plansUserSettings FROM PlansUserSettings plansUserSettings WHERE ";
     private static final String _SQL_COUNT_PLANSUSERSETTINGS = "SELECT COUNT(plansUserSettings) FROM PlansUserSettings plansUserSettings";
     private static final String _SQL_COUNT_PLANSUSERSETTINGS_WHERE = "SELECT COUNT(plansUserSettings) FROM PlansUserSettings plansUserSettings WHERE ";
-    private static final String _SQL_GETPLANATTRIBUTEFILTERS = "SELECT {xcolab_PlanAttributeFilter.*} FROM xcolab_PlanAttributeFilter INNER JOIN xcolab_PlansUserSettings ON (xcolab_PlansUserSettings.planUserSettingsId = xcolab_PlanAttributeFilter.planUserSettingsId) WHERE (xcolab_PlansUserSettings.planUserSettingsId = ?)";
-    private static final String _SQL_GETPLANATTRIBUTEFILTERSSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanAttributeFilter WHERE planUserSettingsId = ?";
-    private static final String _SQL_CONTAINSPLANATTRIBUTEFILTER = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanAttributeFilter WHERE planUserSettingsId = ? AND planAttributeFilterId = ?";
-    private static final String _SQL_GETPLANCOLUMNSETTINGSES = "SELECT {xcolab_PlanColumnSettings.*} FROM xcolab_PlanColumnSettings INNER JOIN xcolab_PlansUserSettings ON (xcolab_PlansUserSettings.planUserSettingsId = xcolab_PlanColumnSettings.planUserSettingsId) WHERE (xcolab_PlansUserSettings.planUserSettingsId = ?)";
-    private static final String _SQL_GETPLANCOLUMNSETTINGSESSIZE = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanColumnSettings WHERE planUserSettingsId = ?";
-    private static final String _SQL_CONTAINSPLANCOLUMNSETTINGS = "SELECT COUNT(*) AS COUNT_VALUE FROM xcolab_PlanColumnSettings WHERE planUserSettingsId = ? AND planColumnSettingsId = ?";
-    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_USERID_2 = "plansUserSettings.userId = ? AND ";
-    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2 = "plansUserSettings.planTypeId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "plansUserSettings.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlansUserSettings exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlansUserSettings exists with the key {";
@@ -237,11 +177,13 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
     private static CacheModel<PlansUserSettings> _nullPlansUserSettingsCacheModel =
         new CacheModel<PlansUserSettings>() {
+            @Override
             public PlansUserSettings toEntityModel() {
                 return _nullPlansUserSettings;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -398,12 +340,241 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     protected UserPersistence userPersistence;
     protected ContainsPlanAttributeFilter containsPlanAttributeFilter;
     protected ContainsPlanColumnSettings containsPlanColumnSettings;
+=======
+    public PlansUserSettingsPersistenceImpl() {
+        setModelClass(PlansUserSettings.class);
+    }
+
+    /**
+     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.NoSuchPlansUserSettingsException} if it could not be found.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @return the matching plans user settings
+     * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a matching plans user settings could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansUserSettings findByuserIdPlanTypeId(long userId, long planTypeId)
+        throws NoSuchPlansUserSettingsException, SystemException {
+        PlansUserSettings plansUserSettings = fetchByuserIdPlanTypeId(userId,
+                planTypeId);
+
+        if (plansUserSettings == null) {
+            StringBundler msg = new StringBundler(6);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("userId=");
+            msg.append(userId);
+
+            msg.append(", planTypeId=");
+            msg.append(planTypeId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchPlansUserSettingsException(msg.toString());
+        }
+
+        return plansUserSettings;
+    }
+
+    /**
+     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
+        long planTypeId) throws SystemException {
+        return fetchByuserIdPlanTypeId(userId, planTypeId, true);
+    }
+
+    /**
+     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
+        long planTypeId, boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { userId, planTypeId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof PlansUserSettings) {
+            PlansUserSettings plansUserSettings = (PlansUserSettings) result;
+
+            if ((userId != plansUserSettings.getUserId()) ||
+                    (planTypeId != plansUserSettings.getPlanTypeId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(4);
+
+            query.append(_SQL_SELECT_PLANSUSERSETTINGS_WHERE);
+
+            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_USERID_2);
+
+            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                qPos.add(planTypeId);
+
+                List<PlansUserSettings> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PlansUserSettingsPersistenceImpl.fetchByuserIdPlanTypeId(long, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PlansUserSettings plansUserSettings = list.get(0);
+
+                    result = plansUserSettings;
+
+                    cacheResult(plansUserSettings);
+
+                    if ((plansUserSettings.getUserId() != userId) ||
+                            (plansUserSettings.getPlanTypeId() != planTypeId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                            finderArgs, plansUserSettings);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (PlansUserSettings) result;
+        }
+    }
+
+    /**
+     * Removes the plans user settings where userId = &#63; and planTypeId = &#63; from the database.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @return the plans user settings that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansUserSettings removeByuserIdPlanTypeId(long userId,
+        long planTypeId)
+        throws NoSuchPlansUserSettingsException, SystemException {
+        PlansUserSettings plansUserSettings = findByuserIdPlanTypeId(userId,
+                planTypeId);
+
+        return remove(plansUserSettings);
+    }
+
+    /**
+     * Returns the number of plans user settingses where userId = &#63; and planTypeId = &#63;.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @return the number of matching plans user settingses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByuserIdPlanTypeId(long userId, long planTypeId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_USERIDPLANTYPEID;
+
+        Object[] finderArgs = new Object[] { userId, planTypeId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_PLANSUSERSETTINGS_WHERE);
+
+            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_USERID_2);
+
+            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                qPos.add(planTypeId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the plans user settings in the entity cache if it is enabled.
      *
      * @param plansUserSettings the plans user settings
      */
+    @Override
     public void cacheResult(PlansUserSettings plansUserSettings) {
         EntityCacheUtil.putResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
             PlansUserSettingsImpl.class, plansUserSettings.getPrimaryKey(),
@@ -411,8 +582,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
             new Object[] {
-                Long.valueOf(plansUserSettings.getUserId()),
-                Long.valueOf(plansUserSettings.getPlanTypeId())
+                plansUserSettings.getUserId(), plansUserSettings.getPlanTypeId()
             }, plansUserSettings);
 
         plansUserSettings.resetOriginalValues();
@@ -423,6 +593,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      *
      * @param plansUserSettingses the plans user settingses
      */
+    @Override
     public void cacheResult(List<PlansUserSettings> plansUserSettingses) {
         for (PlansUserSettings plansUserSettings : plansUserSettingses) {
             if (EntityCacheUtil.getResult(
@@ -487,12 +658,57 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
         }
     }
 
+    protected void cacheUniqueFindersCache(PlansUserSettings plansUserSettings) {
+        if (plansUserSettings.isNew()) {
+            Object[] args = new Object[] {
+                    plansUserSettings.getUserId(),
+                    plansUserSettings.getPlanTypeId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                args, plansUserSettings);
+        } else {
+            PlansUserSettingsModelImpl plansUserSettingsModelImpl = (PlansUserSettingsModelImpl) plansUserSettings;
+
+            if ((plansUserSettingsModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_USERIDPLANTYPEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        plansUserSettings.getUserId(),
+                        plansUserSettings.getPlanTypeId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                    args, plansUserSettings);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(PlansUserSettings plansUserSettings) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-            new Object[] {
-                Long.valueOf(plansUserSettings.getUserId()),
-                Long.valueOf(plansUserSettings.getPlanTypeId())
-            });
+        PlansUserSettingsModelImpl plansUserSettingsModelImpl = (PlansUserSettingsModelImpl) plansUserSettings;
+
+        Object[] args = new Object[] {
+                plansUserSettings.getUserId(), plansUserSettings.getPlanTypeId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID, args);
+
+        if ((plansUserSettingsModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_USERIDPLANTYPEID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    plansUserSettingsModelImpl.getOriginalUserId(),
+                    plansUserSettingsModelImpl.getOriginalPlanTypeId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
+                args);
+        }
     }
 
     /**
@@ -501,6 +717,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @param planUserSettingsId the primary key for the new plans user settings
      * @return the new plans user settings
      */
+    @Override
     public PlansUserSettings create(long planUserSettingsId) {
         PlansUserSettings plansUserSettings = new PlansUserSettingsImpl();
 
@@ -518,9 +735,10 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansUserSettings remove(long planUserSettingsId)
         throws NoSuchPlansUserSettingsException, SystemException {
-        return remove(Long.valueOf(planUserSettingsId));
+        return remove((Serializable) planUserSettingsId);
     }
 
     /**
@@ -571,36 +789,47 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, plansUserSettings);
+            if (!session.contains(plansUserSettings)) {
+                plansUserSettings = (PlansUserSettings) session.get(PlansUserSettingsImpl.class,
+                        plansUserSettings.getPrimaryKeyObj());
+            }
+
+            if (plansUserSettings != null) {
+                session.delete(plansUserSettings);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(plansUserSettings);
+        if (plansUserSettings != null) {
+            clearCache(plansUserSettings);
+        }
 
         return plansUserSettings;
     }
 
     @Override
     public PlansUserSettings updateImpl(
-        com.ext.portlet.model.PlansUserSettings plansUserSettings, boolean merge)
+        com.ext.portlet.model.PlansUserSettings plansUserSettings)
         throws SystemException {
         plansUserSettings = toUnwrappedModel(plansUserSettings);
 
         boolean isNew = plansUserSettings.isNew();
-
-        PlansUserSettingsModelImpl plansUserSettingsModelImpl = (PlansUserSettingsModelImpl) plansUserSettings;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, plansUserSettings, merge);
+            if (plansUserSettings.isNew()) {
+                session.save(plansUserSettings);
 
-            plansUserSettings.setNew(false);
+                plansUserSettings.setNew(false);
+            } else {
+                session.merge(plansUserSettings);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -617,32 +846,8 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
             PlansUserSettingsImpl.class, plansUserSettings.getPrimaryKey(),
             plansUserSettings);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                new Object[] {
-                    Long.valueOf(plansUserSettings.getUserId()),
-                    Long.valueOf(plansUserSettings.getPlanTypeId())
-                }, plansUserSettings);
-        } else {
-            if ((plansUserSettingsModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_USERIDPLANTYPEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(plansUserSettingsModelImpl.getOriginalUserId()),
-                        Long.valueOf(plansUserSettingsModelImpl.getOriginalPlanTypeId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                    new Object[] {
-                        Long.valueOf(plansUserSettings.getUserId()),
-                        Long.valueOf(plansUserSettings.getPlanTypeId())
-                    }, plansUserSettings);
-            }
-        }
+        clearUniqueFindersCache(plansUserSettings);
+        cacheUniqueFindersCache(plansUserSettings);
 
         return plansUserSettings;
     }
@@ -674,13 +879,24 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      *
      * @param primaryKey the primary key of the plans user settings
      * @return the plans user settings
-     * @throws com.liferay.portal.NoSuchModelException if a plans user settings with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlansUserSettings findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchPlansUserSettingsException, SystemException {
+        PlansUserSettings plansUserSettings = fetchByPrimaryKey(primaryKey);
+
+        if (plansUserSettings == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlansUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return plansUserSettings;
     }
 
     /**
@@ -691,21 +907,10 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansUserSettings findByPrimaryKey(long planUserSettingsId)
         throws NoSuchPlansUserSettingsException, SystemException {
-        PlansUserSettings plansUserSettings = fetchByPrimaryKey(planUserSettingsId);
-
-        if (plansUserSettings == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    planUserSettingsId);
-            }
-
-            throw new NoSuchPlansUserSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planUserSettingsId);
-        }
-
-        return plansUserSettings;
+        return findByPrimaryKey((Serializable) planUserSettingsId);
     }
 
     /**
@@ -718,7 +923,40 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     @Override
     public PlansUserSettings fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        PlansUserSettings plansUserSettings = (PlansUserSettings) EntityCacheUtil.getResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+                PlansUserSettingsImpl.class, primaryKey);
+
+        if (plansUserSettings == _nullPlansUserSettings) {
+            return null;
+        }
+
+        if (plansUserSettings == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                plansUserSettings = (PlansUserSettings) session.get(PlansUserSettingsImpl.class,
+                        primaryKey);
+
+                if (plansUserSettings != null) {
+                    cacheResult(plansUserSettings);
+                } else {
+                    EntityCacheUtil.putResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+                        PlansUserSettingsImpl.class, primaryKey,
+                        _nullPlansUserSettings);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
+                    PlansUserSettingsImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return plansUserSettings;
     }
 
     /**
@@ -728,178 +966,10 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the plans user settings, or <code>null</code> if a plans user settings with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansUserSettings fetchByPrimaryKey(long planUserSettingsId)
         throws SystemException {
-        PlansUserSettings plansUserSettings = (PlansUserSettings) EntityCacheUtil.getResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
-                PlansUserSettingsImpl.class, planUserSettingsId);
-
-        if (plansUserSettings == _nullPlansUserSettings) {
-            return null;
-        }
-
-        if (plansUserSettings == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                plansUserSettings = (PlansUserSettings) session.get(PlansUserSettingsImpl.class,
-                        Long.valueOf(planUserSettingsId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (plansUserSettings != null) {
-                    cacheResult(plansUserSettings);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlansUserSettingsModelImpl.ENTITY_CACHE_ENABLED,
-                        PlansUserSettingsImpl.class, planUserSettingsId,
-                        _nullPlansUserSettings);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return plansUserSettings;
-    }
-
-    /**
-     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or throws a {@link com.ext.portlet.NoSuchPlansUserSettingsException} if it could not be found.
-     *
-     * @param userId the user ID
-     * @param planTypeId the plan type ID
-     * @return the matching plans user settings
-     * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a matching plans user settings could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansUserSettings findByuserIdPlanTypeId(long userId, long planTypeId)
-        throws NoSuchPlansUserSettingsException, SystemException {
-        PlansUserSettings plansUserSettings = fetchByuserIdPlanTypeId(userId,
-                planTypeId);
-
-        if (plansUserSettings == null) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(", planTypeId=");
-            msg.append(planTypeId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchPlansUserSettingsException(msg.toString());
-        }
-
-        return plansUserSettings;
-    }
-
-    /**
-     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param userId the user ID
-     * @param planTypeId the plan type ID
-     * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
-        long planTypeId) throws SystemException {
-        return fetchByuserIdPlanTypeId(userId, planTypeId, true);
-    }
-
-    /**
-     * Returns the plans user settings where userId = &#63; and planTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param userId the user ID
-     * @param planTypeId the plan type ID
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching plans user settings, or <code>null</code> if a matching plans user settings could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansUserSettings fetchByuserIdPlanTypeId(long userId,
-        long planTypeId, boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { userId, planTypeId };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_PLANSUSERSETTINGS_WHERE);
-
-            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_USERID_2);
-
-            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                qPos.add(planTypeId);
-
-                List<PlansUserSettings> list = q.list();
-
-                result = list;
-
-                PlansUserSettings plansUserSettings = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                        finderArgs, list);
-                } else {
-                    plansUserSettings = list.get(0);
-
-                    cacheResult(plansUserSettings);
-
-                    if ((plansUserSettings.getUserId() != userId) ||
-                            (plansUserSettings.getPlanTypeId() != planTypeId)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                            finderArgs, plansUserSettings);
-                    }
-                }
-
-                return plansUserSettings;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERIDPLANTYPEID,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (PlansUserSettings) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) planUserSettingsId);
     }
 
     /**
@@ -908,6 +978,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the plans user settingses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansUserSettings> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -916,7 +987,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * Returns a range of all the plans user settingses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansUserSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plans user settingses
@@ -924,6 +995,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the range of plans user settingses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansUserSettings> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -933,7 +1005,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * Returns an ordered range of all the plans user settingses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansUserSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plans user settingses
@@ -942,17 +1014,20 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the ordered range of plans user settingses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansUserSettings> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -975,6 +1050,10 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_PLANSUSERSETTINGS;
+
+                if (pagination) {
+                    sql = sql.concat(PlansUserSettingsModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -984,26 +1063,26 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<PlansUserSettings>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<PlansUserSettings>(list);
                 } else {
                     list = (List<PlansUserSettings>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -1012,86 +1091,15 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
     }
 
     /**
-     * Removes the plans user settings where userId = &#63; and planTypeId = &#63; from the database.
-     *
-     * @param userId the user ID
-     * @param planTypeId the plan type ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByuserIdPlanTypeId(long userId, long planTypeId)
-        throws NoSuchPlansUserSettingsException, SystemException {
-        PlansUserSettings plansUserSettings = findByuserIdPlanTypeId(userId,
-                planTypeId);
-
-        remove(plansUserSettings);
-    }
-
-    /**
      * Removes all the plans user settingses from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (PlansUserSettings plansUserSettings : findAll()) {
             remove(plansUserSettings);
         }
-    }
-
-    /**
-     * Returns the number of plans user settingses where userId = &#63; and planTypeId = &#63;.
-     *
-     * @param userId the user ID
-     * @param planTypeId the plan type ID
-     * @return the number of matching plans user settingses
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByuserIdPlanTypeId(long userId, long planTypeId)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { userId, planTypeId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_COUNT_PLANSUSERSETTINGS_WHERE);
-
-            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_USERID_2);
-
-            query.append(_FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                qPos.add(planTypeId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1100,6 +1108,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
      * @return the number of plans user settingses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1113,409 +1122,20 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                 Query q = session.createQuery(_SQL_COUNT_PLANSUSERSETTINGS);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
-    }
-
-    /**
-     * Returns all the plan attribute filters associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @return the plan attribute filters associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk) throws SystemException {
-        return getPlanAttributeFilters(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-    }
-
-    /**
-     * Returns a range of all the plan attribute filters associated with the plans user settings.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param pk the primary key of the plans user settings
-     * @param start the lower bound of the range of plans user settingses
-     * @param end the upper bound of the range of plans user settingses (not inclusive)
-     * @return the range of plan attribute filters associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk, int start, int end) throws SystemException {
-        return getPlanAttributeFilters(pk, start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan attribute filters associated with the plans user settings.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param pk the primary key of the plans user settings
-     * @param start the lower bound of the range of plans user settingses
-     * @param end the upper bound of the range of plans user settingses (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan attribute filters associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk, int start, int end, OrderByComparator orderByComparator)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
-
-        List<com.ext.portlet.model.PlanAttributeFilter> list = (List<com.ext.portlet.model.PlanAttributeFilter>) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS,
-                finderArgs, this);
-
-        if (list == null) {
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                String sql = null;
-
-                if (orderByComparator != null) {
-                    sql = _SQL_GETPLANATTRIBUTEFILTERS.concat(ORDER_BY_CLAUSE)
-                                                      .concat(orderByComparator.getOrderBy());
-                } else {
-                    sql = _SQL_GETPLANATTRIBUTEFILTERS;
-                }
-
-                SQLQuery q = session.createSQLQuery(sql);
-
-                q.addEntity("xcolab_PlanAttributeFilter",
-                    com.ext.portlet.model.impl.PlanAttributeFilterImpl.class);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(pk);
-
-                list = (List<com.ext.portlet.model.PlanAttributeFilter>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS,
-                        finderArgs);
-                } else {
-                    planAttributeFilterPersistence.cacheResult(list);
-
-                    FinderCacheUtil.putResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS,
-                        finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Returns the number of plan attribute filters associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @return the number of plan attribute filters associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public int getPlanAttributeFiltersSize(long pk) throws SystemException {
-        Object[] finderArgs = new Object[] { pk };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS_SIZE,
-                finderArgs, this);
-
-        if (count == null) {
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                SQLQuery q = session.createSQLQuery(_SQL_GETPLANATTRIBUTEFILTERSSIZE);
-
-                q.addScalar(COUNT_COLUMN_NAME,
-                    com.liferay.portal.kernel.dao.orm.Type.LONG);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(pk);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_GET_PLANATTRIBUTEFILTERS_SIZE,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns <code>true</code> if the plan attribute filter is associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @param planAttributeFilterPK the primary key of the plan attribute filter
-     * @return <code>true</code> if the plan attribute filter is associated with the plans user settings; <code>false</code> otherwise
-     * @throws SystemException if a system exception occurred
-     */
-    public boolean containsPlanAttributeFilter(long pk,
-        long planAttributeFilterPK) throws SystemException {
-        Object[] finderArgs = new Object[] { pk, planAttributeFilterPK };
-
-        Boolean value = (Boolean) FinderCacheUtil.getResult(FINDER_PATH_CONTAINS_PLANATTRIBUTEFILTER,
-                finderArgs, this);
-
-        if (value == null) {
-            try {
-                value = Boolean.valueOf(containsPlanAttributeFilter.contains(
-                            pk, planAttributeFilterPK));
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (value == null) {
-                    value = Boolean.FALSE;
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_CONTAINS_PLANATTRIBUTEFILTER,
-                    finderArgs, value);
-            }
-        }
-
-        return value.booleanValue();
-    }
-
-    /**
-     * Returns <code>true</code> if the plans user settings has any plan attribute filters associated with it.
-     *
-     * @param pk the primary key of the plans user settings to check for associations with plan attribute filters
-     * @return <code>true</code> if the plans user settings has any plan attribute filters associated with it; <code>false</code> otherwise
-     * @throws SystemException if a system exception occurred
-     */
-    public boolean containsPlanAttributeFilters(long pk)
-        throws SystemException {
-        if (getPlanAttributeFiltersSize(pk) > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Returns all the plan column settingses associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @return the plan column settingses associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk) throws SystemException {
-        return getPlanColumnSettingses(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-    }
-
-    /**
-     * Returns a range of all the plan column settingses associated with the plans user settings.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param pk the primary key of the plans user settings
-     * @param start the lower bound of the range of plans user settingses
-     * @param end the upper bound of the range of plans user settingses (not inclusive)
-     * @return the range of plan column settingses associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk, int start, int end) throws SystemException {
-        return getPlanColumnSettingses(pk, start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan column settingses associated with the plans user settings.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param pk the primary key of the plans user settings
-     * @param start the lower bound of the range of plans user settingses
-     * @param end the upper bound of the range of plans user settingses (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan column settingses associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk, int start, int end, OrderByComparator orderByComparator)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { pk, start, end, orderByComparator };
-
-        List<com.ext.portlet.model.PlanColumnSettings> list = (List<com.ext.portlet.model.PlanColumnSettings>) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES,
-                finderArgs, this);
-
-        if (list == null) {
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                String sql = null;
-
-                if (orderByComparator != null) {
-                    sql = _SQL_GETPLANCOLUMNSETTINGSES.concat(ORDER_BY_CLAUSE)
-                                                      .concat(orderByComparator.getOrderBy());
-                } else {
-                    sql = _SQL_GETPLANCOLUMNSETTINGSES;
-                }
-
-                SQLQuery q = session.createSQLQuery(sql);
-
-                q.addEntity("xcolab_PlanColumnSettings",
-                    com.ext.portlet.model.impl.PlanColumnSettingsImpl.class);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(pk);
-
-                list = (List<com.ext.portlet.model.PlanColumnSettings>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES,
-                        finderArgs);
-                } else {
-                    planColumnSettingsPersistence.cacheResult(list);
-
-                    FinderCacheUtil.putResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES,
-                        finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
-     * Returns the number of plan column settingses associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @return the number of plan column settingses associated with the plans user settings
-     * @throws SystemException if a system exception occurred
-     */
-    public int getPlanColumnSettingsesSize(long pk) throws SystemException {
-        Object[] finderArgs = new Object[] { pk };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES_SIZE,
-                finderArgs, this);
-
-        if (count == null) {
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                SQLQuery q = session.createSQLQuery(_SQL_GETPLANCOLUMNSETTINGSESSIZE);
-
-                q.addScalar(COUNT_COLUMN_NAME,
-                    com.liferay.portal.kernel.dao.orm.Type.LONG);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(pk);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_GET_PLANCOLUMNSETTINGSES_SIZE,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns <code>true</code> if the plan column settings is associated with the plans user settings.
-     *
-     * @param pk the primary key of the plans user settings
-     * @param planColumnSettingsPK the primary key of the plan column settings
-     * @return <code>true</code> if the plan column settings is associated with the plans user settings; <code>false</code> otherwise
-     * @throws SystemException if a system exception occurred
-     */
-    public boolean containsPlanColumnSettings(long pk, long planColumnSettingsPK)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { pk, planColumnSettingsPK };
-
-        Boolean value = (Boolean) FinderCacheUtil.getResult(FINDER_PATH_CONTAINS_PLANCOLUMNSETTINGS,
-                finderArgs, this);
-
-        if (value == null) {
-            try {
-                value = Boolean.valueOf(containsPlanColumnSettings.contains(
-                            pk, planColumnSettingsPK));
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (value == null) {
-                    value = Boolean.FALSE;
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_CONTAINS_PLANCOLUMNSETTINGS,
-                    finderArgs, value);
-            }
-        }
-
-        return value.booleanValue();
-    }
-
-    /**
-     * Returns <code>true</code> if the plans user settings has any plan column settingses associated with it.
-     *
-     * @param pk the primary key of the plans user settings to check for associations with plan column settingses
-     * @return <code>true</code> if the plans user settings has any plan column settingses associated with it; <code>false</code> otherwise
-     * @throws SystemException if a system exception occurred
-     */
-    public boolean containsPlanColumnSettingses(long pk)
-        throws SystemException {
-        if (getPlanColumnSettingsesSize(pk) > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -1532,7 +1152,7 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlansUserSettings>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1540,73 +1160,12 @@ public class PlansUserSettingsPersistenceImpl extends BasePersistenceImpl<PlansU
                 _log.error(e);
             }
         }
-
-        containsPlanAttributeFilter = new ContainsPlanAttributeFilter();
-
-        containsPlanColumnSettings = new ContainsPlanColumnSettings();
     }
 
     public void destroy() {
         EntityCacheUtil.removeCache(PlansUserSettingsImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    protected class ContainsPlanAttributeFilter {
-        private MappingSqlQuery<Integer> _mappingSqlQuery;
-
-        protected ContainsPlanAttributeFilter() {
-            _mappingSqlQuery = MappingSqlQueryFactoryUtil.getMappingSqlQuery(getDataSource(),
-                    _SQL_CONTAINSPLANATTRIBUTEFILTER,
-                    new int[] { java.sql.Types.BIGINT, java.sql.Types.BIGINT },
-                    RowMapper.COUNT);
-        }
-
-        protected boolean contains(long planUserSettingsId,
-            long planAttributeFilterId) {
-            List<Integer> results = _mappingSqlQuery.execute(new Object[] {
-                        new Long(planUserSettingsId),
-                        new Long(planAttributeFilterId)
-                    });
-
-            if (results.size() > 0) {
-                Integer count = results.get(0);
-
-                if (count.intValue() > 0) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    protected class ContainsPlanColumnSettings {
-        private MappingSqlQuery<Integer> _mappingSqlQuery;
-
-        protected ContainsPlanColumnSettings() {
-            _mappingSqlQuery = MappingSqlQueryFactoryUtil.getMappingSqlQuery(getDataSource(),
-                    _SQL_CONTAINSPLANCOLUMNSETTINGS,
-                    new int[] { java.sql.Types.BIGINT, java.sql.Types.BIGINT },
-                    RowMapper.COUNT);
-        }
-
-        protected boolean contains(long planUserSettingsId,
-            long planColumnSettingsId) {
-            List<Integer> results = _mappingSqlQuery.execute(new Object[] {
-                        new Long(planUserSettingsId),
-                        new Long(planColumnSettingsId)
-                    });
-
-            if (results.size() > 0) {
-                Integer count = results.get(0);
-
-                if (count.intValue() > 0) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

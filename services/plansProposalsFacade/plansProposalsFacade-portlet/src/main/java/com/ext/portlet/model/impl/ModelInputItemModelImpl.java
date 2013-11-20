@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelInputItem service. Represents a row in the &quot;xcolab_ModelInputItem&quot; database table, with each column mapped to a property of this class.
@@ -57,6 +59,8 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputItem (modelInputItemPK LONG not null primary key,modelId LONG,modelInputItemID LONG,modelGroupId LONG,displayItemOrder INTEGER,type_ VARCHAR(256) null,properties VARCHAR(2048) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelInputItem";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelInputItem.modelInputItemPK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelInputItem.modelInputItemPK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -72,10 +76,11 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     public static long MODELGROUPID_COLUMN_BITMASK = 1L;
     public static long MODELID_COLUMN_BITMASK = 2L;
     public static long MODELINPUTITEMID_COLUMN_BITMASK = 4L;
+    public static long MODELINPUTITEMPK_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelInputItem"));
     private static ClassLoader _classLoader = ModelInputItem.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelInputItem.class
         };
     private long _modelInputItemPK;
@@ -91,9 +96,8 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     private int _displayItemOrder;
     private String _type;
     private String _properties;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelInputItem _escapedModelProxy;
+    private ModelInputItem _escapedModel;
 
     public ModelInputItemModelImpl() {
     }
@@ -105,6 +109,10 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
      * @return the normal model instance
      */
     public static ModelInputItem toModel(ModelInputItemSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelInputItem model = new ModelInputItemImpl();
 
         model.setModelInputItemPK(soapModel.getModelInputItemPK());
@@ -125,6 +133,10 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
      * @return the normal model instances
      */
     public static List<ModelInputItem> toModels(ModelInputItemSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelInputItem> models = new ArrayList<ModelInputItem>(soapModels.length);
 
         for (ModelInputItemSoap soapModel : soapModels) {
@@ -134,44 +146,114 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelInputItemPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelInputItemPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelInputItemPK);
+        return _modelInputItemPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelInputItem.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelInputItem.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelInputItemPK", getModelInputItemPK());
+        attributes.put("modelId", getModelId());
+        attributes.put("modelInputItemID", getModelInputItemID());
+        attributes.put("modelGroupId", getModelGroupId());
+        attributes.put("displayItemOrder", getDisplayItemOrder());
+        attributes.put("type", getType());
+        attributes.put("properties", getProperties());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelInputItemPK = (Long) attributes.get("modelInputItemPK");
+
+        if (modelInputItemPK != null) {
+            setModelInputItemPK(modelInputItemPK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Long modelInputItemID = (Long) attributes.get("modelInputItemID");
+
+        if (modelInputItemID != null) {
+            setModelInputItemID(modelInputItemID);
+        }
+
+        Long modelGroupId = (Long) attributes.get("modelGroupId");
+
+        if (modelGroupId != null) {
+            setModelGroupId(modelGroupId);
+        }
+
+        Integer displayItemOrder = (Integer) attributes.get("displayItemOrder");
+
+        if (displayItemOrder != null) {
+            setDisplayItemOrder(displayItemOrder);
+        }
+
+        String type = (String) attributes.get("type");
+
+        if (type != null) {
+            setType(type);
+        }
+
+        String properties = (String) attributes.get("properties");
+
+        if (properties != null) {
+            setProperties(properties);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelInputItemPK() {
         return _modelInputItemPK;
     }
 
+    @Override
     public void setModelInputItemPK(long modelInputItemPK) {
         _modelInputItemPK = modelInputItemPK;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -189,10 +271,12 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     }
 
     @JSON
+    @Override
     public long getModelInputItemID() {
         return _modelInputItemID;
     }
 
+    @Override
     public void setModelInputItemID(long modelInputItemID) {
         _columnBitmask |= MODELINPUTITEMID_COLUMN_BITMASK;
 
@@ -210,10 +294,12 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     }
 
     @JSON
+    @Override
     public long getModelGroupId() {
         return _modelGroupId;
     }
 
+    @Override
     public void setModelGroupId(long modelGroupId) {
         _columnBitmask |= MODELGROUPID_COLUMN_BITMASK;
 
@@ -231,15 +317,18 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     }
 
     @JSON
+    @Override
     public int getDisplayItemOrder() {
         return _displayItemOrder;
     }
 
+    @Override
     public void setDisplayItemOrder(int displayItemOrder) {
         _displayItemOrder = displayItemOrder;
     }
 
     @JSON
+    @Override
     public String getType() {
         if (_type == null) {
             return StringPool.BLANK;
@@ -248,11 +337,13 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         }
     }
 
+    @Override
     public void setType(String type) {
         _type = type;
     }
 
     @JSON
+    @Override
     public String getProperties() {
         if (_properties == null) {
             return StringPool.BLANK;
@@ -261,6 +352,7 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         }
     }
 
+    @Override
     public void setProperties(String properties) {
         _properties = properties;
     }
@@ -270,29 +362,26 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
     }
 
     @Override
-    public ModelInputItem toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelInputItem) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelInputItem.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelInputItem.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelInputItem toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelInputItem) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -312,6 +401,7 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         return modelInputItemImpl;
     }
 
+    @Override
     public int compareTo(ModelInputItem modelInputItem) {
         long primaryKey = modelInputItem.getPrimaryKey();
 
@@ -326,17 +416,15 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelInputItem)) {
             return false;
         }
 
-        ModelInputItem modelInputItem = null;
-
-        try {
-            modelInputItem = (ModelInputItem) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelInputItem modelInputItem = (ModelInputItem) obj;
 
         long primaryKey = modelInputItem.getPrimaryKey();
 
@@ -427,6 +515,7 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

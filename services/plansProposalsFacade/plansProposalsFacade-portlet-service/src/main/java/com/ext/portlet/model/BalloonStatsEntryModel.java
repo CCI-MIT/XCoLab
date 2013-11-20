@@ -144,35 +144,60 @@ public interface BalloonStatsEntryModel extends BaseModel<BalloonStatsEntry> {
      */
     public void setExtraData(String extraData);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(BalloonStatsEntry balloonStatsEntry);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<BalloonStatsEntry> toCacheModel();
 
+    @Override
     public BalloonStatsEntry toEscapedModel();
 
+    @Override
+    public BalloonStatsEntry toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

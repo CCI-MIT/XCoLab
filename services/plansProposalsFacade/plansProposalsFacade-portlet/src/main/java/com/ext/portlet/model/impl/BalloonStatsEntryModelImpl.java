@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the BalloonStatsEntry service. Represents a row in the &quot;xcolab_BalloonStatsEntry&quot; database table, with each column mapped to a property of this class.
@@ -57,6 +59,8 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonStatsEntry (id_ LONG not null primary key,firstContestId LONG,secondContestId LONG,choosenContest INTEGER,cookie VARCHAR(256) null,ip VARCHAR(75) null,extraData VARCHAR(256) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonStatsEntry";
+    public static final String ORDER_BY_JPQL = " ORDER BY balloonStatsEntry.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonStatsEntry.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -70,7 +74,7 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.BalloonStatsEntry"));
     private static ClassLoader _classLoader = BalloonStatsEntry.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             BalloonStatsEntry.class
         };
     private long _id;
@@ -80,8 +84,7 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
     private String _cookie;
     private String _ip;
     private String _extraData;
-    private transient ExpandoBridge _expandoBridge;
-    private BalloonStatsEntry _escapedModelProxy;
+    private BalloonStatsEntry _escapedModel;
 
     public BalloonStatsEntryModelImpl() {
     }
@@ -93,6 +96,10 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
      * @return the normal model instance
      */
     public static BalloonStatsEntry toModel(BalloonStatsEntrySoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         BalloonStatsEntry model = new BalloonStatsEntryImpl();
 
         model.setId(soapModel.getId());
@@ -114,6 +121,10 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
      */
     public static List<BalloonStatsEntry> toModels(
         BalloonStatsEntrySoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<BalloonStatsEntry> models = new ArrayList<BalloonStatsEntry>(soapModels.length);
 
         for (BalloonStatsEntrySoap soapModel : soapModels) {
@@ -123,67 +134,142 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return BalloonStatsEntry.class;
     }
 
+    @Override
     public String getModelClassName() {
         return BalloonStatsEntry.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("firstContestId", getFirstContestId());
+        attributes.put("secondContestId", getSecondContestId());
+        attributes.put("choosenContest", getChoosenContest());
+        attributes.put("cookie", getCookie());
+        attributes.put("ip", getIp());
+        attributes.put("extraData", getExtraData());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long firstContestId = (Long) attributes.get("firstContestId");
+
+        if (firstContestId != null) {
+            setFirstContestId(firstContestId);
+        }
+
+        Long secondContestId = (Long) attributes.get("secondContestId");
+
+        if (secondContestId != null) {
+            setSecondContestId(secondContestId);
+        }
+
+        Integer choosenContest = (Integer) attributes.get("choosenContest");
+
+        if (choosenContest != null) {
+            setChoosenContest(choosenContest);
+        }
+
+        String cookie = (String) attributes.get("cookie");
+
+        if (cookie != null) {
+            setCookie(cookie);
+        }
+
+        String ip = (String) attributes.get("ip");
+
+        if (ip != null) {
+            setIp(ip);
+        }
+
+        String extraData = (String) attributes.get("extraData");
+
+        if (extraData != null) {
+            setExtraData(extraData);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getFirstContestId() {
         return _firstContestId;
     }
 
+    @Override
     public void setFirstContestId(long firstContestId) {
         _firstContestId = firstContestId;
     }
 
     @JSON
+    @Override
     public long getSecondContestId() {
         return _secondContestId;
     }
 
+    @Override
     public void setSecondContestId(long secondContestId) {
         _secondContestId = secondContestId;
     }
 
     @JSON
+    @Override
     public int getChoosenContest() {
         return _choosenContest;
     }
 
+    @Override
     public void setChoosenContest(int choosenContest) {
         _choosenContest = choosenContest;
     }
 
     @JSON
+    @Override
     public String getCookie() {
         if (_cookie == null) {
             return StringPool.BLANK;
@@ -192,11 +278,13 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         }
     }
 
+    @Override
     public void setCookie(String cookie) {
         _cookie = cookie;
     }
 
     @JSON
+    @Override
     public String getIp() {
         if (_ip == null) {
             return StringPool.BLANK;
@@ -205,11 +293,13 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         }
     }
 
+    @Override
     public void setIp(String ip) {
         _ip = ip;
     }
 
     @JSON
+    @Override
     public String getExtraData() {
         if (_extraData == null) {
             return StringPool.BLANK;
@@ -218,34 +308,32 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         }
     }
 
+    @Override
     public void setExtraData(String extraData) {
         _extraData = extraData;
     }
 
     @Override
-    public BalloonStatsEntry toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (BalloonStatsEntry) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    BalloonStatsEntry.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            BalloonStatsEntry.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public BalloonStatsEntry toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (BalloonStatsEntry) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -265,6 +353,7 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         return balloonStatsEntryImpl;
     }
 
+    @Override
     public int compareTo(BalloonStatsEntry balloonStatsEntry) {
         long primaryKey = balloonStatsEntry.getPrimaryKey();
 
@@ -279,17 +368,15 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof BalloonStatsEntry)) {
             return false;
         }
 
-        BalloonStatsEntry balloonStatsEntry = null;
-
-        try {
-            balloonStatsEntry = (BalloonStatsEntry) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        BalloonStatsEntry balloonStatsEntry = (BalloonStatsEntry) obj;
 
         long primaryKey = balloonStatsEntry.getPrimaryKey();
 
@@ -371,6 +458,7 @@ public class BalloonStatsEntryModelImpl extends BaseModelImpl<BalloonStatsEntry>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

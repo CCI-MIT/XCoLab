@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl;
 import com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -24,64 +25,10 @@ import com.ext.portlet.service.persistence.FocusAreaPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +48,10 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -139,6 +85,18 @@ public class MessagingIgnoredRecipientsPersistenceImpl
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
+            MessagingIgnoredRecipientsImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
+            MessagingIgnoredRecipientsImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
+            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+            new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_FINDBYEMAIL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
             MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
             MessagingIgnoredRecipientsImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -148,6 +106,9 @@ public class MessagingIgnoredRecipientsPersistenceImpl
             MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
             Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByfindByEmail", new String[] { String.class.getName() });
+    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_1 = "messagingIgnoredRecipients.email IS NULL";
+    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_2 = "messagingIgnoredRecipients.email = ?";
+    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_3 = "(messagingIgnoredRecipients.email IS NULL OR messagingIgnoredRecipients.email = '')";
     public static final FinderPath FINDER_PATH_FETCH_BY_FINDBYUSERID = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
             MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
             MessagingIgnoredRecipientsImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -157,26 +118,11 @@ public class MessagingIgnoredRecipientsPersistenceImpl
             MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
             Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByfindByUserId", new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
-            MessagingIgnoredRecipientsImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
-            MessagingIgnoredRecipientsImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingIgnoredRecipientsModelImpl.FINDER_CACHE_ENABLED,
-            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-            new String[0]);
+    private static final String _FINDER_COLUMN_FINDBYUSERID_USERID_2 = "messagingIgnoredRecipients.userId = ?";
     private static final String _SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS = "SELECT messagingIgnoredRecipients FROM MessagingIgnoredRecipients messagingIgnoredRecipients";
     private static final String _SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS_WHERE = "SELECT messagingIgnoredRecipients FROM MessagingIgnoredRecipients messagingIgnoredRecipients WHERE ";
     private static final String _SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS = "SELECT COUNT(messagingIgnoredRecipients) FROM MessagingIgnoredRecipients messagingIgnoredRecipients";
     private static final String _SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS_WHERE = "SELECT COUNT(messagingIgnoredRecipients) FROM MessagingIgnoredRecipients messagingIgnoredRecipients WHERE ";
-    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_1 = "messagingIgnoredRecipients.email IS NULL";
-    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_2 = "messagingIgnoredRecipients.email = ?";
-    private static final String _FINDER_COLUMN_FINDBYEMAIL_EMAIL_3 = "(messagingIgnoredRecipients.email IS NULL OR messagingIgnoredRecipients.email = ?)";
-    private static final String _FINDER_COLUMN_FINDBYUSERID_USERID_2 = "messagingIgnoredRecipients.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "messagingIgnoredRecipients.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MessagingIgnoredRecipients exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MessagingIgnoredRecipients exists with the key {";
@@ -197,11 +143,13 @@ public class MessagingIgnoredRecipientsPersistenceImpl
 
     private static CacheModel<MessagingIgnoredRecipients> _nullMessagingIgnoredRecipientsCacheModel =
         new CacheModel<MessagingIgnoredRecipients>() {
+            @Override
             public MessagingIgnoredRecipients toEntityModel() {
                 return _nullMessagingIgnoredRecipients;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -356,12 +304,445 @@ public class MessagingIgnoredRecipientsPersistenceImpl
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public MessagingIgnoredRecipientsPersistenceImpl() {
+        setModelClass(MessagingIgnoredRecipients.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+
+    /**
+     * Returns the messaging ignored recipients where email = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
+     *
+     * @param email the email
+     * @return the matching messaging ignored recipients
+     * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients findByfindByEmail(String email)
+        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
+        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByfindByEmail(email);
+
+        if (messagingIgnoredRecipients == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("email=");
+            msg.append(email);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchMessagingIgnoredRecipientsException(msg.toString());
+        }
+
+        return messagingIgnoredRecipients;
+    }
+
+    /**
+     * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param email the email
+     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients fetchByfindByEmail(String email)
+        throws SystemException {
+        return fetchByfindByEmail(email, true);
+    }
+
+    /**
+     * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param email the email
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients fetchByfindByEmail(String email,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { email };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
+                    finderArgs, this);
+        }
+
+        if (result instanceof MessagingIgnoredRecipients) {
+            MessagingIgnoredRecipients messagingIgnoredRecipients = (MessagingIgnoredRecipients) result;
+
+            if (!Validator.equals(email, messagingIgnoredRecipients.getEmail())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
+
+            boolean bindEmail = false;
+
+            if (email == null) {
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_1);
+            } else if (email.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_3);
+            } else {
+                bindEmail = true;
+
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindEmail) {
+                    qPos.add(email);
+                }
+
+                List<MessagingIgnoredRecipients> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "MessagingIgnoredRecipientsPersistenceImpl.fetchByfindByEmail(String, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    MessagingIgnoredRecipients messagingIgnoredRecipients = list.get(0);
+
+                    result = messagingIgnoredRecipients;
+
+                    cacheResult(messagingIgnoredRecipients);
+
+                    if ((messagingIgnoredRecipients.getEmail() == null) ||
+                            !messagingIgnoredRecipients.getEmail().equals(email)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
+                            finderArgs, messagingIgnoredRecipients);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (MessagingIgnoredRecipients) result;
+        }
+    }
+
+    /**
+     * Removes the messaging ignored recipients where email = &#63; from the database.
+     *
+     * @param email the email
+     * @return the messaging ignored recipients that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients removeByfindByEmail(String email)
+        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
+        MessagingIgnoredRecipients messagingIgnoredRecipients = findByfindByEmail(email);
+
+        return remove(messagingIgnoredRecipients);
+    }
+
+    /**
+     * Returns the number of messaging ignored recipientses where email = &#63;.
+     *
+     * @param email the email
+     * @return the number of matching messaging ignored recipientses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByfindByEmail(String email) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_FINDBYEMAIL;
+
+        Object[] finderArgs = new Object[] { email };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
+
+            boolean bindEmail = false;
+
+            if (email == null) {
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_1);
+            } else if (email.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_3);
+            } else {
+                bindEmail = true;
+
+                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindEmail) {
+                    qPos.add(email);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Returns the messaging ignored recipients where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
+     *
+     * @param userId the user ID
+     * @return the matching messaging ignored recipients
+     * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients findByfindByUserId(long userId)
+        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
+        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByfindByUserId(userId);
+
+        if (messagingIgnoredRecipients == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("userId=");
+            msg.append(userId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchMessagingIgnoredRecipientsException(msg.toString());
+        }
+
+        return messagingIgnoredRecipients;
+    }
+
+    /**
+     * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param userId the user ID
+     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients fetchByfindByUserId(long userId)
+        throws SystemException {
+        return fetchByfindByUserId(userId, true);
+    }
+
+    /**
+     * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param userId the user ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients fetchByfindByUserId(long userId,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { userId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof MessagingIgnoredRecipients) {
+            MessagingIgnoredRecipients messagingIgnoredRecipients = (MessagingIgnoredRecipients) result;
+
+            if ((userId != messagingIgnoredRecipients.getUserId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
+
+            query.append(_FINDER_COLUMN_FINDBYUSERID_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                List<MessagingIgnoredRecipients> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "MessagingIgnoredRecipientsPersistenceImpl.fetchByfindByUserId(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    MessagingIgnoredRecipients messagingIgnoredRecipients = list.get(0);
+
+                    result = messagingIgnoredRecipients;
+
+                    cacheResult(messagingIgnoredRecipients);
+
+                    if ((messagingIgnoredRecipients.getUserId() != userId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
+                            finderArgs, messagingIgnoredRecipients);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (MessagingIgnoredRecipients) result;
+        }
+    }
+
+    /**
+     * Removes the messaging ignored recipients where userId = &#63; from the database.
+     *
+     * @param userId the user ID
+     * @return the messaging ignored recipients that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingIgnoredRecipients removeByfindByUserId(long userId)
+        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
+        MessagingIgnoredRecipients messagingIgnoredRecipients = findByfindByUserId(userId);
+
+        return remove(messagingIgnoredRecipients);
+    }
+
+    /**
+     * Returns the number of messaging ignored recipientses where userId = &#63;.
+     *
+     * @param userId the user ID
+     * @return the number of matching messaging ignored recipientses
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByfindByUserId(long userId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_FINDBYUSERID;
+
+        Object[] finderArgs = new Object[] { userId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
+
+            query.append(_FINDER_COLUMN_FINDBYUSERID_USERID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(userId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
 
     /**
      * Caches the messaging ignored recipients in the entity cache if it is enabled.
      *
      * @param messagingIgnoredRecipients the messaging ignored recipients
      */
+    @Override
     public void cacheResult(
         MessagingIgnoredRecipients messagingIgnoredRecipients) {
         EntityCacheUtil.putResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
@@ -374,7 +755,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
             messagingIgnoredRecipients);
 
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-            new Object[] { Long.valueOf(messagingIgnoredRecipients.getUserId()) },
+            new Object[] { messagingIgnoredRecipients.getUserId() },
             messagingIgnoredRecipients);
 
         messagingIgnoredRecipients.resetOriginalValues();
@@ -385,6 +766,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      *
      * @param messagingIgnoredRecipientses the messaging ignored recipientses
      */
+    @Override
     public void cacheResult(
         List<MessagingIgnoredRecipients> messagingIgnoredRecipientses) {
         for (MessagingIgnoredRecipients messagingIgnoredRecipients : messagingIgnoredRecipientses) {
@@ -454,13 +836,85 @@ public class MessagingIgnoredRecipientsPersistenceImpl
         }
     }
 
+    protected void cacheUniqueFindersCache(
+        MessagingIgnoredRecipients messagingIgnoredRecipients) {
+        if (messagingIgnoredRecipients.isNew()) {
+            Object[] args = new Object[] { messagingIgnoredRecipients.getEmail() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL, args,
+                messagingIgnoredRecipients);
+
+            args = new Object[] { messagingIgnoredRecipients.getUserId() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYUSERID, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID, args,
+                messagingIgnoredRecipients);
+        } else {
+            MessagingIgnoredRecipientsModelImpl messagingIgnoredRecipientsModelImpl =
+                (MessagingIgnoredRecipientsModelImpl) messagingIgnoredRecipients;
+
+            if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_FINDBYEMAIL.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        messagingIgnoredRecipients.getEmail()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
+                    args, messagingIgnoredRecipients);
+            }
+
+            if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_FINDBYUSERID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        messagingIgnoredRecipients.getUserId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYUSERID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
+                    args, messagingIgnoredRecipients);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(
         MessagingIgnoredRecipients messagingIgnoredRecipients) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-            new Object[] { messagingIgnoredRecipients.getEmail() });
+        MessagingIgnoredRecipientsModelImpl messagingIgnoredRecipientsModelImpl = (MessagingIgnoredRecipientsModelImpl) messagingIgnoredRecipients;
 
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-            new Object[] { Long.valueOf(messagingIgnoredRecipients.getUserId()) });
+        Object[] args = new Object[] { messagingIgnoredRecipients.getEmail() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL, args);
+
+        if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_FINDBYEMAIL.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    messagingIgnoredRecipientsModelImpl.getOriginalEmail()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL, args);
+        }
+
+        args = new Object[] { messagingIgnoredRecipients.getUserId() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYUSERID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID, args);
+
+        if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_FINDBYUSERID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    messagingIgnoredRecipientsModelImpl.getOriginalUserId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYUSERID, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID, args);
+        }
     }
 
     /**
@@ -469,6 +923,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @param ignoredRecipientId the primary key for the new messaging ignored recipients
      * @return the new messaging ignored recipients
      */
+    @Override
     public MessagingIgnoredRecipients create(long ignoredRecipientId) {
         MessagingIgnoredRecipients messagingIgnoredRecipients = new MessagingIgnoredRecipientsImpl();
 
@@ -486,9 +941,10 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a messaging ignored recipients with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingIgnoredRecipients remove(long ignoredRecipientId)
         throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        return remove(Long.valueOf(ignoredRecipientId));
+        return remove((Serializable) ignoredRecipientId);
     }
 
     /**
@@ -540,36 +996,47 @@ public class MessagingIgnoredRecipientsPersistenceImpl
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, messagingIgnoredRecipients);
+            if (!session.contains(messagingIgnoredRecipients)) {
+                messagingIgnoredRecipients = (MessagingIgnoredRecipients) session.get(MessagingIgnoredRecipientsImpl.class,
+                        messagingIgnoredRecipients.getPrimaryKeyObj());
+            }
+
+            if (messagingIgnoredRecipients != null) {
+                session.delete(messagingIgnoredRecipients);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(messagingIgnoredRecipients);
+        if (messagingIgnoredRecipients != null) {
+            clearCache(messagingIgnoredRecipients);
+        }
 
         return messagingIgnoredRecipients;
     }
 
     @Override
     public MessagingIgnoredRecipients updateImpl(
-        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients)
+        throws SystemException {
         messagingIgnoredRecipients = toUnwrappedModel(messagingIgnoredRecipients);
 
         boolean isNew = messagingIgnoredRecipients.isNew();
-
-        MessagingIgnoredRecipientsModelImpl messagingIgnoredRecipientsModelImpl = (MessagingIgnoredRecipientsModelImpl) messagingIgnoredRecipients;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, messagingIgnoredRecipients, merge);
+            if (messagingIgnoredRecipients.isNew()) {
+                session.save(messagingIgnoredRecipients);
 
-            messagingIgnoredRecipients.setNew(false);
+                messagingIgnoredRecipients.setNew(false);
+            } else {
+                session.merge(messagingIgnoredRecipients);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -588,49 +1055,8 @@ public class MessagingIgnoredRecipientsPersistenceImpl
             messagingIgnoredRecipients.getPrimaryKey(),
             messagingIgnoredRecipients);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                new Object[] { messagingIgnoredRecipients.getEmail() },
-                messagingIgnoredRecipients);
-
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                new Object[] {
-                    Long.valueOf(messagingIgnoredRecipients.getUserId())
-                }, messagingIgnoredRecipients);
-        } else {
-            if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_FINDBYEMAIL.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        messagingIgnoredRecipientsModelImpl.getOriginalEmail()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                    new Object[] { messagingIgnoredRecipients.getEmail() },
-                    messagingIgnoredRecipients);
-            }
-
-            if ((messagingIgnoredRecipientsModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_FINDBYUSERID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(messagingIgnoredRecipientsModelImpl.getOriginalUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYUSERID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                    new Object[] {
-                        Long.valueOf(messagingIgnoredRecipients.getUserId())
-                    }, messagingIgnoredRecipients);
-            }
-        }
+        clearUniqueFindersCache(messagingIgnoredRecipients);
+        cacheUniqueFindersCache(messagingIgnoredRecipients);
 
         return messagingIgnoredRecipients;
     }
@@ -660,13 +1086,24 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      *
      * @param primaryKey the primary key of the messaging ignored recipients
      * @return the messaging ignored recipients
-     * @throws com.liferay.portal.NoSuchModelException if a messaging ignored recipients with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a messaging ignored recipients with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingIgnoredRecipients findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
+        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByPrimaryKey(primaryKey);
+
+        if (messagingIgnoredRecipients == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchMessagingIgnoredRecipientsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return messagingIgnoredRecipients;
     }
 
     /**
@@ -677,21 +1114,10 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a messaging ignored recipients with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingIgnoredRecipients findByPrimaryKey(long ignoredRecipientId)
         throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByPrimaryKey(ignoredRecipientId);
-
-        if (messagingIgnoredRecipients == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    ignoredRecipientId);
-            }
-
-            throw new NoSuchMessagingIgnoredRecipientsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                ignoredRecipientId);
-        }
-
-        return messagingIgnoredRecipients;
+        return findByPrimaryKey((Serializable) ignoredRecipientId);
     }
 
     /**
@@ -704,7 +1130,40 @@ public class MessagingIgnoredRecipientsPersistenceImpl
     @Override
     public MessagingIgnoredRecipients fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        MessagingIgnoredRecipients messagingIgnoredRecipients = (MessagingIgnoredRecipients) EntityCacheUtil.getResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+                MessagingIgnoredRecipientsImpl.class, primaryKey);
+
+        if (messagingIgnoredRecipients == _nullMessagingIgnoredRecipients) {
+            return null;
+        }
+
+        if (messagingIgnoredRecipients == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                messagingIgnoredRecipients = (MessagingIgnoredRecipients) session.get(MessagingIgnoredRecipientsImpl.class,
+                        primaryKey);
+
+                if (messagingIgnoredRecipients != null) {
+                    cacheResult(messagingIgnoredRecipients);
+                } else {
+                    EntityCacheUtil.putResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+                        MessagingIgnoredRecipientsImpl.class, primaryKey,
+                        _nullMessagingIgnoredRecipients);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
+                    MessagingIgnoredRecipientsImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return messagingIgnoredRecipients;
     }
 
     /**
@@ -714,304 +1173,10 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @return the messaging ignored recipients, or <code>null</code> if a messaging ignored recipients with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingIgnoredRecipients fetchByPrimaryKey(long ignoredRecipientId)
         throws SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = (MessagingIgnoredRecipients) EntityCacheUtil.getResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
-                MessagingIgnoredRecipientsImpl.class, ignoredRecipientId);
-
-        if (messagingIgnoredRecipients == _nullMessagingIgnoredRecipients) {
-            return null;
-        }
-
-        if (messagingIgnoredRecipients == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                messagingIgnoredRecipients = (MessagingIgnoredRecipients) session.get(MessagingIgnoredRecipientsImpl.class,
-                        Long.valueOf(ignoredRecipientId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (messagingIgnoredRecipients != null) {
-                    cacheResult(messagingIgnoredRecipients);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(MessagingIgnoredRecipientsModelImpl.ENTITY_CACHE_ENABLED,
-                        MessagingIgnoredRecipientsImpl.class,
-                        ignoredRecipientId, _nullMessagingIgnoredRecipients);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return messagingIgnoredRecipients;
-    }
-
-    /**
-     * Returns the messaging ignored recipients where email = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
-     *
-     * @param email the email
-     * @return the matching messaging ignored recipients
-     * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients findByfindByEmail(String email)
-        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByfindByEmail(email);
-
-        if (messagingIgnoredRecipients == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("email=");
-            msg.append(email);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchMessagingIgnoredRecipientsException(msg.toString());
-        }
-
-        return messagingIgnoredRecipients;
-    }
-
-    /**
-     * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param email the email
-     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients fetchByfindByEmail(String email)
-        throws SystemException {
-        return fetchByfindByEmail(email, true);
-    }
-
-    /**
-     * Returns the messaging ignored recipients where email = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param email the email
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients fetchByfindByEmail(String email,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { email };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
-
-            if (email == null) {
-                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_1);
-            } else {
-                if (email.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_3);
-                } else {
-                    query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_2);
-                }
-            }
-
-            query.append(MessagingIgnoredRecipientsModelImpl.ORDER_BY_JPQL);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (email != null) {
-                    qPos.add(email);
-                }
-
-                List<MessagingIgnoredRecipients> list = q.list();
-
-                result = list;
-
-                MessagingIgnoredRecipients messagingIgnoredRecipients = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                        finderArgs, list);
-                } else {
-                    messagingIgnoredRecipients = list.get(0);
-
-                    cacheResult(messagingIgnoredRecipients);
-
-                    if ((messagingIgnoredRecipients.getEmail() == null) ||
-                            !messagingIgnoredRecipients.getEmail().equals(email)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                            finderArgs, messagingIgnoredRecipients);
-                    }
-                }
-
-                return messagingIgnoredRecipients;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYEMAIL,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (MessagingIgnoredRecipients) result;
-            }
-        }
-    }
-
-    /**
-     * Returns the messaging ignored recipients where userId = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingIgnoredRecipientsException} if it could not be found.
-     *
-     * @param userId the user ID
-     * @return the matching messaging ignored recipients
-     * @throws com.ext.portlet.NoSuchMessagingIgnoredRecipientsException if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients findByfindByUserId(long userId)
-        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = fetchByfindByUserId(userId);
-
-        if (messagingIgnoredRecipients == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchMessagingIgnoredRecipientsException(msg.toString());
-        }
-
-        return messagingIgnoredRecipients;
-    }
-
-    /**
-     * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param userId the user ID
-     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients fetchByfindByUserId(long userId)
-        throws SystemException {
-        return fetchByfindByUserId(userId, true);
-    }
-
-    /**
-     * Returns the messaging ignored recipients where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param userId the user ID
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching messaging ignored recipients, or <code>null</code> if a matching messaging ignored recipients could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingIgnoredRecipients fetchByfindByUserId(long userId,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { userId };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
-
-            query.append(_FINDER_COLUMN_FINDBYUSERID_USERID_2);
-
-            query.append(MessagingIgnoredRecipientsModelImpl.ORDER_BY_JPQL);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                List<MessagingIgnoredRecipients> list = q.list();
-
-                result = list;
-
-                MessagingIgnoredRecipients messagingIgnoredRecipients = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                        finderArgs, list);
-                } else {
-                    messagingIgnoredRecipients = list.get(0);
-
-                    cacheResult(messagingIgnoredRecipients);
-
-                    if ((messagingIgnoredRecipients.getUserId() != userId)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                            finderArgs, messagingIgnoredRecipients);
-                    }
-                }
-
-                return messagingIgnoredRecipients;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYUSERID,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (MessagingIgnoredRecipients) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) ignoredRecipientId);
     }
 
     /**
@@ -1020,6 +1185,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @return the messaging ignored recipientses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingIgnoredRecipients> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1028,7 +1194,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * Returns a range of all the messaging ignored recipientses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging ignored recipientses
@@ -1036,6 +1202,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @return the range of messaging ignored recipientses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingIgnoredRecipients> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -1045,7 +1212,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * Returns an ordered range of all the messaging ignored recipientses.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging ignored recipientses
@@ -1054,17 +1221,20 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @return the ordered range of messaging ignored recipientses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingIgnoredRecipients> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -1086,7 +1256,11 @@ public class MessagingIgnoredRecipientsPersistenceImpl
 
                 sql = query.toString();
             } else {
-                sql = _SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS.concat(MessagingIgnoredRecipientsModelImpl.ORDER_BY_JPQL);
+                sql = _SQL_SELECT_MESSAGINGIGNOREDRECIPIENTS;
+
+                if (pagination) {
+                    sql = sql.concat(MessagingIgnoredRecipientsModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -1096,26 +1270,26 @@ public class MessagingIgnoredRecipientsPersistenceImpl
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<MessagingIgnoredRecipients>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<MessagingIgnoredRecipients>(list);
                 } else {
                     list = (List<MessagingIgnoredRecipients>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -1124,152 +1298,15 @@ public class MessagingIgnoredRecipientsPersistenceImpl
     }
 
     /**
-     * Removes the messaging ignored recipients where email = &#63; from the database.
-     *
-     * @param email the email
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByfindByEmail(String email)
-        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = findByfindByEmail(email);
-
-        remove(messagingIgnoredRecipients);
-    }
-
-    /**
-     * Removes the messaging ignored recipients where userId = &#63; from the database.
-     *
-     * @param userId the user ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByfindByUserId(long userId)
-        throws NoSuchMessagingIgnoredRecipientsException, SystemException {
-        MessagingIgnoredRecipients messagingIgnoredRecipients = findByfindByUserId(userId);
-
-        remove(messagingIgnoredRecipients);
-    }
-
-    /**
      * Removes all the messaging ignored recipientses from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (MessagingIgnoredRecipients messagingIgnoredRecipients : findAll()) {
             remove(messagingIgnoredRecipients);
         }
-    }
-
-    /**
-     * Returns the number of messaging ignored recipientses where email = &#63;.
-     *
-     * @param email the email
-     * @return the number of matching messaging ignored recipientses
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByfindByEmail(String email) throws SystemException {
-        Object[] finderArgs = new Object[] { email };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
-
-            if (email == null) {
-                query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_1);
-            } else {
-                if (email.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_3);
-                } else {
-                    query.append(_FINDER_COLUMN_FINDBYEMAIL_EMAIL_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (email != null) {
-                    qPos.add(email);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYEMAIL,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of messaging ignored recipientses where userId = &#63;.
-     *
-     * @param userId the user ID
-     * @return the number of matching messaging ignored recipientses
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByfindByUserId(long userId) throws SystemException {
-        Object[] finderArgs = new Object[] { userId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_FINDBYUSERID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS_WHERE);
-
-            query.append(_FINDER_COLUMN_FINDBYUSERID_USERID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(userId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYUSERID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1278,6 +1315,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
      * @return the number of messaging ignored recipientses
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1291,16 +1329,15 @@ public class MessagingIgnoredRecipientsPersistenceImpl
                 Query q = session.createQuery(_SQL_COUNT_MESSAGINGIGNOREDRECIPIENTS);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1322,7 +1359,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<MessagingIgnoredRecipients>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1335,6 +1372,7 @@ public class MessagingIgnoredRecipientsPersistenceImpl
     public void destroy() {
         EntityCacheUtil.removeCache(MessagingIgnoredRecipientsImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

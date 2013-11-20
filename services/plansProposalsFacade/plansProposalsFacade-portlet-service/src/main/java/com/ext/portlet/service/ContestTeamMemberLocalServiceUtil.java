@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the contest team member local service. This utility wraps {@link com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for ContestTeamMember. This utility wraps
+ * {@link com.ext.portlet.service.impl.ContestTeamMemberLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see ContestTeamMemberLocalService
@@ -55,25 +55,32 @@ public class ContestTeamMemberLocalServiceUtil {
     * Deletes the contest team member with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the contest team member
+    * @return the contest team member that was removed
     * @throws PortalException if a contest team member with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteContestTeamMember(long id)
+    public static com.ext.portlet.model.ContestTeamMember deleteContestTeamMember(
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteContestTeamMember(id);
+        return getService().deleteContestTeamMember(id);
     }
 
     /**
     * Deletes the contest team member from the database. Also notifies the appropriate model listeners.
     *
     * @param contestTeamMember the contest team member
+    * @return the contest team member that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteContestTeamMember(
+    public static com.ext.portlet.model.ContestTeamMember deleteContestTeamMember(
         com.ext.portlet.model.ContestTeamMember contestTeamMember)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteContestTeamMember(contestTeamMember);
+        return getService().deleteContestTeamMember(contestTeamMember);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -94,7 +101,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,7 +121,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -145,6 +152,21 @@ public class ContestTeamMemberLocalServiceUtil {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().dynamicQueryCount(dynamicQuery);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
     }
 
     public static com.ext.portlet.model.ContestTeamMember fetchContestTeamMember(
@@ -178,7 +200,7 @@ public class ContestTeamMemberLocalServiceUtil {
     * Returns a range of all the contest team members.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest team members
@@ -217,20 +239,6 @@ public class ContestTeamMemberLocalServiceUtil {
     }
 
     /**
-    * Updates the contest team member in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param contestTeamMember the contest team member
-    * @param merge whether to merge the contest team member with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the contest team member that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestTeamMember updateContestTeamMember(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().updateContestTeamMember(contestTeamMember, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -246,6 +254,12 @@ public class ContestTeamMemberLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
     public static com.ext.portlet.model.ContestTeamMember addContestTeamMember(
@@ -292,34 +306,25 @@ public class ContestTeamMemberLocalServiceUtil {
 
     public static ContestTeamMemberLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     ContestTeamMemberLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    ContestTeamMemberLocalService.class.getName(),
-                    portletClassLoader);
-
-            _service = new ContestTeamMemberLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof ContestTeamMemberLocalService) {
+                _service = (ContestTeamMemberLocalService) invokableLocalService;
+            } else {
+                _service = new ContestTeamMemberLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(ContestTeamMemberLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(ContestTeamMemberLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(ContestTeamMemberLocalService service) {
-        MethodCache.remove(ContestTeamMemberLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(ContestTeamMemberLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(ContestTeamMemberLocalService.class);
     }
 }

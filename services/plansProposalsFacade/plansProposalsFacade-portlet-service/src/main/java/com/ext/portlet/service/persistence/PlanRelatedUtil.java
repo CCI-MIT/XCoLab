@@ -49,7 +49,7 @@ public class PlanRelatedUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,184 @@ public class PlanRelatedUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlanRelated update(PlanRelated planRelated, boolean merge)
+    public static PlanRelated update(PlanRelated planRelated)
         throws SystemException {
-        return getPersistence().update(planRelated, merge);
+        return getPersistence().update(planRelated);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
-    public static PlanRelated update(PlanRelated planRelated, boolean merge,
+    public static PlanRelated update(PlanRelated planRelated,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planRelated, merge, serviceContext);
+        return getPersistence().update(planRelated, serviceContext);
+    }
+
+    /**
+    * Returns all the plan relateds where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @return the matching plan relateds
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
+        long relatedPlanId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPlanId(relatedPlanId);
+    }
+
+    /**
+    * Returns a range of all the plan relateds where relatedPlanId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanRelatedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param relatedPlanId the related plan ID
+    * @param start the lower bound of the range of plan relateds
+    * @param end the upper bound of the range of plan relateds (not inclusive)
+    * @return the range of matching plan relateds
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
+        long relatedPlanId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPlanId(relatedPlanId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the plan relateds where relatedPlanId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanRelatedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param relatedPlanId the related plan ID
+    * @param start the lower bound of the range of plan relateds
+    * @param end the upper bound of the range of plan relateds (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching plan relateds
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
+        long relatedPlanId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPlanId(relatedPlanId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan related in the ordered set where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan related
+    * @throws com.ext.portlet.NoSuchPlanRelatedException if a matching plan related could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanRelated findByPlanId_First(
+        long relatedPlanId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanRelatedException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPlanId_First(relatedPlanId, orderByComparator);
+    }
+
+    /**
+    * Returns the first plan related in the ordered set where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan related, or <code>null</code> if a matching plan related could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanRelated fetchByPlanId_First(
+        long relatedPlanId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByPlanId_First(relatedPlanId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan related in the ordered set where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan related
+    * @throws com.ext.portlet.NoSuchPlanRelatedException if a matching plan related could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanRelated findByPlanId_Last(
+        long relatedPlanId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanRelatedException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPlanId_Last(relatedPlanId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan related in the ordered set where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan related, or <code>null</code> if a matching plan related could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanRelated fetchByPlanId_Last(
+        long relatedPlanId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByPlanId_Last(relatedPlanId, orderByComparator);
+    }
+
+    /**
+    * Returns the plan relateds before and after the current plan related in the ordered set where relatedPlanId = &#63;.
+    *
+    * @param planRelatedPK the primary key of the current plan related
+    * @param relatedPlanId the related plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next plan related
+    * @throws com.ext.portlet.NoSuchPlanRelatedException if a plan related with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanRelated[] findByPlanId_PrevAndNext(
+        PlanRelatedPK planRelatedPK, long relatedPlanId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchPlanRelatedException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByPlanId_PrevAndNext(planRelatedPK, relatedPlanId,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the plan relateds where relatedPlanId = &#63; from the database.
+    *
+    * @param relatedPlanId the related plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByPlanId(long relatedPlanId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByPlanId(relatedPlanId);
+    }
+
+    /**
+    * Returns the number of plan relateds where relatedPlanId = &#63;.
+    *
+    * @param relatedPlanId the related plan ID
+    * @return the number of matching plan relateds
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanId(long relatedPlanId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByPlanId(relatedPlanId);
     }
 
     /**
@@ -145,9 +310,9 @@ public class PlanRelatedUtil {
     }
 
     public static com.ext.portlet.model.PlanRelated updateImpl(
-        com.ext.portlet.model.PlanRelated planRelated, boolean merge)
+        com.ext.portlet.model.PlanRelated planRelated)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planRelated, merge);
+        return getPersistence().updateImpl(planRelated);
     }
 
     /**
@@ -179,128 +344,6 @@ public class PlanRelatedUtil {
     }
 
     /**
-    * Returns all the plan relateds where relatedPlanId = &#63;.
-    *
-    * @param relatedPlanId the related plan ID
-    * @return the matching plan relateds
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
-        long relatedPlanId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPlanId(relatedPlanId);
-    }
-
-    /**
-    * Returns a range of all the plan relateds where relatedPlanId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param relatedPlanId the related plan ID
-    * @param start the lower bound of the range of plan relateds
-    * @param end the upper bound of the range of plan relateds (not inclusive)
-    * @return the range of matching plan relateds
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
-        long relatedPlanId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPlanId(relatedPlanId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan relateds where relatedPlanId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param relatedPlanId the related plan ID
-    * @param start the lower bound of the range of plan relateds
-    * @param end the upper bound of the range of plan relateds (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching plan relateds
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanRelated> findByPlanId(
-        long relatedPlanId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByPlanId(relatedPlanId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first plan related in the ordered set where relatedPlanId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param relatedPlanId the related plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching plan related
-    * @throws com.ext.portlet.NoSuchPlanRelatedException if a matching plan related could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanRelated findByPlanId_First(
-        long relatedPlanId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanRelatedException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByPlanId_First(relatedPlanId, orderByComparator);
-    }
-
-    /**
-    * Returns the last plan related in the ordered set where relatedPlanId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param relatedPlanId the related plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching plan related
-    * @throws com.ext.portlet.NoSuchPlanRelatedException if a matching plan related could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanRelated findByPlanId_Last(
-        long relatedPlanId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanRelatedException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByPlanId_Last(relatedPlanId, orderByComparator);
-    }
-
-    /**
-    * Returns the plan relateds before and after the current plan related in the ordered set where relatedPlanId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param planRelatedPK the primary key of the current plan related
-    * @param relatedPlanId the related plan ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next plan related
-    * @throws com.ext.portlet.NoSuchPlanRelatedException if a plan related with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanRelated[] findByPlanId_PrevAndNext(
-        PlanRelatedPK planRelatedPK, long relatedPlanId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchPlanRelatedException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByPlanId_PrevAndNext(planRelatedPK, relatedPlanId,
-            orderByComparator);
-    }
-
-    /**
     * Returns all the plan relateds.
     *
     * @return the plan relateds
@@ -315,7 +358,7 @@ public class PlanRelatedUtil {
     * Returns a range of all the plan relateds.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanRelatedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan relateds
@@ -333,7 +376,7 @@ public class PlanRelatedUtil {
     * Returns an ordered range of all the plan relateds.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanRelatedModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan relateds
@@ -350,17 +393,6 @@ public class PlanRelatedUtil {
     }
 
     /**
-    * Removes all the plan relateds where relatedPlanId = &#63; from the database.
-    *
-    * @param relatedPlanId the related plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanId(long relatedPlanId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByPlanId(relatedPlanId);
-    }
-
-    /**
     * Removes all the plan relateds from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -368,18 +400,6 @@ public class PlanRelatedUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan relateds where relatedPlanId = &#63;.
-    *
-    * @param relatedPlanId the related plan ID
-    * @return the number of matching plan relateds
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanId(long relatedPlanId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByPlanId(relatedPlanId);
     }
 
     /**
@@ -405,10 +425,9 @@ public class PlanRelatedUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanRelatedPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanRelatedUtil.class,
-            "_persistence");
     }
 }

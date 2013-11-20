@@ -49,7 +49,7 @@ public class ModelDiscussionUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,345 @@ public class ModelDiscussionUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ModelDiscussion update(ModelDiscussion modelDiscussion,
-        boolean merge) throws SystemException {
-        return getPersistence().update(modelDiscussion, merge);
+    public static ModelDiscussion update(ModelDiscussion modelDiscussion)
+        throws SystemException {
+        return getPersistence().update(modelDiscussion);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ModelDiscussion update(ModelDiscussion modelDiscussion,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(modelDiscussion, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(modelDiscussion, serviceContext);
+    }
+
+    /**
+    * Returns all the model discussions where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @return the matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelId(modelId);
+    }
+
+    /**
+    * Returns a range of all the model discussions where modelId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelId the model ID
+    * @param start the lower bound of the range of model discussions
+    * @param end the upper bound of the range of model discussions (not inclusive)
+    * @return the range of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
+        long modelId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelId(modelId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the model discussions where modelId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelId the model ID
+    * @param start the lower bound of the range of model discussions
+    * @param end the upper bound of the range of model discussions (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
+        long modelId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelId(modelId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first model discussion in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion findByModelId_First(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelId_First(modelId, orderByComparator);
+    }
+
+    /**
+    * Returns the first model discussion in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model discussion, or <code>null</code> if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion fetchByModelId_First(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByModelId_First(modelId, orderByComparator);
+    }
+
+    /**
+    * Returns the last model discussion in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion findByModelId_Last(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelId_Last(modelId, orderByComparator);
+    }
+
+    /**
+    * Returns the last model discussion in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model discussion, or <code>null</code> if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion fetchByModelId_Last(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByModelId_Last(modelId, orderByComparator);
+    }
+
+    /**
+    * Returns the model discussions before and after the current model discussion in the ordered set where modelId = &#63;.
+    *
+    * @param modelDiscussionId the primary key of the current model discussion
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion[] findByModelId_PrevAndNext(
+        long modelDiscussionId, long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByModelId_PrevAndNext(modelDiscussionId, modelId,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the model discussions where modelId = &#63; from the database.
+    *
+    * @param modelId the model ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByModelId(long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByModelId(modelId);
+    }
+
+    /**
+    * Returns the number of model discussions where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @return the number of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByModelId(long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByModelId(modelId);
+    }
+
+    /**
+    * Returns all the model discussions where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @return the matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByDiscussionId(categoryId);
+    }
+
+    /**
+    * Returns a range of all the model discussions where categoryId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param categoryId the category ID
+    * @param start the lower bound of the range of model discussions
+    * @param end the upper bound of the range of model discussions (not inclusive)
+    * @return the range of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
+        long categoryId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByDiscussionId(categoryId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the model discussions where categoryId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param categoryId the category ID
+    * @param start the lower bound of the range of model discussions
+    * @param end the upper bound of the range of model discussions (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
+        long categoryId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByDiscussionId(categoryId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first model discussion in the ordered set where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion findByDiscussionId_First(
+        long categoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByDiscussionId_First(categoryId, orderByComparator);
+    }
+
+    /**
+    * Returns the first model discussion in the ordered set where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model discussion, or <code>null</code> if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion fetchByDiscussionId_First(
+        long categoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByDiscussionId_First(categoryId, orderByComparator);
+    }
+
+    /**
+    * Returns the last model discussion in the ordered set where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion findByDiscussionId_Last(
+        long categoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByDiscussionId_Last(categoryId, orderByComparator);
+    }
+
+    /**
+    * Returns the last model discussion in the ordered set where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model discussion, or <code>null</code> if a matching model discussion could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion fetchByDiscussionId_Last(
+        long categoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByDiscussionId_Last(categoryId, orderByComparator);
+    }
+
+    /**
+    * Returns the model discussions before and after the current model discussion in the ordered set where categoryId = &#63;.
+    *
+    * @param modelDiscussionId the primary key of the current model discussion
+    * @param categoryId the category ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next model discussion
+    * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelDiscussion[] findByDiscussionId_PrevAndNext(
+        long modelDiscussionId, long categoryId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelDiscussionException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByDiscussionId_PrevAndNext(modelDiscussionId,
+            categoryId, orderByComparator);
+    }
+
+    /**
+    * Removes all the model discussions where categoryId = &#63; from the database.
+    *
+    * @param categoryId the category ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByDiscussionId(long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByDiscussionId(categoryId);
+    }
+
+    /**
+    * Returns the number of model discussions where categoryId = &#63;.
+    *
+    * @param categoryId the category ID
+    * @return the number of matching model discussions
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByDiscussionId(long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByDiscussionId(categoryId);
     }
 
     /**
@@ -145,9 +471,9 @@ public class ModelDiscussionUtil {
     }
 
     public static com.ext.portlet.model.ModelDiscussion updateImpl(
-        com.ext.portlet.model.ModelDiscussion modelDiscussion, boolean merge)
+        com.ext.portlet.model.ModelDiscussion modelDiscussion)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(modelDiscussion, merge);
+        return getPersistence().updateImpl(modelDiscussion);
     }
 
     /**
@@ -179,248 +505,6 @@ public class ModelDiscussionUtil {
     }
 
     /**
-    * Returns all the model discussions where modelId = &#63;.
-    *
-    * @param modelId the model ID
-    * @return the matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
-        long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelId(modelId);
-    }
-
-    /**
-    * Returns a range of all the model discussions where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param start the lower bound of the range of model discussions
-    * @param end the upper bound of the range of model discussions (not inclusive)
-    * @return the range of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
-        long modelId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelId(modelId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the model discussions where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param start the lower bound of the range of model discussions
-    * @param end the upper bound of the range of model discussions (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByModelId(
-        long modelId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelId(modelId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first model discussion in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion findByModelId_First(
-        long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelId_First(modelId, orderByComparator);
-    }
-
-    /**
-    * Returns the last model discussion in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion findByModelId_Last(
-        long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelId_Last(modelId, orderByComparator);
-    }
-
-    /**
-    * Returns the model discussions before and after the current model discussion in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelDiscussionId the primary key of the current model discussion
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion[] findByModelId_PrevAndNext(
-        long modelDiscussionId, long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByModelId_PrevAndNext(modelDiscussionId, modelId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns all the model discussions where categoryId = &#63;.
-    *
-    * @param categoryId the category ID
-    * @return the matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
-        long categoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByDiscussionId(categoryId);
-    }
-
-    /**
-    * Returns a range of all the model discussions where categoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param categoryId the category ID
-    * @param start the lower bound of the range of model discussions
-    * @param end the upper bound of the range of model discussions (not inclusive)
-    * @return the range of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
-        long categoryId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByDiscussionId(categoryId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the model discussions where categoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param categoryId the category ID
-    * @param start the lower bound of the range of model discussions
-    * @param end the upper bound of the range of model discussions (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ModelDiscussion> findByDiscussionId(
-        long categoryId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByDiscussionId(categoryId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first model discussion in the ordered set where categoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param categoryId the category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion findByDiscussionId_First(
-        long categoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByDiscussionId_First(categoryId, orderByComparator);
-    }
-
-    /**
-    * Returns the last model discussion in the ordered set where categoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param categoryId the category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a matching model discussion could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion findByDiscussionId_Last(
-        long categoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByDiscussionId_Last(categoryId, orderByComparator);
-    }
-
-    /**
-    * Returns the model discussions before and after the current model discussion in the ordered set where categoryId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelDiscussionId the primary key of the current model discussion
-    * @param categoryId the category ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next model discussion
-    * @throws com.ext.portlet.NoSuchModelDiscussionException if a model discussion with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelDiscussion[] findByDiscussionId_PrevAndNext(
-        long modelDiscussionId, long categoryId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByDiscussionId_PrevAndNext(modelDiscussionId,
-            categoryId, orderByComparator);
-    }
-
-    /**
     * Returns all the model discussions.
     *
     * @return the model discussions
@@ -435,7 +519,7 @@ public class ModelDiscussionUtil {
     * Returns a range of all the model discussions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model discussions
@@ -453,7 +537,7 @@ public class ModelDiscussionUtil {
     * Returns an ordered range of all the model discussions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelDiscussionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model discussions
@@ -470,28 +554,6 @@ public class ModelDiscussionUtil {
     }
 
     /**
-    * Removes all the model discussions where modelId = &#63; from the database.
-    *
-    * @param modelId the model ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByModelId(long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByModelId(modelId);
-    }
-
-    /**
-    * Removes all the model discussions where categoryId = &#63; from the database.
-    *
-    * @param categoryId the category ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByDiscussionId(long categoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByDiscussionId(categoryId);
-    }
-
-    /**
     * Removes all the model discussions from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -499,30 +561,6 @@ public class ModelDiscussionUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of model discussions where modelId = &#63;.
-    *
-    * @param modelId the model ID
-    * @return the number of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByModelId(long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByModelId(modelId);
-    }
-
-    /**
-    * Returns the number of model discussions where categoryId = &#63;.
-    *
-    * @param categoryId the category ID
-    * @return the number of matching model discussions
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByDiscussionId(long categoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByDiscussionId(categoryId);
     }
 
     /**
@@ -548,10 +586,9 @@ public class ModelDiscussionUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ModelDiscussionPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ModelDiscussionUtil.class,
-            "_persistence");
     }
 }

@@ -49,7 +49,7 @@ public class ModelOutputItemUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,88 @@ public class ModelOutputItemUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ModelOutputItem update(ModelOutputItem modelOutputItem,
-        boolean merge) throws SystemException {
-        return getPersistence().update(modelOutputItem, merge);
+    public static ModelOutputItem update(ModelOutputItem modelOutputItem)
+        throws SystemException {
+        return getPersistence().update(modelOutputItem);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ModelOutputItem update(ModelOutputItem modelOutputItem,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(modelOutputItem, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(modelOutputItem, serviceContext);
+    }
+
+    /**
+    * Returns the model output item where modelOutputItemId = &#63; or throws a {@link com.ext.portlet.NoSuchModelOutputItemException} if it could not be found.
+    *
+    * @param modelOutputItemId the model output item ID
+    * @return the matching model output item
+    * @throws com.ext.portlet.NoSuchModelOutputItemException if a matching model output item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelOutputItem findByModelOutputId(
+        long modelOutputItemId)
+        throws com.ext.portlet.NoSuchModelOutputItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByModelOutputId(modelOutputItemId);
+    }
+
+    /**
+    * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param modelOutputItemId the model output item ID
+    * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelOutputItem fetchByModelOutputId(
+        long modelOutputItemId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByModelOutputId(modelOutputItemId);
+    }
+
+    /**
+    * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param modelOutputItemId the model output item ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelOutputItem fetchByModelOutputId(
+        long modelOutputItemId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByModelOutputId(modelOutputItemId, retrieveFromCache);
+    }
+
+    /**
+    * Removes the model output item where modelOutputItemId = &#63; from the database.
+    *
+    * @param modelOutputItemId the model output item ID
+    * @return the model output item that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ModelOutputItem removeByModelOutputId(
+        long modelOutputItemId)
+        throws com.ext.portlet.NoSuchModelOutputItemException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByModelOutputId(modelOutputItemId);
+    }
+
+    /**
+    * Returns the number of model output items where modelOutputItemId = &#63;.
+    *
+    * @param modelOutputItemId the model output item ID
+    * @return the number of matching model output items
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByModelOutputId(long modelOutputItemId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByModelOutputId(modelOutputItemId);
     }
 
     /**
@@ -145,9 +214,9 @@ public class ModelOutputItemUtil {
     }
 
     public static com.ext.portlet.model.ModelOutputItem updateImpl(
-        com.ext.portlet.model.ModelOutputItem modelOutputItem, boolean merge)
+        com.ext.portlet.model.ModelOutputItem modelOutputItem)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(modelOutputItem, merge);
+        return getPersistence().updateImpl(modelOutputItem);
     }
 
     /**
@@ -179,49 +248,6 @@ public class ModelOutputItemUtil {
     }
 
     /**
-    * Returns the model output item where modelOutputItemId = &#63; or throws a {@link com.ext.portlet.NoSuchModelOutputItemException} if it could not be found.
-    *
-    * @param modelOutputItemId the model output item ID
-    * @return the matching model output item
-    * @throws com.ext.portlet.NoSuchModelOutputItemException if a matching model output item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelOutputItem findByModelOutputId(
-        long modelOutputItemId)
-        throws com.ext.portlet.NoSuchModelOutputItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByModelOutputId(modelOutputItemId);
-    }
-
-    /**
-    * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param modelOutputItemId the model output item ID
-    * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelOutputItem fetchByModelOutputId(
-        long modelOutputItemId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByModelOutputId(modelOutputItemId);
-    }
-
-    /**
-    * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param modelOutputItemId the model output item ID
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ModelOutputItem fetchByModelOutputId(
-        long modelOutputItemId, boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .fetchByModelOutputId(modelOutputItemId, retrieveFromCache);
-    }
-
-    /**
     * Returns all the model output items.
     *
     * @return the model output items
@@ -236,7 +262,7 @@ public class ModelOutputItemUtil {
     * Returns a range of all the model output items.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelOutputItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model output items
@@ -254,7 +280,7 @@ public class ModelOutputItemUtil {
     * Returns an ordered range of all the model output items.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelOutputItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model output items
@@ -271,18 +297,6 @@ public class ModelOutputItemUtil {
     }
 
     /**
-    * Removes the model output item where modelOutputItemId = &#63; from the database.
-    *
-    * @param modelOutputItemId the model output item ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByModelOutputId(long modelOutputItemId)
-        throws com.ext.portlet.NoSuchModelOutputItemException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByModelOutputId(modelOutputItemId);
-    }
-
-    /**
     * Removes all the model output items from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -290,18 +304,6 @@ public class ModelOutputItemUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of model output items where modelOutputItemId = &#63;.
-    *
-    * @param modelOutputItemId the model output item ID
-    * @return the number of matching model output items
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByModelOutputId(long modelOutputItemId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByModelOutputId(modelOutputItemId);
     }
 
     /**
@@ -327,10 +329,9 @@ public class ModelOutputItemUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ModelOutputItemPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ModelOutputItemUtil.class,
-            "_persistence");
     }
 }

@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @see PlanMeta
  * @generated
  */
-public class PlanMetaCacheModel implements CacheModel<PlanMeta>, Serializable {
+public class PlanMetaCacheModel implements CacheModel<PlanMeta>, Externalizable {
     public long id;
     public long planId;
     public long planTypeId;
@@ -85,6 +88,7 @@ public class PlanMetaCacheModel implements CacheModel<PlanMeta>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public PlanMeta toEntityModel() {
         PlanMetaImpl planMetaImpl = new PlanMetaImpl();
 
@@ -123,5 +127,58 @@ public class PlanMetaCacheModel implements CacheModel<PlanMeta>, Serializable {
         planMetaImpl.resetOriginalValues();
 
         return planMetaImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planId = objectInput.readLong();
+        planTypeId = objectInput.readLong();
+        planCreated = objectInput.readLong();
+        authorId = objectInput.readLong();
+        votes = objectInput.readInt();
+        planGroupId = objectInput.readLong();
+        open = objectInput.readBoolean();
+        status = objectInput.readUTF();
+        mbCategoryId = objectInput.readLong();
+        categoryGroupId = objectInput.readLong();
+        version = objectInput.readLong();
+        planVersion = objectInput.readLong();
+        created = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+        modelId = objectInput.readLong();
+        promoted = objectInput.readBoolean();
+        previousContestPhase = objectInput.readLong();
+        contestPhase = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(planTypeId);
+        objectOutput.writeLong(planCreated);
+        objectOutput.writeLong(authorId);
+        objectOutput.writeInt(votes);
+        objectOutput.writeLong(planGroupId);
+        objectOutput.writeBoolean(open);
+
+        if (status == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(status);
+        }
+
+        objectOutput.writeLong(mbCategoryId);
+        objectOutput.writeLong(categoryGroupId);
+        objectOutput.writeLong(version);
+        objectOutput.writeLong(planVersion);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updateAuthorId);
+        objectOutput.writeLong(modelId);
+        objectOutput.writeBoolean(promoted);
+        objectOutput.writeLong(previousContestPhase);
+        objectOutput.writeLong(contestPhase);
     }
 }

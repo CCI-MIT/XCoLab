@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link MessageLocalService}.
- * </p>
+ * Provides a wrapper for {@link MessageLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       MessageLocalService
+ * @author Brian Wing Shun Chan
+ * @see MessageLocalService
  * @generated
  */
 public class MessageLocalServiceWrapper implements MessageLocalService,
@@ -26,6 +24,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the message that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Message addMessage(
         com.ext.portlet.model.Message message)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -38,6 +37,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @param messageId the primary key for the new message
     * @return the new message
     */
+    @Override
     public com.ext.portlet.model.Message createMessage(long messageId) {
         return _messageLocalService.createMessage(messageId);
     }
@@ -46,24 +46,34 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * Deletes the message with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param messageId the primary key of the message
+    * @return the message that was removed
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessage(long messageId)
+    @Override
+    public com.ext.portlet.model.Message deleteMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _messageLocalService.deleteMessage(messageId);
+        return _messageLocalService.deleteMessage(messageId);
     }
 
     /**
     * Deletes the message from the database. Also notifies the appropriate model listeners.
     *
     * @param message the message
+    * @return the message that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteMessage(com.ext.portlet.model.Message message)
+    @Override
+    public com.ext.portlet.model.Message deleteMessage(
+        com.ext.portlet.model.Message message)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _messageLocalService.deleteMessage(message);
+        return _messageLocalService.deleteMessage(message);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _messageLocalService.dynamicQuery();
     }
 
     /**
@@ -73,6 +83,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -84,7 +95,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -93,6 +104,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -104,7 +116,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,6 +126,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -131,12 +144,30 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _messageLocalService.dynamicQueryCount(dynamicQuery, projection);
+    }
+
+    @Override
     public com.ext.portlet.model.Message fetchMessage(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.fetchMessage(messageId);
@@ -150,12 +181,14 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @throws PortalException if a message with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Message getMessage(long messageId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.getMessage(messageId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -167,7 +200,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * Returns a range of all the messages.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of messages
@@ -175,6 +208,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the range of messages
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.Message> getMessages(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -187,6 +221,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the number of messages
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getMessagesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.getMessagesCount();
@@ -199,6 +234,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     * @return the message that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Message updateMessage(
         com.ext.portlet.model.Message message)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -206,24 +242,11 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     }
 
     /**
-    * Updates the message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param message the message
-    * @param merge whether to merge the message with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the message that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Message updateMessage(
-        com.ext.portlet.model.Message message, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.updateMessage(message, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _messageLocalService.getBeanIdentifier();
     }
@@ -233,15 +256,25 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _messageLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _messageLocalService.invokeMethod(name, parameterTypes, arguments);
+    }
+
+    @Override
     public int countSentMessage(long userid)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.countSentMessage(userid);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Message> findSentMessages(
         long userid, int pagerstart, int pagerend)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -249,35 +282,41 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
             pagerend);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.MessageRecipientStatus> getRecipients(
         com.ext.portlet.model.Message msg)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.getRecipients(msg);
     }
 
+    @Override
     public boolean hasReciever(com.ext.portlet.model.Message msg, long userid)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.hasReciever(msg, userid);
     }
 
+    @Override
     public boolean isOpened(com.ext.portlet.model.Message msg, long userid)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.isOpened(msg, userid);
     }
 
+    @Override
     public void setOpened(com.ext.portlet.model.Message msg, long userid)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         _messageLocalService.setOpened(msg, userid);
     }
 
+    @Override
     public boolean isArchived(com.ext.portlet.model.Message msg, long userid)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         return _messageLocalService.isArchived(msg, userid);
     }
 
+    @Override
     public void setArchived(com.ext.portlet.model.Message msg, long userid)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -285,24 +324,26 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public MessageLocalService getWrappedMessageLocalService() {
         return _messageLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedMessageLocalService(
         MessageLocalService messageLocalService) {
         _messageLocalService = messageLocalService;
     }
 
+    @Override
     public MessageLocalService getWrappedService() {
         return _messageLocalService;
     }
 
+    @Override
     public void setWrappedService(MessageLocalService messageLocalService) {
         _messageLocalService = messageLocalService;
     }

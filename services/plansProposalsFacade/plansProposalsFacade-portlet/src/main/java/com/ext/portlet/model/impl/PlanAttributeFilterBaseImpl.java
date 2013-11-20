@@ -24,6 +24,7 @@ public abstract class PlanAttributeFilterBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan attribute filter model instance should use the {@link PlanAttributeFilter} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanAttributeFilterLocalServiceUtil.addPlanAttributeFilter(this);

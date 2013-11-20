@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ModelCategory in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ModelCategoryCacheModel implements CacheModel<ModelCategory>,
-    Serializable {
+    Externalizable {
     public long modelCategoryPK;
     public String modelCategoryName;
     public String modelCategoryDescription;
@@ -39,6 +42,7 @@ public class ModelCategoryCacheModel implements CacheModel<ModelCategory>,
         return sb.toString();
     }
 
+    @Override
     public ModelCategory toEntityModel() {
         ModelCategoryImpl modelCategoryImpl = new ModelCategoryImpl();
 
@@ -61,5 +65,33 @@ public class ModelCategoryCacheModel implements CacheModel<ModelCategory>,
         modelCategoryImpl.resetOriginalValues();
 
         return modelCategoryImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        modelCategoryPK = objectInput.readLong();
+        modelCategoryName = objectInput.readUTF();
+        modelCategoryDescription = objectInput.readUTF();
+        modelCategoryDisplayWeight = objectInput.readInt();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(modelCategoryPK);
+
+        if (modelCategoryName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelCategoryName);
+        }
+
+        if (modelCategoryDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(modelCategoryDescription);
+        }
+
+        objectOutput.writeInt(modelCategoryDisplayWeight);
     }
 }

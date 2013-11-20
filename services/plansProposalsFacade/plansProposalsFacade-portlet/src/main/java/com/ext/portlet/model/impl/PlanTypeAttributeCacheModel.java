@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanTypeAttribute in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanTypeAttributeCacheModel implements CacheModel<PlanTypeAttribute>,
-    Serializable {
+    Externalizable {
     public long planTypeAttributeId;
     public long planTypeId;
     public String attributeName;
@@ -36,6 +39,7 @@ public class PlanTypeAttributeCacheModel implements CacheModel<PlanTypeAttribute
         return sb.toString();
     }
 
+    @Override
     public PlanTypeAttribute toEntityModel() {
         PlanTypeAttributeImpl planTypeAttributeImpl = new PlanTypeAttributeImpl();
 
@@ -51,5 +55,25 @@ public class PlanTypeAttributeCacheModel implements CacheModel<PlanTypeAttribute
         planTypeAttributeImpl.resetOriginalValues();
 
         return planTypeAttributeImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planTypeAttributeId = objectInput.readLong();
+        planTypeId = objectInput.readLong();
+        attributeName = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planTypeAttributeId);
+        objectOutput.writeLong(planTypeId);
+
+        if (attributeName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(attributeName);
+        }
     }
 }

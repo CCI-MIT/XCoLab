@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link PlanModelRun}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanModelRun
+ * @author Brian Wing Shun Chan
+ * @see PlanModelRun
  * @generated
  */
 public class PlanModelRunWrapper implements PlanModelRun,
@@ -19,12 +24,74 @@ public class PlanModelRunWrapper implements PlanModelRun,
         _planModelRun = planModelRun;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanModelRun.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanModelRun.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("scenarioId", getScenarioId());
+        attributes.put("planVersion", getPlanVersion());
+        attributes.put("version", getVersion());
+        attributes.put("created", getCreated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long scenarioId = (Long) attributes.get("scenarioId");
+
+        if (scenarioId != null) {
+            setScenarioId(scenarioId);
+        }
+
+        Long planVersion = (Long) attributes.get("planVersion");
+
+        if (planVersion != null) {
+            setPlanVersion(planVersion);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
     }
 
     /**
@@ -32,6 +99,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the primary key of this plan model run
     */
+    @Override
     public long getPrimaryKey() {
         return _planModelRun.getPrimaryKey();
     }
@@ -41,6 +109,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param primaryKey the primary key of this plan model run
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _planModelRun.setPrimaryKey(primaryKey);
     }
@@ -50,6 +119,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the ID of this plan model run
     */
+    @Override
     public long getId() {
         return _planModelRun.getId();
     }
@@ -59,6 +129,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param id the ID of this plan model run
     */
+    @Override
     public void setId(long id) {
         _planModelRun.setId(id);
     }
@@ -68,6 +139,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the plan ID of this plan model run
     */
+    @Override
     public long getPlanId() {
         return _planModelRun.getPlanId();
     }
@@ -77,6 +149,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param planId the plan ID of this plan model run
     */
+    @Override
     public void setPlanId(long planId) {
         _planModelRun.setPlanId(planId);
     }
@@ -86,6 +159,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the scenario ID of this plan model run
     */
+    @Override
     public long getScenarioId() {
         return _planModelRun.getScenarioId();
     }
@@ -95,6 +169,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param scenarioId the scenario ID of this plan model run
     */
+    @Override
     public void setScenarioId(long scenarioId) {
         _planModelRun.setScenarioId(scenarioId);
     }
@@ -104,6 +179,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the plan version of this plan model run
     */
+    @Override
     public long getPlanVersion() {
         return _planModelRun.getPlanVersion();
     }
@@ -113,6 +189,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param planVersion the plan version of this plan model run
     */
+    @Override
     public void setPlanVersion(long planVersion) {
         _planModelRun.setPlanVersion(planVersion);
     }
@@ -122,6 +199,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the version of this plan model run
     */
+    @Override
     public long getVersion() {
         return _planModelRun.getVersion();
     }
@@ -131,6 +209,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param version the version of this plan model run
     */
+    @Override
     public void setVersion(long version) {
         _planModelRun.setVersion(version);
     }
@@ -140,6 +219,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the created of this plan model run
     */
+    @Override
     public java.util.Date getCreated() {
         return _planModelRun.getCreated();
     }
@@ -149,6 +229,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param created the created of this plan model run
     */
+    @Override
     public void setCreated(java.util.Date created) {
         _planModelRun.setCreated(created);
     }
@@ -158,6 +239,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @return the update author ID of this plan model run
     */
+    @Override
     public long getUpdateAuthorId() {
         return _planModelRun.getUpdateAuthorId();
     }
@@ -167,42 +249,64 @@ public class PlanModelRunWrapper implements PlanModelRun,
     *
     * @param updateAuthorId the update author ID of this plan model run
     */
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _planModelRun.setUpdateAuthorId(updateAuthorId);
     }
 
+    @Override
     public boolean isNew() {
         return _planModelRun.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _planModelRun.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _planModelRun.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _planModelRun.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _planModelRun.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _planModelRun.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _planModelRun.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _planModelRun.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _planModelRun.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _planModelRun.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _planModelRun.setExpandoBridgeAttributes(serviceContext);
@@ -213,6 +317,7 @@ public class PlanModelRunWrapper implements PlanModelRun,
         return new PlanModelRunWrapper((PlanModelRun) _planModelRun.clone());
     }
 
+    @Override
     public int compareTo(PlanModelRun planModelRun) {
         return _planModelRun.compareTo(planModelRun);
     }
@@ -222,12 +327,19 @@ public class PlanModelRunWrapper implements PlanModelRun,
         return _planModelRun.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<PlanModelRun> toCacheModel() {
         return _planModelRun.toCacheModel();
     }
 
+    @Override
     public PlanModelRun toEscapedModel() {
         return new PlanModelRunWrapper(_planModelRun.toEscapedModel());
+    }
+
+    @Override
+    public PlanModelRun toUnescapedModel() {
+        return new PlanModelRunWrapper(_planModelRun.toUnescapedModel());
     }
 
     @Override
@@ -235,26 +347,49 @@ public class PlanModelRunWrapper implements PlanModelRun,
         return _planModelRun.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _planModelRun.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planModelRun.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanModelRunWrapper)) {
+            return false;
+        }
+
+        PlanModelRunWrapper planModelRunWrapper = (PlanModelRunWrapper) obj;
+
+        if (Validator.equals(_planModelRun, planModelRunWrapper._planModelRun)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public PlanModelRun getWrappedPlanModelRun() {
         return _planModelRun;
     }
 
+    @Override
     public PlanModelRun getWrappedModel() {
         return _planModelRun;
     }
 
+    @Override
     public void resetOriginalValues() {
         _planModelRun.resetOriginalValues();
     }

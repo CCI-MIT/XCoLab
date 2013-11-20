@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ContestPhaseRibbonType service. Represents a row in the &quot;xcolab_ContestPhaseRibbonType&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseRibbonType (id_ LONG not null primary key,ribbon INTEGER,hoverText VARCHAR(75) null,description VARCHAR(75) null,copyOnPromote BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhaseRibbonType";
+    public static final String ORDER_BY_JPQL = " ORDER BY contestPhaseRibbonType.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhaseRibbonType.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -68,7 +72,7 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhaseRibbonType"));
     private static ClassLoader _classLoader = ContestPhaseRibbonType.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ContestPhaseRibbonType.class
         };
     private long _id;
@@ -76,8 +80,7 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
     private String _hoverText;
     private String _description;
     private boolean _copyOnPromote;
-    private transient ExpandoBridge _expandoBridge;
-    private ContestPhaseRibbonType _escapedModelProxy;
+    private ContestPhaseRibbonType _escapedModel;
 
     public ContestPhaseRibbonTypeModelImpl() {
     }
@@ -90,6 +93,10 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
      */
     public static ContestPhaseRibbonType toModel(
         ContestPhaseRibbonTypeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ContestPhaseRibbonType model = new ContestPhaseRibbonTypeImpl();
 
         model.setId(soapModel.getId());
@@ -109,6 +116,10 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
      */
     public static List<ContestPhaseRibbonType> toModels(
         ContestPhaseRibbonTypeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ContestPhaseRibbonType> models = new ArrayList<ContestPhaseRibbonType>(soapModels.length);
 
         for (ContestPhaseRibbonTypeSoap soapModel : soapModels) {
@@ -118,49 +129,106 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhaseRibbonType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhaseRibbonType.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("ribbon", getRibbon());
+        attributes.put("hoverText", getHoverText());
+        attributes.put("description", getDescription());
+        attributes.put("copyOnPromote", getCopyOnPromote());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Integer ribbon = (Integer) attributes.get("ribbon");
+
+        if (ribbon != null) {
+            setRibbon(ribbon);
+        }
+
+        String hoverText = (String) attributes.get("hoverText");
+
+        if (hoverText != null) {
+            setHoverText(hoverText);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Boolean copyOnPromote = (Boolean) attributes.get("copyOnPromote");
+
+        if (copyOnPromote != null) {
+            setCopyOnPromote(copyOnPromote);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public int getRibbon() {
         return _ribbon;
     }
 
+    @Override
     public void setRibbon(int ribbon) {
         _ribbon = ribbon;
     }
 
     @JSON
+    @Override
     public String getHoverText() {
         if (_hoverText == null) {
             return StringPool.BLANK;
@@ -169,11 +237,13 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         }
     }
 
+    @Override
     public void setHoverText(String hoverText) {
         _hoverText = hoverText;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -182,47 +252,48 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public boolean getCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public boolean isCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public void setCopyOnPromote(boolean copyOnPromote) {
         _copyOnPromote = copyOnPromote;
     }
 
     @Override
-    public ContestPhaseRibbonType toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ContestPhaseRibbonType) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ContestPhaseRibbonType.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ContestPhaseRibbonType.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ContestPhaseRibbonType toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ContestPhaseRibbonType) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -240,6 +311,7 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         return contestPhaseRibbonTypeImpl;
     }
 
+    @Override
     public int compareTo(ContestPhaseRibbonType contestPhaseRibbonType) {
         long primaryKey = contestPhaseRibbonType.getPrimaryKey();
 
@@ -254,17 +326,15 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhaseRibbonType)) {
             return false;
         }
 
-        ContestPhaseRibbonType contestPhaseRibbonType = null;
-
-        try {
-            contestPhaseRibbonType = (ContestPhaseRibbonType) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ContestPhaseRibbonType contestPhaseRibbonType = (ContestPhaseRibbonType) obj;
 
         long primaryKey = contestPhaseRibbonType.getPrimaryKey();
 
@@ -332,6 +402,7 @@ public class ContestPhaseRibbonTypeModelImpl extends BaseModelImpl<ContestPhaseR
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

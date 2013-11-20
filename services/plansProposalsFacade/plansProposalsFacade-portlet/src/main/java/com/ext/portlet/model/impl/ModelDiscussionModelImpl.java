@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelDiscussion service. Represents a row in the &quot;xcolab_ModelDiscussion&quot; database table, with each column mapped to a property of this class.
@@ -52,6 +54,8 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelDiscussion (modelDiscussionId LONG not null primary key,modelId LONG,categoryId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelDiscussion";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelDiscussion.modelDiscussionId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelDiscussion.modelDiscussionId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -66,10 +70,11 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
             true);
     public static long CATEGORYID_COLUMN_BITMASK = 1L;
     public static long MODELID_COLUMN_BITMASK = 2L;
+    public static long MODELDISCUSSIONID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelDiscussion"));
     private static ClassLoader _classLoader = ModelDiscussion.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelDiscussion.class
         };
     private long _modelDiscussionId;
@@ -79,9 +84,8 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
     private long _categoryId;
     private long _originalCategoryId;
     private boolean _setOriginalCategoryId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelDiscussion _escapedModelProxy;
+    private ModelDiscussion _escapedModel;
 
     public ModelDiscussionModelImpl() {
     }
@@ -93,6 +97,10 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
      * @return the normal model instance
      */
     public static ModelDiscussion toModel(ModelDiscussionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelDiscussion model = new ModelDiscussionImpl();
 
         model.setModelDiscussionId(soapModel.getModelDiscussionId());
@@ -110,6 +118,10 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
      */
     public static List<ModelDiscussion> toModels(
         ModelDiscussionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelDiscussion> models = new ArrayList<ModelDiscussion>(soapModels.length);
 
         for (ModelDiscussionSoap soapModel : soapModels) {
@@ -119,44 +131,86 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelDiscussionId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelDiscussionId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelDiscussionId);
+        return _modelDiscussionId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelDiscussion.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelDiscussion.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelDiscussionId", getModelDiscussionId());
+        attributes.put("modelId", getModelId());
+        attributes.put("categoryId", getCategoryId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelDiscussionId = (Long) attributes.get("modelDiscussionId");
+
+        if (modelDiscussionId != null) {
+            setModelDiscussionId(modelDiscussionId);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Long categoryId = (Long) attributes.get("categoryId");
+
+        if (categoryId != null) {
+            setCategoryId(categoryId);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelDiscussionId() {
         return _modelDiscussionId;
     }
 
+    @Override
     public void setModelDiscussionId(long modelDiscussionId) {
         _modelDiscussionId = modelDiscussionId;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -174,10 +228,12 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
     }
 
     @JSON
+    @Override
     public long getCategoryId() {
         return _categoryId;
     }
 
+    @Override
     public void setCategoryId(long categoryId) {
         _columnBitmask |= CATEGORYID_COLUMN_BITMASK;
 
@@ -199,29 +255,26 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
     }
 
     @Override
-    public ModelDiscussion toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelDiscussion) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelDiscussion.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelDiscussion.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelDiscussion toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelDiscussion) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -237,6 +290,7 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
         return modelDiscussionImpl;
     }
 
+    @Override
     public int compareTo(ModelDiscussion modelDiscussion) {
         long primaryKey = modelDiscussion.getPrimaryKey();
 
@@ -251,17 +305,15 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelDiscussion)) {
             return false;
         }
 
-        ModelDiscussion modelDiscussion = null;
-
-        try {
-            modelDiscussion = (ModelDiscussion) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelDiscussion modelDiscussion = (ModelDiscussion) obj;
 
         long primaryKey = modelDiscussion.getPrimaryKey();
 
@@ -320,6 +372,7 @@ public class ModelDiscussionModelImpl extends BaseModelImpl<ModelDiscussion>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

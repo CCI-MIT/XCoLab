@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanTypeColumn in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanTypeColumnCacheModel implements CacheModel<PlanTypeColumn>,
-    Serializable {
+    Externalizable {
     public long planTypeColumnId;
     public long planTypeId;
     public int weight;
@@ -42,6 +45,7 @@ public class PlanTypeColumnCacheModel implements CacheModel<PlanTypeColumn>,
         return sb.toString();
     }
 
+    @Override
     public PlanTypeColumn toEntityModel() {
         PlanTypeColumnImpl planTypeColumnImpl = new PlanTypeColumnImpl();
 
@@ -60,5 +64,30 @@ public class PlanTypeColumnCacheModel implements CacheModel<PlanTypeColumn>,
         planTypeColumnImpl.resetOriginalValues();
 
         return planTypeColumnImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planTypeColumnId = objectInput.readLong();
+        planTypeId = objectInput.readLong();
+        weight = objectInput.readInt();
+        columnName = objectInput.readUTF();
+        visibleByDefault = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planTypeColumnId);
+        objectOutput.writeLong(planTypeId);
+        objectOutput.writeInt(weight);
+
+        if (columnName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(columnName);
+        }
+
+        objectOutput.writeBoolean(visibleByDefault);
     }
 }

@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class PlanPositionCacheModel implements CacheModel<PlanPosition>,
-    Serializable {
+    Externalizable {
     public long planId;
     public long positionId;
     public long userId;
@@ -47,6 +50,7 @@ public class PlanPositionCacheModel implements CacheModel<PlanPosition>,
         return sb.toString();
     }
 
+    @Override
     public PlanPosition toEntityModel() {
         PlanPositionImpl planPositionImpl = new PlanPositionImpl();
 
@@ -75,5 +79,32 @@ public class PlanPositionCacheModel implements CacheModel<PlanPosition>,
         planPositionImpl.resetOriginalValues();
 
         return planPositionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planId = objectInput.readLong();
+        positionId = objectInput.readLong();
+        userId = objectInput.readLong();
+        userName = objectInput.readUTF();
+        createDate = objectInput.readLong();
+        modifiedDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(positionId);
+        objectOutput.writeLong(userId);
+
+        if (userName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(userName);
+        }
+
+        objectOutput.writeLong(createDate);
+        objectOutput.writeLong(modifiedDate);
     }
 }

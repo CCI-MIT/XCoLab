@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelOutputItem service. Represents a row in the &quot;xcolab_ModelOutputItem&quot; database table, with each column mapped to a property of this class.
@@ -62,6 +64,8 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputItem (modelOutputItemModifierPK LONG not null primary key,modelId LONG,modelOutputItemId LONG,modelOutputItemOrder INTEGER,modelItemRangePolicy VARCHAR(2048) null,modelItemRangeMessage VARCHAR(2048) null,modelItemErrorPolicy VARCHAR(2048) null,modelItemErrorMessage VARCHAR(2048) null,modelItemLabelFormat VARCHAR(2048) null,modelItemIsVisible BOOLEAN,itemType VARCHAR(256) null,relatedOutputItem LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelOutputItem";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelOutputItem.modelOutputItemModifierPK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelOutputItem.modelOutputItemModifierPK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -75,10 +79,11 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ModelOutputItem"),
             true);
     public static long MODELOUTPUTITEMID_COLUMN_BITMASK = 1L;
+    public static long MODELOUTPUTITEMMODIFIERPK_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelOutputItem"));
     private static ClassLoader _classLoader = ModelOutputItem.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelOutputItem.class
         };
     private long _modelOutputItemModifierPK;
@@ -95,9 +100,8 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
     private boolean _modelItemIsVisible;
     private String _itemType;
     private long _relatedOutputItem;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelOutputItem _escapedModelProxy;
+    private ModelOutputItem _escapedModel;
 
     public ModelOutputItemModelImpl() {
     }
@@ -109,6 +113,10 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
      * @return the normal model instance
      */
     public static ModelOutputItem toModel(ModelOutputItemSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelOutputItem model = new ModelOutputItemImpl();
 
         model.setModelOutputItemModifierPK(soapModel.getModelOutputItemModifierPK());
@@ -135,6 +143,10 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
      */
     public static List<ModelOutputItem> toModels(
         ModelOutputItemSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelOutputItem> models = new ArrayList<ModelOutputItem>(soapModels.length);
 
         for (ModelOutputItemSoap soapModel : soapModels) {
@@ -144,53 +156,169 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelOutputItemModifierPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelOutputItemModifierPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelOutputItemModifierPK);
+        return _modelOutputItemModifierPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelOutputItem.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelOutputItem.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelOutputItemModifierPK",
+            getModelOutputItemModifierPK());
+        attributes.put("modelId", getModelId());
+        attributes.put("modelOutputItemId", getModelOutputItemId());
+        attributes.put("modelOutputItemOrder", getModelOutputItemOrder());
+        attributes.put("modelItemRangePolicy", getModelItemRangePolicy());
+        attributes.put("modelItemRangeMessage", getModelItemRangeMessage());
+        attributes.put("modelItemErrorPolicy", getModelItemErrorPolicy());
+        attributes.put("modelItemErrorMessage", getModelItemErrorMessage());
+        attributes.put("modelItemLabelFormat", getModelItemLabelFormat());
+        attributes.put("modelItemIsVisible", getModelItemIsVisible());
+        attributes.put("itemType", getItemType());
+        attributes.put("relatedOutputItem", getRelatedOutputItem());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelOutputItemModifierPK = (Long) attributes.get(
+                "modelOutputItemModifierPK");
+
+        if (modelOutputItemModifierPK != null) {
+            setModelOutputItemModifierPK(modelOutputItemModifierPK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Long modelOutputItemId = (Long) attributes.get("modelOutputItemId");
+
+        if (modelOutputItemId != null) {
+            setModelOutputItemId(modelOutputItemId);
+        }
+
+        Integer modelOutputItemOrder = (Integer) attributes.get(
+                "modelOutputItemOrder");
+
+        if (modelOutputItemOrder != null) {
+            setModelOutputItemOrder(modelOutputItemOrder);
+        }
+
+        String modelItemRangePolicy = (String) attributes.get(
+                "modelItemRangePolicy");
+
+        if (modelItemRangePolicy != null) {
+            setModelItemRangePolicy(modelItemRangePolicy);
+        }
+
+        String modelItemRangeMessage = (String) attributes.get(
+                "modelItemRangeMessage");
+
+        if (modelItemRangeMessage != null) {
+            setModelItemRangeMessage(modelItemRangeMessage);
+        }
+
+        String modelItemErrorPolicy = (String) attributes.get(
+                "modelItemErrorPolicy");
+
+        if (modelItemErrorPolicy != null) {
+            setModelItemErrorPolicy(modelItemErrorPolicy);
+        }
+
+        String modelItemErrorMessage = (String) attributes.get(
+                "modelItemErrorMessage");
+
+        if (modelItemErrorMessage != null) {
+            setModelItemErrorMessage(modelItemErrorMessage);
+        }
+
+        String modelItemLabelFormat = (String) attributes.get(
+                "modelItemLabelFormat");
+
+        if (modelItemLabelFormat != null) {
+            setModelItemLabelFormat(modelItemLabelFormat);
+        }
+
+        Boolean modelItemIsVisible = (Boolean) attributes.get(
+                "modelItemIsVisible");
+
+        if (modelItemIsVisible != null) {
+            setModelItemIsVisible(modelItemIsVisible);
+        }
+
+        String itemType = (String) attributes.get("itemType");
+
+        if (itemType != null) {
+            setItemType(itemType);
+        }
+
+        Long relatedOutputItem = (Long) attributes.get("relatedOutputItem");
+
+        if (relatedOutputItem != null) {
+            setRelatedOutputItem(relatedOutputItem);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelOutputItemModifierPK() {
         return _modelOutputItemModifierPK;
     }
 
+    @Override
     public void setModelOutputItemModifierPK(long modelOutputItemModifierPK) {
         _modelOutputItemModifierPK = modelOutputItemModifierPK;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
     @JSON
+    @Override
     public long getModelOutputItemId() {
         return _modelOutputItemId;
     }
 
+    @Override
     public void setModelOutputItemId(long modelOutputItemId) {
         _columnBitmask |= MODELOUTPUTITEMID_COLUMN_BITMASK;
 
@@ -208,15 +336,18 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
     }
 
     @JSON
+    @Override
     public int getModelOutputItemOrder() {
         return _modelOutputItemOrder;
     }
 
+    @Override
     public void setModelOutputItemOrder(int modelOutputItemOrder) {
         _modelOutputItemOrder = modelOutputItemOrder;
     }
 
     @JSON
+    @Override
     public String getModelItemRangePolicy() {
         if (_modelItemRangePolicy == null) {
             return StringPool.BLANK;
@@ -225,11 +356,13 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setModelItemRangePolicy(String modelItemRangePolicy) {
         _modelItemRangePolicy = modelItemRangePolicy;
     }
 
     @JSON
+    @Override
     public String getModelItemRangeMessage() {
         if (_modelItemRangeMessage == null) {
             return StringPool.BLANK;
@@ -238,11 +371,13 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setModelItemRangeMessage(String modelItemRangeMessage) {
         _modelItemRangeMessage = modelItemRangeMessage;
     }
 
     @JSON
+    @Override
     public String getModelItemErrorPolicy() {
         if (_modelItemErrorPolicy == null) {
             return StringPool.BLANK;
@@ -251,11 +386,13 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setModelItemErrorPolicy(String modelItemErrorPolicy) {
         _modelItemErrorPolicy = modelItemErrorPolicy;
     }
 
     @JSON
+    @Override
     public String getModelItemErrorMessage() {
         if (_modelItemErrorMessage == null) {
             return StringPool.BLANK;
@@ -264,11 +401,13 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setModelItemErrorMessage(String modelItemErrorMessage) {
         _modelItemErrorMessage = modelItemErrorMessage;
     }
 
     @JSON
+    @Override
     public String getModelItemLabelFormat() {
         if (_modelItemLabelFormat == null) {
             return StringPool.BLANK;
@@ -277,24 +416,29 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setModelItemLabelFormat(String modelItemLabelFormat) {
         _modelItemLabelFormat = modelItemLabelFormat;
     }
 
     @JSON
+    @Override
     public boolean getModelItemIsVisible() {
         return _modelItemIsVisible;
     }
 
+    @Override
     public boolean isModelItemIsVisible() {
         return _modelItemIsVisible;
     }
 
+    @Override
     public void setModelItemIsVisible(boolean modelItemIsVisible) {
         _modelItemIsVisible = modelItemIsVisible;
     }
 
     @JSON
+    @Override
     public String getItemType() {
         if (_itemType == null) {
             return StringPool.BLANK;
@@ -303,15 +447,18 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         }
     }
 
+    @Override
     public void setItemType(String itemType) {
         _itemType = itemType;
     }
 
     @JSON
+    @Override
     public long getRelatedOutputItem() {
         return _relatedOutputItem;
     }
 
+    @Override
     public void setRelatedOutputItem(long relatedOutputItem) {
         _relatedOutputItem = relatedOutputItem;
     }
@@ -321,29 +468,26 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
     }
 
     @Override
-    public ModelOutputItem toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelOutputItem) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelOutputItem.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelOutputItem.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelOutputItem toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelOutputItem) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -368,6 +512,7 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         return modelOutputItemImpl;
     }
 
+    @Override
     public int compareTo(ModelOutputItem modelOutputItem) {
         long primaryKey = modelOutputItem.getPrimaryKey();
 
@@ -382,17 +527,15 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelOutputItem)) {
             return false;
         }
 
-        ModelOutputItem modelOutputItem = null;
-
-        try {
-            modelOutputItem = (ModelOutputItem) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelOutputItem modelOutputItem = (ModelOutputItem) obj;
 
         long primaryKey = modelOutputItem.getPrimaryKey();
 
@@ -524,6 +667,7 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(40);
 

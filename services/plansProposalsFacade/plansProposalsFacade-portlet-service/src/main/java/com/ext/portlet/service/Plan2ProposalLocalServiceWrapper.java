@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link Plan2ProposalLocalService}.
- * </p>
+ * Provides a wrapper for {@link Plan2ProposalLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       Plan2ProposalLocalService
+ * @author Brian Wing Shun Chan
+ * @see Plan2ProposalLocalService
  * @generated
  */
 public class Plan2ProposalLocalServiceWrapper
@@ -28,6 +26,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the plan2 proposal that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Plan2Proposal addPlan2Proposal(
         com.ext.portlet.model.Plan2Proposal plan2Proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @param planId the primary key for the new plan2 proposal
     * @return the new plan2 proposal
     */
+    @Override
     public com.ext.portlet.model.Plan2Proposal createPlan2Proposal(long planId) {
         return _plan2ProposalLocalService.createPlan2Proposal(planId);
     }
@@ -48,25 +48,34 @@ public class Plan2ProposalLocalServiceWrapper
     * Deletes the plan2 proposal with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param planId the primary key of the plan2 proposal
+    * @return the plan2 proposal that was removed
     * @throws PortalException if a plan2 proposal with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlan2Proposal(long planId)
+    @Override
+    public com.ext.portlet.model.Plan2Proposal deletePlan2Proposal(long planId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _plan2ProposalLocalService.deletePlan2Proposal(planId);
+        return _plan2ProposalLocalService.deletePlan2Proposal(planId);
     }
 
     /**
     * Deletes the plan2 proposal from the database. Also notifies the appropriate model listeners.
     *
     * @param plan2Proposal the plan2 proposal
+    * @return the plan2 proposal that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlan2Proposal(
+    @Override
+    public com.ext.portlet.model.Plan2Proposal deletePlan2Proposal(
         com.ext.portlet.model.Plan2Proposal plan2Proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _plan2ProposalLocalService.deletePlan2Proposal(plan2Proposal);
+        return _plan2ProposalLocalService.deletePlan2Proposal(plan2Proposal);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _plan2ProposalLocalService.dynamicQuery();
     }
 
     /**
@@ -76,6 +85,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -87,7 +97,7 @@ public class Plan2ProposalLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -96,6 +106,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -107,7 +118,7 @@ public class Plan2ProposalLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -117,6 +128,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -134,12 +146,31 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _plan2ProposalLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _plan2ProposalLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.Plan2Proposal fetchPlan2Proposal(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _plan2ProposalLocalService.fetchPlan2Proposal(planId);
@@ -153,12 +184,14 @@ public class Plan2ProposalLocalServiceWrapper
     * @throws PortalException if a plan2 proposal with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Plan2Proposal getPlan2Proposal(long planId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _plan2ProposalLocalService.getPlan2Proposal(planId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -170,7 +203,7 @@ public class Plan2ProposalLocalServiceWrapper
     * Returns a range of all the plan2 proposals.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Plan2ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan2 proposals
@@ -178,6 +211,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the range of plan2 proposals
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.Plan2Proposal> getPlan2Proposals(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -190,6 +224,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the number of plan2 proposals
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlan2ProposalsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _plan2ProposalLocalService.getPlan2ProposalsCount();
@@ -202,6 +237,7 @@ public class Plan2ProposalLocalServiceWrapper
     * @return the plan2 proposal that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.Plan2Proposal updatePlan2Proposal(
         com.ext.portlet.model.Plan2Proposal plan2Proposal)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -209,25 +245,11 @@ public class Plan2ProposalLocalServiceWrapper
     }
 
     /**
-    * Updates the plan2 proposal in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param plan2Proposal the plan2 proposal
-    * @param merge whether to merge the plan2 proposal with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan2 proposal that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Plan2Proposal updatePlan2Proposal(
-        com.ext.portlet.model.Plan2Proposal plan2Proposal, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _plan2ProposalLocalService.updatePlan2Proposal(plan2Proposal,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _plan2ProposalLocalService.getBeanIdentifier();
     }
@@ -237,29 +259,40 @@ public class Plan2ProposalLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _plan2ProposalLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _plan2ProposalLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public Plan2ProposalLocalService getWrappedPlan2ProposalLocalService() {
         return _plan2ProposalLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlan2ProposalLocalService(
         Plan2ProposalLocalService plan2ProposalLocalService) {
         _plan2ProposalLocalService = plan2ProposalLocalService;
     }
 
+    @Override
     public Plan2ProposalLocalService getWrappedService() {
         return _plan2ProposalLocalService;
     }
 
+    @Override
     public void setWrappedService(
         Plan2ProposalLocalService plan2ProposalLocalService) {
         _plan2ProposalLocalService = plan2ProposalLocalService;

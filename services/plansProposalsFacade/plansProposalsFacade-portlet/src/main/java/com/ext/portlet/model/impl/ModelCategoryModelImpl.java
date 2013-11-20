@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelCategory service. Represents a row in the &quot;xcolab_ModelCategory&quot; database table, with each column mapped to a property of this class.
@@ -54,6 +56,8 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelCategory (modelCategoryPK LONG not null primary key,modelCategoryName VARCHAR(256) null,modelCategoryDescription VARCHAR(2048) null,modelCategoryDisplayWeight INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelCategory";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelCategory.modelCategoryPK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelCategory.modelCategoryPK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -67,15 +71,14 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelCategory"));
     private static ClassLoader _classLoader = ModelCategory.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelCategory.class
         };
     private long _modelCategoryPK;
     private String _modelCategoryName;
     private String _modelCategoryDescription;
     private int _modelCategoryDisplayWeight;
-    private transient ExpandoBridge _expandoBridge;
-    private ModelCategory _escapedModelProxy;
+    private ModelCategory _escapedModel;
 
     public ModelCategoryModelImpl() {
     }
@@ -87,6 +90,10 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
      * @return the normal model instance
      */
     public static ModelCategory toModel(ModelCategorySoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelCategory model = new ModelCategoryImpl();
 
         model.setModelCategoryPK(soapModel.getModelCategoryPK());
@@ -104,6 +111,10 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
      * @return the normal model instances
      */
     public static List<ModelCategory> toModels(ModelCategorySoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelCategory> models = new ArrayList<ModelCategory>(soapModels.length);
 
         for (ModelCategorySoap soapModel : soapModels) {
@@ -113,40 +124,91 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelCategoryPK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelCategoryPK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelCategoryPK);
+        return _modelCategoryPK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelCategory.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelCategory.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelCategoryPK", getModelCategoryPK());
+        attributes.put("modelCategoryName", getModelCategoryName());
+        attributes.put("modelCategoryDescription", getModelCategoryDescription());
+        attributes.put("modelCategoryDisplayWeight",
+            getModelCategoryDisplayWeight());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelCategoryPK = (Long) attributes.get("modelCategoryPK");
+
+        if (modelCategoryPK != null) {
+            setModelCategoryPK(modelCategoryPK);
+        }
+
+        String modelCategoryName = (String) attributes.get("modelCategoryName");
+
+        if (modelCategoryName != null) {
+            setModelCategoryName(modelCategoryName);
+        }
+
+        String modelCategoryDescription = (String) attributes.get(
+                "modelCategoryDescription");
+
+        if (modelCategoryDescription != null) {
+            setModelCategoryDescription(modelCategoryDescription);
+        }
+
+        Integer modelCategoryDisplayWeight = (Integer) attributes.get(
+                "modelCategoryDisplayWeight");
+
+        if (modelCategoryDisplayWeight != null) {
+            setModelCategoryDisplayWeight(modelCategoryDisplayWeight);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelCategoryPK() {
         return _modelCategoryPK;
     }
 
+    @Override
     public void setModelCategoryPK(long modelCategoryPK) {
         _modelCategoryPK = modelCategoryPK;
     }
 
     @JSON
+    @Override
     public String getModelCategoryName() {
         if (_modelCategoryName == null) {
             return StringPool.BLANK;
@@ -155,11 +217,13 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         }
     }
 
+    @Override
     public void setModelCategoryName(String modelCategoryName) {
         _modelCategoryName = modelCategoryName;
     }
 
     @JSON
+    @Override
     public String getModelCategoryDescription() {
         if (_modelCategoryDescription == null) {
             return StringPool.BLANK;
@@ -168,43 +232,43 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         }
     }
 
+    @Override
     public void setModelCategoryDescription(String modelCategoryDescription) {
         _modelCategoryDescription = modelCategoryDescription;
     }
 
     @JSON
+    @Override
     public int getModelCategoryDisplayWeight() {
         return _modelCategoryDisplayWeight;
     }
 
+    @Override
     public void setModelCategoryDisplayWeight(int modelCategoryDisplayWeight) {
         _modelCategoryDisplayWeight = modelCategoryDisplayWeight;
     }
 
     @Override
-    public ModelCategory toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelCategory) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelCategory.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelCategory.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelCategory toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelCategory) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -221,6 +285,7 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         return modelCategoryImpl;
     }
 
+    @Override
     public int compareTo(ModelCategory modelCategory) {
         long primaryKey = modelCategory.getPrimaryKey();
 
@@ -235,17 +300,15 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelCategory)) {
             return false;
         }
 
-        ModelCategory modelCategory = null;
-
-        try {
-            modelCategory = (ModelCategory) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelCategory modelCategory = (ModelCategory) obj;
 
         long primaryKey = modelCategory.getPrimaryKey();
 
@@ -310,6 +373,7 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

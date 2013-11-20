@@ -5,14 +5,15 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.service.BaseLocalService;
+import com.liferay.portal.service.InvokableLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
 
 /**
- * The interface for the model category local service.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service interface for ModelCategory. Methods of this
+ * service will not have security checks based on the propagated JAAS
+ * credentials because this service can only be accessed from within the same
+ * VM.
  *
  * @author Brian Wing Shun Chan
  * @see ModelCategoryLocalServiceUtil
@@ -23,7 +24,8 @@ import com.liferay.portal.service.PersistedModelLocalService;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
     PortalException.class, SystemException.class}
 )
-public interface ModelCategoryLocalService extends PersistedModelLocalService {
+public interface ModelCategoryLocalService extends BaseLocalService,
+    InvokableLocalService, PersistedModelLocalService {
     /*
      * NOTE FOR DEVELOPERS:
      *
@@ -54,10 +56,12 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * Deletes the model category with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param modelCategoryPK the primary key of the model category
+    * @return the model category that was removed
     * @throws PortalException if a model category with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelCategory(long modelCategoryPK)
+    public com.ext.portlet.model.ModelCategory deleteModelCategory(
+        long modelCategoryPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -65,11 +69,14 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * Deletes the model category from the database. Also notifies the appropriate model listeners.
     *
     * @param modelCategory the model category
+    * @return the model category that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelCategory(
+    public com.ext.portlet.model.ModelCategory deleteModelCategory(
         com.ext.portlet.model.ModelCategory modelCategory)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery();
 
     /**
     * Performs a dynamic query on the database and returns the matching rows.
@@ -87,7 +94,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -105,7 +112,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -133,6 +140,19 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ModelCategory fetchModelCategory(
         long modelCategoryPK)
@@ -152,6 +172,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
@@ -162,7 +183,7 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * Returns a range of all the model categories.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model categories
@@ -197,18 +218,6 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Updates the model category in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param modelCategory the model category
-    * @param merge whether to merge the model category with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the model category that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelCategory updateModelCategory(
-        com.ext.portlet.model.ModelCategory modelCategory, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -221,6 +230,11 @@ public interface ModelCategoryLocalService extends PersistedModelLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ModelGlobalPreference> getModelPreferences(

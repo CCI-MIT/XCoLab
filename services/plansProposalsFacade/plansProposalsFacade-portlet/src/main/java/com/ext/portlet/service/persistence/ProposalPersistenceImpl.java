@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.impl.ProposalImpl;
 import com.ext.portlet.model.impl.ProposalModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -75,13 +76,10 @@ import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -99,11 +97,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,10 +134,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
         ".List2";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ProposalModelImpl.ENTITY_CACHE_ENABLED,
             ProposalModelImpl.FINDER_CACHE_ENABLED, ProposalImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ProposalModelImpl.ENTITY_CACHE_ENABLED,
             ProposalModelImpl.FINDER_CACHE_ENABLED, ProposalImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ProposalModelImpl.ENTITY_CACHE_ENABLED,
             ProposalModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
@@ -165,11 +161,13 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
         };
 
     private static CacheModel<Proposal> _nullProposalCacheModel = new CacheModel<Proposal>() {
+            @Override
             public Proposal toEntityModel() {
                 return _nullProposal;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -324,12 +322,18 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public ProposalPersistenceImpl() {
+        setModelClass(Proposal.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the proposal in the entity cache if it is enabled.
      *
      * @param proposal the proposal
      */
+    @Override
     public void cacheResult(Proposal proposal) {
         EntityCacheUtil.putResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
             ProposalImpl.class, proposal.getPrimaryKey(), proposal);
@@ -342,6 +346,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      *
      * @param proposals the proposals
      */
+    @Override
     public void cacheResult(List<Proposal> proposals) {
         for (Proposal proposal : proposals) {
             if (EntityCacheUtil.getResult(
@@ -407,6 +412,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @param proposalId the primary key for the new proposal
      * @return the new proposal
      */
+    @Override
     public Proposal create(long proposalId) {
         Proposal proposal = new ProposalImpl();
 
@@ -424,9 +430,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @throws com.ext.portlet.NoSuchProposalException if a proposal with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Proposal remove(long proposalId)
         throws NoSuchProposalException, SystemException {
-        return remove(Long.valueOf(proposalId));
+        return remove((Serializable) proposalId);
     }
 
     /**
@@ -476,31 +483,46 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, proposal);
+            if (!session.contains(proposal)) {
+                proposal = (Proposal) session.get(ProposalImpl.class,
+                        proposal.getPrimaryKeyObj());
+            }
+
+            if (proposal != null) {
+                session.delete(proposal);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(proposal);
+        if (proposal != null) {
+            clearCache(proposal);
+        }
 
         return proposal;
     }
 
     @Override
-    public Proposal updateImpl(com.ext.portlet.model.Proposal proposal,
-        boolean merge) throws SystemException {
+    public Proposal updateImpl(com.ext.portlet.model.Proposal proposal)
+        throws SystemException {
         proposal = toUnwrappedModel(proposal);
+
+        boolean isNew = proposal.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, proposal, merge);
+            if (proposal.isNew()) {
+                session.save(proposal);
 
-            proposal.setNew(false);
+                proposal.setNew(false);
+            } else {
+                session.merge(proposal);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -508,6 +530,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
             ProposalImpl.class, proposal.getPrimaryKey(), proposal);
@@ -545,13 +571,24 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      *
      * @param primaryKey the primary key of the proposal
      * @return the proposal
-     * @throws com.liferay.portal.NoSuchModelException if a proposal with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchProposalException if a proposal with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public Proposal findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchProposalException, SystemException {
+        Proposal proposal = fetchByPrimaryKey(primaryKey);
+
+        if (proposal == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return proposal;
     }
 
     /**
@@ -562,20 +599,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @throws com.ext.portlet.NoSuchProposalException if a proposal with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Proposal findByPrimaryKey(long proposalId)
         throws NoSuchProposalException, SystemException {
-        Proposal proposal = fetchByPrimaryKey(proposalId);
-
-        if (proposal == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + proposalId);
-            }
-
-            throw new NoSuchProposalException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                proposalId);
-        }
-
-        return proposal;
+        return findByPrimaryKey((Serializable) proposalId);
     }
 
     /**
@@ -588,7 +615,38 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
     @Override
     public Proposal fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        Proposal proposal = (Proposal) EntityCacheUtil.getResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                ProposalImpl.class, primaryKey);
+
+        if (proposal == _nullProposal) {
+            return null;
+        }
+
+        if (proposal == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                proposal = (Proposal) session.get(ProposalImpl.class, primaryKey);
+
+                if (proposal != null) {
+                    cacheResult(proposal);
+                } else {
+                    EntityCacheUtil.putResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                        ProposalImpl.class, primaryKey, _nullProposal);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
+                    ProposalImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return proposal;
     }
 
     /**
@@ -598,42 +656,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @return the proposal, or <code>null</code> if a proposal with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public Proposal fetchByPrimaryKey(long proposalId)
         throws SystemException {
-        Proposal proposal = (Proposal) EntityCacheUtil.getResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                ProposalImpl.class, proposalId);
-
-        if (proposal == _nullProposal) {
-            return null;
-        }
-
-        if (proposal == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                proposal = (Proposal) session.get(ProposalImpl.class,
-                        Long.valueOf(proposalId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (proposal != null) {
-                    cacheResult(proposal);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(ProposalModelImpl.ENTITY_CACHE_ENABLED,
-                        ProposalImpl.class, proposalId, _nullProposal);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return proposal;
+        return fetchByPrimaryKey((Serializable) proposalId);
     }
 
     /**
@@ -642,6 +668,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @return the proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Proposal> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -650,7 +677,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * Returns a range of all the proposals.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of proposals
@@ -658,6 +685,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @return the range of proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Proposal> findAll(int start, int end) throws SystemException {
         return findAll(start, end, null);
     }
@@ -666,7 +694,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * Returns an ordered range of all the proposals.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of proposals
@@ -675,17 +703,20 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @return the ordered range of proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<Proposal> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -708,6 +739,10 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_PROPOSAL;
+
+                if (pagination) {
+                    sql = sql.concat(ProposalModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -717,26 +752,26 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<Proposal>) QueryUtil.list(q, getDialect(),
                             start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<Proposal>(list);
                 } else {
                     list = (List<Proposal>) QueryUtil.list(q, getDialect(),
                             start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -749,6 +784,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (Proposal proposal : findAll()) {
             remove(proposal);
@@ -761,6 +797,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
      * @return the number of proposals
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -774,16 +811,15 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
                 Query q = session.createQuery(_SQL_COUNT_PROPOSAL);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -805,7 +841,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<Proposal>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -818,6 +854,7 @@ public class ProposalPersistenceImpl extends BasePersistenceImpl<Proposal>
     public void destroy() {
         EntityCacheUtil.removeCache(ProposalImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

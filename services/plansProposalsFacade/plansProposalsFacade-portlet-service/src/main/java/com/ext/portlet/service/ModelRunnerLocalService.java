@@ -4,13 +4,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.service.BaseLocalService;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The interface for the model runner local service.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service interface for ModelRunner. Methods of this
+ * service will not have security checks based on the propagated JAAS
+ * credentials because this service can only be accessed from within the same
+ * VM.
  *
  * @author Brian Wing Shun Chan
  * @see ModelRunnerLocalServiceUtil
@@ -21,7 +22,8 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
     PortalException.class, SystemException.class}
 )
-public interface ModelRunnerLocalService {
+public interface ModelRunnerLocalService extends BaseLocalService,
+    InvokableLocalService {
     /*
      * NOTE FOR DEVELOPERS:
      *
@@ -41,4 +43,9 @@ public interface ModelRunnerLocalService {
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable;
 }

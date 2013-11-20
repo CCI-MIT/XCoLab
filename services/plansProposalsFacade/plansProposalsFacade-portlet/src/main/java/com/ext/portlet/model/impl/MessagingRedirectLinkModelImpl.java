@@ -23,7 +23,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingRedirectLink service. Represents a row in the &quot;xcolab_MessagingRedirectLink&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingRedirectLink (redirectId LONG not null primary key,link VARCHAR(1024) null,messageId LONG,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingRedirectLink";
+    public static final String ORDER_BY_JPQL = " ORDER BY messagingRedirectLink.redirectId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingRedirectLink.redirectId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -68,15 +72,14 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingRedirectLink"));
     private static ClassLoader _classLoader = MessagingRedirectLink.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingRedirectLink.class
         };
     private long _redirectId;
     private String _link;
     private long _messageId;
     private Date _createDate;
-    private transient ExpandoBridge _expandoBridge;
-    private MessagingRedirectLink _escapedModelProxy;
+    private MessagingRedirectLink _escapedModel;
 
     public MessagingRedirectLinkModelImpl() {
     }
@@ -89,6 +92,10 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
      */
     public static MessagingRedirectLink toModel(
         MessagingRedirectLinkSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingRedirectLink model = new MessagingRedirectLinkImpl();
 
         model.setRedirectId(soapModel.getRedirectId());
@@ -107,6 +114,10 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
      */
     public static List<MessagingRedirectLink> toModels(
         MessagingRedirectLinkSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingRedirectLink> models = new ArrayList<MessagingRedirectLink>(soapModels.length);
 
         for (MessagingRedirectLinkSoap soapModel : soapModels) {
@@ -116,40 +127,88 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _redirectId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setRedirectId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_redirectId);
+        return _redirectId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingRedirectLink.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingRedirectLink.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("redirectId", getRedirectId());
+        attributes.put("link", getLink());
+        attributes.put("messageId", getMessageId());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long redirectId = (Long) attributes.get("redirectId");
+
+        if (redirectId != null) {
+            setRedirectId(redirectId);
+        }
+
+        String link = (String) attributes.get("link");
+
+        if (link != null) {
+            setLink(link);
+        }
+
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getRedirectId() {
         return _redirectId;
     }
 
+    @Override
     public void setRedirectId(long redirectId) {
         _redirectId = redirectId;
     }
 
     @JSON
+    @Override
     public String getLink() {
         if (_link == null) {
             return StringPool.BLANK;
@@ -158,52 +217,54 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
         }
     }
 
+    @Override
     public void setLink(String link) {
         _link = link;
     }
 
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
 
     @Override
-    public MessagingRedirectLink toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingRedirectLink) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingRedirectLink.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingRedirectLink.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingRedirectLink toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingRedirectLink) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -220,6 +281,7 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
         return messagingRedirectLinkImpl;
     }
 
+    @Override
     public int compareTo(MessagingRedirectLink messagingRedirectLink) {
         long primaryKey = messagingRedirectLink.getPrimaryKey();
 
@@ -234,17 +296,15 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingRedirectLink)) {
             return false;
         }
 
-        MessagingRedirectLink messagingRedirectLink = null;
-
-        try {
-            messagingRedirectLink = (MessagingRedirectLink) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingRedirectLink messagingRedirectLink = (MessagingRedirectLink) obj;
 
         long primaryKey = messagingRedirectLink.getPrimaryKey();
 
@@ -308,6 +368,7 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

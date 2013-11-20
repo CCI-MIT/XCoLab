@@ -22,7 +22,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanPositions service. Represents a row in the &quot;xcolab_PlanPositions&quot; database table, with each column mapped to a property of this class.
@@ -71,10 +73,11 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanPositions"),
             true);
     public static long PLANID_COLUMN_BITMASK = 1L;
+    public static long ID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanPositions"));
     private static ClassLoader _classLoader = PlanPositions.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanPositions.class
         };
     private long _id;
@@ -85,9 +88,8 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
     private long _version;
     private Date _created;
     private long _updateAuthorId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanPositions _escapedModelProxy;
+    private PlanPositions _escapedModel;
 
     public PlanPositionsModelImpl() {
     }
@@ -99,6 +101,10 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
      * @return the normal model instance
      */
     public static PlanPositions toModel(PlanPositionsSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanPositions model = new PlanPositionsImpl();
 
         model.setId(soapModel.getId());
@@ -118,6 +124,10 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
      * @return the normal model instances
      */
     public static List<PlanPositions> toModels(PlanPositionsSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanPositions> models = new ArrayList<PlanPositions>(soapModels.length);
 
         for (PlanPositionsSoap soapModel : soapModels) {
@@ -127,35 +137,96 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanPositions.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanPositions.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("planVersion", getPlanVersion());
+        attributes.put("version", getVersion());
+        attributes.put("created", getCreated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Long planVersion = (Long) attributes.get("planVersion");
+
+        if (planVersion != null) {
+            setPlanVersion(planVersion);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -163,10 +234,12 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -184,37 +257,45 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
     }
 
     @JSON
+    @Override
     public long getPlanVersion() {
         return _planVersion;
     }
 
+    @Override
     public void setPlanVersion(long planVersion) {
         _planVersion = planVersion;
     }
 
     @JSON
+    @Override
     public long getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(long version) {
         _version = version;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @JSON
+    @Override
     public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
@@ -224,29 +305,26 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
     }
 
     @Override
-    public PlanPositions toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanPositions) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanPositions.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanPositions.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanPositions toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanPositions) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -265,6 +343,7 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
         return planPositionsImpl;
     }
 
+    @Override
     public int compareTo(PlanPositions planPositions) {
         int value = 0;
 
@@ -287,17 +366,15 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanPositions)) {
             return false;
         }
 
-        PlanPositions planPositions = null;
-
-        try {
-            planPositions = (PlanPositions) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanPositions planPositions = (PlanPositions) obj;
 
         long primaryKey = planPositions.getPrimaryKey();
 
@@ -370,6 +447,7 @@ public class PlanPositionsModelImpl extends BaseModelImpl<PlanPositions>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

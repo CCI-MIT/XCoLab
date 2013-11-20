@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link Proposal2PhaseService}.
- * </p>
+ * Provides a wrapper for {@link Proposal2PhaseService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       Proposal2PhaseService
+ * @author Brian Wing Shun Chan
+ * @see Proposal2PhaseService
  * @generated
  */
 public class Proposal2PhaseServiceWrapper implements Proposal2PhaseService,
@@ -21,24 +19,54 @@ public class Proposal2PhaseServiceWrapper implements Proposal2PhaseService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _proposal2PhaseService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _proposal2PhaseService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _proposal2PhaseService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public Proposal2PhaseService getWrappedProposal2PhaseService() {
         return _proposal2PhaseService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedProposal2PhaseService(
         Proposal2PhaseService proposal2PhaseService) {
         _proposal2PhaseService = proposal2PhaseService;
     }
 
+    @Override
     public Proposal2PhaseService getWrappedService() {
         return _proposal2PhaseService;
     }
 
+    @Override
     public void setWrappedService(Proposal2PhaseService proposal2PhaseService) {
         _proposal2PhaseService = proposal2PhaseService;
     }

@@ -24,6 +24,7 @@ public abstract class PlanModelRunBaseImpl extends PlanModelRunModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan model run model instance should use the {@link PlanModelRun} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanModelRunLocalServiceUtil.addPlanModelRun(this);

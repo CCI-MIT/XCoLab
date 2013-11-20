@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link PlanAttribute}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanAttribute
+ * @author Brian Wing Shun Chan
+ * @see PlanAttribute
  * @generated
  */
 public class PlanAttributeWrapper implements PlanAttribute,
@@ -19,12 +23,53 @@ public class PlanAttributeWrapper implements PlanAttribute,
         _planAttribute = planAttribute;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanAttribute.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanAttribute.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("attributeId", getAttributeId());
+        attributes.put("planId", getPlanId());
+        attributes.put("attributeName", getAttributeName());
+        attributes.put("attributeValue", getAttributeValue());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long attributeId = (Long) attributes.get("attributeId");
+
+        if (attributeId != null) {
+            setAttributeId(attributeId);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        String attributeName = (String) attributes.get("attributeName");
+
+        if (attributeName != null) {
+            setAttributeName(attributeName);
+        }
+
+        String attributeValue = (String) attributes.get("attributeValue");
+
+        if (attributeValue != null) {
+            setAttributeValue(attributeValue);
+        }
     }
 
     /**
@@ -32,6 +77,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the primary key of this plan attribute
     */
+    @Override
     public long getPrimaryKey() {
         return _planAttribute.getPrimaryKey();
     }
@@ -41,6 +87,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param primaryKey the primary key of this plan attribute
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _planAttribute.setPrimaryKey(primaryKey);
     }
@@ -50,6 +97,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the attribute ID of this plan attribute
     */
+    @Override
     public long getAttributeId() {
         return _planAttribute.getAttributeId();
     }
@@ -59,6 +107,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param attributeId the attribute ID of this plan attribute
     */
+    @Override
     public void setAttributeId(long attributeId) {
         _planAttribute.setAttributeId(attributeId);
     }
@@ -68,6 +117,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the plan ID of this plan attribute
     */
+    @Override
     public long getPlanId() {
         return _planAttribute.getPlanId();
     }
@@ -77,6 +127,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param planId the plan ID of this plan attribute
     */
+    @Override
     public void setPlanId(long planId) {
         _planAttribute.setPlanId(planId);
     }
@@ -86,6 +137,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the attribute name of this plan attribute
     */
+    @Override
     public java.lang.String getAttributeName() {
         return _planAttribute.getAttributeName();
     }
@@ -95,6 +147,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param attributeName the attribute name of this plan attribute
     */
+    @Override
     public void setAttributeName(java.lang.String attributeName) {
         _planAttribute.setAttributeName(attributeName);
     }
@@ -104,6 +157,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @return the attribute value of this plan attribute
     */
+    @Override
     public java.lang.String getAttributeValue() {
         return _planAttribute.getAttributeValue();
     }
@@ -113,42 +167,64 @@ public class PlanAttributeWrapper implements PlanAttribute,
     *
     * @param attributeValue the attribute value of this plan attribute
     */
+    @Override
     public void setAttributeValue(java.lang.String attributeValue) {
         _planAttribute.setAttributeValue(attributeValue);
     }
 
+    @Override
     public boolean isNew() {
         return _planAttribute.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _planAttribute.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _planAttribute.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _planAttribute.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _planAttribute.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _planAttribute.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _planAttribute.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _planAttribute.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _planAttribute.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _planAttribute.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _planAttribute.setExpandoBridgeAttributes(serviceContext);
@@ -159,6 +235,7 @@ public class PlanAttributeWrapper implements PlanAttribute,
         return new PlanAttributeWrapper((PlanAttribute) _planAttribute.clone());
     }
 
+    @Override
     public int compareTo(PlanAttribute planAttribute) {
         return _planAttribute.compareTo(planAttribute);
     }
@@ -168,12 +245,19 @@ public class PlanAttributeWrapper implements PlanAttribute,
         return _planAttribute.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<PlanAttribute> toCacheModel() {
         return _planAttribute.toCacheModel();
     }
 
+    @Override
     public PlanAttribute toEscapedModel() {
         return new PlanAttributeWrapper(_planAttribute.toEscapedModel());
+    }
+
+    @Override
+    public PlanAttribute toUnescapedModel() {
+        return new PlanAttributeWrapper(_planAttribute.toUnescapedModel());
     }
 
     @Override
@@ -181,26 +265,49 @@ public class PlanAttributeWrapper implements PlanAttribute,
         return _planAttribute.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _planAttribute.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _planAttribute.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanAttributeWrapper)) {
+            return false;
+        }
+
+        PlanAttributeWrapper planAttributeWrapper = (PlanAttributeWrapper) obj;
+
+        if (Validator.equals(_planAttribute, planAttributeWrapper._planAttribute)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public PlanAttribute getWrappedPlanAttribute() {
         return _planAttribute;
     }
 
+    @Override
     public PlanAttribute getWrappedModel() {
         return _planAttribute;
     }
 
+    @Override
     public void resetOriginalValues() {
         _planAttribute.resetOriginalValues();
     }

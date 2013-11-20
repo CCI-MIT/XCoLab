@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalAttributeType service. Represents a row in the &quot;xcolab_ProposalAttributeType&quot; database table, with each column mapped to a property of this class.
@@ -49,6 +51,8 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalAttributeType (name VARCHAR(75) not null primary key,visibleInVersionHistory BOOLEAN,copyOnPromote BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalAttributeType";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalAttributeType.name ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalAttributeType.name ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -62,13 +66,13 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalAttributeType"));
     private static ClassLoader _classLoader = ProposalAttributeType.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalAttributeType.class
         };
     private String _name;
     private boolean _visibleInVersionHistory;
     private boolean _copyOnPromote;
-    private ProposalAttributeType _escapedModelProxy;
+    private ProposalAttributeType _escapedModel;
 
     public ProposalAttributeTypeModelImpl() {
     }
@@ -81,6 +85,10 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
      */
     public static ProposalAttributeType toModel(
         ProposalAttributeTypeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalAttributeType model = new ProposalAttributeTypeImpl();
 
         model.setName(soapModel.getName());
@@ -98,6 +106,10 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
      */
     public static List<ProposalAttributeType> toModels(
         ProposalAttributeTypeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalAttributeType> models = new ArrayList<ProposalAttributeType>(soapModels.length);
 
         for (ProposalAttributeTypeSoap soapModel : soapModels) {
@@ -107,31 +119,71 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
         return models;
     }
 
+    @Override
     public String getPrimaryKey() {
         return _name;
     }
 
+    @Override
     public void setPrimaryKey(String primaryKey) {
         setName(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return _name;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((String) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalAttributeType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalAttributeType.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("name", getName());
+        attributes.put("visibleInVersionHistory", getVisibleInVersionHistory());
+        attributes.put("copyOnPromote", getCopyOnPromote());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Boolean visibleInVersionHistory = (Boolean) attributes.get(
+                "visibleInVersionHistory");
+
+        if (visibleInVersionHistory != null) {
+            setVisibleInVersionHistory(visibleInVersionHistory);
+        }
+
+        Boolean copyOnPromote = (Boolean) attributes.get("copyOnPromote");
+
+        if (copyOnPromote != null) {
+            setCopyOnPromote(copyOnPromote);
+        }
+    }
+
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -140,45 +192,51 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public boolean getVisibleInVersionHistory() {
         return _visibleInVersionHistory;
     }
 
+    @Override
     public boolean isVisibleInVersionHistory() {
         return _visibleInVersionHistory;
     }
 
+    @Override
     public void setVisibleInVersionHistory(boolean visibleInVersionHistory) {
         _visibleInVersionHistory = visibleInVersionHistory;
     }
 
     @JSON
+    @Override
     public boolean getCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public boolean isCopyOnPromote() {
         return _copyOnPromote;
     }
 
+    @Override
     public void setCopyOnPromote(boolean copyOnPromote) {
         _copyOnPromote = copyOnPromote;
     }
 
     @Override
     public ProposalAttributeType toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalAttributeType) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalAttributeType) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -194,6 +252,7 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
         return proposalAttributeTypeImpl;
     }
 
+    @Override
     public int compareTo(ProposalAttributeType proposalAttributeType) {
         String primaryKey = proposalAttributeType.getPrimaryKey();
 
@@ -202,17 +261,15 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalAttributeType)) {
             return false;
         }
 
-        ProposalAttributeType proposalAttributeType = null;
-
-        try {
-            proposalAttributeType = (ProposalAttributeType) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalAttributeType proposalAttributeType = (ProposalAttributeType) obj;
 
         String primaryKey = proposalAttributeType.getPrimaryKey();
 
@@ -266,6 +323,7 @@ public class ProposalAttributeTypeModelImpl extends BaseModelImpl<ProposalAttrib
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

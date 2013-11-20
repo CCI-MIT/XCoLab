@@ -23,7 +23,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingUserPreferences service. Represents a row in the &quot;xcolab_MessagingUserPreferences&quot; database table, with each column mapped to a property of this class.
@@ -56,6 +58,8 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingUserPreferences (messagingPreferencesId LONG not null primary key,userId LONG,emailOnSend BOOLEAN,emailOnReceipt BOOLEAN,emailOnActivity BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingUserPreferences";
+    public static final String ORDER_BY_JPQL = " ORDER BY messagingUserPreferences.messagingPreferencesId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingUserPreferences.messagingPreferencesId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,10 +73,11 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.MessagingUserPreferences"),
             true);
     public static long USERID_COLUMN_BITMASK = 1L;
+    public static long MESSAGINGPREFERENCESID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingUserPreferences"));
     private static ClassLoader _classLoader = MessagingUserPreferences.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingUserPreferences.class
         };
     private long _messagingPreferencesId;
@@ -83,9 +88,8 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
     private boolean _emailOnSend;
     private boolean _emailOnReceipt;
     private boolean _emailOnActivity;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private MessagingUserPreferences _escapedModelProxy;
+    private MessagingUserPreferences _escapedModel;
 
     public MessagingUserPreferencesModelImpl() {
     }
@@ -98,6 +102,10 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
      */
     public static MessagingUserPreferences toModel(
         MessagingUserPreferencesSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingUserPreferences model = new MessagingUserPreferencesImpl();
 
         model.setMessagingPreferencesId(soapModel.getMessagingPreferencesId());
@@ -117,6 +125,10 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
      */
     public static List<MessagingUserPreferences> toModels(
         MessagingUserPreferencesSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingUserPreferences> models = new ArrayList<MessagingUserPreferences>(soapModels.length);
 
         for (MessagingUserPreferencesSoap soapModel : soapModels) {
@@ -126,44 +138,101 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _messagingPreferencesId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setMessagingPreferencesId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_messagingPreferencesId);
+        return _messagingPreferencesId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingUserPreferences.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingUserPreferences.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("messagingPreferencesId", getMessagingPreferencesId());
+        attributes.put("userId", getUserId());
+        attributes.put("emailOnSend", getEmailOnSend());
+        attributes.put("emailOnReceipt", getEmailOnReceipt());
+        attributes.put("emailOnActivity", getEmailOnActivity());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long messagingPreferencesId = (Long) attributes.get(
+                "messagingPreferencesId");
+
+        if (messagingPreferencesId != null) {
+            setMessagingPreferencesId(messagingPreferencesId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Boolean emailOnSend = (Boolean) attributes.get("emailOnSend");
+
+        if (emailOnSend != null) {
+            setEmailOnSend(emailOnSend);
+        }
+
+        Boolean emailOnReceipt = (Boolean) attributes.get("emailOnReceipt");
+
+        if (emailOnReceipt != null) {
+            setEmailOnReceipt(emailOnReceipt);
+        }
+
+        Boolean emailOnActivity = (Boolean) attributes.get("emailOnActivity");
+
+        if (emailOnActivity != null) {
+            setEmailOnActivity(emailOnActivity);
+        }
+    }
+
     @JSON
+    @Override
     public long getMessagingPreferencesId() {
         return _messagingPreferencesId;
     }
 
+    @Override
     public void setMessagingPreferencesId(long messagingPreferencesId) {
         _messagingPreferencesId = messagingPreferencesId;
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -176,10 +245,12 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -189,40 +260,49 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
     }
 
     @JSON
+    @Override
     public boolean getEmailOnSend() {
         return _emailOnSend;
     }
 
+    @Override
     public boolean isEmailOnSend() {
         return _emailOnSend;
     }
 
+    @Override
     public void setEmailOnSend(boolean emailOnSend) {
         _emailOnSend = emailOnSend;
     }
 
     @JSON
+    @Override
     public boolean getEmailOnReceipt() {
         return _emailOnReceipt;
     }
 
+    @Override
     public boolean isEmailOnReceipt() {
         return _emailOnReceipt;
     }
 
+    @Override
     public void setEmailOnReceipt(boolean emailOnReceipt) {
         _emailOnReceipt = emailOnReceipt;
     }
 
     @JSON
+    @Override
     public boolean getEmailOnActivity() {
         return _emailOnActivity;
     }
 
+    @Override
     public boolean isEmailOnActivity() {
         return _emailOnActivity;
     }
 
+    @Override
     public void setEmailOnActivity(boolean emailOnActivity) {
         _emailOnActivity = emailOnActivity;
     }
@@ -232,29 +312,26 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
     }
 
     @Override
-    public MessagingUserPreferences toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingUserPreferences) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingUserPreferences.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingUserPreferences.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingUserPreferences toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingUserPreferences) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -272,6 +349,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         return messagingUserPreferencesImpl;
     }
 
+    @Override
     public int compareTo(MessagingUserPreferences messagingUserPreferences) {
         long primaryKey = messagingUserPreferences.getPrimaryKey();
 
@@ -286,17 +364,15 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingUserPreferences)) {
             return false;
         }
 
-        MessagingUserPreferences messagingUserPreferences = null;
-
-        try {
-            messagingUserPreferences = (MessagingUserPreferences) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingUserPreferences messagingUserPreferences = (MessagingUserPreferences) obj;
 
         long primaryKey = messagingUserPreferences.getPrimaryKey();
 
@@ -359,6 +435,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

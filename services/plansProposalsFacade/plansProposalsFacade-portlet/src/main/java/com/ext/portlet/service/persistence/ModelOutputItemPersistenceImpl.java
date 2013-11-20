@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchModelOutputItemException;
 import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.model.impl.ModelOutputItemImpl;
 import com.ext.portlet.model.impl.ModelOutputItemModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -37,51 +38,10 @@ import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
 import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
 import com.ext.portlet.service.persistence.ModelInputItemPersistence;
 import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +61,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +96,17 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED,
+            ModelOutputItemImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED,
+            ModelOutputItemImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_MODELOUTPUTID = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
             ModelOutputItemModelImpl.FINDER_CACHE_ENABLED,
             ModelOutputItemImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -147,23 +116,12 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
             ModelOutputItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModelOutputId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
-            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED,
-            ModelOutputItemImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
-            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED,
-            ModelOutputItemImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
-            ModelOutputItemModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2 =
+        "modelOutputItem.modelOutputItemId = ?";
     private static final String _SQL_SELECT_MODELOUTPUTITEM = "SELECT modelOutputItem FROM ModelOutputItem modelOutputItem";
     private static final String _SQL_SELECT_MODELOUTPUTITEM_WHERE = "SELECT modelOutputItem FROM ModelOutputItem modelOutputItem WHERE ";
     private static final String _SQL_COUNT_MODELOUTPUTITEM = "SELECT COUNT(modelOutputItem) FROM ModelOutputItem modelOutputItem";
     private static final String _SQL_COUNT_MODELOUTPUTITEM_WHERE = "SELECT COUNT(modelOutputItem) FROM ModelOutputItem modelOutputItem WHERE ";
-    private static final String _FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2 =
-        "modelOutputItem.modelOutputItemId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "modelOutputItem.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ModelOutputItem exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ModelOutputItem exists with the key {";
@@ -183,11 +141,13 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
         };
 
     private static CacheModel<ModelOutputItem> _nullModelOutputItemCacheModel = new CacheModel<ModelOutputItem>() {
+            @Override
             public ModelOutputItem toEntityModel() {
                 return _nullModelOutputItem;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -342,19 +302,227 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public ModelOutputItemPersistenceImpl() {
+        setModelClass(ModelOutputItem.class);
+    }
+
+    /**
+     * Returns the model output item where modelOutputItemId = &#63; or throws a {@link com.ext.portlet.NoSuchModelOutputItemException} if it could not be found.
+     *
+     * @param modelOutputItemId the model output item ID
+     * @return the matching model output item
+     * @throws com.ext.portlet.NoSuchModelOutputItemException if a matching model output item could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelOutputItem findByModelOutputId(long modelOutputItemId)
+        throws NoSuchModelOutputItemException, SystemException {
+        ModelOutputItem modelOutputItem = fetchByModelOutputId(modelOutputItemId);
+
+        if (modelOutputItem == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("modelOutputItemId=");
+            msg.append(modelOutputItemId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchModelOutputItemException(msg.toString());
+        }
+
+        return modelOutputItem;
+    }
+
+    /**
+     * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param modelOutputItemId the model output item ID
+     * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId)
+        throws SystemException {
+        return fetchByModelOutputId(modelOutputItemId, true);
+    }
+
+    /**
+     * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param modelOutputItemId the model output item ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { modelOutputItemId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof ModelOutputItem) {
+            ModelOutputItem modelOutputItem = (ModelOutputItem) result;
+
+            if ((modelOutputItemId != modelOutputItem.getModelOutputItemId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_MODELOUTPUTITEM_WHERE);
+
+            query.append(_FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(modelOutputItemId);
+
+                List<ModelOutputItem> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "ModelOutputItemPersistenceImpl.fetchByModelOutputId(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    ModelOutputItem modelOutputItem = list.get(0);
+
+                    result = modelOutputItem;
+
+                    cacheResult(modelOutputItem);
+
+                    if ((modelOutputItem.getModelOutputItemId() != modelOutputItemId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                            finderArgs, modelOutputItem);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (ModelOutputItem) result;
+        }
+    }
+
+    /**
+     * Removes the model output item where modelOutputItemId = &#63; from the database.
+     *
+     * @param modelOutputItemId the model output item ID
+     * @return the model output item that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ModelOutputItem removeByModelOutputId(long modelOutputItemId)
+        throws NoSuchModelOutputItemException, SystemException {
+        ModelOutputItem modelOutputItem = findByModelOutputId(modelOutputItemId);
+
+        return remove(modelOutputItem);
+    }
+
+    /**
+     * Returns the number of model output items where modelOutputItemId = &#63;.
+     *
+     * @param modelOutputItemId the model output item ID
+     * @return the number of matching model output items
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByModelOutputId(long modelOutputItemId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MODELOUTPUTID;
+
+        Object[] finderArgs = new Object[] { modelOutputItemId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MODELOUTPUTITEM_WHERE);
+
+            query.append(_FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(modelOutputItemId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the model output item in the entity cache if it is enabled.
      *
      * @param modelOutputItem the model output item
      */
+    @Override
     public void cacheResult(ModelOutputItem modelOutputItem) {
         EntityCacheUtil.putResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
             ModelOutputItemImpl.class, modelOutputItem.getPrimaryKey(),
             modelOutputItem);
 
         FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-            new Object[] { Long.valueOf(modelOutputItem.getModelOutputItemId()) },
+            new Object[] { modelOutputItem.getModelOutputItemId() },
             modelOutputItem);
 
         modelOutputItem.resetOriginalValues();
@@ -365,6 +533,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      *
      * @param modelOutputItems the model output items
      */
+    @Override
     public void cacheResult(List<ModelOutputItem> modelOutputItems) {
         for (ModelOutputItem modelOutputItem : modelOutputItems) {
             if (EntityCacheUtil.getResult(
@@ -429,9 +598,50 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
         }
     }
 
+    protected void cacheUniqueFindersCache(ModelOutputItem modelOutputItem) {
+        if (modelOutputItem.isNew()) {
+            Object[] args = new Object[] { modelOutputItem.getModelOutputItemId() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID, args,
+                modelOutputItem);
+        } else {
+            ModelOutputItemModelImpl modelOutputItemModelImpl = (ModelOutputItemModelImpl) modelOutputItem;
+
+            if ((modelOutputItemModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_MODELOUTPUTID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        modelOutputItem.getModelOutputItemId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                    args, modelOutputItem);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(ModelOutputItem modelOutputItem) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-            new Object[] { Long.valueOf(modelOutputItem.getModelOutputItemId()) });
+        ModelOutputItemModelImpl modelOutputItemModelImpl = (ModelOutputItemModelImpl) modelOutputItem;
+
+        Object[] args = new Object[] { modelOutputItem.getModelOutputItemId() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID, args);
+
+        if ((modelOutputItemModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_MODELOUTPUTID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    modelOutputItemModelImpl.getOriginalModelOutputItemId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
+                args);
+        }
     }
 
     /**
@@ -440,6 +650,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @param modelOutputItemModifierPK the primary key for the new model output item
      * @return the new model output item
      */
+    @Override
     public ModelOutputItem create(long modelOutputItemModifierPK) {
         ModelOutputItem modelOutputItem = new ModelOutputItemImpl();
 
@@ -457,9 +668,10 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @throws com.ext.portlet.NoSuchModelOutputItemException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelOutputItem remove(long modelOutputItemModifierPK)
         throws NoSuchModelOutputItemException, SystemException {
-        return remove(Long.valueOf(modelOutputItemModifierPK));
+        return remove((Serializable) modelOutputItemModifierPK);
     }
 
     /**
@@ -510,36 +722,47 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, modelOutputItem);
+            if (!session.contains(modelOutputItem)) {
+                modelOutputItem = (ModelOutputItem) session.get(ModelOutputItemImpl.class,
+                        modelOutputItem.getPrimaryKeyObj());
+            }
+
+            if (modelOutputItem != null) {
+                session.delete(modelOutputItem);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(modelOutputItem);
+        if (modelOutputItem != null) {
+            clearCache(modelOutputItem);
+        }
 
         return modelOutputItem;
     }
 
     @Override
     public ModelOutputItem updateImpl(
-        com.ext.portlet.model.ModelOutputItem modelOutputItem, boolean merge)
+        com.ext.portlet.model.ModelOutputItem modelOutputItem)
         throws SystemException {
         modelOutputItem = toUnwrappedModel(modelOutputItem);
 
         boolean isNew = modelOutputItem.isNew();
-
-        ModelOutputItemModelImpl modelOutputItemModelImpl = (ModelOutputItemModelImpl) modelOutputItem;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, modelOutputItem, merge);
+            if (modelOutputItem.isNew()) {
+                session.save(modelOutputItem);
 
-            modelOutputItem.setNew(false);
+                modelOutputItem.setNew(false);
+            } else {
+                session.merge(modelOutputItem);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -556,29 +779,8 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
             ModelOutputItemImpl.class, modelOutputItem.getPrimaryKey(),
             modelOutputItem);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                new Object[] {
-                    Long.valueOf(modelOutputItem.getModelOutputItemId())
-                }, modelOutputItem);
-        } else {
-            if ((modelOutputItemModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_MODELOUTPUTID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(modelOutputItemModelImpl.getOriginalModelOutputItemId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                    new Object[] {
-                        Long.valueOf(modelOutputItem.getModelOutputItemId())
-                    }, modelOutputItem);
-            }
-        }
+        clearUniqueFindersCache(modelOutputItem);
+        cacheUniqueFindersCache(modelOutputItem);
 
         return modelOutputItem;
     }
@@ -614,13 +816,24 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      *
      * @param primaryKey the primary key of the model output item
      * @return the model output item
-     * @throws com.liferay.portal.NoSuchModelException if a model output item with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchModelOutputItemException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public ModelOutputItem findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchModelOutputItemException, SystemException {
+        ModelOutputItem modelOutputItem = fetchByPrimaryKey(primaryKey);
+
+        if (modelOutputItem == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchModelOutputItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return modelOutputItem;
     }
 
     /**
@@ -631,21 +844,10 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @throws com.ext.portlet.NoSuchModelOutputItemException if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelOutputItem findByPrimaryKey(long modelOutputItemModifierPK)
         throws NoSuchModelOutputItemException, SystemException {
-        ModelOutputItem modelOutputItem = fetchByPrimaryKey(modelOutputItemModifierPK);
-
-        if (modelOutputItem == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    modelOutputItemModifierPK);
-            }
-
-            throw new NoSuchModelOutputItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                modelOutputItemModifierPK);
-        }
-
-        return modelOutputItem;
+        return findByPrimaryKey((Serializable) modelOutputItemModifierPK);
     }
 
     /**
@@ -658,7 +860,40 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     @Override
     public ModelOutputItem fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        ModelOutputItem modelOutputItem = (ModelOutputItem) EntityCacheUtil.getResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+                ModelOutputItemImpl.class, primaryKey);
+
+        if (modelOutputItem == _nullModelOutputItem) {
+            return null;
+        }
+
+        if (modelOutputItem == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                modelOutputItem = (ModelOutputItem) session.get(ModelOutputItemImpl.class,
+                        primaryKey);
+
+                if (modelOutputItem != null) {
+                    cacheResult(modelOutputItem);
+                } else {
+                    EntityCacheUtil.putResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+                        ModelOutputItemImpl.class, primaryKey,
+                        _nullModelOutputItem);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
+                    ModelOutputItemImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return modelOutputItem;
     }
 
     /**
@@ -668,166 +903,10 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the model output item, or <code>null</code> if a model output item with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ModelOutputItem fetchByPrimaryKey(long modelOutputItemModifierPK)
         throws SystemException {
-        ModelOutputItem modelOutputItem = (ModelOutputItem) EntityCacheUtil.getResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
-                ModelOutputItemImpl.class, modelOutputItemModifierPK);
-
-        if (modelOutputItem == _nullModelOutputItem) {
-            return null;
-        }
-
-        if (modelOutputItem == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                modelOutputItem = (ModelOutputItem) session.get(ModelOutputItemImpl.class,
-                        Long.valueOf(modelOutputItemModifierPK));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (modelOutputItem != null) {
-                    cacheResult(modelOutputItem);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(ModelOutputItemModelImpl.ENTITY_CACHE_ENABLED,
-                        ModelOutputItemImpl.class, modelOutputItemModifierPK,
-                        _nullModelOutputItem);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return modelOutputItem;
-    }
-
-    /**
-     * Returns the model output item where modelOutputItemId = &#63; or throws a {@link com.ext.portlet.NoSuchModelOutputItemException} if it could not be found.
-     *
-     * @param modelOutputItemId the model output item ID
-     * @return the matching model output item
-     * @throws com.ext.portlet.NoSuchModelOutputItemException if a matching model output item could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelOutputItem findByModelOutputId(long modelOutputItemId)
-        throws NoSuchModelOutputItemException, SystemException {
-        ModelOutputItem modelOutputItem = fetchByModelOutputId(modelOutputItemId);
-
-        if (modelOutputItem == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("modelOutputItemId=");
-            msg.append(modelOutputItemId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchModelOutputItemException(msg.toString());
-        }
-
-        return modelOutputItem;
-    }
-
-    /**
-     * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param modelOutputItemId the model output item ID
-     * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId)
-        throws SystemException {
-        return fetchByModelOutputId(modelOutputItemId, true);
-    }
-
-    /**
-     * Returns the model output item where modelOutputItemId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param modelOutputItemId the model output item ID
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching model output item, or <code>null</code> if a matching model output item could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public ModelOutputItem fetchByModelOutputId(long modelOutputItemId,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { modelOutputItemId };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_SELECT_MODELOUTPUTITEM_WHERE);
-
-            query.append(_FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(modelOutputItemId);
-
-                List<ModelOutputItem> list = q.list();
-
-                result = list;
-
-                ModelOutputItem modelOutputItem = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                        finderArgs, list);
-                } else {
-                    modelOutputItem = list.get(0);
-
-                    cacheResult(modelOutputItem);
-
-                    if ((modelOutputItem.getModelOutputItemId() != modelOutputItemId)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                            finderArgs, modelOutputItem);
-                    }
-                }
-
-                return modelOutputItem;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MODELOUTPUTID,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (ModelOutputItem) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) modelOutputItemModifierPK);
     }
 
     /**
@@ -836,6 +915,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the model output items
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelOutputItem> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -844,7 +924,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * Returns a range of all the model output items.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelOutputItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of model output items
@@ -852,6 +932,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the range of model output items
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelOutputItem> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -861,7 +942,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * Returns an ordered range of all the model output items.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelOutputItemModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of model output items
@@ -870,17 +951,20 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the ordered range of model output items
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ModelOutputItem> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -903,6 +987,10 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_MODELOUTPUTITEM;
+
+                if (pagination) {
+                    sql = sql.concat(ModelOutputItemModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -912,26 +1000,26 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<ModelOutputItem>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<ModelOutputItem>(list);
                 } else {
                     list = (List<ModelOutputItem>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -940,79 +1028,15 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     }
 
     /**
-     * Removes the model output item where modelOutputItemId = &#63; from the database.
-     *
-     * @param modelOutputItemId the model output item ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByModelOutputId(long modelOutputItemId)
-        throws NoSuchModelOutputItemException, SystemException {
-        ModelOutputItem modelOutputItem = findByModelOutputId(modelOutputItemId);
-
-        remove(modelOutputItem);
-    }
-
-    /**
      * Removes all the model output items from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (ModelOutputItem modelOutputItem : findAll()) {
             remove(modelOutputItem);
         }
-    }
-
-    /**
-     * Returns the number of model output items where modelOutputItemId = &#63;.
-     *
-     * @param modelOutputItemId the model output item ID
-     * @return the number of matching model output items
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByModelOutputId(long modelOutputItemId)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { modelOutputItemId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MODELOUTPUTITEM_WHERE);
-
-            query.append(_FINDER_COLUMN_MODELOUTPUTID_MODELOUTPUTITEMID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(modelOutputItemId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MODELOUTPUTID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1021,6 +1045,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
      * @return the number of model output items
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1034,16 +1059,15 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
                 Query q = session.createQuery(_SQL_COUNT_MODELOUTPUTITEM);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1065,7 +1089,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<ModelOutputItem>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1078,6 +1102,7 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
     public void destroy() {
         EntityCacheUtil.removeCache(ModelOutputItemImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

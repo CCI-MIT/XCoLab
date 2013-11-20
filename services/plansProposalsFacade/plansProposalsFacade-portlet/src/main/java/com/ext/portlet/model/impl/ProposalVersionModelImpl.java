@@ -20,7 +20,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalVersion service. Represents a row in the &quot;xcolab_ProposalVersion&quot; database table, with each column mapped to a property of this class.
@@ -69,10 +71,11 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ProposalVersion"),
             true);
     public static long PROPOSALID_COLUMN_BITMASK = 1L;
+    public static long VERSION_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalVersion"));
     private static ClassLoader _classLoader = ProposalVersion.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalVersion.class
         };
     private long _proposalId;
@@ -84,7 +87,7 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     private String _updateType;
     private long _updateAdditionalId;
     private long _columnBitmask;
-    private ProposalVersion _escapedModelProxy;
+    private ProposalVersion _escapedModel;
 
     public ProposalVersionModelImpl() {
     }
@@ -96,6 +99,10 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
      * @return the normal model instance
      */
     public static ProposalVersion toModel(ProposalVersionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalVersion model = new ProposalVersionImpl();
 
         model.setProposalId(soapModel.getProposalId());
@@ -116,6 +123,10 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
      */
     public static List<ProposalVersion> toModels(
         ProposalVersionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalVersion> models = new ArrayList<ProposalVersion>(soapModels.length);
 
         for (ProposalVersionSoap soapModel : soapModels) {
@@ -125,36 +136,97 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
         return models;
     }
 
+    @Override
     public ProposalVersionPK getPrimaryKey() {
         return new ProposalVersionPK(_proposalId, _version);
     }
 
+    @Override
     public void setPrimaryKey(ProposalVersionPK primaryKey) {
         setProposalId(primaryKey.proposalId);
         setVersion(primaryKey.version);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new ProposalVersionPK(_proposalId, _version);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((ProposalVersionPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalVersion.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalVersion.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("version", getVersion());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("updateType", getUpdateType());
+        attributes.put("updateAdditionalId", getUpdateAdditionalId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Integer version = (Integer) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        String updateType = (String) attributes.get("updateType");
+
+        if (updateType != null) {
+            setUpdateType(updateType);
+        }
+
+        Long updateAdditionalId = (Long) attributes.get("updateAdditionalId");
+
+        if (updateAdditionalId != null) {
+            setUpdateAdditionalId(updateAdditionalId);
+        }
+    }
+
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -172,10 +244,12 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     }
 
     @JSON
+    @Override
     public int getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(int version) {
         _columnBitmask = -1L;
 
@@ -183,24 +257,29 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
     }
 
     @JSON
+    @Override
     public long getAuthorId() {
         return _authorId;
     }
 
+    @Override
     public void setAuthorId(long authorId) {
         _authorId = authorId;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
 
     @JSON
+    @Override
     public String getUpdateType() {
         if (_updateType == null) {
             return StringPool.BLANK;
@@ -209,15 +288,18 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
         }
     }
 
+    @Override
     public void setUpdateType(String updateType) {
         _updateType = updateType;
     }
 
     @JSON
+    @Override
     public long getUpdateAdditionalId() {
         return _updateAdditionalId;
     }
 
+    @Override
     public void setUpdateAdditionalId(long updateAdditionalId) {
         _updateAdditionalId = updateAdditionalId;
     }
@@ -228,13 +310,12 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
 
     @Override
     public ProposalVersion toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalVersion) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalVersion) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -253,6 +334,7 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
         return proposalVersionImpl;
     }
 
+    @Override
     public int compareTo(ProposalVersion proposalVersion) {
         int value = 0;
 
@@ -275,17 +357,15 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalVersion)) {
             return false;
         }
 
-        ProposalVersion proposalVersion = null;
-
-        try {
-            proposalVersion = (ProposalVersion) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalVersion proposalVersion = (ProposalVersion) obj;
 
         ProposalVersionPK primaryKey = proposalVersion.getPrimaryKey();
 
@@ -364,6 +444,7 @@ public class ProposalVersionModelImpl extends BaseModelImpl<ProposalVersion>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the EmailList service. Represents a row in the &quot;xcolab_EmailList&quot; database table, with each column mapped to a property of this class.
@@ -53,6 +55,8 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_EmailList (id_ LONG not null primary key,name VARCHAR(256) null,email VARCHAR(256) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_EmailList";
+    public static final String ORDER_BY_JPQL = " ORDER BY emailList.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_EmailList.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -67,10 +71,11 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
             true);
     public static long EMAIL_COLUMN_BITMASK = 1L;
     public static long NAME_COLUMN_BITMASK = 2L;
+    public static long ID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.EmailList"));
     private static ClassLoader _classLoader = EmailList.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             EmailList.class
         };
     private long _id;
@@ -78,9 +83,8 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
     private String _originalName;
     private String _email;
     private String _originalEmail;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private EmailList _escapedModelProxy;
+    private EmailList _escapedModel;
 
     public EmailListModelImpl() {
     }
@@ -92,6 +96,10 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
      * @return the normal model instance
      */
     public static EmailList toModel(EmailListSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         EmailList model = new EmailListImpl();
 
         model.setId(soapModel.getId());
@@ -108,6 +116,10 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
      * @return the normal model instances
      */
     public static List<EmailList> toModels(EmailListSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<EmailList> models = new ArrayList<EmailList>(soapModels.length);
 
         for (EmailListSoap soapModel : soapModels) {
@@ -117,40 +129,81 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return EmailList.class;
     }
 
+    @Override
     public String getModelClassName() {
         return EmailList.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("name", getName());
+        attributes.put("email", getEmail());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String email = (String) attributes.get("email");
+
+        if (email != null) {
+            setEmail(email);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -159,6 +212,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         }
     }
 
+    @Override
     public void setName(String name) {
         _columnBitmask |= NAME_COLUMN_BITMASK;
 
@@ -174,6 +228,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
     }
 
     @JSON
+    @Override
     public String getEmail() {
         if (_email == null) {
             return StringPool.BLANK;
@@ -182,6 +237,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         }
     }
 
+    @Override
     public void setEmail(String email) {
         _columnBitmask |= EMAIL_COLUMN_BITMASK;
 
@@ -201,29 +257,26 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
     }
 
     @Override
-    public EmailList toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (EmailList) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    EmailList.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            EmailList.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public EmailList toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (EmailList) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -239,6 +292,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         return emailListImpl;
     }
 
+    @Override
     public int compareTo(EmailList emailList) {
         long primaryKey = emailList.getPrimaryKey();
 
@@ -253,17 +307,15 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof EmailList)) {
             return false;
         }
 
-        EmailList emailList = null;
-
-        try {
-            emailList = (EmailList) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        EmailList emailList = (EmailList) obj;
 
         long primaryKey = emailList.getPrimaryKey();
 
@@ -330,6 +382,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

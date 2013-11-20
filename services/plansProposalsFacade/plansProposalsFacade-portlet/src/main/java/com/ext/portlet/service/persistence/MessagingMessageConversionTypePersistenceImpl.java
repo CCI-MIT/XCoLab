@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchMessagingMessageConversionTypeException;
 import com.ext.portlet.model.MessagingMessageConversionType;
 import com.ext.portlet.model.impl.MessagingMessageConversionTypeImpl;
 import com.ext.portlet.model.impl.MessagingMessageConversionTypeModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -26,62 +27,10 @@ import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +50,10 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -139,6 +87,18 @@ public class MessagingMessageConversionTypePersistenceImpl
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
+            MessagingMessageConversionTypeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
+            MessagingMessageConversionTypeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
+            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+            new String[0]);
     public static final FinderPath FINDER_PATH_FETCH_BY_FINDBYNAME = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
             MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
             MessagingMessageConversionTypeImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -148,26 +108,14 @@ public class MessagingMessageConversionTypePersistenceImpl
             MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
             Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByfindByName", new String[] { String.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
-            MessagingMessageConversionTypeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
-            MessagingMessageConversionTypeImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
-            MessagingMessageConversionTypeModelImpl.FINDER_CACHE_ENABLED,
-            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-            new String[0]);
+    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_1 = "messagingMessageConversionType.name IS NULL";
+    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_2 = "messagingMessageConversionType.name = ?";
+    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_3 = "(messagingMessageConversionType.name IS NULL OR messagingMessageConversionType.name = '')";
     private static final String _SQL_SELECT_MESSAGINGMESSAGECONVERSIONTYPE = "SELECT messagingMessageConversionType FROM MessagingMessageConversionType messagingMessageConversionType";
     private static final String _SQL_SELECT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE =
         "SELECT messagingMessageConversionType FROM MessagingMessageConversionType messagingMessageConversionType WHERE ";
     private static final String _SQL_COUNT_MESSAGINGMESSAGECONVERSIONTYPE = "SELECT COUNT(messagingMessageConversionType) FROM MessagingMessageConversionType messagingMessageConversionType";
     private static final String _SQL_COUNT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE = "SELECT COUNT(messagingMessageConversionType) FROM MessagingMessageConversionType messagingMessageConversionType WHERE ";
-    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_1 = "messagingMessageConversionType.name IS NULL";
-    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_2 = "messagingMessageConversionType.name = ?";
-    private static final String _FINDER_COLUMN_FINDBYNAME_NAME_3 = "(messagingMessageConversionType.name IS NULL OR messagingMessageConversionType.name = ?)";
     private static final String _ORDER_BY_ENTITY_ALIAS = "messagingMessageConversionType.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MessagingMessageConversionType exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MessagingMessageConversionType exists with the key {";
@@ -189,11 +137,13 @@ public class MessagingMessageConversionTypePersistenceImpl
 
     private static CacheModel<MessagingMessageConversionType> _nullMessagingMessageConversionTypeCacheModel =
         new CacheModel<MessagingMessageConversionType>() {
+            @Override
             public MessagingMessageConversionType toEntityModel() {
                 return _nullMessagingMessageConversionType;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -348,12 +298,246 @@ public class MessagingMessageConversionTypePersistenceImpl
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public MessagingMessageConversionTypePersistenceImpl() {
+        setModelClass(MessagingMessageConversionType.class);
+    }
+
+    /**
+     * Returns the messaging message conversion type where name = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingMessageConversionTypeException} if it could not be found.
+     *
+     * @param name the name
+     * @return the matching messaging message conversion type
+     * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a matching messaging message conversion type could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingMessageConversionType findByfindByName(String name)
+        throws NoSuchMessagingMessageConversionTypeException, SystemException {
+        MessagingMessageConversionType messagingMessageConversionType = fetchByfindByName(name);
+
+        if (messagingMessageConversionType == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("name=");
+            msg.append(name);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchMessagingMessageConversionTypeException(msg.toString());
+        }
+
+        return messagingMessageConversionType;
+    }
+
+    /**
+     * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param name the name
+     * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingMessageConversionType fetchByfindByName(String name)
+        throws SystemException {
+        return fetchByfindByName(name, true);
+    }
+
+    /**
+     * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param name the name
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingMessageConversionType fetchByfindByName(String name,
+        boolean retrieveFromCache) throws SystemException {
+        Object[] finderArgs = new Object[] { name };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
+                    finderArgs, this);
+        }
+
+        if (result instanceof MessagingMessageConversionType) {
+            MessagingMessageConversionType messagingMessageConversionType = (MessagingMessageConversionType) result;
+
+            if (!Validator.equals(name, messagingMessageConversionType.getName())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE);
+
+            boolean bindName = false;
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_3);
+            } else {
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindName) {
+                    qPos.add(name);
+                }
+
+                List<MessagingMessageConversionType> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "MessagingMessageConversionTypePersistenceImpl.fetchByfindByName(String, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    MessagingMessageConversionType messagingMessageConversionType =
+                        list.get(0);
+
+                    result = messagingMessageConversionType;
+
+                    cacheResult(messagingMessageConversionType);
+
+                    if ((messagingMessageConversionType.getName() == null) ||
+                            !messagingMessageConversionType.getName()
+                                                               .equals(name)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
+                            finderArgs, messagingMessageConversionType);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (MessagingMessageConversionType) result;
+        }
+    }
+
+    /**
+     * Removes the messaging message conversion type where name = &#63; from the database.
+     *
+     * @param name the name
+     * @return the messaging message conversion type that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public MessagingMessageConversionType removeByfindByName(String name)
+        throws NoSuchMessagingMessageConversionTypeException, SystemException {
+        MessagingMessageConversionType messagingMessageConversionType = findByfindByName(name);
+
+        return remove(messagingMessageConversionType);
+    }
+
+    /**
+     * Returns the number of messaging message conversion types where name = &#63;.
+     *
+     * @param name the name
+     * @return the number of matching messaging message conversion types
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByfindByName(String name) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_FINDBYNAME;
+
+        Object[] finderArgs = new Object[] { name };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE);
+
+            boolean bindName = false;
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_3);
+            } else {
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindName) {
+                    qPos.add(name);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the messaging message conversion type in the entity cache if it is enabled.
      *
      * @param messagingMessageConversionType the messaging message conversion type
      */
+    @Override
     public void cacheResult(
         MessagingMessageConversionType messagingMessageConversionType) {
         EntityCacheUtil.putResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
@@ -373,6 +557,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      *
      * @param messagingMessageConversionTypes the messaging message conversion types
      */
+    @Override
     public void cacheResult(
         List<MessagingMessageConversionType> messagingMessageConversionTypes) {
         for (MessagingMessageConversionType messagingMessageConversionType : messagingMessageConversionTypes) {
@@ -442,10 +627,54 @@ public class MessagingMessageConversionTypePersistenceImpl
         }
     }
 
+    protected void cacheUniqueFindersCache(
+        MessagingMessageConversionType messagingMessageConversionType) {
+        if (messagingMessageConversionType.isNew()) {
+            Object[] args = new Object[] {
+                    messagingMessageConversionType.getName()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYNAME, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME, args,
+                messagingMessageConversionType);
+        } else {
+            MessagingMessageConversionTypeModelImpl messagingMessageConversionTypeModelImpl =
+                (MessagingMessageConversionTypeModelImpl) messagingMessageConversionType;
+
+            if ((messagingMessageConversionTypeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_FINDBYNAME.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        messagingMessageConversionType.getName()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYNAME,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
+                    args, messagingMessageConversionType);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(
         MessagingMessageConversionType messagingMessageConversionType) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-            new Object[] { messagingMessageConversionType.getName() });
+        MessagingMessageConversionTypeModelImpl messagingMessageConversionTypeModelImpl =
+            (MessagingMessageConversionTypeModelImpl) messagingMessageConversionType;
+
+        Object[] args = new Object[] { messagingMessageConversionType.getName() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYNAME, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME, args);
+
+        if ((messagingMessageConversionTypeModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_FINDBYNAME.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    messagingMessageConversionTypeModelImpl.getOriginalName()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYNAME, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME, args);
+        }
     }
 
     /**
@@ -454,6 +683,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @param typeId the primary key for the new messaging message conversion type
      * @return the new messaging message conversion type
      */
+    @Override
     public MessagingMessageConversionType create(long typeId) {
         MessagingMessageConversionType messagingMessageConversionType = new MessagingMessageConversionTypeImpl();
 
@@ -471,9 +701,10 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a messaging message conversion type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessageConversionType remove(long typeId)
         throws NoSuchMessagingMessageConversionTypeException, SystemException {
-        return remove(Long.valueOf(typeId));
+        return remove((Serializable) typeId);
     }
 
     /**
@@ -525,38 +756,47 @@ public class MessagingMessageConversionTypePersistenceImpl
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, messagingMessageConversionType);
+            if (!session.contains(messagingMessageConversionType)) {
+                messagingMessageConversionType = (MessagingMessageConversionType) session.get(MessagingMessageConversionTypeImpl.class,
+                        messagingMessageConversionType.getPrimaryKeyObj());
+            }
+
+            if (messagingMessageConversionType != null) {
+                session.delete(messagingMessageConversionType);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(messagingMessageConversionType);
+        if (messagingMessageConversionType != null) {
+            clearCache(messagingMessageConversionType);
+        }
 
         return messagingMessageConversionType;
     }
 
     @Override
     public MessagingMessageConversionType updateImpl(
-        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType)
+        throws SystemException {
         messagingMessageConversionType = toUnwrappedModel(messagingMessageConversionType);
 
         boolean isNew = messagingMessageConversionType.isNew();
-
-        MessagingMessageConversionTypeModelImpl messagingMessageConversionTypeModelImpl =
-            (MessagingMessageConversionTypeModelImpl) messagingMessageConversionType;
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, messagingMessageConversionType,
-                merge);
+            if (messagingMessageConversionType.isNew()) {
+                session.save(messagingMessageConversionType);
 
-            messagingMessageConversionType.setNew(false);
+                messagingMessageConversionType.setNew(false);
+            } else {
+                session.merge(messagingMessageConversionType);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -575,27 +815,8 @@ public class MessagingMessageConversionTypePersistenceImpl
             messagingMessageConversionType.getPrimaryKey(),
             messagingMessageConversionType);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                new Object[] { messagingMessageConversionType.getName() },
-                messagingMessageConversionType);
-        } else {
-            if ((messagingMessageConversionTypeModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_FINDBYNAME.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        messagingMessageConversionTypeModelImpl.getOriginalName()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_FINDBYNAME,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                    new Object[] { messagingMessageConversionType.getName() },
-                    messagingMessageConversionType);
-            }
-        }
+        clearUniqueFindersCache(messagingMessageConversionType);
+        cacheUniqueFindersCache(messagingMessageConversionType);
 
         return messagingMessageConversionType;
     }
@@ -623,13 +844,25 @@ public class MessagingMessageConversionTypePersistenceImpl
      *
      * @param primaryKey the primary key of the messaging message conversion type
      * @return the messaging message conversion type
-     * @throws com.liferay.portal.NoSuchModelException if a messaging message conversion type with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a messaging message conversion type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public MessagingMessageConversionType findByPrimaryKey(
-        Serializable primaryKey) throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        Serializable primaryKey)
+        throws NoSuchMessagingMessageConversionTypeException, SystemException {
+        MessagingMessageConversionType messagingMessageConversionType = fetchByPrimaryKey(primaryKey);
+
+        if (messagingMessageConversionType == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchMessagingMessageConversionTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return messagingMessageConversionType;
     }
 
     /**
@@ -640,20 +873,10 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a messaging message conversion type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessageConversionType findByPrimaryKey(long typeId)
         throws NoSuchMessagingMessageConversionTypeException, SystemException {
-        MessagingMessageConversionType messagingMessageConversionType = fetchByPrimaryKey(typeId);
-
-        if (messagingMessageConversionType == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + typeId);
-            }
-
-            throw new NoSuchMessagingMessageConversionTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                typeId);
-        }
-
-        return messagingMessageConversionType;
+        return findByPrimaryKey((Serializable) typeId);
     }
 
     /**
@@ -666,7 +889,40 @@ public class MessagingMessageConversionTypePersistenceImpl
     @Override
     public MessagingMessageConversionType fetchByPrimaryKey(
         Serializable primaryKey) throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        MessagingMessageConversionType messagingMessageConversionType = (MessagingMessageConversionType) EntityCacheUtil.getResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+                MessagingMessageConversionTypeImpl.class, primaryKey);
+
+        if (messagingMessageConversionType == _nullMessagingMessageConversionType) {
+            return null;
+        }
+
+        if (messagingMessageConversionType == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                messagingMessageConversionType = (MessagingMessageConversionType) session.get(MessagingMessageConversionTypeImpl.class,
+                        primaryKey);
+
+                if (messagingMessageConversionType != null) {
+                    cacheResult(messagingMessageConversionType);
+                } else {
+                    EntityCacheUtil.putResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+                        MessagingMessageConversionTypeImpl.class, primaryKey,
+                        _nullMessagingMessageConversionType);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
+                    MessagingMessageConversionTypeImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return messagingMessageConversionType;
     }
 
     /**
@@ -676,178 +932,10 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @return the messaging message conversion type, or <code>null</code> if a messaging message conversion type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public MessagingMessageConversionType fetchByPrimaryKey(long typeId)
         throws SystemException {
-        MessagingMessageConversionType messagingMessageConversionType = (MessagingMessageConversionType) EntityCacheUtil.getResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
-                MessagingMessageConversionTypeImpl.class, typeId);
-
-        if (messagingMessageConversionType == _nullMessagingMessageConversionType) {
-            return null;
-        }
-
-        if (messagingMessageConversionType == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                messagingMessageConversionType = (MessagingMessageConversionType) session.get(MessagingMessageConversionTypeImpl.class,
-                        Long.valueOf(typeId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (messagingMessageConversionType != null) {
-                    cacheResult(messagingMessageConversionType);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(MessagingMessageConversionTypeModelImpl.ENTITY_CACHE_ENABLED,
-                        MessagingMessageConversionTypeImpl.class, typeId,
-                        _nullMessagingMessageConversionType);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return messagingMessageConversionType;
-    }
-
-    /**
-     * Returns the messaging message conversion type where name = &#63; or throws a {@link com.ext.portlet.NoSuchMessagingMessageConversionTypeException} if it could not be found.
-     *
-     * @param name the name
-     * @return the matching messaging message conversion type
-     * @throws com.ext.portlet.NoSuchMessagingMessageConversionTypeException if a matching messaging message conversion type could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingMessageConversionType findByfindByName(String name)
-        throws NoSuchMessagingMessageConversionTypeException, SystemException {
-        MessagingMessageConversionType messagingMessageConversionType = fetchByfindByName(name);
-
-        if (messagingMessageConversionType == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("name=");
-            msg.append(name);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchMessagingMessageConversionTypeException(msg.toString());
-        }
-
-        return messagingMessageConversionType;
-    }
-
-    /**
-     * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param name the name
-     * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingMessageConversionType fetchByfindByName(String name)
-        throws SystemException {
-        return fetchByfindByName(name, true);
-    }
-
-    /**
-     * Returns the messaging message conversion type where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-     *
-     * @param name the name
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching messaging message conversion type, or <code>null</code> if a matching messaging message conversion type could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public MessagingMessageConversionType fetchByfindByName(String name,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { name };
-
-        Object result = null;
-
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                    finderArgs, this);
-        }
-
-        if (result == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_SELECT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE);
-
-            if (name == null) {
-                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_1);
-            } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_FINDBYNAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_FINDBYNAME_NAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (name != null) {
-                    qPos.add(name);
-                }
-
-                List<MessagingMessageConversionType> list = q.list();
-
-                result = list;
-
-                MessagingMessageConversionType messagingMessageConversionType = null;
-
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                        finderArgs, list);
-                } else {
-                    messagingMessageConversionType = list.get(0);
-
-                    cacheResult(messagingMessageConversionType);
-
-                    if ((messagingMessageConversionType.getName() == null) ||
-                            !messagingMessageConversionType.getName()
-                                                               .equals(name)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                            finderArgs, messagingMessageConversionType);
-                    }
-                }
-
-                return messagingMessageConversionType;
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_FINDBYNAME,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (MessagingMessageConversionType) result;
-            }
-        }
+        return fetchByPrimaryKey((Serializable) typeId);
     }
 
     /**
@@ -856,6 +944,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @return the messaging message conversion types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessageConversionType> findAll()
         throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -865,7 +954,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * Returns a range of all the messaging message conversion types.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging message conversion types
@@ -873,6 +962,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @return the range of messaging message conversion types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessageConversionType> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -882,7 +972,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * Returns an ordered range of all the messaging message conversion types.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.MessagingMessageConversionTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of messaging message conversion types
@@ -891,17 +981,20 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @return the ordered range of messaging message conversion types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<MessagingMessageConversionType> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -924,6 +1017,10 @@ public class MessagingMessageConversionTypePersistenceImpl
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_MESSAGINGMESSAGECONVERSIONTYPE;
+
+                if (pagination) {
+                    sql = sql.concat(MessagingMessageConversionTypeModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -933,26 +1030,26 @@ public class MessagingMessageConversionTypePersistenceImpl
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<MessagingMessageConversionType>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<MessagingMessageConversionType>(list);
                 } else {
                     list = (List<MessagingMessageConversionType>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -961,88 +1058,15 @@ public class MessagingMessageConversionTypePersistenceImpl
     }
 
     /**
-     * Removes the messaging message conversion type where name = &#63; from the database.
-     *
-     * @param name the name
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByfindByName(String name)
-        throws NoSuchMessagingMessageConversionTypeException, SystemException {
-        MessagingMessageConversionType messagingMessageConversionType = findByfindByName(name);
-
-        remove(messagingMessageConversionType);
-    }
-
-    /**
      * Removes all the messaging message conversion types from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (MessagingMessageConversionType messagingMessageConversionType : findAll()) {
             remove(messagingMessageConversionType);
         }
-    }
-
-    /**
-     * Returns the number of messaging message conversion types where name = &#63;.
-     *
-     * @param name the name
-     * @return the number of matching messaging message conversion types
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByfindByName(String name) throws SystemException {
-        Object[] finderArgs = new Object[] { name };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_FINDBYNAME,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_MESSAGINGMESSAGECONVERSIONTYPE_WHERE);
-
-            if (name == null) {
-                query.append(_FINDER_COLUMN_FINDBYNAME_NAME_1);
-            } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_FINDBYNAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_FINDBYNAME_NAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (name != null) {
-                    qPos.add(name);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_FINDBYNAME,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1051,6 +1075,7 @@ public class MessagingMessageConversionTypePersistenceImpl
      * @return the number of messaging message conversion types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1064,16 +1089,15 @@ public class MessagingMessageConversionTypePersistenceImpl
                 Query q = session.createQuery(_SQL_COUNT_MESSAGINGMESSAGECONVERSIONTYPE);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1096,7 +1120,7 @@ public class MessagingMessageConversionTypePersistenceImpl
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<MessagingMessageConversionType>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1109,6 +1133,7 @@ public class MessagingMessageConversionTypePersistenceImpl
     public void destroy() {
         EntityCacheUtil.removeCache(MessagingMessageConversionTypeImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

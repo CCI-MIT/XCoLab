@@ -24,6 +24,7 @@ public abstract class PlanAttributeBaseImpl extends PlanAttributeModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan attribute model instance should use the {@link PlanAttribute} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanAttributeLocalServiceUtil.addPlanAttribute(this);

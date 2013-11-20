@@ -413,7 +413,7 @@ create table xcolab_PlanFan (
 create table xcolab_PlanItem (
 	id_ LONG not null primary key,
 	planId LONG,
-	state VARCHAR(75) null,
+	state_ VARCHAR(75) null,
 	updated DATE null,
 	updateAuthorId LONG,
 	updateType VARCHAR(75) null,

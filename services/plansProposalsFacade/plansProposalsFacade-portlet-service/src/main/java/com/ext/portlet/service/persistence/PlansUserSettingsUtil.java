@@ -49,7 +49,7 @@ public class PlansUserSettingsUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,101 +83,20 @@ public class PlansUserSettingsUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static PlansUserSettings update(
-        PlansUserSettings plansUserSettings, boolean merge)
+    public static PlansUserSettings update(PlansUserSettings plansUserSettings)
         throws SystemException {
-        return getPersistence().update(plansUserSettings, merge);
+        return getPersistence().update(plansUserSettings);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static PlansUserSettings update(
-        PlansUserSettings plansUserSettings, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(plansUserSettings, merge, serviceContext);
-    }
-
-    /**
-    * Caches the plans user settings in the entity cache if it is enabled.
-    *
-    * @param plansUserSettings the plans user settings
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.PlansUserSettings plansUserSettings) {
-        getPersistence().cacheResult(plansUserSettings);
-    }
-
-    /**
-    * Caches the plans user settingses in the entity cache if it is enabled.
-    *
-    * @param plansUserSettingses the plans user settingses
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.PlansUserSettings> plansUserSettingses) {
-        getPersistence().cacheResult(plansUserSettingses);
-    }
-
-    /**
-    * Creates a new plans user settings with the primary key. Does not add the plans user settings to the database.
-    *
-    * @param planUserSettingsId the primary key for the new plans user settings
-    * @return the new plans user settings
-    */
-    public static com.ext.portlet.model.PlansUserSettings create(
-        long planUserSettingsId) {
-        return getPersistence().create(planUserSettingsId);
-    }
-
-    /**
-    * Removes the plans user settings with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param planUserSettingsId the primary key of the plans user settings
-    * @return the plans user settings that was removed
-    * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlansUserSettings remove(
-        long planUserSettingsId)
-        throws com.ext.portlet.NoSuchPlansUserSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(planUserSettingsId);
-    }
-
-    public static com.ext.portlet.model.PlansUserSettings updateImpl(
-        com.ext.portlet.model.PlansUserSettings plansUserSettings, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(plansUserSettings, merge);
-    }
-
-    /**
-    * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.NoSuchPlansUserSettingsException} if it could not be found.
-    *
-    * @param planUserSettingsId the primary key of the plans user settings
-    * @return the plans user settings
-    * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlansUserSettings findByPrimaryKey(
-        long planUserSettingsId)
-        throws com.ext.portlet.NoSuchPlansUserSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(planUserSettingsId);
-    }
-
-    /**
-    * Returns the plans user settings with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param planUserSettingsId the primary key of the plans user settings
-    * @return the plans user settings, or <code>null</code> if a plans user settings with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlansUserSettings fetchByPrimaryKey(
-        long planUserSettingsId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(planUserSettingsId);
+        PlansUserSettings plansUserSettings, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(plansUserSettings, serviceContext);
     }
 
     /**
@@ -228,6 +147,114 @@ public class PlansUserSettingsUtil {
     }
 
     /**
+    * Removes the plans user settings where userId = &#63; and planTypeId = &#63; from the database.
+    *
+    * @param userId the user ID
+    * @param planTypeId the plan type ID
+    * @return the plans user settings that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlansUserSettings removeByuserIdPlanTypeId(
+        long userId, long planTypeId)
+        throws com.ext.portlet.NoSuchPlansUserSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByuserIdPlanTypeId(userId, planTypeId);
+    }
+
+    /**
+    * Returns the number of plans user settingses where userId = &#63; and planTypeId = &#63;.
+    *
+    * @param userId the user ID
+    * @param planTypeId the plan type ID
+    * @return the number of matching plans user settingses
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByuserIdPlanTypeId(long userId, long planTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByuserIdPlanTypeId(userId, planTypeId);
+    }
+
+    /**
+    * Caches the plans user settings in the entity cache if it is enabled.
+    *
+    * @param plansUserSettings the plans user settings
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.PlansUserSettings plansUserSettings) {
+        getPersistence().cacheResult(plansUserSettings);
+    }
+
+    /**
+    * Caches the plans user settingses in the entity cache if it is enabled.
+    *
+    * @param plansUserSettingses the plans user settingses
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.PlansUserSettings> plansUserSettingses) {
+        getPersistence().cacheResult(plansUserSettingses);
+    }
+
+    /**
+    * Creates a new plans user settings with the primary key. Does not add the plans user settings to the database.
+    *
+    * @param planUserSettingsId the primary key for the new plans user settings
+    * @return the new plans user settings
+    */
+    public static com.ext.portlet.model.PlansUserSettings create(
+        long planUserSettingsId) {
+        return getPersistence().create(planUserSettingsId);
+    }
+
+    /**
+    * Removes the plans user settings with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param planUserSettingsId the primary key of the plans user settings
+    * @return the plans user settings that was removed
+    * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlansUserSettings remove(
+        long planUserSettingsId)
+        throws com.ext.portlet.NoSuchPlansUserSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(planUserSettingsId);
+    }
+
+    public static com.ext.portlet.model.PlansUserSettings updateImpl(
+        com.ext.portlet.model.PlansUserSettings plansUserSettings)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(plansUserSettings);
+    }
+
+    /**
+    * Returns the plans user settings with the primary key or throws a {@link com.ext.portlet.NoSuchPlansUserSettingsException} if it could not be found.
+    *
+    * @param planUserSettingsId the primary key of the plans user settings
+    * @return the plans user settings
+    * @throws com.ext.portlet.NoSuchPlansUserSettingsException if a plans user settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlansUserSettings findByPrimaryKey(
+        long planUserSettingsId)
+        throws com.ext.portlet.NoSuchPlansUserSettingsException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(planUserSettingsId);
+    }
+
+    /**
+    * Returns the plans user settings with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param planUserSettingsId the primary key of the plans user settings
+    * @return the plans user settings, or <code>null</code> if a plans user settings with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlansUserSettings fetchByPrimaryKey(
+        long planUserSettingsId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(planUserSettingsId);
+    }
+
+    /**
     * Returns all the plans user settingses.
     *
     * @return the plans user settingses
@@ -242,7 +269,7 @@ public class PlansUserSettingsUtil {
     * Returns a range of all the plans user settingses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansUserSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plans user settingses
@@ -260,7 +287,7 @@ public class PlansUserSettingsUtil {
     * Returns an ordered range of all the plans user settingses.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansUserSettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plans user settingses
@@ -277,19 +304,6 @@ public class PlansUserSettingsUtil {
     }
 
     /**
-    * Removes the plans user settings where userId = &#63; and planTypeId = &#63; from the database.
-    *
-    * @param userId the user ID
-    * @param planTypeId the plan type ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByuserIdPlanTypeId(long userId, long planTypeId)
-        throws com.ext.portlet.NoSuchPlansUserSettingsException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByuserIdPlanTypeId(userId, planTypeId);
-    }
-
-    /**
     * Removes all the plans user settingses from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -297,19 +311,6 @@ public class PlansUserSettingsUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plans user settingses where userId = &#63; and planTypeId = &#63;.
-    *
-    * @param userId the user ID
-    * @param planTypeId the plan type ID
-    * @return the number of matching plans user settingses
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByuserIdPlanTypeId(long userId, long planTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByuserIdPlanTypeId(userId, planTypeId);
     }
 
     /**
@@ -321,190 +322,6 @@ public class PlansUserSettingsUtil {
     public static int countAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countAll();
-    }
-
-    /**
-    * Returns all the plan attribute filters associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @return the plan attribute filters associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanAttributeFilters(pk);
-    }
-
-    /**
-    * Returns a range of all the plan attribute filters associated with the plans user settings.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param pk the primary key of the plans user settings
-    * @param start the lower bound of the range of plans user settingses
-    * @param end the upper bound of the range of plans user settingses (not inclusive)
-    * @return the range of plan attribute filters associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanAttributeFilters(pk, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan attribute filters associated with the plans user settings.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param pk the primary key of the plans user settings
-    * @param start the lower bound of the range of plans user settingses
-    * @param end the upper bound of the range of plans user settingses (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of plan attribute filters associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanAttributeFilter> getPlanAttributeFilters(
-        long pk, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .getPlanAttributeFilters(pk, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the number of plan attribute filters associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @return the number of plan attribute filters associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static int getPlanAttributeFiltersSize(long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanAttributeFiltersSize(pk);
-    }
-
-    /**
-    * Returns <code>true</code> if the plan attribute filter is associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @param planAttributeFilterPK the primary key of the plan attribute filter
-    * @return <code>true</code> if the plan attribute filter is associated with the plans user settings; <code>false</code> otherwise
-    * @throws SystemException if a system exception occurred
-    */
-    public static boolean containsPlanAttributeFilter(long pk,
-        long planAttributeFilterPK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .containsPlanAttributeFilter(pk, planAttributeFilterPK);
-    }
-
-    /**
-    * Returns <code>true</code> if the plans user settings has any plan attribute filters associated with it.
-    *
-    * @param pk the primary key of the plans user settings to check for associations with plan attribute filters
-    * @return <code>true</code> if the plans user settings has any plan attribute filters associated with it; <code>false</code> otherwise
-    * @throws SystemException if a system exception occurred
-    */
-    public static boolean containsPlanAttributeFilters(long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().containsPlanAttributeFilters(pk);
-    }
-
-    /**
-    * Returns all the plan column settingses associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @return the plan column settingses associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanColumnSettingses(pk);
-    }
-
-    /**
-    * Returns a range of all the plan column settingses associated with the plans user settings.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param pk the primary key of the plans user settings
-    * @param start the lower bound of the range of plans user settingses
-    * @param end the upper bound of the range of plans user settingses (not inclusive)
-    * @return the range of plan column settingses associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanColumnSettingses(pk, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the plan column settingses associated with the plans user settings.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param pk the primary key of the plans user settings
-    * @param start the lower bound of the range of plans user settingses
-    * @param end the upper bound of the range of plans user settingses (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of plan column settingses associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.PlanColumnSettings> getPlanColumnSettingses(
-        long pk, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .getPlanColumnSettingses(pk, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the number of plan column settingses associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @return the number of plan column settingses associated with the plans user settings
-    * @throws SystemException if a system exception occurred
-    */
-    public static int getPlanColumnSettingsesSize(long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().getPlanColumnSettingsesSize(pk);
-    }
-
-    /**
-    * Returns <code>true</code> if the plan column settings is associated with the plans user settings.
-    *
-    * @param pk the primary key of the plans user settings
-    * @param planColumnSettingsPK the primary key of the plan column settings
-    * @return <code>true</code> if the plan column settings is associated with the plans user settings; <code>false</code> otherwise
-    * @throws SystemException if a system exception occurred
-    */
-    public static boolean containsPlanColumnSettings(long pk,
-        long planColumnSettingsPK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .containsPlanColumnSettings(pk, planColumnSettingsPK);
-    }
-
-    /**
-    * Returns <code>true</code> if the plans user settings has any plan column settingses associated with it.
-    *
-    * @param pk the primary key of the plans user settings to check for associations with plan column settingses
-    * @return <code>true</code> if the plans user settings has any plan column settingses associated with it; <code>false</code> otherwise
-    * @throws SystemException if a system exception occurred
-    */
-    public static boolean containsPlanColumnSettingses(long pk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().containsPlanColumnSettingses(pk);
     }
 
     public static PlansUserSettingsPersistence getPersistence() {
@@ -519,10 +336,9 @@ public class PlansUserSettingsUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlansUserSettingsPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlansUserSettingsUtil.class,
-            "_persistence");
     }
 }

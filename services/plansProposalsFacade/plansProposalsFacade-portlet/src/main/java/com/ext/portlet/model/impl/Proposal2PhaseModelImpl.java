@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the Proposal2Phase service. Represents a row in the &quot;xcolab_Proposal2Phase&quot; database table, with each column mapped to a property of this class.
@@ -52,6 +54,8 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_Proposal2Phase (proposalId LONG not null,contestPhaseId LONG not null,versionFrom INTEGER,versionTo INTEGER,sortWeight INTEGER,autopromoteCandidate BOOLEAN,primary key (proposalId, contestPhaseId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Proposal2Phase";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposal2Phase.id.proposalId ASC, proposal2Phase.id.contestPhaseId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_Proposal2Phase.proposalId ASC, xcolab_Proposal2Phase.contestPhaseId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,7 +73,7 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Proposal2Phase"));
     private static ClassLoader _classLoader = Proposal2Phase.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             Proposal2Phase.class
         };
     private long _proposalId;
@@ -83,7 +87,7 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     private int _sortWeight;
     private boolean _autopromoteCandidate;
     private long _columnBitmask;
-    private Proposal2Phase _escapedModelProxy;
+    private Proposal2Phase _escapedModel;
 
     public Proposal2PhaseModelImpl() {
     }
@@ -95,6 +99,10 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
      * @return the normal model instance
      */
     public static Proposal2Phase toModel(Proposal2PhaseSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         Proposal2Phase model = new Proposal2PhaseImpl();
 
         model.setProposalId(soapModel.getProposalId());
@@ -114,6 +122,10 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
      * @return the normal model instances
      */
     public static List<Proposal2Phase> toModels(Proposal2PhaseSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<Proposal2Phase> models = new ArrayList<Proposal2Phase>(soapModels.length);
 
         for (Proposal2PhaseSoap soapModel : soapModels) {
@@ -123,36 +135,98 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
         return models;
     }
 
+    @Override
     public Proposal2PhasePK getPrimaryKey() {
         return new Proposal2PhasePK(_proposalId, _contestPhaseId);
     }
 
+    @Override
     public void setPrimaryKey(Proposal2PhasePK primaryKey) {
         setProposalId(primaryKey.proposalId);
         setContestPhaseId(primaryKey.contestPhaseId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new Proposal2PhasePK(_proposalId, _contestPhaseId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((Proposal2PhasePK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Proposal2Phase.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Proposal2Phase.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("contestPhaseId", getContestPhaseId());
+        attributes.put("versionFrom", getVersionFrom());
+        attributes.put("versionTo", getVersionTo());
+        attributes.put("sortWeight", getSortWeight());
+        attributes.put("autopromoteCandidate", getAutopromoteCandidate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Long contestPhaseId = (Long) attributes.get("contestPhaseId");
+
+        if (contestPhaseId != null) {
+            setContestPhaseId(contestPhaseId);
+        }
+
+        Integer versionFrom = (Integer) attributes.get("versionFrom");
+
+        if (versionFrom != null) {
+            setVersionFrom(versionFrom);
+        }
+
+        Integer versionTo = (Integer) attributes.get("versionTo");
+
+        if (versionTo != null) {
+            setVersionTo(versionTo);
+        }
+
+        Integer sortWeight = (Integer) attributes.get("sortWeight");
+
+        if (sortWeight != null) {
+            setSortWeight(sortWeight);
+        }
+
+        Boolean autopromoteCandidate = (Boolean) attributes.get(
+                "autopromoteCandidate");
+
+        if (autopromoteCandidate != null) {
+            setAutopromoteCandidate(autopromoteCandidate);
+        }
+    }
+
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -170,10 +244,12 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     @JSON
+    @Override
     public long getContestPhaseId() {
         return _contestPhaseId;
     }
 
+    @Override
     public void setContestPhaseId(long contestPhaseId) {
         _columnBitmask |= CONTESTPHASEID_COLUMN_BITMASK;
 
@@ -191,41 +267,50 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
     }
 
     @JSON
+    @Override
     public int getVersionFrom() {
         return _versionFrom;
     }
 
+    @Override
     public void setVersionFrom(int versionFrom) {
         _versionFrom = versionFrom;
     }
 
     @JSON
+    @Override
     public int getVersionTo() {
         return _versionTo;
     }
 
+    @Override
     public void setVersionTo(int versionTo) {
         _versionTo = versionTo;
     }
 
     @JSON
+    @Override
     public int getSortWeight() {
         return _sortWeight;
     }
 
+    @Override
     public void setSortWeight(int sortWeight) {
         _sortWeight = sortWeight;
     }
 
     @JSON
+    @Override
     public boolean getAutopromoteCandidate() {
         return _autopromoteCandidate;
     }
 
+    @Override
     public boolean isAutopromoteCandidate() {
         return _autopromoteCandidate;
     }
 
+    @Override
     public void setAutopromoteCandidate(boolean autopromoteCandidate) {
         _autopromoteCandidate = autopromoteCandidate;
     }
@@ -236,13 +321,12 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
     @Override
     public Proposal2Phase toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (Proposal2Phase) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (Proposal2Phase) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -261,6 +345,7 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
         return proposal2PhaseImpl;
     }
 
+    @Override
     public int compareTo(Proposal2Phase proposal2Phase) {
         Proposal2PhasePK primaryKey = proposal2Phase.getPrimaryKey();
 
@@ -269,17 +354,15 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Proposal2Phase)) {
             return false;
         }
 
-        Proposal2Phase proposal2Phase = null;
-
-        try {
-            proposal2Phase = (Proposal2Phase) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Proposal2Phase proposal2Phase = (Proposal2Phase) obj;
 
         Proposal2PhasePK primaryKey = proposal2Phase.getPrimaryKey();
 
@@ -350,6 +433,7 @@ public class Proposal2PhaseModelImpl extends BaseModelImpl<Proposal2Phase>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

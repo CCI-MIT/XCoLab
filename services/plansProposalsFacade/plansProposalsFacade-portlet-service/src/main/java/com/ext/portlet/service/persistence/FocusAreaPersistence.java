@@ -24,6 +24,61 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
      */
 
     /**
+    * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
+    *
+    * @param name the name
+    * @return the matching focus area
+    * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.FocusArea findByName(java.lang.String name)
+        throws com.ext.portlet.NoSuchFocusAreaException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param name the name
+    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.FocusArea fetchByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param name the name
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.FocusArea fetchByName(java.lang.String name,
+        boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes the focus area where name = &#63; from the database.
+    *
+    * @param name the name
+    * @return the focus area that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.FocusArea removeByName(java.lang.String name)
+        throws com.ext.portlet.NoSuchFocusAreaException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of focus areas where name = &#63;.
+    *
+    * @param name the name
+    * @return the number of matching focus areas
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByName(java.lang.String name)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Caches the focus area in the entity cache if it is enabled.
     *
     * @param focusArea the focus area
@@ -59,7 +114,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.FocusArea updateImpl(
-        com.ext.portlet.model.FocusArea focusArea, boolean merge)
+        com.ext.portlet.model.FocusArea focusArea)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -85,40 +140,6 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the focus area where name = &#63; or throws a {@link com.ext.portlet.NoSuchFocusAreaException} if it could not be found.
-    *
-    * @param name the name
-    * @return the matching focus area
-    * @throws com.ext.portlet.NoSuchFocusAreaException if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.FocusArea findByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchFocusAreaException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-    *
-    * @param name the name
-    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.FocusArea fetchByName(java.lang.String name)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the focus area where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-    *
-    * @param name the name
-    * @param retrieveFromCache whether to use the finder cache
-    * @return the matching focus area, or <code>null</code> if a matching focus area could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.FocusArea fetchByName(java.lang.String name,
-        boolean retrieveFromCache)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the focus areas.
     *
     * @return the focus areas
@@ -131,7 +152,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * Returns a range of all the focus areas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of focus areas
@@ -146,7 +167,7 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
     * Returns an ordered range of all the focus areas.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.FocusAreaModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of focus areas
@@ -161,31 +182,11 @@ public interface FocusAreaPersistence extends BasePersistence<FocusArea> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes the focus area where name = &#63; from the database.
-    *
-    * @param name the name
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByName(java.lang.String name)
-        throws com.ext.portlet.NoSuchFocusAreaException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the focus areas from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of focus areas where name = &#63;.
-    *
-    * @param name the name
-    * @return the number of matching focus areas
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByName(java.lang.String name)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

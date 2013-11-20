@@ -21,7 +21,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalSupporter service. Represents a row in the &quot;xcolab_ProposalSupporter&quot; database table, with each column mapped to a property of this class.
@@ -52,6 +54,8 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalSupporter (proposalId LONG not null,userId LONG not null,createDate DATE null,primary key (proposalId, userId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalSupporter";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalSupporter.id.proposalId ASC, proposalSupporter.id.userId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalSupporter.proposalId ASC, xcolab_ProposalSupporter.userId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,7 +73,7 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalSupporter"));
     private static ClassLoader _classLoader = ProposalSupporter.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalSupporter.class
         };
     private long _proposalId;
@@ -81,7 +85,7 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
     private boolean _setOriginalUserId;
     private Date _createDate;
     private long _columnBitmask;
-    private ProposalSupporter _escapedModelProxy;
+    private ProposalSupporter _escapedModel;
 
     public ProposalSupporterModelImpl() {
     }
@@ -93,6 +97,10 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
      * @return the normal model instance
      */
     public static ProposalSupporter toModel(ProposalSupporterSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalSupporter model = new ProposalSupporterImpl();
 
         model.setProposalId(soapModel.getProposalId());
@@ -110,6 +118,10 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
      */
     public static List<ProposalSupporter> toModels(
         ProposalSupporterSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalSupporter> models = new ArrayList<ProposalSupporter>(soapModels.length);
 
         for (ProposalSupporterSoap soapModel : soapModels) {
@@ -119,36 +131,76 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
         return models;
     }
 
+    @Override
     public ProposalSupporterPK getPrimaryKey() {
         return new ProposalSupporterPK(_proposalId, _userId);
     }
 
+    @Override
     public void setPrimaryKey(ProposalSupporterPK primaryKey) {
         setProposalId(primaryKey.proposalId);
         setUserId(primaryKey.userId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new ProposalSupporterPK(_proposalId, _userId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((ProposalSupporterPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalSupporter.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalSupporter.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("userId", getUserId());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -166,10 +218,12 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -182,10 +236,12 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -195,10 +251,12 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
@@ -209,13 +267,12 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
 
     @Override
     public ProposalSupporter toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalSupporter) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalSupporter) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -231,6 +288,7 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
         return proposalSupporterImpl;
     }
 
+    @Override
     public int compareTo(ProposalSupporter proposalSupporter) {
         ProposalSupporterPK primaryKey = proposalSupporter.getPrimaryKey();
 
@@ -239,17 +297,15 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalSupporter)) {
             return false;
         }
 
-        ProposalSupporter proposalSupporter = null;
-
-        try {
-            proposalSupporter = (ProposalSupporter) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalSupporter proposalSupporter = (ProposalSupporter) obj;
 
         ProposalSupporterPK primaryKey = proposalSupporter.getPrimaryKey();
 
@@ -314,6 +370,7 @@ public class ProposalSupporterModelImpl extends BaseModelImpl<ProposalSupporter>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

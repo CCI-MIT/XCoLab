@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ContestPhaseTypeLocalService}.
- * </p>
+ * Provides a wrapper for {@link ContestPhaseTypeLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ContestPhaseTypeLocalService
+ * @author Brian Wing Shun Chan
+ * @see ContestPhaseTypeLocalService
  * @generated
  */
 public class ContestPhaseTypeLocalServiceWrapper
@@ -28,6 +26,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the contest phase type that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ContestPhaseType addContestPhaseType(
         com.ext.portlet.model.ContestPhaseType contestPhaseType)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @param id the primary key for the new contest phase type
     * @return the new contest phase type
     */
+    @Override
     public com.ext.portlet.model.ContestPhaseType createContestPhaseType(
         long id) {
         return _contestPhaseTypeLocalService.createContestPhaseType(id);
@@ -49,25 +49,35 @@ public class ContestPhaseTypeLocalServiceWrapper
     * Deletes the contest phase type with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the contest phase type
+    * @return the contest phase type that was removed
     * @throws PortalException if a contest phase type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestPhaseType(long id)
+    @Override
+    public com.ext.portlet.model.ContestPhaseType deleteContestPhaseType(
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _contestPhaseTypeLocalService.deleteContestPhaseType(id);
+        return _contestPhaseTypeLocalService.deleteContestPhaseType(id);
     }
 
     /**
     * Deletes the contest phase type from the database. Also notifies the appropriate model listeners.
     *
     * @param contestPhaseType the contest phase type
+    * @return the contest phase type that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteContestPhaseType(
+    @Override
+    public com.ext.portlet.model.ContestPhaseType deleteContestPhaseType(
         com.ext.portlet.model.ContestPhaseType contestPhaseType)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _contestPhaseTypeLocalService.deleteContestPhaseType(contestPhaseType);
+        return _contestPhaseTypeLocalService.deleteContestPhaseType(contestPhaseType);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _contestPhaseTypeLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseTypeLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseTypeLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.ContestPhaseType fetchContestPhaseType(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseTypeLocalService.fetchContestPhaseType(id);
@@ -155,12 +187,14 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @throws PortalException if a contest phase type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ContestPhaseType getContestPhaseType(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseTypeLocalService.getContestPhaseType(id);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -172,7 +206,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * Returns a range of all the contest phase types.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest phase types
@@ -180,6 +214,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the range of contest phase types
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ContestPhaseType> getContestPhaseTypes(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -192,6 +227,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the number of contest phase types
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getContestPhaseTypesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseTypeLocalService.getContestPhaseTypesCount();
@@ -204,6 +240,7 @@ public class ContestPhaseTypeLocalServiceWrapper
     * @return the contest phase type that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ContestPhaseType updateContestPhaseType(
         com.ext.portlet.model.ContestPhaseType contestPhaseType)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -211,25 +248,11 @@ public class ContestPhaseTypeLocalServiceWrapper
     }
 
     /**
-    * Updates the contest phase type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param contestPhaseType the contest phase type
-    * @param merge whether to merge the contest phase type with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the contest phase type that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ContestPhaseType updateContestPhaseType(
-        com.ext.portlet.model.ContestPhaseType contestPhaseType, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhaseTypeLocalService.updateContestPhaseType(contestPhaseType,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _contestPhaseTypeLocalService.getBeanIdentifier();
     }
@@ -239,29 +262,40 @@ public class ContestPhaseTypeLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _contestPhaseTypeLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _contestPhaseTypeLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ContestPhaseTypeLocalService getWrappedContestPhaseTypeLocalService() {
         return _contestPhaseTypeLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedContestPhaseTypeLocalService(
         ContestPhaseTypeLocalService contestPhaseTypeLocalService) {
         _contestPhaseTypeLocalService = contestPhaseTypeLocalService;
     }
 
+    @Override
     public ContestPhaseTypeLocalService getWrappedService() {
         return _contestPhaseTypeLocalService;
     }
 
+    @Override
     public void setWrappedService(
         ContestPhaseTypeLocalService contestPhaseTypeLocalService) {
         _contestPhaseTypeLocalService = contestPhaseTypeLocalService;

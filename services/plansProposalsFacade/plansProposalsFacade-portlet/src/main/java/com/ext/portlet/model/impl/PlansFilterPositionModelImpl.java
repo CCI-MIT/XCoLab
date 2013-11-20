@@ -20,7 +20,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlansFilterPosition service. Represents a row in the &quot;xcolab_PlansFilterPosition&quot; database table, with each column mapped to a property of this class.
@@ -51,6 +53,8 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlansFilterPosition (userId LONG not null,planTypeId LONG not null,positionId LONG not null,primary key (userId, planTypeId, positionId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlansFilterPosition";
+    public static final String ORDER_BY_JPQL = " ORDER BY plansFilterPosition.id.userId ASC, plansFilterPosition.id.planTypeId ASC, plansFilterPosition.id.positionId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlansFilterPosition.userId ASC, xcolab_PlansFilterPosition.planTypeId ASC, xcolab_PlansFilterPosition.positionId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -65,10 +69,11 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
             true);
     public static long PLANTYPEID_COLUMN_BITMASK = 1L;
     public static long USERID_COLUMN_BITMASK = 2L;
+    public static long POSITIONID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlansFilterPosition"));
     private static ClassLoader _classLoader = PlansFilterPosition.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlansFilterPosition.class
         };
     private long _userId;
@@ -80,7 +85,7 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
     private boolean _setOriginalPlanTypeId;
     private long _positionId;
     private long _columnBitmask;
-    private PlansFilterPosition _escapedModelProxy;
+    private PlansFilterPosition _escapedModel;
 
     public PlansFilterPositionModelImpl() {
     }
@@ -92,6 +97,10 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
      * @return the normal model instance
      */
     public static PlansFilterPosition toModel(PlansFilterPositionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlansFilterPosition model = new PlansFilterPositionImpl();
 
         model.setUserId(soapModel.getUserId());
@@ -109,6 +118,10 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
      */
     public static List<PlansFilterPosition> toModels(
         PlansFilterPositionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlansFilterPosition> models = new ArrayList<PlansFilterPosition>(soapModels.length);
 
         for (PlansFilterPositionSoap soapModel : soapModels) {
@@ -118,37 +131,77 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
         return models;
     }
 
+    @Override
     public PlansFilterPositionPK getPrimaryKey() {
         return new PlansFilterPositionPK(_userId, _planTypeId, _positionId);
     }
 
+    @Override
     public void setPrimaryKey(PlansFilterPositionPK primaryKey) {
         setUserId(primaryKey.userId);
         setPlanTypeId(primaryKey.planTypeId);
         setPositionId(primaryKey.positionId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlansFilterPositionPK(_userId, _planTypeId, _positionId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlansFilterPositionPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlansFilterPosition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlansFilterPosition.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("userId", getUserId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("positionId", getPositionId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        Long positionId = (Long) attributes.get("positionId");
+
+        if (positionId != null) {
+            setPositionId(positionId);
+        }
+    }
+
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -161,10 +214,12 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -174,10 +229,12 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
     }
 
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _columnBitmask |= PLANTYPEID_COLUMN_BITMASK;
 
@@ -195,10 +252,12 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
     }
 
     @JSON
+    @Override
     public long getPositionId() {
         return _positionId;
     }
 
+    @Override
     public void setPositionId(long positionId) {
         _positionId = positionId;
     }
@@ -209,13 +268,12 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
 
     @Override
     public PlansFilterPosition toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlansFilterPosition) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlansFilterPosition) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -231,6 +289,7 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
         return plansFilterPositionImpl;
     }
 
+    @Override
     public int compareTo(PlansFilterPosition plansFilterPosition) {
         PlansFilterPositionPK primaryKey = plansFilterPosition.getPrimaryKey();
 
@@ -239,17 +298,15 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlansFilterPosition)) {
             return false;
         }
 
-        PlansFilterPosition plansFilterPosition = null;
-
-        try {
-            plansFilterPosition = (PlansFilterPosition) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlansFilterPosition plansFilterPosition = (PlansFilterPosition) obj;
 
         PlansFilterPositionPK primaryKey = plansFilterPosition.getPrimaryKey();
 
@@ -308,6 +365,7 @@ public class PlansFilterPositionModelImpl extends BaseModelImpl<PlansFilterPosit
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

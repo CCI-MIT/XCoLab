@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanType service. Represents a row in the &quot;xcolab_PlanType&quot; database table, with each column mapped to a property of this class.
@@ -60,6 +62,8 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanType (planTypeId LONG not null primary key,name VARCHAR(75) null,description VARCHAR(2048) null,modelId LONG,modelTypeName VARCHAR(75) null,published BOOLEAN,publishedCounterpartId LONG,isDefault BOOLEAN,defaultModelId LONG,defaultScenarioId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanType";
+    public static final String ORDER_BY_JPQL = " ORDER BY planType.planTypeId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanType.planTypeId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -73,10 +77,11 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanType"),
             true);
     public static long ISDEFAULT_COLUMN_BITMASK = 1L;
+    public static long PLANTYPEID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanType"));
     private static ClassLoader _classLoader = PlanType.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanType.class
         };
     private long _planTypeId;
@@ -91,9 +96,8 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
     private boolean _setOriginalIsDefault;
     private long _defaultModelId;
     private long _defaultScenarioId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanType _escapedModelProxy;
+    private PlanType _escapedModel;
 
     public PlanTypeModelImpl() {
     }
@@ -105,6 +109,10 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
      * @return the normal model instance
      */
     public static PlanType toModel(PlanTypeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanType model = new PlanTypeImpl();
 
         model.setPlanTypeId(soapModel.getPlanTypeId());
@@ -128,6 +136,10 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
      * @return the normal model instances
      */
     public static List<PlanType> toModels(PlanTypeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanType> models = new ArrayList<PlanType>(soapModels.length);
 
         for (PlanTypeSoap soapModel : soapModels) {
@@ -137,40 +149,131 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planTypeId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanTypeId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planTypeId);
+        return _planTypeId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanType.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanType.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("modelId", getModelId());
+        attributes.put("modelTypeName", getModelTypeName());
+        attributes.put("published", getPublished());
+        attributes.put("publishedCounterpartId", getPublishedCounterpartId());
+        attributes.put("isDefault", getIsDefault());
+        attributes.put("defaultModelId", getDefaultModelId());
+        attributes.put("defaultScenarioId", getDefaultScenarioId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        String modelTypeName = (String) attributes.get("modelTypeName");
+
+        if (modelTypeName != null) {
+            setModelTypeName(modelTypeName);
+        }
+
+        Boolean published = (Boolean) attributes.get("published");
+
+        if (published != null) {
+            setPublished(published);
+        }
+
+        Long publishedCounterpartId = (Long) attributes.get(
+                "publishedCounterpartId");
+
+        if (publishedCounterpartId != null) {
+            setPublishedCounterpartId(publishedCounterpartId);
+        }
+
+        Boolean isDefault = (Boolean) attributes.get("isDefault");
+
+        if (isDefault != null) {
+            setIsDefault(isDefault);
+        }
+
+        Long defaultModelId = (Long) attributes.get("defaultModelId");
+
+        if (defaultModelId != null) {
+            setDefaultModelId(defaultModelId);
+        }
+
+        Long defaultScenarioId = (Long) attributes.get("defaultScenarioId");
+
+        if (defaultScenarioId != null) {
+            setDefaultScenarioId(defaultScenarioId);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -179,11 +282,13 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -192,20 +297,24 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _modelId = modelId;
     }
 
     @JSON
+    @Override
     public String getModelTypeName() {
         if (_modelTypeName == null) {
             return StringPool.BLANK;
@@ -214,41 +323,50 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         }
     }
 
+    @Override
     public void setModelTypeName(String modelTypeName) {
         _modelTypeName = modelTypeName;
     }
 
     @JSON
+    @Override
     public boolean getPublished() {
         return _published;
     }
 
+    @Override
     public boolean isPublished() {
         return _published;
     }
 
+    @Override
     public void setPublished(boolean published) {
         _published = published;
     }
 
     @JSON
+    @Override
     public long getPublishedCounterpartId() {
         return _publishedCounterpartId;
     }
 
+    @Override
     public void setPublishedCounterpartId(long publishedCounterpartId) {
         _publishedCounterpartId = publishedCounterpartId;
     }
 
     @JSON
+    @Override
     public boolean getIsDefault() {
         return _isDefault;
     }
 
+    @Override
     public boolean isIsDefault() {
         return _isDefault;
     }
 
+    @Override
     public void setIsDefault(boolean isDefault) {
         _columnBitmask |= ISDEFAULT_COLUMN_BITMASK;
 
@@ -266,19 +384,23 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
     }
 
     @JSON
+    @Override
     public long getDefaultModelId() {
         return _defaultModelId;
     }
 
+    @Override
     public void setDefaultModelId(long defaultModelId) {
         _defaultModelId = defaultModelId;
     }
 
     @JSON
+    @Override
     public long getDefaultScenarioId() {
         return _defaultScenarioId;
     }
 
+    @Override
     public void setDefaultScenarioId(long defaultScenarioId) {
         _defaultScenarioId = defaultScenarioId;
     }
@@ -288,29 +410,26 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
     }
 
     @Override
-    public PlanType toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanType) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanType.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanType.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanType toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanType) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -333,6 +452,7 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         return planTypeImpl;
     }
 
+    @Override
     public int compareTo(PlanType planType) {
         long primaryKey = planType.getPrimaryKey();
 
@@ -347,17 +467,15 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanType)) {
             return false;
         }
 
-        PlanType planType = null;
-
-        try {
-            planType = (PlanType) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanType planType = (PlanType) obj;
 
         long primaryKey = planType.getPrimaryKey();
 
@@ -458,6 +576,7 @@ public class PlanTypeModelImpl extends BaseModelImpl<PlanType>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(34);
 

@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the ontology term entity local service. This utility wraps {@link com.ext.portlet.service.impl.OntologyTermEntityLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for OntologyTermEntity. This utility wraps
+ * {@link com.ext.portlet.service.impl.OntologyTermEntityLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see OntologyTermEntityLocalService
@@ -55,25 +55,32 @@ public class OntologyTermEntityLocalServiceUtil {
     * Deletes the ontology term entity with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the ontology term entity
+    * @return the ontology term entity that was removed
     * @throws PortalException if a ontology term entity with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteOntologyTermEntity(long id)
+    public static com.ext.portlet.model.OntologyTermEntity deleteOntologyTermEntity(
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteOntologyTermEntity(id);
+        return getService().deleteOntologyTermEntity(id);
     }
 
     /**
     * Deletes the ontology term entity from the database. Also notifies the appropriate model listeners.
     *
     * @param ontologyTermEntity the ontology term entity
+    * @return the ontology term entity that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteOntologyTermEntity(
+    public static com.ext.portlet.model.OntologyTermEntity deleteOntologyTermEntity(
         com.ext.portlet.model.OntologyTermEntity ontologyTermEntity)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteOntologyTermEntity(ontologyTermEntity);
+        return getService().deleteOntologyTermEntity(ontologyTermEntity);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -94,7 +101,7 @@ public class OntologyTermEntityLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermEntityModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,7 +121,7 @@ public class OntologyTermEntityLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermEntityModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -145,6 +152,21 @@ public class OntologyTermEntityLocalServiceUtil {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().dynamicQueryCount(dynamicQuery);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
     }
 
     public static com.ext.portlet.model.OntologyTermEntity fetchOntologyTermEntity(
@@ -178,7 +200,7 @@ public class OntologyTermEntityLocalServiceUtil {
     * Returns a range of all the ontology term entities.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermEntityModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of ontology term entities
@@ -217,21 +239,6 @@ public class OntologyTermEntityLocalServiceUtil {
     }
 
     /**
-    * Updates the ontology term entity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param ontologyTermEntity the ontology term entity
-    * @param merge whether to merge the ontology term entity with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the ontology term entity that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.OntologyTermEntity updateOntologyTermEntity(
-        com.ext.portlet.model.OntologyTermEntity ontologyTermEntity,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().updateOntologyTermEntity(ontologyTermEntity, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -247,6 +254,12 @@ public class OntologyTermEntityLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
     public static java.util.List<java.lang.Long> findTagedIdsForClass(
@@ -271,34 +284,25 @@ public class OntologyTermEntityLocalServiceUtil {
 
     public static OntologyTermEntityLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     OntologyTermEntityLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    OntologyTermEntityLocalService.class.getName(),
-                    portletClassLoader);
-
-            _service = new OntologyTermEntityLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof OntologyTermEntityLocalService) {
+                _service = (OntologyTermEntityLocalService) invokableLocalService;
+            } else {
+                _service = new OntologyTermEntityLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(OntologyTermEntityLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(OntologyTermEntityLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(OntologyTermEntityLocalService service) {
-        MethodCache.remove(OntologyTermEntityLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(OntologyTermEntityLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(OntologyTermEntityLocalService.class);
     }
 }

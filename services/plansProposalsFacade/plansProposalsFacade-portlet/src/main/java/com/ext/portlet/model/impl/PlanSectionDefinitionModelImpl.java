@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanSectionDefinition service. Represents a row in the &quot;xcolab_PlanSectionDefinition&quot; database table, with each column mapped to a property of this class.
@@ -59,6 +61,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,locked BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
+    public static final String ORDER_BY_JPQL = " ORDER BY planSectionDefinition.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionDefinition.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -72,7 +76,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanSectionDefinition"));
     private static ClassLoader _classLoader = PlanSectionDefinition.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanSectionDefinition.class
         };
     private long _id;
@@ -84,8 +88,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
     private int _characterLimit;
     private long _focusAreaId;
     private boolean _locked;
-    private transient ExpandoBridge _expandoBridge;
-    private PlanSectionDefinition _escapedModelProxy;
+    private PlanSectionDefinition _escapedModel;
 
     public PlanSectionDefinitionModelImpl() {
     }
@@ -98,6 +101,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
      */
     public static PlanSectionDefinition toModel(
         PlanSectionDefinitionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanSectionDefinition model = new PlanSectionDefinitionImpl();
 
         model.setId(soapModel.getId());
@@ -121,6 +128,10 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
      */
     public static List<PlanSectionDefinition> toModels(
         PlanSectionDefinitionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanSectionDefinition> models = new ArrayList<PlanSectionDefinition>(soapModels.length);
 
         for (PlanSectionDefinitionSoap soapModel : soapModels) {
@@ -130,40 +141,123 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanSectionDefinition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanSectionDefinition.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("type", getType());
+        attributes.put("adminTitle", getAdminTitle());
+        attributes.put("title", getTitle());
+        attributes.put("defaultText", getDefaultText());
+        attributes.put("helpText", getHelpText());
+        attributes.put("characterLimit", getCharacterLimit());
+        attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("locked", getLocked());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String type = (String) attributes.get("type");
+
+        if (type != null) {
+            setType(type);
+        }
+
+        String adminTitle = (String) attributes.get("adminTitle");
+
+        if (adminTitle != null) {
+            setAdminTitle(adminTitle);
+        }
+
+        String title = (String) attributes.get("title");
+
+        if (title != null) {
+            setTitle(title);
+        }
+
+        String defaultText = (String) attributes.get("defaultText");
+
+        if (defaultText != null) {
+            setDefaultText(defaultText);
+        }
+
+        String helpText = (String) attributes.get("helpText");
+
+        if (helpText != null) {
+            setHelpText(helpText);
+        }
+
+        Integer characterLimit = (Integer) attributes.get("characterLimit");
+
+        if (characterLimit != null) {
+            setCharacterLimit(characterLimit);
+        }
+
+        Long focusAreaId = (Long) attributes.get("focusAreaId");
+
+        if (focusAreaId != null) {
+            setFocusAreaId(focusAreaId);
+        }
+
+        Boolean locked = (Boolean) attributes.get("locked");
+
+        if (locked != null) {
+            setLocked(locked);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getType() {
         if (_type == null) {
             return StringPool.BLANK;
@@ -172,11 +266,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         }
     }
 
+    @Override
     public void setType(String type) {
         _type = type;
     }
 
     @JSON
+    @Override
     public String getAdminTitle() {
         if (_adminTitle == null) {
             return StringPool.BLANK;
@@ -185,11 +281,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         }
     }
 
+    @Override
     public void setAdminTitle(String adminTitle) {
         _adminTitle = adminTitle;
     }
 
     @JSON
+    @Override
     public String getTitle() {
         if (_title == null) {
             return StringPool.BLANK;
@@ -198,11 +296,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         }
     }
 
+    @Override
     public void setTitle(String title) {
         _title = title;
     }
 
     @JSON
+    @Override
     public String getDefaultText() {
         if (_defaultText == null) {
             return StringPool.BLANK;
@@ -211,11 +311,13 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         }
     }
 
+    @Override
     public void setDefaultText(String defaultText) {
         _defaultText = defaultText;
     }
 
     @JSON
+    @Override
     public String getHelpText() {
         if (_helpText == null) {
             return StringPool.BLANK;
@@ -224,65 +326,70 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         }
     }
 
+    @Override
     public void setHelpText(String helpText) {
         _helpText = helpText;
     }
 
     @JSON
+    @Override
     public int getCharacterLimit() {
         return _characterLimit;
     }
 
+    @Override
     public void setCharacterLimit(int characterLimit) {
         _characterLimit = characterLimit;
     }
 
     @JSON
+    @Override
     public long getFocusAreaId() {
         return _focusAreaId;
     }
 
+    @Override
     public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
     }
 
     @JSON
+    @Override
     public boolean getLocked() {
         return _locked;
     }
 
+    @Override
     public boolean isLocked() {
         return _locked;
     }
 
+    @Override
     public void setLocked(boolean locked) {
         _locked = locked;
     }
 
     @Override
-    public PlanSectionDefinition toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanSectionDefinition) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanSectionDefinition.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanSectionDefinition.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanSectionDefinition toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanSectionDefinition) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -304,6 +411,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         return planSectionDefinitionImpl;
     }
 
+    @Override
     public int compareTo(PlanSectionDefinition planSectionDefinition) {
         long primaryKey = planSectionDefinition.getPrimaryKey();
 
@@ -318,17 +426,15 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanSectionDefinition)) {
             return false;
         }
 
-        PlanSectionDefinition planSectionDefinition = null;
-
-        try {
-            planSectionDefinition = (PlanSectionDefinition) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanSectionDefinition planSectionDefinition = (PlanSectionDefinition) obj;
 
         long primaryKey = planSectionDefinition.getPrimaryKey();
 
@@ -430,6 +536,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

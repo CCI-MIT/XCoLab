@@ -24,6 +24,7 @@ public abstract class PlanItemBaseImpl extends PlanItemModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan item model instance should use the {@link PlanItem} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanItemLocalServiceUtil.addPlanItem(this);

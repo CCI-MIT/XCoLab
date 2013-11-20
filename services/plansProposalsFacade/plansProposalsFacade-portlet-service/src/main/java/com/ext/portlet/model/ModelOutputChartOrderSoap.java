@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.ModelOutputChartOrderServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.ModelOutputChartOrderServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.ModelOutputChartOrderServiceSoap
  * @generated
  */
 public class ModelOutputChartOrderSoap implements Serializable {

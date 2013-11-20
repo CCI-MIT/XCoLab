@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link DiscussionMessageService}.
- * </p>
+ * Provides a wrapper for {@link DiscussionMessageService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       DiscussionMessageService
+ * @author Brian Wing Shun Chan
+ * @see DiscussionMessageService
  * @generated
  */
 public class DiscussionMessageServiceWrapper implements DiscussionMessageService,
@@ -21,24 +19,54 @@ public class DiscussionMessageServiceWrapper implements DiscussionMessageService
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _discussionMessageService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _discussionMessageService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _discussionMessageService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public DiscussionMessageService getWrappedDiscussionMessageService() {
         return _discussionMessageService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedDiscussionMessageService(
         DiscussionMessageService discussionMessageService) {
         _discussionMessageService = discussionMessageService;
     }
 
+    @Override
     public DiscussionMessageService getWrappedService() {
         return _discussionMessageService;
     }
 
+    @Override
     public void setWrappedService(
         DiscussionMessageService discussionMessageService) {
         _discussionMessageService = discussionMessageService;

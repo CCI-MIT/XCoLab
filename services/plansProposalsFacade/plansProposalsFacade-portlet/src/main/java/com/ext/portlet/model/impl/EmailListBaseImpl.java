@@ -24,6 +24,7 @@ public abstract class EmailListBaseImpl extends EmailListModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a email list model instance should use the {@link EmailList} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             EmailListLocalServiceUtil.addEmailList(this);

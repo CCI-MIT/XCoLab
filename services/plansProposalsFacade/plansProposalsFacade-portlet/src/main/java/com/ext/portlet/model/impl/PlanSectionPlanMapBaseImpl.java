@@ -24,6 +24,7 @@ public abstract class PlanSectionPlanMapBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan section plan map model instance should use the {@link PlanSectionPlanMap} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionPlanMapLocalServiceUtil.addPlanSectionPlanMap(this);

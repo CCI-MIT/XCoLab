@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link ContestPhaseColumn}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       ContestPhaseColumn
+ * @author Brian Wing Shun Chan
+ * @see ContestPhaseColumn
  * @generated
  */
 public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
@@ -19,12 +23,60 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
         _contestPhaseColumn = contestPhaseColumn;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhaseColumn.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhaseColumn.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("ContestPhasePK", getContestPhasePK());
+        attributes.put("columnName", getColumnName());
+        attributes.put("columnWeight", getColumnWeight());
+        attributes.put("defaultSort", getDefaultSort());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long ContestPhasePK = (Long) attributes.get("ContestPhasePK");
+
+        if (ContestPhasePK != null) {
+            setContestPhasePK(ContestPhasePK);
+        }
+
+        String columnName = (String) attributes.get("columnName");
+
+        if (columnName != null) {
+            setColumnName(columnName);
+        }
+
+        Integer columnWeight = (Integer) attributes.get("columnWeight");
+
+        if (columnWeight != null) {
+            setColumnWeight(columnWeight);
+        }
+
+        Boolean defaultSort = (Boolean) attributes.get("defaultSort");
+
+        if (defaultSort != null) {
+            setDefaultSort(defaultSort);
+        }
     }
 
     /**
@@ -32,6 +84,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the primary key of this contest phase column
     */
+    @Override
     public long getPrimaryKey() {
         return _contestPhaseColumn.getPrimaryKey();
     }
@@ -41,6 +94,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param primaryKey the primary key of this contest phase column
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _contestPhaseColumn.setPrimaryKey(primaryKey);
     }
@@ -50,6 +104,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the ID of this contest phase column
     */
+    @Override
     public long getId() {
         return _contestPhaseColumn.getId();
     }
@@ -59,6 +114,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param id the ID of this contest phase column
     */
+    @Override
     public void setId(long id) {
         _contestPhaseColumn.setId(id);
     }
@@ -68,6 +124,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the contest phase p k of this contest phase column
     */
+    @Override
     public long getContestPhasePK() {
         return _contestPhaseColumn.getContestPhasePK();
     }
@@ -77,6 +134,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param ContestPhasePK the contest phase p k of this contest phase column
     */
+    @Override
     public void setContestPhasePK(long ContestPhasePK) {
         _contestPhaseColumn.setContestPhasePK(ContestPhasePK);
     }
@@ -86,6 +144,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the column name of this contest phase column
     */
+    @Override
     public java.lang.String getColumnName() {
         return _contestPhaseColumn.getColumnName();
     }
@@ -95,6 +154,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param columnName the column name of this contest phase column
     */
+    @Override
     public void setColumnName(java.lang.String columnName) {
         _contestPhaseColumn.setColumnName(columnName);
     }
@@ -104,6 +164,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the column weight of this contest phase column
     */
+    @Override
     public int getColumnWeight() {
         return _contestPhaseColumn.getColumnWeight();
     }
@@ -113,6 +174,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param columnWeight the column weight of this contest phase column
     */
+    @Override
     public void setColumnWeight(int columnWeight) {
         _contestPhaseColumn.setColumnWeight(columnWeight);
     }
@@ -122,6 +184,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return the default sort of this contest phase column
     */
+    @Override
     public boolean getDefaultSort() {
         return _contestPhaseColumn.getDefaultSort();
     }
@@ -131,6 +194,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @return <code>true</code> if this contest phase column is default sort; <code>false</code> otherwise
     */
+    @Override
     public boolean isDefaultSort() {
         return _contestPhaseColumn.isDefaultSort();
     }
@@ -140,42 +204,64 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     *
     * @param defaultSort the default sort of this contest phase column
     */
+    @Override
     public void setDefaultSort(boolean defaultSort) {
         _contestPhaseColumn.setDefaultSort(defaultSort);
     }
 
+    @Override
     public boolean isNew() {
         return _contestPhaseColumn.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _contestPhaseColumn.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _contestPhaseColumn.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _contestPhaseColumn.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _contestPhaseColumn.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _contestPhaseColumn.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _contestPhaseColumn.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _contestPhaseColumn.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _contestPhaseColumn.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _contestPhaseColumn.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _contestPhaseColumn.setExpandoBridgeAttributes(serviceContext);
@@ -186,6 +272,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
         return new ContestPhaseColumnWrapper((ContestPhaseColumn) _contestPhaseColumn.clone());
     }
 
+    @Override
     public int compareTo(ContestPhaseColumn contestPhaseColumn) {
         return _contestPhaseColumn.compareTo(contestPhaseColumn);
     }
@@ -195,12 +282,19 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
         return _contestPhaseColumn.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<ContestPhaseColumn> toCacheModel() {
         return _contestPhaseColumn.toCacheModel();
     }
 
+    @Override
     public ContestPhaseColumn toEscapedModel() {
         return new ContestPhaseColumnWrapper(_contestPhaseColumn.toEscapedModel());
+    }
+
+    @Override
+    public ContestPhaseColumn toUnescapedModel() {
+        return new ContestPhaseColumnWrapper(_contestPhaseColumn.toUnescapedModel());
     }
 
     @Override
@@ -208,26 +302,50 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
         return _contestPhaseColumn.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _contestPhaseColumn.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestPhaseColumn.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhaseColumnWrapper)) {
+            return false;
+        }
+
+        ContestPhaseColumnWrapper contestPhaseColumnWrapper = (ContestPhaseColumnWrapper) obj;
+
+        if (Validator.equals(_contestPhaseColumn,
+                    contestPhaseColumnWrapper._contestPhaseColumn)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public ContestPhaseColumn getWrappedContestPhaseColumn() {
         return _contestPhaseColumn;
     }
 
+    @Override
     public ContestPhaseColumn getWrappedModel() {
         return _contestPhaseColumn;
     }
 
+    @Override
     public void resetOriginalValues() {
         _contestPhaseColumn.resetOriginalValues();
     }

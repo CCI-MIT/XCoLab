@@ -24,6 +24,7 @@ public abstract class Plan2ProposalBaseImpl extends Plan2ProposalModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan2 proposal model instance should use the {@link Plan2Proposal} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             Plan2ProposalLocalServiceUtil.addPlan2Proposal(this);

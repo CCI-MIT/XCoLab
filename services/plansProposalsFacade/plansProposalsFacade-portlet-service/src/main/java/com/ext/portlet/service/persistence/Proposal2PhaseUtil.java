@@ -49,7 +49,7 @@ public class Proposal2PhaseUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,19 +83,351 @@ public class Proposal2PhaseUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static Proposal2Phase update(Proposal2Phase proposal2Phase,
-        boolean merge) throws SystemException {
-        return getPersistence().update(proposal2Phase, merge);
+    public static Proposal2Phase update(Proposal2Phase proposal2Phase)
+        throws SystemException {
+        return getPersistence().update(proposal2Phase);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static Proposal2Phase update(Proposal2Phase proposal2Phase,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(proposal2Phase, merge, serviceContext);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(proposal2Phase, serviceContext);
+    }
+
+    /**
+    * Returns all the proposal2 phases where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @return the matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByProposalId(proposalId);
+    }
+
+    /**
+    * Returns a range of all the proposal2 phases where proposalId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param start the lower bound of the range of proposal2 phases
+    * @param end the upper bound of the range of proposal2 phases (not inclusive)
+    * @return the range of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
+        long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByProposalId(proposalId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the proposal2 phases where proposalId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param proposalId the proposal ID
+    * @param start the lower bound of the range of proposal2 phases
+    * @param end the upper bound of the range of proposal2 phases (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
+        long proposalId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId(proposalId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal2 phase in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase findByProposalId_First(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_First(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal2 phase in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal2 phase, or <code>null</code> if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase fetchByProposalId_First(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_First(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal2 phase in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase findByProposalId_Last(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_Last(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal2 phase in the ordered set where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal2 phase, or <code>null</code> if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase fetchByProposalId_Last(
+        long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByProposalId_Last(proposalId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where proposalId = &#63;.
+    *
+    * @param proposal2PhasePK the primary key of the current proposal2 phase
+    * @param proposalId the proposal ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase[] findByProposalId_PrevAndNext(
+        Proposal2PhasePK proposal2PhasePK, long proposalId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByProposalId_PrevAndNext(proposal2PhasePK, proposalId,
+            orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal2 phases where proposalId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByProposalId(proposalId);
+    }
+
+    /**
+    * Returns the number of proposal2 phases where proposalId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @return the number of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByProposalId(proposalId);
+    }
+
+    /**
+    * Returns all the proposal2 phases where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @return the matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestPhaseId(contestPhaseId);
+    }
+
+    /**
+    * Returns a range of all the proposal2 phases where contestPhaseId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param start the lower bound of the range of proposal2 phases
+    * @param end the upper bound of the range of proposal2 phases (not inclusive)
+    * @return the range of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
+        long contestPhaseId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestPhaseId(contestPhaseId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the proposal2 phases where contestPhaseId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param start the lower bound of the range of proposal2 phases
+    * @param end the upper bound of the range of proposal2 phases (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
+        long contestPhaseId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhaseId(contestPhaseId, start, end,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal2 phase in the ordered set where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase findByContestPhaseId_First(
+        long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhaseId_First(contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Returns the first proposal2 phase in the ordered set where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching proposal2 phase, or <code>null</code> if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase fetchByContestPhaseId_First(
+        long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhaseId_First(contestPhaseId,
+            orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal2 phase in the ordered set where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase findByContestPhaseId_Last(
+        long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhaseId_Last(contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Returns the last proposal2 phase in the ordered set where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching proposal2 phase, or <code>null</code> if a matching proposal2 phase could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase fetchByContestPhaseId_Last(
+        long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestPhaseId_Last(contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where contestPhaseId = &#63;.
+    *
+    * @param proposal2PhasePK the primary key of the current proposal2 phase
+    * @param contestPhaseId the contest phase ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next proposal2 phase
+    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.Proposal2Phase[] findByContestPhaseId_PrevAndNext(
+        Proposal2PhasePK proposal2PhasePK, long contestPhaseId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchProposal2PhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestPhaseId_PrevAndNext(proposal2PhasePK,
+            contestPhaseId, orderByComparator);
+    }
+
+    /**
+    * Removes all the proposal2 phases where contestPhaseId = &#63; from the database.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByContestPhaseId(long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByContestPhaseId(contestPhaseId);
+    }
+
+    /**
+    * Returns the number of proposal2 phases where contestPhaseId = &#63;.
+    *
+    * @param contestPhaseId the contest phase ID
+    * @return the number of matching proposal2 phases
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestPhaseId(long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByContestPhaseId(contestPhaseId);
     }
 
     /**
@@ -145,9 +477,9 @@ public class Proposal2PhaseUtil {
     }
 
     public static com.ext.portlet.model.Proposal2Phase updateImpl(
-        com.ext.portlet.model.Proposal2Phase proposal2Phase, boolean merge)
+        com.ext.portlet.model.Proposal2Phase proposal2Phase)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(proposal2Phase, merge);
+        return getPersistence().updateImpl(proposal2Phase);
     }
 
     /**
@@ -179,251 +511,6 @@ public class Proposal2PhaseUtil {
     }
 
     /**
-    * Returns all the proposal2 phases where proposalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @return the matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByProposalId(proposalId);
-    }
-
-    /**
-    * Returns a range of all the proposal2 phases where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param start the lower bound of the range of proposal2 phases
-    * @param end the upper bound of the range of proposal2 phases (not inclusive)
-    * @return the range of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
-        long proposalId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByProposalId(proposalId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the proposal2 phases where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param start the lower bound of the range of proposal2 phases
-    * @param end the upper bound of the range of proposal2 phases (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByProposalId(
-        long proposalId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId(proposalId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first proposal2 phase in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase findByProposalId_First(
-        long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_First(proposalId, orderByComparator);
-    }
-
-    /**
-    * Returns the last proposal2 phase in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase findByProposalId_Last(
-        long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_Last(proposalId, orderByComparator);
-    }
-
-    /**
-    * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where proposalId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposal2PhasePK the primary key of the current proposal2 phase
-    * @param proposalId the proposal ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase[] findByProposalId_PrevAndNext(
-        Proposal2PhasePK proposal2PhasePK, long proposalId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByProposalId_PrevAndNext(proposal2PhasePK, proposalId,
-            orderByComparator);
-    }
-
-    /**
-    * Returns all the proposal2 phases where contestPhaseId = &#63;.
-    *
-    * @param contestPhaseId the contest phase ID
-    * @return the matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
-        long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestPhaseId(contestPhaseId);
-    }
-
-    /**
-    * Returns a range of all the proposal2 phases where contestPhaseId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param start the lower bound of the range of proposal2 phases
-    * @param end the upper bound of the range of proposal2 phases (not inclusive)
-    * @return the range of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
-        long contestPhaseId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestPhaseId(contestPhaseId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the proposal2 phases where contestPhaseId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param start the lower bound of the range of proposal2 phases
-    * @param end the upper bound of the range of proposal2 phases (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.Proposal2Phase> findByContestPhaseId(
-        long contestPhaseId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhaseId(contestPhaseId, start, end,
-            orderByComparator);
-    }
-
-    /**
-    * Returns the first proposal2 phase in the ordered set where contestPhaseId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase findByContestPhaseId_First(
-        long contestPhaseId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhaseId_First(contestPhaseId, orderByComparator);
-    }
-
-    /**
-    * Returns the last proposal2 phase in the ordered set where contestPhaseId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestPhaseId the contest phase ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a matching proposal2 phase could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase findByContestPhaseId_Last(
-        long contestPhaseId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhaseId_Last(contestPhaseId, orderByComparator);
-    }
-
-    /**
-    * Returns the proposal2 phases before and after the current proposal2 phase in the ordered set where contestPhaseId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param proposal2PhasePK the primary key of the current proposal2 phase
-    * @param contestPhaseId the contest phase ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next proposal2 phase
-    * @throws com.ext.portlet.NoSuchProposal2PhaseException if a proposal2 phase with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.Proposal2Phase[] findByContestPhaseId_PrevAndNext(
-        Proposal2PhasePK proposal2PhasePK, long contestPhaseId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchProposal2PhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestPhaseId_PrevAndNext(proposal2PhasePK,
-            contestPhaseId, orderByComparator);
-    }
-
-    /**
     * Returns all the proposal2 phases.
     *
     * @return the proposal2 phases
@@ -438,7 +525,7 @@ public class Proposal2PhaseUtil {
     * Returns a range of all the proposal2 phases.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal2 phases
@@ -456,7 +543,7 @@ public class Proposal2PhaseUtil {
     * Returns an ordered range of all the proposal2 phases.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.Proposal2PhaseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal2 phases
@@ -473,28 +560,6 @@ public class Proposal2PhaseUtil {
     }
 
     /**
-    * Removes all the proposal2 phases where proposalId = &#63; from the database.
-    *
-    * @param proposalId the proposal ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByProposalId(proposalId);
-    }
-
-    /**
-    * Removes all the proposal2 phases where contestPhaseId = &#63; from the database.
-    *
-    * @param contestPhaseId the contest phase ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByContestPhaseId(long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByContestPhaseId(contestPhaseId);
-    }
-
-    /**
     * Removes all the proposal2 phases from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -502,30 +567,6 @@ public class Proposal2PhaseUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of proposal2 phases where proposalId = &#63;.
-    *
-    * @param proposalId the proposal ID
-    * @return the number of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByProposalId(proposalId);
-    }
-
-    /**
-    * Returns the number of proposal2 phases where contestPhaseId = &#63;.
-    *
-    * @param contestPhaseId the contest phase ID
-    * @return the number of matching proposal2 phases
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByContestPhaseId(long contestPhaseId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByContestPhaseId(contestPhaseId);
     }
 
     /**
@@ -551,10 +592,9 @@ public class Proposal2PhaseUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(Proposal2PhasePersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(Proposal2PhaseUtil.class,
-            "_persistence");
     }
 }

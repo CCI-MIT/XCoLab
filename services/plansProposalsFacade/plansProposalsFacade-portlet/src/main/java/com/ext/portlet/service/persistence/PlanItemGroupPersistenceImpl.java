@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanItemGroupException;
 import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.impl.PlanItemGroupImpl;
 import com.ext.portlet.model.impl.PlanItemGroupModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -48,40 +49,10 @@ import com.ext.portlet.service.persistence.PlanAttributePersistence;
 import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
 import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
 import com.ext.portlet.service.persistence.PlanFanPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +72,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +107,17 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED,
+            PlanItemGroupImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED,
+            PlanItemGroupImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPID = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
             PlanItemGroupModelImpl.FINDER_CACHE_ENABLED,
             PlanItemGroupImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -145,8 +125,8 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID =
         new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
@@ -158,22 +138,11 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
             PlanItemGroupModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED,
-            PlanItemGroupImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED,
-            PlanItemGroupImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-            "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 = "planItemGroup.groupId = ?";
     private static final String _SQL_SELECT_PLANITEMGROUP = "SELECT planItemGroup FROM PlanItemGroup planItemGroup";
     private static final String _SQL_SELECT_PLANITEMGROUP_WHERE = "SELECT planItemGroup FROM PlanItemGroup planItemGroup WHERE ";
     private static final String _SQL_COUNT_PLANITEMGROUP = "SELECT COUNT(planItemGroup) FROM PlanItemGroup planItemGroup";
     private static final String _SQL_COUNT_PLANITEMGROUP_WHERE = "SELECT COUNT(planItemGroup) FROM PlanItemGroup planItemGroup WHERE ";
-    private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 = "planItemGroup.groupId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planItemGroup.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanItemGroup exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanItemGroup exists with the key {";
@@ -193,11 +162,13 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
         };
 
     private static CacheModel<PlanItemGroup> _nullPlanItemGroupCacheModel = new CacheModel<PlanItemGroup>() {
+            @Override
             public PlanItemGroup toEntityModel() {
                 return _nullPlanItemGroup;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -352,340 +323,11 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan item group in the entity cache if it is enabled.
-     *
-     * @param planItemGroup the plan item group
-     */
-    public void cacheResult(PlanItemGroup planItemGroup) {
-        EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey(),
-            planItemGroup);
-
-        planItemGroup.resetOriginalValues();
+=======
+    public PlanItemGroupPersistenceImpl() {
+        setModelClass(PlanItemGroup.class);
     }
-
-    /**
-     * Caches the plan item groups in the entity cache if it is enabled.
-     *
-     * @param planItemGroups the plan item groups
-     */
-    public void cacheResult(List<PlanItemGroup> planItemGroups) {
-        for (PlanItemGroup planItemGroup : planItemGroups) {
-            if (EntityCacheUtil.getResult(
-                        PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanItemGroupImpl.class, planItemGroup.getPrimaryKey()) == null) {
-                cacheResult(planItemGroup);
-            } else {
-                planItemGroup.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan item groups.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanItemGroupImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanItemGroupImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan item group.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanItemGroup planItemGroup) {
-        EntityCacheUtil.removeResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<PlanItemGroup> planItemGroups) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanItemGroup planItemGroup : planItemGroups) {
-            EntityCacheUtil.removeResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-                PlanItemGroupImpl.class, planItemGroup.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new plan item group with the primary key. Does not add the plan item group to the database.
-     *
-     * @param planId the primary key for the new plan item group
-     * @return the new plan item group
-     */
-    public PlanItemGroup create(long planId) {
-        PlanItemGroup planItemGroup = new PlanItemGroupImpl();
-
-        planItemGroup.setNew(true);
-        planItemGroup.setPrimaryKey(planId);
-
-        return planItemGroup;
-    }
-
-    /**
-     * Removes the plan item group with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param planId the primary key of the plan item group
-     * @return the plan item group that was removed
-     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanItemGroup remove(long planId)
-        throws NoSuchPlanItemGroupException, SystemException {
-        return remove(Long.valueOf(planId));
-    }
-
-    /**
-     * Removes the plan item group with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan item group
-     * @return the plan item group that was removed
-     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanItemGroup remove(Serializable primaryKey)
-        throws NoSuchPlanItemGroupException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanItemGroup planItemGroup = (PlanItemGroup) session.get(PlanItemGroupImpl.class,
-                    primaryKey);
-
-            if (planItemGroup == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanItemGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planItemGroup);
-        } catch (NoSuchPlanItemGroupException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanItemGroup removeImpl(PlanItemGroup planItemGroup)
-        throws SystemException {
-        planItemGroup = toUnwrappedModel(planItemGroup);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planItemGroup);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planItemGroup);
-
-        return planItemGroup;
-    }
-
-    @Override
-    public PlanItemGroup updateImpl(
-        com.ext.portlet.model.PlanItemGroup planItemGroup, boolean merge)
-        throws SystemException {
-        planItemGroup = toUnwrappedModel(planItemGroup);
-
-        boolean isNew = planItemGroup.isNew();
-
-        PlanItemGroupModelImpl planItemGroupModelImpl = (PlanItemGroupModelImpl) planItemGroup;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planItemGroup, merge);
-
-            planItemGroup.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanItemGroupModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planItemGroupModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planItemGroupModelImpl.getOriginalGroupId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planItemGroupModelImpl.getGroupId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey(),
-            planItemGroup);
-
-        return planItemGroup;
-    }
-
-    protected PlanItemGroup toUnwrappedModel(PlanItemGroup planItemGroup) {
-        if (planItemGroup instanceof PlanItemGroupImpl) {
-            return planItemGroup;
-        }
-
-        PlanItemGroupImpl planItemGroupImpl = new PlanItemGroupImpl();
-
-        planItemGroupImpl.setNew(planItemGroup.isNew());
-        planItemGroupImpl.setPrimaryKey(planItemGroup.getPrimaryKey());
-
-        planItemGroupImpl.setPlanId(planItemGroup.getPlanId());
-        planItemGroupImpl.setGroupId(planItemGroup.getGroupId());
-
-        return planItemGroupImpl;
-    }
-
-    /**
-     * Returns the plan item group with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan item group
-     * @return the plan item group
-     * @throws com.liferay.portal.NoSuchModelException if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanItemGroup findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan item group with the primary key or throws a {@link com.ext.portlet.NoSuchPlanItemGroupException} if it could not be found.
-     *
-     * @param planId the primary key of the plan item group
-     * @return the plan item group
-     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanItemGroup findByPrimaryKey(long planId)
-        throws NoSuchPlanItemGroupException, SystemException {
-        PlanItemGroup planItemGroup = fetchByPrimaryKey(planId);
-
-        if (planItemGroup == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + planId);
-            }
-
-            throw new NoSuchPlanItemGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planId);
-        }
-
-        return planItemGroup;
-    }
-
-    /**
-     * Returns the plan item group with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan item group
-     * @return the plan item group, or <code>null</code> if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanItemGroup fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the plan item group with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param planId the primary key of the plan item group
-     * @return the plan item group, or <code>null</code> if a plan item group with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanItemGroup fetchByPrimaryKey(long planId)
-        throws SystemException {
-        PlanItemGroup planItemGroup = (PlanItemGroup) EntityCacheUtil.getResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-                PlanItemGroupImpl.class, planId);
-
-        if (planItemGroup == _nullPlanItemGroup) {
-            return null;
-        }
-
-        if (planItemGroup == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planItemGroup = (PlanItemGroup) session.get(PlanItemGroupImpl.class,
-                        Long.valueOf(planId));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planItemGroup != null) {
-                    cacheResult(planItemGroup);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanItemGroupImpl.class, planId, _nullPlanItemGroup);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planItemGroup;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the plan item groups where groupId = &#63;.
@@ -694,6 +336,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @return the matching plan item groups
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanItemGroup> findByGroupId(long groupId)
         throws SystemException {
         return findByGroupId(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
@@ -703,7 +346,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * Returns a range of all the plan item groups where groupId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param groupId the group ID
@@ -712,6 +355,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @return the range of matching plan item groups
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanItemGroup> findByGroupId(long groupId, int start, int end)
         throws SystemException {
         return findByGroupId(groupId, start, end, null);
@@ -721,7 +365,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * Returns an ordered range of all the plan item groups where groupId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param groupId the group ID
@@ -731,13 +375,16 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @return the ordered range of matching plan item groups
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanItemGroup> findByGroupId(long groupId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID;
             finderArgs = new Object[] { groupId };
         } else {
@@ -748,6 +395,16 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
         List<PlanItemGroup> list = (List<PlanItemGroup>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanItemGroup planItemGroup : list) {
+                if ((groupId != planItemGroup.getGroupId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -755,7 +412,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLANITEMGROUP_WHERE);
@@ -765,6 +422,9 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanItemGroupModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -780,19 +440,26 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
 
                 qPos.add(groupId);
 
-                list = (List<PlanItemGroup>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanItemGroup>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanItemGroup>(list);
+                } else {
+                    list = (List<PlanItemGroup>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -803,44 +470,58 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
     /**
      * Returns the first plan item group in the ordered set where groupId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param groupId the group ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan item group
      * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanItemGroup findByGroupId_First(long groupId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemGroupException, SystemException {
+        PlanItemGroup planItemGroup = fetchByGroupId_First(groupId,
+                orderByComparator);
+
+        if (planItemGroup != null) {
+            return planItemGroup;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("groupId=");
+        msg.append(groupId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanItemGroupException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan item group in the ordered set where groupId = &#63;.
+     *
+     * @param groupId the group ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan item group, or <code>null</code> if a matching plan item group could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup fetchByGroupId_First(long groupId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanItemGroup> list = findByGroupId(groupId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("groupId=");
-            msg.append(groupId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanItemGroupException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan item group in the ordered set where groupId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param groupId the group ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -848,36 +529,58 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @throws com.ext.portlet.NoSuchPlanItemGroupException if a matching plan item group could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanItemGroup findByGroupId_Last(long groupId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemGroupException, SystemException {
+        PlanItemGroup planItemGroup = fetchByGroupId_Last(groupId,
+                orderByComparator);
+
+        if (planItemGroup != null) {
+            return planItemGroup;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("groupId=");
+        msg.append(groupId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanItemGroupException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan item group in the ordered set where groupId = &#63;.
+     *
+     * @param groupId the group ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan item group, or <code>null</code> if a matching plan item group could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup fetchByGroupId_Last(long groupId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByGroupId(groupId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanItemGroup> list = findByGroupId(groupId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("groupId=");
-            msg.append(groupId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanItemGroupException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan item groups before and after the current plan item group in the ordered set where groupId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planId the primary key of the current plan item group
      * @param groupId the group ID
@@ -886,6 +589,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanItemGroup[] findByGroupId_PrevAndNext(long planId, long groupId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanItemGroupException, SystemException {
@@ -978,6 +682,8 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
                     }
                 }
             }
+        } else {
+            query.append(PlanItemGroupModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1009,133 +715,15 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
     }
 
     /**
-     * Returns all the plan item groups.
-     *
-     * @return the plan item groups
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanItemGroup> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan item groups.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan item groups
-     * @param end the upper bound of the range of plan item groups (not inclusive)
-     * @return the range of plan item groups
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanItemGroup> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan item groups.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan item groups
-     * @param end the upper bound of the range of plan item groups (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan item groups
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanItemGroup> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanItemGroup> list = (List<PlanItemGroup>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANITEMGROUP);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANITEMGROUP;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanItemGroup>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanItemGroup>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
      * Removes all the plan item groups where groupId = &#63; from the database.
      *
      * @param groupId the group ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByGroupId(long groupId) throws SystemException {
-        for (PlanItemGroup planItemGroup : findByGroupId(groupId)) {
-            remove(planItemGroup);
-        }
-    }
-
-    /**
-     * Removes all the plan item groups from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanItemGroup planItemGroup : findAll()) {
+        for (PlanItemGroup planItemGroup : findByGroupId(groupId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(planItemGroup);
         }
     }
@@ -1147,11 +735,14 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
      * @return the number of matching plan item groups
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByGroupId(long groupId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPID;
+
         Object[] finderArgs = new Object[] { groupId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_GROUPID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1174,16 +765,13 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
                 qPos.add(groupId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_GROUPID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1192,11 +780,492 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
     }
 
     /**
+     * Caches the plan item group in the entity cache if it is enabled.
+     *
+     * @param planItemGroup the plan item group
+     */
+    @Override
+    public void cacheResult(PlanItemGroup planItemGroup) {
+        EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey(),
+            planItemGroup);
+
+        planItemGroup.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan item groups in the entity cache if it is enabled.
+     *
+     * @param planItemGroups the plan item groups
+     */
+    @Override
+    public void cacheResult(List<PlanItemGroup> planItemGroups) {
+        for (PlanItemGroup planItemGroup : planItemGroups) {
+            if (EntityCacheUtil.getResult(
+                        PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanItemGroupImpl.class, planItemGroup.getPrimaryKey()) == null) {
+                cacheResult(planItemGroup);
+            } else {
+                planItemGroup.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan item groups.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanItemGroupImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanItemGroupImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan item group.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanItemGroup planItemGroup) {
+        EntityCacheUtil.removeResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<PlanItemGroup> planItemGroups) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanItemGroup planItemGroup : planItemGroups) {
+            EntityCacheUtil.removeResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+                PlanItemGroupImpl.class, planItemGroup.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new plan item group with the primary key. Does not add the plan item group to the database.
+     *
+     * @param planId the primary key for the new plan item group
+     * @return the new plan item group
+     */
+    @Override
+    public PlanItemGroup create(long planId) {
+        PlanItemGroup planItemGroup = new PlanItemGroupImpl();
+
+        planItemGroup.setNew(true);
+        planItemGroup.setPrimaryKey(planId);
+
+        return planItemGroup;
+    }
+
+    /**
+     * Removes the plan item group with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param planId the primary key of the plan item group
+     * @return the plan item group that was removed
+     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup remove(long planId)
+        throws NoSuchPlanItemGroupException, SystemException {
+        return remove((Serializable) planId);
+    }
+
+    /**
+     * Removes the plan item group with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan item group
+     * @return the plan item group that was removed
+     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup remove(Serializable primaryKey)
+        throws NoSuchPlanItemGroupException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanItemGroup planItemGroup = (PlanItemGroup) session.get(PlanItemGroupImpl.class,
+                    primaryKey);
+
+            if (planItemGroup == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanItemGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planItemGroup);
+        } catch (NoSuchPlanItemGroupException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanItemGroup removeImpl(PlanItemGroup planItemGroup)
+        throws SystemException {
+        planItemGroup = toUnwrappedModel(planItemGroup);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planItemGroup)) {
+                planItemGroup = (PlanItemGroup) session.get(PlanItemGroupImpl.class,
+                        planItemGroup.getPrimaryKeyObj());
+            }
+
+            if (planItemGroup != null) {
+                session.delete(planItemGroup);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planItemGroup != null) {
+            clearCache(planItemGroup);
+        }
+
+        return planItemGroup;
+    }
+
+    @Override
+    public PlanItemGroup updateImpl(
+        com.ext.portlet.model.PlanItemGroup planItemGroup)
+        throws SystemException {
+        planItemGroup = toUnwrappedModel(planItemGroup);
+
+        boolean isNew = planItemGroup.isNew();
+
+        PlanItemGroupModelImpl planItemGroupModelImpl = (PlanItemGroupModelImpl) planItemGroup;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planItemGroup.isNew()) {
+                session.save(planItemGroup);
+
+                planItemGroup.setNew(false);
+            } else {
+                session.merge(planItemGroup);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanItemGroupModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planItemGroupModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planItemGroupModelImpl.getOriginalGroupId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+                    args);
+
+                args = new Object[] { planItemGroupModelImpl.getGroupId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+            PlanItemGroupImpl.class, planItemGroup.getPrimaryKey(),
+            planItemGroup);
+
+        return planItemGroup;
+    }
+
+    protected PlanItemGroup toUnwrappedModel(PlanItemGroup planItemGroup) {
+        if (planItemGroup instanceof PlanItemGroupImpl) {
+            return planItemGroup;
+        }
+
+        PlanItemGroupImpl planItemGroupImpl = new PlanItemGroupImpl();
+
+        planItemGroupImpl.setNew(planItemGroup.isNew());
+        planItemGroupImpl.setPrimaryKey(planItemGroup.getPrimaryKey());
+
+        planItemGroupImpl.setPlanId(planItemGroup.getPlanId());
+        planItemGroupImpl.setGroupId(planItemGroup.getGroupId());
+
+        return planItemGroupImpl;
+    }
+
+    /**
+     * Returns the plan item group with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan item group
+     * @return the plan item group
+     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanItemGroupException, SystemException {
+        PlanItemGroup planItemGroup = fetchByPrimaryKey(primaryKey);
+
+        if (planItemGroup == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanItemGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planItemGroup;
+    }
+
+    /**
+     * Returns the plan item group with the primary key or throws a {@link com.ext.portlet.NoSuchPlanItemGroupException} if it could not be found.
+     *
+     * @param planId the primary key of the plan item group
+     * @return the plan item group
+     * @throws com.ext.portlet.NoSuchPlanItemGroupException if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup findByPrimaryKey(long planId)
+        throws NoSuchPlanItemGroupException, SystemException {
+        return findByPrimaryKey((Serializable) planId);
+    }
+
+    /**
+     * Returns the plan item group with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan item group
+     * @return the plan item group, or <code>null</code> if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanItemGroup planItemGroup = (PlanItemGroup) EntityCacheUtil.getResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+                PlanItemGroupImpl.class, primaryKey);
+
+        if (planItemGroup == _nullPlanItemGroup) {
+            return null;
+        }
+
+        if (planItemGroup == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planItemGroup = (PlanItemGroup) session.get(PlanItemGroupImpl.class,
+                        primaryKey);
+
+                if (planItemGroup != null) {
+                    cacheResult(planItemGroup);
+                } else {
+                    EntityCacheUtil.putResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanItemGroupImpl.class, primaryKey, _nullPlanItemGroup);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanItemGroupModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanItemGroupImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planItemGroup;
+    }
+
+    /**
+     * Returns the plan item group with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param planId the primary key of the plan item group
+     * @return the plan item group, or <code>null</code> if a plan item group with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanItemGroup fetchByPrimaryKey(long planId)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) planId);
+    }
+
+    /**
+     * Returns all the plan item groups.
+     *
+     * @return the plan item groups
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanItemGroup> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan item groups.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan item groups
+     * @param end the upper bound of the range of plan item groups (not inclusive)
+     * @return the range of plan item groups
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanItemGroup> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan item groups.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan item groups
+     * @param end the upper bound of the range of plan item groups (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan item groups
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanItemGroup> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanItemGroup> list = (List<PlanItemGroup>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANITEMGROUP);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANITEMGROUP;
+
+                if (pagination) {
+                    sql = sql.concat(PlanItemGroupModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanItemGroup>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanItemGroup>(list);
+                } else {
+                    list = (List<PlanItemGroup>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan item groups from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanItemGroup planItemGroup : findAll()) {
+            remove(planItemGroup);
+        }
+    }
+
+    /**
      * Returns the number of plan item groups.
      *
      * @return the number of plan item groups
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1210,16 +1279,15 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
                 Query q = session.createQuery(_SQL_COUNT_PLANITEMGROUP);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1241,7 +1309,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanItemGroup>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1254,6 +1322,7 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
     public void destroy() {
         EntityCacheUtil.removeCache(PlanItemGroupImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

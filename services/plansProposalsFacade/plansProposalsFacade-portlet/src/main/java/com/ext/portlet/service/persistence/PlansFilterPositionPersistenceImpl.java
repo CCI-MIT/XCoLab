@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlansFilterPositionException;
 import com.ext.portlet.model.PlansFilterPosition;
 import com.ext.portlet.model.impl.PlansFilterPositionImpl;
 import com.ext.portlet.model.impl.PlansFilterPositionModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -68,20 +69,10 @@ import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
 import com.ext.portlet.service.persistence.PlanTypePersistence;
 import com.ext.portlet.service.persistence.PlanVotePersistence;
 import com.ext.portlet.service.persistence.PlansFilterPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +92,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +127,17 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED,
+            PlansFilterPositionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED,
+            PlansFilterPositionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERIDPLANTYPEID =
         new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
             PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +146,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
             new String[] {
                 Long.class.getName(), Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID =
         new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
@@ -163,23 +163,12 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByUserIdPlanTypeId",
             new String[] { Long.class.getName(), Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED,
-            PlansFilterPositionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED,
-            PlansFilterPositionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-            PlansFilterPositionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_USERID_2 = "plansFilterPosition.id.userId = ? AND ";
+    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2 = "plansFilterPosition.id.planTypeId = ?";
     private static final String _SQL_SELECT_PLANSFILTERPOSITION = "SELECT plansFilterPosition FROM PlansFilterPosition plansFilterPosition";
     private static final String _SQL_SELECT_PLANSFILTERPOSITION_WHERE = "SELECT plansFilterPosition FROM PlansFilterPosition plansFilterPosition WHERE ";
     private static final String _SQL_COUNT_PLANSFILTERPOSITION = "SELECT COUNT(plansFilterPosition) FROM PlansFilterPosition plansFilterPosition";
     private static final String _SQL_COUNT_PLANSFILTERPOSITION_WHERE = "SELECT COUNT(plansFilterPosition) FROM PlansFilterPosition plansFilterPosition WHERE ";
-    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_USERID_2 = "plansFilterPosition.id.userId = ? AND ";
-    private static final String _FINDER_COLUMN_USERIDPLANTYPEID_PLANTYPEID_2 = "plansFilterPosition.id.planTypeId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "plansFilterPosition.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlansFilterPosition exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlansFilterPosition exists with the key {";
@@ -200,11 +189,13 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
     private static CacheModel<PlansFilterPosition> _nullPlansFilterPositionCacheModel =
         new CacheModel<PlansFilterPosition>() {
+            @Override
             public PlansFilterPosition toEntityModel() {
                 return _nullPlansFilterPosition;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -371,340 +362,10 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
             plansFilterPosition);
 
         plansFilterPosition.resetOriginalValues();
-    }
-
-    /**
-     * Caches the plans filter positions in the entity cache if it is enabled.
-     *
-     * @param plansFilterPositions the plans filter positions
-     */
-    public void cacheResult(List<PlansFilterPosition> plansFilterPositions) {
-        for (PlansFilterPosition plansFilterPosition : plansFilterPositions) {
-            if (EntityCacheUtil.getResult(
-                        PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-                        PlansFilterPositionImpl.class,
-                        plansFilterPosition.getPrimaryKey()) == null) {
-                cacheResult(plansFilterPosition);
-            } else {
-                plansFilterPosition.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plans filter positions.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlansFilterPositionImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlansFilterPositionImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plans filter position.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlansFilterPosition plansFilterPosition) {
-        EntityCacheUtil.removeResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-            PlansFilterPositionImpl.class, plansFilterPosition.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<PlansFilterPosition> plansFilterPositions) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlansFilterPosition plansFilterPosition : plansFilterPositions) {
-            EntityCacheUtil.removeResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-                PlansFilterPositionImpl.class,
-                plansFilterPosition.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new plans filter position with the primary key. Does not add the plans filter position to the database.
-     *
-     * @param plansFilterPositionPK the primary key for the new plans filter position
-     * @return the new plans filter position
-     */
-    public PlansFilterPosition create(
-        PlansFilterPositionPK plansFilterPositionPK) {
-        PlansFilterPosition plansFilterPosition = new PlansFilterPositionImpl();
-
-        plansFilterPosition.setNew(true);
-        plansFilterPosition.setPrimaryKey(plansFilterPositionPK);
-
-        return plansFilterPosition;
-    }
-
-    /**
-     * Removes the plans filter position with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param plansFilterPositionPK the primary key of the plans filter position
-     * @return the plans filter position that was removed
-     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansFilterPosition remove(
-        PlansFilterPositionPK plansFilterPositionPK)
-        throws NoSuchPlansFilterPositionException, SystemException {
-        return remove((Serializable) plansFilterPositionPK);
-    }
-
-    /**
-     * Removes the plans filter position with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plans filter position
-     * @return the plans filter position that was removed
-     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlansFilterPosition remove(Serializable primaryKey)
-        throws NoSuchPlansFilterPositionException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlansFilterPosition plansFilterPosition = (PlansFilterPosition) session.get(PlansFilterPositionImpl.class,
-                    primaryKey);
-
-            if (plansFilterPosition == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(plansFilterPosition);
-        } catch (NoSuchPlansFilterPositionException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlansFilterPosition removeImpl(
-        PlansFilterPosition plansFilterPosition) throws SystemException {
-        plansFilterPosition = toUnwrappedModel(plansFilterPosition);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, plansFilterPosition);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(plansFilterPosition);
-
-        return plansFilterPosition;
-    }
-
-    @Override
-    public PlansFilterPosition updateImpl(
-        com.ext.portlet.model.PlansFilterPosition plansFilterPosition,
-        boolean merge) throws SystemException {
-        plansFilterPosition = toUnwrappedModel(plansFilterPosition);
-
-        boolean isNew = plansFilterPosition.isNew();
-
-        PlansFilterPositionModelImpl plansFilterPositionModelImpl = (PlansFilterPositionModelImpl) plansFilterPosition;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, plansFilterPosition, merge);
-
-            plansFilterPosition.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlansFilterPositionModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((plansFilterPositionModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(plansFilterPositionModelImpl.getOriginalUserId()),
-                        Long.valueOf(plansFilterPositionModelImpl.getOriginalPlanTypeId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(plansFilterPositionModelImpl.getUserId()),
-                        Long.valueOf(plansFilterPositionModelImpl.getPlanTypeId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-            PlansFilterPositionImpl.class, plansFilterPosition.getPrimaryKey(),
-            plansFilterPosition);
-
-        return plansFilterPosition;
-    }
-
-    protected PlansFilterPosition toUnwrappedModel(
-        PlansFilterPosition plansFilterPosition) {
-        if (plansFilterPosition instanceof PlansFilterPositionImpl) {
-            return plansFilterPosition;
-        }
-
-        PlansFilterPositionImpl plansFilterPositionImpl = new PlansFilterPositionImpl();
-
-        plansFilterPositionImpl.setNew(plansFilterPosition.isNew());
-        plansFilterPositionImpl.setPrimaryKey(plansFilterPosition.getPrimaryKey());
-
-        plansFilterPositionImpl.setUserId(plansFilterPosition.getUserId());
-        plansFilterPositionImpl.setPlanTypeId(plansFilterPosition.getPlanTypeId());
-        plansFilterPositionImpl.setPositionId(plansFilterPosition.getPositionId());
-
-        return plansFilterPositionImpl;
-    }
-
-    /**
-     * Returns the plans filter position with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plans filter position
-     * @return the plans filter position
-     * @throws com.liferay.portal.NoSuchModelException if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlansFilterPosition findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((PlansFilterPositionPK) primaryKey);
-    }
-
-    /**
-     * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.NoSuchPlansFilterPositionException} if it could not be found.
-     *
-     * @param plansFilterPositionPK the primary key of the plans filter position
-     * @return the plans filter position
-     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansFilterPosition findByPrimaryKey(
-        PlansFilterPositionPK plansFilterPositionPK)
-        throws NoSuchPlansFilterPositionException, SystemException {
-        PlansFilterPosition plansFilterPosition = fetchByPrimaryKey(plansFilterPositionPK);
-
-        if (plansFilterPosition == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    plansFilterPositionPK);
-            }
-
-            throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                plansFilterPositionPK);
-        }
-
-        return plansFilterPosition;
-    }
-
-    /**
-     * Returns the plans filter position with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plans filter position
-     * @return the plans filter position, or <code>null</code> if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlansFilterPosition fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((PlansFilterPositionPK) primaryKey);
-    }
-
-    /**
-     * Returns the plans filter position with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param plansFilterPositionPK the primary key of the plans filter position
-     * @return the plans filter position, or <code>null</code> if a plans filter position with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlansFilterPosition fetchByPrimaryKey(
-        PlansFilterPositionPK plansFilterPositionPK) throws SystemException {
-        PlansFilterPosition plansFilterPosition = (PlansFilterPosition) EntityCacheUtil.getResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-                PlansFilterPositionImpl.class, plansFilterPositionPK);
-
-        if (plansFilterPosition == _nullPlansFilterPosition) {
-            return null;
-        }
-
-        if (plansFilterPosition == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                plansFilterPosition = (PlansFilterPosition) session.get(PlansFilterPositionImpl.class,
-                        plansFilterPositionPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (plansFilterPosition != null) {
-                    cacheResult(plansFilterPosition);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
-                        PlansFilterPositionImpl.class, plansFilterPositionPK,
-                        _nullPlansFilterPosition);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return plansFilterPosition;
+=======
+    public PlansFilterPositionPersistenceImpl() {
+        setModelClass(PlansFilterPosition.class);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
     /**
@@ -715,6 +376,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
         long planTypeId) throws SystemException {
         return findByUserIdPlanTypeId(userId, planTypeId, QueryUtil.ALL_POS,
@@ -725,7 +387,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * Returns a range of all the plans filter positions where userId = &#63; and planTypeId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansFilterPositionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param userId the user ID
@@ -735,6 +397,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the range of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
         long planTypeId, int start, int end) throws SystemException {
         return findByUserIdPlanTypeId(userId, planTypeId, start, end, null);
@@ -744,7 +407,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * Returns an ordered range of all the plans filter positions where userId = &#63; and planTypeId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansFilterPositionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param userId the user ID
@@ -755,14 +418,17 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the ordered range of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlansFilterPosition> findByUserIdPlanTypeId(long userId,
         long planTypeId, int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID;
             finderArgs = new Object[] { userId, planTypeId };
         } else {
@@ -777,6 +443,17 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
         List<PlansFilterPosition> list = (List<PlansFilterPosition>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlansFilterPosition plansFilterPosition : list) {
+                if ((userId != plansFilterPosition.getUserId()) ||
+                        (planTypeId != plansFilterPosition.getPlanTypeId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -784,7 +461,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                 query = new StringBundler(4 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(3);
+                query = new StringBundler(4);
             }
 
             query.append(_SQL_SELECT_PLANSFILTERPOSITION_WHERE);
@@ -796,6 +473,9 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlansFilterPositionModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -813,19 +493,26 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 qPos.add(planTypeId);
 
-                list = (List<PlansFilterPosition>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlansFilterPosition>(list);
+                } else {
+                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -836,10 +523,6 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     /**
      * Returns the first plans filter position in the ordered set where userId = &#63; and planTypeId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param userId the user ID
      * @param planTypeId the plan type ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -847,37 +530,57 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansFilterPosition findByUserIdPlanTypeId_First(long userId,
         long planTypeId, OrderByComparator orderByComparator)
         throws NoSuchPlansFilterPositionException, SystemException {
+        PlansFilterPosition plansFilterPosition = fetchByUserIdPlanTypeId_First(userId,
+                planTypeId, orderByComparator);
+
+        if (plansFilterPosition != null) {
+            return plansFilterPosition;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("userId=");
+        msg.append(userId);
+
+        msg.append(", planTypeId=");
+        msg.append(planTypeId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlansFilterPositionException(msg.toString());
+    }
+
+    /**
+     * Returns the first plans filter position in the ordered set where userId = &#63; and planTypeId = &#63;.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plans filter position, or <code>null</code> if a matching plans filter position could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition fetchByUserIdPlanTypeId_First(long userId,
+        long planTypeId, OrderByComparator orderByComparator)
+        throws SystemException {
         List<PlansFilterPosition> list = findByUserIdPlanTypeId(userId,
                 planTypeId, 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(", planTypeId=");
-            msg.append(planTypeId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlansFilterPositionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plans filter position in the ordered set where userId = &#63; and planTypeId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param userId the user ID
      * @param planTypeId the plan type ID
@@ -886,39 +589,63 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a matching plans filter position could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansFilterPosition findByUserIdPlanTypeId_Last(long userId,
         long planTypeId, OrderByComparator orderByComparator)
         throws NoSuchPlansFilterPositionException, SystemException {
+        PlansFilterPosition plansFilterPosition = fetchByUserIdPlanTypeId_Last(userId,
+                planTypeId, orderByComparator);
+
+        if (plansFilterPosition != null) {
+            return plansFilterPosition;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("userId=");
+        msg.append(userId);
+
+        msg.append(", planTypeId=");
+        msg.append(planTypeId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlansFilterPositionException(msg.toString());
+    }
+
+    /**
+     * Returns the last plans filter position in the ordered set where userId = &#63; and planTypeId = &#63;.
+     *
+     * @param userId the user ID
+     * @param planTypeId the plan type ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plans filter position, or <code>null</code> if a matching plans filter position could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition fetchByUserIdPlanTypeId_Last(long userId,
+        long planTypeId, OrderByComparator orderByComparator)
+        throws SystemException {
         int count = countByUserIdPlanTypeId(userId, planTypeId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlansFilterPosition> list = findByUserIdPlanTypeId(userId,
                 planTypeId, count - 1, count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("userId=");
-            msg.append(userId);
-
-            msg.append(", planTypeId=");
-            msg.append(planTypeId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlansFilterPositionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plans filter positions before and after the current plans filter position in the ordered set where userId = &#63; and planTypeId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param plansFilterPositionPK the primary key of the current plans filter position
      * @param userId the user ID
@@ -928,6 +655,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlansFilterPosition[] findByUserIdPlanTypeId_PrevAndNext(
         PlansFilterPositionPK plansFilterPositionPK, long userId,
         long planTypeId, OrderByComparator orderByComparator)
@@ -1025,6 +753,8 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                     }
                 }
             }
+        } else {
+            query.append(PlansFilterPositionModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1058,136 +788,17 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
-     * Returns all the plans filter positions.
-     *
-     * @return the plans filter positions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlansFilterPosition> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plans filter positions.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plans filter positions
-     * @param end the upper bound of the range of plans filter positions (not inclusive)
-     * @return the range of plans filter positions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlansFilterPosition> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plans filter positions.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plans filter positions
-     * @param end the upper bound of the range of plans filter positions (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plans filter positions
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlansFilterPosition> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlansFilterPosition> list = (List<PlansFilterPosition>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANSFILTERPOSITION);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANSFILTERPOSITION;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
      * Removes all the plans filter positions where userId = &#63; and planTypeId = &#63; from the database.
      *
      * @param userId the user ID
      * @param planTypeId the plan type ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByUserIdPlanTypeId(long userId, long planTypeId)
         throws SystemException {
         for (PlansFilterPosition plansFilterPosition : findByUserIdPlanTypeId(
-                userId, planTypeId)) {
-            remove(plansFilterPosition);
-        }
-    }
-
-    /**
-     * Removes all the plans filter positions from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlansFilterPosition plansFilterPosition : findAll()) {
+                userId, planTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(plansFilterPosition);
         }
     }
@@ -1200,12 +811,15 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the number of matching plans filter positions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByUserIdPlanTypeId(long userId, long planTypeId)
         throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_USERIDPLANTYPEID;
+
         Object[] finderArgs = new Object[] { userId, planTypeId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(3);
@@ -1232,16 +846,13 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                 qPos.add(planTypeId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1250,11 +861,506 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
+     * Caches the plans filter position in the entity cache if it is enabled.
+     *
+     * @param plansFilterPosition the plans filter position
+     */
+    @Override
+    public void cacheResult(PlansFilterPosition plansFilterPosition) {
+        EntityCacheUtil.putResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionImpl.class, plansFilterPosition.getPrimaryKey(),
+            plansFilterPosition);
+
+        plansFilterPosition.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plans filter positions in the entity cache if it is enabled.
+     *
+     * @param plansFilterPositions the plans filter positions
+     */
+    @Override
+    public void cacheResult(List<PlansFilterPosition> plansFilterPositions) {
+        for (PlansFilterPosition plansFilterPosition : plansFilterPositions) {
+            if (EntityCacheUtil.getResult(
+                        PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+                        PlansFilterPositionImpl.class,
+                        plansFilterPosition.getPrimaryKey()) == null) {
+                cacheResult(plansFilterPosition);
+            } else {
+                plansFilterPosition.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plans filter positions.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlansFilterPositionImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlansFilterPositionImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plans filter position.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlansFilterPosition plansFilterPosition) {
+        EntityCacheUtil.removeResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionImpl.class, plansFilterPosition.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<PlansFilterPosition> plansFilterPositions) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlansFilterPosition plansFilterPosition : plansFilterPositions) {
+            EntityCacheUtil.removeResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+                PlansFilterPositionImpl.class,
+                plansFilterPosition.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new plans filter position with the primary key. Does not add the plans filter position to the database.
+     *
+     * @param plansFilterPositionPK the primary key for the new plans filter position
+     * @return the new plans filter position
+     */
+    @Override
+    public PlansFilterPosition create(
+        PlansFilterPositionPK plansFilterPositionPK) {
+        PlansFilterPosition plansFilterPosition = new PlansFilterPositionImpl();
+
+        plansFilterPosition.setNew(true);
+        plansFilterPosition.setPrimaryKey(plansFilterPositionPK);
+
+        return plansFilterPosition;
+    }
+
+    /**
+     * Removes the plans filter position with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param plansFilterPositionPK the primary key of the plans filter position
+     * @return the plans filter position that was removed
+     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition remove(
+        PlansFilterPositionPK plansFilterPositionPK)
+        throws NoSuchPlansFilterPositionException, SystemException {
+        return remove((Serializable) plansFilterPositionPK);
+    }
+
+    /**
+     * Removes the plans filter position with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plans filter position
+     * @return the plans filter position that was removed
+     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition remove(Serializable primaryKey)
+        throws NoSuchPlansFilterPositionException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlansFilterPosition plansFilterPosition = (PlansFilterPosition) session.get(PlansFilterPositionImpl.class,
+                    primaryKey);
+
+            if (plansFilterPosition == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(plansFilterPosition);
+        } catch (NoSuchPlansFilterPositionException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlansFilterPosition removeImpl(
+        PlansFilterPosition plansFilterPosition) throws SystemException {
+        plansFilterPosition = toUnwrappedModel(plansFilterPosition);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(plansFilterPosition)) {
+                plansFilterPosition = (PlansFilterPosition) session.get(PlansFilterPositionImpl.class,
+                        plansFilterPosition.getPrimaryKeyObj());
+            }
+
+            if (plansFilterPosition != null) {
+                session.delete(plansFilterPosition);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (plansFilterPosition != null) {
+            clearCache(plansFilterPosition);
+        }
+
+        return plansFilterPosition;
+    }
+
+    @Override
+    public PlansFilterPosition updateImpl(
+        com.ext.portlet.model.PlansFilterPosition plansFilterPosition)
+        throws SystemException {
+        plansFilterPosition = toUnwrappedModel(plansFilterPosition);
+
+        boolean isNew = plansFilterPosition.isNew();
+
+        PlansFilterPositionModelImpl plansFilterPositionModelImpl = (PlansFilterPositionModelImpl) plansFilterPosition;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (plansFilterPosition.isNew()) {
+                session.save(plansFilterPosition);
+
+                plansFilterPosition.setNew(false);
+            } else {
+                session.merge(plansFilterPosition);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlansFilterPositionModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((plansFilterPositionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        plansFilterPositionModelImpl.getOriginalUserId(),
+                        plansFilterPositionModelImpl.getOriginalPlanTypeId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID,
+                    args);
+
+                args = new Object[] {
+                        plansFilterPositionModelImpl.getUserId(),
+                        plansFilterPositionModelImpl.getPlanTypeId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERIDPLANTYPEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERIDPLANTYPEID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+            PlansFilterPositionImpl.class, plansFilterPosition.getPrimaryKey(),
+            plansFilterPosition);
+
+        return plansFilterPosition;
+    }
+
+    protected PlansFilterPosition toUnwrappedModel(
+        PlansFilterPosition plansFilterPosition) {
+        if (plansFilterPosition instanceof PlansFilterPositionImpl) {
+            return plansFilterPosition;
+        }
+
+        PlansFilterPositionImpl plansFilterPositionImpl = new PlansFilterPositionImpl();
+
+        plansFilterPositionImpl.setNew(plansFilterPosition.isNew());
+        plansFilterPositionImpl.setPrimaryKey(plansFilterPosition.getPrimaryKey());
+
+        plansFilterPositionImpl.setUserId(plansFilterPosition.getUserId());
+        plansFilterPositionImpl.setPlanTypeId(plansFilterPosition.getPlanTypeId());
+        plansFilterPositionImpl.setPositionId(plansFilterPosition.getPositionId());
+
+        return plansFilterPositionImpl;
+    }
+
+    /**
+     * Returns the plans filter position with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plans filter position
+     * @return the plans filter position
+     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlansFilterPositionException, SystemException {
+        PlansFilterPosition plansFilterPosition = fetchByPrimaryKey(primaryKey);
+
+        if (plansFilterPosition == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlansFilterPositionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return plansFilterPosition;
+    }
+
+    /**
+     * Returns the plans filter position with the primary key or throws a {@link com.ext.portlet.NoSuchPlansFilterPositionException} if it could not be found.
+     *
+     * @param plansFilterPositionPK the primary key of the plans filter position
+     * @return the plans filter position
+     * @throws com.ext.portlet.NoSuchPlansFilterPositionException if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition findByPrimaryKey(
+        PlansFilterPositionPK plansFilterPositionPK)
+        throws NoSuchPlansFilterPositionException, SystemException {
+        return findByPrimaryKey((Serializable) plansFilterPositionPK);
+    }
+
+    /**
+     * Returns the plans filter position with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plans filter position
+     * @return the plans filter position, or <code>null</code> if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlansFilterPosition plansFilterPosition = (PlansFilterPosition) EntityCacheUtil.getResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+                PlansFilterPositionImpl.class, primaryKey);
+
+        if (plansFilterPosition == _nullPlansFilterPosition) {
+            return null;
+        }
+
+        if (plansFilterPosition == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                plansFilterPosition = (PlansFilterPosition) session.get(PlansFilterPositionImpl.class,
+                        primaryKey);
+
+                if (plansFilterPosition != null) {
+                    cacheResult(plansFilterPosition);
+                } else {
+                    EntityCacheUtil.putResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+                        PlansFilterPositionImpl.class, primaryKey,
+                        _nullPlansFilterPosition);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlansFilterPositionModelImpl.ENTITY_CACHE_ENABLED,
+                    PlansFilterPositionImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return plansFilterPosition;
+    }
+
+    /**
+     * Returns the plans filter position with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param plansFilterPositionPK the primary key of the plans filter position
+     * @return the plans filter position, or <code>null</code> if a plans filter position with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlansFilterPosition fetchByPrimaryKey(
+        PlansFilterPositionPK plansFilterPositionPK) throws SystemException {
+        return fetchByPrimaryKey((Serializable) plansFilterPositionPK);
+    }
+
+    /**
+     * Returns all the plans filter positions.
+     *
+     * @return the plans filter positions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlansFilterPosition> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plans filter positions.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansFilterPositionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plans filter positions
+     * @param end the upper bound of the range of plans filter positions (not inclusive)
+     * @return the range of plans filter positions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlansFilterPosition> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plans filter positions.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlansFilterPositionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plans filter positions
+     * @param end the upper bound of the range of plans filter positions (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plans filter positions
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlansFilterPosition> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlansFilterPosition> list = (List<PlansFilterPosition>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANSFILTERPOSITION);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANSFILTERPOSITION;
+
+                if (pagination) {
+                    sql = sql.concat(PlansFilterPositionModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlansFilterPosition>(list);
+                } else {
+                    list = (List<PlansFilterPosition>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plans filter positions from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlansFilterPosition plansFilterPosition : findAll()) {
+            remove(plansFilterPosition);
+        }
+    }
+
+    /**
      * Returns the number of plans filter positions.
      *
      * @return the number of plans filter positions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1268,16 +1374,15 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
                 Query q = session.createQuery(_SQL_COUNT_PLANSFILTERPOSITION);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1299,7 +1404,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlansFilterPosition>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1312,6 +1417,7 @@ public class PlansFilterPositionPersistenceImpl extends BasePersistenceImpl<Plan
     public void destroy() {
         EntityCacheUtil.removeCache(PlansFilterPositionImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

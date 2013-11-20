@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanSectionDefinitionException;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.impl.PlanSectionDefinitionImpl;
 import com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -57,31 +58,10 @@ import com.ext.portlet.service.persistence.PlanPositionPersistence;
 import com.ext.portlet.service.persistence.PlanPositionsPersistence;
 import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
 import com.ext.portlet.service.persistence.PlanRelatedPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -97,13 +77,12 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -111,6 +90,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the plan section definition service.
@@ -139,11 +119,11 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionDefinitionModelImpl.FINDER_CACHE_ENABLED,
             PlanSectionDefinitionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionDefinitionModelImpl.FINDER_CACHE_ENABLED,
             PlanSectionDefinitionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
@@ -154,6 +134,9 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(PlanSectionDefinitionPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id", "type"
+            });
     private static PlanSectionDefinition _nullPlanSectionDefinition = new PlanSectionDefinitionImpl() {
             @Override
             public Object clone() {
@@ -168,11 +151,13 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
 
     private static CacheModel<PlanSectionDefinition> _nullPlanSectionDefinitionCacheModel =
         new CacheModel<PlanSectionDefinition>() {
+            @Override
             public PlanSectionDefinition toEntityModel() {
                 return _nullPlanSectionDefinition;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -327,12 +312,18 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+=======
+    public PlanSectionDefinitionPersistenceImpl() {
+        setModelClass(PlanSectionDefinition.class);
+    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the plan section definition in the entity cache if it is enabled.
      *
      * @param planSectionDefinition the plan section definition
      */
+    @Override
     public void cacheResult(PlanSectionDefinition planSectionDefinition) {
         EntityCacheUtil.putResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionDefinitionImpl.class,
@@ -346,6 +337,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      *
      * @param planSectionDefinitions the plan section definitions
      */
+    @Override
     public void cacheResult(List<PlanSectionDefinition> planSectionDefinitions) {
         for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
             if (EntityCacheUtil.getResult(
@@ -414,6 +406,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @param id the primary key for the new plan section definition
      * @return the new plan section definition
      */
+    @Override
     public PlanSectionDefinition create(long id) {
         PlanSectionDefinition planSectionDefinition = new PlanSectionDefinitionImpl();
 
@@ -431,9 +424,10 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @throws com.ext.portlet.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionDefinition remove(long id)
         throws NoSuchPlanSectionDefinitionException, SystemException {
-        return remove(Long.valueOf(id));
+        return remove((Serializable) id);
     }
 
     /**
@@ -484,32 +478,47 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, planSectionDefinition);
+            if (!session.contains(planSectionDefinition)) {
+                planSectionDefinition = (PlanSectionDefinition) session.get(PlanSectionDefinitionImpl.class,
+                        planSectionDefinition.getPrimaryKeyObj());
+            }
+
+            if (planSectionDefinition != null) {
+                session.delete(planSectionDefinition);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(planSectionDefinition);
+        if (planSectionDefinition != null) {
+            clearCache(planSectionDefinition);
+        }
 
         return planSectionDefinition;
     }
 
     @Override
     public PlanSectionDefinition updateImpl(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition)
+        throws SystemException {
         planSectionDefinition = toUnwrappedModel(planSectionDefinition);
+
+        boolean isNew = planSectionDefinition.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, planSectionDefinition, merge);
+            if (planSectionDefinition.isNew()) {
+                session.save(planSectionDefinition);
 
-            planSectionDefinition.setNew(false);
+                planSectionDefinition.setNew(false);
+            } else {
+                session.merge(planSectionDefinition);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -517,6 +526,10 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
             PlanSectionDefinitionImpl.class,
@@ -554,13 +567,24 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      *
      * @param primaryKey the primary key of the plan section definition
      * @return the plan section definition
-     * @throws com.liferay.portal.NoSuchModelException if a plan section definition with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public PlanSectionDefinition findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
+        throws NoSuchPlanSectionDefinitionException, SystemException {
+        PlanSectionDefinition planSectionDefinition = fetchByPrimaryKey(primaryKey);
+
+        if (planSectionDefinition == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanSectionDefinitionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planSectionDefinition;
     }
 
     /**
@@ -571,20 +595,10 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @throws com.ext.portlet.NoSuchPlanSectionDefinitionException if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionDefinition findByPrimaryKey(long id)
         throws NoSuchPlanSectionDefinitionException, SystemException {
-        PlanSectionDefinition planSectionDefinition = fetchByPrimaryKey(id);
-
-        if (planSectionDefinition == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
-            }
-
-            throw new NoSuchPlanSectionDefinitionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                id);
-        }
-
-        return planSectionDefinition;
+        return findByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -597,7 +611,40 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     @Override
     public PlanSectionDefinition fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
+        PlanSectionDefinition planSectionDefinition = (PlanSectionDefinition) EntityCacheUtil.getResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+                PlanSectionDefinitionImpl.class, primaryKey);
+
+        if (planSectionDefinition == _nullPlanSectionDefinition) {
+            return null;
+        }
+
+        if (planSectionDefinition == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planSectionDefinition = (PlanSectionDefinition) session.get(PlanSectionDefinitionImpl.class,
+                        primaryKey);
+
+                if (planSectionDefinition != null) {
+                    cacheResult(planSectionDefinition);
+                } else {
+                    EntityCacheUtil.putResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanSectionDefinitionImpl.class, primaryKey,
+                        _nullPlanSectionDefinition);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanSectionDefinitionImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planSectionDefinition;
     }
 
     /**
@@ -607,43 +654,10 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the plan section definition, or <code>null</code> if a plan section definition with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanSectionDefinition fetchByPrimaryKey(long id)
         throws SystemException {
-        PlanSectionDefinition planSectionDefinition = (PlanSectionDefinition) EntityCacheUtil.getResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-                PlanSectionDefinitionImpl.class, id);
-
-        if (planSectionDefinition == _nullPlanSectionDefinition) {
-            return null;
-        }
-
-        if (planSectionDefinition == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planSectionDefinition = (PlanSectionDefinition) session.get(PlanSectionDefinitionImpl.class,
-                        Long.valueOf(id));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planSectionDefinition != null) {
-                    cacheResult(planSectionDefinition);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanSectionDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanSectionDefinitionImpl.class, id,
-                        _nullPlanSectionDefinition);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planSectionDefinition;
+        return fetchByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -652,6 +666,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the plan section definitions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionDefinition> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -660,7 +675,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * Returns a range of all the plan section definitions.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plan section definitions
@@ -668,6 +683,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the range of plan section definitions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionDefinition> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -677,7 +693,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * Returns an ordered range of all the plan section definitions.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of plan section definitions
@@ -686,17 +702,20 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the ordered range of plan section definitions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanSectionDefinition> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -719,6 +738,10 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_PLANSECTIONDEFINITION;
+
+                if (pagination) {
+                    sql = sql.concat(PlanSectionDefinitionModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -728,26 +751,26 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<PlanSectionDefinition>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanSectionDefinition>(list);
                 } else {
                     list = (List<PlanSectionDefinition>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -760,6 +783,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (PlanSectionDefinition planSectionDefinition : findAll()) {
             remove(planSectionDefinition);
@@ -772,6 +796,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
      * @return the number of plan section definitions
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -785,21 +810,25 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
                 Query q = session.createQuery(_SQL_COUNT_PLANSECTIONDEFINITION);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -816,7 +845,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanSectionDefinition>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -829,6 +858,7 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
     public void destroy() {
         EntityCacheUtil.removeCache(PlanSectionDefinitionImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.PlanTypeAttributeLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
@@ -17,58 +23,190 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
     private long _planTypeAttributeId;
     private long _planTypeId;
     private String _attributeName;
+    private BaseModel<?> _planTypeAttributeRemoteModel;
 
     public PlanTypeAttributeClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTypeAttribute.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTypeAttribute.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planTypeAttributeId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanTypeAttributeId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planTypeAttributeId);
+        return _planTypeAttributeId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTypeAttributeId", getPlanTypeAttributeId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("attributeName", getAttributeName());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTypeAttributeId = (Long) attributes.get("planTypeAttributeId");
+
+        if (planTypeAttributeId != null) {
+            setPlanTypeAttributeId(planTypeAttributeId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        String attributeName = (String) attributes.get("attributeName");
+
+        if (attributeName != null) {
+            setAttributeName(attributeName);
+        }
+    }
+
+    @Override
     public long getPlanTypeAttributeId() {
         return _planTypeAttributeId;
     }
 
+    @Override
     public void setPlanTypeAttributeId(long planTypeAttributeId) {
         _planTypeAttributeId = planTypeAttributeId;
+
+        if (_planTypeAttributeRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeAttributeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanTypeAttributeId",
+                        long.class);
+
+                method.invoke(_planTypeAttributeRemoteModel, planTypeAttributeId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
+
+        if (_planTypeAttributeRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeAttributeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanTypeId", long.class);
+
+                method.invoke(_planTypeAttributeRemoteModel, planTypeId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getAttributeName() {
         return _attributeName;
     }
 
+    @Override
     public void setAttributeName(String attributeName) {
         _attributeName = attributeName;
+
+        if (_planTypeAttributeRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeAttributeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAttributeName", String.class);
+
+                method.invoke(_planTypeAttributeRemoteModel, attributeName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getPlanTypeAttributeRemoteModel() {
+        return _planTypeAttributeRemoteModel;
+    }
+
+    public void setPlanTypeAttributeRemoteModel(
+        BaseModel<?> planTypeAttributeRemoteModel) {
+        _planTypeAttributeRemoteModel = planTypeAttributeRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _planTypeAttributeRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_planTypeAttributeRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTypeAttributeLocalServiceUtil.addPlanTypeAttribute(this);
@@ -79,7 +217,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
 
     @Override
     public PlanTypeAttribute toEscapedModel() {
-        return (PlanTypeAttribute) Proxy.newProxyInstance(PlanTypeAttribute.class.getClassLoader(),
+        return (PlanTypeAttribute) ProxyUtil.newProxyInstance(PlanTypeAttribute.class.getClassLoader(),
             new Class[] { PlanTypeAttribute.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -95,6 +233,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
         return clone;
     }
 
+    @Override
     public int compareTo(PlanTypeAttribute planTypeAttribute) {
         long primaryKey = planTypeAttribute.getPrimaryKey();
 
@@ -109,17 +248,15 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTypeAttributeClp)) {
             return false;
         }
 
-        PlanTypeAttributeClp planTypeAttribute = null;
-
-        try {
-            planTypeAttribute = (PlanTypeAttributeClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTypeAttributeClp planTypeAttribute = (PlanTypeAttributeClp) obj;
 
         long primaryKey = planTypeAttribute.getPrimaryKey();
 
@@ -150,6 +287,7 @@ public class PlanTypeAttributeClp extends BaseModelImpl<PlanTypeAttribute>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ProposalContestPhaseAttributeLocalService}.
- * </p>
+ * Provides a wrapper for {@link ProposalContestPhaseAttributeLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ProposalContestPhaseAttributeLocalService
+ * @author Brian Wing Shun Chan
+ * @see ProposalContestPhaseAttributeLocalService
  * @generated
  */
 public class ProposalContestPhaseAttributeLocalServiceWrapper
@@ -28,6 +26,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the proposal contest phase attribute that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute addProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param id the primary key for the new proposal contest phase attribute
     * @return the new proposal contest phase attribute
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute createProposalContestPhaseAttribute(
         long id) {
         return _proposalContestPhaseAttributeLocalService.createProposalContestPhaseAttribute(id);
@@ -49,25 +49,35 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * Deletes the proposal contest phase attribute with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the proposal contest phase attribute
+    * @return the proposal contest phase attribute that was removed
     * @throws PortalException if a proposal contest phase attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposalContestPhaseAttribute(long id)
+    @Override
+    public com.ext.portlet.model.ProposalContestPhaseAttribute deleteProposalContestPhaseAttribute(
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(id);
+        return _proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(id);
     }
 
     /**
     * Deletes the proposal contest phase attribute from the database. Also notifies the appropriate model listeners.
     *
     * @param proposalContestPhaseAttribute the proposal contest phase attribute
+    * @return the proposal contest phase attribute that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteProposalContestPhaseAttribute(
+    @Override
+    public com.ext.portlet.model.ProposalContestPhaseAttribute deleteProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+        return _proposalContestPhaseAttributeLocalService.deleteProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _proposalContestPhaseAttributeLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalContestPhaseAttributeLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute fetchProposalContestPhaseAttribute(
         long id) throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalContestPhaseAttributeLocalService.fetchProposalContestPhaseAttribute(id);
@@ -155,6 +187,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @throws PortalException if a proposal contest phase attribute with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long id)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -162,6 +195,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
         return _proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(id);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -173,7 +207,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * Returns a range of all the proposal contest phase attributes.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of proposal contest phase attributes
@@ -181,6 +215,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the range of proposal contest phase attributes
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -194,6 +229,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the number of proposal contest phase attributes
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getProposalContestPhaseAttributesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttributesCount();
@@ -206,6 +242,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return the proposal contest phase attribute that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute updateProposalContestPhaseAttribute(
         com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -213,26 +250,11 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     }
 
     /**
-    * Updates the proposal contest phase attribute in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param proposalContestPhaseAttribute the proposal contest phase attribute
-    * @param merge whether to merge the proposal contest phase attribute with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the proposal contest phase attribute that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ProposalContestPhaseAttribute updateProposalContestPhaseAttribute(
-        com.ext.portlet.model.ProposalContestPhaseAttribute proposalContestPhaseAttribute,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalContestPhaseAttributeLocalService.updateProposalContestPhaseAttribute(proposalContestPhaseAttribute,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _proposalContestPhaseAttributeLocalService.getBeanIdentifier();
     }
@@ -242,8 +264,17 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _proposalContestPhaseAttributeLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _proposalContestPhaseAttributeLocalService.invokeMethod(name,
+            parameterTypes, arguments);
     }
 
     /**
@@ -254,6 +285,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return list of proposal phase attributes
     * @throws SystemException in case of LR error
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(
         long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -271,6 +303,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @return proposal phase attribute
     * @throws SystemException in case of LR error
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long proposalId, long contestPhaseId, java.lang.String attributeName,
         long additionalId)
@@ -290,6 +323,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
     * @throws SystemException in case of lr error
     */
+    @Override
     public com.ext.portlet.model.ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
         long proposalId, long contestPhaseId, java.lang.String attributeName)
         throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
@@ -307,6 +341,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param value value to be set
     * @throws SystemException in case of LR error
     */
+    @Override
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, long value)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -323,6 +358,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param value value to be set
     * @throws SystemException in case of LR error
     */
+    @Override
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName,
         java.lang.String value)
@@ -340,6 +376,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param value value to be set
     * @throws SystemException in case of LR error
     */
+    @Override
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, double value)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -356,6 +393,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param value value to be set
     * @throws SystemException in case of LR error
     */
+    @Override
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, long longValue,
         java.lang.String stringValue, double realValue)
@@ -373,6 +411,7 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param value value to be set
     * @throws SystemException in case of LR error
     */
+    @Override
     public void deleteProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -381,24 +420,26 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalContestPhaseAttributeLocalService getWrappedProposalContestPhaseAttributeLocalService() {
         return _proposalContestPhaseAttributeLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedProposalContestPhaseAttributeLocalService(
         ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
         _proposalContestPhaseAttributeLocalService = proposalContestPhaseAttributeLocalService;
     }
 
+    @Override
     public ProposalContestPhaseAttributeLocalService getWrappedService() {
         return _proposalContestPhaseAttributeLocalService;
     }
 
+    @Override
     public void setWrappedService(
         ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
         _proposalContestPhaseAttributeLocalService = proposalContestPhaseAttributeLocalService;

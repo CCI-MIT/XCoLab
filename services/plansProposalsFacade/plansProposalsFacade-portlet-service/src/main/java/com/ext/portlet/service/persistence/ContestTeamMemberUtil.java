@@ -49,7 +49,7 @@ public class ContestTeamMemberUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,21 +83,184 @@ public class ContestTeamMemberUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
-    public static ContestTeamMember update(
-        ContestTeamMember contestTeamMember, boolean merge)
+    public static ContestTeamMember update(ContestTeamMember contestTeamMember)
         throws SystemException {
-        return getPersistence().update(contestTeamMember, merge);
+        return getPersistence().update(contestTeamMember);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static ContestTeamMember update(
-        ContestTeamMember contestTeamMember, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(contestTeamMember, merge, serviceContext);
+        ContestTeamMember contestTeamMember, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(contestTeamMember, serviceContext);
+    }
+
+    /**
+    * Returns all the contest team members where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @return the matching contest team members
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestId(contestId);
+    }
+
+    /**
+    * Returns a range of all the contest team members where contestId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestId the contest ID
+    * @param start the lower bound of the range of contest team members
+    * @param end the upper bound of the range of contest team members (not inclusive)
+    * @return the range of matching contest team members
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
+        long contestId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByContestId(contestId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the contest team members where contestId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestId the contest ID
+    * @param start the lower bound of the range of contest team members
+    * @param end the upper bound of the range of contest team members (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contest team members
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
+        long contestId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestId(contestId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first contest team member in the ordered set where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest team member
+    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a matching contest team member could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestTeamMember findByContestId_First(
+        long contestId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestTeamMemberException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestId_First(contestId, orderByComparator);
+    }
+
+    /**
+    * Returns the first contest team member in the ordered set where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest team member, or <code>null</code> if a matching contest team member could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestTeamMember fetchByContestId_First(
+        long contestId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestId_First(contestId, orderByComparator);
+    }
+
+    /**
+    * Returns the last contest team member in the ordered set where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest team member
+    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a matching contest team member could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestTeamMember findByContestId_Last(
+        long contestId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestTeamMemberException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestId_Last(contestId, orderByComparator);
+    }
+
+    /**
+    * Returns the last contest team member in the ordered set where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest team member, or <code>null</code> if a matching contest team member could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestTeamMember fetchByContestId_Last(
+        long contestId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .fetchByContestId_Last(contestId, orderByComparator);
+    }
+
+    /**
+    * Returns the contest team members before and after the current contest team member in the ordered set where contestId = &#63;.
+    *
+    * @param id the primary key of the current contest team member
+    * @param contestId the contest ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest team member
+    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a contest team member with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.ContestTeamMember[] findByContestId_PrevAndNext(
+        long id, long contestId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestTeamMemberException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByContestId_PrevAndNext(id, contestId, orderByComparator);
+    }
+
+    /**
+    * Removes all the contest team members where contestId = &#63; from the database.
+    *
+    * @param contestId the contest ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByContestId(long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByContestId(contestId);
+    }
+
+    /**
+    * Returns the number of contest team members where contestId = &#63;.
+    *
+    * @param contestId the contest ID
+    * @return the number of matching contest team members
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByContestId(long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByContestId(contestId);
     }
 
     /**
@@ -145,9 +308,9 @@ public class ContestTeamMemberUtil {
     }
 
     public static com.ext.portlet.model.ContestTeamMember updateImpl(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember, boolean merge)
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(contestTeamMember, merge);
+        return getPersistence().updateImpl(contestTeamMember);
     }
 
     /**
@@ -178,127 +341,6 @@ public class ContestTeamMemberUtil {
     }
 
     /**
-    * Returns all the contest team members where contestId = &#63;.
-    *
-    * @param contestId the contest ID
-    * @return the matching contest team members
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestId(contestId);
-    }
-
-    /**
-    * Returns a range of all the contest team members where contestId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestId the contest ID
-    * @param start the lower bound of the range of contest team members
-    * @param end the upper bound of the range of contest team members (not inclusive)
-    * @return the range of matching contest team members
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
-        long contestId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByContestId(contestId, start, end);
-    }
-
-    /**
-    * Returns an ordered range of all the contest team members where contestId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestId the contest ID
-    * @param start the lower bound of the range of contest team members
-    * @param end the upper bound of the range of contest team members (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching contest team members
-    * @throws SystemException if a system exception occurred
-    */
-    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findByContestId(
-        long contestId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestId(contestId, start, end, orderByComparator);
-    }
-
-    /**
-    * Returns the first contest team member in the ordered set where contestId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestId the contest ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching contest team member
-    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a matching contest team member could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestTeamMember findByContestId_First(
-        long contestId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestTeamMemberException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestId_First(contestId, orderByComparator);
-    }
-
-    /**
-    * Returns the last contest team member in the ordered set where contestId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param contestId the contest ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching contest team member
-    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a matching contest team member could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestTeamMember findByContestId_Last(
-        long contestId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestTeamMemberException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestId_Last(contestId, orderByComparator);
-    }
-
-    /**
-    * Returns the contest team members before and after the current contest team member in the ordered set where contestId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param id the primary key of the current contest team member
-    * @param contestId the contest ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next contest team member
-    * @throws com.ext.portlet.NoSuchContestTeamMemberException if a contest team member with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ContestTeamMember[] findByContestId_PrevAndNext(
-        long id, long contestId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestTeamMemberException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence()
-                   .findByContestId_PrevAndNext(id, contestId, orderByComparator);
-    }
-
-    /**
     * Returns all the contest team members.
     *
     * @return the contest team members
@@ -313,7 +355,7 @@ public class ContestTeamMemberUtil {
     * Returns a range of all the contest team members.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest team members
@@ -331,7 +373,7 @@ public class ContestTeamMemberUtil {
     * Returns an ordered range of all the contest team members.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestTeamMemberModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of contest team members
@@ -348,17 +390,6 @@ public class ContestTeamMemberUtil {
     }
 
     /**
-    * Removes all the contest team members where contestId = &#63; from the database.
-    *
-    * @param contestId the contest ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByContestId(long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByContestId(contestId);
-    }
-
-    /**
     * Removes all the contest team members from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -366,18 +397,6 @@ public class ContestTeamMemberUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of contest team members where contestId = &#63;.
-    *
-    * @param contestId the contest ID
-    * @return the number of matching contest team members
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByContestId(long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByContestId(contestId);
     }
 
     /**
@@ -403,10 +422,9 @@ public class ContestTeamMemberUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(ContestTeamMemberPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(ContestTeamMemberUtil.class,
-            "_persistence");
     }
 }

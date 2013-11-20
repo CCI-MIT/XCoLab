@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ModelInputGroupLocalService}.
- * </p>
+ * Provides a wrapper for {@link ModelInputGroupLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelInputGroupLocalService
+ * @author Brian Wing Shun Chan
+ * @see ModelInputGroupLocalService
  * @generated
  */
 public class ModelInputGroupLocalServiceWrapper
@@ -28,6 +26,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the model input group that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelInputGroup addModelInputGroup(
         com.ext.portlet.model.ModelInputGroup modelInputGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @param modelInputGroupPK the primary key for the new model input group
     * @return the new model input group
     */
+    @Override
     public com.ext.portlet.model.ModelInputGroup createModelInputGroup(
         long modelInputGroupPK) {
         return _modelInputGroupLocalService.createModelInputGroup(modelInputGroupPK);
@@ -49,25 +49,35 @@ public class ModelInputGroupLocalServiceWrapper
     * Deletes the model input group with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param modelInputGroupPK the primary key of the model input group
+    * @return the model input group that was removed
     * @throws PortalException if a model input group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelInputGroup(long modelInputGroupPK)
+    @Override
+    public com.ext.portlet.model.ModelInputGroup deleteModelInputGroup(
+        long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _modelInputGroupLocalService.deleteModelInputGroup(modelInputGroupPK);
+        return _modelInputGroupLocalService.deleteModelInputGroup(modelInputGroupPK);
     }
 
     /**
     * Deletes the model input group from the database. Also notifies the appropriate model listeners.
     *
     * @param modelInputGroup the model input group
+    * @return the model input group that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deleteModelInputGroup(
+    @Override
+    public com.ext.portlet.model.ModelInputGroup deleteModelInputGroup(
         com.ext.portlet.model.ModelInputGroup modelInputGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _modelInputGroupLocalService.deleteModelInputGroup(modelInputGroup);
+        return _modelInputGroupLocalService.deleteModelInputGroup(modelInputGroup);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _modelInputGroupLocalService.dynamicQuery();
     }
 
     /**
@@ -77,6 +87,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -88,7 +99,7 @@ public class ModelInputGroupLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -97,6 +108,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -109,7 +121,7 @@ public class ModelInputGroupLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -119,6 +131,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -136,12 +149,31 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelInputGroupLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _modelInputGroupLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.ModelInputGroup fetchModelInputGroup(
         long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -156,6 +188,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @throws PortalException if a model input group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelInputGroup getModelInputGroup(
         long modelInputGroupPK)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -163,6 +196,7 @@ public class ModelInputGroupLocalServiceWrapper
         return _modelInputGroupLocalService.getModelInputGroup(modelInputGroupPK);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -174,7 +208,7 @@ public class ModelInputGroupLocalServiceWrapper
     * Returns a range of all the model input groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model input groups
@@ -182,6 +216,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the range of model input groups
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.ModelInputGroup> getModelInputGroups(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -194,6 +229,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the number of model input groups
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getModelInputGroupsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _modelInputGroupLocalService.getModelInputGroupsCount();
@@ -206,6 +242,7 @@ public class ModelInputGroupLocalServiceWrapper
     * @return the model input group that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.ModelInputGroup updateModelInputGroup(
         com.ext.portlet.model.ModelInputGroup modelInputGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -213,25 +250,11 @@ public class ModelInputGroupLocalServiceWrapper
     }
 
     /**
-    * Updates the model input group in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param modelInputGroup the model input group
-    * @param merge whether to merge the model input group with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the model input group that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup updateModelInputGroup(
-        com.ext.portlet.model.ModelInputGroup modelInputGroup, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _modelInputGroupLocalService.updateModelInputGroup(modelInputGroup,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _modelInputGroupLocalService.getBeanIdentifier();
     }
@@ -241,30 +264,44 @@ public class ModelInputGroupLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _modelInputGroupLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _modelInputGroupLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.ModelInputGroup> getInputGroups(
         edu.mit.cci.roma.client.Simulation sim) {
         return _modelInputGroupLocalService.getInputGroups(sim);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ModelInputGroup> getChildGroups(
         com.ext.portlet.model.ModelInputGroup group) {
         return _modelInputGroupLocalService.getChildGroups(group);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ModelInputItem> getInputItems(
         com.ext.portlet.model.ModelInputGroup group) {
         return _modelInputGroupLocalService.getInputItems(group);
     }
 
+    @Override
     public com.ext.portlet.model.ModelInputGroup getParent(
         com.ext.portlet.model.ModelInputGroup group) {
         return _modelInputGroupLocalService.getParent(group);
     }
 
+    @Override
     public edu.mit.cci.roma.client.Simulation getModel(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
@@ -272,6 +309,7 @@ public class ModelInputGroupLocalServiceWrapper
         return _modelInputGroupLocalService.getModel(group);
     }
 
+    @Override
     public edu.mit.cci.roma.client.MetaData getMetaData(
         com.ext.portlet.model.ModelInputGroup group)
         throws com.liferay.portal.kernel.exception.SystemException,
@@ -280,24 +318,26 @@ public class ModelInputGroupLocalServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ModelInputGroupLocalService getWrappedModelInputGroupLocalService() {
         return _modelInputGroupLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedModelInputGroupLocalService(
         ModelInputGroupLocalService modelInputGroupLocalService) {
         _modelInputGroupLocalService = modelInputGroupLocalService;
     }
 
+    @Override
     public ModelInputGroupLocalService getWrappedService() {
         return _modelInputGroupLocalService;
     }
 
+    @Override
     public void setWrappedService(
         ModelInputGroupLocalService modelInputGroupLocalService) {
         _modelInputGroupLocalService = modelInputGroupLocalService;

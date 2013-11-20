@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanFanLocalService}.
- * </p>
+ * Provides a wrapper for {@link PlanFanLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanFanLocalService
+ * @author Brian Wing Shun Chan
+ * @see PlanFanLocalService
  * @generated
  */
 public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
@@ -26,6 +24,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the plan fan that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanFan addPlanFan(
         com.ext.portlet.model.PlanFan planFan)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -38,6 +37,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @param id the primary key for the new plan fan
     * @return the new plan fan
     */
+    @Override
     public com.ext.portlet.model.PlanFan createPlanFan(long id) {
         return _planFanLocalService.createPlanFan(id);
     }
@@ -46,24 +46,34 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * Deletes the plan fan with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the plan fan
+    * @return the plan fan that was removed
     * @throws PortalException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanFan(long id)
+    @Override
+    public com.ext.portlet.model.PlanFan deletePlanFan(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _planFanLocalService.deletePlanFan(id);
+        return _planFanLocalService.deletePlanFan(id);
     }
 
     /**
     * Deletes the plan fan from the database. Also notifies the appropriate model listeners.
     *
     * @param planFan the plan fan
+    * @return the plan fan that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanFan(com.ext.portlet.model.PlanFan planFan)
+    @Override
+    public com.ext.portlet.model.PlanFan deletePlanFan(
+        com.ext.portlet.model.PlanFan planFan)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _planFanLocalService.deletePlanFan(planFan);
+        return _planFanLocalService.deletePlanFan(planFan);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _planFanLocalService.dynamicQuery();
     }
 
     /**
@@ -73,6 +83,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -84,7 +95,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -93,6 +104,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -104,7 +116,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,6 +126,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -131,12 +144,30 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planFanLocalService.dynamicQueryCount(dynamicQuery, projection);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanFan fetchPlanFan(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.fetchPlanFan(id);
@@ -150,12 +181,14 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @throws PortalException if a plan fan with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanFan getPlanFan(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getPlanFan(id);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -167,7 +200,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * Returns a range of all the plan fans.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanFanModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan fans
@@ -175,6 +208,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the range of plan fans
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.PlanFan> getPlanFans(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -187,6 +221,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the number of plan fans
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlanFansCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getPlanFansCount();
@@ -199,6 +234,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     * @return the plan fan that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanFan updatePlanFan(
         com.ext.portlet.model.PlanFan planFan)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -206,24 +242,11 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     }
 
     /**
-    * Updates the plan fan in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planFan the plan fan
-    * @param merge whether to merge the plan fan with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan fan that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanFan updatePlanFan(
-        com.ext.portlet.model.PlanFan planFan, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planFanLocalService.updatePlanFan(planFan, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _planFanLocalService.getBeanIdentifier();
     }
@@ -233,38 +256,52 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planFanLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planFanLocalService.invokeMethod(name, parameterTypes, arguments);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.PlanFan> getPlanFansForPlan(
         java.lang.Long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getPlanFansForPlan(planId);
     }
 
+    @Override
     public int countPlanFansForPlan(java.lang.Long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.countPlanFansForPlan(planId);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanFan> getPlanFansForUser(
         java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getPlanFansForUser(userId);
     }
 
+    @Override
     public com.ext.portlet.model.PlanFan addFan(java.lang.Long planId,
         java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.addFan(planId, userId);
     }
 
+    @Override
     public void removePlanFan(java.lang.Long planId, java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         _planFanLocalService.removePlanFan(planId, userId);
     }
 
+    @Override
     public com.ext.portlet.model.PlanFan getPlanFanByPlanIdUserId(
         java.lang.Long planId, java.lang.Long userId)
         throws com.ext.portlet.NoSuchPlanFanException,
@@ -272,22 +309,26 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
         return _planFanLocalService.getPlanFanByPlanIdUserId(planId, userId);
     }
 
+    @Override
     public int countByUserId(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.countByUserId(userId);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanFan> getByUserId(
         java.lang.Long userId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planFanLocalService.getByUserId(userId, start, end);
     }
 
+    @Override
     public void store(com.ext.portlet.model.PlanFan pf)
         throws com.liferay.portal.kernel.exception.SystemException {
         _planFanLocalService.store(pf);
     }
 
+    @Override
     public com.liferay.portal.model.User getUser(
         com.ext.portlet.model.PlanFan pf)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -295,6 +336,7 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
         return _planFanLocalService.getUser(pf);
     }
 
+    @Override
     public com.ext.portlet.model.PlanItem getPlan(
         com.ext.portlet.model.PlanFan pf)
         throws com.ext.portlet.NoSuchPlanItemException,
@@ -303,24 +345,26 @@ public class PlanFanLocalServiceWrapper implements PlanFanLocalService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanFanLocalService getWrappedPlanFanLocalService() {
         return _planFanLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanFanLocalService(
         PlanFanLocalService planFanLocalService) {
         _planFanLocalService = planFanLocalService;
     }
 
+    @Override
     public PlanFanLocalService getWrappedService() {
         return _planFanLocalService;
     }
 
+    @Override
     public void setWrappedService(PlanFanLocalService planFanLocalService) {
         _planFanLocalService = planFanLocalService;
     }

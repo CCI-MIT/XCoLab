@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ModelGlobalPreference service. Represents a row in the &quot;xcolab_ModelGlobalPreference&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ModelGlobalPreference (modelGlobalPreferencePK LONG not null primary key,modelId LONG,visible BOOLEAN,weight INTEGER,expertEvaluationPageId LONG,modelCategoryId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelGlobalPreference";
+    public static final String ORDER_BY_JPQL = " ORDER BY modelGlobalPreference.modelGlobalPreferencePK ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelGlobalPreference.modelGlobalPreferencePK ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,10 +73,11 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
             true);
     public static long MODELCATEGORYID_COLUMN_BITMASK = 1L;
     public static long MODELID_COLUMN_BITMASK = 2L;
+    public static long MODELGLOBALPREFERENCEPK_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ModelGlobalPreference"));
     private static ClassLoader _classLoader = ModelGlobalPreference.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ModelGlobalPreference.class
         };
     private long _modelGlobalPreferencePK;
@@ -85,9 +90,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
     private long _modelCategoryId;
     private long _originalModelCategoryId;
     private boolean _setOriginalModelCategoryId;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ModelGlobalPreference _escapedModelProxy;
+    private ModelGlobalPreference _escapedModel;
 
     public ModelGlobalPreferenceModelImpl() {
     }
@@ -100,6 +104,10 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
      */
     public static ModelGlobalPreference toModel(
         ModelGlobalPreferenceSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ModelGlobalPreference model = new ModelGlobalPreferenceImpl();
 
         model.setModelGlobalPreferencePK(soapModel.getModelGlobalPreferencePK());
@@ -120,6 +128,10 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
      */
     public static List<ModelGlobalPreference> toModels(
         ModelGlobalPreferenceSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ModelGlobalPreference> models = new ArrayList<ModelGlobalPreference>(soapModels.length);
 
         for (ModelGlobalPreferenceSoap soapModel : soapModels) {
@@ -129,44 +141,109 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _modelGlobalPreferencePK;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setModelGlobalPreferencePK(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_modelGlobalPreferencePK);
+        return _modelGlobalPreferencePK;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelGlobalPreference.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelGlobalPreference.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelGlobalPreferencePK", getModelGlobalPreferencePK());
+        attributes.put("modelId", getModelId());
+        attributes.put("visible", getVisible());
+        attributes.put("weight", getWeight());
+        attributes.put("expertEvaluationPageId", getExpertEvaluationPageId());
+        attributes.put("modelCategoryId", getModelCategoryId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelGlobalPreferencePK = (Long) attributes.get(
+                "modelGlobalPreferencePK");
+
+        if (modelGlobalPreferencePK != null) {
+            setModelGlobalPreferencePK(modelGlobalPreferencePK);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
+
+        Boolean visible = (Boolean) attributes.get("visible");
+
+        if (visible != null) {
+            setVisible(visible);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        Long expertEvaluationPageId = (Long) attributes.get(
+                "expertEvaluationPageId");
+
+        if (expertEvaluationPageId != null) {
+            setExpertEvaluationPageId(expertEvaluationPageId);
+        }
+
+        Long modelCategoryId = (Long) attributes.get("modelCategoryId");
+
+        if (modelCategoryId != null) {
+            setModelCategoryId(modelCategoryId);
+        }
+    }
+
     @JSON
+    @Override
     public long getModelGlobalPreferencePK() {
         return _modelGlobalPreferencePK;
     }
 
+    @Override
     public void setModelGlobalPreferencePK(long modelGlobalPreferencePK) {
         _modelGlobalPreferencePK = modelGlobalPreferencePK;
     }
 
     @JSON
+    @Override
     public long getModelId() {
         return _modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         _columnBitmask |= MODELID_COLUMN_BITMASK;
 
@@ -184,41 +261,50 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
     }
 
     @JSON
+    @Override
     public boolean getVisible() {
         return _visible;
     }
 
+    @Override
     public boolean isVisible() {
         return _visible;
     }
 
+    @Override
     public void setVisible(boolean visible) {
         _visible = visible;
     }
 
     @JSON
+    @Override
     public int getWeight() {
         return _weight;
     }
 
+    @Override
     public void setWeight(int weight) {
         _weight = weight;
     }
 
     @JSON
+    @Override
     public long getExpertEvaluationPageId() {
         return _expertEvaluationPageId;
     }
 
+    @Override
     public void setExpertEvaluationPageId(long expertEvaluationPageId) {
         _expertEvaluationPageId = expertEvaluationPageId;
     }
 
     @JSON
+    @Override
     public long getModelCategoryId() {
         return _modelCategoryId;
     }
 
+    @Override
     public void setModelCategoryId(long modelCategoryId) {
         _columnBitmask |= MODELCATEGORYID_COLUMN_BITMASK;
 
@@ -240,29 +326,26 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
     }
 
     @Override
-    public ModelGlobalPreference toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ModelGlobalPreference) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ModelGlobalPreference.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ModelGlobalPreference.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ModelGlobalPreference toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ModelGlobalPreference) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -281,6 +364,7 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         return modelGlobalPreferenceImpl;
     }
 
+    @Override
     public int compareTo(ModelGlobalPreference modelGlobalPreference) {
         long primaryKey = modelGlobalPreference.getPrimaryKey();
 
@@ -295,17 +379,15 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelGlobalPreference)) {
             return false;
         }
 
-        ModelGlobalPreference modelGlobalPreference = null;
-
-        try {
-            modelGlobalPreference = (ModelGlobalPreference) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ModelGlobalPreference modelGlobalPreference = (ModelGlobalPreference) obj;
 
         long primaryKey = modelGlobalPreference.getPrimaryKey();
 
@@ -376,6 +458,7 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

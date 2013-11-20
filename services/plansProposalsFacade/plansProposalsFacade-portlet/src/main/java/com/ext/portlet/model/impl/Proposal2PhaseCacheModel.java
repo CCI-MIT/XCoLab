@@ -5,7 +5,10 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing Proposal2Phase in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
-    Serializable {
+    Externalizable {
     public long proposalId;
     public long contestPhaseId;
     public int versionFrom;
@@ -44,6 +47,7 @@ public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
         return sb.toString();
     }
 
+    @Override
     public Proposal2Phase toEntityModel() {
         Proposal2PhaseImpl proposal2PhaseImpl = new Proposal2PhaseImpl();
 
@@ -57,5 +61,26 @@ public class Proposal2PhaseCacheModel implements CacheModel<Proposal2Phase>,
         proposal2PhaseImpl.resetOriginalValues();
 
         return proposal2PhaseImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        proposalId = objectInput.readLong();
+        contestPhaseId = objectInput.readLong();
+        versionFrom = objectInput.readInt();
+        versionTo = objectInput.readInt();
+        sortWeight = objectInput.readInt();
+        autopromoteCandidate = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(proposalId);
+        objectOutput.writeLong(contestPhaseId);
+        objectOutput.writeInt(versionFrom);
+        objectOutput.writeInt(versionTo);
+        objectOutput.writeInt(sortWeight);
+        objectOutput.writeBoolean(autopromoteCandidate);
     }
 }

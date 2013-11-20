@@ -1,9 +1,16 @@
 package com.ext.portlet.service.impl.mock;
 
+import java.util.List;
+import java.util.Locale;
+
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalService;
 
 /**
@@ -42,29 +49,6 @@ public class UserLocalServiceMock implements UserLocalService {
         return null;
     }
 
-    /**
-    * Deletes the user with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param userId the primary key of the user
-    * @throws PortalException if a user with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public void deleteUser(long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-    }
-
-    /**
-    * Deletes the user from the database. Also notifies the appropriate model listeners.
-    *
-    * @param user the user
-    * @throws PortalException
-    * @throws SystemException if a system exception occurred
-    */
-    public void deleteUser(com.liferay.portal.model.User user)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-    }
 
     /**
     * Performs a dynamic query on the database and returns the matching rows.
@@ -2796,5 +2780,456 @@ public class UserLocalServiceMock implements UserLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
     }
+
+	@Override
+	public DynamicQuery dynamicQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserByUuidAndCompanyId(String uuid, long companyId)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteUserGroupUser(long userGroupId, User user)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteUserGroupUsers(long userGroupId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteUserGroupUsers(long userGroupId, List<User> Users)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+			Projection projection) throws SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public User fetchUserByUuidAndCompanyId(String uuid, long companyId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addGroupUser(long groupId, long userId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addGroupUser(long groupId, User user) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addGroupUsers(long groupId, List<User> Users)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearGroupUsers(long groupId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteGroupUser(long groupId, long userId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteGroupUser(long groupId, User user) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteGroupUsers(long groupId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteGroupUsers(long groupId, List<User> Users)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getGroupUsers(long groupId, int start, int end)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getGroupUsers(long groupId, int start, int end,
+			OrderByComparator orderByComparator) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasGroupUsers(long groupId) throws SystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setGroupUsers(long groupId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addOrganizationUser(long organizationId, long userId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addOrganizationUser(long organizationId, User user)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addOrganizationUsers(long organizationId, List<User> Users)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteOrganizationUser(long organizationId, long userId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteOrganizationUser(long organizationId, User user)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteOrganizationUsers(long organizationId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteOrganizationUsers(long organizationId, List<User> Users)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getOrganizationUsers(long organizationId, int start,
+			int end) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getOrganizationUsers(long organizationId, int start,
+			int end, OrderByComparator orderByComparator)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasOrganizationUsers(long organizationId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setOrganizationUsers(long organizationId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRoleUser(long roleId, long userId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRoleUser(long roleId, User user) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRoleUsers(long roleId, List<User> Users)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearRoleUsers(long roleId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteRoleUser(long roleId, User user) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteRoleUsers(long roleId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteRoleUsers(long roleId, List<User> Users)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getRoleUsers(long roleId, int start, int end,
+			OrderByComparator orderByComparator) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasRoleUsers(long roleId) throws SystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void addTeamUser(long teamId, long userId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTeamUser(long teamId, User user) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTeamUsers(long teamId, List<User> Users)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearTeamUsers(long teamId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteTeamUser(long teamId, long userId) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteTeamUser(long teamId, User user) throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteTeamUsers(long teamId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteTeamUsers(long teamId, List<User> Users)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getTeamUsers(long teamId) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getTeamUsers(long teamId, int start, int end)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getTeamUsers(long teamId, int start, int end,
+			OrderByComparator orderByComparator) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getTeamUsersCount(long teamId) throws SystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasTeamUsers(long teamId) throws SystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setTeamUsers(long teamId, long[] userIds)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addUserGroupUser(long userGroupId, long userId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addUserGroupUser(long userGroupId, User user)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addUserGroupUsers(long userGroupId, List<User> Users)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getUserGroupUsers(long userGroupId, int start, int end)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getUserGroupUsers(long userGroupId, int start, int end,
+			OrderByComparator orderByComparator) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasUserGroupUsers(long userGroupId) throws SystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public User addDefaultAdminUser(long companyId, String screenName,
+			String emailAddress, Locale locale, String firstName,
+			String middleName, String lastName) throws PortalException,
+			SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User fetchUserByEmailAddress(long companyId, String emailAddress)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User fetchUserByFacebookId(long companyId, long facebookId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User fetchUserByOpenId(long companyId, String openId)
+			throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getInheritedRoleUsers(long roleId, int start, int end,
+			OrderByComparator obc) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void unsetGroupTeamsUsers(long groupId, long[] userIds)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public User deleteUser(long userId) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User deleteUser(User user) throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

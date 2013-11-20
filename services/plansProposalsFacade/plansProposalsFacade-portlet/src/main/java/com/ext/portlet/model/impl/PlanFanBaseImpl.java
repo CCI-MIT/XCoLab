@@ -24,6 +24,7 @@ public abstract class PlanFanBaseImpl extends PlanFanModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan fan model instance should use the {@link PlanFan} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanFanLocalServiceUtil.addPlanFan(this);

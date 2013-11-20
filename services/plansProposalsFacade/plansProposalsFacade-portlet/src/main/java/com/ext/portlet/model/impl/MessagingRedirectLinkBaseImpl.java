@@ -24,6 +24,7 @@ public abstract class MessagingRedirectLinkBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a messaging redirect link model instance should use the {@link MessagingRedirectLink} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             MessagingRedirectLinkLocalServiceUtil.addMessagingRedirectLink(this);

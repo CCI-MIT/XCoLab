@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanTemplate service. Represents a row in the &quot;xcolab_PlanTemplate&quot; database table, with each column mapped to a property of this class.
@@ -52,6 +54,8 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanTemplate";
+    public static final String ORDER_BY_JPQL = " ORDER BY planTemplate.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanTemplate.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -65,13 +69,12 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanTemplate"));
     private static ClassLoader _classLoader = PlanTemplate.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanTemplate.class
         };
     private long _id;
     private String _name;
-    private transient ExpandoBridge _expandoBridge;
-    private PlanTemplate _escapedModelProxy;
+    private PlanTemplate _escapedModel;
 
     public PlanTemplateModelImpl() {
     }
@@ -83,6 +86,10 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
      * @return the normal model instance
      */
     public static PlanTemplate toModel(PlanTemplateSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanTemplate model = new PlanTemplateImpl();
 
         model.setId(soapModel.getId());
@@ -98,6 +105,10 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
      * @return the normal model instances
      */
     public static List<PlanTemplate> toModels(PlanTemplateSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanTemplate> models = new ArrayList<PlanTemplate>(soapModels.length);
 
         for (PlanTemplateSoap soapModel : soapModels) {
@@ -107,40 +118,74 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTemplate.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTemplate.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("name", getName());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -149,34 +194,32 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @Override
-    public PlanTemplate toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanTemplate) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanTemplate.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanTemplate.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanTemplate toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanTemplate) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -191,6 +234,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         return planTemplateImpl;
     }
 
+    @Override
     public int compareTo(PlanTemplate planTemplate) {
         long primaryKey = planTemplate.getPrimaryKey();
 
@@ -205,17 +249,15 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTemplate)) {
             return false;
         }
 
-        PlanTemplate planTemplate = null;
-
-        try {
-            planTemplate = (PlanTemplate) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTemplate planTemplate = (PlanTemplate) obj;
 
         long primaryKey = planTemplate.getPrimaryKey();
 
@@ -265,6 +307,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(10);
 

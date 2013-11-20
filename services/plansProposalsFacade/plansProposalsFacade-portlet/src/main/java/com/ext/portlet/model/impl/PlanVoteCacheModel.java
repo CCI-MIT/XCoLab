@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanVote;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -16,7 +19,7 @@ import java.util.Date;
  * @see PlanVote
  * @generated
  */
-public class PlanVoteCacheModel implements CacheModel<PlanVote>, Serializable {
+public class PlanVoteCacheModel implements CacheModel<PlanVote>, Externalizable {
     public long userId;
     public long contestId;
     public long planId;
@@ -39,6 +42,7 @@ public class PlanVoteCacheModel implements CacheModel<PlanVote>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public PlanVote toEntityModel() {
         PlanVoteImpl planVoteImpl = new PlanVoteImpl();
 
@@ -55,5 +59,22 @@ public class PlanVoteCacheModel implements CacheModel<PlanVote>, Serializable {
         planVoteImpl.resetOriginalValues();
 
         return planVoteImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        userId = objectInput.readLong();
+        contestId = objectInput.readLong();
+        planId = objectInput.readLong();
+        createDate = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(contestId);
+        objectOutput.writeLong(planId);
+        objectOutput.writeLong(createDate);
     }
 }

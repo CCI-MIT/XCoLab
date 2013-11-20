@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.PlanTeamHistoryServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.PlanTeamHistoryServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.PlanTeamHistoryServiceSoap
  * @generated
  */
 public class PlanTeamHistorySoap implements Serializable {

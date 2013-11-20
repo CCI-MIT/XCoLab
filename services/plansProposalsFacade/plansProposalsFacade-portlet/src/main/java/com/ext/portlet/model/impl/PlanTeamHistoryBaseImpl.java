@@ -24,6 +24,7 @@ public abstract class PlanTeamHistoryBaseImpl extends PlanTeamHistoryModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan team history model instance should use the {@link PlanTeamHistory} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTeamHistoryLocalServiceUtil.addPlanTeamHistory(this);

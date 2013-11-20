@@ -24,6 +24,7 @@ public abstract class PlanPositionItemBaseImpl extends PlanPositionItemModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan position item model instance should use the {@link PlanPositionItem} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanPositionItemLocalServiceUtil.addPlanPositionItem(this);

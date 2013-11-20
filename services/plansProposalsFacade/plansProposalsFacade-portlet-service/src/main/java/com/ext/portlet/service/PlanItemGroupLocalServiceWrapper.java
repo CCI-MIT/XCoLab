@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanItemGroupLocalService}.
- * </p>
+ * Provides a wrapper for {@link PlanItemGroupLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanItemGroupLocalService
+ * @author Brian Wing Shun Chan
+ * @see PlanItemGroupLocalService
  * @generated
  */
 public class PlanItemGroupLocalServiceWrapper
@@ -28,6 +26,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the plan item group that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanItemGroup addPlanItemGroup(
         com.ext.portlet.model.PlanItemGroup planItemGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -40,6 +39,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @param planId the primary key for the new plan item group
     * @return the new plan item group
     */
+    @Override
     public com.ext.portlet.model.PlanItemGroup createPlanItemGroup(long planId) {
         return _planItemGroupLocalService.createPlanItemGroup(planId);
     }
@@ -48,25 +48,34 @@ public class PlanItemGroupLocalServiceWrapper
     * Deletes the plan item group with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param planId the primary key of the plan item group
+    * @return the plan item group that was removed
     * @throws PortalException if a plan item group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanItemGroup(long planId)
+    @Override
+    public com.ext.portlet.model.PlanItemGroup deletePlanItemGroup(long planId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _planItemGroupLocalService.deletePlanItemGroup(planId);
+        return _planItemGroupLocalService.deletePlanItemGroup(planId);
     }
 
     /**
     * Deletes the plan item group from the database. Also notifies the appropriate model listeners.
     *
     * @param planItemGroup the plan item group
+    * @return the plan item group that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanItemGroup(
+    @Override
+    public com.ext.portlet.model.PlanItemGroup deletePlanItemGroup(
         com.ext.portlet.model.PlanItemGroup planItemGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _planItemGroupLocalService.deletePlanItemGroup(planItemGroup);
+        return _planItemGroupLocalService.deletePlanItemGroup(planItemGroup);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _planItemGroupLocalService.dynamicQuery();
     }
 
     /**
@@ -76,6 +85,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -87,7 +97,7 @@ public class PlanItemGroupLocalServiceWrapper
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -96,6 +106,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -107,7 +118,7 @@ public class PlanItemGroupLocalServiceWrapper
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -117,6 +128,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -134,12 +146,31 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planItemGroupLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planItemGroupLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanItemGroup fetchPlanItemGroup(long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planItemGroupLocalService.fetchPlanItemGroup(planId);
@@ -153,12 +184,14 @@ public class PlanItemGroupLocalServiceWrapper
     * @throws PortalException if a plan item group with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanItemGroup getPlanItemGroup(long planId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planItemGroupLocalService.getPlanItemGroup(planId);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -170,7 +203,7 @@ public class PlanItemGroupLocalServiceWrapper
     * Returns a range of all the plan item groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanItemGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan item groups
@@ -178,6 +211,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the range of plan item groups
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.PlanItemGroup> getPlanItemGroups(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -190,6 +224,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the number of plan item groups
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlanItemGroupsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planItemGroupLocalService.getPlanItemGroupsCount();
@@ -202,6 +237,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @return the plan item group that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanItemGroup updatePlanItemGroup(
         com.ext.portlet.model.PlanItemGroup planItemGroup)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -209,25 +245,11 @@ public class PlanItemGroupLocalServiceWrapper
     }
 
     /**
-    * Updates the plan item group in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planItemGroup the plan item group
-    * @param merge whether to merge the plan item group with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan item group that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanItemGroup updatePlanItemGroup(
-        com.ext.portlet.model.PlanItemGroup planItemGroup, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planItemGroupLocalService.updatePlanItemGroup(planItemGroup,
-            merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _planItemGroupLocalService.getBeanIdentifier();
     }
@@ -237,8 +259,17 @@ public class PlanItemGroupLocalServiceWrapper
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planItemGroupLocalService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planItemGroupLocalService.invokeMethod(name, parameterTypes,
+            arguments);
     }
 
     /**
@@ -252,6 +283,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @throws SystemException
     * @throws NoSuchModelException
     */
+    @Override
     public void addToGroup(java.lang.Long fromPlanId, java.lang.Long toPlanId)
         throws com.liferay.portal.NoSuchModelException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -268,6 +300,7 @@ public class PlanItemGroupLocalServiceWrapper
     * @throws NoSuchModelException
     * @throws SystemException
     */
+    @Override
     public java.util.List<java.lang.Long> getPlansInGroup(java.lang.Long planId)
         throws com.liferay.portal.NoSuchModelException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -275,24 +308,26 @@ public class PlanItemGroupLocalServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanItemGroupLocalService getWrappedPlanItemGroupLocalService() {
         return _planItemGroupLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanItemGroupLocalService(
         PlanItemGroupLocalService planItemGroupLocalService) {
         _planItemGroupLocalService = planItemGroupLocalService;
     }
 
+    @Override
     public PlanItemGroupLocalService getWrappedService() {
         return _planItemGroupLocalService;
     }
 
+    @Override
     public void setWrappedService(
         PlanItemGroupLocalService planItemGroupLocalService) {
         _planItemGroupLocalService = planItemGroupLocalService;

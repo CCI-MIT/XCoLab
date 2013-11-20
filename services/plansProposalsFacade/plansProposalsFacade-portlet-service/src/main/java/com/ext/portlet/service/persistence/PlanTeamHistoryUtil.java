@@ -49,7 +49,7 @@ public class PlanTeamHistoryUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,96 +83,19 @@ public class PlanTeamHistoryUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+     */
+    public static PlanTeamHistory update(PlanTeamHistory planTeamHistory)
+        throws SystemException {
+        return getPersistence().update(planTeamHistory);
+    }
+
+    /**
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static PlanTeamHistory update(PlanTeamHistory planTeamHistory,
-        boolean merge) throws SystemException {
-        return getPersistence().update(planTeamHistory, merge);
-    }
-
-    /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
-     */
-    public static PlanTeamHistory update(PlanTeamHistory planTeamHistory,
-        boolean merge, ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(planTeamHistory, merge, serviceContext);
-    }
-
-    /**
-    * Caches the plan team history in the entity cache if it is enabled.
-    *
-    * @param planTeamHistory the plan team history
-    */
-    public static void cacheResult(
-        com.ext.portlet.model.PlanTeamHistory planTeamHistory) {
-        getPersistence().cacheResult(planTeamHistory);
-    }
-
-    /**
-    * Caches the plan team histories in the entity cache if it is enabled.
-    *
-    * @param planTeamHistories the plan team histories
-    */
-    public static void cacheResult(
-        java.util.List<com.ext.portlet.model.PlanTeamHistory> planTeamHistories) {
-        getPersistence().cacheResult(planTeamHistories);
-    }
-
-    /**
-    * Creates a new plan team history with the primary key. Does not add the plan team history to the database.
-    *
-    * @param id the primary key for the new plan team history
-    * @return the new plan team history
-    */
-    public static com.ext.portlet.model.PlanTeamHistory create(long id) {
-        return getPersistence().create(id);
-    }
-
-    /**
-    * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
-    *
-    * @param id the primary key of the plan team history
-    * @return the plan team history that was removed
-    * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTeamHistory remove(long id)
-        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(id);
-    }
-
-    public static com.ext.portlet.model.PlanTeamHistory updateImpl(
-        com.ext.portlet.model.PlanTeamHistory planTeamHistory, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planTeamHistory, merge);
-    }
-
-    /**
-    * Returns the plan team history with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTeamHistoryException} if it could not be found.
-    *
-    * @param id the primary key of the plan team history
-    * @return the plan team history
-    * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTeamHistory findByPrimaryKey(
-        long id)
-        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(id);
-    }
-
-    /**
-    * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
-    *
-    * @param id the primary key of the plan team history
-    * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTeamHistory fetchByPrimaryKey(
-        long id) throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(id);
+        ServiceContext serviceContext) throws SystemException {
+        return getPersistence().update(planTeamHistory, serviceContext);
     }
 
     /**
@@ -191,7 +114,7 @@ public class PlanTeamHistoryUtil {
     * Returns a range of all the plan team histories where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -210,7 +133,7 @@ public class PlanTeamHistoryUtil {
     * Returns an ordered range of all the plan team histories where planId = &#63;.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param planId the plan ID
@@ -231,10 +154,6 @@ public class PlanTeamHistoryUtil {
     /**
     * Returns the first plan team history in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching plan team history
@@ -250,11 +169,22 @@ public class PlanTeamHistoryUtil {
     }
 
     /**
-    * Returns the last plan team history in the ordered set where planId = &#63;.
+    * Returns the first plan team history in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching plan team history, or <code>null</code> if a matching plan team history could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory fetchByPlanId_First(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPlanId_First(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the last plan team history in the ordered set where planId = &#63;.
     *
     * @param planId the plan ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -271,11 +201,22 @@ public class PlanTeamHistoryUtil {
     }
 
     /**
-    * Returns the plan team histories before and after the current plan team history in the ordered set where planId = &#63;.
+    * Returns the last plan team history in the ordered set where planId = &#63;.
     *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
+    * @param planId the plan ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching plan team history, or <code>null</code> if a matching plan team history could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory fetchByPlanId_Last(
+        long planId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPlanId_Last(planId, orderByComparator);
+    }
+
+    /**
+    * Returns the plan team histories before and after the current plan team history in the ordered set where planId = &#63;.
     *
     * @param id the primary key of the current plan team history
     * @param planId the plan ID
@@ -291,6 +232,29 @@ public class PlanTeamHistoryUtil {
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence()
                    .findByPlanId_PrevAndNext(id, planId, orderByComparator);
+    }
+
+    /**
+    * Removes all the plan team histories where planId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByPlanId(planId);
+    }
+
+    /**
+    * Returns the number of plan team histories where planId = &#63;.
+    *
+    * @param planId the plan ID
+    * @return the number of matching plan team histories
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByPlanId(long planId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByPlanId(planId);
     }
 
     /**
@@ -341,6 +305,111 @@ public class PlanTeamHistoryUtil {
     }
 
     /**
+    * Removes the plan team history where planId = &#63; and userId = &#63; from the database.
+    *
+    * @param planId the plan ID
+    * @param userId the user ID
+    * @return the plan team history that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory removeByLastUserActionInPlan(
+        long planId, long userId)
+        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().removeByLastUserActionInPlan(planId, userId);
+    }
+
+    /**
+    * Returns the number of plan team histories where planId = &#63; and userId = &#63;.
+    *
+    * @param planId the plan ID
+    * @param userId the user ID
+    * @return the number of matching plan team histories
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByLastUserActionInPlan(long planId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByLastUserActionInPlan(planId, userId);
+    }
+
+    /**
+    * Caches the plan team history in the entity cache if it is enabled.
+    *
+    * @param planTeamHistory the plan team history
+    */
+    public static void cacheResult(
+        com.ext.portlet.model.PlanTeamHistory planTeamHistory) {
+        getPersistence().cacheResult(planTeamHistory);
+    }
+
+    /**
+    * Caches the plan team histories in the entity cache if it is enabled.
+    *
+    * @param planTeamHistories the plan team histories
+    */
+    public static void cacheResult(
+        java.util.List<com.ext.portlet.model.PlanTeamHistory> planTeamHistories) {
+        getPersistence().cacheResult(planTeamHistories);
+    }
+
+    /**
+    * Creates a new plan team history with the primary key. Does not add the plan team history to the database.
+    *
+    * @param id the primary key for the new plan team history
+    * @return the new plan team history
+    */
+    public static com.ext.portlet.model.PlanTeamHistory create(long id) {
+        return getPersistence().create(id);
+    }
+
+    /**
+    * Removes the plan team history with the primary key from the database. Also notifies the appropriate model listeners.
+    *
+    * @param id the primary key of the plan team history
+    * @return the plan team history that was removed
+    * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory remove(long id)
+        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().remove(id);
+    }
+
+    public static com.ext.portlet.model.PlanTeamHistory updateImpl(
+        com.ext.portlet.model.PlanTeamHistory planTeamHistory)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().updateImpl(planTeamHistory);
+    }
+
+    /**
+    * Returns the plan team history with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTeamHistoryException} if it could not be found.
+    *
+    * @param id the primary key of the plan team history
+    * @return the plan team history
+    * @throws com.ext.portlet.NoSuchPlanTeamHistoryException if a plan team history with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory findByPrimaryKey(
+        long id)
+        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByPrimaryKey(id);
+    }
+
+    /**
+    * Returns the plan team history with the primary key or returns <code>null</code> if it could not be found.
+    *
+    * @param id the primary key of the plan team history
+    * @return the plan team history, or <code>null</code> if a plan team history with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.PlanTeamHistory fetchByPrimaryKey(
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(id);
+    }
+
+    /**
     * Returns all the plan team histories.
     *
     * @return the plan team histories
@@ -355,7 +424,7 @@ public class PlanTeamHistoryUtil {
     * Returns a range of all the plan team histories.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan team histories
@@ -373,7 +442,7 @@ public class PlanTeamHistoryUtil {
     * Returns an ordered range of all the plan team histories.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTeamHistoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan team histories
@@ -390,30 +459,6 @@ public class PlanTeamHistoryUtil {
     }
 
     /**
-    * Removes all the plan team histories where planId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByPlanId(planId);
-    }
-
-    /**
-    * Removes the plan team history where planId = &#63; and userId = &#63; from the database.
-    *
-    * @param planId the plan ID
-    * @param userId the user ID
-    * @throws SystemException if a system exception occurred
-    */
-    public static void removeByLastUserActionInPlan(long planId, long userId)
-        throws com.ext.portlet.NoSuchPlanTeamHistoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getPersistence().removeByLastUserActionInPlan(planId, userId);
-    }
-
-    /**
     * Removes all the plan team histories from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -421,31 +466,6 @@ public class PlanTeamHistoryUtil {
     public static void removeAll()
         throws com.liferay.portal.kernel.exception.SystemException {
         getPersistence().removeAll();
-    }
-
-    /**
-    * Returns the number of plan team histories where planId = &#63;.
-    *
-    * @param planId the plan ID
-    * @return the number of matching plan team histories
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByPlanId(long planId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByPlanId(planId);
-    }
-
-    /**
-    * Returns the number of plan team histories where planId = &#63; and userId = &#63;.
-    *
-    * @param planId the plan ID
-    * @param userId the user ID
-    * @return the number of matching plan team histories
-    * @throws SystemException if a system exception occurred
-    */
-    public static int countByLastUserActionInPlan(long planId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().countByLastUserActionInPlan(planId, userId);
     }
 
     /**
@@ -471,10 +491,9 @@ public class PlanTeamHistoryUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanTeamHistoryPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanTeamHistoryUtil.class,
-            "_persistence");
     }
 }

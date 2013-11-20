@@ -117,6 +117,7 @@
         <module>hooks</module>
 	</modules>
 	<properties>
-		<liferay.version>6.1.0</liferay.version>
+		<liferay.version>6.2.0-GA1</liferay.version>
+		<liferay.maven.plugin.version>6.2.0-RC5</liferay.maven.plugin.version>
 	</properties>
 </project>

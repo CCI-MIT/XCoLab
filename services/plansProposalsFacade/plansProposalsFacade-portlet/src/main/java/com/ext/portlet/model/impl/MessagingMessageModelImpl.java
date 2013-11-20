@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingMessage service. Represents a row in the &quot;xcolab_MessagingMessage&quot; database table, with each column mapped to a property of this class.
@@ -79,7 +81,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingMessage"));
     private static ClassLoader _classLoader = MessagingMessage.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingMessage.class
         };
     private long _messageId;
@@ -94,8 +96,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
     private long _creatorId;
     private Date _createDate;
     private Date _modifiedDate;
-    private transient ExpandoBridge _expandoBridge;
-    private MessagingMessage _escapedModelProxy;
+    private MessagingMessage _escapedModel;
 
     public MessagingMessageModelImpl() {
     }
@@ -107,6 +108,10 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
      * @return the normal model instance
      */
     public static MessagingMessage toModel(MessagingMessageSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingMessage model = new MessagingMessageImpl();
 
         model.setMessageId(soapModel.getMessageId());
@@ -133,6 +138,10 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
      */
     public static List<MessagingMessage> toModels(
         MessagingMessageSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingMessage> models = new ArrayList<MessagingMessage>(soapModels.length);
 
         for (MessagingMessageSoap soapModel : soapModels) {
@@ -142,40 +151,144 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _messageId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setMessageId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_messageId);
+        return _messageId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingMessage.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingMessage.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("messageId", getMessageId());
+        attributes.put("name", getName());
+        attributes.put("description", getDescription());
+        attributes.put("subject", getSubject());
+        attributes.put("body", getBody());
+        attributes.put("replyTo", getReplyTo());
+        attributes.put("sendToAll", getSendToAll());
+        attributes.put("conversionCount", getConversionCount());
+        attributes.put("redirectURL", getRedirectURL());
+        attributes.put("creatorId", getCreatorId());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("modifiedDate", getModifiedDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        String subject = (String) attributes.get("subject");
+
+        if (subject != null) {
+            setSubject(subject);
+        }
+
+        String body = (String) attributes.get("body");
+
+        if (body != null) {
+            setBody(body);
+        }
+
+        String replyTo = (String) attributes.get("replyTo");
+
+        if (replyTo != null) {
+            setReplyTo(replyTo);
+        }
+
+        Boolean sendToAll = (Boolean) attributes.get("sendToAll");
+
+        if (sendToAll != null) {
+            setSendToAll(sendToAll);
+        }
+
+        Long conversionCount = (Long) attributes.get("conversionCount");
+
+        if (conversionCount != null) {
+            setConversionCount(conversionCount);
+        }
+
+        String redirectURL = (String) attributes.get("redirectURL");
+
+        if (redirectURL != null) {
+            setRedirectURL(redirectURL);
+        }
+
+        Long creatorId = (Long) attributes.get("creatorId");
+
+        if (creatorId != null) {
+            setCreatorId(creatorId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date modifiedDate = (Date) attributes.get("modifiedDate");
+
+        if (modifiedDate != null) {
+            setModifiedDate(modifiedDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -184,11 +297,13 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -197,11 +312,13 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public String getSubject() {
         if (_subject == null) {
             return StringPool.BLANK;
@@ -210,11 +327,13 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setSubject(String subject) {
         _subject = subject;
     }
 
     @JSON
+    @Override
     public String getBody() {
         if (_body == null) {
             return StringPool.BLANK;
@@ -223,11 +342,13 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setBody(String body) {
         _body = body;
     }
 
     @JSON
+    @Override
     public String getReplyTo() {
         if (_replyTo == null) {
             return StringPool.BLANK;
@@ -236,33 +357,40 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setReplyTo(String replyTo) {
         _replyTo = replyTo;
     }
 
     @JSON
+    @Override
     public boolean getSendToAll() {
         return _sendToAll;
     }
 
+    @Override
     public boolean isSendToAll() {
         return _sendToAll;
     }
 
+    @Override
     public void setSendToAll(boolean sendToAll) {
         _sendToAll = sendToAll;
     }
 
     @JSON
+    @Override
     public long getConversionCount() {
         return _conversionCount;
     }
 
+    @Override
     public void setConversionCount(long conversionCount) {
         _conversionCount = conversionCount;
     }
 
     @JSON
+    @Override
     public String getRedirectURL() {
         if (_redirectURL == null) {
             return StringPool.BLANK;
@@ -271,61 +399,65 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         }
     }
 
+    @Override
     public void setRedirectURL(String redirectURL) {
         _redirectURL = redirectURL;
     }
 
     @JSON
+    @Override
     public long getCreatorId() {
         return _creatorId;
     }
 
+    @Override
     public void setCreatorId(long creatorId) {
         _creatorId = creatorId;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
 
     @JSON
+    @Override
     public Date getModifiedDate() {
         return _modifiedDate;
     }
 
+    @Override
     public void setModifiedDate(Date modifiedDate) {
         _modifiedDate = modifiedDate;
     }
 
     @Override
-    public MessagingMessage toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingMessage) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingMessage.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingMessage.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingMessage toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingMessage) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -350,6 +482,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         return messagingMessageImpl;
     }
 
+    @Override
     public int compareTo(MessagingMessage messagingMessage) {
         int value = 0;
 
@@ -367,17 +500,15 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingMessage)) {
             return false;
         }
 
-        MessagingMessage messagingMessage = null;
-
-        try {
-            messagingMessage = (MessagingMessage) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingMessage messagingMessage = (MessagingMessage) obj;
 
         long primaryKey = messagingMessage.getPrimaryKey();
 
@@ -509,6 +640,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(40);
 

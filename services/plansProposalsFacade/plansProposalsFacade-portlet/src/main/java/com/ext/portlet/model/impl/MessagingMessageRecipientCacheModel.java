@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing MessagingMessageRecipient in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class MessagingMessageRecipientCacheModel implements CacheModel<MessagingMessageRecipient>,
-    Serializable {
+    Externalizable {
     public long recipientId;
     public long messageId;
     public long userId;
@@ -39,6 +42,7 @@ public class MessagingMessageRecipientCacheModel implements CacheModel<Messaging
         return sb.toString();
     }
 
+    @Override
     public MessagingMessageRecipient toEntityModel() {
         MessagingMessageRecipientImpl messagingMessageRecipientImpl = new MessagingMessageRecipientImpl();
 
@@ -55,5 +59,27 @@ public class MessagingMessageRecipientCacheModel implements CacheModel<Messaging
         messagingMessageRecipientImpl.resetOriginalValues();
 
         return messagingMessageRecipientImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        recipientId = objectInput.readLong();
+        messageId = objectInput.readLong();
+        userId = objectInput.readLong();
+        emailAddress = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(recipientId);
+        objectOutput.writeLong(messageId);
+        objectOutput.writeLong(userId);
+
+        if (emailAddress == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(emailAddress);
+        }
     }
 }

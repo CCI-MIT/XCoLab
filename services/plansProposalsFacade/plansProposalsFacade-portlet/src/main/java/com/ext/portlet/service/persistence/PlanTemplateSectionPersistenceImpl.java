@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanTemplateSectionException;
 import com.ext.portlet.model.PlanTemplateSection;
 import com.ext.portlet.model.impl.PlanTemplateSectionImpl;
 import com.ext.portlet.model.impl.PlanTemplateSectionModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -62,26 +63,10 @@ import com.ext.portlet.service.persistence.PlanSectionPersistence;
 import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
 import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
 import com.ext.portlet.service.persistence.PlanTemplatePersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +86,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +121,17 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANTEMPLATEID =
         new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
             PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +140,8 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID =
         new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
@@ -155,27 +149,17 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
             PlanTemplateSectionImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPlanTemplateId",
             new String[] { Long.class.getName() },
-            PlanTemplateSectionModelImpl.PLANTEMPLATEID_COLUMN_BITMASK);
+            PlanTemplateSectionModelImpl.PLANTEMPLATEID_COLUMN_BITMASK |
+            PlanTemplateSectionModelImpl.WEIGHT_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_PLANTEMPLATEID = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
             PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanTemplateId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
-            PlanTemplateSectionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED,
-            PlanTemplateSectionImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_PLANTEMPLATEID_PLANTEMPLATEID_2 = "planTemplateSection.id.planTemplateId = ?";
     private static final String _SQL_SELECT_PLANTEMPLATESECTION = "SELECT planTemplateSection FROM PlanTemplateSection planTemplateSection";
     private static final String _SQL_SELECT_PLANTEMPLATESECTION_WHERE = "SELECT planTemplateSection FROM PlanTemplateSection planTemplateSection WHERE ";
     private static final String _SQL_COUNT_PLANTEMPLATESECTION = "SELECT COUNT(planTemplateSection) FROM PlanTemplateSection planTemplateSection";
     private static final String _SQL_COUNT_PLANTEMPLATESECTION_WHERE = "SELECT COUNT(planTemplateSection) FROM PlanTemplateSection planTemplateSection WHERE ";
-    private static final String _FINDER_COLUMN_PLANTEMPLATEID_PLANTEMPLATEID_2 = "planTemplateSection.id.planTemplateId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planTemplateSection.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanTemplateSection exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanTemplateSection exists with the key {";
@@ -196,11 +180,13 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
     private static CacheModel<PlanTemplateSection> _nullPlanTemplateSectionCacheModel =
         new CacheModel<PlanTemplateSection>() {
+            @Override
             public PlanTemplateSection toEntityModel() {
                 return _nullPlanTemplateSection;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -355,351 +341,11 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the plan template section in the entity cache if it is enabled.
-     *
-     * @param planTemplateSection the plan template section
-     */
-    public void cacheResult(PlanTemplateSection planTemplateSection) {
-        EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey(),
-            planTemplateSection);
-
-        planTemplateSection.resetOriginalValues();
+=======
+    public PlanTemplateSectionPersistenceImpl() {
+        setModelClass(PlanTemplateSection.class);
     }
-
-    /**
-     * Caches the plan template sections in the entity cache if it is enabled.
-     *
-     * @param planTemplateSections the plan template sections
-     */
-    public void cacheResult(List<PlanTemplateSection> planTemplateSections) {
-        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-            if (EntityCacheUtil.getResult(
-                        PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanTemplateSectionImpl.class,
-                        planTemplateSection.getPrimaryKey()) == null) {
-                cacheResult(planTemplateSection);
-            } else {
-                planTemplateSection.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan template sections.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanTemplateSectionImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanTemplateSectionImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan template section.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanTemplateSection planTemplateSection) {
-        EntityCacheUtil.removeResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<PlanTemplateSection> planTemplateSections) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-            EntityCacheUtil.removeResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-                PlanTemplateSectionImpl.class,
-                planTemplateSection.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new plan template section with the primary key. Does not add the plan template section to the database.
-     *
-     * @param planTemplateSectionPK the primary key for the new plan template section
-     * @return the new plan template section
-     */
-    public PlanTemplateSection create(
-        PlanTemplateSectionPK planTemplateSectionPK) {
-        PlanTemplateSection planTemplateSection = new PlanTemplateSectionImpl();
-
-        planTemplateSection.setNew(true);
-        planTemplateSection.setPrimaryKey(planTemplateSectionPK);
-
-        return planTemplateSection;
-    }
-
-    /**
-     * Removes the plan template section with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param planTemplateSectionPK the primary key of the plan template section
-     * @return the plan template section that was removed
-     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTemplateSection remove(
-        PlanTemplateSectionPK planTemplateSectionPK)
-        throws NoSuchPlanTemplateSectionException, SystemException {
-        return remove((Serializable) planTemplateSectionPK);
-    }
-
-    /**
-     * Removes the plan template section with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan template section
-     * @return the plan template section that was removed
-     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTemplateSection remove(Serializable primaryKey)
-        throws NoSuchPlanTemplateSectionException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanTemplateSection planTemplateSection = (PlanTemplateSection) session.get(PlanTemplateSectionImpl.class,
-                    primaryKey);
-
-            if (planTemplateSection == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanTemplateSectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planTemplateSection);
-        } catch (NoSuchPlanTemplateSectionException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanTemplateSection removeImpl(
-        PlanTemplateSection planTemplateSection) throws SystemException {
-        planTemplateSection = toUnwrappedModel(planTemplateSection);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planTemplateSection);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planTemplateSection);
-
-        return planTemplateSection;
-    }
-
-    @Override
-    public PlanTemplateSection updateImpl(
-        com.ext.portlet.model.PlanTemplateSection planTemplateSection,
-        boolean merge) throws SystemException {
-        planTemplateSection = toUnwrappedModel(planTemplateSection);
-
-        boolean isNew = planTemplateSection.isNew();
-
-        PlanTemplateSectionModelImpl planTemplateSectionModelImpl = (PlanTemplateSectionModelImpl) planTemplateSection;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planTemplateSection, merge);
-
-            planTemplateSection.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanTemplateSectionModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planTemplateSectionModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planTemplateSectionModelImpl.getOriginalPlanTemplateId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planTemplateSectionModelImpl.getPlanTemplateId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey(),
-            planTemplateSection);
-
-        return planTemplateSection;
-    }
-
-    protected PlanTemplateSection toUnwrappedModel(
-        PlanTemplateSection planTemplateSection) {
-        if (planTemplateSection instanceof PlanTemplateSectionImpl) {
-            return planTemplateSection;
-        }
-
-        PlanTemplateSectionImpl planTemplateSectionImpl = new PlanTemplateSectionImpl();
-
-        planTemplateSectionImpl.setNew(planTemplateSection.isNew());
-        planTemplateSectionImpl.setPrimaryKey(planTemplateSection.getPrimaryKey());
-
-        planTemplateSectionImpl.setPlanTemplateId(planTemplateSection.getPlanTemplateId());
-        planTemplateSectionImpl.setPlanSectionId(planTemplateSection.getPlanSectionId());
-        planTemplateSectionImpl.setWeight(planTemplateSection.getWeight());
-
-        return planTemplateSectionImpl;
-    }
-
-    /**
-     * Returns the plan template section with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan template section
-     * @return the plan template section
-     * @throws com.liferay.portal.NoSuchModelException if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTemplateSection findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((PlanTemplateSectionPK) primaryKey);
-    }
-
-    /**
-     * Returns the plan template section with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTemplateSectionException} if it could not be found.
-     *
-     * @param planTemplateSectionPK the primary key of the plan template section
-     * @return the plan template section
-     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTemplateSection findByPrimaryKey(
-        PlanTemplateSectionPK planTemplateSectionPK)
-        throws NoSuchPlanTemplateSectionException, SystemException {
-        PlanTemplateSection planTemplateSection = fetchByPrimaryKey(planTemplateSectionPK);
-
-        if (planTemplateSection == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    planTemplateSectionPK);
-            }
-
-            throw new NoSuchPlanTemplateSectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planTemplateSectionPK);
-        }
-
-        return planTemplateSection;
-    }
-
-    /**
-     * Returns the plan template section with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan template section
-     * @return the plan template section, or <code>null</code> if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanTemplateSection fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((PlanTemplateSectionPK) primaryKey);
-    }
-
-    /**
-     * Returns the plan template section with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param planTemplateSectionPK the primary key of the plan template section
-     * @return the plan template section, or <code>null</code> if a plan template section with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanTemplateSection fetchByPrimaryKey(
-        PlanTemplateSectionPK planTemplateSectionPK) throws SystemException {
-        PlanTemplateSection planTemplateSection = (PlanTemplateSection) EntityCacheUtil.getResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-                PlanTemplateSectionImpl.class, planTemplateSectionPK);
-
-        if (planTemplateSection == _nullPlanTemplateSection) {
-            return null;
-        }
-
-        if (planTemplateSection == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planTemplateSection = (PlanTemplateSection) session.get(PlanTemplateSectionImpl.class,
-                        planTemplateSectionPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planTemplateSection != null) {
-                    cacheResult(planTemplateSection);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanTemplateSectionImpl.class, planTemplateSectionPK,
-                        _nullPlanTemplateSection);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planTemplateSection;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the plan template sections where planTemplateId = &#63;.
@@ -708,6 +354,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the matching plan template sections
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId)
         throws SystemException {
         return findByPlanTemplateId(planTemplateId, QueryUtil.ALL_POS,
@@ -718,7 +365,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * Returns a range of all the plan template sections where planTemplateId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planTemplateId the plan template ID
@@ -727,6 +374,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the range of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId,
         int start, int end) throws SystemException {
         return findByPlanTemplateId(planTemplateId, start, end, null);
@@ -736,7 +384,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * Returns an ordered range of all the plan template sections where planTemplateId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planTemplateId the plan template ID
@@ -746,14 +394,17 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the ordered range of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanTemplateSection> findByPlanTemplateId(long planTemplateId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID;
             finderArgs = new Object[] { planTemplateId };
         } else {
@@ -767,6 +418,16 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
         List<PlanTemplateSection> list = (List<PlanTemplateSection>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanTemplateSection planTemplateSection : list) {
+                if ((planTemplateId != planTemplateSection.getPlanTemplateId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
 
         if (list == null) {
             StringBundler query = null;
@@ -785,8 +446,8 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
-            }
-            else {
+            } else
+             if (pagination) {
                 query.append(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
             }
 
@@ -803,19 +464,26 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 qPos.add(planTemplateId);
 
-                list = (List<PlanTemplateSection>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTemplateSection>(list);
+                } else {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -826,44 +494,59 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     /**
      * Returns the first plan template section in the ordered set where planTemplateId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param planTemplateId the plan template ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan template section
      * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTemplateSection findByPlanTemplateId_First(long planTemplateId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = fetchByPlanTemplateId_First(planTemplateId,
+                orderByComparator);
+
+        if (planTemplateSection != null) {
+            return planTemplateSection;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planTemplateId=");
+        msg.append(planTemplateId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTemplateSectionException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan template section in the ordered set where planTemplateId = &#63;.
+     *
+     * @param planTemplateId the plan template ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan template section, or <code>null</code> if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPlanTemplateId_First(
+        long planTemplateId, OrderByComparator orderByComparator)
+        throws SystemException {
         List<PlanTemplateSection> list = findByPlanTemplateId(planTemplateId,
                 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planTemplateId=");
-            msg.append(planTemplateId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanTemplateSectionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan template section in the ordered set where planTemplateId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planTemplateId the plan template ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -871,36 +554,58 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a matching plan template section could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTemplateSection findByPlanTemplateId_Last(long planTemplateId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = fetchByPlanTemplateId_Last(planTemplateId,
+                orderByComparator);
+
+        if (planTemplateSection != null) {
+            return planTemplateSection;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planTemplateId=");
+        msg.append(planTemplateId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanTemplateSectionException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan template section in the ordered set where planTemplateId = &#63;.
+     *
+     * @param planTemplateId the plan template ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan template section, or <code>null</code> if a matching plan template section could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPlanTemplateId_Last(long planTemplateId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByPlanTemplateId(planTemplateId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanTemplateSection> list = findByPlanTemplateId(planTemplateId,
                 count - 1, count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planTemplateId=");
-            msg.append(planTemplateId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanTemplateSectionException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan template sections before and after the current plan template section in the ordered set where planTemplateId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planTemplateSectionPK the primary key of the current plan template section
      * @param planTemplateId the plan template ID
@@ -909,6 +614,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanTemplateSection[] findByPlanTemplateId_PrevAndNext(
         PlanTemplateSectionPK planTemplateSectionPK, long planTemplateId,
         OrderByComparator orderByComparator)
@@ -1004,8 +710,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
                     }
                 }
             }
-        }
-        else {
+        } else {
             query.append(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
         }
 
@@ -1038,135 +743,16 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
-     * Returns all the plan template sections.
-     *
-     * @return the plan template sections
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTemplateSection> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan template sections.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan template sections
-     * @param end the upper bound of the range of plan template sections (not inclusive)
-     * @return the range of plan template sections
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTemplateSection> findAll(int start, int end)
-        throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan template sections.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan template sections
-     * @param end the upper bound of the range of plan template sections (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan template sections
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanTemplateSection> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanTemplateSection> list = (List<PlanTemplateSection>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANTEMPLATESECTION);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANTEMPLATESECTION.concat(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
-                            getDialect(), start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
-                            getDialect(), start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return list;
-    }
-
-    /**
      * Removes all the plan template sections where planTemplateId = &#63; from the database.
      *
      * @param planTemplateId the plan template ID
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeByPlanTemplateId(long planTemplateId)
         throws SystemException {
         for (PlanTemplateSection planTemplateSection : findByPlanTemplateId(
-                planTemplateId)) {
-            remove(planTemplateSection);
-        }
-    }
-
-    /**
-     * Removes all the plan template sections from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanTemplateSection planTemplateSection : findAll()) {
+                planTemplateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
             remove(planTemplateSection);
         }
     }
@@ -1178,12 +764,15 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
      * @return the number of matching plan template sections
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByPlanTemplateId(long planTemplateId)
         throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANTEMPLATEID;
+
         Object[] finderArgs = new Object[] { planTemplateId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(2);
@@ -1206,16 +795,13 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
                 qPos.add(planTemplateId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1224,11 +810,504 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     }
 
     /**
+     * Caches the plan template section in the entity cache if it is enabled.
+     *
+     * @param planTemplateSection the plan template section
+     */
+    @Override
+    public void cacheResult(PlanTemplateSection planTemplateSection) {
+        EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey(),
+            planTemplateSection);
+
+        planTemplateSection.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan template sections in the entity cache if it is enabled.
+     *
+     * @param planTemplateSections the plan template sections
+     */
+    @Override
+    public void cacheResult(List<PlanTemplateSection> planTemplateSections) {
+        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
+            if (EntityCacheUtil.getResult(
+                        PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanTemplateSectionImpl.class,
+                        planTemplateSection.getPrimaryKey()) == null) {
+                cacheResult(planTemplateSection);
+            } else {
+                planTemplateSection.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan template sections.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanTemplateSectionImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanTemplateSectionImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan template section.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanTemplateSection planTemplateSection) {
+        EntityCacheUtil.removeResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<PlanTemplateSection> planTemplateSections) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
+            EntityCacheUtil.removeResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+                PlanTemplateSectionImpl.class,
+                planTemplateSection.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new plan template section with the primary key. Does not add the plan template section to the database.
+     *
+     * @param planTemplateSectionPK the primary key for the new plan template section
+     * @return the new plan template section
+     */
+    @Override
+    public PlanTemplateSection create(
+        PlanTemplateSectionPK planTemplateSectionPK) {
+        PlanTemplateSection planTemplateSection = new PlanTemplateSectionImpl();
+
+        planTemplateSection.setNew(true);
+        planTemplateSection.setPrimaryKey(planTemplateSectionPK);
+
+        return planTemplateSection;
+    }
+
+    /**
+     * Removes the plan template section with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param planTemplateSectionPK the primary key of the plan template section
+     * @return the plan template section that was removed
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection remove(
+        PlanTemplateSectionPK planTemplateSectionPK)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        return remove((Serializable) planTemplateSectionPK);
+    }
+
+    /**
+     * Removes the plan template section with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan template section
+     * @return the plan template section that was removed
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection remove(Serializable primaryKey)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanTemplateSection planTemplateSection = (PlanTemplateSection) session.get(PlanTemplateSectionImpl.class,
+                    primaryKey);
+
+            if (planTemplateSection == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanTemplateSectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planTemplateSection);
+        } catch (NoSuchPlanTemplateSectionException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanTemplateSection removeImpl(
+        PlanTemplateSection planTemplateSection) throws SystemException {
+        planTemplateSection = toUnwrappedModel(planTemplateSection);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planTemplateSection)) {
+                planTemplateSection = (PlanTemplateSection) session.get(PlanTemplateSectionImpl.class,
+                        planTemplateSection.getPrimaryKeyObj());
+            }
+
+            if (planTemplateSection != null) {
+                session.delete(planTemplateSection);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planTemplateSection != null) {
+            clearCache(planTemplateSection);
+        }
+
+        return planTemplateSection;
+    }
+
+    @Override
+    public PlanTemplateSection updateImpl(
+        com.ext.portlet.model.PlanTemplateSection planTemplateSection)
+        throws SystemException {
+        planTemplateSection = toUnwrappedModel(planTemplateSection);
+
+        boolean isNew = planTemplateSection.isNew();
+
+        PlanTemplateSectionModelImpl planTemplateSectionModelImpl = (PlanTemplateSectionModelImpl) planTemplateSection;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planTemplateSection.isNew()) {
+                session.save(planTemplateSection);
+
+                planTemplateSection.setNew(false);
+            } else {
+                session.merge(planTemplateSection);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanTemplateSectionModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planTemplateSectionModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planTemplateSectionModelImpl.getOriginalPlanTemplateId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID,
+                    args);
+
+                args = new Object[] {
+                        planTemplateSectionModelImpl.getPlanTemplateId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANTEMPLATEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANTEMPLATEID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+            PlanTemplateSectionImpl.class, planTemplateSection.getPrimaryKey(),
+            planTemplateSection);
+
+        return planTemplateSection;
+    }
+
+    protected PlanTemplateSection toUnwrappedModel(
+        PlanTemplateSection planTemplateSection) {
+        if (planTemplateSection instanceof PlanTemplateSectionImpl) {
+            return planTemplateSection;
+        }
+
+        PlanTemplateSectionImpl planTemplateSectionImpl = new PlanTemplateSectionImpl();
+
+        planTemplateSectionImpl.setNew(planTemplateSection.isNew());
+        planTemplateSectionImpl.setPrimaryKey(planTemplateSection.getPrimaryKey());
+
+        planTemplateSectionImpl.setPlanTemplateId(planTemplateSection.getPlanTemplateId());
+        planTemplateSectionImpl.setPlanSectionId(planTemplateSection.getPlanSectionId());
+        planTemplateSectionImpl.setWeight(planTemplateSection.getWeight());
+
+        return planTemplateSectionImpl;
+    }
+
+    /**
+     * Returns the plan template section with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan template section
+     * @return the plan template section
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        PlanTemplateSection planTemplateSection = fetchByPrimaryKey(primaryKey);
+
+        if (planTemplateSection == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanTemplateSectionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planTemplateSection;
+    }
+
+    /**
+     * Returns the plan template section with the primary key or throws a {@link com.ext.portlet.NoSuchPlanTemplateSectionException} if it could not be found.
+     *
+     * @param planTemplateSectionPK the primary key of the plan template section
+     * @return the plan template section
+     * @throws com.ext.portlet.NoSuchPlanTemplateSectionException if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection findByPrimaryKey(
+        PlanTemplateSectionPK planTemplateSectionPK)
+        throws NoSuchPlanTemplateSectionException, SystemException {
+        return findByPrimaryKey((Serializable) planTemplateSectionPK);
+    }
+
+    /**
+     * Returns the plan template section with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan template section
+     * @return the plan template section, or <code>null</code> if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanTemplateSection planTemplateSection = (PlanTemplateSection) EntityCacheUtil.getResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+                PlanTemplateSectionImpl.class, primaryKey);
+
+        if (planTemplateSection == _nullPlanTemplateSection) {
+            return null;
+        }
+
+        if (planTemplateSection == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planTemplateSection = (PlanTemplateSection) session.get(PlanTemplateSectionImpl.class,
+                        primaryKey);
+
+                if (planTemplateSection != null) {
+                    cacheResult(planTemplateSection);
+                } else {
+                    EntityCacheUtil.putResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanTemplateSectionImpl.class, primaryKey,
+                        _nullPlanTemplateSection);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanTemplateSectionModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanTemplateSectionImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planTemplateSection;
+    }
+
+    /**
+     * Returns the plan template section with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param planTemplateSectionPK the primary key of the plan template section
+     * @return the plan template section, or <code>null</code> if a plan template section with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanTemplateSection fetchByPrimaryKey(
+        PlanTemplateSectionPK planTemplateSectionPK) throws SystemException {
+        return fetchByPrimaryKey((Serializable) planTemplateSectionPK);
+    }
+
+    /**
+     * Returns all the plan template sections.
+     *
+     * @return the plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan template sections.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan template sections
+     * @param end the upper bound of the range of plan template sections (not inclusive)
+     * @return the range of plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findAll(int start, int end)
+        throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan template sections.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan template sections
+     * @param end the upper bound of the range of plan template sections (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan template sections
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanTemplateSection> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanTemplateSection> list = (List<PlanTemplateSection>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANTEMPLATESECTION);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANTEMPLATESECTION;
+
+                if (pagination) {
+                    sql = sql.concat(PlanTemplateSectionModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanTemplateSection>(list);
+                } else {
+                    list = (List<PlanTemplateSection>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan template sections from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanTemplateSection planTemplateSection : findAll()) {
+            remove(planTemplateSection);
+        }
+    }
+
+    /**
      * Returns the number of plan template sections.
      *
      * @return the number of plan template sections
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1242,16 +1321,15 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
                 Query q = session.createQuery(_SQL_COUNT_PLANTEMPLATESECTION);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1273,7 +1351,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanTemplateSection>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1286,6 +1364,7 @@ public class PlanTemplateSectionPersistenceImpl extends BasePersistenceImpl<Plan
     public void destroy() {
         EntityCacheUtil.removeCache(PlanTemplateSectionImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

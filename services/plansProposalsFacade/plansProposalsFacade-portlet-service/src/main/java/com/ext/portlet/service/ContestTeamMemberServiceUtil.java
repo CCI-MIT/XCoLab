@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableService;
 
 /**
- * The utility for the contest team member remote service. This utility wraps {@link com.ext.portlet.service.impl.ContestTeamMemberServiceImpl} and is the primary access point for service operations in application layer code running on a remote server.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
+ * Provides the remote service utility for ContestTeamMember. This utility wraps
+ * {@link com.ext.portlet.service.impl.ContestTeamMemberServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on a remote server. Methods of this service are expected to have security
+ * checks based on the propagated JAAS credentials because this service can be
+ * accessed remotely.
  *
  * @author Brian Wing Shun Chan
  * @see ContestTeamMemberService
@@ -26,39 +26,56 @@ public class ContestTeamMemberServiceUtil {
      *
      * Never modify this class directly. Add custom service methods to {@link com.ext.portlet.service.impl.ContestTeamMemberServiceImpl} and rerun ServiceBuilder to regenerate this class.
      */
+
+    /**
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    public static java.lang.String getBeanIdentifier() {
+        return getService().getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    public static void setBeanIdentifier(java.lang.String beanIdentifier) {
+        getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
+    }
+
     public static void clearService() {
         _service = null;
     }
 
     public static ContestTeamMemberService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableService invokableService = (InvokableService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     ContestTeamMemberService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    ContestTeamMemberService.class.getName(), portletClassLoader);
-
-            _service = new ContestTeamMemberServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableService instanceof ContestTeamMemberService) {
+                _service = (ContestTeamMemberService) invokableService;
+            } else {
+                _service = new ContestTeamMemberServiceClp(invokableService);
+            }
 
             ReferenceRegistry.registerReference(ContestTeamMemberServiceUtil.class,
                 "_service");
-            MethodCache.remove(ContestTeamMemberService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(ContestTeamMemberService service) {
-        MethodCache.remove(ContestTeamMemberService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(ContestTeamMemberServiceUtil.class,
-            "_service");
-        MethodCache.remove(ContestTeamMemberService.class);
     }
 }

@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlansFilterPositionService}.
- * </p>
+ * Provides a wrapper for {@link PlansFilterPositionService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlansFilterPositionService
+ * @author Brian Wing Shun Chan
+ * @see PlansFilterPositionService
  * @generated
  */
 public class PlansFilterPositionServiceWrapper
@@ -22,24 +20,54 @@ public class PlansFilterPositionServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _plansFilterPositionService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _plansFilterPositionService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _plansFilterPositionService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlansFilterPositionService getWrappedPlansFilterPositionService() {
         return _plansFilterPositionService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlansFilterPositionService(
         PlansFilterPositionService plansFilterPositionService) {
         _plansFilterPositionService = plansFilterPositionService;
     }
 
+    @Override
     public PlansFilterPositionService getWrappedService() {
         return _plansFilterPositionService;
     }
 
+    @Override
     public void setWrappedService(
         PlansFilterPositionService plansFilterPositionService) {
         _plansFilterPositionService = plansFilterPositionService;

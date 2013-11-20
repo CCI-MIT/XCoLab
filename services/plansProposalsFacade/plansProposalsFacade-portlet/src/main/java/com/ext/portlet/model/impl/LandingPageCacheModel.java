@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class LandingPageCacheModel implements CacheModel<LandingPage>,
-    Serializable {
+    Externalizable {
     public long id;
     public String baseUrl;
     public String targetUrl;
@@ -41,6 +44,7 @@ public class LandingPageCacheModel implements CacheModel<LandingPage>,
         return sb.toString();
     }
 
+    @Override
     public LandingPage toEntityModel() {
         LandingPageImpl landingPageImpl = new LandingPageImpl();
 
@@ -67,5 +71,33 @@ public class LandingPageCacheModel implements CacheModel<LandingPage>,
         landingPageImpl.resetOriginalValues();
 
         return landingPageImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        baseUrl = objectInput.readUTF();
+        targetUrl = objectInput.readUTF();
+        updated = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+
+        if (baseUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(baseUrl);
+        }
+
+        if (targetUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(targetUrl);
+        }
+
+        objectOutput.writeLong(updated);
     }
 }

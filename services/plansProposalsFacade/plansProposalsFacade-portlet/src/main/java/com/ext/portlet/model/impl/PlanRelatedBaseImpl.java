@@ -24,6 +24,7 @@ public abstract class PlanRelatedBaseImpl extends PlanRelatedModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan related model instance should use the {@link PlanRelated} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanRelatedLocalServiceUtil.addPlanRelated(this);

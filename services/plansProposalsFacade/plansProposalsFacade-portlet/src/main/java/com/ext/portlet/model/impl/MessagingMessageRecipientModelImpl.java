@@ -24,7 +24,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the MessagingMessageRecipient service. Represents a row in the &quot;xcolab_MessagingMessageRecipient&quot; database table, with each column mapped to a property of this class.
@@ -56,6 +58,8 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageRecipient (recipientId LONG not null primary key,messageId LONG,userId LONG,emailAddress VARCHAR(512) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessageRecipient";
+    public static final String ORDER_BY_JPQL = " ORDER BY messagingMessageRecipient.recipientId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessageRecipient.recipientId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,7 +73,7 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.MessagingMessageRecipient"));
     private static ClassLoader _classLoader = MessagingMessageRecipient.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             MessagingMessageRecipient.class
         };
     private long _recipientId;
@@ -77,8 +81,7 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
     private long _userId;
     private String _userUuid;
     private String _emailAddress;
-    private transient ExpandoBridge _expandoBridge;
-    private MessagingMessageRecipient _escapedModelProxy;
+    private MessagingMessageRecipient _escapedModel;
 
     public MessagingMessageRecipientModelImpl() {
     }
@@ -91,6 +94,10 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
      */
     public static MessagingMessageRecipient toModel(
         MessagingMessageRecipientSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         MessagingMessageRecipient model = new MessagingMessageRecipientImpl();
 
         model.setRecipientId(soapModel.getRecipientId());
@@ -109,6 +116,10 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
      */
     public static List<MessagingMessageRecipient> toModels(
         MessagingMessageRecipientSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<MessagingMessageRecipient> models = new ArrayList<MessagingMessageRecipient>(soapModels.length);
 
         for (MessagingMessageRecipientSoap soapModel : soapModels) {
@@ -118,66 +129,120 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _recipientId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setRecipientId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_recipientId);
+        return _recipientId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingMessageRecipient.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingMessageRecipient.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("recipientId", getRecipientId());
+        attributes.put("messageId", getMessageId());
+        attributes.put("userId", getUserId());
+        attributes.put("emailAddress", getEmailAddress());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long recipientId = (Long) attributes.get("recipientId");
+
+        if (recipientId != null) {
+            setRecipientId(recipientId);
+        }
+
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String emailAddress = (String) attributes.get("emailAddress");
+
+        if (emailAddress != null) {
+            setEmailAddress(emailAddress);
+        }
+    }
+
     @JSON
+    @Override
     public long getRecipientId() {
         return _recipientId;
     }
 
+    @Override
     public void setRecipientId(long recipientId) {
         _recipientId = recipientId;
     }
 
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
 
     @JSON
+    @Override
     public String getEmailAddress() {
         if (_emailAddress == null) {
             return StringPool.BLANK;
@@ -186,34 +251,32 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
         }
     }
 
+    @Override
     public void setEmailAddress(String emailAddress) {
         _emailAddress = emailAddress;
     }
 
     @Override
-    public MessagingMessageRecipient toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (MessagingMessageRecipient) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    MessagingMessageRecipient.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            MessagingMessageRecipient.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public MessagingMessageRecipient toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (MessagingMessageRecipient) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -230,6 +293,7 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
         return messagingMessageRecipientImpl;
     }
 
+    @Override
     public int compareTo(MessagingMessageRecipient messagingMessageRecipient) {
         long primaryKey = messagingMessageRecipient.getPrimaryKey();
 
@@ -244,17 +308,15 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingMessageRecipient)) {
             return false;
         }
 
-        MessagingMessageRecipient messagingMessageRecipient = null;
-
-        try {
-            messagingMessageRecipient = (MessagingMessageRecipient) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        MessagingMessageRecipient messagingMessageRecipient = (MessagingMessageRecipient) obj;
 
         long primaryKey = messagingMessageRecipient.getPrimaryKey();
 
@@ -312,6 +374,7 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

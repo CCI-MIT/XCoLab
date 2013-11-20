@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link ModelPosition}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelPosition
+ * @author Brian Wing Shun Chan
+ * @see ModelPosition
  * @generated
  */
 public class ModelPositionWrapper implements ModelPosition,
@@ -19,12 +23,46 @@ public class ModelPositionWrapper implements ModelPosition,
         _modelPosition = modelPosition;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelPosition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelPosition.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("positionId", getPositionId());
+        attributes.put("modelId", getModelId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long positionId = (Long) attributes.get("positionId");
+
+        if (positionId != null) {
+            setPositionId(positionId);
+        }
+
+        Long modelId = (Long) attributes.get("modelId");
+
+        if (modelId != null) {
+            setModelId(modelId);
+        }
     }
 
     /**
@@ -32,6 +70,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the primary key of this model position
     */
+    @Override
     public long getPrimaryKey() {
         return _modelPosition.getPrimaryKey();
     }
@@ -41,6 +80,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param primaryKey the primary key of this model position
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _modelPosition.setPrimaryKey(primaryKey);
     }
@@ -50,6 +90,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the ID of this model position
     */
+    @Override
     public long getId() {
         return _modelPosition.getId();
     }
@@ -59,6 +100,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param id the ID of this model position
     */
+    @Override
     public void setId(long id) {
         _modelPosition.setId(id);
     }
@@ -68,6 +110,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the position ID of this model position
     */
+    @Override
     public long getPositionId() {
         return _modelPosition.getPositionId();
     }
@@ -77,6 +120,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param positionId the position ID of this model position
     */
+    @Override
     public void setPositionId(long positionId) {
         _modelPosition.setPositionId(positionId);
     }
@@ -86,6 +130,7 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @return the model ID of this model position
     */
+    @Override
     public long getModelId() {
         return _modelPosition.getModelId();
     }
@@ -95,42 +140,64 @@ public class ModelPositionWrapper implements ModelPosition,
     *
     * @param modelId the model ID of this model position
     */
+    @Override
     public void setModelId(long modelId) {
         _modelPosition.setModelId(modelId);
     }
 
+    @Override
     public boolean isNew() {
         return _modelPosition.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _modelPosition.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _modelPosition.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _modelPosition.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _modelPosition.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _modelPosition.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _modelPosition.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _modelPosition.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _modelPosition.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _modelPosition.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _modelPosition.setExpandoBridgeAttributes(serviceContext);
@@ -141,6 +208,7 @@ public class ModelPositionWrapper implements ModelPosition,
         return new ModelPositionWrapper((ModelPosition) _modelPosition.clone());
     }
 
+    @Override
     public int compareTo(ModelPosition modelPosition) {
         return _modelPosition.compareTo(modelPosition);
     }
@@ -150,12 +218,19 @@ public class ModelPositionWrapper implements ModelPosition,
         return _modelPosition.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<ModelPosition> toCacheModel() {
         return _modelPosition.toCacheModel();
     }
 
+    @Override
     public ModelPosition toEscapedModel() {
         return new ModelPositionWrapper(_modelPosition.toEscapedModel());
+    }
+
+    @Override
+    public ModelPosition toUnescapedModel() {
+        return new ModelPositionWrapper(_modelPosition.toUnescapedModel());
     }
 
     @Override
@@ -163,26 +238,49 @@ public class ModelPositionWrapper implements ModelPosition,
         return _modelPosition.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _modelPosition.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelPosition.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelPositionWrapper)) {
+            return false;
+        }
+
+        ModelPositionWrapper modelPositionWrapper = (ModelPositionWrapper) obj;
+
+        if (Validator.equals(_modelPosition, modelPositionWrapper._modelPosition)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public ModelPosition getWrappedModelPosition() {
         return _modelPosition;
     }
 
+    @Override
     public ModelPosition getWrappedModel() {
         return _modelPosition;
     }
 
+    @Override
     public void resetOriginalValues() {
         _modelPosition.resetOriginalValues();
     }

@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link ModelCategory}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       ModelCategory
+ * @author Brian Wing Shun Chan
+ * @see ModelCategory
  * @generated
  */
 public class ModelCategoryWrapper implements ModelCategory,
@@ -19,12 +23,56 @@ public class ModelCategoryWrapper implements ModelCategory,
         _modelCategory = modelCategory;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ModelCategory.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ModelCategory.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("modelCategoryPK", getModelCategoryPK());
+        attributes.put("modelCategoryName", getModelCategoryName());
+        attributes.put("modelCategoryDescription", getModelCategoryDescription());
+        attributes.put("modelCategoryDisplayWeight",
+            getModelCategoryDisplayWeight());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long modelCategoryPK = (Long) attributes.get("modelCategoryPK");
+
+        if (modelCategoryPK != null) {
+            setModelCategoryPK(modelCategoryPK);
+        }
+
+        String modelCategoryName = (String) attributes.get("modelCategoryName");
+
+        if (modelCategoryName != null) {
+            setModelCategoryName(modelCategoryName);
+        }
+
+        String modelCategoryDescription = (String) attributes.get(
+                "modelCategoryDescription");
+
+        if (modelCategoryDescription != null) {
+            setModelCategoryDescription(modelCategoryDescription);
+        }
+
+        Integer modelCategoryDisplayWeight = (Integer) attributes.get(
+                "modelCategoryDisplayWeight");
+
+        if (modelCategoryDisplayWeight != null) {
+            setModelCategoryDisplayWeight(modelCategoryDisplayWeight);
+        }
     }
 
     /**
@@ -32,6 +80,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the primary key of this model category
     */
+    @Override
     public long getPrimaryKey() {
         return _modelCategory.getPrimaryKey();
     }
@@ -41,6 +90,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param primaryKey the primary key of this model category
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _modelCategory.setPrimaryKey(primaryKey);
     }
@@ -50,6 +100,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category p k of this model category
     */
+    @Override
     public long getModelCategoryPK() {
         return _modelCategory.getModelCategoryPK();
     }
@@ -59,6 +110,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryPK the model category p k of this model category
     */
+    @Override
     public void setModelCategoryPK(long modelCategoryPK) {
         _modelCategory.setModelCategoryPK(modelCategoryPK);
     }
@@ -68,6 +120,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category name of this model category
     */
+    @Override
     public java.lang.String getModelCategoryName() {
         return _modelCategory.getModelCategoryName();
     }
@@ -77,6 +130,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryName the model category name of this model category
     */
+    @Override
     public void setModelCategoryName(java.lang.String modelCategoryName) {
         _modelCategory.setModelCategoryName(modelCategoryName);
     }
@@ -86,6 +140,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category description of this model category
     */
+    @Override
     public java.lang.String getModelCategoryDescription() {
         return _modelCategory.getModelCategoryDescription();
     }
@@ -95,6 +150,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryDescription the model category description of this model category
     */
+    @Override
     public void setModelCategoryDescription(
         java.lang.String modelCategoryDescription) {
         _modelCategory.setModelCategoryDescription(modelCategoryDescription);
@@ -105,6 +161,7 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @return the model category display weight of this model category
     */
+    @Override
     public int getModelCategoryDisplayWeight() {
         return _modelCategory.getModelCategoryDisplayWeight();
     }
@@ -114,42 +171,64 @@ public class ModelCategoryWrapper implements ModelCategory,
     *
     * @param modelCategoryDisplayWeight the model category display weight of this model category
     */
+    @Override
     public void setModelCategoryDisplayWeight(int modelCategoryDisplayWeight) {
         _modelCategory.setModelCategoryDisplayWeight(modelCategoryDisplayWeight);
     }
 
+    @Override
     public boolean isNew() {
         return _modelCategory.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _modelCategory.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _modelCategory.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _modelCategory.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _modelCategory.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _modelCategory.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _modelCategory.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _modelCategory.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _modelCategory.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _modelCategory.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _modelCategory.setExpandoBridgeAttributes(serviceContext);
@@ -160,6 +239,7 @@ public class ModelCategoryWrapper implements ModelCategory,
         return new ModelCategoryWrapper((ModelCategory) _modelCategory.clone());
     }
 
+    @Override
     public int compareTo(ModelCategory modelCategory) {
         return _modelCategory.compareTo(modelCategory);
     }
@@ -169,12 +249,19 @@ public class ModelCategoryWrapper implements ModelCategory,
         return _modelCategory.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<ModelCategory> toCacheModel() {
         return _modelCategory.toCacheModel();
     }
 
+    @Override
     public ModelCategory toEscapedModel() {
         return new ModelCategoryWrapper(_modelCategory.toEscapedModel());
+    }
+
+    @Override
+    public ModelCategory toUnescapedModel() {
+        return new ModelCategoryWrapper(_modelCategory.toUnescapedModel());
     }
 
     @Override
@@ -182,26 +269,49 @@ public class ModelCategoryWrapper implements ModelCategory,
         return _modelCategory.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _modelCategory.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelCategory.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ModelCategoryWrapper)) {
+            return false;
+        }
+
+        ModelCategoryWrapper modelCategoryWrapper = (ModelCategoryWrapper) obj;
+
+        if (Validator.equals(_modelCategory, modelCategoryWrapper._modelCategory)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public ModelCategory getWrappedModelCategory() {
         return _modelCategory;
     }
 
+    @Override
     public ModelCategory getWrappedModel() {
         return _modelCategory;
     }
 
+    @Override
     public void resetOriginalValues() {
         _modelCategory.resetOriginalValues();
     }

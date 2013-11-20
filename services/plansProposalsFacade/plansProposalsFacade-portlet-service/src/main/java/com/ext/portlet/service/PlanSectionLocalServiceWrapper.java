@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link PlanSectionLocalService}.
- * </p>
+ * Provides a wrapper for {@link PlanSectionLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       PlanSectionLocalService
+ * @author Brian Wing Shun Chan
+ * @see PlanSectionLocalService
  * @generated
  */
 public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
@@ -27,6 +25,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the plan section that was added
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanSection addPlanSection(
         com.ext.portlet.model.PlanSection planSection)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -39,6 +38,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @param id the primary key for the new plan section
     * @return the new plan section
     */
+    @Override
     public com.ext.portlet.model.PlanSection createPlanSection(long id) {
         return _planSectionLocalService.createPlanSection(id);
     }
@@ -47,24 +47,34 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * Deletes the plan section with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the plan section
+    * @return the plan section that was removed
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSection(long id)
+    @Override
+    public com.ext.portlet.model.PlanSection deletePlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _planSectionLocalService.deletePlanSection(id);
+        return _planSectionLocalService.deletePlanSection(id);
     }
 
     /**
     * Deletes the plan section from the database. Also notifies the appropriate model listeners.
     *
     * @param planSection the plan section
+    * @return the plan section that was removed
     * @throws SystemException if a system exception occurred
     */
-    public void deletePlanSection(com.ext.portlet.model.PlanSection planSection)
+    @Override
+    public com.ext.portlet.model.PlanSection deletePlanSection(
+        com.ext.portlet.model.PlanSection planSection)
         throws com.liferay.portal.kernel.exception.SystemException {
-        _planSectionLocalService.deletePlanSection(planSection);
+        return _planSectionLocalService.deletePlanSection(planSection);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return _planSectionLocalService.dynamicQuery();
     }
 
     /**
@@ -74,6 +84,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -85,7 +96,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -94,6 +105,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -105,7 +117,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -115,6 +127,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the ordered range of matching rows
     * @throws SystemException if a system exception occurred
     */
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -132,12 +145,31 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the number of rows that match the dynamic query
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _planSectionLocalService.dynamicQueryCount(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanSection fetchPlanSection(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.fetchPlanSection(id);
@@ -151,12 +183,14 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @throws PortalException if a plan section with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanSection getPlanSection(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.getPlanSection(id);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -168,7 +202,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * Returns a range of all the plan sections.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan sections
@@ -176,6 +210,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the range of plan sections
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.util.List<com.ext.portlet.model.PlanSection> getPlanSections(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -188,6 +223,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the number of plan sections
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public int getPlanSectionsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _planSectionLocalService.getPlanSectionsCount();
@@ -200,6 +236,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     * @return the plan section that was updated
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public com.ext.portlet.model.PlanSection updatePlanSection(
         com.ext.portlet.model.PlanSection planSection)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -207,24 +244,11 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     }
 
     /**
-    * Updates the plan section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planSection the plan section
-    * @param merge whether to merge the plan section with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan section that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.PlanSection updatePlanSection(
-        com.ext.portlet.model.PlanSection planSection, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planSectionLocalService.updatePlanSection(planSection, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
     */
+    @Override
     public java.lang.String getBeanIdentifier() {
         return _planSectionLocalService.getBeanIdentifier();
     }
@@ -234,10 +258,20 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     *
     * @param beanIdentifier the Spring bean ID for this bean
     */
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
         _planSectionLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _planSectionLocalService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    @Override
     public com.ext.portlet.model.PlanSection getCurrentForPlanSectionDef(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def)
@@ -245,6 +279,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.getCurrentForPlanSectionDef(plan, def);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection getCurrentForPlanSectionDef(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def, boolean createOnEmpty)
@@ -253,6 +288,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
             createOnEmpty);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection getForPlanSectionDef(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def)
@@ -260,6 +296,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.getForPlanSectionDef(plan, def);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection getForPlanSectionDef(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def, boolean current,
@@ -269,6 +306,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
             current, createOnEmpty);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection createForPlanFrom(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSection from, boolean store)
@@ -277,6 +315,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.createForPlanFrom(plan, from, store);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection createNewVersionForPlanSectionDefinition(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def)
@@ -285,6 +324,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
             def);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSection createNewVersionForPlanSectionDefinition(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def, boolean store)
@@ -293,6 +333,7 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
             def, store);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanSection> getAllForPlanDefinition(
         com.ext.portlet.model.PlanItem plan,
         com.ext.portlet.model.PlanSectionDefinition def)
@@ -300,11 +341,13 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.getAllForPlanDefinition(plan, def);
     }
 
+    @Override
     public void store(com.ext.portlet.model.PlanSection ps)
         throws com.liferay.portal.kernel.exception.SystemException {
         _planSectionLocalService.store(ps);
     }
 
+    @Override
     public com.ext.portlet.model.PlanSectionDefinition getDefinition(
         com.ext.portlet.model.PlanSection ps)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -312,12 +355,14 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
         return _planSectionLocalService.getDefinition(ps);
     }
 
+    @Override
     public void addPlanReference(com.ext.portlet.model.PlanSection ps,
         java.lang.Long planId)
         throws com.liferay.portal.kernel.exception.SystemException {
         _planSectionLocalService.addPlanReference(ps, planId);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.PlanItem> getReferencedPlans(
         com.ext.portlet.model.PlanSection ps)
         throws com.ext.portlet.NoSuchPlanItemException,
@@ -326,24 +371,26 @@ public class PlanSectionLocalServiceWrapper implements PlanSectionLocalService,
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public PlanSectionLocalService getWrappedPlanSectionLocalService() {
         return _planSectionLocalService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedPlanSectionLocalService(
         PlanSectionLocalService planSectionLocalService) {
         _planSectionLocalService = planSectionLocalService;
     }
 
+    @Override
     public PlanSectionLocalService getWrappedService() {
         return _planSectionLocalService;
     }
 
+    @Override
     public void setWrappedService(
         PlanSectionLocalService planSectionLocalService) {
         _planSectionLocalService = planSectionLocalService;

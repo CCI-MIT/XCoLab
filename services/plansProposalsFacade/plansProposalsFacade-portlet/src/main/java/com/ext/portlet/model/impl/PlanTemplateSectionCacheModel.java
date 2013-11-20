@@ -5,7 +5,10 @@ import com.ext.portlet.model.PlanTemplateSection;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanTemplateSection in entity cache.
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanTemplateSectionCacheModel implements CacheModel<PlanTemplateSection>,
-    Serializable {
+    Externalizable {
     public long planTemplateId;
     public long planSectionId;
     public int weight;
@@ -35,6 +38,7 @@ public class PlanTemplateSectionCacheModel implements CacheModel<PlanTemplateSec
         return sb.toString();
     }
 
+    @Override
     public PlanTemplateSection toEntityModel() {
         PlanTemplateSectionImpl planTemplateSectionImpl = new PlanTemplateSectionImpl();
 
@@ -45,5 +49,20 @@ public class PlanTemplateSectionCacheModel implements CacheModel<PlanTemplateSec
         planTemplateSectionImpl.resetOriginalValues();
 
         return planTemplateSectionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planTemplateId = objectInput.readLong();
+        planSectionId = objectInput.readLong();
+        weight = objectInput.readInt();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planTemplateId);
+        objectOutput.writeLong(planSectionId);
+        objectOutput.writeInt(weight);
     }
 }

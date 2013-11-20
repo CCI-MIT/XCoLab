@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanSectionDefinition in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDefinition>,
-    Serializable {
+    Externalizable {
     public long id;
     public String type;
     public String adminTitle;
@@ -54,6 +57,7 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         return sb.toString();
     }
 
+    @Override
     public PlanSectionDefinition toEntityModel() {
         PlanSectionDefinitionImpl planSectionDefinitionImpl = new PlanSectionDefinitionImpl();
 
@@ -96,5 +100,58 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         planSectionDefinitionImpl.resetOriginalValues();
 
         return planSectionDefinitionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        type = objectInput.readUTF();
+        adminTitle = objectInput.readUTF();
+        title = objectInput.readUTF();
+        defaultText = objectInput.readUTF();
+        helpText = objectInput.readUTF();
+        characterLimit = objectInput.readInt();
+        focusAreaId = objectInput.readLong();
+        locked = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+
+        if (type == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(type);
+        }
+
+        if (adminTitle == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(adminTitle);
+        }
+
+        if (title == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(title);
+        }
+
+        if (defaultText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(defaultText);
+        }
+
+        if (helpText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(helpText);
+        }
+
+        objectOutput.writeInt(characterLimit);
+        objectOutput.writeLong(focusAreaId);
+        objectOutput.writeBoolean(locked);
     }
 }

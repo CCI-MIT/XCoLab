@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class PlanDescriptionCacheModel implements CacheModel<PlanDescription>,
-    Serializable {
+    Externalizable {
     public long id;
     public long planId;
     public String name;
@@ -59,6 +62,7 @@ public class PlanDescriptionCacheModel implements CacheModel<PlanDescription>,
         return sb.toString();
     }
 
+    @Override
     public PlanDescription toEntityModel() {
         PlanDescriptionImpl planDescriptionImpl = new PlanDescriptionImpl();
 
@@ -98,5 +102,50 @@ public class PlanDescriptionCacheModel implements CacheModel<PlanDescription>,
         planDescriptionImpl.resetOriginalValues();
 
         return planDescriptionImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planId = objectInput.readLong();
+        name = objectInput.readUTF();
+        description = objectInput.readUTF();
+        version = objectInput.readLong();
+        planVersion = objectInput.readLong();
+        created = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+        image = objectInput.readLong();
+        pitch = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planId);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
+        }
+
+        objectOutput.writeLong(version);
+        objectOutput.writeLong(planVersion);
+        objectOutput.writeLong(created);
+        objectOutput.writeLong(updateAuthorId);
+        objectOutput.writeLong(image);
+
+        if (pitch == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(pitch);
+        }
     }
 }

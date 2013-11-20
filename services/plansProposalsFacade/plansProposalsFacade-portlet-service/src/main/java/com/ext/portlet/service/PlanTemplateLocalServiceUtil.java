@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the plan template local service. This utility wraps {@link com.ext.portlet.service.impl.PlanTemplateLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for PlanTemplate. This utility wraps
+ * {@link com.ext.portlet.service.impl.PlanTemplateLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see PlanTemplateLocalService
@@ -54,25 +54,31 @@ public class PlanTemplateLocalServiceUtil {
     * Deletes the plan template with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param id the primary key of the plan template
+    * @return the plan template that was removed
     * @throws PortalException if a plan template with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanTemplate(long id)
+    public static com.ext.portlet.model.PlanTemplate deletePlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deletePlanTemplate(id);
+        return getService().deletePlanTemplate(id);
     }
 
     /**
     * Deletes the plan template from the database. Also notifies the appropriate model listeners.
     *
     * @param planTemplate the plan template
+    * @return the plan template that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deletePlanTemplate(
+    public static com.ext.portlet.model.PlanTemplate deletePlanTemplate(
         com.ext.portlet.model.PlanTemplate planTemplate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deletePlanTemplate(planTemplate);
+        return getService().deletePlanTemplate(planTemplate);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -93,7 +99,7 @@ public class PlanTemplateLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -113,7 +119,7 @@ public class PlanTemplateLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -146,6 +152,21 @@ public class PlanTemplateLocalServiceUtil {
         return getService().dynamicQueryCount(dynamicQuery);
     }
 
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
+    }
+
     public static com.ext.portlet.model.PlanTemplate fetchPlanTemplate(long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().fetchPlanTemplate(id);
@@ -176,7 +197,7 @@ public class PlanTemplateLocalServiceUtil {
     * Returns a range of all the plan templates.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanTemplateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan templates
@@ -215,20 +236,6 @@ public class PlanTemplateLocalServiceUtil {
     }
 
     /**
-    * Updates the plan template in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param planTemplate the plan template
-    * @param merge whether to merge the plan template with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the plan template that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.PlanTemplate updatePlanTemplate(
-        com.ext.portlet.model.PlanTemplate planTemplate, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().updatePlanTemplate(planTemplate, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -244,6 +251,12 @@ public class PlanTemplateLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
     public static void store(com.ext.portlet.model.PlanTemplate template)
@@ -287,33 +300,25 @@ public class PlanTemplateLocalServiceUtil {
 
     public static PlanTemplateLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     PlanTemplateLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    PlanTemplateLocalService.class.getName(), portletClassLoader);
-
-            _service = new PlanTemplateLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof PlanTemplateLocalService) {
+                _service = (PlanTemplateLocalService) invokableLocalService;
+            } else {
+                _service = new PlanTemplateLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(PlanTemplateLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(PlanTemplateLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(PlanTemplateLocalService service) {
-        MethodCache.remove(PlanTemplateLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(PlanTemplateLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(PlanTemplateLocalService.class);
     }
 }

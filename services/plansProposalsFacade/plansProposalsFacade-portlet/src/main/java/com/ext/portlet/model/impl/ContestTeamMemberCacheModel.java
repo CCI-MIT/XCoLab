@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing ContestTeamMember in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember>,
-    Serializable {
+    Externalizable {
     public long id;
     public long contestId;
     public long userId;
@@ -39,6 +42,7 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         return sb.toString();
     }
 
+    @Override
     public ContestTeamMember toEntityModel() {
         ContestTeamMemberImpl contestTeamMemberImpl = new ContestTeamMemberImpl();
 
@@ -55,5 +59,27 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         contestTeamMemberImpl.resetOriginalValues();
 
         return contestTeamMemberImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        contestId = objectInput.readLong();
+        userId = objectInput.readLong();
+        role = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(contestId);
+        objectOutput.writeLong(userId);
+
+        if (role == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(role);
+        }
     }
 }

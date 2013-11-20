@@ -23,7 +23,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanItem service. Represents a row in the &quot;xcolab_PlanItem&quot; database table, with each column mapped to a property of this class.
@@ -50,13 +52,13 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
             { "planId", Types.BIGINT },
-            { "state", Types.VARCHAR },
+            { "state_", Types.VARCHAR },
             { "updated", Types.TIMESTAMP },
             { "updateAuthorId", Types.BIGINT },
             { "updateType", Types.VARCHAR },
             { "version", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanItem (id_ LONG not null primary key,planId LONG,state VARCHAR(75) null,updated DATE null,updateAuthorId LONG,updateType VARCHAR(75) null,version LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanItem (id_ LONG not null primary key,planId LONG,state_ VARCHAR(75) null,updated DATE null,updateAuthorId LONG,updateType VARCHAR(75) null,version LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanItem";
     public static final String ORDER_BY_JPQL = " ORDER BY planItem.id DESC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanItem.id_ DESC";
@@ -73,10 +75,11 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanItem"),
             true);
     public static long PLANID_COLUMN_BITMASK = 1L;
+    public static long ID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanItem"));
     private static ClassLoader _classLoader = PlanItem.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanItem.class
         };
     private long _id;
@@ -88,9 +91,8 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
     private long _updateAuthorId;
     private String _updateType;
     private long _version;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanItem _escapedModelProxy;
+    private PlanItem _escapedModel;
 
     public PlanItemModelImpl() {
     }
@@ -102,6 +104,10 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
      * @return the normal model instance
      */
     public static PlanItem toModel(PlanItemSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanItem model = new PlanItemImpl();
 
         model.setId(soapModel.getId());
@@ -122,6 +128,10 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
      * @return the normal model instances
      */
     public static List<PlanItem> toModels(PlanItemSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanItem> models = new ArrayList<PlanItem>(soapModels.length);
 
         for (PlanItemSoap soapModel : soapModels) {
@@ -131,35 +141,103 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanItem.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanItem.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("planId", getPlanId());
+        attributes.put("state", getState());
+        attributes.put("updated", getUpdated());
+        attributes.put("updateAuthorId", getUpdateAuthorId());
+        attributes.put("updateType", getUpdateType());
+        attributes.put("version", getVersion());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        String state = (String) attributes.get("state");
+
+        if (state != null) {
+            setState(state);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+
+        Long updateAuthorId = (Long) attributes.get("updateAuthorId");
+
+        if (updateAuthorId != null) {
+            setUpdateAuthorId(updateAuthorId);
+        }
+
+        String updateType = (String) attributes.get("updateType");
+
+        if (updateType != null) {
+            setUpdateType(updateType);
+        }
+
+        Long version = (Long) attributes.get("version");
+
+        if (version != null) {
+            setVersion(version);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _columnBitmask = -1L;
 
@@ -167,10 +245,12 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -188,6 +268,7 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
     }
 
     @JSON
+    @Override
     public String getState() {
         if (_state == null) {
             return StringPool.BLANK;
@@ -196,29 +277,35 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
         }
     }
 
+    @Override
     public void setState(String state) {
         _state = state;
     }
 
     @JSON
+    @Override
     public Date getUpdated() {
         return _updated;
     }
 
+    @Override
     public void setUpdated(Date updated) {
         _updated = updated;
     }
 
     @JSON
+    @Override
     public long getUpdateAuthorId() {
         return _updateAuthorId;
     }
 
+    @Override
     public void setUpdateAuthorId(long updateAuthorId) {
         _updateAuthorId = updateAuthorId;
     }
 
     @JSON
+    @Override
     public String getUpdateType() {
         if (_updateType == null) {
             return StringPool.BLANK;
@@ -227,15 +314,18 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
         }
     }
 
+    @Override
     public void setUpdateType(String updateType) {
         _updateType = updateType;
     }
 
     @JSON
+    @Override
     public long getVersion() {
         return _version;
     }
 
+    @Override
     public void setVersion(long version) {
         _version = version;
     }
@@ -245,29 +335,26 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
     }
 
     @Override
-    public PlanItem toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanItem) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanItem.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanItem.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanItem toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanItem) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -287,6 +374,7 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
         return planItemImpl;
     }
 
+    @Override
     public int compareTo(PlanItem planItem) {
         int value = 0;
 
@@ -309,17 +397,15 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanItem)) {
             return false;
         }
 
-        PlanItem planItem = null;
-
-        try {
-            planItem = (PlanItem) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanItem planItem = (PlanItem) obj;
 
         long primaryKey = planItem.getPrimaryKey();
 
@@ -408,6 +494,7 @@ public class PlanItemModelImpl extends BaseModelImpl<PlanItem>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

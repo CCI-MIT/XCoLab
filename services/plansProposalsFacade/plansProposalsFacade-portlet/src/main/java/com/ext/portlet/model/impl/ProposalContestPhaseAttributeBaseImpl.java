@@ -25,6 +25,7 @@ public abstract class ProposalContestPhaseAttributeBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a proposal contest phase attribute model instance should use the {@link ProposalContestPhaseAttribute} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(this);

@@ -181,35 +181,60 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
      */
     public void setLocked(boolean locked);
 
+    @Override
     public boolean isNew();
 
+    @Override
     public void setNew(boolean n);
 
+    @Override
     public boolean isCachedModel();
 
+    @Override
     public void setCachedModel(boolean cachedModel);
 
+    @Override
     public boolean isEscapedModel();
 
+    @Override
     public Serializable getPrimaryKeyObj();
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
+    @Override
     public ExpandoBridge getExpandoBridge();
 
+    @Override
+    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+
+    @Override
+    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+
+    @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+    @Override
     public Object clone();
 
+    @Override
     public int compareTo(PlanSectionDefinition planSectionDefinition);
 
+    @Override
     public int hashCode();
 
+    @Override
     public CacheModel<PlanSectionDefinition> toCacheModel();
 
+    @Override
     public PlanSectionDefinition toEscapedModel();
 
+    @Override
+    public PlanSectionDefinition toUnescapedModel();
+
+    @Override
     public String toString();
 
+    @Override
     public String toXmlString();
 }

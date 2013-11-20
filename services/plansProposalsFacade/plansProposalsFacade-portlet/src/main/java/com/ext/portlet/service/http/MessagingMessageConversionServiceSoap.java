@@ -1,13 +1,11 @@
 package com.ext.portlet.service.http;
 
 /**
- * <p>
- * This class provides a SOAP utility for the
+ * Provides the SOAP utility for the
  * {@link com.ext.portlet.service.MessagingMessageConversionServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
- * </p>
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
@@ -27,9 +25,8 @@ package com.ext.portlet.service.http;
  * </p>
  *
  * <p>
- * You can see a list of services at
- * http://localhost:8080/api/secure/axis. Set the property
- * <b>axis.servlet.hosts.allowed</b> in portal.properties to configure
+ * You can see a list of services at http://localhost:8080/api/axis. Set the
+ * property <b>axis.servlet.hosts.allowed</b> in portal.properties to configure
  * security.
  * </p>
  *
@@ -37,10 +34,10 @@ package com.ext.portlet.service.http;
  * The SOAP utility is only generated for remote services.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       MessagingMessageConversionServiceHttp
- * @see       com.ext.portlet.model.MessagingMessageConversionSoap
- * @see       com.ext.portlet.service.MessagingMessageConversionServiceUtil
+ * @author Brian Wing Shun Chan
+ * @see MessagingMessageConversionServiceHttp
+ * @see com.ext.portlet.model.MessagingMessageConversionSoap
+ * @see com.ext.portlet.service.MessagingMessageConversionServiceUtil
  * @generated
  */
 public class MessagingMessageConversionServiceSoap {

@@ -23,7 +23,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the LandingPage service. Represents a row in the &quot;xcolab_LandingPage&quot; database table, with each column mapped to a property of this class.
@@ -55,6 +57,8 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_LandingPage (id_ LONG not null primary key,baseUrl VARCHAR(1024) null,targetUrl VARCHAR(1024) null,updated DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_LandingPage";
+    public static final String ORDER_BY_JPQL = " ORDER BY landingPage.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_LandingPage.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -68,15 +72,14 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.LandingPage"));
     private static ClassLoader _classLoader = LandingPage.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             LandingPage.class
         };
     private long _id;
     private String _baseUrl;
     private String _targetUrl;
     private Date _updated;
-    private transient ExpandoBridge _expandoBridge;
-    private LandingPage _escapedModelProxy;
+    private LandingPage _escapedModel;
 
     public LandingPageModelImpl() {
     }
@@ -88,6 +91,10 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
      * @return the normal model instance
      */
     public static LandingPage toModel(LandingPageSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         LandingPage model = new LandingPageImpl();
 
         model.setId(soapModel.getId());
@@ -105,6 +112,10 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
      * @return the normal model instances
      */
     public static List<LandingPage> toModels(LandingPageSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<LandingPage> models = new ArrayList<LandingPage>(soapModels.length);
 
         for (LandingPageSoap soapModel : soapModels) {
@@ -114,40 +125,88 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return LandingPage.class;
     }
 
+    @Override
     public String getModelClassName() {
         return LandingPage.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("baseUrl", getBaseUrl());
+        attributes.put("targetUrl", getTargetUrl());
+        attributes.put("updated", getUpdated());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String baseUrl = (String) attributes.get("baseUrl");
+
+        if (baseUrl != null) {
+            setBaseUrl(baseUrl);
+        }
+
+        String targetUrl = (String) attributes.get("targetUrl");
+
+        if (targetUrl != null) {
+            setTargetUrl(targetUrl);
+        }
+
+        Date updated = (Date) attributes.get("updated");
+
+        if (updated != null) {
+            setUpdated(updated);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getBaseUrl() {
         if (_baseUrl == null) {
             return StringPool.BLANK;
@@ -156,11 +215,13 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         }
     }
 
+    @Override
     public void setBaseUrl(String baseUrl) {
         _baseUrl = baseUrl;
     }
 
     @JSON
+    @Override
     public String getTargetUrl() {
         if (_targetUrl == null) {
             return StringPool.BLANK;
@@ -169,43 +230,43 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         }
     }
 
+    @Override
     public void setTargetUrl(String targetUrl) {
         _targetUrl = targetUrl;
     }
 
     @JSON
+    @Override
     public Date getUpdated() {
         return _updated;
     }
 
+    @Override
     public void setUpdated(Date updated) {
         _updated = updated;
     }
 
     @Override
-    public LandingPage toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (LandingPage) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    LandingPage.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            LandingPage.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public LandingPage toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (LandingPage) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -222,6 +283,7 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         return landingPageImpl;
     }
 
+    @Override
     public int compareTo(LandingPage landingPage) {
         long primaryKey = landingPage.getPrimaryKey();
 
@@ -236,17 +298,15 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof LandingPage)) {
             return false;
         }
 
-        LandingPage landingPage = null;
-
-        try {
-            landingPage = (LandingPage) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        LandingPage landingPage = (LandingPage) obj;
 
         long primaryKey = landingPage.getPrimaryKey();
 
@@ -316,6 +376,7 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

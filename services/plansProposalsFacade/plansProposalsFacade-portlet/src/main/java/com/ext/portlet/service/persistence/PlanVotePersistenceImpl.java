@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchPlanVoteException;
 import com.ext.portlet.model.PlanVote;
 import com.ext.portlet.model.impl.PlanVoteImpl;
 import com.ext.portlet.model.impl.PlanVoteModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -66,22 +67,10 @@ import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
 import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
 import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
 import com.ext.portlet.service.persistence.PlanTypePersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -101,11 +90,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -138,6 +125,15 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTID =
         new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
             PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
@@ -145,8 +141,8 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID =
         new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
@@ -158,14 +154,15 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             PlanVoteModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycontestId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_CONTESTID_CONTESTID_2 = "planVote.id.contestId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PLANID = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
             PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPlanId",
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID =
         new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
@@ -177,6 +174,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             PlanVoteModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlanId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PLANID_PLANID_2 = "planVote.planId = ?";
     public static final FinderPath FINDER_PATH_FETCH_BY_CONTESTIDUSERID = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
             PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
             FINDER_CLASS_NAME_ENTITY, "fetchByContestIdUserId",
@@ -188,23 +186,12 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByContestIdUserId",
             new String[] { Long.class.getName(), Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-            PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-            PlanVoteModelImpl.FINDER_CACHE_ENABLED, PlanVoteImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-            PlanVoteModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_CONTESTIDUSERID_CONTESTID_2 = "planVote.id.contestId = ? AND ";
+    private static final String _FINDER_COLUMN_CONTESTIDUSERID_USERID_2 = "planVote.id.userId = ?";
     private static final String _SQL_SELECT_PLANVOTE = "SELECT planVote FROM PlanVote planVote";
     private static final String _SQL_SELECT_PLANVOTE_WHERE = "SELECT planVote FROM PlanVote planVote WHERE ";
     private static final String _SQL_COUNT_PLANVOTE = "SELECT COUNT(planVote) FROM PlanVote planVote";
     private static final String _SQL_COUNT_PLANVOTE_WHERE = "SELECT COUNT(planVote) FROM PlanVote planVote WHERE ";
-    private static final String _FINDER_COLUMN_CONTESTID_CONTESTID_2 = "planVote.id.contestId = ?";
-    private static final String _FINDER_COLUMN_PLANID_PLANID_2 = "planVote.planId = ?";
-    private static final String _FINDER_COLUMN_CONTESTIDUSERID_CONTESTID_2 = "planVote.id.contestId = ? AND ";
-    private static final String _FINDER_COLUMN_CONTESTIDUSERID_USERID_2 = "planVote.id.userId = ?";
     private static final String _ORDER_BY_ENTITY_ALIAS = "planVote.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PlanVote exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PlanVote exists with the key {";
@@ -224,11 +211,13 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
         };
 
     private static CacheModel<PlanVote> _nullPlanVoteCacheModel = new CacheModel<PlanVote>() {
+            @Override
             public PlanVote toEntityModel() {
                 return _nullPlanVote;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -400,383 +389,10 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             }, planVote);
 
         planVote.resetOriginalValues();
-    }
-
-    /**
-     * Caches the plan votes in the entity cache if it is enabled.
-     *
-     * @param planVotes the plan votes
-     */
-    public void cacheResult(List<PlanVote> planVotes) {
-        for (PlanVote planVote : planVotes) {
-            if (EntityCacheUtil.getResult(
-                        PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanVoteImpl.class, planVote.getPrimaryKey()) == null) {
-                cacheResult(planVote);
-            } else {
-                planVote.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all plan votes.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(PlanVoteImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(PlanVoteImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the plan vote.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(PlanVote planVote) {
-        EntityCacheUtil.removeResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-            PlanVoteImpl.class, planVote.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        clearUniqueFindersCache(planVote);
-    }
-
-    @Override
-    public void clearCache(List<PlanVote> planVotes) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (PlanVote planVote : planVotes) {
-            EntityCacheUtil.removeResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-                PlanVoteImpl.class, planVote.getPrimaryKey());
-
-            clearUniqueFindersCache(planVote);
-        }
-    }
-
-    protected void clearUniqueFindersCache(PlanVote planVote) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
-            new Object[] {
-                Long.valueOf(planVote.getContestId()),
-                Long.valueOf(planVote.getUserId())
-            });
-    }
-
-    /**
-     * Creates a new plan vote with the primary key. Does not add the plan vote to the database.
-     *
-     * @param planVotePK the primary key for the new plan vote
-     * @return the new plan vote
-     */
-    public PlanVote create(PlanVotePK planVotePK) {
-        PlanVote planVote = new PlanVoteImpl();
-
-        planVote.setNew(true);
-        planVote.setPrimaryKey(planVotePK);
-
-        return planVote;
-    }
-
-    /**
-     * Removes the plan vote with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param planVotePK the primary key of the plan vote
-     * @return the plan vote that was removed
-     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanVote remove(PlanVotePK planVotePK)
-        throws NoSuchPlanVoteException, SystemException {
-        return remove((Serializable) planVotePK);
-    }
-
-    /**
-     * Removes the plan vote with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the plan vote
-     * @return the plan vote that was removed
-     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanVote remove(Serializable primaryKey)
-        throws NoSuchPlanVoteException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            PlanVote planVote = (PlanVote) session.get(PlanVoteImpl.class,
-                    primaryKey);
-
-            if (planVote == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchPlanVoteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(planVote);
-        } catch (NoSuchPlanVoteException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected PlanVote removeImpl(PlanVote planVote) throws SystemException {
-        planVote = toUnwrappedModel(planVote);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, planVote);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(planVote);
-
-        return planVote;
-    }
-
-    @Override
-    public PlanVote updateImpl(com.ext.portlet.model.PlanVote planVote,
-        boolean merge) throws SystemException {
-        planVote = toUnwrappedModel(planVote);
-
-        boolean isNew = planVote.isNew();
-
-        PlanVoteModelImpl planVoteModelImpl = (PlanVoteModelImpl) planVote;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, planVote, merge);
-
-            planVote.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !PlanVoteModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((planVoteModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planVoteModelImpl.getOriginalContestId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(planVoteModelImpl.getContestId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID,
-                    args);
-            }
-
-            if ((planVoteModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planVoteModelImpl.getOriginalPlanId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-
-                args = new Object[] { Long.valueOf(planVoteModelImpl.getPlanId()) };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-            PlanVoteImpl.class, planVote.getPrimaryKey(), planVote);
-
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
-                new Object[] {
-                    Long.valueOf(planVote.getContestId()),
-                    Long.valueOf(planVote.getUserId())
-                }, planVote);
-        } else {
-            if ((planVoteModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_CONTESTIDUSERID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(planVoteModelImpl.getOriginalContestId()),
-                        Long.valueOf(planVoteModelImpl.getOriginalUserId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
-                    new Object[] {
-                        Long.valueOf(planVote.getContestId()),
-                        Long.valueOf(planVote.getUserId())
-                    }, planVote);
-            }
-        }
-
-        return planVote;
-    }
-
-    protected PlanVote toUnwrappedModel(PlanVote planVote) {
-        if (planVote instanceof PlanVoteImpl) {
-            return planVote;
-        }
-
-        PlanVoteImpl planVoteImpl = new PlanVoteImpl();
-
-        planVoteImpl.setNew(planVote.isNew());
-        planVoteImpl.setPrimaryKey(planVote.getPrimaryKey());
-
-        planVoteImpl.setUserId(planVote.getUserId());
-        planVoteImpl.setContestId(planVote.getContestId());
-        planVoteImpl.setPlanId(planVote.getPlanId());
-        planVoteImpl.setCreateDate(planVote.getCreateDate());
-
-        return planVoteImpl;
-    }
-
-    /**
-     * Returns the plan vote with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan vote
-     * @return the plan vote
-     * @throws com.liferay.portal.NoSuchModelException if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanVote findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((PlanVotePK) primaryKey);
-    }
-
-    /**
-     * Returns the plan vote with the primary key or throws a {@link com.ext.portlet.NoSuchPlanVoteException} if it could not be found.
-     *
-     * @param planVotePK the primary key of the plan vote
-     * @return the plan vote
-     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanVote findByPrimaryKey(PlanVotePK planVotePK)
-        throws NoSuchPlanVoteException, SystemException {
-        PlanVote planVote = fetchByPrimaryKey(planVotePK);
-
-        if (planVote == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + planVotePK);
-            }
-
-            throw new NoSuchPlanVoteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                planVotePK);
-        }
-
-        return planVote;
-    }
-
-    /**
-     * Returns the plan vote with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the plan vote
-     * @return the plan vote, or <code>null</code> if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public PlanVote fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey((PlanVotePK) primaryKey);
-    }
-
-    /**
-     * Returns the plan vote with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param planVotePK the primary key of the plan vote
-     * @return the plan vote, or <code>null</code> if a plan vote with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public PlanVote fetchByPrimaryKey(PlanVotePK planVotePK)
-        throws SystemException {
-        PlanVote planVote = (PlanVote) EntityCacheUtil.getResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-                PlanVoteImpl.class, planVotePK);
-
-        if (planVote == _nullPlanVote) {
-            return null;
-        }
-
-        if (planVote == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                planVote = (PlanVote) session.get(PlanVoteImpl.class, planVotePK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (planVote != null) {
-                    cacheResult(planVote);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
-                        PlanVoteImpl.class, planVotePK, _nullPlanVote);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return planVote;
+=======
+    public PlanVotePersistenceImpl() {
+        setModelClass(PlanVote.class);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
     /**
@@ -786,6 +402,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findBycontestId(long contestId)
         throws SystemException {
         return findBycontestId(contestId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -796,7 +413,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * Returns a range of all the plan votes where contestId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param contestId the contest ID
@@ -805,6 +422,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findBycontestId(long contestId, int start, int end)
         throws SystemException {
         return findBycontestId(contestId, start, end, null);
@@ -814,7 +432,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * Returns an ordered range of all the plan votes where contestId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param contestId the contest ID
@@ -824,13 +442,16 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the ordered range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findBycontestId(long contestId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID;
             finderArgs = new Object[] { contestId };
         } else {
@@ -841,6 +462,16 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
         List<PlanVote> list = (List<PlanVote>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanVote planVote : list) {
+                if ((contestId != planVote.getContestId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -848,7 +479,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLANVOTE_WHERE);
@@ -858,6 +489,9 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanVoteModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -873,19 +507,26 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 qPos.add(contestId);
 
-                list = (List<PlanVote>) QueryUtil.list(q, getDialect(), start,
-                        end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanVote>(list);
+                } else {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -896,43 +537,56 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     /**
      * Returns the first plan vote in the ordered set where contestId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param contestId the contest ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan vote
      * @throws com.ext.portlet.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote findBycontestId_First(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
+        PlanVote planVote = fetchBycontestId_First(contestId, orderByComparator);
+
+        if (planVote != null) {
+            return planVote;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestId=");
+        msg.append(contestId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanVoteException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan vote in the ordered set where contestId = &#63;.
+     *
+     * @param contestId the contest ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan vote, or <code>null</code> if a matching plan vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchBycontestId_First(long contestId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanVote> list = findBycontestId(contestId, 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("contestId=");
-            msg.append(contestId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanVoteException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan vote in the ordered set where contestId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param contestId the contest ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -940,36 +594,57 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote findBycontestId_Last(long contestId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
+        PlanVote planVote = fetchBycontestId_Last(contestId, orderByComparator);
+
+        if (planVote != null) {
+            return planVote;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestId=");
+        msg.append(contestId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanVoteException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan vote in the ordered set where contestId = &#63;.
+     *
+     * @param contestId the contest ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan vote, or <code>null</code> if a matching plan vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchBycontestId_Last(long contestId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countBycontestId(contestId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanVote> list = findBycontestId(contestId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("contestId=");
-            msg.append(contestId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanVoteException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan votes before and after the current plan vote in the ordered set where contestId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planVotePK the primary key of the current plan vote
      * @param contestId the contest ID
@@ -978,6 +653,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote[] findBycontestId_PrevAndNext(PlanVotePK planVotePK,
         long contestId, OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
@@ -1070,6 +746,8 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                     }
                 }
             }
+        } else {
+            query.append(PlanVoteModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1101,12 +779,78 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     }
 
     /**
+     * Removes all the plan votes where contestId = &#63; from the database.
+     *
+     * @param contestId the contest ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeBycontestId(long contestId) throws SystemException {
+        for (PlanVote planVote : findBycontestId(contestId, QueryUtil.ALL_POS,
+                QueryUtil.ALL_POS, null)) {
+            remove(planVote);
+        }
+    }
+
+    /**
+     * Returns the number of plan votes where contestId = &#63;.
+     *
+     * @param contestId the contest ID
+     * @return the number of matching plan votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countBycontestId(long contestId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTESTID;
+
+        Object[] finderArgs = new Object[] { contestId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANVOTE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTID_CONTESTID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the plan votes where planId = &#63;.
      *
      * @param planId the plan ID
      * @return the matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findByPlanId(long planId) throws SystemException {
         return findByPlanId(planId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1115,7 +859,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * Returns a range of all the plan votes where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -1124,6 +868,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findByPlanId(long planId, int start, int end)
         throws SystemException {
         return findByPlanId(planId, start, end, null);
@@ -1133,7 +878,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * Returns an ordered range of all the plan votes where planId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param planId the plan ID
@@ -1143,13 +888,16 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the ordered range of matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<PlanVote> findByPlanId(long planId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID;
             finderArgs = new Object[] { planId };
         } else {
@@ -1160,6 +908,16 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
         List<PlanVote> list = (List<PlanVote>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (PlanVote planVote : list) {
+                if ((planId != planVote.getPlanId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1167,7 +925,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_PLANVOTE_WHERE);
@@ -1177,6 +935,9 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(PlanVoteModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1192,19 +953,26 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 qPos.add(planId);
 
-                list = (List<PlanVote>) QueryUtil.list(q, getDialect(), start,
-                        end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanVote>(list);
+                } else {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1215,43 +983,56 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     /**
      * Returns the first plan vote in the ordered set where planId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching plan vote
      * @throws com.ext.portlet.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote findByPlanId_First(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
+        PlanVote planVote = fetchByPlanId_First(planId, orderByComparator);
+
+        if (planVote != null) {
+            return planVote;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanVoteException(msg.toString());
+    }
+
+    /**
+     * Returns the first plan vote in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching plan vote, or <code>null</code> if a matching plan vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchByPlanId_First(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<PlanVote> list = findByPlanId(planId, 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanVoteException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last plan vote in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planId the plan ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1259,36 +1040,57 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote findByPlanId_Last(long planId,
         OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
+        PlanVote planVote = fetchByPlanId_Last(planId, orderByComparator);
+
+        if (planVote != null) {
+            return planVote;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("planId=");
+        msg.append(planId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchPlanVoteException(msg.toString());
+    }
+
+    /**
+     * Returns the last plan vote in the ordered set where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching plan vote, or <code>null</code> if a matching plan vote could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchByPlanId_Last(long planId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByPlanId(planId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<PlanVote> list = findByPlanId(planId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("planId=");
-            msg.append(planId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchPlanVoteException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the plan votes before and after the current plan vote in the ordered set where planId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param planVotePK the primary key of the current plan vote
      * @param planId the plan ID
@@ -1297,6 +1099,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote[] findByPlanId_PrevAndNext(PlanVotePK planVotePK,
         long planId, OrderByComparator orderByComparator)
         throws NoSuchPlanVoteException, SystemException {
@@ -1389,6 +1192,8 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                     }
                 }
             }
+        } else {
+            query.append(PlanVoteModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1420,6 +1225,71 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     }
 
     /**
+     * Removes all the plan votes where planId = &#63; from the database.
+     *
+     * @param planId the plan ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByPlanId(long planId) throws SystemException {
+        for (PlanVote planVote : findByPlanId(planId, QueryUtil.ALL_POS,
+                QueryUtil.ALL_POS, null)) {
+            remove(planVote);
+        }
+    }
+
+    /**
+     * Returns the number of plan votes where planId = &#63;.
+     *
+     * @param planId the plan ID
+     * @return the number of matching plan votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByPlanId(long planId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PLANID;
+
+        Object[] finderArgs = new Object[] { planId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PLANVOTE_WHERE);
+
+            query.append(_FINDER_COLUMN_PLANID_PLANID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(planId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns the plan vote where contestId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchPlanVoteException} if it could not be found.
      *
      * @param contestId the contest ID
@@ -1428,6 +1298,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @throws com.ext.portlet.NoSuchPlanVoteException if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote findByContestIdUserId(long contestId, long userId)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = fetchByContestIdUserId(contestId, userId);
@@ -1463,6 +1334,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan vote, or <code>null</code> if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote fetchByContestIdUserId(long contestId, long userId)
         throws SystemException {
         return fetchByContestIdUserId(contestId, userId, true);
@@ -1477,6 +1349,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the matching plan vote, or <code>null</code> if a matching plan vote could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public PlanVote fetchByContestIdUserId(long contestId, long userId,
         boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { contestId, userId };
@@ -1488,8 +1361,17 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                     finderArgs, this);
         }
 
+        if (result instanceof PlanVote) {
+            PlanVote planVote = (PlanVote) result;
+
+            if ((contestId != planVote.getContestId()) ||
+                    (userId != planVote.getUserId())) {
+                result = null;
+            }
+        }
+
         if (result == null) {
-            StringBundler query = new StringBundler(3);
+            StringBundler query = new StringBundler(4);
 
             query.append(_SQL_SELECT_PLANVOTE_WHERE);
 
@@ -1514,15 +1396,20 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 List<PlanVote> list = q.list();
 
-                result = list;
-
-                PlanVote planVote = null;
-
                 if (list.isEmpty()) {
                     FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
                         finderArgs, list);
                 } else {
-                    planVote = list.get(0);
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PlanVotePersistenceImpl.fetchByContestIdUserId(long, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PlanVote planVote = list.get(0);
+
+                    result = planVote;
 
                     cacheResult(planVote);
 
@@ -1532,156 +1419,20 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                             finderArgs, planVote);
                     }
                 }
-
-                return planVote;
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
+                    finderArgs);
+
                 throw processException(e);
             } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
-                        finderArgs);
-                }
-
-                closeSession(session);
-            }
-        } else {
-            if (result instanceof List<?>) {
-                return null;
-            } else {
-                return (PlanVote) result;
-            }
-        }
-    }
-
-    /**
-     * Returns all the plan votes.
-     *
-     * @return the plan votes
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanVote> findAll() throws SystemException {
-        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-    }
-
-    /**
-     * Returns a range of all the plan votes.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan votes
-     * @param end the upper bound of the range of plan votes (not inclusive)
-     * @return the range of plan votes
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanVote> findAll(int start, int end) throws SystemException {
-        return findAll(start, end, null);
-    }
-
-    /**
-     * Returns an ordered range of all the plan votes.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
-     * @param start the lower bound of the range of plan votes
-     * @param end the upper bound of the range of plan votes (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of plan votes
-     * @throws SystemException if a system exception occurred
-     */
-    public List<PlanVote> findAll(int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
-
-        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-                (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-            finderArgs = FINDER_ARGS_EMPTY;
-        } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-            finderArgs = new Object[] { start, end, orderByComparator };
-        }
-
-        List<PlanVote> list = (List<PlanVote>) FinderCacheUtil.getResult(finderPath,
-                finderArgs, this);
-
-        if (list == null) {
-            StringBundler query = null;
-            String sql = null;
-
-            if (orderByComparator != null) {
-                query = new StringBundler(2 +
-                        (orderByComparator.getOrderByFields().length * 3));
-
-                query.append(_SQL_SELECT_PLANVOTE);
-
-                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-                    orderByComparator);
-
-                sql = query.toString();
-            } else {
-                sql = _SQL_SELECT_PLANVOTE;
-            }
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                if (orderByComparator == null) {
-                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
-                            start, end, false);
-
-                    Collections.sort(list);
-                } else {
-                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
-                            start, end);
-                }
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
 
-        return list;
-    }
-
-    /**
-     * Removes all the plan votes where contestId = &#63; from the database.
-     *
-     * @param contestId the contest ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeBycontestId(long contestId) throws SystemException {
-        for (PlanVote planVote : findBycontestId(contestId)) {
-            remove(planVote);
-        }
-    }
-
-    /**
-     * Removes all the plan votes where planId = &#63; from the database.
-     *
-     * @param planId the plan ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByPlanId(long planId) throws SystemException {
-        for (PlanVote planVote : findByPlanId(planId)) {
-            remove(planVote);
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (PlanVote) result;
         }
     }
 
@@ -1690,126 +1441,15 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      *
      * @param contestId the contest ID
      * @param userId the user ID
+     * @return the plan vote that was removed
      * @throws SystemException if a system exception occurred
      */
-    public void removeByContestIdUserId(long contestId, long userId)
+    @Override
+    public PlanVote removeByContestIdUserId(long contestId, long userId)
         throws NoSuchPlanVoteException, SystemException {
         PlanVote planVote = findByContestIdUserId(contestId, userId);
 
-        remove(planVote);
-    }
-
-    /**
-     * Removes all the plan votes from the database.
-     *
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeAll() throws SystemException {
-        for (PlanVote planVote : findAll()) {
-            remove(planVote);
-        }
-    }
-
-    /**
-     * Returns the number of plan votes where contestId = &#63;.
-     *
-     * @param contestId the contest ID
-     * @return the number of matching plan votes
-     * @throws SystemException if a system exception occurred
-     */
-    public int countBycontestId(long contestId) throws SystemException {
-        Object[] finderArgs = new Object[] { contestId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PLANVOTE_WHERE);
-
-            query.append(_FINDER_COLUMN_CONTESTID_CONTESTID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(contestId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of plan votes where planId = &#63;.
-     *
-     * @param planId the plan ID
-     * @return the number of matching plan votes
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByPlanId(long planId) throws SystemException {
-        Object[] finderArgs = new Object[] { planId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PLANID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_PLANVOTE_WHERE);
-
-            query.append(_FINDER_COLUMN_PLANID_PLANID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(planId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PLANID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
+        return remove(planVote);
     }
 
     /**
@@ -1820,12 +1460,15 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
      * @return the number of matching plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countByContestIdUserId(long contestId, long userId)
         throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTESTIDUSERID;
+
         Object[] finderArgs = new Object[] { contestId, userId };
 
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
-                finderArgs, this);
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
 
         if (count == null) {
             StringBundler query = new StringBundler(3);
@@ -1852,16 +1495,13 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                 qPos.add(userId);
 
                 count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
-                    finderArgs, count);
-
                 closeSession(session);
             }
         }
@@ -1870,11 +1510,569 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     }
 
     /**
+     * Caches the plan vote in the entity cache if it is enabled.
+     *
+     * @param planVote the plan vote
+     */
+    @Override
+    public void cacheResult(PlanVote planVote) {
+        EntityCacheUtil.putResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteImpl.class, planVote.getPrimaryKey(), planVote);
+
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
+            new Object[] { planVote.getContestId(), planVote.getUserId() },
+            planVote);
+
+        planVote.resetOriginalValues();
+    }
+
+    /**
+     * Caches the plan votes in the entity cache if it is enabled.
+     *
+     * @param planVotes the plan votes
+     */
+    @Override
+    public void cacheResult(List<PlanVote> planVotes) {
+        for (PlanVote planVote : planVotes) {
+            if (EntityCacheUtil.getResult(
+                        PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanVoteImpl.class, planVote.getPrimaryKey()) == null) {
+                cacheResult(planVote);
+            } else {
+                planVote.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all plan votes.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(PlanVoteImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(PlanVoteImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the plan vote.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(PlanVote planVote) {
+        EntityCacheUtil.removeResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteImpl.class, planVote.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(planVote);
+    }
+
+    @Override
+    public void clearCache(List<PlanVote> planVotes) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (PlanVote planVote : planVotes) {
+            EntityCacheUtil.removeResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+                PlanVoteImpl.class, planVote.getPrimaryKey());
+
+            clearUniqueFindersCache(planVote);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(PlanVote planVote) {
+        if (planVote.isNew()) {
+            Object[] args = new Object[] {
+                    planVote.getContestId(), planVote.getUserId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
+                args, planVote);
+        } else {
+            PlanVoteModelImpl planVoteModelImpl = (PlanVoteModelImpl) planVote;
+
+            if ((planVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_CONTESTIDUSERID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planVote.getContestId(), planVote.getUserId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
+                    args, planVote);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(PlanVote planVote) {
+        PlanVoteModelImpl planVoteModelImpl = (PlanVoteModelImpl) planVote;
+
+        Object[] args = new Object[] {
+                planVote.getContestId(), planVote.getUserId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID, args);
+
+        if ((planVoteModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_CONTESTIDUSERID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    planVoteModelImpl.getOriginalContestId(),
+                    planVoteModelImpl.getOriginalUserId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTIDUSERID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTIDUSERID,
+                args);
+        }
+    }
+
+    /**
+     * Creates a new plan vote with the primary key. Does not add the plan vote to the database.
+     *
+     * @param planVotePK the primary key for the new plan vote
+     * @return the new plan vote
+     */
+    @Override
+    public PlanVote create(PlanVotePK planVotePK) {
+        PlanVote planVote = new PlanVoteImpl();
+
+        planVote.setNew(true);
+        planVote.setPrimaryKey(planVotePK);
+
+        return planVote;
+    }
+
+    /**
+     * Removes the plan vote with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param planVotePK the primary key of the plan vote
+     * @return the plan vote that was removed
+     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote remove(PlanVotePK planVotePK)
+        throws NoSuchPlanVoteException, SystemException {
+        return remove((Serializable) planVotePK);
+    }
+
+    /**
+     * Removes the plan vote with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the plan vote
+     * @return the plan vote that was removed
+     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote remove(Serializable primaryKey)
+        throws NoSuchPlanVoteException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            PlanVote planVote = (PlanVote) session.get(PlanVoteImpl.class,
+                    primaryKey);
+
+            if (planVote == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchPlanVoteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(planVote);
+        } catch (NoSuchPlanVoteException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected PlanVote removeImpl(PlanVote planVote) throws SystemException {
+        planVote = toUnwrappedModel(planVote);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(planVote)) {
+                planVote = (PlanVote) session.get(PlanVoteImpl.class,
+                        planVote.getPrimaryKeyObj());
+            }
+
+            if (planVote != null) {
+                session.delete(planVote);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (planVote != null) {
+            clearCache(planVote);
+        }
+
+        return planVote;
+    }
+
+    @Override
+    public PlanVote updateImpl(com.ext.portlet.model.PlanVote planVote)
+        throws SystemException {
+        planVote = toUnwrappedModel(planVote);
+
+        boolean isNew = planVote.isNew();
+
+        PlanVoteModelImpl planVoteModelImpl = (PlanVoteModelImpl) planVote;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (planVote.isNew()) {
+                session.save(planVote);
+
+                planVote.setNew(false);
+            } else {
+                session.merge(planVote);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !PlanVoteModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((planVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planVoteModelImpl.getOriginalContestId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID,
+                    args);
+
+                args = new Object[] { planVoteModelImpl.getContestId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTID,
+                    args);
+            }
+
+            if ((planVoteModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        planVoteModelImpl.getOriginalPlanId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+
+                args = new Object[] { planVoteModelImpl.getPlanId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PLANID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PLANID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+            PlanVoteImpl.class, planVote.getPrimaryKey(), planVote);
+
+        clearUniqueFindersCache(planVote);
+        cacheUniqueFindersCache(planVote);
+
+        return planVote;
+    }
+
+    protected PlanVote toUnwrappedModel(PlanVote planVote) {
+        if (planVote instanceof PlanVoteImpl) {
+            return planVote;
+        }
+
+        PlanVoteImpl planVoteImpl = new PlanVoteImpl();
+
+        planVoteImpl.setNew(planVote.isNew());
+        planVoteImpl.setPrimaryKey(planVote.getPrimaryKey());
+
+        planVoteImpl.setUserId(planVote.getUserId());
+        planVoteImpl.setContestId(planVote.getContestId());
+        planVoteImpl.setPlanId(planVote.getPlanId());
+        planVoteImpl.setCreateDate(planVote.getCreateDate());
+
+        return planVoteImpl;
+    }
+
+    /**
+     * Returns the plan vote with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan vote
+     * @return the plan vote
+     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchPlanVoteException, SystemException {
+        PlanVote planVote = fetchByPrimaryKey(primaryKey);
+
+        if (planVote == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchPlanVoteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return planVote;
+    }
+
+    /**
+     * Returns the plan vote with the primary key or throws a {@link com.ext.portlet.NoSuchPlanVoteException} if it could not be found.
+     *
+     * @param planVotePK the primary key of the plan vote
+     * @return the plan vote
+     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote findByPrimaryKey(PlanVotePK planVotePK)
+        throws NoSuchPlanVoteException, SystemException {
+        return findByPrimaryKey((Serializable) planVotePK);
+    }
+
+    /**
+     * Returns the plan vote with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the plan vote
+     * @return the plan vote, or <code>null</code> if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        PlanVote planVote = (PlanVote) EntityCacheUtil.getResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+                PlanVoteImpl.class, primaryKey);
+
+        if (planVote == _nullPlanVote) {
+            return null;
+        }
+
+        if (planVote == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                planVote = (PlanVote) session.get(PlanVoteImpl.class, primaryKey);
+
+                if (planVote != null) {
+                    cacheResult(planVote);
+                } else {
+                    EntityCacheUtil.putResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+                        PlanVoteImpl.class, primaryKey, _nullPlanVote);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(PlanVoteModelImpl.ENTITY_CACHE_ENABLED,
+                    PlanVoteImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return planVote;
+    }
+
+    /**
+     * Returns the plan vote with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param planVotePK the primary key of the plan vote
+     * @return the plan vote, or <code>null</code> if a plan vote with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PlanVote fetchByPrimaryKey(PlanVotePK planVotePK)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) planVotePK);
+    }
+
+    /**
+     * Returns all the plan votes.
+     *
+     * @return the plan votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanVote> findAll() throws SystemException {
+        return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the plan votes.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan votes
+     * @param end the upper bound of the range of plan votes (not inclusive)
+     * @return the range of plan votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanVote> findAll(int start, int end) throws SystemException {
+        return findAll(start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the plan votes.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanVoteModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param start the lower bound of the range of plan votes
+     * @param end the upper bound of the range of plan votes (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of plan votes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<PlanVote> findAll(int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderArgs = FINDER_ARGS_EMPTY;
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            finderArgs = new Object[] { start, end, orderByComparator };
+        }
+
+        List<PlanVote> list = (List<PlanVote>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if (list == null) {
+            StringBundler query = null;
+            String sql = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(2 +
+                        (orderByComparator.getOrderByFields().length * 3));
+
+                query.append(_SQL_SELECT_PLANVOTE);
+
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+
+                sql = query.toString();
+            } else {
+                sql = _SQL_SELECT_PLANVOTE;
+
+                if (pagination) {
+                    sql = sql.concat(PlanVoteModelImpl.ORDER_BY_JPQL);
+                }
+            }
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                if (!pagination) {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<PlanVote>(list);
+                } else {
+                    list = (List<PlanVote>) QueryUtil.list(q, getDialect(),
+                            start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Removes all the plan votes from the database.
+     *
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeAll() throws SystemException {
+        for (PlanVote planVote : findAll()) {
+            remove(planVote);
+        }
+    }
+
+    /**
      * Returns the number of plan votes.
      *
      * @return the number of plan votes
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1888,16 +2086,15 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
                 Query q = session.createQuery(_SQL_COUNT_PLANVOTE);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1919,7 +2116,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<PlanVote>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1932,6 +2129,7 @@ public class PlanVotePersistenceImpl extends BasePersistenceImpl<PlanVote>
     public void destroy() {
         EntityCacheUtil.removeCache(PlanVoteImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

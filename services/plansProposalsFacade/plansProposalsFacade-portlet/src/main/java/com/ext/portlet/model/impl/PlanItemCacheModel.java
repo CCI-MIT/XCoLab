@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -17,7 +20,7 @@ import java.util.Date;
  * @see PlanItem
  * @generated
  */
-public class PlanItemCacheModel implements CacheModel<PlanItem>, Serializable {
+public class PlanItemCacheModel implements CacheModel<PlanItem>, Externalizable {
     public long id;
     public long planId;
     public String state;
@@ -49,6 +52,7 @@ public class PlanItemCacheModel implements CacheModel<PlanItem>, Serializable {
         return sb.toString();
     }
 
+    @Override
     public PlanItem toEntityModel() {
         PlanItemImpl planItemImpl = new PlanItemImpl();
 
@@ -80,5 +84,40 @@ public class PlanItemCacheModel implements CacheModel<PlanItem>, Serializable {
         planItemImpl.resetOriginalValues();
 
         return planItemImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        planId = objectInput.readLong();
+        state = objectInput.readUTF();
+        updated = objectInput.readLong();
+        updateAuthorId = objectInput.readLong();
+        updateType = objectInput.readUTF();
+        version = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+        objectOutput.writeLong(planId);
+
+        if (state == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(state);
+        }
+
+        objectOutput.writeLong(updated);
+        objectOutput.writeLong(updateAuthorId);
+
+        if (updateType == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(updateType);
+        }
+
+        objectOutput.writeLong(version);
     }
 }

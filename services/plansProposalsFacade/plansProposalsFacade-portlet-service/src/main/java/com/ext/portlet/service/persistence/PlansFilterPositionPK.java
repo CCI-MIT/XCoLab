@@ -45,6 +45,7 @@ public class PlansFilterPositionPK implements Comparable<PlansFilterPositionPK>,
         this.positionId = positionId;
     }
 
+    @Override
     public int compareTo(PlansFilterPositionPK pk) {
         if (pk == null) {
             return -1;
@@ -93,17 +94,15 @@ public class PlansFilterPositionPK implements Comparable<PlansFilterPositionPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlansFilterPositionPK)) {
             return false;
         }
 
-        PlansFilterPositionPK pk = null;
-
-        try {
-            pk = (PlansFilterPositionPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlansFilterPositionPK pk = (PlansFilterPositionPK) obj;
 
         if ((userId == pk.userId) && (planTypeId == pk.planTypeId) &&
                 (positionId == pk.positionId)) {

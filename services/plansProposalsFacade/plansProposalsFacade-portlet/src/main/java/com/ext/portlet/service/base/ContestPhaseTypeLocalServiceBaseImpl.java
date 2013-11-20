@@ -1,6 +1,7 @@
 package com.ext.portlet.service.base;
 
 import com.ext.portlet.model.ContestPhaseType;
+<<<<<<< HEAD
 import com.ext.portlet.service.ActivitySubscriptionLocalService;
 import com.ext.portlet.service.ActivitySubscriptionService;
 import com.ext.portlet.service.AnalyticsUserEventLocalService;
@@ -16,143 +17,9 @@ import com.ext.portlet.service.ContestPhaseLocalService;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalService;
 import com.ext.portlet.service.ContestPhaseRibbonTypeService;
 import com.ext.portlet.service.ContestPhaseService;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.ContestPhaseTypeLocalService;
-import com.ext.portlet.service.ContestPhaseTypeService;
-import com.ext.portlet.service.ContestService;
-import com.ext.portlet.service.ContestTeamMemberLocalService;
-import com.ext.portlet.service.ContestTeamMemberService;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalService;
-import com.ext.portlet.service.DiscussionCategoryGroupService;
-import com.ext.portlet.service.DiscussionCategoryLocalService;
-import com.ext.portlet.service.DiscussionCategoryService;
-import com.ext.portlet.service.DiscussionMessageFlagLocalService;
-import com.ext.portlet.service.DiscussionMessageFlagService;
-import com.ext.portlet.service.DiscussionMessageLocalService;
-import com.ext.portlet.service.DiscussionMessageService;
-import com.ext.portlet.service.EmailListLocalService;
-import com.ext.portlet.service.EmailListService;
-import com.ext.portlet.service.FocusAreaLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermService;
-import com.ext.portlet.service.FocusAreaService;
-import com.ext.portlet.service.LandingPageLocalService;
-import com.ext.portlet.service.LandingPageService;
-import com.ext.portlet.service.MessageLocalService;
-import com.ext.portlet.service.MessageRecipientStatusLocalService;
-import com.ext.portlet.service.MessageRecipientStatusService;
-import com.ext.portlet.service.MessageService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsService;
-import com.ext.portlet.service.MessagingMessageConversionLocalService;
-import com.ext.portlet.service.MessagingMessageConversionService;
-import com.ext.portlet.service.MessagingMessageConversionTypeLocalService;
-import com.ext.portlet.service.MessagingMessageConversionTypeService;
-import com.ext.portlet.service.MessagingMessageLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientService;
-import com.ext.portlet.service.MessagingMessageService;
-import com.ext.portlet.service.MessagingRedirectLinkLocalService;
-import com.ext.portlet.service.MessagingRedirectLinkService;
-import com.ext.portlet.service.MessagingUserPreferencesLocalService;
-import com.ext.portlet.service.MessagingUserPreferencesService;
-import com.ext.portlet.service.ModelCategoryLocalService;
-import com.ext.portlet.service.ModelCategoryService;
-import com.ext.portlet.service.ModelDiscussionLocalService;
-import com.ext.portlet.service.ModelDiscussionService;
-import com.ext.portlet.service.ModelGlobalPreferenceLocalService;
-import com.ext.portlet.service.ModelGlobalPreferenceService;
-import com.ext.portlet.service.ModelInputGroupLocalService;
-import com.ext.portlet.service.ModelInputGroupService;
-import com.ext.portlet.service.ModelInputItemLocalService;
-import com.ext.portlet.service.ModelInputItemService;
-import com.ext.portlet.service.ModelOutputChartOrderLocalService;
-import com.ext.portlet.service.ModelOutputChartOrderService;
-import com.ext.portlet.service.ModelOutputItemLocalService;
-import com.ext.portlet.service.ModelOutputItemService;
-import com.ext.portlet.service.ModelPositionLocalService;
-import com.ext.portlet.service.ModelPositionService;
-import com.ext.portlet.service.ModelRunnerLocalService;
-import com.ext.portlet.service.ModelRunnerService;
-import com.ext.portlet.service.OntologySpaceLocalService;
-import com.ext.portlet.service.OntologySpaceService;
-import com.ext.portlet.service.OntologyTermEntityLocalService;
-import com.ext.portlet.service.OntologyTermEntityService;
-import com.ext.portlet.service.OntologyTermLocalService;
-import com.ext.portlet.service.OntologyTermService;
-import com.ext.portlet.service.Plan2ProposalLocalService;
-import com.ext.portlet.service.Plan2ProposalService;
-import com.ext.portlet.service.PlanAttributeFilterLocalService;
-import com.ext.portlet.service.PlanAttributeFilterService;
-import com.ext.portlet.service.PlanAttributeLocalService;
-import com.ext.portlet.service.PlanAttributeService;
-import com.ext.portlet.service.PlanColumnSettingsLocalService;
-import com.ext.portlet.service.PlanColumnSettingsService;
-import com.ext.portlet.service.PlanDescriptionLocalService;
-import com.ext.portlet.service.PlanDescriptionService;
-import com.ext.portlet.service.PlanFanLocalService;
-import com.ext.portlet.service.PlanFanService;
-import com.ext.portlet.service.PlanItemGroupLocalService;
-import com.ext.portlet.service.PlanItemGroupService;
-import com.ext.portlet.service.PlanItemLocalService;
-import com.ext.portlet.service.PlanItemService;
-import com.ext.portlet.service.PlanMetaLocalService;
-import com.ext.portlet.service.PlanMetaService;
-import com.ext.portlet.service.PlanModelRunLocalService;
-import com.ext.portlet.service.PlanModelRunService;
-import com.ext.portlet.service.PlanPositionItemLocalService;
-import com.ext.portlet.service.PlanPositionItemService;
-import com.ext.portlet.service.PlanPositionLocalService;
-import com.ext.portlet.service.PlanPositionService;
-import com.ext.portlet.service.PlanPositionsLocalService;
-import com.ext.portlet.service.PlanPositionsService;
-import com.ext.portlet.service.PlanPropertyFilterLocalService;
-import com.ext.portlet.service.PlanPropertyFilterService;
-import com.ext.portlet.service.PlanRelatedLocalService;
-import com.ext.portlet.service.PlanRelatedService;
-import com.ext.portlet.service.PlanSectionDefinitionLocalService;
-import com.ext.portlet.service.PlanSectionDefinitionService;
-import com.ext.portlet.service.PlanSectionLocalService;
-import com.ext.portlet.service.PlanSectionPlanMapLocalService;
-import com.ext.portlet.service.PlanSectionPlanMapService;
-import com.ext.portlet.service.PlanSectionService;
-import com.ext.portlet.service.PlanTeamHistoryLocalService;
-import com.ext.portlet.service.PlanTeamHistoryService;
-import com.ext.portlet.service.PlanTemplateLocalService;
-import com.ext.portlet.service.PlanTemplateSectionLocalService;
-import com.ext.portlet.service.PlanTemplateSectionService;
-import com.ext.portlet.service.PlanTemplateService;
-import com.ext.portlet.service.PlanTypeAttributeLocalService;
-import com.ext.portlet.service.PlanTypeAttributeService;
-import com.ext.portlet.service.PlanTypeColumnLocalService;
-import com.ext.portlet.service.PlanTypeColumnService;
-import com.ext.portlet.service.PlanTypeLocalService;
-import com.ext.portlet.service.PlanTypeService;
-import com.ext.portlet.service.PlanVoteLocalService;
-import com.ext.portlet.service.PlanVoteService;
-import com.ext.portlet.service.PlansFilterLocalService;
-import com.ext.portlet.service.PlansFilterPositionLocalService;
-import com.ext.portlet.service.PlansFilterPositionService;
-import com.ext.portlet.service.PlansFilterService;
-import com.ext.portlet.service.PlansUserSettingsLocalService;
-import com.ext.portlet.service.PlansUserSettingsService;
-import com.ext.portlet.service.Proposal2PhaseLocalService;
-import com.ext.portlet.service.Proposal2PhaseService;
-import com.ext.portlet.service.ProposalAttributeLocalService;
-import com.ext.portlet.service.ProposalAttributeService;
-import com.ext.portlet.service.ProposalAttributeTypeLocalService;
-import com.ext.portlet.service.ProposalAttributeTypeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeService;
-import com.ext.portlet.service.ProposalLocalService;
-import com.ext.portlet.service.ProposalService;
-import com.ext.portlet.service.ProposalSupporterLocalService;
-import com.ext.portlet.service.ProposalSupporterService;
-import com.ext.portlet.service.ProposalVersionLocalService;
-import com.ext.portlet.service.ProposalVersionService;
-import com.ext.portlet.service.ProposalVoteLocalService;
-import com.ext.portlet.service.ProposalVoteService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -230,28 +97,21 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.counter.service.CounterLocalService;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.service.BaseLocalServiceImpl;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
-import com.liferay.portal.service.ResourceLocalService;
-import com.liferay.portal.service.ResourceService;
-import com.liferay.portal.service.UserLocalService;
-import com.liferay.portal.service.UserService;
-import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 
 import java.io.Serializable;
@@ -261,7 +121,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 /**
- * The base implementation of the contest phase type local service.
+ * Provides the base implementation for the contest phase type local service.
  *
  * <p>
  * This implementation exists only as a container for the default service methods generated by ServiceBuilder. All custom service methods should be put in {@link com.ext.portlet.service.impl.ContestPhaseTypeLocalServiceImpl}.
@@ -273,14 +133,15 @@ import javax.sql.DataSource;
  * @generated
  */
 public abstract class ContestPhaseTypeLocalServiceBaseImpl
-    implements ContestPhaseTypeLocalService, IdentifiableBean {
-    private static Log _log = LogFactoryUtil.getLog(ContestPhaseTypeLocalServiceBaseImpl.class);
-    @BeanReference(type = ActivitySubscriptionLocalService.class)
-    protected ActivitySubscriptionLocalService activitySubscriptionLocalService;
-    @BeanReference(type = ActivitySubscriptionService.class)
-    protected ActivitySubscriptionService activitySubscriptionService;
+    extends BaseLocalServiceImpl implements ContestPhaseTypeLocalService,
+        IdentifiableBean {
+    @BeanReference(type = com.ext.portlet.service.ActivitySubscriptionLocalService.class)
+    protected com.ext.portlet.service.ActivitySubscriptionLocalService activitySubscriptionLocalService;
+    @BeanReference(type = com.ext.portlet.service.ActivitySubscriptionService.class)
+    protected com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService;
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+<<<<<<< HEAD
     @BeanReference(type = AnalyticsUserEventLocalService.class)
     protected AnalyticsUserEventLocalService analyticsUserEventLocalService;
     @BeanReference(type = AnalyticsUserEventService.class)
@@ -291,461 +152,465 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
     protected BalloonStatsEntryLocalService balloonStatsEntryLocalService;
     @BeanReference(type = BalloonStatsEntryService.class)
     protected BalloonStatsEntryService balloonStatsEntryService;
+=======
+    @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryLocalService.class)
+    protected com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService;
+    @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryService.class)
+    protected com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService;
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
-    @BeanReference(type = ContestLocalService.class)
-    protected ContestLocalService contestLocalService;
-    @BeanReference(type = ContestService.class)
-    protected ContestService contestService;
+    @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
+    protected com.ext.portlet.service.ContestLocalService contestLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestService.class)
+    protected com.ext.portlet.service.ContestService contestService;
     @BeanReference(type = ContestPersistence.class)
     protected ContestPersistence contestPersistence;
-    @BeanReference(type = ContestDebateLocalService.class)
-    protected ContestDebateLocalService contestDebateLocalService;
-    @BeanReference(type = ContestDebateService.class)
-    protected ContestDebateService contestDebateService;
+    @BeanReference(type = com.ext.portlet.service.ContestDebateLocalService.class)
+    protected com.ext.portlet.service.ContestDebateLocalService contestDebateLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestDebateService.class)
+    protected com.ext.portlet.service.ContestDebateService contestDebateService;
     @BeanReference(type = ContestDebatePersistence.class)
     protected ContestDebatePersistence contestDebatePersistence;
-    @BeanReference(type = ContestPhaseLocalService.class)
-    protected ContestPhaseLocalService contestPhaseLocalService;
-    @BeanReference(type = ContestPhaseService.class)
-    protected ContestPhaseService contestPhaseService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseLocalService.class)
+    protected com.ext.portlet.service.ContestPhaseLocalService contestPhaseLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseService.class)
+    protected com.ext.portlet.service.ContestPhaseService contestPhaseService;
     @BeanReference(type = ContestPhasePersistence.class)
     protected ContestPhasePersistence contestPhasePersistence;
-    @BeanReference(type = ContestPhaseColumnLocalService.class)
-    protected ContestPhaseColumnLocalService contestPhaseColumnLocalService;
-    @BeanReference(type = ContestPhaseColumnService.class)
-    protected ContestPhaseColumnService contestPhaseColumnService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseColumnLocalService.class)
+    protected com.ext.portlet.service.ContestPhaseColumnLocalService contestPhaseColumnLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseColumnService.class)
+    protected com.ext.portlet.service.ContestPhaseColumnService contestPhaseColumnService;
     @BeanReference(type = ContestPhaseColumnPersistence.class)
     protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
-    @BeanReference(type = ContestPhaseRibbonTypeLocalService.class)
-    protected ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService;
-    @BeanReference(type = ContestPhaseRibbonTypeService.class)
-    protected ContestPhaseRibbonTypeService contestPhaseRibbonTypeService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseRibbonTypeLocalService.class)
+    protected com.ext.portlet.service.ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseRibbonTypeService.class)
+    protected com.ext.portlet.service.ContestPhaseRibbonTypeService contestPhaseRibbonTypeService;
     @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
     protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
-    @BeanReference(type = ContestPhaseTypeLocalService.class)
-    protected ContestPhaseTypeLocalService contestPhaseTypeLocalService;
-    @BeanReference(type = ContestPhaseTypeService.class)
-    protected ContestPhaseTypeService contestPhaseTypeService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseTypeLocalService.class)
+    protected com.ext.portlet.service.ContestPhaseTypeLocalService contestPhaseTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestPhaseTypeService.class)
+    protected com.ext.portlet.service.ContestPhaseTypeService contestPhaseTypeService;
     @BeanReference(type = ContestPhaseTypePersistence.class)
     protected ContestPhaseTypePersistence contestPhaseTypePersistence;
-    @BeanReference(type = ContestTeamMemberLocalService.class)
-    protected ContestTeamMemberLocalService contestTeamMemberLocalService;
-    @BeanReference(type = ContestTeamMemberService.class)
-    protected ContestTeamMemberService contestTeamMemberService;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberLocalService.class)
+    protected com.ext.portlet.service.ContestTeamMemberLocalService contestTeamMemberLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestTeamMemberService.class)
+    protected com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService;
     @BeanReference(type = ContestTeamMemberPersistence.class)
     protected ContestTeamMemberPersistence contestTeamMemberPersistence;
-    @BeanReference(type = DiscussionCategoryLocalService.class)
-    protected DiscussionCategoryLocalService discussionCategoryLocalService;
-    @BeanReference(type = DiscussionCategoryService.class)
-    protected DiscussionCategoryService discussionCategoryService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryLocalService.class)
+    protected com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryService.class)
+    protected com.ext.portlet.service.DiscussionCategoryService discussionCategoryService;
     @BeanReference(type = DiscussionCategoryPersistence.class)
     protected DiscussionCategoryPersistence discussionCategoryPersistence;
-    @BeanReference(type = DiscussionCategoryGroupLocalService.class)
-    protected DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService;
-    @BeanReference(type = DiscussionCategoryGroupService.class)
-    protected DiscussionCategoryGroupService discussionCategoryGroupService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryGroupLocalService.class)
+    protected com.ext.portlet.service.DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryGroupService.class)
+    protected com.ext.portlet.service.DiscussionCategoryGroupService discussionCategoryGroupService;
     @BeanReference(type = DiscussionCategoryGroupPersistence.class)
     protected DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence;
-    @BeanReference(type = DiscussionMessageLocalService.class)
-    protected DiscussionMessageLocalService discussionMessageLocalService;
-    @BeanReference(type = DiscussionMessageService.class)
-    protected DiscussionMessageService discussionMessageService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionMessageLocalService.class)
+    protected com.ext.portlet.service.DiscussionMessageLocalService discussionMessageLocalService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionMessageService.class)
+    protected com.ext.portlet.service.DiscussionMessageService discussionMessageService;
     @BeanReference(type = DiscussionMessagePersistence.class)
     protected DiscussionMessagePersistence discussionMessagePersistence;
-    @BeanReference(type = DiscussionMessageFlagLocalService.class)
-    protected DiscussionMessageFlagLocalService discussionMessageFlagLocalService;
-    @BeanReference(type = DiscussionMessageFlagService.class)
-    protected DiscussionMessageFlagService discussionMessageFlagService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionMessageFlagLocalService.class)
+    protected com.ext.portlet.service.DiscussionMessageFlagLocalService discussionMessageFlagLocalService;
+    @BeanReference(type = com.ext.portlet.service.DiscussionMessageFlagService.class)
+    protected com.ext.portlet.service.DiscussionMessageFlagService discussionMessageFlagService;
     @BeanReference(type = DiscussionMessageFlagPersistence.class)
     protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
-    @BeanReference(type = EmailListLocalService.class)
-    protected EmailListLocalService emailListLocalService;
-    @BeanReference(type = EmailListService.class)
-    protected EmailListService emailListService;
+    @BeanReference(type = com.ext.portlet.service.EmailListLocalService.class)
+    protected com.ext.portlet.service.EmailListLocalService emailListLocalService;
+    @BeanReference(type = com.ext.portlet.service.EmailListService.class)
+    protected com.ext.portlet.service.EmailListService emailListService;
     @BeanReference(type = EmailListPersistence.class)
     protected EmailListPersistence emailListPersistence;
-    @BeanReference(type = FocusAreaLocalService.class)
-    protected FocusAreaLocalService focusAreaLocalService;
-    @BeanReference(type = FocusAreaService.class)
-    protected FocusAreaService focusAreaService;
+    @BeanReference(type = com.ext.portlet.service.FocusAreaLocalService.class)
+    protected com.ext.portlet.service.FocusAreaLocalService focusAreaLocalService;
+    @BeanReference(type = com.ext.portlet.service.FocusAreaService.class)
+    protected com.ext.portlet.service.FocusAreaService focusAreaService;
     @BeanReference(type = FocusAreaPersistence.class)
     protected FocusAreaPersistence focusAreaPersistence;
-    @BeanReference(type = FocusAreaOntologyTermLocalService.class)
-    protected FocusAreaOntologyTermLocalService focusAreaOntologyTermLocalService;
-    @BeanReference(type = FocusAreaOntologyTermService.class)
-    protected FocusAreaOntologyTermService focusAreaOntologyTermService;
+    @BeanReference(type = com.ext.portlet.service.FocusAreaOntologyTermLocalService.class)
+    protected com.ext.portlet.service.FocusAreaOntologyTermLocalService focusAreaOntologyTermLocalService;
+    @BeanReference(type = com.ext.portlet.service.FocusAreaOntologyTermService.class)
+    protected com.ext.portlet.service.FocusAreaOntologyTermService focusAreaOntologyTermService;
     @BeanReference(type = FocusAreaOntologyTermPersistence.class)
     protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
-    @BeanReference(type = LandingPageLocalService.class)
-    protected LandingPageLocalService landingPageLocalService;
-    @BeanReference(type = LandingPageService.class)
-    protected LandingPageService landingPageService;
+    @BeanReference(type = com.ext.portlet.service.LandingPageLocalService.class)
+    protected com.ext.portlet.service.LandingPageLocalService landingPageLocalService;
+    @BeanReference(type = com.ext.portlet.service.LandingPageService.class)
+    protected com.ext.portlet.service.LandingPageService landingPageService;
     @BeanReference(type = LandingPagePersistence.class)
     protected LandingPagePersistence landingPagePersistence;
-    @BeanReference(type = MessageLocalService.class)
-    protected MessageLocalService messageLocalService;
-    @BeanReference(type = MessageService.class)
-    protected MessageService messageService;
+    @BeanReference(type = com.ext.portlet.service.MessageLocalService.class)
+    protected com.ext.portlet.service.MessageLocalService messageLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessageService.class)
+    protected com.ext.portlet.service.MessageService messageService;
     @BeanReference(type = MessagePersistence.class)
     protected MessagePersistence messagePersistence;
-    @BeanReference(type = MessageRecipientStatusLocalService.class)
-    protected MessageRecipientStatusLocalService messageRecipientStatusLocalService;
-    @BeanReference(type = MessageRecipientStatusService.class)
-    protected MessageRecipientStatusService messageRecipientStatusService;
+    @BeanReference(type = com.ext.portlet.service.MessageRecipientStatusLocalService.class)
+    protected com.ext.portlet.service.MessageRecipientStatusLocalService messageRecipientStatusLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessageRecipientStatusService.class)
+    protected com.ext.portlet.service.MessageRecipientStatusService messageRecipientStatusService;
     @BeanReference(type = MessageRecipientStatusPersistence.class)
     protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
-    @BeanReference(type = MessagingIgnoredRecipientsLocalService.class)
-    protected MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
-    @BeanReference(type = MessagingIgnoredRecipientsService.class)
-    protected MessagingIgnoredRecipientsService messagingIgnoredRecipientsService;
+    @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsLocalService.class)
+    protected com.ext.portlet.service.MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsService.class)
+    protected com.ext.portlet.service.MessagingIgnoredRecipientsService messagingIgnoredRecipientsService;
     @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
     protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
-    @BeanReference(type = MessagingMessageLocalService.class)
-    protected MessagingMessageLocalService messagingMessageLocalService;
-    @BeanReference(type = MessagingMessageService.class)
-    protected MessagingMessageService messagingMessageService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageLocalService.class)
+    protected com.ext.portlet.service.MessagingMessageLocalService messagingMessageLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageService.class)
+    protected com.ext.portlet.service.MessagingMessageService messagingMessageService;
     @BeanReference(type = MessagingMessagePersistence.class)
     protected MessagingMessagePersistence messagingMessagePersistence;
-    @BeanReference(type = MessagingMessageConversionLocalService.class)
-    protected MessagingMessageConversionLocalService messagingMessageConversionLocalService;
-    @BeanReference(type = MessagingMessageConversionService.class)
-    protected MessagingMessageConversionService messagingMessageConversionService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageConversionLocalService.class)
+    protected com.ext.portlet.service.MessagingMessageConversionLocalService messagingMessageConversionLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageConversionService.class)
+    protected com.ext.portlet.service.MessagingMessageConversionService messagingMessageConversionService;
     @BeanReference(type = MessagingMessageConversionPersistence.class)
     protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
-    @BeanReference(type = MessagingMessageConversionTypeLocalService.class)
-    protected MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService;
-    @BeanReference(type = MessagingMessageConversionTypeService.class)
-    protected MessagingMessageConversionTypeService messagingMessageConversionTypeService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageConversionTypeLocalService.class)
+    protected com.ext.portlet.service.MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageConversionTypeService.class)
+    protected com.ext.portlet.service.MessagingMessageConversionTypeService messagingMessageConversionTypeService;
     @BeanReference(type = MessagingMessageConversionTypePersistence.class)
     protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
-    @BeanReference(type = MessagingMessageRecipientLocalService.class)
-    protected MessagingMessageRecipientLocalService messagingMessageRecipientLocalService;
-    @BeanReference(type = MessagingMessageRecipientService.class)
-    protected MessagingMessageRecipientService messagingMessageRecipientService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageRecipientLocalService.class)
+    protected com.ext.portlet.service.MessagingMessageRecipientLocalService messagingMessageRecipientLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingMessageRecipientService.class)
+    protected com.ext.portlet.service.MessagingMessageRecipientService messagingMessageRecipientService;
     @BeanReference(type = MessagingMessageRecipientPersistence.class)
     protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
-    @BeanReference(type = MessagingRedirectLinkLocalService.class)
-    protected MessagingRedirectLinkLocalService messagingRedirectLinkLocalService;
-    @BeanReference(type = MessagingRedirectLinkService.class)
-    protected MessagingRedirectLinkService messagingRedirectLinkService;
+    @BeanReference(type = com.ext.portlet.service.MessagingRedirectLinkLocalService.class)
+    protected com.ext.portlet.service.MessagingRedirectLinkLocalService messagingRedirectLinkLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingRedirectLinkService.class)
+    protected com.ext.portlet.service.MessagingRedirectLinkService messagingRedirectLinkService;
     @BeanReference(type = MessagingRedirectLinkPersistence.class)
     protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
-    @BeanReference(type = MessagingUserPreferencesLocalService.class)
-    protected MessagingUserPreferencesLocalService messagingUserPreferencesLocalService;
-    @BeanReference(type = MessagingUserPreferencesService.class)
-    protected MessagingUserPreferencesService messagingUserPreferencesService;
+    @BeanReference(type = com.ext.portlet.service.MessagingUserPreferencesLocalService.class)
+    protected com.ext.portlet.service.MessagingUserPreferencesLocalService messagingUserPreferencesLocalService;
+    @BeanReference(type = com.ext.portlet.service.MessagingUserPreferencesService.class)
+    protected com.ext.portlet.service.MessagingUserPreferencesService messagingUserPreferencesService;
     @BeanReference(type = MessagingUserPreferencesPersistence.class)
     protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
-    @BeanReference(type = ModelCategoryLocalService.class)
-    protected ModelCategoryLocalService modelCategoryLocalService;
-    @BeanReference(type = ModelCategoryService.class)
-    protected ModelCategoryService modelCategoryService;
+    @BeanReference(type = com.ext.portlet.service.ModelCategoryLocalService.class)
+    protected com.ext.portlet.service.ModelCategoryLocalService modelCategoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelCategoryService.class)
+    protected com.ext.portlet.service.ModelCategoryService modelCategoryService;
     @BeanReference(type = ModelCategoryPersistence.class)
     protected ModelCategoryPersistence modelCategoryPersistence;
-    @BeanReference(type = ModelDiscussionLocalService.class)
-    protected ModelDiscussionLocalService modelDiscussionLocalService;
-    @BeanReference(type = ModelDiscussionService.class)
-    protected ModelDiscussionService modelDiscussionService;
+    @BeanReference(type = com.ext.portlet.service.ModelDiscussionLocalService.class)
+    protected com.ext.portlet.service.ModelDiscussionLocalService modelDiscussionLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelDiscussionService.class)
+    protected com.ext.portlet.service.ModelDiscussionService modelDiscussionService;
     @BeanReference(type = ModelDiscussionPersistence.class)
     protected ModelDiscussionPersistence modelDiscussionPersistence;
-    @BeanReference(type = ModelGlobalPreferenceLocalService.class)
-    protected ModelGlobalPreferenceLocalService modelGlobalPreferenceLocalService;
-    @BeanReference(type = ModelGlobalPreferenceService.class)
-    protected ModelGlobalPreferenceService modelGlobalPreferenceService;
+    @BeanReference(type = com.ext.portlet.service.ModelGlobalPreferenceLocalService.class)
+    protected com.ext.portlet.service.ModelGlobalPreferenceLocalService modelGlobalPreferenceLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelGlobalPreferenceService.class)
+    protected com.ext.portlet.service.ModelGlobalPreferenceService modelGlobalPreferenceService;
     @BeanReference(type = ModelGlobalPreferencePersistence.class)
     protected ModelGlobalPreferencePersistence modelGlobalPreferencePersistence;
-    @BeanReference(type = ModelInputGroupLocalService.class)
-    protected ModelInputGroupLocalService modelInputGroupLocalService;
-    @BeanReference(type = ModelInputGroupService.class)
-    protected ModelInputGroupService modelInputGroupService;
+    @BeanReference(type = com.ext.portlet.service.ModelInputGroupLocalService.class)
+    protected com.ext.portlet.service.ModelInputGroupLocalService modelInputGroupLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelInputGroupService.class)
+    protected com.ext.portlet.service.ModelInputGroupService modelInputGroupService;
     @BeanReference(type = ModelInputGroupPersistence.class)
     protected ModelInputGroupPersistence modelInputGroupPersistence;
-    @BeanReference(type = ModelInputItemLocalService.class)
-    protected ModelInputItemLocalService modelInputItemLocalService;
-    @BeanReference(type = ModelInputItemService.class)
-    protected ModelInputItemService modelInputItemService;
+    @BeanReference(type = com.ext.portlet.service.ModelInputItemLocalService.class)
+    protected com.ext.portlet.service.ModelInputItemLocalService modelInputItemLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelInputItemService.class)
+    protected com.ext.portlet.service.ModelInputItemService modelInputItemService;
     @BeanReference(type = ModelInputItemPersistence.class)
     protected ModelInputItemPersistence modelInputItemPersistence;
-    @BeanReference(type = ModelOutputChartOrderLocalService.class)
-    protected ModelOutputChartOrderLocalService modelOutputChartOrderLocalService;
-    @BeanReference(type = ModelOutputChartOrderService.class)
-    protected ModelOutputChartOrderService modelOutputChartOrderService;
+    @BeanReference(type = com.ext.portlet.service.ModelOutputChartOrderLocalService.class)
+    protected com.ext.portlet.service.ModelOutputChartOrderLocalService modelOutputChartOrderLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelOutputChartOrderService.class)
+    protected com.ext.portlet.service.ModelOutputChartOrderService modelOutputChartOrderService;
     @BeanReference(type = ModelOutputChartOrderPersistence.class)
     protected ModelOutputChartOrderPersistence modelOutputChartOrderPersistence;
-    @BeanReference(type = ModelOutputItemLocalService.class)
-    protected ModelOutputItemLocalService modelOutputItemLocalService;
-    @BeanReference(type = ModelOutputItemService.class)
-    protected ModelOutputItemService modelOutputItemService;
+    @BeanReference(type = com.ext.portlet.service.ModelOutputItemLocalService.class)
+    protected com.ext.portlet.service.ModelOutputItemLocalService modelOutputItemLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelOutputItemService.class)
+    protected com.ext.portlet.service.ModelOutputItemService modelOutputItemService;
     @BeanReference(type = ModelOutputItemPersistence.class)
     protected ModelOutputItemPersistence modelOutputItemPersistence;
-    @BeanReference(type = ModelPositionLocalService.class)
-    protected ModelPositionLocalService modelPositionLocalService;
-    @BeanReference(type = ModelPositionService.class)
-    protected ModelPositionService modelPositionService;
+    @BeanReference(type = com.ext.portlet.service.ModelPositionLocalService.class)
+    protected com.ext.portlet.service.ModelPositionLocalService modelPositionLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelPositionService.class)
+    protected com.ext.portlet.service.ModelPositionService modelPositionService;
     @BeanReference(type = ModelPositionPersistence.class)
     protected ModelPositionPersistence modelPositionPersistence;
-    @BeanReference(type = ModelRunnerLocalService.class)
-    protected ModelRunnerLocalService modelRunnerLocalService;
-    @BeanReference(type = ModelRunnerService.class)
-    protected ModelRunnerService modelRunnerService;
-    @BeanReference(type = OntologySpaceLocalService.class)
-    protected OntologySpaceLocalService ontologySpaceLocalService;
-    @BeanReference(type = OntologySpaceService.class)
-    protected OntologySpaceService ontologySpaceService;
+    @BeanReference(type = com.ext.portlet.service.ModelRunnerLocalService.class)
+    protected com.ext.portlet.service.ModelRunnerLocalService modelRunnerLocalService;
+    @BeanReference(type = com.ext.portlet.service.ModelRunnerService.class)
+    protected com.ext.portlet.service.ModelRunnerService modelRunnerService;
+    @BeanReference(type = com.ext.portlet.service.OntologySpaceLocalService.class)
+    protected com.ext.portlet.service.OntologySpaceLocalService ontologySpaceLocalService;
+    @BeanReference(type = com.ext.portlet.service.OntologySpaceService.class)
+    protected com.ext.portlet.service.OntologySpaceService ontologySpaceService;
     @BeanReference(type = OntologySpacePersistence.class)
     protected OntologySpacePersistence ontologySpacePersistence;
-    @BeanReference(type = OntologyTermLocalService.class)
-    protected OntologyTermLocalService ontologyTermLocalService;
-    @BeanReference(type = OntologyTermService.class)
-    protected OntologyTermService ontologyTermService;
+    @BeanReference(type = com.ext.portlet.service.OntologyTermLocalService.class)
+    protected com.ext.portlet.service.OntologyTermLocalService ontologyTermLocalService;
+    @BeanReference(type = com.ext.portlet.service.OntologyTermService.class)
+    protected com.ext.portlet.service.OntologyTermService ontologyTermService;
     @BeanReference(type = OntologyTermPersistence.class)
     protected OntologyTermPersistence ontologyTermPersistence;
-    @BeanReference(type = OntologyTermEntityLocalService.class)
-    protected OntologyTermEntityLocalService ontologyTermEntityLocalService;
-    @BeanReference(type = OntologyTermEntityService.class)
-    protected OntologyTermEntityService ontologyTermEntityService;
+    @BeanReference(type = com.ext.portlet.service.OntologyTermEntityLocalService.class)
+    protected com.ext.portlet.service.OntologyTermEntityLocalService ontologyTermEntityLocalService;
+    @BeanReference(type = com.ext.portlet.service.OntologyTermEntityService.class)
+    protected com.ext.portlet.service.OntologyTermEntityService ontologyTermEntityService;
     @BeanReference(type = OntologyTermEntityPersistence.class)
     protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
-    @BeanReference(type = Plan2ProposalLocalService.class)
-    protected Plan2ProposalLocalService plan2ProposalLocalService;
-    @BeanReference(type = Plan2ProposalService.class)
-    protected Plan2ProposalService plan2ProposalService;
+    @BeanReference(type = com.ext.portlet.service.Plan2ProposalLocalService.class)
+    protected com.ext.portlet.service.Plan2ProposalLocalService plan2ProposalLocalService;
+    @BeanReference(type = com.ext.portlet.service.Plan2ProposalService.class)
+    protected com.ext.portlet.service.Plan2ProposalService plan2ProposalService;
     @BeanReference(type = Plan2ProposalPersistence.class)
     protected Plan2ProposalPersistence plan2ProposalPersistence;
-    @BeanReference(type = PlanAttributeLocalService.class)
-    protected PlanAttributeLocalService planAttributeLocalService;
-    @BeanReference(type = PlanAttributeService.class)
-    protected PlanAttributeService planAttributeService;
+    @BeanReference(type = com.ext.portlet.service.PlanAttributeLocalService.class)
+    protected com.ext.portlet.service.PlanAttributeLocalService planAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanAttributeService.class)
+    protected com.ext.portlet.service.PlanAttributeService planAttributeService;
     @BeanReference(type = PlanAttributePersistence.class)
     protected PlanAttributePersistence planAttributePersistence;
-    @BeanReference(type = PlanAttributeFilterLocalService.class)
-    protected PlanAttributeFilterLocalService planAttributeFilterLocalService;
-    @BeanReference(type = PlanAttributeFilterService.class)
-    protected PlanAttributeFilterService planAttributeFilterService;
+    @BeanReference(type = com.ext.portlet.service.PlanAttributeFilterLocalService.class)
+    protected com.ext.portlet.service.PlanAttributeFilterLocalService planAttributeFilterLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanAttributeFilterService.class)
+    protected com.ext.portlet.service.PlanAttributeFilterService planAttributeFilterService;
     @BeanReference(type = PlanAttributeFilterPersistence.class)
     protected PlanAttributeFilterPersistence planAttributeFilterPersistence;
-    @BeanReference(type = PlanColumnSettingsLocalService.class)
-    protected PlanColumnSettingsLocalService planColumnSettingsLocalService;
-    @BeanReference(type = PlanColumnSettingsService.class)
-    protected PlanColumnSettingsService planColumnSettingsService;
+    @BeanReference(type = com.ext.portlet.service.PlanColumnSettingsLocalService.class)
+    protected com.ext.portlet.service.PlanColumnSettingsLocalService planColumnSettingsLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanColumnSettingsService.class)
+    protected com.ext.portlet.service.PlanColumnSettingsService planColumnSettingsService;
     @BeanReference(type = PlanColumnSettingsPersistence.class)
     protected PlanColumnSettingsPersistence planColumnSettingsPersistence;
-    @BeanReference(type = PlanDescriptionLocalService.class)
-    protected PlanDescriptionLocalService planDescriptionLocalService;
-    @BeanReference(type = PlanDescriptionService.class)
-    protected PlanDescriptionService planDescriptionService;
+    @BeanReference(type = com.ext.portlet.service.PlanDescriptionLocalService.class)
+    protected com.ext.portlet.service.PlanDescriptionLocalService planDescriptionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanDescriptionService.class)
+    protected com.ext.portlet.service.PlanDescriptionService planDescriptionService;
     @BeanReference(type = PlanDescriptionPersistence.class)
     protected PlanDescriptionPersistence planDescriptionPersistence;
-    @BeanReference(type = PlanFanLocalService.class)
-    protected PlanFanLocalService planFanLocalService;
-    @BeanReference(type = PlanFanService.class)
-    protected PlanFanService planFanService;
+    @BeanReference(type = com.ext.portlet.service.PlanFanLocalService.class)
+    protected com.ext.portlet.service.PlanFanLocalService planFanLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanFanService.class)
+    protected com.ext.portlet.service.PlanFanService planFanService;
     @BeanReference(type = PlanFanPersistence.class)
     protected PlanFanPersistence planFanPersistence;
-    @BeanReference(type = PlanItemLocalService.class)
-    protected PlanItemLocalService planItemLocalService;
-    @BeanReference(type = PlanItemService.class)
-    protected PlanItemService planItemService;
+    @BeanReference(type = com.ext.portlet.service.PlanItemLocalService.class)
+    protected com.ext.portlet.service.PlanItemLocalService planItemLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanItemService.class)
+    protected com.ext.portlet.service.PlanItemService planItemService;
     @BeanReference(type = PlanItemPersistence.class)
     protected PlanItemPersistence planItemPersistence;
     @BeanReference(type = PlanItemFinder.class)
     protected PlanItemFinder planItemFinder;
-    @BeanReference(type = PlanItemGroupLocalService.class)
-    protected PlanItemGroupLocalService planItemGroupLocalService;
-    @BeanReference(type = PlanItemGroupService.class)
-    protected PlanItemGroupService planItemGroupService;
+    @BeanReference(type = com.ext.portlet.service.PlanItemGroupLocalService.class)
+    protected com.ext.portlet.service.PlanItemGroupLocalService planItemGroupLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanItemGroupService.class)
+    protected com.ext.portlet.service.PlanItemGroupService planItemGroupService;
     @BeanReference(type = PlanItemGroupPersistence.class)
     protected PlanItemGroupPersistence planItemGroupPersistence;
-    @BeanReference(type = PlanMetaLocalService.class)
-    protected PlanMetaLocalService planMetaLocalService;
-    @BeanReference(type = PlanMetaService.class)
-    protected PlanMetaService planMetaService;
+    @BeanReference(type = com.ext.portlet.service.PlanMetaLocalService.class)
+    protected com.ext.portlet.service.PlanMetaLocalService planMetaLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanMetaService.class)
+    protected com.ext.portlet.service.PlanMetaService planMetaService;
     @BeanReference(type = PlanMetaPersistence.class)
     protected PlanMetaPersistence planMetaPersistence;
-    @BeanReference(type = PlanModelRunLocalService.class)
-    protected PlanModelRunLocalService planModelRunLocalService;
-    @BeanReference(type = PlanModelRunService.class)
-    protected PlanModelRunService planModelRunService;
+    @BeanReference(type = com.ext.portlet.service.PlanModelRunLocalService.class)
+    protected com.ext.portlet.service.PlanModelRunLocalService planModelRunLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanModelRunService.class)
+    protected com.ext.portlet.service.PlanModelRunService planModelRunService;
     @BeanReference(type = PlanModelRunPersistence.class)
     protected PlanModelRunPersistence planModelRunPersistence;
-    @BeanReference(type = PlanPositionLocalService.class)
-    protected PlanPositionLocalService planPositionLocalService;
-    @BeanReference(type = PlanPositionService.class)
-    protected PlanPositionService planPositionService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionLocalService.class)
+    protected com.ext.portlet.service.PlanPositionLocalService planPositionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionService.class)
+    protected com.ext.portlet.service.PlanPositionService planPositionService;
     @BeanReference(type = PlanPositionPersistence.class)
     protected PlanPositionPersistence planPositionPersistence;
-    @BeanReference(type = PlanPositionItemLocalService.class)
-    protected PlanPositionItemLocalService planPositionItemLocalService;
-    @BeanReference(type = PlanPositionItemService.class)
-    protected PlanPositionItemService planPositionItemService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionItemLocalService.class)
+    protected com.ext.portlet.service.PlanPositionItemLocalService planPositionItemLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionItemService.class)
+    protected com.ext.portlet.service.PlanPositionItemService planPositionItemService;
     @BeanReference(type = PlanPositionItemPersistence.class)
     protected PlanPositionItemPersistence planPositionItemPersistence;
-    @BeanReference(type = PlanPositionsLocalService.class)
-    protected PlanPositionsLocalService planPositionsLocalService;
-    @BeanReference(type = PlanPositionsService.class)
-    protected PlanPositionsService planPositionsService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionsLocalService.class)
+    protected com.ext.portlet.service.PlanPositionsLocalService planPositionsLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanPositionsService.class)
+    protected com.ext.portlet.service.PlanPositionsService planPositionsService;
     @BeanReference(type = PlanPositionsPersistence.class)
     protected PlanPositionsPersistence planPositionsPersistence;
-    @BeanReference(type = PlanPropertyFilterLocalService.class)
-    protected PlanPropertyFilterLocalService planPropertyFilterLocalService;
-    @BeanReference(type = PlanPropertyFilterService.class)
-    protected PlanPropertyFilterService planPropertyFilterService;
+    @BeanReference(type = com.ext.portlet.service.PlanPropertyFilterLocalService.class)
+    protected com.ext.portlet.service.PlanPropertyFilterLocalService planPropertyFilterLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanPropertyFilterService.class)
+    protected com.ext.portlet.service.PlanPropertyFilterService planPropertyFilterService;
     @BeanReference(type = PlanPropertyFilterPersistence.class)
     protected PlanPropertyFilterPersistence planPropertyFilterPersistence;
-    @BeanReference(type = PlanRelatedLocalService.class)
-    protected PlanRelatedLocalService planRelatedLocalService;
-    @BeanReference(type = PlanRelatedService.class)
-    protected PlanRelatedService planRelatedService;
+    @BeanReference(type = com.ext.portlet.service.PlanRelatedLocalService.class)
+    protected com.ext.portlet.service.PlanRelatedLocalService planRelatedLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanRelatedService.class)
+    protected com.ext.portlet.service.PlanRelatedService planRelatedService;
     @BeanReference(type = PlanRelatedPersistence.class)
     protected PlanRelatedPersistence planRelatedPersistence;
-    @BeanReference(type = PlanSectionLocalService.class)
-    protected PlanSectionLocalService planSectionLocalService;
-    @BeanReference(type = PlanSectionService.class)
-    protected PlanSectionService planSectionService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionLocalService.class)
+    protected com.ext.portlet.service.PlanSectionLocalService planSectionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionService.class)
+    protected com.ext.portlet.service.PlanSectionService planSectionService;
     @BeanReference(type = PlanSectionPersistence.class)
     protected PlanSectionPersistence planSectionPersistence;
-    @BeanReference(type = PlanSectionDefinitionLocalService.class)
-    protected PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
-    @BeanReference(type = PlanSectionDefinitionService.class)
-    protected PlanSectionDefinitionService planSectionDefinitionService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionDefinitionLocalService.class)
+    protected com.ext.portlet.service.PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionDefinitionService.class)
+    protected com.ext.portlet.service.PlanSectionDefinitionService planSectionDefinitionService;
     @BeanReference(type = PlanSectionDefinitionPersistence.class)
     protected PlanSectionDefinitionPersistence planSectionDefinitionPersistence;
-    @BeanReference(type = PlanSectionPlanMapLocalService.class)
-    protected PlanSectionPlanMapLocalService planSectionPlanMapLocalService;
-    @BeanReference(type = PlanSectionPlanMapService.class)
-    protected PlanSectionPlanMapService planSectionPlanMapService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionPlanMapLocalService.class)
+    protected com.ext.portlet.service.PlanSectionPlanMapLocalService planSectionPlanMapLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanSectionPlanMapService.class)
+    protected com.ext.portlet.service.PlanSectionPlanMapService planSectionPlanMapService;
     @BeanReference(type = PlanSectionPlanMapPersistence.class)
     protected PlanSectionPlanMapPersistence planSectionPlanMapPersistence;
-    @BeanReference(type = PlansFilterLocalService.class)
-    protected PlansFilterLocalService plansFilterLocalService;
-    @BeanReference(type = PlansFilterService.class)
-    protected PlansFilterService plansFilterService;
+    @BeanReference(type = com.ext.portlet.service.PlansFilterLocalService.class)
+    protected com.ext.portlet.service.PlansFilterLocalService plansFilterLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlansFilterService.class)
+    protected com.ext.portlet.service.PlansFilterService plansFilterService;
     @BeanReference(type = PlansFilterPersistence.class)
     protected PlansFilterPersistence plansFilterPersistence;
-    @BeanReference(type = PlansFilterPositionLocalService.class)
-    protected PlansFilterPositionLocalService plansFilterPositionLocalService;
-    @BeanReference(type = PlansFilterPositionService.class)
-    protected PlansFilterPositionService plansFilterPositionService;
+    @BeanReference(type = com.ext.portlet.service.PlansFilterPositionLocalService.class)
+    protected com.ext.portlet.service.PlansFilterPositionLocalService plansFilterPositionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlansFilterPositionService.class)
+    protected com.ext.portlet.service.PlansFilterPositionService plansFilterPositionService;
     @BeanReference(type = PlansFilterPositionPersistence.class)
     protected PlansFilterPositionPersistence plansFilterPositionPersistence;
-    @BeanReference(type = PlansUserSettingsLocalService.class)
-    protected PlansUserSettingsLocalService plansUserSettingsLocalService;
-    @BeanReference(type = PlansUserSettingsService.class)
-    protected PlansUserSettingsService plansUserSettingsService;
+    @BeanReference(type = com.ext.portlet.service.PlansUserSettingsLocalService.class)
+    protected com.ext.portlet.service.PlansUserSettingsLocalService plansUserSettingsLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlansUserSettingsService.class)
+    protected com.ext.portlet.service.PlansUserSettingsService plansUserSettingsService;
     @BeanReference(type = PlansUserSettingsPersistence.class)
     protected PlansUserSettingsPersistence plansUserSettingsPersistence;
-    @BeanReference(type = PlanTeamHistoryLocalService.class)
-    protected PlanTeamHistoryLocalService planTeamHistoryLocalService;
-    @BeanReference(type = PlanTeamHistoryService.class)
-    protected PlanTeamHistoryService planTeamHistoryService;
+    @BeanReference(type = com.ext.portlet.service.PlanTeamHistoryLocalService.class)
+    protected com.ext.portlet.service.PlanTeamHistoryLocalService planTeamHistoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTeamHistoryService.class)
+    protected com.ext.portlet.service.PlanTeamHistoryService planTeamHistoryService;
     @BeanReference(type = PlanTeamHistoryPersistence.class)
     protected PlanTeamHistoryPersistence planTeamHistoryPersistence;
-    @BeanReference(type = PlanTemplateLocalService.class)
-    protected PlanTemplateLocalService planTemplateLocalService;
-    @BeanReference(type = PlanTemplateService.class)
-    protected PlanTemplateService planTemplateService;
+    @BeanReference(type = com.ext.portlet.service.PlanTemplateLocalService.class)
+    protected com.ext.portlet.service.PlanTemplateLocalService planTemplateLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTemplateService.class)
+    protected com.ext.portlet.service.PlanTemplateService planTemplateService;
     @BeanReference(type = PlanTemplatePersistence.class)
     protected PlanTemplatePersistence planTemplatePersistence;
-    @BeanReference(type = PlanTemplateSectionLocalService.class)
-    protected PlanTemplateSectionLocalService planTemplateSectionLocalService;
-    @BeanReference(type = PlanTemplateSectionService.class)
-    protected PlanTemplateSectionService planTemplateSectionService;
+    @BeanReference(type = com.ext.portlet.service.PlanTemplateSectionLocalService.class)
+    protected com.ext.portlet.service.PlanTemplateSectionLocalService planTemplateSectionLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTemplateSectionService.class)
+    protected com.ext.portlet.service.PlanTemplateSectionService planTemplateSectionService;
     @BeanReference(type = PlanTemplateSectionPersistence.class)
     protected PlanTemplateSectionPersistence planTemplateSectionPersistence;
-    @BeanReference(type = PlanTypeLocalService.class)
-    protected PlanTypeLocalService planTypeLocalService;
-    @BeanReference(type = PlanTypeService.class)
-    protected PlanTypeService planTypeService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeLocalService.class)
+    protected com.ext.portlet.service.PlanTypeLocalService planTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeService.class)
+    protected com.ext.portlet.service.PlanTypeService planTypeService;
     @BeanReference(type = PlanTypePersistence.class)
     protected PlanTypePersistence planTypePersistence;
-    @BeanReference(type = PlanTypeAttributeLocalService.class)
-    protected PlanTypeAttributeLocalService planTypeAttributeLocalService;
-    @BeanReference(type = PlanTypeAttributeService.class)
-    protected PlanTypeAttributeService planTypeAttributeService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeAttributeLocalService.class)
+    protected com.ext.portlet.service.PlanTypeAttributeLocalService planTypeAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeAttributeService.class)
+    protected com.ext.portlet.service.PlanTypeAttributeService planTypeAttributeService;
     @BeanReference(type = PlanTypeAttributePersistence.class)
     protected PlanTypeAttributePersistence planTypeAttributePersistence;
-    @BeanReference(type = PlanTypeColumnLocalService.class)
-    protected PlanTypeColumnLocalService planTypeColumnLocalService;
-    @BeanReference(type = PlanTypeColumnService.class)
-    protected PlanTypeColumnService planTypeColumnService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeColumnLocalService.class)
+    protected com.ext.portlet.service.PlanTypeColumnLocalService planTypeColumnLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanTypeColumnService.class)
+    protected com.ext.portlet.service.PlanTypeColumnService planTypeColumnService;
     @BeanReference(type = PlanTypeColumnPersistence.class)
     protected PlanTypeColumnPersistence planTypeColumnPersistence;
-    @BeanReference(type = PlanVoteLocalService.class)
-    protected PlanVoteLocalService planVoteLocalService;
-    @BeanReference(type = PlanVoteService.class)
-    protected PlanVoteService planVoteService;
+    @BeanReference(type = com.ext.portlet.service.PlanVoteLocalService.class)
+    protected com.ext.portlet.service.PlanVoteLocalService planVoteLocalService;
+    @BeanReference(type = com.ext.portlet.service.PlanVoteService.class)
+    protected com.ext.portlet.service.PlanVoteService planVoteService;
     @BeanReference(type = PlanVotePersistence.class)
     protected PlanVotePersistence planVotePersistence;
-    @BeanReference(type = ProposalLocalService.class)
-    protected ProposalLocalService proposalLocalService;
-    @BeanReference(type = ProposalService.class)
-    protected ProposalService proposalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalLocalService.class)
+    protected com.ext.portlet.service.ProposalLocalService proposalLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalService.class)
+    protected com.ext.portlet.service.ProposalService proposalService;
     @BeanReference(type = ProposalPersistence.class)
     protected ProposalPersistence proposalPersistence;
-    @BeanReference(type = Proposal2PhaseLocalService.class)
-    protected Proposal2PhaseLocalService proposal2PhaseLocalService;
-    @BeanReference(type = Proposal2PhaseService.class)
-    protected Proposal2PhaseService proposal2PhaseService;
+    @BeanReference(type = com.ext.portlet.service.Proposal2PhaseLocalService.class)
+    protected com.ext.portlet.service.Proposal2PhaseLocalService proposal2PhaseLocalService;
+    @BeanReference(type = com.ext.portlet.service.Proposal2PhaseService.class)
+    protected com.ext.portlet.service.Proposal2PhaseService proposal2PhaseService;
     @BeanReference(type = Proposal2PhasePersistence.class)
     protected Proposal2PhasePersistence proposal2PhasePersistence;
-    @BeanReference(type = ProposalAttributeLocalService.class)
-    protected ProposalAttributeLocalService proposalAttributeLocalService;
-    @BeanReference(type = ProposalAttributeService.class)
-    protected ProposalAttributeService proposalAttributeService;
+    @BeanReference(type = com.ext.portlet.service.ProposalAttributeLocalService.class)
+    protected com.ext.portlet.service.ProposalAttributeLocalService proposalAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalAttributeService.class)
+    protected com.ext.portlet.service.ProposalAttributeService proposalAttributeService;
     @BeanReference(type = ProposalAttributePersistence.class)
     protected ProposalAttributePersistence proposalAttributePersistence;
-    @BeanReference(type = ProposalAttributeTypeLocalService.class)
-    protected ProposalAttributeTypeLocalService proposalAttributeTypeLocalService;
-    @BeanReference(type = ProposalAttributeTypeService.class)
-    protected ProposalAttributeTypeService proposalAttributeTypeService;
+    @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeLocalService.class)
+    protected com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalAttributeTypeService.class)
+    protected com.ext.portlet.service.ProposalAttributeTypeService proposalAttributeTypeService;
     @BeanReference(type = ProposalAttributeTypePersistence.class)
     protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeLocalService.class)
-    protected ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
-    @BeanReference(type = ProposalContestPhaseAttributeService.class)
-    protected ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
+    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeLocalService.class)
+    protected com.ext.portlet.service.ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeService.class)
+    protected com.ext.portlet.service.ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
     @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
     protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypeLocalService.class)
-    protected ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService;
-    @BeanReference(type = ProposalContestPhaseAttributeTypeService.class)
-    protected ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
+    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService.class)
+    protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalContestPhaseAttributeTypeService.class)
+    protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
     @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
     protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
-    @BeanReference(type = ProposalSupporterLocalService.class)
-    protected ProposalSupporterLocalService proposalSupporterLocalService;
-    @BeanReference(type = ProposalSupporterService.class)
-    protected ProposalSupporterService proposalSupporterService;
+    @BeanReference(type = com.ext.portlet.service.ProposalSupporterLocalService.class)
+    protected com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalSupporterService.class)
+    protected com.ext.portlet.service.ProposalSupporterService proposalSupporterService;
     @BeanReference(type = ProposalSupporterPersistence.class)
     protected ProposalSupporterPersistence proposalSupporterPersistence;
-    @BeanReference(type = ProposalVersionLocalService.class)
-    protected ProposalVersionLocalService proposalVersionLocalService;
-    @BeanReference(type = ProposalVersionService.class)
-    protected ProposalVersionService proposalVersionService;
+    @BeanReference(type = com.ext.portlet.service.ProposalVersionLocalService.class)
+    protected com.ext.portlet.service.ProposalVersionLocalService proposalVersionLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalVersionService.class)
+    protected com.ext.portlet.service.ProposalVersionService proposalVersionService;
     @BeanReference(type = ProposalVersionPersistence.class)
     protected ProposalVersionPersistence proposalVersionPersistence;
-    @BeanReference(type = ProposalVoteLocalService.class)
-    protected ProposalVoteLocalService proposalVoteLocalService;
-    @BeanReference(type = ProposalVoteService.class)
-    protected ProposalVoteService proposalVoteService;
+    @BeanReference(type = com.ext.portlet.service.ProposalVoteLocalService.class)
+    protected com.ext.portlet.service.ProposalVoteLocalService proposalVoteLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalVoteService.class)
+    protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = CounterLocalService.class)
-    protected CounterLocalService counterLocalService;
-    @BeanReference(type = ResourceLocalService.class)
-    protected ResourceLocalService resourceLocalService;
-    @BeanReference(type = ResourceService.class)
-    protected ResourceService resourceService;
-    @BeanReference(type = ResourcePersistence.class)
-    protected ResourcePersistence resourcePersistence;
-    @BeanReference(type = UserLocalService.class)
-    protected UserLocalService userLocalService;
-    @BeanReference(type = UserService.class)
-    protected UserService userService;
+    @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+    protected com.liferay.counter.service.CounterLocalService counterLocalService;
+    @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
+    protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
+    @BeanReference(type = com.liferay.portal.service.UserLocalService.class)
+    protected com.liferay.portal.service.UserLocalService userLocalService;
+    @BeanReference(type = com.liferay.portal.service.UserService.class)
+    protected com.liferay.portal.service.UserService userService;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
     private String _beanIdentifier;
+    private ClassLoader _classLoader;
+    private ContestPhaseTypeLocalServiceClpInvoker _clpInvoker = new ContestPhaseTypeLocalServiceClpInvoker();
 
     /*
      * NOTE FOR DEVELOPERS:
@@ -760,26 +625,13 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the contest phase type that was added
      * @throws SystemException if a system exception occurred
      */
+    @Indexable(type = IndexableType.REINDEX)
+    @Override
     public ContestPhaseType addContestPhaseType(
         ContestPhaseType contestPhaseType) throws SystemException {
         contestPhaseType.setNew(true);
 
-        contestPhaseType = contestPhaseTypePersistence.update(contestPhaseType,
-                false);
-
-        Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
-
-        if (indexer != null) {
-            try {
-                indexer.reindex(contestPhaseType);
-            } catch (SearchException se) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(se, se);
-                }
-            }
-        }
-
-        return contestPhaseType;
+        return contestPhaseTypePersistence.update(contestPhaseType);
     }
 
     /**
@@ -788,6 +640,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param id the primary key for the new contest phase type
      * @return the new contest phase type
      */
+    @Override
     public ContestPhaseType createContestPhaseType(long id) {
         return contestPhaseTypePersistence.create(id);
     }
@@ -796,47 +649,37 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * Deletes the contest phase type with the primary key from the database. Also notifies the appropriate model listeners.
      *
      * @param id the primary key of the contest phase type
+     * @return the contest phase type that was removed
      * @throws PortalException if a contest phase type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestPhaseType(long id)
+    @Indexable(type = IndexableType.DELETE)
+    @Override
+    public ContestPhaseType deleteContestPhaseType(long id)
         throws PortalException, SystemException {
-        ContestPhaseType contestPhaseType = contestPhaseTypePersistence.remove(id);
-
-        Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
-
-        if (indexer != null) {
-            try {
-                indexer.delete(contestPhaseType);
-            } catch (SearchException se) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(se, se);
-                }
-            }
-        }
+        return contestPhaseTypePersistence.remove(id);
     }
 
     /**
      * Deletes the contest phase type from the database. Also notifies the appropriate model listeners.
      *
      * @param contestPhaseType the contest phase type
+     * @return the contest phase type that was removed
      * @throws SystemException if a system exception occurred
      */
-    public void deleteContestPhaseType(ContestPhaseType contestPhaseType)
-        throws SystemException {
-        contestPhaseTypePersistence.remove(contestPhaseType);
+    @Indexable(type = IndexableType.DELETE)
+    @Override
+    public ContestPhaseType deleteContestPhaseType(
+        ContestPhaseType contestPhaseType) throws SystemException {
+        return contestPhaseTypePersistence.remove(contestPhaseType);
+    }
 
-        Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
+    @Override
+    public DynamicQuery dynamicQuery() {
+        Class<?> clazz = getClass();
 
-        if (indexer != null) {
-            try {
-                indexer.delete(contestPhaseType);
-            } catch (SearchException se) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(se, se);
-                }
-            }
-        }
+        return DynamicQueryFactoryUtil.forClass(ContestPhaseType.class,
+            clazz.getClassLoader());
     }
 
     /**
@@ -846,6 +689,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the matching rows
      * @throws SystemException if a system exception occurred
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public List dynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
@@ -856,7 +700,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * Performs a dynamic query on the database and returns a range of the matching rows.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param dynamicQuery the dynamic query
@@ -865,6 +709,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the range of matching rows
      * @throws SystemException if a system exception occurred
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
         throws SystemException {
@@ -876,7 +721,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * Performs a dynamic query on the database and returns an ordered range of the matching rows.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param dynamicQuery the dynamic query
@@ -886,6 +731,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the ordered range of matching rows
      * @throws SystemException if a system exception occurred
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
@@ -900,11 +746,28 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the number of rows that match the dynamic query
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public long dynamicQueryCount(DynamicQuery dynamicQuery)
         throws SystemException {
         return contestPhaseTypePersistence.countWithDynamicQuery(dynamicQuery);
     }
 
+    /**
+     * Returns the number of rows that match the dynamic query.
+     *
+     * @param dynamicQuery the dynamic query
+     * @param projection the projection to apply to the query
+     * @return the number of rows that match the dynamic query
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public long dynamicQueryCount(DynamicQuery dynamicQuery,
+        Projection projection) throws SystemException {
+        return contestPhaseTypePersistence.countWithDynamicQuery(dynamicQuery,
+            projection);
+    }
+
+    @Override
     public ContestPhaseType fetchContestPhaseType(long id)
         throws SystemException {
         return contestPhaseTypePersistence.fetchByPrimaryKey(id);
@@ -918,11 +781,13 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @throws PortalException if a contest phase type with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public ContestPhaseType getContestPhaseType(long id)
         throws PortalException, SystemException {
         return contestPhaseTypePersistence.findByPrimaryKey(id);
     }
 
+    @Override
     public PersistedModel getPersistedModel(Serializable primaryKeyObj)
         throws PortalException, SystemException {
         return contestPhaseTypePersistence.findByPrimaryKey(primaryKeyObj);
@@ -932,7 +797,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * Returns a range of all the contest phase types.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestPhaseTypeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of contest phase types
@@ -940,6 +805,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the range of contest phase types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<ContestPhaseType> getContestPhaseTypes(int start, int end)
         throws SystemException {
         return contestPhaseTypePersistence.findAll(start, end);
@@ -951,6 +817,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the number of contest phase types
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int getContestPhaseTypesCount() throws SystemException {
         return contestPhaseTypePersistence.countAll();
     }
@@ -962,40 +829,11 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @return the contest phase type that was updated
      * @throws SystemException if a system exception occurred
      */
+    @Indexable(type = IndexableType.REINDEX)
+    @Override
     public ContestPhaseType updateContestPhaseType(
         ContestPhaseType contestPhaseType) throws SystemException {
-        return updateContestPhaseType(contestPhaseType, true);
-    }
-
-    /**
-     * Updates the contest phase type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-     *
-     * @param contestPhaseType the contest phase type
-     * @param merge whether to merge the contest phase type with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-     * @return the contest phase type that was updated
-     * @throws SystemException if a system exception occurred
-     */
-    public ContestPhaseType updateContestPhaseType(
-        ContestPhaseType contestPhaseType, boolean merge)
-        throws SystemException {
-        contestPhaseType.setNew(false);
-
-        contestPhaseType = contestPhaseTypePersistence.update(contestPhaseType,
-                merge);
-
-        Indexer indexer = IndexerRegistryUtil.getIndexer(getModelClassName());
-
-        if (indexer != null) {
-            try {
-                indexer.reindex(contestPhaseType);
-            } catch (SearchException se) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(se, se);
-                }
-            }
-        }
-
-        return contestPhaseType;
+        return contestPhaseTypePersistence.update(contestPhaseType);
     }
 
     /**
@@ -1003,7 +841,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the activity subscription local service
      */
-    public ActivitySubscriptionLocalService getActivitySubscriptionLocalService() {
+    public com.ext.portlet.service.ActivitySubscriptionLocalService getActivitySubscriptionLocalService() {
         return activitySubscriptionLocalService;
     }
 
@@ -1013,7 +851,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param activitySubscriptionLocalService the activity subscription local service
      */
     public void setActivitySubscriptionLocalService(
-        ActivitySubscriptionLocalService activitySubscriptionLocalService) {
+        com.ext.portlet.service.ActivitySubscriptionLocalService activitySubscriptionLocalService) {
         this.activitySubscriptionLocalService = activitySubscriptionLocalService;
     }
 
@@ -1022,7 +860,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the activity subscription remote service
      */
-    public ActivitySubscriptionService getActivitySubscriptionService() {
+    public com.ext.portlet.service.ActivitySubscriptionService getActivitySubscriptionService() {
         return activitySubscriptionService;
     }
 
@@ -1032,7 +870,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param activitySubscriptionService the activity subscription remote service
      */
     public void setActivitySubscriptionService(
-        ActivitySubscriptionService activitySubscriptionService) {
+        com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService) {
         this.activitySubscriptionService = activitySubscriptionService;
     }
 
@@ -1117,7 +955,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the balloon stats entry local service
      */
-    public BalloonStatsEntryLocalService getBalloonStatsEntryLocalService() {
+    public com.ext.portlet.service.BalloonStatsEntryLocalService getBalloonStatsEntryLocalService() {
         return balloonStatsEntryLocalService;
     }
 
@@ -1127,7 +965,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param balloonStatsEntryLocalService the balloon stats entry local service
      */
     public void setBalloonStatsEntryLocalService(
-        BalloonStatsEntryLocalService balloonStatsEntryLocalService) {
+        com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService) {
         this.balloonStatsEntryLocalService = balloonStatsEntryLocalService;
     }
 
@@ -1136,7 +974,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the balloon stats entry remote service
      */
-    public BalloonStatsEntryService getBalloonStatsEntryService() {
+    public com.ext.portlet.service.BalloonStatsEntryService getBalloonStatsEntryService() {
         return balloonStatsEntryService;
     }
 
@@ -1146,7 +984,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param balloonStatsEntryService the balloon stats entry remote service
      */
     public void setBalloonStatsEntryService(
-        BalloonStatsEntryService balloonStatsEntryService) {
+        com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService) {
         this.balloonStatsEntryService = balloonStatsEntryService;
     }
 
@@ -1174,7 +1012,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest local service
      */
-    public ContestLocalService getContestLocalService() {
+    public com.ext.portlet.service.ContestLocalService getContestLocalService() {
         return contestLocalService;
     }
 
@@ -1183,7 +1021,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param contestLocalService the contest local service
      */
-    public void setContestLocalService(ContestLocalService contestLocalService) {
+    public void setContestLocalService(
+        com.ext.portlet.service.ContestLocalService contestLocalService) {
         this.contestLocalService = contestLocalService;
     }
 
@@ -1192,7 +1031,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest remote service
      */
-    public ContestService getContestService() {
+    public com.ext.portlet.service.ContestService getContestService() {
         return contestService;
     }
 
@@ -1201,7 +1040,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param contestService the contest remote service
      */
-    public void setContestService(ContestService contestService) {
+    public void setContestService(
+        com.ext.portlet.service.ContestService contestService) {
         this.contestService = contestService;
     }
 
@@ -1228,7 +1068,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest debate local service
      */
-    public ContestDebateLocalService getContestDebateLocalService() {
+    public com.ext.portlet.service.ContestDebateLocalService getContestDebateLocalService() {
         return contestDebateLocalService;
     }
 
@@ -1238,7 +1078,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestDebateLocalService the contest debate local service
      */
     public void setContestDebateLocalService(
-        ContestDebateLocalService contestDebateLocalService) {
+        com.ext.portlet.service.ContestDebateLocalService contestDebateLocalService) {
         this.contestDebateLocalService = contestDebateLocalService;
     }
 
@@ -1247,7 +1087,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest debate remote service
      */
-    public ContestDebateService getContestDebateService() {
+    public com.ext.portlet.service.ContestDebateService getContestDebateService() {
         return contestDebateService;
     }
 
@@ -1257,7 +1097,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestDebateService the contest debate remote service
      */
     public void setContestDebateService(
-        ContestDebateService contestDebateService) {
+        com.ext.portlet.service.ContestDebateService contestDebateService) {
         this.contestDebateService = contestDebateService;
     }
 
@@ -1285,7 +1125,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase local service
      */
-    public ContestPhaseLocalService getContestPhaseLocalService() {
+    public com.ext.portlet.service.ContestPhaseLocalService getContestPhaseLocalService() {
         return contestPhaseLocalService;
     }
 
@@ -1295,7 +1135,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseLocalService the contest phase local service
      */
     public void setContestPhaseLocalService(
-        ContestPhaseLocalService contestPhaseLocalService) {
+        com.ext.portlet.service.ContestPhaseLocalService contestPhaseLocalService) {
         this.contestPhaseLocalService = contestPhaseLocalService;
     }
 
@@ -1304,7 +1144,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase remote service
      */
-    public ContestPhaseService getContestPhaseService() {
+    public com.ext.portlet.service.ContestPhaseService getContestPhaseService() {
         return contestPhaseService;
     }
 
@@ -1313,7 +1153,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param contestPhaseService the contest phase remote service
      */
-    public void setContestPhaseService(ContestPhaseService contestPhaseService) {
+    public void setContestPhaseService(
+        com.ext.portlet.service.ContestPhaseService contestPhaseService) {
         this.contestPhaseService = contestPhaseService;
     }
 
@@ -1341,7 +1182,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase column local service
      */
-    public ContestPhaseColumnLocalService getContestPhaseColumnLocalService() {
+    public com.ext.portlet.service.ContestPhaseColumnLocalService getContestPhaseColumnLocalService() {
         return contestPhaseColumnLocalService;
     }
 
@@ -1351,7 +1192,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseColumnLocalService the contest phase column local service
      */
     public void setContestPhaseColumnLocalService(
-        ContestPhaseColumnLocalService contestPhaseColumnLocalService) {
+        com.ext.portlet.service.ContestPhaseColumnLocalService contestPhaseColumnLocalService) {
         this.contestPhaseColumnLocalService = contestPhaseColumnLocalService;
     }
 
@@ -1360,7 +1201,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase column remote service
      */
-    public ContestPhaseColumnService getContestPhaseColumnService() {
+    public com.ext.portlet.service.ContestPhaseColumnService getContestPhaseColumnService() {
         return contestPhaseColumnService;
     }
 
@@ -1370,7 +1211,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseColumnService the contest phase column remote service
      */
     public void setContestPhaseColumnService(
-        ContestPhaseColumnService contestPhaseColumnService) {
+        com.ext.portlet.service.ContestPhaseColumnService contestPhaseColumnService) {
         this.contestPhaseColumnService = contestPhaseColumnService;
     }
 
@@ -1398,7 +1239,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase ribbon type local service
      */
-    public ContestPhaseRibbonTypeLocalService getContestPhaseRibbonTypeLocalService() {
+    public com.ext.portlet.service.ContestPhaseRibbonTypeLocalService getContestPhaseRibbonTypeLocalService() {
         return contestPhaseRibbonTypeLocalService;
     }
 
@@ -1408,7 +1249,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseRibbonTypeLocalService the contest phase ribbon type local service
      */
     public void setContestPhaseRibbonTypeLocalService(
-        ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService) {
+        com.ext.portlet.service.ContestPhaseRibbonTypeLocalService contestPhaseRibbonTypeLocalService) {
         this.contestPhaseRibbonTypeLocalService = contestPhaseRibbonTypeLocalService;
     }
 
@@ -1417,7 +1258,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase ribbon type remote service
      */
-    public ContestPhaseRibbonTypeService getContestPhaseRibbonTypeService() {
+    public com.ext.portlet.service.ContestPhaseRibbonTypeService getContestPhaseRibbonTypeService() {
         return contestPhaseRibbonTypeService;
     }
 
@@ -1427,7 +1268,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseRibbonTypeService the contest phase ribbon type remote service
      */
     public void setContestPhaseRibbonTypeService(
-        ContestPhaseRibbonTypeService contestPhaseRibbonTypeService) {
+        com.ext.portlet.service.ContestPhaseRibbonTypeService contestPhaseRibbonTypeService) {
         this.contestPhaseRibbonTypeService = contestPhaseRibbonTypeService;
     }
 
@@ -1455,7 +1296,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase type local service
      */
-    public ContestPhaseTypeLocalService getContestPhaseTypeLocalService() {
+    public com.ext.portlet.service.ContestPhaseTypeLocalService getContestPhaseTypeLocalService() {
         return contestPhaseTypeLocalService;
     }
 
@@ -1465,7 +1306,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseTypeLocalService the contest phase type local service
      */
     public void setContestPhaseTypeLocalService(
-        ContestPhaseTypeLocalService contestPhaseTypeLocalService) {
+        com.ext.portlet.service.ContestPhaseTypeLocalService contestPhaseTypeLocalService) {
         this.contestPhaseTypeLocalService = contestPhaseTypeLocalService;
     }
 
@@ -1474,7 +1315,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest phase type remote service
      */
-    public ContestPhaseTypeService getContestPhaseTypeService() {
+    public com.ext.portlet.service.ContestPhaseTypeService getContestPhaseTypeService() {
         return contestPhaseTypeService;
     }
 
@@ -1484,7 +1325,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestPhaseTypeService the contest phase type remote service
      */
     public void setContestPhaseTypeService(
-        ContestPhaseTypeService contestPhaseTypeService) {
+        com.ext.portlet.service.ContestPhaseTypeService contestPhaseTypeService) {
         this.contestPhaseTypeService = contestPhaseTypeService;
     }
 
@@ -1512,7 +1353,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest team member local service
      */
-    public ContestTeamMemberLocalService getContestTeamMemberLocalService() {
+    public com.ext.portlet.service.ContestTeamMemberLocalService getContestTeamMemberLocalService() {
         return contestTeamMemberLocalService;
     }
 
@@ -1522,7 +1363,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestTeamMemberLocalService the contest team member local service
      */
     public void setContestTeamMemberLocalService(
-        ContestTeamMemberLocalService contestTeamMemberLocalService) {
+        com.ext.portlet.service.ContestTeamMemberLocalService contestTeamMemberLocalService) {
         this.contestTeamMemberLocalService = contestTeamMemberLocalService;
     }
 
@@ -1531,7 +1372,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the contest team member remote service
      */
-    public ContestTeamMemberService getContestTeamMemberService() {
+    public com.ext.portlet.service.ContestTeamMemberService getContestTeamMemberService() {
         return contestTeamMemberService;
     }
 
@@ -1541,7 +1382,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param contestTeamMemberService the contest team member remote service
      */
     public void setContestTeamMemberService(
-        ContestTeamMemberService contestTeamMemberService) {
+        com.ext.portlet.service.ContestTeamMemberService contestTeamMemberService) {
         this.contestTeamMemberService = contestTeamMemberService;
     }
 
@@ -1569,7 +1410,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion category local service
      */
-    public DiscussionCategoryLocalService getDiscussionCategoryLocalService() {
+    public com.ext.portlet.service.DiscussionCategoryLocalService getDiscussionCategoryLocalService() {
         return discussionCategoryLocalService;
     }
 
@@ -1579,7 +1420,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionCategoryLocalService the discussion category local service
      */
     public void setDiscussionCategoryLocalService(
-        DiscussionCategoryLocalService discussionCategoryLocalService) {
+        com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService) {
         this.discussionCategoryLocalService = discussionCategoryLocalService;
     }
 
@@ -1588,7 +1429,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion category remote service
      */
-    public DiscussionCategoryService getDiscussionCategoryService() {
+    public com.ext.portlet.service.DiscussionCategoryService getDiscussionCategoryService() {
         return discussionCategoryService;
     }
 
@@ -1598,7 +1439,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionCategoryService the discussion category remote service
      */
     public void setDiscussionCategoryService(
-        DiscussionCategoryService discussionCategoryService) {
+        com.ext.portlet.service.DiscussionCategoryService discussionCategoryService) {
         this.discussionCategoryService = discussionCategoryService;
     }
 
@@ -1626,7 +1467,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion category group local service
      */
-    public DiscussionCategoryGroupLocalService getDiscussionCategoryGroupLocalService() {
+    public com.ext.portlet.service.DiscussionCategoryGroupLocalService getDiscussionCategoryGroupLocalService() {
         return discussionCategoryGroupLocalService;
     }
 
@@ -1636,7 +1477,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionCategoryGroupLocalService the discussion category group local service
      */
     public void setDiscussionCategoryGroupLocalService(
-        DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService) {
+        com.ext.portlet.service.DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService) {
         this.discussionCategoryGroupLocalService = discussionCategoryGroupLocalService;
     }
 
@@ -1645,7 +1486,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion category group remote service
      */
-    public DiscussionCategoryGroupService getDiscussionCategoryGroupService() {
+    public com.ext.portlet.service.DiscussionCategoryGroupService getDiscussionCategoryGroupService() {
         return discussionCategoryGroupService;
     }
 
@@ -1655,7 +1496,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionCategoryGroupService the discussion category group remote service
      */
     public void setDiscussionCategoryGroupService(
-        DiscussionCategoryGroupService discussionCategoryGroupService) {
+        com.ext.portlet.service.DiscussionCategoryGroupService discussionCategoryGroupService) {
         this.discussionCategoryGroupService = discussionCategoryGroupService;
     }
 
@@ -1683,7 +1524,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion message local service
      */
-    public DiscussionMessageLocalService getDiscussionMessageLocalService() {
+    public com.ext.portlet.service.DiscussionMessageLocalService getDiscussionMessageLocalService() {
         return discussionMessageLocalService;
     }
 
@@ -1693,7 +1534,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionMessageLocalService the discussion message local service
      */
     public void setDiscussionMessageLocalService(
-        DiscussionMessageLocalService discussionMessageLocalService) {
+        com.ext.portlet.service.DiscussionMessageLocalService discussionMessageLocalService) {
         this.discussionMessageLocalService = discussionMessageLocalService;
     }
 
@@ -1702,7 +1543,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion message remote service
      */
-    public DiscussionMessageService getDiscussionMessageService() {
+    public com.ext.portlet.service.DiscussionMessageService getDiscussionMessageService() {
         return discussionMessageService;
     }
 
@@ -1712,7 +1553,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionMessageService the discussion message remote service
      */
     public void setDiscussionMessageService(
-        DiscussionMessageService discussionMessageService) {
+        com.ext.portlet.service.DiscussionMessageService discussionMessageService) {
         this.discussionMessageService = discussionMessageService;
     }
 
@@ -1740,7 +1581,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion message flag local service
      */
-    public DiscussionMessageFlagLocalService getDiscussionMessageFlagLocalService() {
+    public com.ext.portlet.service.DiscussionMessageFlagLocalService getDiscussionMessageFlagLocalService() {
         return discussionMessageFlagLocalService;
     }
 
@@ -1750,7 +1591,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionMessageFlagLocalService the discussion message flag local service
      */
     public void setDiscussionMessageFlagLocalService(
-        DiscussionMessageFlagLocalService discussionMessageFlagLocalService) {
+        com.ext.portlet.service.DiscussionMessageFlagLocalService discussionMessageFlagLocalService) {
         this.discussionMessageFlagLocalService = discussionMessageFlagLocalService;
     }
 
@@ -1759,7 +1600,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the discussion message flag remote service
      */
-    public DiscussionMessageFlagService getDiscussionMessageFlagService() {
+    public com.ext.portlet.service.DiscussionMessageFlagService getDiscussionMessageFlagService() {
         return discussionMessageFlagService;
     }
 
@@ -1769,7 +1610,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param discussionMessageFlagService the discussion message flag remote service
      */
     public void setDiscussionMessageFlagService(
-        DiscussionMessageFlagService discussionMessageFlagService) {
+        com.ext.portlet.service.DiscussionMessageFlagService discussionMessageFlagService) {
         this.discussionMessageFlagService = discussionMessageFlagService;
     }
 
@@ -1797,7 +1638,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the email list local service
      */
-    public EmailListLocalService getEmailListLocalService() {
+    public com.ext.portlet.service.EmailListLocalService getEmailListLocalService() {
         return emailListLocalService;
     }
 
@@ -1807,7 +1648,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param emailListLocalService the email list local service
      */
     public void setEmailListLocalService(
-        EmailListLocalService emailListLocalService) {
+        com.ext.portlet.service.EmailListLocalService emailListLocalService) {
         this.emailListLocalService = emailListLocalService;
     }
 
@@ -1816,7 +1657,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the email list remote service
      */
-    public EmailListService getEmailListService() {
+    public com.ext.portlet.service.EmailListService getEmailListService() {
         return emailListService;
     }
 
@@ -1825,7 +1666,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param emailListService the email list remote service
      */
-    public void setEmailListService(EmailListService emailListService) {
+    public void setEmailListService(
+        com.ext.portlet.service.EmailListService emailListService) {
         this.emailListService = emailListService;
     }
 
@@ -1853,7 +1695,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the focus area local service
      */
-    public FocusAreaLocalService getFocusAreaLocalService() {
+    public com.ext.portlet.service.FocusAreaLocalService getFocusAreaLocalService() {
         return focusAreaLocalService;
     }
 
@@ -1863,7 +1705,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param focusAreaLocalService the focus area local service
      */
     public void setFocusAreaLocalService(
-        FocusAreaLocalService focusAreaLocalService) {
+        com.ext.portlet.service.FocusAreaLocalService focusAreaLocalService) {
         this.focusAreaLocalService = focusAreaLocalService;
     }
 
@@ -1872,7 +1714,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the focus area remote service
      */
-    public FocusAreaService getFocusAreaService() {
+    public com.ext.portlet.service.FocusAreaService getFocusAreaService() {
         return focusAreaService;
     }
 
@@ -1881,7 +1723,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param focusAreaService the focus area remote service
      */
-    public void setFocusAreaService(FocusAreaService focusAreaService) {
+    public void setFocusAreaService(
+        com.ext.portlet.service.FocusAreaService focusAreaService) {
         this.focusAreaService = focusAreaService;
     }
 
@@ -1909,7 +1752,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the focus area ontology term local service
      */
-    public FocusAreaOntologyTermLocalService getFocusAreaOntologyTermLocalService() {
+    public com.ext.portlet.service.FocusAreaOntologyTermLocalService getFocusAreaOntologyTermLocalService() {
         return focusAreaOntologyTermLocalService;
     }
 
@@ -1919,7 +1762,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param focusAreaOntologyTermLocalService the focus area ontology term local service
      */
     public void setFocusAreaOntologyTermLocalService(
-        FocusAreaOntologyTermLocalService focusAreaOntologyTermLocalService) {
+        com.ext.portlet.service.FocusAreaOntologyTermLocalService focusAreaOntologyTermLocalService) {
         this.focusAreaOntologyTermLocalService = focusAreaOntologyTermLocalService;
     }
 
@@ -1928,7 +1771,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the focus area ontology term remote service
      */
-    public FocusAreaOntologyTermService getFocusAreaOntologyTermService() {
+    public com.ext.portlet.service.FocusAreaOntologyTermService getFocusAreaOntologyTermService() {
         return focusAreaOntologyTermService;
     }
 
@@ -1938,7 +1781,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param focusAreaOntologyTermService the focus area ontology term remote service
      */
     public void setFocusAreaOntologyTermService(
-        FocusAreaOntologyTermService focusAreaOntologyTermService) {
+        com.ext.portlet.service.FocusAreaOntologyTermService focusAreaOntologyTermService) {
         this.focusAreaOntologyTermService = focusAreaOntologyTermService;
     }
 
@@ -1966,7 +1809,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the landing page local service
      */
-    public LandingPageLocalService getLandingPageLocalService() {
+    public com.ext.portlet.service.LandingPageLocalService getLandingPageLocalService() {
         return landingPageLocalService;
     }
 
@@ -1976,7 +1819,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param landingPageLocalService the landing page local service
      */
     public void setLandingPageLocalService(
-        LandingPageLocalService landingPageLocalService) {
+        com.ext.portlet.service.LandingPageLocalService landingPageLocalService) {
         this.landingPageLocalService = landingPageLocalService;
     }
 
@@ -1985,7 +1828,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the landing page remote service
      */
-    public LandingPageService getLandingPageService() {
+    public com.ext.portlet.service.LandingPageService getLandingPageService() {
         return landingPageService;
     }
 
@@ -1994,7 +1837,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param landingPageService the landing page remote service
      */
-    public void setLandingPageService(LandingPageService landingPageService) {
+    public void setLandingPageService(
+        com.ext.portlet.service.LandingPageService landingPageService) {
         this.landingPageService = landingPageService;
     }
 
@@ -2022,7 +1866,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the message local service
      */
-    public MessageLocalService getMessageLocalService() {
+    public com.ext.portlet.service.MessageLocalService getMessageLocalService() {
         return messageLocalService;
     }
 
@@ -2031,7 +1875,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param messageLocalService the message local service
      */
-    public void setMessageLocalService(MessageLocalService messageLocalService) {
+    public void setMessageLocalService(
+        com.ext.portlet.service.MessageLocalService messageLocalService) {
         this.messageLocalService = messageLocalService;
     }
 
@@ -2040,7 +1885,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the message remote service
      */
-    public MessageService getMessageService() {
+    public com.ext.portlet.service.MessageService getMessageService() {
         return messageService;
     }
 
@@ -2049,7 +1894,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param messageService the message remote service
      */
-    public void setMessageService(MessageService messageService) {
+    public void setMessageService(
+        com.ext.portlet.service.MessageService messageService) {
         this.messageService = messageService;
     }
 
@@ -2076,7 +1922,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the message recipient status local service
      */
-    public MessageRecipientStatusLocalService getMessageRecipientStatusLocalService() {
+    public com.ext.portlet.service.MessageRecipientStatusLocalService getMessageRecipientStatusLocalService() {
         return messageRecipientStatusLocalService;
     }
 
@@ -2086,7 +1932,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messageRecipientStatusLocalService the message recipient status local service
      */
     public void setMessageRecipientStatusLocalService(
-        MessageRecipientStatusLocalService messageRecipientStatusLocalService) {
+        com.ext.portlet.service.MessageRecipientStatusLocalService messageRecipientStatusLocalService) {
         this.messageRecipientStatusLocalService = messageRecipientStatusLocalService;
     }
 
@@ -2095,7 +1941,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the message recipient status remote service
      */
-    public MessageRecipientStatusService getMessageRecipientStatusService() {
+    public com.ext.portlet.service.MessageRecipientStatusService getMessageRecipientStatusService() {
         return messageRecipientStatusService;
     }
 
@@ -2105,7 +1951,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messageRecipientStatusService the message recipient status remote service
      */
     public void setMessageRecipientStatusService(
-        MessageRecipientStatusService messageRecipientStatusService) {
+        com.ext.portlet.service.MessageRecipientStatusService messageRecipientStatusService) {
         this.messageRecipientStatusService = messageRecipientStatusService;
     }
 
@@ -2133,7 +1979,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging ignored recipients local service
      */
-    public MessagingIgnoredRecipientsLocalService getMessagingIgnoredRecipientsLocalService() {
+    public com.ext.portlet.service.MessagingIgnoredRecipientsLocalService getMessagingIgnoredRecipientsLocalService() {
         return messagingIgnoredRecipientsLocalService;
     }
 
@@ -2143,7 +1989,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingIgnoredRecipientsLocalService the messaging ignored recipients local service
      */
     public void setMessagingIgnoredRecipientsLocalService(
-        MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService) {
+        com.ext.portlet.service.MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService) {
         this.messagingIgnoredRecipientsLocalService = messagingIgnoredRecipientsLocalService;
     }
 
@@ -2152,7 +1998,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging ignored recipients remote service
      */
-    public MessagingIgnoredRecipientsService getMessagingIgnoredRecipientsService() {
+    public com.ext.portlet.service.MessagingIgnoredRecipientsService getMessagingIgnoredRecipientsService() {
         return messagingIgnoredRecipientsService;
     }
 
@@ -2162,7 +2008,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingIgnoredRecipientsService the messaging ignored recipients remote service
      */
     public void setMessagingIgnoredRecipientsService(
-        MessagingIgnoredRecipientsService messagingIgnoredRecipientsService) {
+        com.ext.portlet.service.MessagingIgnoredRecipientsService messagingIgnoredRecipientsService) {
         this.messagingIgnoredRecipientsService = messagingIgnoredRecipientsService;
     }
 
@@ -2190,7 +2036,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message local service
      */
-    public MessagingMessageLocalService getMessagingMessageLocalService() {
+    public com.ext.portlet.service.MessagingMessageLocalService getMessagingMessageLocalService() {
         return messagingMessageLocalService;
     }
 
@@ -2200,7 +2046,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageLocalService the messaging message local service
      */
     public void setMessagingMessageLocalService(
-        MessagingMessageLocalService messagingMessageLocalService) {
+        com.ext.portlet.service.MessagingMessageLocalService messagingMessageLocalService) {
         this.messagingMessageLocalService = messagingMessageLocalService;
     }
 
@@ -2209,7 +2055,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message remote service
      */
-    public MessagingMessageService getMessagingMessageService() {
+    public com.ext.portlet.service.MessagingMessageService getMessagingMessageService() {
         return messagingMessageService;
     }
 
@@ -2219,7 +2065,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageService the messaging message remote service
      */
     public void setMessagingMessageService(
-        MessagingMessageService messagingMessageService) {
+        com.ext.portlet.service.MessagingMessageService messagingMessageService) {
         this.messagingMessageService = messagingMessageService;
     }
 
@@ -2247,7 +2093,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message conversion local service
      */
-    public MessagingMessageConversionLocalService getMessagingMessageConversionLocalService() {
+    public com.ext.portlet.service.MessagingMessageConversionLocalService getMessagingMessageConversionLocalService() {
         return messagingMessageConversionLocalService;
     }
 
@@ -2257,7 +2103,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageConversionLocalService the messaging message conversion local service
      */
     public void setMessagingMessageConversionLocalService(
-        MessagingMessageConversionLocalService messagingMessageConversionLocalService) {
+        com.ext.portlet.service.MessagingMessageConversionLocalService messagingMessageConversionLocalService) {
         this.messagingMessageConversionLocalService = messagingMessageConversionLocalService;
     }
 
@@ -2266,7 +2112,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message conversion remote service
      */
-    public MessagingMessageConversionService getMessagingMessageConversionService() {
+    public com.ext.portlet.service.MessagingMessageConversionService getMessagingMessageConversionService() {
         return messagingMessageConversionService;
     }
 
@@ -2276,7 +2122,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageConversionService the messaging message conversion remote service
      */
     public void setMessagingMessageConversionService(
-        MessagingMessageConversionService messagingMessageConversionService) {
+        com.ext.portlet.service.MessagingMessageConversionService messagingMessageConversionService) {
         this.messagingMessageConversionService = messagingMessageConversionService;
     }
 
@@ -2304,7 +2150,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message conversion type local service
      */
-    public MessagingMessageConversionTypeLocalService getMessagingMessageConversionTypeLocalService() {
+    public com.ext.portlet.service.MessagingMessageConversionTypeLocalService getMessagingMessageConversionTypeLocalService() {
         return messagingMessageConversionTypeLocalService;
     }
 
@@ -2314,7 +2160,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageConversionTypeLocalService the messaging message conversion type local service
      */
     public void setMessagingMessageConversionTypeLocalService(
-        MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService) {
+        com.ext.portlet.service.MessagingMessageConversionTypeLocalService messagingMessageConversionTypeLocalService) {
         this.messagingMessageConversionTypeLocalService = messagingMessageConversionTypeLocalService;
     }
 
@@ -2323,7 +2169,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message conversion type remote service
      */
-    public MessagingMessageConversionTypeService getMessagingMessageConversionTypeService() {
+    public com.ext.portlet.service.MessagingMessageConversionTypeService getMessagingMessageConversionTypeService() {
         return messagingMessageConversionTypeService;
     }
 
@@ -2333,7 +2179,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageConversionTypeService the messaging message conversion type remote service
      */
     public void setMessagingMessageConversionTypeService(
-        MessagingMessageConversionTypeService messagingMessageConversionTypeService) {
+        com.ext.portlet.service.MessagingMessageConversionTypeService messagingMessageConversionTypeService) {
         this.messagingMessageConversionTypeService = messagingMessageConversionTypeService;
     }
 
@@ -2361,7 +2207,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message recipient local service
      */
-    public MessagingMessageRecipientLocalService getMessagingMessageRecipientLocalService() {
+    public com.ext.portlet.service.MessagingMessageRecipientLocalService getMessagingMessageRecipientLocalService() {
         return messagingMessageRecipientLocalService;
     }
 
@@ -2371,7 +2217,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageRecipientLocalService the messaging message recipient local service
      */
     public void setMessagingMessageRecipientLocalService(
-        MessagingMessageRecipientLocalService messagingMessageRecipientLocalService) {
+        com.ext.portlet.service.MessagingMessageRecipientLocalService messagingMessageRecipientLocalService) {
         this.messagingMessageRecipientLocalService = messagingMessageRecipientLocalService;
     }
 
@@ -2380,7 +2226,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging message recipient remote service
      */
-    public MessagingMessageRecipientService getMessagingMessageRecipientService() {
+    public com.ext.portlet.service.MessagingMessageRecipientService getMessagingMessageRecipientService() {
         return messagingMessageRecipientService;
     }
 
@@ -2390,7 +2236,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingMessageRecipientService the messaging message recipient remote service
      */
     public void setMessagingMessageRecipientService(
-        MessagingMessageRecipientService messagingMessageRecipientService) {
+        com.ext.portlet.service.MessagingMessageRecipientService messagingMessageRecipientService) {
         this.messagingMessageRecipientService = messagingMessageRecipientService;
     }
 
@@ -2418,7 +2264,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging redirect link local service
      */
-    public MessagingRedirectLinkLocalService getMessagingRedirectLinkLocalService() {
+    public com.ext.portlet.service.MessagingRedirectLinkLocalService getMessagingRedirectLinkLocalService() {
         return messagingRedirectLinkLocalService;
     }
 
@@ -2428,7 +2274,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingRedirectLinkLocalService the messaging redirect link local service
      */
     public void setMessagingRedirectLinkLocalService(
-        MessagingRedirectLinkLocalService messagingRedirectLinkLocalService) {
+        com.ext.portlet.service.MessagingRedirectLinkLocalService messagingRedirectLinkLocalService) {
         this.messagingRedirectLinkLocalService = messagingRedirectLinkLocalService;
     }
 
@@ -2437,7 +2283,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging redirect link remote service
      */
-    public MessagingRedirectLinkService getMessagingRedirectLinkService() {
+    public com.ext.portlet.service.MessagingRedirectLinkService getMessagingRedirectLinkService() {
         return messagingRedirectLinkService;
     }
 
@@ -2447,7 +2293,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingRedirectLinkService the messaging redirect link remote service
      */
     public void setMessagingRedirectLinkService(
-        MessagingRedirectLinkService messagingRedirectLinkService) {
+        com.ext.portlet.service.MessagingRedirectLinkService messagingRedirectLinkService) {
         this.messagingRedirectLinkService = messagingRedirectLinkService;
     }
 
@@ -2475,7 +2321,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging user preferences local service
      */
-    public MessagingUserPreferencesLocalService getMessagingUserPreferencesLocalService() {
+    public com.ext.portlet.service.MessagingUserPreferencesLocalService getMessagingUserPreferencesLocalService() {
         return messagingUserPreferencesLocalService;
     }
 
@@ -2485,7 +2331,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingUserPreferencesLocalService the messaging user preferences local service
      */
     public void setMessagingUserPreferencesLocalService(
-        MessagingUserPreferencesLocalService messagingUserPreferencesLocalService) {
+        com.ext.portlet.service.MessagingUserPreferencesLocalService messagingUserPreferencesLocalService) {
         this.messagingUserPreferencesLocalService = messagingUserPreferencesLocalService;
     }
 
@@ -2494,7 +2340,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the messaging user preferences remote service
      */
-    public MessagingUserPreferencesService getMessagingUserPreferencesService() {
+    public com.ext.portlet.service.MessagingUserPreferencesService getMessagingUserPreferencesService() {
         return messagingUserPreferencesService;
     }
 
@@ -2504,7 +2350,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param messagingUserPreferencesService the messaging user preferences remote service
      */
     public void setMessagingUserPreferencesService(
-        MessagingUserPreferencesService messagingUserPreferencesService) {
+        com.ext.portlet.service.MessagingUserPreferencesService messagingUserPreferencesService) {
         this.messagingUserPreferencesService = messagingUserPreferencesService;
     }
 
@@ -2532,7 +2378,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model category local service
      */
-    public ModelCategoryLocalService getModelCategoryLocalService() {
+    public com.ext.portlet.service.ModelCategoryLocalService getModelCategoryLocalService() {
         return modelCategoryLocalService;
     }
 
@@ -2542,7 +2388,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelCategoryLocalService the model category local service
      */
     public void setModelCategoryLocalService(
-        ModelCategoryLocalService modelCategoryLocalService) {
+        com.ext.portlet.service.ModelCategoryLocalService modelCategoryLocalService) {
         this.modelCategoryLocalService = modelCategoryLocalService;
     }
 
@@ -2551,7 +2397,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model category remote service
      */
-    public ModelCategoryService getModelCategoryService() {
+    public com.ext.portlet.service.ModelCategoryService getModelCategoryService() {
         return modelCategoryService;
     }
 
@@ -2561,7 +2407,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelCategoryService the model category remote service
      */
     public void setModelCategoryService(
-        ModelCategoryService modelCategoryService) {
+        com.ext.portlet.service.ModelCategoryService modelCategoryService) {
         this.modelCategoryService = modelCategoryService;
     }
 
@@ -2589,7 +2435,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model discussion local service
      */
-    public ModelDiscussionLocalService getModelDiscussionLocalService() {
+    public com.ext.portlet.service.ModelDiscussionLocalService getModelDiscussionLocalService() {
         return modelDiscussionLocalService;
     }
 
@@ -2599,7 +2445,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelDiscussionLocalService the model discussion local service
      */
     public void setModelDiscussionLocalService(
-        ModelDiscussionLocalService modelDiscussionLocalService) {
+        com.ext.portlet.service.ModelDiscussionLocalService modelDiscussionLocalService) {
         this.modelDiscussionLocalService = modelDiscussionLocalService;
     }
 
@@ -2608,7 +2454,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model discussion remote service
      */
-    public ModelDiscussionService getModelDiscussionService() {
+    public com.ext.portlet.service.ModelDiscussionService getModelDiscussionService() {
         return modelDiscussionService;
     }
 
@@ -2618,7 +2464,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelDiscussionService the model discussion remote service
      */
     public void setModelDiscussionService(
-        ModelDiscussionService modelDiscussionService) {
+        com.ext.portlet.service.ModelDiscussionService modelDiscussionService) {
         this.modelDiscussionService = modelDiscussionService;
     }
 
@@ -2646,7 +2492,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model global preference local service
      */
-    public ModelGlobalPreferenceLocalService getModelGlobalPreferenceLocalService() {
+    public com.ext.portlet.service.ModelGlobalPreferenceLocalService getModelGlobalPreferenceLocalService() {
         return modelGlobalPreferenceLocalService;
     }
 
@@ -2656,7 +2502,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelGlobalPreferenceLocalService the model global preference local service
      */
     public void setModelGlobalPreferenceLocalService(
-        ModelGlobalPreferenceLocalService modelGlobalPreferenceLocalService) {
+        com.ext.portlet.service.ModelGlobalPreferenceLocalService modelGlobalPreferenceLocalService) {
         this.modelGlobalPreferenceLocalService = modelGlobalPreferenceLocalService;
     }
 
@@ -2665,7 +2511,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model global preference remote service
      */
-    public ModelGlobalPreferenceService getModelGlobalPreferenceService() {
+    public com.ext.portlet.service.ModelGlobalPreferenceService getModelGlobalPreferenceService() {
         return modelGlobalPreferenceService;
     }
 
@@ -2675,7 +2521,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelGlobalPreferenceService the model global preference remote service
      */
     public void setModelGlobalPreferenceService(
-        ModelGlobalPreferenceService modelGlobalPreferenceService) {
+        com.ext.portlet.service.ModelGlobalPreferenceService modelGlobalPreferenceService) {
         this.modelGlobalPreferenceService = modelGlobalPreferenceService;
     }
 
@@ -2703,7 +2549,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model input group local service
      */
-    public ModelInputGroupLocalService getModelInputGroupLocalService() {
+    public com.ext.portlet.service.ModelInputGroupLocalService getModelInputGroupLocalService() {
         return modelInputGroupLocalService;
     }
 
@@ -2713,7 +2559,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelInputGroupLocalService the model input group local service
      */
     public void setModelInputGroupLocalService(
-        ModelInputGroupLocalService modelInputGroupLocalService) {
+        com.ext.portlet.service.ModelInputGroupLocalService modelInputGroupLocalService) {
         this.modelInputGroupLocalService = modelInputGroupLocalService;
     }
 
@@ -2722,7 +2568,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model input group remote service
      */
-    public ModelInputGroupService getModelInputGroupService() {
+    public com.ext.portlet.service.ModelInputGroupService getModelInputGroupService() {
         return modelInputGroupService;
     }
 
@@ -2732,7 +2578,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelInputGroupService the model input group remote service
      */
     public void setModelInputGroupService(
-        ModelInputGroupService modelInputGroupService) {
+        com.ext.portlet.service.ModelInputGroupService modelInputGroupService) {
         this.modelInputGroupService = modelInputGroupService;
     }
 
@@ -2760,7 +2606,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model input item local service
      */
-    public ModelInputItemLocalService getModelInputItemLocalService() {
+    public com.ext.portlet.service.ModelInputItemLocalService getModelInputItemLocalService() {
         return modelInputItemLocalService;
     }
 
@@ -2770,7 +2616,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelInputItemLocalService the model input item local service
      */
     public void setModelInputItemLocalService(
-        ModelInputItemLocalService modelInputItemLocalService) {
+        com.ext.portlet.service.ModelInputItemLocalService modelInputItemLocalService) {
         this.modelInputItemLocalService = modelInputItemLocalService;
     }
 
@@ -2779,7 +2625,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model input item remote service
      */
-    public ModelInputItemService getModelInputItemService() {
+    public com.ext.portlet.service.ModelInputItemService getModelInputItemService() {
         return modelInputItemService;
     }
 
@@ -2789,7 +2635,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelInputItemService the model input item remote service
      */
     public void setModelInputItemService(
-        ModelInputItemService modelInputItemService) {
+        com.ext.portlet.service.ModelInputItemService modelInputItemService) {
         this.modelInputItemService = modelInputItemService;
     }
 
@@ -2817,7 +2663,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model output chart order local service
      */
-    public ModelOutputChartOrderLocalService getModelOutputChartOrderLocalService() {
+    public com.ext.portlet.service.ModelOutputChartOrderLocalService getModelOutputChartOrderLocalService() {
         return modelOutputChartOrderLocalService;
     }
 
@@ -2827,7 +2673,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelOutputChartOrderLocalService the model output chart order local service
      */
     public void setModelOutputChartOrderLocalService(
-        ModelOutputChartOrderLocalService modelOutputChartOrderLocalService) {
+        com.ext.portlet.service.ModelOutputChartOrderLocalService modelOutputChartOrderLocalService) {
         this.modelOutputChartOrderLocalService = modelOutputChartOrderLocalService;
     }
 
@@ -2836,7 +2682,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model output chart order remote service
      */
-    public ModelOutputChartOrderService getModelOutputChartOrderService() {
+    public com.ext.portlet.service.ModelOutputChartOrderService getModelOutputChartOrderService() {
         return modelOutputChartOrderService;
     }
 
@@ -2846,7 +2692,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelOutputChartOrderService the model output chart order remote service
      */
     public void setModelOutputChartOrderService(
-        ModelOutputChartOrderService modelOutputChartOrderService) {
+        com.ext.portlet.service.ModelOutputChartOrderService modelOutputChartOrderService) {
         this.modelOutputChartOrderService = modelOutputChartOrderService;
     }
 
@@ -2874,7 +2720,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model output item local service
      */
-    public ModelOutputItemLocalService getModelOutputItemLocalService() {
+    public com.ext.portlet.service.ModelOutputItemLocalService getModelOutputItemLocalService() {
         return modelOutputItemLocalService;
     }
 
@@ -2884,7 +2730,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelOutputItemLocalService the model output item local service
      */
     public void setModelOutputItemLocalService(
-        ModelOutputItemLocalService modelOutputItemLocalService) {
+        com.ext.portlet.service.ModelOutputItemLocalService modelOutputItemLocalService) {
         this.modelOutputItemLocalService = modelOutputItemLocalService;
     }
 
@@ -2893,7 +2739,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model output item remote service
      */
-    public ModelOutputItemService getModelOutputItemService() {
+    public com.ext.portlet.service.ModelOutputItemService getModelOutputItemService() {
         return modelOutputItemService;
     }
 
@@ -2903,7 +2749,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelOutputItemService the model output item remote service
      */
     public void setModelOutputItemService(
-        ModelOutputItemService modelOutputItemService) {
+        com.ext.portlet.service.ModelOutputItemService modelOutputItemService) {
         this.modelOutputItemService = modelOutputItemService;
     }
 
@@ -2931,7 +2777,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model position local service
      */
-    public ModelPositionLocalService getModelPositionLocalService() {
+    public com.ext.portlet.service.ModelPositionLocalService getModelPositionLocalService() {
         return modelPositionLocalService;
     }
 
@@ -2941,7 +2787,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelPositionLocalService the model position local service
      */
     public void setModelPositionLocalService(
-        ModelPositionLocalService modelPositionLocalService) {
+        com.ext.portlet.service.ModelPositionLocalService modelPositionLocalService) {
         this.modelPositionLocalService = modelPositionLocalService;
     }
 
@@ -2950,7 +2796,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model position remote service
      */
-    public ModelPositionService getModelPositionService() {
+    public com.ext.portlet.service.ModelPositionService getModelPositionService() {
         return modelPositionService;
     }
 
@@ -2960,7 +2806,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelPositionService the model position remote service
      */
     public void setModelPositionService(
-        ModelPositionService modelPositionService) {
+        com.ext.portlet.service.ModelPositionService modelPositionService) {
         this.modelPositionService = modelPositionService;
     }
 
@@ -2988,7 +2834,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model runner local service
      */
-    public ModelRunnerLocalService getModelRunnerLocalService() {
+    public com.ext.portlet.service.ModelRunnerLocalService getModelRunnerLocalService() {
         return modelRunnerLocalService;
     }
 
@@ -2998,7 +2844,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param modelRunnerLocalService the model runner local service
      */
     public void setModelRunnerLocalService(
-        ModelRunnerLocalService modelRunnerLocalService) {
+        com.ext.portlet.service.ModelRunnerLocalService modelRunnerLocalService) {
         this.modelRunnerLocalService = modelRunnerLocalService;
     }
 
@@ -3007,7 +2853,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the model runner remote service
      */
-    public ModelRunnerService getModelRunnerService() {
+    public com.ext.portlet.service.ModelRunnerService getModelRunnerService() {
         return modelRunnerService;
     }
 
@@ -3016,7 +2862,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param modelRunnerService the model runner remote service
      */
-    public void setModelRunnerService(ModelRunnerService modelRunnerService) {
+    public void setModelRunnerService(
+        com.ext.portlet.service.ModelRunnerService modelRunnerService) {
         this.modelRunnerService = modelRunnerService;
     }
 
@@ -3025,7 +2872,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology space local service
      */
-    public OntologySpaceLocalService getOntologySpaceLocalService() {
+    public com.ext.portlet.service.OntologySpaceLocalService getOntologySpaceLocalService() {
         return ontologySpaceLocalService;
     }
 
@@ -3035,7 +2882,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param ontologySpaceLocalService the ontology space local service
      */
     public void setOntologySpaceLocalService(
-        OntologySpaceLocalService ontologySpaceLocalService) {
+        com.ext.portlet.service.OntologySpaceLocalService ontologySpaceLocalService) {
         this.ontologySpaceLocalService = ontologySpaceLocalService;
     }
 
@@ -3044,7 +2891,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology space remote service
      */
-    public OntologySpaceService getOntologySpaceService() {
+    public com.ext.portlet.service.OntologySpaceService getOntologySpaceService() {
         return ontologySpaceService;
     }
 
@@ -3054,7 +2901,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param ontologySpaceService the ontology space remote service
      */
     public void setOntologySpaceService(
-        OntologySpaceService ontologySpaceService) {
+        com.ext.portlet.service.OntologySpaceService ontologySpaceService) {
         this.ontologySpaceService = ontologySpaceService;
     }
 
@@ -3082,7 +2929,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology term local service
      */
-    public OntologyTermLocalService getOntologyTermLocalService() {
+    public com.ext.portlet.service.OntologyTermLocalService getOntologyTermLocalService() {
         return ontologyTermLocalService;
     }
 
@@ -3092,7 +2939,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param ontologyTermLocalService the ontology term local service
      */
     public void setOntologyTermLocalService(
-        OntologyTermLocalService ontologyTermLocalService) {
+        com.ext.portlet.service.OntologyTermLocalService ontologyTermLocalService) {
         this.ontologyTermLocalService = ontologyTermLocalService;
     }
 
@@ -3101,7 +2948,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology term remote service
      */
-    public OntologyTermService getOntologyTermService() {
+    public com.ext.portlet.service.OntologyTermService getOntologyTermService() {
         return ontologyTermService;
     }
 
@@ -3110,7 +2957,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param ontologyTermService the ontology term remote service
      */
-    public void setOntologyTermService(OntologyTermService ontologyTermService) {
+    public void setOntologyTermService(
+        com.ext.portlet.service.OntologyTermService ontologyTermService) {
         this.ontologyTermService = ontologyTermService;
     }
 
@@ -3138,7 +2986,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology term entity local service
      */
-    public OntologyTermEntityLocalService getOntologyTermEntityLocalService() {
+    public com.ext.portlet.service.OntologyTermEntityLocalService getOntologyTermEntityLocalService() {
         return ontologyTermEntityLocalService;
     }
 
@@ -3148,7 +2996,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param ontologyTermEntityLocalService the ontology term entity local service
      */
     public void setOntologyTermEntityLocalService(
-        OntologyTermEntityLocalService ontologyTermEntityLocalService) {
+        com.ext.portlet.service.OntologyTermEntityLocalService ontologyTermEntityLocalService) {
         this.ontologyTermEntityLocalService = ontologyTermEntityLocalService;
     }
 
@@ -3157,7 +3005,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the ontology term entity remote service
      */
-    public OntologyTermEntityService getOntologyTermEntityService() {
+    public com.ext.portlet.service.OntologyTermEntityService getOntologyTermEntityService() {
         return ontologyTermEntityService;
     }
 
@@ -3167,7 +3015,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param ontologyTermEntityService the ontology term entity remote service
      */
     public void setOntologyTermEntityService(
-        OntologyTermEntityService ontologyTermEntityService) {
+        com.ext.portlet.service.OntologyTermEntityService ontologyTermEntityService) {
         this.ontologyTermEntityService = ontologyTermEntityService;
     }
 
@@ -3195,7 +3043,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan2 proposal local service
      */
-    public Plan2ProposalLocalService getPlan2ProposalLocalService() {
+    public com.ext.portlet.service.Plan2ProposalLocalService getPlan2ProposalLocalService() {
         return plan2ProposalLocalService;
     }
 
@@ -3205,7 +3053,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plan2ProposalLocalService the plan2 proposal local service
      */
     public void setPlan2ProposalLocalService(
-        Plan2ProposalLocalService plan2ProposalLocalService) {
+        com.ext.portlet.service.Plan2ProposalLocalService plan2ProposalLocalService) {
         this.plan2ProposalLocalService = plan2ProposalLocalService;
     }
 
@@ -3214,7 +3062,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan2 proposal remote service
      */
-    public Plan2ProposalService getPlan2ProposalService() {
+    public com.ext.portlet.service.Plan2ProposalService getPlan2ProposalService() {
         return plan2ProposalService;
     }
 
@@ -3224,7 +3072,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plan2ProposalService the plan2 proposal remote service
      */
     public void setPlan2ProposalService(
-        Plan2ProposalService plan2ProposalService) {
+        com.ext.portlet.service.Plan2ProposalService plan2ProposalService) {
         this.plan2ProposalService = plan2ProposalService;
     }
 
@@ -3252,7 +3100,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan attribute local service
      */
-    public PlanAttributeLocalService getPlanAttributeLocalService() {
+    public com.ext.portlet.service.PlanAttributeLocalService getPlanAttributeLocalService() {
         return planAttributeLocalService;
     }
 
@@ -3262,7 +3110,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planAttributeLocalService the plan attribute local service
      */
     public void setPlanAttributeLocalService(
-        PlanAttributeLocalService planAttributeLocalService) {
+        com.ext.portlet.service.PlanAttributeLocalService planAttributeLocalService) {
         this.planAttributeLocalService = planAttributeLocalService;
     }
 
@@ -3271,7 +3119,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan attribute remote service
      */
-    public PlanAttributeService getPlanAttributeService() {
+    public com.ext.portlet.service.PlanAttributeService getPlanAttributeService() {
         return planAttributeService;
     }
 
@@ -3281,7 +3129,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planAttributeService the plan attribute remote service
      */
     public void setPlanAttributeService(
-        PlanAttributeService planAttributeService) {
+        com.ext.portlet.service.PlanAttributeService planAttributeService) {
         this.planAttributeService = planAttributeService;
     }
 
@@ -3309,7 +3157,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan attribute filter local service
      */
-    public PlanAttributeFilterLocalService getPlanAttributeFilterLocalService() {
+    public com.ext.portlet.service.PlanAttributeFilterLocalService getPlanAttributeFilterLocalService() {
         return planAttributeFilterLocalService;
     }
 
@@ -3319,7 +3167,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planAttributeFilterLocalService the plan attribute filter local service
      */
     public void setPlanAttributeFilterLocalService(
-        PlanAttributeFilterLocalService planAttributeFilterLocalService) {
+        com.ext.portlet.service.PlanAttributeFilterLocalService planAttributeFilterLocalService) {
         this.planAttributeFilterLocalService = planAttributeFilterLocalService;
     }
 
@@ -3328,7 +3176,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan attribute filter remote service
      */
-    public PlanAttributeFilterService getPlanAttributeFilterService() {
+    public com.ext.portlet.service.PlanAttributeFilterService getPlanAttributeFilterService() {
         return planAttributeFilterService;
     }
 
@@ -3338,7 +3186,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planAttributeFilterService the plan attribute filter remote service
      */
     public void setPlanAttributeFilterService(
-        PlanAttributeFilterService planAttributeFilterService) {
+        com.ext.portlet.service.PlanAttributeFilterService planAttributeFilterService) {
         this.planAttributeFilterService = planAttributeFilterService;
     }
 
@@ -3366,7 +3214,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan column settings local service
      */
-    public PlanColumnSettingsLocalService getPlanColumnSettingsLocalService() {
+    public com.ext.portlet.service.PlanColumnSettingsLocalService getPlanColumnSettingsLocalService() {
         return planColumnSettingsLocalService;
     }
 
@@ -3376,7 +3224,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planColumnSettingsLocalService the plan column settings local service
      */
     public void setPlanColumnSettingsLocalService(
-        PlanColumnSettingsLocalService planColumnSettingsLocalService) {
+        com.ext.portlet.service.PlanColumnSettingsLocalService planColumnSettingsLocalService) {
         this.planColumnSettingsLocalService = planColumnSettingsLocalService;
     }
 
@@ -3385,7 +3233,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan column settings remote service
      */
-    public PlanColumnSettingsService getPlanColumnSettingsService() {
+    public com.ext.portlet.service.PlanColumnSettingsService getPlanColumnSettingsService() {
         return planColumnSettingsService;
     }
 
@@ -3395,7 +3243,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planColumnSettingsService the plan column settings remote service
      */
     public void setPlanColumnSettingsService(
-        PlanColumnSettingsService planColumnSettingsService) {
+        com.ext.portlet.service.PlanColumnSettingsService planColumnSettingsService) {
         this.planColumnSettingsService = planColumnSettingsService;
     }
 
@@ -3423,7 +3271,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan description local service
      */
-    public PlanDescriptionLocalService getPlanDescriptionLocalService() {
+    public com.ext.portlet.service.PlanDescriptionLocalService getPlanDescriptionLocalService() {
         return planDescriptionLocalService;
     }
 
@@ -3433,7 +3281,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planDescriptionLocalService the plan description local service
      */
     public void setPlanDescriptionLocalService(
-        PlanDescriptionLocalService planDescriptionLocalService) {
+        com.ext.portlet.service.PlanDescriptionLocalService planDescriptionLocalService) {
         this.planDescriptionLocalService = planDescriptionLocalService;
     }
 
@@ -3442,7 +3290,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan description remote service
      */
-    public PlanDescriptionService getPlanDescriptionService() {
+    public com.ext.portlet.service.PlanDescriptionService getPlanDescriptionService() {
         return planDescriptionService;
     }
 
@@ -3452,7 +3300,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planDescriptionService the plan description remote service
      */
     public void setPlanDescriptionService(
-        PlanDescriptionService planDescriptionService) {
+        com.ext.portlet.service.PlanDescriptionService planDescriptionService) {
         this.planDescriptionService = planDescriptionService;
     }
 
@@ -3480,7 +3328,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan fan local service
      */
-    public PlanFanLocalService getPlanFanLocalService() {
+    public com.ext.portlet.service.PlanFanLocalService getPlanFanLocalService() {
         return planFanLocalService;
     }
 
@@ -3489,7 +3337,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planFanLocalService the plan fan local service
      */
-    public void setPlanFanLocalService(PlanFanLocalService planFanLocalService) {
+    public void setPlanFanLocalService(
+        com.ext.portlet.service.PlanFanLocalService planFanLocalService) {
         this.planFanLocalService = planFanLocalService;
     }
 
@@ -3498,7 +3347,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan fan remote service
      */
-    public PlanFanService getPlanFanService() {
+    public com.ext.portlet.service.PlanFanService getPlanFanService() {
         return planFanService;
     }
 
@@ -3507,7 +3356,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planFanService the plan fan remote service
      */
-    public void setPlanFanService(PlanFanService planFanService) {
+    public void setPlanFanService(
+        com.ext.portlet.service.PlanFanService planFanService) {
         this.planFanService = planFanService;
     }
 
@@ -3534,7 +3384,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan item local service
      */
-    public PlanItemLocalService getPlanItemLocalService() {
+    public com.ext.portlet.service.PlanItemLocalService getPlanItemLocalService() {
         return planItemLocalService;
     }
 
@@ -3544,7 +3394,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planItemLocalService the plan item local service
      */
     public void setPlanItemLocalService(
-        PlanItemLocalService planItemLocalService) {
+        com.ext.portlet.service.PlanItemLocalService planItemLocalService) {
         this.planItemLocalService = planItemLocalService;
     }
 
@@ -3553,7 +3403,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan item remote service
      */
-    public PlanItemService getPlanItemService() {
+    public com.ext.portlet.service.PlanItemService getPlanItemService() {
         return planItemService;
     }
 
@@ -3562,7 +3412,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planItemService the plan item remote service
      */
-    public void setPlanItemService(PlanItemService planItemService) {
+    public void setPlanItemService(
+        com.ext.portlet.service.PlanItemService planItemService) {
         this.planItemService = planItemService;
     }
 
@@ -3607,7 +3458,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan item group local service
      */
-    public PlanItemGroupLocalService getPlanItemGroupLocalService() {
+    public com.ext.portlet.service.PlanItemGroupLocalService getPlanItemGroupLocalService() {
         return planItemGroupLocalService;
     }
 
@@ -3617,7 +3468,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planItemGroupLocalService the plan item group local service
      */
     public void setPlanItemGroupLocalService(
-        PlanItemGroupLocalService planItemGroupLocalService) {
+        com.ext.portlet.service.PlanItemGroupLocalService planItemGroupLocalService) {
         this.planItemGroupLocalService = planItemGroupLocalService;
     }
 
@@ -3626,7 +3477,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan item group remote service
      */
-    public PlanItemGroupService getPlanItemGroupService() {
+    public com.ext.portlet.service.PlanItemGroupService getPlanItemGroupService() {
         return planItemGroupService;
     }
 
@@ -3636,7 +3487,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planItemGroupService the plan item group remote service
      */
     public void setPlanItemGroupService(
-        PlanItemGroupService planItemGroupService) {
+        com.ext.portlet.service.PlanItemGroupService planItemGroupService) {
         this.planItemGroupService = planItemGroupService;
     }
 
@@ -3664,7 +3515,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan meta local service
      */
-    public PlanMetaLocalService getPlanMetaLocalService() {
+    public com.ext.portlet.service.PlanMetaLocalService getPlanMetaLocalService() {
         return planMetaLocalService;
     }
 
@@ -3674,7 +3525,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planMetaLocalService the plan meta local service
      */
     public void setPlanMetaLocalService(
-        PlanMetaLocalService planMetaLocalService) {
+        com.ext.portlet.service.PlanMetaLocalService planMetaLocalService) {
         this.planMetaLocalService = planMetaLocalService;
     }
 
@@ -3683,7 +3534,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan meta remote service
      */
-    public PlanMetaService getPlanMetaService() {
+    public com.ext.portlet.service.PlanMetaService getPlanMetaService() {
         return planMetaService;
     }
 
@@ -3692,7 +3543,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planMetaService the plan meta remote service
      */
-    public void setPlanMetaService(PlanMetaService planMetaService) {
+    public void setPlanMetaService(
+        com.ext.portlet.service.PlanMetaService planMetaService) {
         this.planMetaService = planMetaService;
     }
 
@@ -3719,7 +3571,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan model run local service
      */
-    public PlanModelRunLocalService getPlanModelRunLocalService() {
+    public com.ext.portlet.service.PlanModelRunLocalService getPlanModelRunLocalService() {
         return planModelRunLocalService;
     }
 
@@ -3729,7 +3581,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planModelRunLocalService the plan model run local service
      */
     public void setPlanModelRunLocalService(
-        PlanModelRunLocalService planModelRunLocalService) {
+        com.ext.portlet.service.PlanModelRunLocalService planModelRunLocalService) {
         this.planModelRunLocalService = planModelRunLocalService;
     }
 
@@ -3738,7 +3590,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan model run remote service
      */
-    public PlanModelRunService getPlanModelRunService() {
+    public com.ext.portlet.service.PlanModelRunService getPlanModelRunService() {
         return planModelRunService;
     }
 
@@ -3747,7 +3599,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planModelRunService the plan model run remote service
      */
-    public void setPlanModelRunService(PlanModelRunService planModelRunService) {
+    public void setPlanModelRunService(
+        com.ext.portlet.service.PlanModelRunService planModelRunService) {
         this.planModelRunService = planModelRunService;
     }
 
@@ -3775,7 +3628,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan position local service
      */
-    public PlanPositionLocalService getPlanPositionLocalService() {
+    public com.ext.portlet.service.PlanPositionLocalService getPlanPositionLocalService() {
         return planPositionLocalService;
     }
 
@@ -3785,7 +3638,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPositionLocalService the plan position local service
      */
     public void setPlanPositionLocalService(
-        PlanPositionLocalService planPositionLocalService) {
+        com.ext.portlet.service.PlanPositionLocalService planPositionLocalService) {
         this.planPositionLocalService = planPositionLocalService;
     }
 
@@ -3794,7 +3647,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan position remote service
      */
-    public PlanPositionService getPlanPositionService() {
+    public com.ext.portlet.service.PlanPositionService getPlanPositionService() {
         return planPositionService;
     }
 
@@ -3803,7 +3656,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planPositionService the plan position remote service
      */
-    public void setPlanPositionService(PlanPositionService planPositionService) {
+    public void setPlanPositionService(
+        com.ext.portlet.service.PlanPositionService planPositionService) {
         this.planPositionService = planPositionService;
     }
 
@@ -3831,7 +3685,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan position item local service
      */
-    public PlanPositionItemLocalService getPlanPositionItemLocalService() {
+    public com.ext.portlet.service.PlanPositionItemLocalService getPlanPositionItemLocalService() {
         return planPositionItemLocalService;
     }
 
@@ -3841,7 +3695,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPositionItemLocalService the plan position item local service
      */
     public void setPlanPositionItemLocalService(
-        PlanPositionItemLocalService planPositionItemLocalService) {
+        com.ext.portlet.service.PlanPositionItemLocalService planPositionItemLocalService) {
         this.planPositionItemLocalService = planPositionItemLocalService;
     }
 
@@ -3850,7 +3704,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan position item remote service
      */
-    public PlanPositionItemService getPlanPositionItemService() {
+    public com.ext.portlet.service.PlanPositionItemService getPlanPositionItemService() {
         return planPositionItemService;
     }
 
@@ -3860,7 +3714,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPositionItemService the plan position item remote service
      */
     public void setPlanPositionItemService(
-        PlanPositionItemService planPositionItemService) {
+        com.ext.portlet.service.PlanPositionItemService planPositionItemService) {
         this.planPositionItemService = planPositionItemService;
     }
 
@@ -3888,7 +3742,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan positions local service
      */
-    public PlanPositionsLocalService getPlanPositionsLocalService() {
+    public com.ext.portlet.service.PlanPositionsLocalService getPlanPositionsLocalService() {
         return planPositionsLocalService;
     }
 
@@ -3898,7 +3752,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPositionsLocalService the plan positions local service
      */
     public void setPlanPositionsLocalService(
-        PlanPositionsLocalService planPositionsLocalService) {
+        com.ext.portlet.service.PlanPositionsLocalService planPositionsLocalService) {
         this.planPositionsLocalService = planPositionsLocalService;
     }
 
@@ -3907,7 +3761,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan positions remote service
      */
-    public PlanPositionsService getPlanPositionsService() {
+    public com.ext.portlet.service.PlanPositionsService getPlanPositionsService() {
         return planPositionsService;
     }
 
@@ -3917,7 +3771,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPositionsService the plan positions remote service
      */
     public void setPlanPositionsService(
-        PlanPositionsService planPositionsService) {
+        com.ext.portlet.service.PlanPositionsService planPositionsService) {
         this.planPositionsService = planPositionsService;
     }
 
@@ -3945,7 +3799,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan property filter local service
      */
-    public PlanPropertyFilterLocalService getPlanPropertyFilterLocalService() {
+    public com.ext.portlet.service.PlanPropertyFilterLocalService getPlanPropertyFilterLocalService() {
         return planPropertyFilterLocalService;
     }
 
@@ -3955,7 +3809,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPropertyFilterLocalService the plan property filter local service
      */
     public void setPlanPropertyFilterLocalService(
-        PlanPropertyFilterLocalService planPropertyFilterLocalService) {
+        com.ext.portlet.service.PlanPropertyFilterLocalService planPropertyFilterLocalService) {
         this.planPropertyFilterLocalService = planPropertyFilterLocalService;
     }
 
@@ -3964,7 +3818,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan property filter remote service
      */
-    public PlanPropertyFilterService getPlanPropertyFilterService() {
+    public com.ext.portlet.service.PlanPropertyFilterService getPlanPropertyFilterService() {
         return planPropertyFilterService;
     }
 
@@ -3974,7 +3828,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planPropertyFilterService the plan property filter remote service
      */
     public void setPlanPropertyFilterService(
-        PlanPropertyFilterService planPropertyFilterService) {
+        com.ext.portlet.service.PlanPropertyFilterService planPropertyFilterService) {
         this.planPropertyFilterService = planPropertyFilterService;
     }
 
@@ -4002,7 +3856,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan related local service
      */
-    public PlanRelatedLocalService getPlanRelatedLocalService() {
+    public com.ext.portlet.service.PlanRelatedLocalService getPlanRelatedLocalService() {
         return planRelatedLocalService;
     }
 
@@ -4012,7 +3866,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planRelatedLocalService the plan related local service
      */
     public void setPlanRelatedLocalService(
-        PlanRelatedLocalService planRelatedLocalService) {
+        com.ext.portlet.service.PlanRelatedLocalService planRelatedLocalService) {
         this.planRelatedLocalService = planRelatedLocalService;
     }
 
@@ -4021,7 +3875,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan related remote service
      */
-    public PlanRelatedService getPlanRelatedService() {
+    public com.ext.portlet.service.PlanRelatedService getPlanRelatedService() {
         return planRelatedService;
     }
 
@@ -4030,7 +3884,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planRelatedService the plan related remote service
      */
-    public void setPlanRelatedService(PlanRelatedService planRelatedService) {
+    public void setPlanRelatedService(
+        com.ext.portlet.service.PlanRelatedService planRelatedService) {
         this.planRelatedService = planRelatedService;
     }
 
@@ -4058,7 +3913,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section local service
      */
-    public PlanSectionLocalService getPlanSectionLocalService() {
+    public com.ext.portlet.service.PlanSectionLocalService getPlanSectionLocalService() {
         return planSectionLocalService;
     }
 
@@ -4068,7 +3923,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planSectionLocalService the plan section local service
      */
     public void setPlanSectionLocalService(
-        PlanSectionLocalService planSectionLocalService) {
+        com.ext.portlet.service.PlanSectionLocalService planSectionLocalService) {
         this.planSectionLocalService = planSectionLocalService;
     }
 
@@ -4077,7 +3932,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section remote service
      */
-    public PlanSectionService getPlanSectionService() {
+    public com.ext.portlet.service.PlanSectionService getPlanSectionService() {
         return planSectionService;
     }
 
@@ -4086,7 +3941,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planSectionService the plan section remote service
      */
-    public void setPlanSectionService(PlanSectionService planSectionService) {
+    public void setPlanSectionService(
+        com.ext.portlet.service.PlanSectionService planSectionService) {
         this.planSectionService = planSectionService;
     }
 
@@ -4114,7 +3970,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section definition local service
      */
-    public PlanSectionDefinitionLocalService getPlanSectionDefinitionLocalService() {
+    public com.ext.portlet.service.PlanSectionDefinitionLocalService getPlanSectionDefinitionLocalService() {
         return planSectionDefinitionLocalService;
     }
 
@@ -4124,7 +3980,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planSectionDefinitionLocalService the plan section definition local service
      */
     public void setPlanSectionDefinitionLocalService(
-        PlanSectionDefinitionLocalService planSectionDefinitionLocalService) {
+        com.ext.portlet.service.PlanSectionDefinitionLocalService planSectionDefinitionLocalService) {
         this.planSectionDefinitionLocalService = planSectionDefinitionLocalService;
     }
 
@@ -4133,7 +3989,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section definition remote service
      */
-    public PlanSectionDefinitionService getPlanSectionDefinitionService() {
+    public com.ext.portlet.service.PlanSectionDefinitionService getPlanSectionDefinitionService() {
         return planSectionDefinitionService;
     }
 
@@ -4143,7 +3999,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planSectionDefinitionService the plan section definition remote service
      */
     public void setPlanSectionDefinitionService(
-        PlanSectionDefinitionService planSectionDefinitionService) {
+        com.ext.portlet.service.PlanSectionDefinitionService planSectionDefinitionService) {
         this.planSectionDefinitionService = planSectionDefinitionService;
     }
 
@@ -4171,7 +4027,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section plan map local service
      */
-    public PlanSectionPlanMapLocalService getPlanSectionPlanMapLocalService() {
+    public com.ext.portlet.service.PlanSectionPlanMapLocalService getPlanSectionPlanMapLocalService() {
         return planSectionPlanMapLocalService;
     }
 
@@ -4181,7 +4037,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planSectionPlanMapLocalService the plan section plan map local service
      */
     public void setPlanSectionPlanMapLocalService(
-        PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
+        com.ext.portlet.service.PlanSectionPlanMapLocalService planSectionPlanMapLocalService) {
         this.planSectionPlanMapLocalService = planSectionPlanMapLocalService;
     }
 
@@ -4190,7 +4046,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan section plan map remote service
      */
-    public PlanSectionPlanMapService getPlanSectionPlanMapService() {
+    public com.ext.portlet.service.PlanSectionPlanMapService getPlanSectionPlanMapService() {
         return planSectionPlanMapService;
     }
 
@@ -4200,7 +4056,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planSectionPlanMapService the plan section plan map remote service
      */
     public void setPlanSectionPlanMapService(
-        PlanSectionPlanMapService planSectionPlanMapService) {
+        com.ext.portlet.service.PlanSectionPlanMapService planSectionPlanMapService) {
         this.planSectionPlanMapService = planSectionPlanMapService;
     }
 
@@ -4228,7 +4084,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans filter local service
      */
-    public PlansFilterLocalService getPlansFilterLocalService() {
+    public com.ext.portlet.service.PlansFilterLocalService getPlansFilterLocalService() {
         return plansFilterLocalService;
     }
 
@@ -4238,7 +4094,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plansFilterLocalService the plans filter local service
      */
     public void setPlansFilterLocalService(
-        PlansFilterLocalService plansFilterLocalService) {
+        com.ext.portlet.service.PlansFilterLocalService plansFilterLocalService) {
         this.plansFilterLocalService = plansFilterLocalService;
     }
 
@@ -4247,7 +4103,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans filter remote service
      */
-    public PlansFilterService getPlansFilterService() {
+    public com.ext.portlet.service.PlansFilterService getPlansFilterService() {
         return plansFilterService;
     }
 
@@ -4256,7 +4112,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param plansFilterService the plans filter remote service
      */
-    public void setPlansFilterService(PlansFilterService plansFilterService) {
+    public void setPlansFilterService(
+        com.ext.portlet.service.PlansFilterService plansFilterService) {
         this.plansFilterService = plansFilterService;
     }
 
@@ -4284,7 +4141,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans filter position local service
      */
-    public PlansFilterPositionLocalService getPlansFilterPositionLocalService() {
+    public com.ext.portlet.service.PlansFilterPositionLocalService getPlansFilterPositionLocalService() {
         return plansFilterPositionLocalService;
     }
 
@@ -4294,7 +4151,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plansFilterPositionLocalService the plans filter position local service
      */
     public void setPlansFilterPositionLocalService(
-        PlansFilterPositionLocalService plansFilterPositionLocalService) {
+        com.ext.portlet.service.PlansFilterPositionLocalService plansFilterPositionLocalService) {
         this.plansFilterPositionLocalService = plansFilterPositionLocalService;
     }
 
@@ -4303,7 +4160,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans filter position remote service
      */
-    public PlansFilterPositionService getPlansFilterPositionService() {
+    public com.ext.portlet.service.PlansFilterPositionService getPlansFilterPositionService() {
         return plansFilterPositionService;
     }
 
@@ -4313,7 +4170,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plansFilterPositionService the plans filter position remote service
      */
     public void setPlansFilterPositionService(
-        PlansFilterPositionService plansFilterPositionService) {
+        com.ext.portlet.service.PlansFilterPositionService plansFilterPositionService) {
         this.plansFilterPositionService = plansFilterPositionService;
     }
 
@@ -4341,7 +4198,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans user settings local service
      */
-    public PlansUserSettingsLocalService getPlansUserSettingsLocalService() {
+    public com.ext.portlet.service.PlansUserSettingsLocalService getPlansUserSettingsLocalService() {
         return plansUserSettingsLocalService;
     }
 
@@ -4351,7 +4208,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plansUserSettingsLocalService the plans user settings local service
      */
     public void setPlansUserSettingsLocalService(
-        PlansUserSettingsLocalService plansUserSettingsLocalService) {
+        com.ext.portlet.service.PlansUserSettingsLocalService plansUserSettingsLocalService) {
         this.plansUserSettingsLocalService = plansUserSettingsLocalService;
     }
 
@@ -4360,7 +4217,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plans user settings remote service
      */
-    public PlansUserSettingsService getPlansUserSettingsService() {
+    public com.ext.portlet.service.PlansUserSettingsService getPlansUserSettingsService() {
         return plansUserSettingsService;
     }
 
@@ -4370,7 +4227,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param plansUserSettingsService the plans user settings remote service
      */
     public void setPlansUserSettingsService(
-        PlansUserSettingsService plansUserSettingsService) {
+        com.ext.portlet.service.PlansUserSettingsService plansUserSettingsService) {
         this.plansUserSettingsService = plansUserSettingsService;
     }
 
@@ -4398,7 +4255,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan team history local service
      */
-    public PlanTeamHistoryLocalService getPlanTeamHistoryLocalService() {
+    public com.ext.portlet.service.PlanTeamHistoryLocalService getPlanTeamHistoryLocalService() {
         return planTeamHistoryLocalService;
     }
 
@@ -4408,7 +4265,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTeamHistoryLocalService the plan team history local service
      */
     public void setPlanTeamHistoryLocalService(
-        PlanTeamHistoryLocalService planTeamHistoryLocalService) {
+        com.ext.portlet.service.PlanTeamHistoryLocalService planTeamHistoryLocalService) {
         this.planTeamHistoryLocalService = planTeamHistoryLocalService;
     }
 
@@ -4417,7 +4274,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan team history remote service
      */
-    public PlanTeamHistoryService getPlanTeamHistoryService() {
+    public com.ext.portlet.service.PlanTeamHistoryService getPlanTeamHistoryService() {
         return planTeamHistoryService;
     }
 
@@ -4427,7 +4284,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTeamHistoryService the plan team history remote service
      */
     public void setPlanTeamHistoryService(
-        PlanTeamHistoryService planTeamHistoryService) {
+        com.ext.portlet.service.PlanTeamHistoryService planTeamHistoryService) {
         this.planTeamHistoryService = planTeamHistoryService;
     }
 
@@ -4455,7 +4312,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan template local service
      */
-    public PlanTemplateLocalService getPlanTemplateLocalService() {
+    public com.ext.portlet.service.PlanTemplateLocalService getPlanTemplateLocalService() {
         return planTemplateLocalService;
     }
 
@@ -4465,7 +4322,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTemplateLocalService the plan template local service
      */
     public void setPlanTemplateLocalService(
-        PlanTemplateLocalService planTemplateLocalService) {
+        com.ext.portlet.service.PlanTemplateLocalService planTemplateLocalService) {
         this.planTemplateLocalService = planTemplateLocalService;
     }
 
@@ -4474,7 +4331,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan template remote service
      */
-    public PlanTemplateService getPlanTemplateService() {
+    public com.ext.portlet.service.PlanTemplateService getPlanTemplateService() {
         return planTemplateService;
     }
 
@@ -4483,7 +4340,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planTemplateService the plan template remote service
      */
-    public void setPlanTemplateService(PlanTemplateService planTemplateService) {
+    public void setPlanTemplateService(
+        com.ext.portlet.service.PlanTemplateService planTemplateService) {
         this.planTemplateService = planTemplateService;
     }
 
@@ -4511,7 +4369,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan template section local service
      */
-    public PlanTemplateSectionLocalService getPlanTemplateSectionLocalService() {
+    public com.ext.portlet.service.PlanTemplateSectionLocalService getPlanTemplateSectionLocalService() {
         return planTemplateSectionLocalService;
     }
 
@@ -4521,7 +4379,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTemplateSectionLocalService the plan template section local service
      */
     public void setPlanTemplateSectionLocalService(
-        PlanTemplateSectionLocalService planTemplateSectionLocalService) {
+        com.ext.portlet.service.PlanTemplateSectionLocalService planTemplateSectionLocalService) {
         this.planTemplateSectionLocalService = planTemplateSectionLocalService;
     }
 
@@ -4530,7 +4388,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan template section remote service
      */
-    public PlanTemplateSectionService getPlanTemplateSectionService() {
+    public com.ext.portlet.service.PlanTemplateSectionService getPlanTemplateSectionService() {
         return planTemplateSectionService;
     }
 
@@ -4540,7 +4398,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTemplateSectionService the plan template section remote service
      */
     public void setPlanTemplateSectionService(
-        PlanTemplateSectionService planTemplateSectionService) {
+        com.ext.portlet.service.PlanTemplateSectionService planTemplateSectionService) {
         this.planTemplateSectionService = planTemplateSectionService;
     }
 
@@ -4568,7 +4426,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type local service
      */
-    public PlanTypeLocalService getPlanTypeLocalService() {
+    public com.ext.portlet.service.PlanTypeLocalService getPlanTypeLocalService() {
         return planTypeLocalService;
     }
 
@@ -4578,7 +4436,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTypeLocalService the plan type local service
      */
     public void setPlanTypeLocalService(
-        PlanTypeLocalService planTypeLocalService) {
+        com.ext.portlet.service.PlanTypeLocalService planTypeLocalService) {
         this.planTypeLocalService = planTypeLocalService;
     }
 
@@ -4587,7 +4445,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type remote service
      */
-    public PlanTypeService getPlanTypeService() {
+    public com.ext.portlet.service.PlanTypeService getPlanTypeService() {
         return planTypeService;
     }
 
@@ -4596,7 +4454,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planTypeService the plan type remote service
      */
-    public void setPlanTypeService(PlanTypeService planTypeService) {
+    public void setPlanTypeService(
+        com.ext.portlet.service.PlanTypeService planTypeService) {
         this.planTypeService = planTypeService;
     }
 
@@ -4623,7 +4482,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type attribute local service
      */
-    public PlanTypeAttributeLocalService getPlanTypeAttributeLocalService() {
+    public com.ext.portlet.service.PlanTypeAttributeLocalService getPlanTypeAttributeLocalService() {
         return planTypeAttributeLocalService;
     }
 
@@ -4633,7 +4492,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTypeAttributeLocalService the plan type attribute local service
      */
     public void setPlanTypeAttributeLocalService(
-        PlanTypeAttributeLocalService planTypeAttributeLocalService) {
+        com.ext.portlet.service.PlanTypeAttributeLocalService planTypeAttributeLocalService) {
         this.planTypeAttributeLocalService = planTypeAttributeLocalService;
     }
 
@@ -4642,7 +4501,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type attribute remote service
      */
-    public PlanTypeAttributeService getPlanTypeAttributeService() {
+    public com.ext.portlet.service.PlanTypeAttributeService getPlanTypeAttributeService() {
         return planTypeAttributeService;
     }
 
@@ -4652,7 +4511,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTypeAttributeService the plan type attribute remote service
      */
     public void setPlanTypeAttributeService(
-        PlanTypeAttributeService planTypeAttributeService) {
+        com.ext.portlet.service.PlanTypeAttributeService planTypeAttributeService) {
         this.planTypeAttributeService = planTypeAttributeService;
     }
 
@@ -4680,7 +4539,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type column local service
      */
-    public PlanTypeColumnLocalService getPlanTypeColumnLocalService() {
+    public com.ext.portlet.service.PlanTypeColumnLocalService getPlanTypeColumnLocalService() {
         return planTypeColumnLocalService;
     }
 
@@ -4690,7 +4549,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTypeColumnLocalService the plan type column local service
      */
     public void setPlanTypeColumnLocalService(
-        PlanTypeColumnLocalService planTypeColumnLocalService) {
+        com.ext.portlet.service.PlanTypeColumnLocalService planTypeColumnLocalService) {
         this.planTypeColumnLocalService = planTypeColumnLocalService;
     }
 
@@ -4699,7 +4558,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan type column remote service
      */
-    public PlanTypeColumnService getPlanTypeColumnService() {
+    public com.ext.portlet.service.PlanTypeColumnService getPlanTypeColumnService() {
         return planTypeColumnService;
     }
 
@@ -4709,7 +4568,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planTypeColumnService the plan type column remote service
      */
     public void setPlanTypeColumnService(
-        PlanTypeColumnService planTypeColumnService) {
+        com.ext.portlet.service.PlanTypeColumnService planTypeColumnService) {
         this.planTypeColumnService = planTypeColumnService;
     }
 
@@ -4737,7 +4596,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan vote local service
      */
-    public PlanVoteLocalService getPlanVoteLocalService() {
+    public com.ext.portlet.service.PlanVoteLocalService getPlanVoteLocalService() {
         return planVoteLocalService;
     }
 
@@ -4747,7 +4606,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param planVoteLocalService the plan vote local service
      */
     public void setPlanVoteLocalService(
-        PlanVoteLocalService planVoteLocalService) {
+        com.ext.portlet.service.PlanVoteLocalService planVoteLocalService) {
         this.planVoteLocalService = planVoteLocalService;
     }
 
@@ -4756,7 +4615,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the plan vote remote service
      */
-    public PlanVoteService getPlanVoteService() {
+    public com.ext.portlet.service.PlanVoteService getPlanVoteService() {
         return planVoteService;
     }
 
@@ -4765,7 +4624,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param planVoteService the plan vote remote service
      */
-    public void setPlanVoteService(PlanVoteService planVoteService) {
+    public void setPlanVoteService(
+        com.ext.portlet.service.PlanVoteService planVoteService) {
         this.planVoteService = planVoteService;
     }
 
@@ -4792,7 +4652,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal local service
      */
-    public ProposalLocalService getProposalLocalService() {
+    public com.ext.portlet.service.ProposalLocalService getProposalLocalService() {
         return proposalLocalService;
     }
 
@@ -4802,7 +4662,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalLocalService the proposal local service
      */
     public void setProposalLocalService(
-        ProposalLocalService proposalLocalService) {
+        com.ext.portlet.service.ProposalLocalService proposalLocalService) {
         this.proposalLocalService = proposalLocalService;
     }
 
@@ -4811,7 +4671,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal remote service
      */
-    public ProposalService getProposalService() {
+    public com.ext.portlet.service.ProposalService getProposalService() {
         return proposalService;
     }
 
@@ -4820,7 +4680,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param proposalService the proposal remote service
      */
-    public void setProposalService(ProposalService proposalService) {
+    public void setProposalService(
+        com.ext.portlet.service.ProposalService proposalService) {
         this.proposalService = proposalService;
     }
 
@@ -4847,7 +4708,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal2 phase local service
      */
-    public Proposal2PhaseLocalService getProposal2PhaseLocalService() {
+    public com.ext.portlet.service.Proposal2PhaseLocalService getProposal2PhaseLocalService() {
         return proposal2PhaseLocalService;
     }
 
@@ -4857,7 +4718,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposal2PhaseLocalService the proposal2 phase local service
      */
     public void setProposal2PhaseLocalService(
-        Proposal2PhaseLocalService proposal2PhaseLocalService) {
+        com.ext.portlet.service.Proposal2PhaseLocalService proposal2PhaseLocalService) {
         this.proposal2PhaseLocalService = proposal2PhaseLocalService;
     }
 
@@ -4866,7 +4727,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal2 phase remote service
      */
-    public Proposal2PhaseService getProposal2PhaseService() {
+    public com.ext.portlet.service.Proposal2PhaseService getProposal2PhaseService() {
         return proposal2PhaseService;
     }
 
@@ -4876,7 +4737,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposal2PhaseService the proposal2 phase remote service
      */
     public void setProposal2PhaseService(
-        Proposal2PhaseService proposal2PhaseService) {
+        com.ext.portlet.service.Proposal2PhaseService proposal2PhaseService) {
         this.proposal2PhaseService = proposal2PhaseService;
     }
 
@@ -4904,7 +4765,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal attribute local service
      */
-    public ProposalAttributeLocalService getProposalAttributeLocalService() {
+    public com.ext.portlet.service.ProposalAttributeLocalService getProposalAttributeLocalService() {
         return proposalAttributeLocalService;
     }
 
@@ -4914,7 +4775,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalAttributeLocalService the proposal attribute local service
      */
     public void setProposalAttributeLocalService(
-        ProposalAttributeLocalService proposalAttributeLocalService) {
+        com.ext.portlet.service.ProposalAttributeLocalService proposalAttributeLocalService) {
         this.proposalAttributeLocalService = proposalAttributeLocalService;
     }
 
@@ -4923,7 +4784,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal attribute remote service
      */
-    public ProposalAttributeService getProposalAttributeService() {
+    public com.ext.portlet.service.ProposalAttributeService getProposalAttributeService() {
         return proposalAttributeService;
     }
 
@@ -4933,7 +4794,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalAttributeService the proposal attribute remote service
      */
     public void setProposalAttributeService(
-        ProposalAttributeService proposalAttributeService) {
+        com.ext.portlet.service.ProposalAttributeService proposalAttributeService) {
         this.proposalAttributeService = proposalAttributeService;
     }
 
@@ -4961,7 +4822,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal attribute type local service
      */
-    public ProposalAttributeTypeLocalService getProposalAttributeTypeLocalService() {
+    public com.ext.portlet.service.ProposalAttributeTypeLocalService getProposalAttributeTypeLocalService() {
         return proposalAttributeTypeLocalService;
     }
 
@@ -4971,7 +4832,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalAttributeTypeLocalService the proposal attribute type local service
      */
     public void setProposalAttributeTypeLocalService(
-        ProposalAttributeTypeLocalService proposalAttributeTypeLocalService) {
+        com.ext.portlet.service.ProposalAttributeTypeLocalService proposalAttributeTypeLocalService) {
         this.proposalAttributeTypeLocalService = proposalAttributeTypeLocalService;
     }
 
@@ -4980,7 +4841,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal attribute type remote service
      */
-    public ProposalAttributeTypeService getProposalAttributeTypeService() {
+    public com.ext.portlet.service.ProposalAttributeTypeService getProposalAttributeTypeService() {
         return proposalAttributeTypeService;
     }
 
@@ -4990,7 +4851,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalAttributeTypeService the proposal attribute type remote service
      */
     public void setProposalAttributeTypeService(
-        ProposalAttributeTypeService proposalAttributeTypeService) {
+        com.ext.portlet.service.ProposalAttributeTypeService proposalAttributeTypeService) {
         this.proposalAttributeTypeService = proposalAttributeTypeService;
     }
 
@@ -5018,7 +4879,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal contest phase attribute local service
      */
-    public ProposalContestPhaseAttributeLocalService getProposalContestPhaseAttributeLocalService() {
+    public com.ext.portlet.service.ProposalContestPhaseAttributeLocalService getProposalContestPhaseAttributeLocalService() {
         return proposalContestPhaseAttributeLocalService;
     }
 
@@ -5028,7 +4889,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalContestPhaseAttributeLocalService the proposal contest phase attribute local service
      */
     public void setProposalContestPhaseAttributeLocalService(
-        ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
+        com.ext.portlet.service.ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService) {
         this.proposalContestPhaseAttributeLocalService = proposalContestPhaseAttributeLocalService;
     }
 
@@ -5037,7 +4898,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal contest phase attribute remote service
      */
-    public ProposalContestPhaseAttributeService getProposalContestPhaseAttributeService() {
+    public com.ext.portlet.service.ProposalContestPhaseAttributeService getProposalContestPhaseAttributeService() {
         return proposalContestPhaseAttributeService;
     }
 
@@ -5047,7 +4908,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalContestPhaseAttributeService the proposal contest phase attribute remote service
      */
     public void setProposalContestPhaseAttributeService(
-        ProposalContestPhaseAttributeService proposalContestPhaseAttributeService) {
+        com.ext.portlet.service.ProposalContestPhaseAttributeService proposalContestPhaseAttributeService) {
         this.proposalContestPhaseAttributeService = proposalContestPhaseAttributeService;
     }
 
@@ -5075,7 +4936,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal contest phase attribute type local service
      */
-    public ProposalContestPhaseAttributeTypeLocalService getProposalContestPhaseAttributeTypeLocalService() {
+    public com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService getProposalContestPhaseAttributeTypeLocalService() {
         return proposalContestPhaseAttributeTypeLocalService;
     }
 
@@ -5085,7 +4946,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalContestPhaseAttributeTypeLocalService the proposal contest phase attribute type local service
      */
     public void setProposalContestPhaseAttributeTypeLocalService(
-        ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService) {
+        com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService proposalContestPhaseAttributeTypeLocalService) {
         this.proposalContestPhaseAttributeTypeLocalService = proposalContestPhaseAttributeTypeLocalService;
     }
 
@@ -5094,7 +4955,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal contest phase attribute type remote service
      */
-    public ProposalContestPhaseAttributeTypeService getProposalContestPhaseAttributeTypeService() {
+    public com.ext.portlet.service.ProposalContestPhaseAttributeTypeService getProposalContestPhaseAttributeTypeService() {
         return proposalContestPhaseAttributeTypeService;
     }
 
@@ -5104,7 +4965,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalContestPhaseAttributeTypeService the proposal contest phase attribute type remote service
      */
     public void setProposalContestPhaseAttributeTypeService(
-        ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService) {
+        com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService) {
         this.proposalContestPhaseAttributeTypeService = proposalContestPhaseAttributeTypeService;
     }
 
@@ -5132,7 +4993,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal supporter local service
      */
-    public ProposalSupporterLocalService getProposalSupporterLocalService() {
+    public com.ext.portlet.service.ProposalSupporterLocalService getProposalSupporterLocalService() {
         return proposalSupporterLocalService;
     }
 
@@ -5142,7 +5003,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalSupporterLocalService the proposal supporter local service
      */
     public void setProposalSupporterLocalService(
-        ProposalSupporterLocalService proposalSupporterLocalService) {
+        com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService) {
         this.proposalSupporterLocalService = proposalSupporterLocalService;
     }
 
@@ -5151,7 +5012,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal supporter remote service
      */
-    public ProposalSupporterService getProposalSupporterService() {
+    public com.ext.portlet.service.ProposalSupporterService getProposalSupporterService() {
         return proposalSupporterService;
     }
 
@@ -5161,7 +5022,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalSupporterService the proposal supporter remote service
      */
     public void setProposalSupporterService(
-        ProposalSupporterService proposalSupporterService) {
+        com.ext.portlet.service.ProposalSupporterService proposalSupporterService) {
         this.proposalSupporterService = proposalSupporterService;
     }
 
@@ -5189,7 +5050,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal version local service
      */
-    public ProposalVersionLocalService getProposalVersionLocalService() {
+    public com.ext.portlet.service.ProposalVersionLocalService getProposalVersionLocalService() {
         return proposalVersionLocalService;
     }
 
@@ -5199,7 +5060,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalVersionLocalService the proposal version local service
      */
     public void setProposalVersionLocalService(
-        ProposalVersionLocalService proposalVersionLocalService) {
+        com.ext.portlet.service.ProposalVersionLocalService proposalVersionLocalService) {
         this.proposalVersionLocalService = proposalVersionLocalService;
     }
 
@@ -5208,7 +5069,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal version remote service
      */
-    public ProposalVersionService getProposalVersionService() {
+    public com.ext.portlet.service.ProposalVersionService getProposalVersionService() {
         return proposalVersionService;
     }
 
@@ -5218,7 +5079,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalVersionService the proposal version remote service
      */
     public void setProposalVersionService(
-        ProposalVersionService proposalVersionService) {
+        com.ext.portlet.service.ProposalVersionService proposalVersionService) {
         this.proposalVersionService = proposalVersionService;
     }
 
@@ -5246,7 +5107,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal vote local service
      */
-    public ProposalVoteLocalService getProposalVoteLocalService() {
+    public com.ext.portlet.service.ProposalVoteLocalService getProposalVoteLocalService() {
         return proposalVoteLocalService;
     }
 
@@ -5256,7 +5117,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param proposalVoteLocalService the proposal vote local service
      */
     public void setProposalVoteLocalService(
-        ProposalVoteLocalService proposalVoteLocalService) {
+        com.ext.portlet.service.ProposalVoteLocalService proposalVoteLocalService) {
         this.proposalVoteLocalService = proposalVoteLocalService;
     }
 
@@ -5265,7 +5126,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the proposal vote remote service
      */
-    public ProposalVoteService getProposalVoteService() {
+    public com.ext.portlet.service.ProposalVoteService getProposalVoteService() {
         return proposalVoteService;
     }
 
@@ -5274,7 +5135,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param proposalVoteService the proposal vote remote service
      */
-    public void setProposalVoteService(ProposalVoteService proposalVoteService) {
+    public void setProposalVoteService(
+        com.ext.portlet.service.ProposalVoteService proposalVoteService) {
         this.proposalVoteService = proposalVoteService;
     }
 
@@ -5302,7 +5164,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the counter local service
      */
-    public CounterLocalService getCounterLocalService() {
+    public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
         return counterLocalService;
     }
 
@@ -5311,7 +5173,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param counterLocalService the counter local service
      */
-    public void setCounterLocalService(CounterLocalService counterLocalService) {
+    public void setCounterLocalService(
+        com.liferay.counter.service.CounterLocalService counterLocalService) {
         this.counterLocalService = counterLocalService;
     }
 
@@ -5320,7 +5183,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the resource local service
      */
-    public ResourceLocalService getResourceLocalService() {
+    public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
         return resourceLocalService;
     }
 
@@ -5330,44 +5193,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      * @param resourceLocalService the resource local service
      */
     public void setResourceLocalService(
-        ResourceLocalService resourceLocalService) {
+        com.liferay.portal.service.ResourceLocalService resourceLocalService) {
         this.resourceLocalService = resourceLocalService;
-    }
-
-    /**
-     * Returns the resource remote service.
-     *
-     * @return the resource remote service
-     */
-    public ResourceService getResourceService() {
-        return resourceService;
-    }
-
-    /**
-     * Sets the resource remote service.
-     *
-     * @param resourceService the resource remote service
-     */
-    public void setResourceService(ResourceService resourceService) {
-        this.resourceService = resourceService;
-    }
-
-    /**
-     * Returns the resource persistence.
-     *
-     * @return the resource persistence
-     */
-    public ResourcePersistence getResourcePersistence() {
-        return resourcePersistence;
-    }
-
-    /**
-     * Sets the resource persistence.
-     *
-     * @param resourcePersistence the resource persistence
-     */
-    public void setResourcePersistence(ResourcePersistence resourcePersistence) {
-        this.resourcePersistence = resourcePersistence;
     }
 
     /**
@@ -5375,7 +5202,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the user local service
      */
-    public UserLocalService getUserLocalService() {
+    public com.liferay.portal.service.UserLocalService getUserLocalService() {
         return userLocalService;
     }
 
@@ -5384,7 +5211,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param userLocalService the user local service
      */
-    public void setUserLocalService(UserLocalService userLocalService) {
+    public void setUserLocalService(
+        com.liferay.portal.service.UserLocalService userLocalService) {
         this.userLocalService = userLocalService;
     }
 
@@ -5393,7 +5221,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the user remote service
      */
-    public UserService getUserService() {
+    public com.liferay.portal.service.UserService getUserService() {
         return userService;
     }
 
@@ -5402,7 +5230,8 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param userService the user remote service
      */
-    public void setUserService(UserService userService) {
+    public void setUserService(
+        com.liferay.portal.service.UserService userService) {
         this.userService = userService;
     }
 
@@ -5425,6 +5254,10 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
     }
 
     public void afterPropertiesSet() {
+        Class<?> clazz = getClass();
+
+        _classLoader = clazz.getClassLoader();
+
         PersistedModelLocalServiceRegistryUtil.register("com.ext.portlet.model.ContestPhaseType",
             contestPhaseTypeLocalService);
     }
@@ -5439,6 +5272,7 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @return the Spring bean ID for this bean
      */
+    @Override
     public String getBeanIdentifier() {
         return _beanIdentifier;
     }
@@ -5448,8 +5282,29 @@ public abstract class ContestPhaseTypeLocalServiceBaseImpl
      *
      * @param beanIdentifier the Spring bean ID for this bean
      */
+    @Override
     public void setBeanIdentifier(String beanIdentifier) {
         _beanIdentifier = beanIdentifier;
+    }
+
+    @Override
+    public Object invokeMethod(String name, String[] parameterTypes,
+        Object[] arguments) throws Throwable {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        if (contextClassLoader != _classLoader) {
+            currentThread.setContextClassLoader(_classLoader);
+        }
+
+        try {
+            return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+        } finally {
+            if (contextClassLoader != _classLoader) {
+                currentThread.setContextClassLoader(contextClassLoader);
+            }
+        }
     }
 
     protected Class<?> getModelClass() {

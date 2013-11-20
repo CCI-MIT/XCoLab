@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinition>
@@ -23,110 +29,368 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
     private int _characterLimit;
     private long _focusAreaId;
     private boolean _locked;
+    private BaseModel<?> _planSectionDefinitionRemoteModel;
 
     public PlanSectionDefinitionClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanSectionDefinition.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanSectionDefinition.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("type", getType());
+        attributes.put("adminTitle", getAdminTitle());
+        attributes.put("title", getTitle());
+        attributes.put("defaultText", getDefaultText());
+        attributes.put("helpText", getHelpText());
+        attributes.put("characterLimit", getCharacterLimit());
+        attributes.put("focusAreaId", getFocusAreaId());
+        attributes.put("locked", getLocked());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String type = (String) attributes.get("type");
+
+        if (type != null) {
+            setType(type);
+        }
+
+        String adminTitle = (String) attributes.get("adminTitle");
+
+        if (adminTitle != null) {
+            setAdminTitle(adminTitle);
+        }
+
+        String title = (String) attributes.get("title");
+
+        if (title != null) {
+            setTitle(title);
+        }
+
+        String defaultText = (String) attributes.get("defaultText");
+
+        if (defaultText != null) {
+            setDefaultText(defaultText);
+        }
+
+        String helpText = (String) attributes.get("helpText");
+
+        if (helpText != null) {
+            setHelpText(helpText);
+        }
+
+        Integer characterLimit = (Integer) attributes.get("characterLimit");
+
+        if (characterLimit != null) {
+            setCharacterLimit(characterLimit);
+        }
+
+        Long focusAreaId = (Long) attributes.get("focusAreaId");
+
+        if (focusAreaId != null) {
+            setFocusAreaId(focusAreaId);
+        }
+
+        Boolean locked = (Boolean) attributes.get("locked");
+
+        if (locked != null) {
+            setLocked(locked);
+        }
+    }
+
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getType() {
         return _type;
     }
 
+    @Override
     public void setType(String type) {
         _type = type;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setType", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, type);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getAdminTitle() {
         return _adminTitle;
     }
 
+    @Override
     public void setAdminTitle(String adminTitle) {
         _adminTitle = adminTitle;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAdminTitle", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, adminTitle);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getTitle() {
         return _title;
     }
 
+    @Override
     public void setTitle(String title) {
         _title = title;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTitle", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, title);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getDefaultText() {
         return _defaultText;
     }
 
+    @Override
     public void setDefaultText(String defaultText) {
         _defaultText = defaultText;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDefaultText", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, defaultText);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getHelpText() {
         return _helpText;
     }
 
+    @Override
     public void setHelpText(String helpText) {
         _helpText = helpText;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setHelpText", String.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, helpText);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public int getCharacterLimit() {
         return _characterLimit;
     }
 
+    @Override
     public void setCharacterLimit(int characterLimit) {
         _characterLimit = characterLimit;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCharacterLimit", int.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, characterLimit);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getFocusAreaId() {
         return _focusAreaId;
     }
 
+    @Override
     public void setFocusAreaId(long focusAreaId) {
         _focusAreaId = focusAreaId;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFocusAreaId", long.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, focusAreaId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public boolean getLocked() {
         return _locked;
     }
 
+    @Override
     public boolean isLocked() {
         return _locked;
     }
 
+    @Override
     public void setLocked(boolean locked) {
         _locked = locked;
+
+        if (_planSectionDefinitionRemoteModel != null) {
+            try {
+                Class<?> clazz = _planSectionDefinitionRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setLocked", boolean.class);
+
+                method.invoke(_planSectionDefinitionRemoteModel, locked);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getPlanSectionDefinitionRemoteModel() {
+        return _planSectionDefinitionRemoteModel;
+    }
+
+    public void setPlanSectionDefinitionRemoteModel(
+        BaseModel<?> planSectionDefinitionRemoteModel) {
+        _planSectionDefinitionRemoteModel = planSectionDefinitionRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _planSectionDefinitionRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_planSectionDefinitionRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(this);
@@ -137,7 +401,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public PlanSectionDefinition toEscapedModel() {
-        return (PlanSectionDefinition) Proxy.newProxyInstance(PlanSectionDefinition.class.getClassLoader(),
+        return (PlanSectionDefinition) ProxyUtil.newProxyInstance(PlanSectionDefinition.class.getClassLoader(),
             new Class[] { PlanSectionDefinition.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -159,6 +423,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         return clone;
     }
 
+    @Override
     public int compareTo(PlanSectionDefinition planSectionDefinition) {
         long primaryKey = planSectionDefinition.getPrimaryKey();
 
@@ -173,17 +438,15 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanSectionDefinitionClp)) {
             return false;
         }
 
-        PlanSectionDefinitionClp planSectionDefinition = null;
-
-        try {
-            planSectionDefinition = (PlanSectionDefinitionClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanSectionDefinitionClp planSectionDefinition = (PlanSectionDefinitionClp) obj;
 
         long primaryKey = planSectionDefinition.getPrimaryKey();
 
@@ -226,6 +489,7 @@ public class PlanSectionDefinitionClp extends BaseModelImpl<PlanSectionDefinitio
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

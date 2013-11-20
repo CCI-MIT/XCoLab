@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
@@ -24,7 +25,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ActivitySubscription service. Represents a row in the &quot;xcolab_ActivitySubscription&quot; database table, with each column mapped to a property of this class.
@@ -61,6 +64,8 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ActivitySubscription (pk LONG not null primary key,classNameId LONG,classPK LONG,type_ INTEGER,automaticSubscriptionCounter INTEGER,extraData TEXT null,receiverId LONG,createDate DATE null,modifiedDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ActivitySubscription";
+    public static final String ORDER_BY_JPQL = " ORDER BY activitySubscription.pk ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ActivitySubscription.pk ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -78,10 +83,11 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     public static long EXTRADATA_COLUMN_BITMASK = 4L;
     public static long RECEIVERID_COLUMN_BITMASK = 8L;
     public static long TYPE_COLUMN_BITMASK = 16L;
+    public static long PK_COLUMN_BITMASK = 32L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ActivitySubscription"));
     private static ClassLoader _classLoader = ActivitySubscription.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ActivitySubscription.class
         };
     private long _pk;
@@ -102,9 +108,8 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     private boolean _setOriginalReceiverId;
     private Date _createDate;
     private Date _modifiedDate;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ActivitySubscription _escapedModelProxy;
+    private ActivitySubscription _escapedModel;
 
     public ActivitySubscriptionModelImpl() {
     }
@@ -117,6 +122,10 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
      */
     public static ActivitySubscription toModel(
         ActivitySubscriptionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ActivitySubscription model = new ActivitySubscriptionImpl();
 
         model.setPk(soapModel.getPk());
@@ -140,6 +149,10 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
      */
     public static List<ActivitySubscription> toModels(
         ActivitySubscriptionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ActivitySubscription> models = new ArrayList<ActivitySubscription>(soapModels.length);
 
         for (ActivitySubscriptionSoap soapModel : soapModels) {
@@ -149,39 +162,124 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _pk;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPk(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_pk);
+        return _pk;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ActivitySubscription.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ActivitySubscription.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("pk", getPk());
+        attributes.put("classNameId", getClassNameId());
+        attributes.put("classPK", getClassPK());
+        attributes.put("type", getType());
+        attributes.put("automaticSubscriptionCounter",
+            getAutomaticSubscriptionCounter());
+        attributes.put("extraData", getExtraData());
+        attributes.put("receiverId", getReceiverId());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("modifiedDate", getModifiedDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long pk = (Long) attributes.get("pk");
+
+        if (pk != null) {
+            setPk(pk);
+        }
+
+        Long classNameId = (Long) attributes.get("classNameId");
+
+        if (classNameId != null) {
+            setClassNameId(classNameId);
+        }
+
+        Long classPK = (Long) attributes.get("classPK");
+
+        if (classPK != null) {
+            setClassPK(classPK);
+        }
+
+        Integer type = (Integer) attributes.get("type");
+
+        if (type != null) {
+            setType(type);
+        }
+
+        Integer automaticSubscriptionCounter = (Integer) attributes.get(
+                "automaticSubscriptionCounter");
+
+        if (automaticSubscriptionCounter != null) {
+            setAutomaticSubscriptionCounter(automaticSubscriptionCounter);
+        }
+
+        String extraData = (String) attributes.get("extraData");
+
+        if (extraData != null) {
+            setExtraData(extraData);
+        }
+
+        Long receiverId = (Long) attributes.get("receiverId");
+
+        if (receiverId != null) {
+            setReceiverId(receiverId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date modifiedDate = (Date) attributes.get("modifiedDate");
+
+        if (modifiedDate != null) {
+            setModifiedDate(modifiedDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getPk() {
         return _pk;
     }
 
+    @Override
     public void setPk(long pk) {
         _pk = pk;
     }
 
+    @Override
     public String getClassName() {
         if (getClassNameId() <= 0) {
             return StringPool.BLANK;
@@ -190,11 +288,24 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         return PortalUtil.getClassName(getClassNameId());
     }
 
+    @Override
+    public void setClassName(String className) {
+        long classNameId = 0;
+
+        if (Validator.isNotNull(className)) {
+            classNameId = PortalUtil.getClassNameId(className);
+        }
+
+        setClassNameId(classNameId);
+    }
+
     @JSON
+    @Override
     public long getClassNameId() {
         return _classNameId;
     }
 
+    @Override
     public void setClassNameId(long classNameId) {
         _columnBitmask |= CLASSNAMEID_COLUMN_BITMASK;
 
@@ -212,10 +323,12 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    @Override
     public long getClassPK() {
         return _classPK;
     }
 
+    @Override
     public void setClassPK(long classPK) {
         _columnBitmask |= CLASSPK_COLUMN_BITMASK;
 
@@ -233,10 +346,12 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    @Override
     public int getType() {
         return _type;
     }
 
+    @Override
     public void setType(int type) {
         _columnBitmask |= TYPE_COLUMN_BITMASK;
 
@@ -254,16 +369,19 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    @Override
     public int getAutomaticSubscriptionCounter() {
         return _automaticSubscriptionCounter;
     }
 
+    @Override
     public void setAutomaticSubscriptionCounter(
         int automaticSubscriptionCounter) {
         _automaticSubscriptionCounter = automaticSubscriptionCounter;
     }
 
     @JSON
+    @Override
     public String getExtraData() {
         if (_extraData == null) {
             return StringPool.BLANK;
@@ -272,6 +390,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         }
     }
 
+    @Override
     public void setExtraData(String extraData) {
         _columnBitmask |= EXTRADATA_COLUMN_BITMASK;
 
@@ -287,10 +406,12 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    @Override
     public long getReceiverId() {
         return _receiverId;
     }
 
+    @Override
     public void setReceiverId(long receiverId) {
         _columnBitmask |= RECEIVERID_COLUMN_BITMASK;
 
@@ -308,19 +429,23 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
 
     @JSON
+    @Override
     public Date getModifiedDate() {
         return _modifiedDate;
     }
 
+    @Override
     public void setModifiedDate(Date modifiedDate) {
         _modifiedDate = modifiedDate;
     }
@@ -330,29 +455,26 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
     }
 
     @Override
-    public ActivitySubscription toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ActivitySubscription) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ActivitySubscription.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ActivitySubscription.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ActivitySubscription toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ActivitySubscription) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -374,6 +496,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         return activitySubscriptionImpl;
     }
 
+    @Override
     public int compareTo(ActivitySubscription activitySubscription) {
         long primaryKey = activitySubscription.getPrimaryKey();
 
@@ -388,17 +511,15 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ActivitySubscription)) {
             return false;
         }
 
-        ActivitySubscription activitySubscription = null;
-
-        try {
-            activitySubscription = (ActivitySubscription) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ActivitySubscription activitySubscription = (ActivitySubscription) obj;
 
         long primaryKey = activitySubscription.getPrimaryKey();
 
@@ -509,6 +630,7 @@ public class ActivitySubscriptionModelImpl extends BaseModelImpl<ActivitySubscri
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(31);
 

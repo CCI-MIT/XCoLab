@@ -18,7 +18,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanTemplateSection service. Represents a row in the &quot;xcolab_PlanTemplateSection&quot; database table, with each column mapped to a property of this class.
@@ -64,10 +66,11 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.PlanTemplateSection"),
             true);
     public static long PLANTEMPLATEID_COLUMN_BITMASK = 1L;
+    public static long WEIGHT_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanTemplateSection"));
     private static ClassLoader _classLoader = PlanTemplateSection.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanTemplateSection.class
         };
     private long _planTemplateId;
@@ -76,7 +79,7 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
     private long _planSectionId;
     private int _weight;
     private long _columnBitmask;
-    private PlanTemplateSection _escapedModelProxy;
+    private PlanTemplateSection _escapedModel;
 
     public PlanTemplateSectionModelImpl() {
     }
@@ -88,6 +91,10 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
      * @return the normal model instance
      */
     public static PlanTemplateSection toModel(PlanTemplateSectionSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanTemplateSection model = new PlanTemplateSectionImpl();
 
         model.setPlanTemplateId(soapModel.getPlanTemplateId());
@@ -105,6 +112,10 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
      */
     public static List<PlanTemplateSection> toModels(
         PlanTemplateSectionSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanTemplateSection> models = new ArrayList<PlanTemplateSection>(soapModels.length);
 
         for (PlanTemplateSectionSoap soapModel : soapModels) {
@@ -114,36 +125,76 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
         return models;
     }
 
+    @Override
     public PlanTemplateSectionPK getPrimaryKey() {
         return new PlanTemplateSectionPK(_planTemplateId, _planSectionId);
     }
 
+    @Override
     public void setPrimaryKey(PlanTemplateSectionPK primaryKey) {
         setPlanTemplateId(primaryKey.planTemplateId);
         setPlanSectionId(primaryKey.planSectionId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanTemplateSectionPK(_planTemplateId, _planSectionId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanTemplateSectionPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTemplateSection.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTemplateSection.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTemplateId", getPlanTemplateId());
+        attributes.put("planSectionId", getPlanSectionId());
+        attributes.put("weight", getWeight());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTemplateId = (Long) attributes.get("planTemplateId");
+
+        if (planTemplateId != null) {
+            setPlanTemplateId(planTemplateId);
+        }
+
+        Long planSectionId = (Long) attributes.get("planSectionId");
+
+        if (planSectionId != null) {
+            setPlanSectionId(planSectionId);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanTemplateId() {
         return _planTemplateId;
     }
 
+    @Override
     public void setPlanTemplateId(long planTemplateId) {
         _columnBitmask |= PLANTEMPLATEID_COLUMN_BITMASK;
 
@@ -161,19 +212,23 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
     }
 
     @JSON
+    @Override
     public long getPlanSectionId() {
         return _planSectionId;
     }
 
+    @Override
     public void setPlanSectionId(long planSectionId) {
         _planSectionId = planSectionId;
     }
 
     @JSON
+    @Override
     public int getWeight() {
         return _weight;
     }
 
+    @Override
     public void setWeight(int weight) {
         _columnBitmask = -1L;
 
@@ -186,13 +241,12 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
 
     @Override
     public PlanTemplateSection toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanTemplateSection) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlanTemplateSection) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -208,6 +262,7 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
         return planTemplateSectionImpl;
     }
 
+    @Override
     public int compareTo(PlanTemplateSection planTemplateSection) {
         int value = 0;
 
@@ -228,17 +283,15 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTemplateSection)) {
             return false;
         }
 
-        PlanTemplateSection planTemplateSection = null;
-
-        try {
-            planTemplateSection = (PlanTemplateSection) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTemplateSection planTemplateSection = (PlanTemplateSection) obj;
 
         PlanTemplateSectionPK primaryKey = planTemplateSection.getPrimaryKey();
 
@@ -293,6 +346,7 @@ public class PlanTemplateSectionModelImpl extends BaseModelImpl<PlanTemplateSect
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

@@ -1,134 +1,204 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addProposal2PhaseMethodKey0;
-    private MethodKey _createProposal2PhaseMethodKey1;
-    private MethodKey _deleteProposal2PhaseMethodKey2;
-    private MethodKey _deleteProposal2PhaseMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchProposal2PhaseMethodKey8;
-    private MethodKey _getProposal2PhaseMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getProposal2PhasesMethodKey11;
-    private MethodKey _getProposal2PhasesCountMethodKey12;
-    private MethodKey _updateProposal2PhaseMethodKey13;
-    private MethodKey _updateProposal2PhaseMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _createMethodKey17;
-    private MethodKey _getByProposalIdContestPhaseIdMethodKey18;
-    private MethodKey _getCurrentContestForProposalMethodKey19;
-    private MethodKey _getForVersionMethodKey20;
-    private MethodKey _getContestPhasesForProposalMethodKey21;
-    private MethodKey _getActiveContestPhasesForProposalMethodKey22;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
 
-    public Proposal2PhaseLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+    public Proposal2PhaseLocalServiceClp(
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addProposal2PhaseMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addProposal2Phase", com.ext.portlet.model.Proposal2Phase.class);
+        _methodName0 = "addProposal2Phase";
 
-        _createProposal2PhaseMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createProposal2Phase",
-                com.ext.portlet.service.persistence.Proposal2PhasePK.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.Proposal2Phase"
+            };
 
-        _deleteProposal2PhaseMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposal2Phase",
-                com.ext.portlet.service.persistence.Proposal2PhasePK.class);
+        _methodName1 = "createProposal2Phase";
 
-        _deleteProposal2PhaseMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposal2Phase",
-                com.ext.portlet.model.Proposal2Phase.class);
+        _methodParameterTypes1 = new String[] {
+                "com.ext.portlet.service.persistence.Proposal2PhasePK"
+            };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteProposal2Phase";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] {
+                "com.ext.portlet.service.persistence.Proposal2PhasePK"
+            };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteProposal2Phase";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.Proposal2Phase"
+            };
 
-        _fetchProposal2PhaseMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchProposal2Phase",
-                com.ext.portlet.service.persistence.Proposal2PhasePK.class);
+        _methodName4 = "dynamicQuery";
 
-        _getProposal2PhaseMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposal2Phase",
-                com.ext.portlet.service.persistence.Proposal2PhasePK.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getProposal2PhasesMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposal2Phases", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getProposal2PhasesCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposal2PhasesCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateProposal2PhaseMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposal2Phase",
-                com.ext.portlet.model.Proposal2Phase.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateProposal2PhaseMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposal2Phase",
-                com.ext.portlet.model.Proposal2Phase.class, boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", long.class, long.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getByProposalIdContestPhaseIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getByProposalIdContestPhaseId", long.class, long.class);
+        _methodName9 = "dynamicQueryCount";
 
-        _getCurrentContestForProposalMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getCurrentContestForProposal", long.class);
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
 
-        _getForVersionMethodKey20 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getForVersion", com.ext.portlet.model.ProposalVersion.class);
+        _methodName10 = "fetchProposal2Phase";
 
-        _getContestPhasesForProposalMethodKey21 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContestPhasesForProposal", long.class);
+        _methodParameterTypes10 = new String[] {
+                "com.ext.portlet.service.persistence.Proposal2PhasePK"
+            };
 
-        _getActiveContestPhasesForProposalMethodKey22 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getActiveContestPhasesForProposal", long.class);
+        _methodName11 = "getProposal2Phase";
+
+        _methodParameterTypes11 = new String[] {
+                "com.ext.portlet.service.persistence.Proposal2PhasePK"
+            };
+
+        _methodName12 = "getPersistedModel";
+
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
+
+        _methodName13 = "getProposal2Phases";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getProposal2PhasesCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updateProposal2Phase";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.Proposal2Phase"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "create";
+
+        _methodParameterTypes19 = new String[] { "long", "long" };
+
+        _methodName20 = "getByProposalIdContestPhaseId";
+
+        _methodParameterTypes20 = new String[] { "long", "long" };
+
+        _methodName21 = "getCurrentContestForProposal";
+
+        _methodParameterTypes21 = new String[] { "long" };
+
+        _methodName22 = "getForVersion";
+
+        _methodParameterTypes22 = new String[] {
+                "com.ext.portlet.model.ProposalVersion"
+            };
+
+        _methodName23 = "getContestPhasesForProposal";
+
+        _methodParameterTypes23 = new String[] { "long" };
+
+        _methodName24 = "getActiveContestPhasesForProposal";
+
+        _methodParameterTypes24 = new String[] { "long" };
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase addProposal2Phase(
         com.ext.portlet.model.Proposal2Phase proposal2Phase)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addProposal2PhaseMethodKey0,
-                ClpSerializer.translateInput(proposal2Phase));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] { ClpSerializer.translateInput(proposal2Phase) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -144,16 +214,19 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase createProposal2Phase(
         com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createProposal2PhaseMethodKey1,
-                ClpSerializer.translateInput(proposal2PhasePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1,
+                    new Object[] { ClpSerializer.translateInput(
+                            proposal2PhasePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -165,16 +238,21 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteProposal2Phase(
+    @Override
+    public com.ext.portlet.model.Proposal2Phase deleteProposal2Phase(
         com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteProposal2PhaseMethodKey2,
-                ClpSerializer.translateInput(proposal2PhasePK));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2,
+                    new Object[] { ClpSerializer.translateInput(
+                            proposal2PhasePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -190,17 +268,23 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteProposal2Phase(
+    @Override
+    public com.ext.portlet.model.Proposal2Phase deleteProposal2Phase(
         com.ext.portlet.model.Proposal2Phase proposal2Phase)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteProposal2PhaseMethodKey3,
-                ClpSerializer.translateInput(proposal2Phase));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] { ClpSerializer.translateInput(proposal2Phase) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -212,20 +296,45 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -241,18 +350,26 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -268,6 +385,7 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -276,13 +394,21 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -298,17 +424,19 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -324,17 +452,53 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.Proposal2Phase fetchProposal2Phase(
         com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchProposal2PhaseMethodKey8,
-                ClpSerializer.translateInput(proposal2PhasePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10,
+                    new Object[] { ClpSerializer.translateInput(
+                            proposal2PhasePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -350,18 +514,21 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase getProposal2Phase(
         com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposal2PhaseMethodKey9,
-                ClpSerializer.translateInput(proposal2PhasePK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11,
+                    new Object[] { ClpSerializer.translateInput(
+                            proposal2PhasePK) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -381,18 +548,20 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -412,17 +581,18 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.Proposal2Phase> getProposal2Phases(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposal2PhasesMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -438,15 +608,17 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.util.List<com.ext.portlet.model.Proposal2Phase>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getProposal2PhasesCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getProposal2PhasesCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -462,17 +634,19 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase updateProposal2Phase(
         com.ext.portlet.model.Proposal2Phase proposal2Phase)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateProposal2PhaseMethodKey13,
-                ClpSerializer.translateInput(proposal2Phase));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] { ClpSerializer.translateInput(proposal2Phase) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -488,40 +662,16 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.Proposal2Phase updateProposal2Phase(
-        com.ext.portlet.model.Proposal2Phase proposal2Phase, boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateProposal2PhaseMethodKey14,
-                ClpSerializer.translateInput(proposal2Phase), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -533,13 +683,15 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -549,16 +701,25 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public com.ext.portlet.model.Proposal2Phase create(long proposalId,
         long contestPhaseId) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createMethodKey17,
-                proposalId, contestPhaseId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -570,18 +731,20 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
         long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getByProposalIdContestPhaseIdMethodKey18,
-                proposalId, contestPhaseId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -601,18 +764,19 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Contest getCurrentContestForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getCurrentContestForProposalMethodKey19,
-                proposalId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21, new Object[] { proposalId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -632,18 +796,20 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Contest) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.Proposal2Phase getForVersion(
         com.ext.portlet.model.ProposalVersion proposalVersion)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getForVersionMethodKey20,
-                ClpSerializer.translateInput(proposalVersion));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
+                    new Object[] { ClpSerializer.translateInput(proposalVersion) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -663,17 +829,18 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (com.ext.portlet.model.Proposal2Phase) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<java.lang.Long> getContestPhasesForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getContestPhasesForProposalMethodKey21,
-                proposalId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23, new Object[] { proposalId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -689,18 +856,19 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getActiveContestPhasesForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getActiveContestPhasesForProposalMethodKey22,
-                proposalId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24, new Object[] { proposalId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -718,9 +886,5 @@ public class Proposal2PhaseLocalServiceClp implements Proposal2PhaseLocalService
         }
 
         return (java.util.List<com.ext.portlet.model.ContestPhase>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

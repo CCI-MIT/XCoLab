@@ -21,7 +21,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ProposalVote service. Represents a row in the &quot;xcolab_ProposalVote&quot; database table, with each column mapped to a property of this class.
@@ -53,6 +55,8 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalVote (proposalId LONG,contestPhaseId LONG not null,userId LONG not null,createDate DATE null,primary key (contestPhaseId, userId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalVote";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalVote.id.contestPhaseId ASC, proposalVote.id.userId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalVote.contestPhaseId ASC, xcolab_ProposalVote.userId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -71,7 +75,7 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ProposalVote"));
     private static ClassLoader _classLoader = ProposalVote.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalVote.class
         };
     private long _proposalId;
@@ -86,7 +90,7 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     private boolean _setOriginalUserId;
     private Date _createDate;
     private long _columnBitmask;
-    private ProposalVote _escapedModelProxy;
+    private ProposalVote _escapedModel;
 
     public ProposalVoteModelImpl() {
     }
@@ -98,6 +102,10 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
      * @return the normal model instance
      */
     public static ProposalVote toModel(ProposalVoteSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ProposalVote model = new ProposalVoteImpl();
 
         model.setProposalId(soapModel.getProposalId());
@@ -115,6 +123,10 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
      * @return the normal model instances
      */
     public static List<ProposalVote> toModels(ProposalVoteSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ProposalVote> models = new ArrayList<ProposalVote>(soapModels.length);
 
         for (ProposalVoteSoap soapModel : soapModels) {
@@ -124,36 +136,83 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         return models;
     }
 
+    @Override
     public ProposalVotePK getPrimaryKey() {
         return new ProposalVotePK(_contestPhaseId, _userId);
     }
 
+    @Override
     public void setPrimaryKey(ProposalVotePK primaryKey) {
         setContestPhaseId(primaryKey.contestPhaseId);
         setUserId(primaryKey.userId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new ProposalVotePK(_contestPhaseId, _userId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((ProposalVotePK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ProposalVote.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ProposalVote.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("contestPhaseId", getContestPhaseId());
+        attributes.put("userId", getUserId());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Long contestPhaseId = (Long) attributes.get("contestPhaseId");
+
+        if (contestPhaseId != null) {
+            setContestPhaseId(contestPhaseId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getProposalId() {
         return _proposalId;
     }
 
+    @Override
     public void setProposalId(long proposalId) {
         _columnBitmask |= PROPOSALID_COLUMN_BITMASK;
 
@@ -171,10 +230,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     }
 
     @JSON
+    @Override
     public long getContestPhaseId() {
         return _contestPhaseId;
     }
 
+    @Override
     public void setContestPhaseId(long contestPhaseId) {
         _columnBitmask |= CONTESTPHASEID_COLUMN_BITMASK;
 
@@ -192,10 +253,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -208,10 +271,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -221,10 +286,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
@@ -235,13 +302,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
 
     @Override
     public ProposalVote toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProposalVote) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProposalVote) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -258,6 +324,7 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         return proposalVoteImpl;
     }
 
+    @Override
     public int compareTo(ProposalVote proposalVote) {
         ProposalVotePK primaryKey = proposalVote.getPrimaryKey();
 
@@ -266,17 +333,15 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalVote)) {
             return false;
         }
 
-        ProposalVote proposalVote = null;
-
-        try {
-            proposalVote = (ProposalVote) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProposalVote proposalVote = (ProposalVote) obj;
 
         ProposalVotePK primaryKey = proposalVote.getPrimaryKey();
 
@@ -349,6 +414,7 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

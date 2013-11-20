@@ -24,6 +24,282 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
      */
 
     /**
+    * Returns all the model input groups where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @return the matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
+        long parentGroupPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the model input groups where parentGroupPK = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param parentGroupPK the parent group p k
+    * @param start the lower bound of the range of model input groups
+    * @param end the upper bound of the range of model input groups (not inclusive)
+    * @return the range of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
+        long parentGroupPK, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the model input groups where parentGroupPK = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param parentGroupPK the parent group p k
+    * @param start the lower bound of the range of model input groups
+    * @param end the upper bound of the range of model input groups (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
+        long parentGroupPK, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first model input group in the ordered set where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup findByparentModelId_First(
+        long parentGroupPK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first model input group in the ordered set where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model input group, or <code>null</code> if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup fetchByparentModelId_First(
+        long parentGroupPK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last model input group in the ordered set where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup findByparentModelId_Last(
+        long parentGroupPK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last model input group in the ordered set where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model input group, or <code>null</code> if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup fetchByparentModelId_Last(
+        long parentGroupPK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the model input groups before and after the current model input group in the ordered set where parentGroupPK = &#63;.
+    *
+    * @param modelInputGroupPK the primary key of the current model input group
+    * @param parentGroupPK the parent group p k
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a model input group with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup[] findByparentModelId_PrevAndNext(
+        long modelInputGroupPK, long parentGroupPK,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the model input groups where parentGroupPK = &#63; from the database.
+    *
+    * @param parentGroupPK the parent group p k
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByparentModelId(long parentGroupPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of model input groups where parentGroupPK = &#63;.
+    *
+    * @param parentGroupPK the parent group p k
+    * @return the number of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByparentModelId(long parentGroupPK)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the model input groups where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @return the matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the model input groups where modelId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelId the model ID
+    * @param start the lower bound of the range of model input groups
+    * @param end the upper bound of the range of model input groups (not inclusive)
+    * @return the range of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
+        long modelId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the model input groups where modelId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param modelId the model ID
+    * @param start the lower bound of the range of model input groups
+    * @param end the upper bound of the range of model input groups (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
+        long modelId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first model input group in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup findByModelId_First(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first model input group in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching model input group, or <code>null</code> if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup fetchByModelId_First(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last model input group in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup findByModelId_Last(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last model input group in the ordered set where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching model input group, or <code>null</code> if a matching model input group could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup fetchByModelId_Last(
+        long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the model input groups before and after the current model input group in the ordered set where modelId = &#63;.
+    *
+    * @param modelInputGroupPK the primary key of the current model input group
+    * @param modelId the model ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next model input group
+    * @throws com.ext.portlet.NoSuchModelInputGroupException if a model input group with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ModelInputGroup[] findByModelId_PrevAndNext(
+        long modelInputGroupPK, long modelId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchModelInputGroupException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the model input groups where modelId = &#63; from the database.
+    *
+    * @param modelId the model ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByModelId(long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of model input groups where modelId = &#63;.
+    *
+    * @param modelId the model ID
+    * @return the number of matching model input groups
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByModelId(long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Caches the model input group in the entity cache if it is enabled.
     *
     * @param modelInputGroup the model input group
@@ -60,7 +336,7 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.ModelInputGroup updateImpl(
-        com.ext.portlet.model.ModelInputGroup modelInputGroup, boolean merge)
+        com.ext.portlet.model.ModelInputGroup modelInputGroup)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -88,216 +364,6 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns all the model input groups where parentGroupPK = &#63;.
-    *
-    * @param parentGroupPK the parent group p k
-    * @return the matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
-        long parentGroupPK)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns a range of all the model input groups where parentGroupPK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param parentGroupPK the parent group p k
-    * @param start the lower bound of the range of model input groups
-    * @param end the upper bound of the range of model input groups (not inclusive)
-    * @return the range of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
-        long parentGroupPK, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns an ordered range of all the model input groups where parentGroupPK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param parentGroupPK the parent group p k
-    * @param start the lower bound of the range of model input groups
-    * @param end the upper bound of the range of model input groups (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByparentModelId(
-        long parentGroupPK, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the first model input group in the ordered set where parentGroupPK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param parentGroupPK the parent group p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup findByparentModelId_First(
-        long parentGroupPK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the last model input group in the ordered set where parentGroupPK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param parentGroupPK the parent group p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup findByparentModelId_Last(
-        long parentGroupPK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the model input groups before and after the current model input group in the ordered set where parentGroupPK = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelInputGroupPK the primary key of the current model input group
-    * @param parentGroupPK the parent group p k
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a model input group with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup[] findByparentModelId_PrevAndNext(
-        long modelInputGroupPK, long parentGroupPK,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns all the model input groups where modelId = &#63;.
-    *
-    * @param modelId the model ID
-    * @return the matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
-        long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns a range of all the model input groups where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param start the lower bound of the range of model input groups
-    * @param end the upper bound of the range of model input groups (not inclusive)
-    * @return the range of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
-        long modelId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns an ordered range of all the model input groups where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param start the lower bound of the range of model input groups
-    * @param end the upper bound of the range of model input groups (not inclusive)
-    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-    * @return the ordered range of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public java.util.List<com.ext.portlet.model.ModelInputGroup> findByModelId(
-        long modelId, int start, int end,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the first model input group in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup findByModelId_First(
-        long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the last model input group in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a matching model input group could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup findByModelId_Last(
-        long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the model input groups before and after the current model input group in the ordered set where modelId = &#63;.
-    *
-    * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-    * </p>
-    *
-    * @param modelInputGroupPK the primary key of the current model input group
-    * @param modelId the model ID
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next model input group
-    * @throws com.ext.portlet.NoSuchModelInputGroupException if a model input group with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.ModelInputGroup[] findByModelId_PrevAndNext(
-        long modelInputGroupPK, long modelId,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchModelInputGroupException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Returns all the model input groups.
     *
     * @return the model input groups
@@ -310,7 +376,7 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
     * Returns a range of all the model input groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model input groups
@@ -326,7 +392,7 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
     * Returns an ordered range of all the model input groups.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ModelInputGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of model input groups
@@ -341,49 +407,11 @@ public interface ModelInputGroupPersistence extends BasePersistence<ModelInputGr
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the model input groups where parentGroupPK = &#63; from the database.
-    *
-    * @param parentGroupPK the parent group p k
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByparentModelId(long parentGroupPK)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the model input groups where modelId = &#63; from the database.
-    *
-    * @param modelId the model ID
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByModelId(long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
     * Removes all the model input groups from the database.
     *
     * @throws SystemException if a system exception occurred
     */
     public void removeAll()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of model input groups where parentGroupPK = &#63;.
-    *
-    * @param parentGroupPK the parent group p k
-    * @return the number of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByparentModelId(long parentGroupPK)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of model input groups where modelId = &#63;.
-    *
-    * @param modelId the model ID
-    * @return the number of matching model input groups
-    * @throws SystemException if a system exception occurred
-    */
-    public int countByModelId(long modelId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

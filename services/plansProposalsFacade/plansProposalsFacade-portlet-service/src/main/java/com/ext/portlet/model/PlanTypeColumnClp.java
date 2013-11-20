@@ -1,15 +1,21 @@
 package com.ext.portlet.model;
 
+import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.PlanTypeColumnLocalServiceUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
@@ -19,78 +25,254 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
     private int _weight;
     private String _columnName;
     private boolean _visibleByDefault;
+    private BaseModel<?> _planTypeColumnRemoteModel;
 
     public PlanTypeColumnClp() {
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanTypeColumn.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanTypeColumn.class.getName();
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planTypeColumnId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanTypeColumnId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planTypeColumnId);
+        return _planTypeColumnId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planTypeColumnId", getPlanTypeColumnId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("weight", getWeight());
+        attributes.put("columnName", getColumnName());
+        attributes.put("visibleByDefault", getVisibleByDefault());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planTypeColumnId = (Long) attributes.get("planTypeColumnId");
+
+        if (planTypeColumnId != null) {
+            setPlanTypeColumnId(planTypeColumnId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        Integer weight = (Integer) attributes.get("weight");
+
+        if (weight != null) {
+            setWeight(weight);
+        }
+
+        String columnName = (String) attributes.get("columnName");
+
+        if (columnName != null) {
+            setColumnName(columnName);
+        }
+
+        Boolean visibleByDefault = (Boolean) attributes.get("visibleByDefault");
+
+        if (visibleByDefault != null) {
+            setVisibleByDefault(visibleByDefault);
+        }
+    }
+
+    @Override
     public long getPlanTypeColumnId() {
         return _planTypeColumnId;
     }
 
+    @Override
     public void setPlanTypeColumnId(long planTypeColumnId) {
         _planTypeColumnId = planTypeColumnId;
+
+        if (_planTypeColumnRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeColumnRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanTypeColumnId",
+                        long.class);
+
+                method.invoke(_planTypeColumnRemoteModel, planTypeColumnId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
+
+        if (_planTypeColumnRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeColumnRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPlanTypeId", long.class);
+
+                method.invoke(_planTypeColumnRemoteModel, planTypeId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public int getWeight() {
         return _weight;
     }
 
+    @Override
     public void setWeight(int weight) {
         _weight = weight;
+
+        if (_planTypeColumnRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeColumnRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setWeight", int.class);
+
+                method.invoke(_planTypeColumnRemoteModel, weight);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public String getColumnName() {
         return _columnName;
     }
 
+    @Override
     public void setColumnName(String columnName) {
         _columnName = columnName;
+
+        if (_planTypeColumnRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeColumnRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setColumnName", String.class);
+
+                method.invoke(_planTypeColumnRemoteModel, columnName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    @Override
     public boolean getVisibleByDefault() {
         return _visibleByDefault;
     }
 
+    @Override
     public boolean isVisibleByDefault() {
         return _visibleByDefault;
     }
 
+    @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
         _visibleByDefault = visibleByDefault;
+
+        if (_planTypeColumnRemoteModel != null) {
+            try {
+                Class<?> clazz = _planTypeColumnRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setVisibleByDefault",
+                        boolean.class);
+
+                method.invoke(_planTypeColumnRemoteModel, visibleByDefault);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
     }
 
+    public BaseModel<?> getPlanTypeColumnRemoteModel() {
+        return _planTypeColumnRemoteModel;
+    }
+
+    public void setPlanTypeColumnRemoteModel(
+        BaseModel<?> planTypeColumnRemoteModel) {
+        _planTypeColumnRemoteModel = planTypeColumnRemoteModel;
+    }
+
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
+
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
+
+        Class<?> remoteModelClass = _planTypeColumnRemoteModel.getClass();
+
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
+
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
+
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
+
+        Object returnValue = method.invoke(_planTypeColumnRemoteModel,
+                remoteParameterValues);
+
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
+
+        return returnValue;
+    }
+
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTypeColumnLocalServiceUtil.addPlanTypeColumn(this);
@@ -101,7 +283,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
 
     @Override
     public PlanTypeColumn toEscapedModel() {
-        return (PlanTypeColumn) Proxy.newProxyInstance(PlanTypeColumn.class.getClassLoader(),
+        return (PlanTypeColumn) ProxyUtil.newProxyInstance(PlanTypeColumn.class.getClassLoader(),
             new Class[] { PlanTypeColumn.class },
             new AutoEscapeBeanHandler(this));
     }
@@ -119,6 +301,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         return clone;
     }
 
+    @Override
     public int compareTo(PlanTypeColumn planTypeColumn) {
         int value = 0;
 
@@ -134,8 +317,8 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
             return value;
         }
 
-        value = getColumnName().toLowerCase()
-                    .compareTo(planTypeColumn.getColumnName().toLowerCase());
+        value = getColumnName()
+                    .compareToIgnoreCase(planTypeColumn.getColumnName());
 
         if (value != 0) {
             return value;
@@ -146,17 +329,15 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTypeColumnClp)) {
             return false;
         }
 
-        PlanTypeColumnClp planTypeColumn = null;
-
-        try {
-            planTypeColumn = (PlanTypeColumnClp) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTypeColumnClp planTypeColumn = (PlanTypeColumnClp) obj;
 
         long primaryKey = planTypeColumn.getPrimaryKey();
 
@@ -191,6 +372,7 @@ public class PlanTypeColumnClp extends BaseModelImpl<PlanTypeColumn>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

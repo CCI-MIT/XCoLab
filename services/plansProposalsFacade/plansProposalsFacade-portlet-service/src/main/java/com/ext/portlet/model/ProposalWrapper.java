@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link Proposal}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Proposal
+ * @author Brian Wing Shun Chan
+ * @see Proposal
  * @generated
  */
 public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
@@ -18,12 +23,102 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         _proposal = proposal;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Proposal.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Proposal.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("proposalId", getProposalId());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("updatedDate", getUpdatedDate());
+        attributes.put("currentVersion", getCurrentVersion());
+        attributes.put("authorId", getAuthorId());
+        attributes.put("visible", getVisible());
+        attributes.put("discussionId", getDiscussionId());
+        attributes.put("judgeDiscussionId", getJudgeDiscussionId());
+        attributes.put("fellowDiscussionId", getFellowDiscussionId());
+        attributes.put("advisorDiscussionId", getAdvisorDiscussionId());
+        attributes.put("groupId", getGroupId());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long proposalId = (Long) attributes.get("proposalId");
+
+        if (proposalId != null) {
+            setProposalId(proposalId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        Date updatedDate = (Date) attributes.get("updatedDate");
+
+        if (updatedDate != null) {
+            setUpdatedDate(updatedDate);
+        }
+
+        Integer currentVersion = (Integer) attributes.get("currentVersion");
+
+        if (currentVersion != null) {
+            setCurrentVersion(currentVersion);
+        }
+
+        Long authorId = (Long) attributes.get("authorId");
+
+        if (authorId != null) {
+            setAuthorId(authorId);
+        }
+
+        Boolean visible = (Boolean) attributes.get("visible");
+
+        if (visible != null) {
+            setVisible(visible);
+        }
+
+        Long discussionId = (Long) attributes.get("discussionId");
+
+        if (discussionId != null) {
+            setDiscussionId(discussionId);
+        }
+
+        Long judgeDiscussionId = (Long) attributes.get("judgeDiscussionId");
+
+        if (judgeDiscussionId != null) {
+            setJudgeDiscussionId(judgeDiscussionId);
+        }
+
+        Long fellowDiscussionId = (Long) attributes.get("fellowDiscussionId");
+
+        if (fellowDiscussionId != null) {
+            setFellowDiscussionId(fellowDiscussionId);
+        }
+
+        Long advisorDiscussionId = (Long) attributes.get("advisorDiscussionId");
+
+        if (advisorDiscussionId != null) {
+            setAdvisorDiscussionId(advisorDiscussionId);
+        }
+
+        Long groupId = (Long) attributes.get("groupId");
+
+        if (groupId != null) {
+            setGroupId(groupId);
+        }
     }
 
     /**
@@ -31,6 +126,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the primary key of this proposal
     */
+    @Override
     public long getPrimaryKey() {
         return _proposal.getPrimaryKey();
     }
@@ -40,6 +136,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param primaryKey the primary key of this proposal
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _proposal.setPrimaryKey(primaryKey);
     }
@@ -49,6 +146,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the proposal ID of this proposal
     */
+    @Override
     public long getProposalId() {
         return _proposal.getProposalId();
     }
@@ -58,6 +156,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param proposalId the proposal ID of this proposal
     */
+    @Override
     public void setProposalId(long proposalId) {
         _proposal.setProposalId(proposalId);
     }
@@ -67,6 +166,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the create date of this proposal
     */
+    @Override
     public java.util.Date getCreateDate() {
         return _proposal.getCreateDate();
     }
@@ -76,6 +176,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param createDate the create date of this proposal
     */
+    @Override
     public void setCreateDate(java.util.Date createDate) {
         _proposal.setCreateDate(createDate);
     }
@@ -85,6 +186,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the updated date of this proposal
     */
+    @Override
     public java.util.Date getUpdatedDate() {
         return _proposal.getUpdatedDate();
     }
@@ -94,6 +196,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param updatedDate the updated date of this proposal
     */
+    @Override
     public void setUpdatedDate(java.util.Date updatedDate) {
         _proposal.setUpdatedDate(updatedDate);
     }
@@ -103,6 +206,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the current version of this proposal
     */
+    @Override
     public int getCurrentVersion() {
         return _proposal.getCurrentVersion();
     }
@@ -112,6 +216,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param currentVersion the current version of this proposal
     */
+    @Override
     public void setCurrentVersion(int currentVersion) {
         _proposal.setCurrentVersion(currentVersion);
     }
@@ -121,6 +226,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the author ID of this proposal
     */
+    @Override
     public long getAuthorId() {
         return _proposal.getAuthorId();
     }
@@ -130,6 +236,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param authorId the author ID of this proposal
     */
+    @Override
     public void setAuthorId(long authorId) {
         _proposal.setAuthorId(authorId);
     }
@@ -139,6 +246,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the visible of this proposal
     */
+    @Override
     public boolean getVisible() {
         return _proposal.getVisible();
     }
@@ -148,6 +256,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return <code>true</code> if this proposal is visible; <code>false</code> otherwise
     */
+    @Override
     public boolean isVisible() {
         return _proposal.isVisible();
     }
@@ -157,6 +266,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param visible the visible of this proposal
     */
+    @Override
     public void setVisible(boolean visible) {
         _proposal.setVisible(visible);
     }
@@ -166,6 +276,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the discussion ID of this proposal
     */
+    @Override
     public long getDiscussionId() {
         return _proposal.getDiscussionId();
     }
@@ -175,6 +286,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param discussionId the discussion ID of this proposal
     */
+    @Override
     public void setDiscussionId(long discussionId) {
         _proposal.setDiscussionId(discussionId);
     }
@@ -184,6 +296,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the judge discussion ID of this proposal
     */
+    @Override
     public long getJudgeDiscussionId() {
         return _proposal.getJudgeDiscussionId();
     }
@@ -193,6 +306,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param judgeDiscussionId the judge discussion ID of this proposal
     */
+    @Override
     public void setJudgeDiscussionId(long judgeDiscussionId) {
         _proposal.setJudgeDiscussionId(judgeDiscussionId);
     }
@@ -202,6 +316,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the fellow discussion ID of this proposal
     */
+    @Override
     public long getFellowDiscussionId() {
         return _proposal.getFellowDiscussionId();
     }
@@ -211,6 +326,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param fellowDiscussionId the fellow discussion ID of this proposal
     */
+    @Override
     public void setFellowDiscussionId(long fellowDiscussionId) {
         _proposal.setFellowDiscussionId(fellowDiscussionId);
     }
@@ -220,6 +336,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the advisor discussion ID of this proposal
     */
+    @Override
     public long getAdvisorDiscussionId() {
         return _proposal.getAdvisorDiscussionId();
     }
@@ -229,6 +346,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param advisorDiscussionId the advisor discussion ID of this proposal
     */
+    @Override
     public void setAdvisorDiscussionId(long advisorDiscussionId) {
         _proposal.setAdvisorDiscussionId(advisorDiscussionId);
     }
@@ -238,6 +356,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @return the group ID of this proposal
     */
+    @Override
     public long getGroupId() {
         return _proposal.getGroupId();
     }
@@ -247,42 +366,64 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     *
     * @param groupId the group ID of this proposal
     */
+    @Override
     public void setGroupId(long groupId) {
         _proposal.setGroupId(groupId);
     }
 
+    @Override
     public boolean isNew() {
         return _proposal.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _proposal.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _proposal.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _proposal.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _proposal.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _proposal.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _proposal.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _proposal.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _proposal.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _proposal.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _proposal.setExpandoBridgeAttributes(serviceContext);
@@ -293,6 +434,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         return new ProposalWrapper((Proposal) _proposal.clone());
     }
 
+    @Override
     public int compareTo(Proposal proposal) {
         return _proposal.compareTo(proposal);
     }
@@ -302,12 +444,19 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         return _proposal.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<Proposal> toCacheModel() {
         return _proposal.toCacheModel();
     }
 
+    @Override
     public Proposal toEscapedModel() {
         return new ProposalWrapper(_proposal.toEscapedModel());
+    }
+
+    @Override
+    public Proposal toUnescapedModel() {
+        return new ProposalWrapper(_proposal.toUnescapedModel());
     }
 
     @Override
@@ -315,26 +464,49 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
         return _proposal.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _proposal.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _proposal.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProposalWrapper)) {
+            return false;
+        }
+
+        ProposalWrapper proposalWrapper = (ProposalWrapper) obj;
+
+        if (Validator.equals(_proposal, proposalWrapper._proposal)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public Proposal getWrappedProposal() {
         return _proposal;
     }
 
+    @Override
     public Proposal getWrappedModel() {
         return _proposal;
     }
 
+    @Override
     public void resetOriginalValues() {
         _proposal.resetOriginalValues();
     }

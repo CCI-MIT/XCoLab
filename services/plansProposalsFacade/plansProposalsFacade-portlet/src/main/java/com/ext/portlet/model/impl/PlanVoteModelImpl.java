@@ -21,7 +21,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanVote service. Represents a row in the &quot;xcolab_PlanVote&quot; database table, with each column mapped to a property of this class.
@@ -53,6 +55,8 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanVote (userId LONG not null,contestId LONG not null,planId LONG,createDate DATE null,primary key (userId, contestId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanVote";
+    public static final String ORDER_BY_JPQL = " ORDER BY planVote.id.userId ASC, planVote.id.contestId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanVote.userId ASC, xcolab_PlanVote.contestId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -71,7 +75,7 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanVote"));
     private static ClassLoader _classLoader = PlanVote.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanVote.class
         };
     private long _userId;
@@ -86,7 +90,7 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
     private boolean _setOriginalPlanId;
     private Date _createDate;
     private long _columnBitmask;
-    private PlanVote _escapedModelProxy;
+    private PlanVote _escapedModel;
 
     public PlanVoteModelImpl() {
     }
@@ -98,6 +102,10 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
      * @return the normal model instance
      */
     public static PlanVote toModel(PlanVoteSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanVote model = new PlanVoteImpl();
 
         model.setUserId(soapModel.getUserId());
@@ -115,6 +123,10 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
      * @return the normal model instances
      */
     public static List<PlanVote> toModels(PlanVoteSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanVote> models = new ArrayList<PlanVote>(soapModels.length);
 
         for (PlanVoteSoap soapModel : soapModels) {
@@ -124,36 +136,83 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
         return models;
     }
 
+    @Override
     public PlanVotePK getPrimaryKey() {
         return new PlanVotePK(_userId, _contestId);
     }
 
+    @Override
     public void setPrimaryKey(PlanVotePK primaryKey) {
         setUserId(primaryKey.userId);
         setContestId(primaryKey.contestId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlanVotePK(_userId, _contestId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlanVotePK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanVote.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanVote.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("userId", getUserId());
+        attributes.put("contestId", getContestId());
+        attributes.put("planId", getPlanId());
+        attributes.put("createDate", getCreateDate());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Long contestId = (Long) attributes.get("contestId");
+
+        if (contestId != null) {
+            setContestId(contestId);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+    }
+
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -166,10 +225,12 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -179,10 +240,12 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
     }
 
     @JSON
+    @Override
     public long getContestId() {
         return _contestId;
     }
 
+    @Override
     public void setContestId(long contestId) {
         _columnBitmask |= CONTESTID_COLUMN_BITMASK;
 
@@ -200,10 +263,12 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -221,10 +286,12 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _createDate = createDate;
     }
@@ -235,13 +302,12 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
 
     @Override
     public PlanVote toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanVote) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlanVote) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -258,6 +324,7 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
         return planVoteImpl;
     }
 
+    @Override
     public int compareTo(PlanVote planVote) {
         PlanVotePK primaryKey = planVote.getPrimaryKey();
 
@@ -266,17 +333,15 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanVote)) {
             return false;
         }
 
-        PlanVote planVote = null;
-
-        try {
-            planVote = (PlanVote) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanVote planVote = (PlanVote) obj;
 
         PlanVotePK primaryKey = planVote.getPrimaryKey();
 
@@ -349,6 +414,7 @@ public class PlanVoteModelImpl extends BaseModelImpl<PlanVote>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

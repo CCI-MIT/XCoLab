@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchDiscussionMessageFlagException;
 import com.ext.portlet.model.DiscussionMessageFlag;
 import com.ext.portlet.model.impl.DiscussionMessageFlagImpl;
 import com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -16,72 +17,10 @@ import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
 import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
-import com.ext.portlet.service.persistence.EmailListPersistence;
-import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
-import com.ext.portlet.service.persistence.FocusAreaPersistence;
-import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
-import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +37,14 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +52,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the discussion message flag service.
@@ -138,6 +78,17 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_MESSAGEID =
         new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
@@ -146,8 +97,8 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID =
         new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
@@ -160,6 +111,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessageFlag.messageId = ?";
     public static final FinderPath FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
             DiscussionMessageFlagImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -172,32 +124,23 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByMessageIdFlagType",
             new String[] { Long.class.getName(), String.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageFlagImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageFlagImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageFlagModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2 = "discussionMessageFlag.messageId = ? AND ";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1 = "discussionMessageFlag.flagType IS NULL";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2 = "discussionMessageFlag.flagType = ?";
+    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3 = "(discussionMessageFlag.flagType IS NULL OR discussionMessageFlag.flagType = '')";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGEFLAG = "SELECT discussionMessageFlag FROM DiscussionMessageFlag discussionMessageFlag";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGEFLAG_WHERE = "SELECT discussionMessageFlag FROM DiscussionMessageFlag discussionMessageFlag WHERE ";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGEFLAG = "SELECT COUNT(discussionMessageFlag) FROM DiscussionMessageFlag discussionMessageFlag";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE = "SELECT COUNT(discussionMessageFlag) FROM DiscussionMessageFlag discussionMessageFlag WHERE ";
-    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessageFlag.messageId = ?";
-    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2 = "discussionMessageFlag.messageId = ? AND ";
-    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1 = "discussionMessageFlag.flagType IS NULL";
-    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2 = "discussionMessageFlag.flagType = ?";
-    private static final String _FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3 = "(discussionMessageFlag.flagType IS NULL OR discussionMessageFlag.flagType = ?)";
     private static final String _ORDER_BY_ENTITY_ALIAS = "discussionMessageFlag.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DiscussionMessageFlag exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DiscussionMessageFlag exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(DiscussionMessageFlagPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "data"
+            });
     private static DiscussionMessageFlag _nullDiscussionMessageFlag = new DiscussionMessageFlagImpl() {
             @Override
             public Object clone() {
@@ -212,11 +155,13 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
     private static CacheModel<DiscussionMessageFlag> _nullDiscussionMessageFlagCacheModel =
         new CacheModel<DiscussionMessageFlag>() {
+            @Override
             public DiscussionMessageFlag toEntityModel() {
                 return _nullDiscussionMessageFlag;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -390,382 +335,10 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             }, discussionMessageFlag);
 
         discussionMessageFlag.resetOriginalValues();
-    }
-
-    /**
-     * Caches the discussion message flags in the entity cache if it is enabled.
-     *
-     * @param discussionMessageFlags the discussion message flags
-     */
-    public void cacheResult(List<DiscussionMessageFlag> discussionMessageFlags) {
-        for (DiscussionMessageFlag discussionMessageFlag : discussionMessageFlags) {
-            if (EntityCacheUtil.getResult(
-                        DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-                        DiscussionMessageFlagImpl.class,
-                        discussionMessageFlag.getPrimaryKey()) == null) {
-                cacheResult(discussionMessageFlag);
-            } else {
-                discussionMessageFlag.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all discussion message flags.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(DiscussionMessageFlagImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(DiscussionMessageFlagImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the discussion message flag.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(DiscussionMessageFlag discussionMessageFlag) {
-        EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageFlagImpl.class,
-            discussionMessageFlag.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        clearUniqueFindersCache(discussionMessageFlag);
-    }
-
-    @Override
-    public void clearCache(List<DiscussionMessageFlag> discussionMessageFlags) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (DiscussionMessageFlag discussionMessageFlag : discussionMessageFlags) {
-            EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-                DiscussionMessageFlagImpl.class,
-                discussionMessageFlag.getPrimaryKey());
-
-            clearUniqueFindersCache(discussionMessageFlag);
-        }
-    }
-
-    protected void clearUniqueFindersCache(
-        DiscussionMessageFlag discussionMessageFlag) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
-            new Object[] {
-                Long.valueOf(discussionMessageFlag.getMessageId()),
-                
-            discussionMessageFlag.getFlagType()
-            });
-    }
-
-    /**
-     * Creates a new discussion message flag with the primary key. Does not add the discussion message flag to the database.
-     *
-     * @param pk the primary key for the new discussion message flag
-     * @return the new discussion message flag
-     */
-    public DiscussionMessageFlag create(long pk) {
-        DiscussionMessageFlag discussionMessageFlag = new DiscussionMessageFlagImpl();
-
-        discussionMessageFlag.setNew(true);
-        discussionMessageFlag.setPrimaryKey(pk);
-
-        return discussionMessageFlag;
-    }
-
-    /**
-     * Removes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param pk the primary key of the discussion message flag
-     * @return the discussion message flag that was removed
-     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public DiscussionMessageFlag remove(long pk)
-        throws NoSuchDiscussionMessageFlagException, SystemException {
-        return remove(Long.valueOf(pk));
-    }
-
-    /**
-     * Removes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the discussion message flag
-     * @return the discussion message flag that was removed
-     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessageFlag remove(Serializable primaryKey)
-        throws NoSuchDiscussionMessageFlagException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) session.get(DiscussionMessageFlagImpl.class,
-                    primaryKey);
-
-            if (discussionMessageFlag == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchDiscussionMessageFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(discussionMessageFlag);
-        } catch (NoSuchDiscussionMessageFlagException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected DiscussionMessageFlag removeImpl(
-        DiscussionMessageFlag discussionMessageFlag) throws SystemException {
-        discussionMessageFlag = toUnwrappedModel(discussionMessageFlag);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, discussionMessageFlag);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(discussionMessageFlag);
-
-        return discussionMessageFlag;
-    }
-
-    @Override
-    public DiscussionMessageFlag updateImpl(
-        com.ext.portlet.model.DiscussionMessageFlag discussionMessageFlag,
-        boolean merge) throws SystemException {
-        discussionMessageFlag = toUnwrappedModel(discussionMessageFlag);
-
-        boolean isNew = discussionMessageFlag.isNew();
-
-        DiscussionMessageFlagModelImpl discussionMessageFlagModelImpl = (DiscussionMessageFlagModelImpl) discussionMessageFlag;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, discussionMessageFlag, merge);
-
-            discussionMessageFlag.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !DiscussionMessageFlagModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((discussionMessageFlagModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(discussionMessageFlagModelImpl.getOriginalMessageId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(discussionMessageFlagModelImpl.getMessageId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageFlagImpl.class,
-            discussionMessageFlag.getPrimaryKey(), discussionMessageFlag);
-
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
-                new Object[] {
-                    Long.valueOf(discussionMessageFlag.getMessageId()),
-                    
-                discussionMessageFlag.getFlagType()
-                }, discussionMessageFlag);
-        } else {
-            if ((discussionMessageFlagModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(discussionMessageFlagModelImpl.getOriginalMessageId()),
-                        
-                        discussionMessageFlagModelImpl.getOriginalFlagType()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
-                    args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
-                    new Object[] {
-                        Long.valueOf(discussionMessageFlag.getMessageId()),
-                        
-                    discussionMessageFlag.getFlagType()
-                    }, discussionMessageFlag);
-            }
-        }
-
-        return discussionMessageFlag;
-    }
-
-    protected DiscussionMessageFlag toUnwrappedModel(
-        DiscussionMessageFlag discussionMessageFlag) {
-        if (discussionMessageFlag instanceof DiscussionMessageFlagImpl) {
-            return discussionMessageFlag;
-        }
-
-        DiscussionMessageFlagImpl discussionMessageFlagImpl = new DiscussionMessageFlagImpl();
-
-        discussionMessageFlagImpl.setNew(discussionMessageFlag.isNew());
-        discussionMessageFlagImpl.setPrimaryKey(discussionMessageFlag.getPrimaryKey());
-
-        discussionMessageFlagImpl.setPk(discussionMessageFlag.getPk());
-        discussionMessageFlagImpl.setMessageId(discussionMessageFlag.getMessageId());
-        discussionMessageFlagImpl.setFlagType(discussionMessageFlag.getFlagType());
-        discussionMessageFlagImpl.setData(discussionMessageFlag.getData());
-        discussionMessageFlagImpl.setCreated(discussionMessageFlag.getCreated());
-        discussionMessageFlagImpl.setUserId(discussionMessageFlag.getUserId());
-
-        return discussionMessageFlagImpl;
-    }
-
-    /**
-     * Returns the discussion message flag with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the discussion message flag
-     * @return the discussion message flag
-     * @throws com.liferay.portal.NoSuchModelException if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessageFlag findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the discussion message flag with the primary key or throws a {@link com.ext.portlet.NoSuchDiscussionMessageFlagException} if it could not be found.
-     *
-     * @param pk the primary key of the discussion message flag
-     * @return the discussion message flag
-     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public DiscussionMessageFlag findByPrimaryKey(long pk)
-        throws NoSuchDiscussionMessageFlagException, SystemException {
-        DiscussionMessageFlag discussionMessageFlag = fetchByPrimaryKey(pk);
-
-        if (discussionMessageFlag == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + pk);
-            }
-
-            throw new NoSuchDiscussionMessageFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                pk);
-        }
-
-        return discussionMessageFlag;
-    }
-
-    /**
-     * Returns the discussion message flag with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the discussion message flag
-     * @return the discussion message flag, or <code>null</code> if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public DiscussionMessageFlag fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the discussion message flag with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param pk the primary key of the discussion message flag
-     * @return the discussion message flag, or <code>null</code> if a discussion message flag with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public DiscussionMessageFlag fetchByPrimaryKey(long pk)
-        throws SystemException {
-        DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) EntityCacheUtil.getResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-                DiscussionMessageFlagImpl.class, pk);
-
-        if (discussionMessageFlag == _nullDiscussionMessageFlag) {
-            return null;
-        }
-
-        if (discussionMessageFlag == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                discussionMessageFlag = (DiscussionMessageFlag) session.get(DiscussionMessageFlagImpl.class,
-                        Long.valueOf(pk));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (discussionMessageFlag != null) {
-                    cacheResult(discussionMessageFlag);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
-                        DiscussionMessageFlagImpl.class, pk,
-                        _nullDiscussionMessageFlag);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return discussionMessageFlag;
+=======
+    public DiscussionMessageFlagPersistenceImpl() {
+        setModelClass(DiscussionMessageFlag.class);
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     }
 
     /**
@@ -775,6 +348,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findByMessageId(long messageId)
         throws SystemException {
         return findByMessageId(messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -785,7 +359,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * Returns a range of all the discussion message flags where messageId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param messageId the message ID
@@ -794,6 +368,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the range of matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findByMessageId(long messageId,
         int start, int end) throws SystemException {
         return findByMessageId(messageId, start, end, null);
@@ -803,7 +378,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * Returns an ordered range of all the discussion message flags where messageId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param messageId the message ID
@@ -813,14 +388,17 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the ordered range of matching discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findByMessageId(long messageId,
         int start, int end, OrderByComparator orderByComparator)
         throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID;
             finderArgs = new Object[] { messageId };
         } else {
@@ -831,6 +409,16 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
         List<DiscussionMessageFlag> list = (List<DiscussionMessageFlag>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (DiscussionMessageFlag discussionMessageFlag : list) {
+                if ((messageId != discussionMessageFlag.getMessageId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -838,7 +426,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_DISCUSSIONMESSAGEFLAG_WHERE);
@@ -848,6 +436,9 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(DiscussionMessageFlagModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -863,19 +454,26 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 qPos.add(messageId);
 
-                list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<DiscussionMessageFlag>(list);
+                } else {
+                    list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -886,44 +484,58 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     /**
      * Returns the first discussion message flag in the ordered set where messageId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param messageId the message ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching discussion message flag
      * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag findByMessageId_First(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = fetchByMessageId_First(messageId,
+                orderByComparator);
+
+        if (discussionMessageFlag != null) {
+            return discussionMessageFlag;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("messageId=");
+        msg.append(messageId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageFlagException(msg.toString());
+    }
+
+    /**
+     * Returns the first discussion message flag in the ordered set where messageId = &#63;.
+     *
+     * @param messageId the message ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag fetchByMessageId_First(long messageId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<DiscussionMessageFlag> list = findByMessageId(messageId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("messageId=");
-            msg.append(messageId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchDiscussionMessageFlagException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last discussion message flag in the ordered set where messageId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param messageId the message ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -931,36 +543,58 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag findByMessageId_Last(long messageId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = fetchByMessageId_Last(messageId,
+                orderByComparator);
+
+        if (discussionMessageFlag != null) {
+            return discussionMessageFlag;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("messageId=");
+        msg.append(messageId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageFlagException(msg.toString());
+    }
+
+    /**
+     * Returns the last discussion message flag in the ordered set where messageId = &#63;.
+     *
+     * @param messageId the message ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag fetchByMessageId_Last(long messageId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByMessageId(messageId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<DiscussionMessageFlag> list = findByMessageId(messageId,
                 count - 1, count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("messageId=");
-            msg.append(messageId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchDiscussionMessageFlagException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the discussion message flags before and after the current discussion message flag in the ordered set where messageId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param pk the primary key of the current discussion message flag
      * @param messageId the message ID
@@ -969,6 +603,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag[] findByMessageId_PrevAndNext(long pk,
         long messageId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageFlagException, SystemException {
@@ -1061,6 +696,8 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                     }
                 }
             }
+        } else {
+            query.append(DiscussionMessageFlagModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1092,6 +729,71 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     }
 
     /**
+     * Removes all the discussion message flags where messageId = &#63; from the database.
+     *
+     * @param messageId the message ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByMessageId(long messageId) throws SystemException {
+        for (DiscussionMessageFlag discussionMessageFlag : findByMessageId(
+                messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(discussionMessageFlag);
+        }
+    }
+
+    /**
+     * Returns the number of discussion message flags where messageId = &#63;.
+     *
+     * @param messageId the message ID
+     * @return the number of matching discussion message flags
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByMessageId(long messageId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEID;
+
+        Object[] finderArgs = new Object[] { messageId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns the discussion message flag where messageId = &#63; and flagType = &#63; or throws a {@link com.ext.portlet.NoSuchDiscussionMessageFlagException} if it could not be found.
      *
      * @param messageId the message ID
@@ -1100,6 +802,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag findByMessageIdFlagType(long messageId,
         String flagType)
         throws NoSuchDiscussionMessageFlagException, SystemException {
@@ -1137,6 +840,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag fetchByMessageIdFlagType(long messageId,
         String flagType) throws SystemException {
         return fetchByMessageIdFlagType(messageId, flagType, true);
@@ -1151,6 +855,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the matching discussion message flag, or <code>null</code> if a matching discussion message flag could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessageFlag fetchByMessageIdFlagType(long messageId,
         String flagType, boolean retrieveFromCache) throws SystemException {
         Object[] finderArgs = new Object[] { messageId, flagType };
@@ -1162,21 +867,33 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                     finderArgs, this);
         }
 
+        if (result instanceof DiscussionMessageFlag) {
+            DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) result;
+
+            if ((messageId != discussionMessageFlag.getMessageId()) ||
+                    !Validator.equals(flagType,
+                        discussionMessageFlag.getFlagType())) {
+                result = null;
+            }
+        }
+
         if (result == null) {
-            StringBundler query = new StringBundler(3);
+            StringBundler query = new StringBundler(4);
 
             query.append(_SQL_SELECT_DISCUSSIONMESSAGEFLAG_WHERE);
 
             query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2);
 
+            boolean bindFlagType = false;
+
             if (flagType == null) {
                 query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1);
+            } else if (flagType.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
             } else {
-                if (flagType.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
-                } else {
-                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
-                }
+                bindFlagType = true;
+
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
             }
 
             String sql = query.toString();
@@ -1192,21 +909,19 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 qPos.add(messageId);
 
-                if (flagType != null) {
+                if (bindFlagType) {
                     qPos.add(flagType);
                 }
 
                 List<DiscussionMessageFlag> list = q.list();
 
-                result = list;
-
-                DiscussionMessageFlag discussionMessageFlag = null;
-
                 if (list.isEmpty()) {
                     FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
                         finderArgs, list);
                 } else {
-                    discussionMessageFlag = list.get(0);
+                    DiscussionMessageFlag discussionMessageFlag = list.get(0);
+
+                    result = discussionMessageFlag;
 
                     cacheResult(discussionMessageFlag);
 
@@ -1217,25 +932,542 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                             finderArgs, discussionMessageFlag);
                     }
                 }
-
-                return discussionMessageFlag;
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                    finderArgs);
+
                 throw processException(e);
             } finally {
-                if (result == null) {
-                    FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
-                        finderArgs);
-                }
-
                 closeSession(session);
             }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
         } else {
-            if (result instanceof List<?>) {
-                return null;
+            return (DiscussionMessageFlag) result;
+        }
+    }
+
+    /**
+     * Removes the discussion message flag where messageId = &#63; and flagType = &#63; from the database.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @return the discussion message flag that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag removeByMessageIdFlagType(long messageId,
+        String flagType)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = findByMessageIdFlagType(messageId,
+                flagType);
+
+        return remove(discussionMessageFlag);
+    }
+
+    /**
+     * Returns the number of discussion message flags where messageId = &#63; and flagType = &#63;.
+     *
+     * @param messageId the message ID
+     * @param flagType the flag type
+     * @return the number of matching discussion message flags
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByMessageIdFlagType(long messageId, String flagType)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE;
+
+        Object[] finderArgs = new Object[] { messageId, flagType };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2);
+
+            boolean bindFlagType = false;
+
+            if (flagType == null) {
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1);
+            } else if (flagType.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
             } else {
-                return (DiscussionMessageFlag) result;
+                bindFlagType = true;
+
+                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                if (bindFlagType) {
+                    qPos.add(flagType);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
             }
         }
+
+        return count.intValue();
+    }
+
+    /**
+     * Caches the discussion message flag in the entity cache if it is enabled.
+     *
+     * @param discussionMessageFlag the discussion message flag
+     */
+    @Override
+    public void cacheResult(DiscussionMessageFlag discussionMessageFlag) {
+        EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class,
+            discussionMessageFlag.getPrimaryKey(), discussionMessageFlag);
+
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+            new Object[] {
+                discussionMessageFlag.getMessageId(),
+                discussionMessageFlag.getFlagType()
+            }, discussionMessageFlag);
+
+        discussionMessageFlag.resetOriginalValues();
+    }
+
+    /**
+     * Caches the discussion message flags in the entity cache if it is enabled.
+     *
+     * @param discussionMessageFlags the discussion message flags
+     */
+    @Override
+    public void cacheResult(List<DiscussionMessageFlag> discussionMessageFlags) {
+        for (DiscussionMessageFlag discussionMessageFlag : discussionMessageFlags) {
+            if (EntityCacheUtil.getResult(
+                        DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+                        DiscussionMessageFlagImpl.class,
+                        discussionMessageFlag.getPrimaryKey()) == null) {
+                cacheResult(discussionMessageFlag);
+            } else {
+                discussionMessageFlag.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all discussion message flags.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(DiscussionMessageFlagImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(DiscussionMessageFlagImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the discussion message flag.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(DiscussionMessageFlag discussionMessageFlag) {
+        EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class,
+            discussionMessageFlag.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(discussionMessageFlag);
+    }
+
+    @Override
+    public void clearCache(List<DiscussionMessageFlag> discussionMessageFlags) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (DiscussionMessageFlag discussionMessageFlag : discussionMessageFlags) {
+            EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+                DiscussionMessageFlagImpl.class,
+                discussionMessageFlag.getPrimaryKey());
+
+            clearUniqueFindersCache(discussionMessageFlag);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(
+        DiscussionMessageFlag discussionMessageFlag) {
+        if (discussionMessageFlag.isNew()) {
+            Object[] args = new Object[] {
+                    discussionMessageFlag.getMessageId(),
+                    discussionMessageFlag.getFlagType()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                args, discussionMessageFlag);
+        } else {
+            DiscussionMessageFlagModelImpl discussionMessageFlagModelImpl = (DiscussionMessageFlagModelImpl) discussionMessageFlag;
+
+            if ((discussionMessageFlagModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        discussionMessageFlag.getMessageId(),
+                        discussionMessageFlag.getFlagType()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                    args, discussionMessageFlag);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(
+        DiscussionMessageFlag discussionMessageFlag) {
+        DiscussionMessageFlagModelImpl discussionMessageFlagModelImpl = (DiscussionMessageFlagModelImpl) discussionMessageFlag;
+
+        Object[] args = new Object[] {
+                discussionMessageFlag.getMessageId(),
+                discussionMessageFlag.getFlagType()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+            args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+            args);
+
+        if ((discussionMessageFlagModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    discussionMessageFlagModelImpl.getOriginalMessageId(),
+                    discussionMessageFlagModelImpl.getOriginalFlagType()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_MESSAGEIDFLAGTYPE,
+                args);
+        }
+    }
+
+    /**
+     * Creates a new discussion message flag with the primary key. Does not add the discussion message flag to the database.
+     *
+     * @param pk the primary key for the new discussion message flag
+     * @return the new discussion message flag
+     */
+    @Override
+    public DiscussionMessageFlag create(long pk) {
+        DiscussionMessageFlag discussionMessageFlag = new DiscussionMessageFlagImpl();
+
+        discussionMessageFlag.setNew(true);
+        discussionMessageFlag.setPrimaryKey(pk);
+
+        return discussionMessageFlag;
+    }
+
+    /**
+     * Removes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param pk the primary key of the discussion message flag
+     * @return the discussion message flag that was removed
+     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag remove(long pk)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        return remove((Serializable) pk);
+    }
+
+    /**
+     * Removes the discussion message flag with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the discussion message flag
+     * @return the discussion message flag that was removed
+     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag remove(Serializable primaryKey)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) session.get(DiscussionMessageFlagImpl.class,
+                    primaryKey);
+
+            if (discussionMessageFlag == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchDiscussionMessageFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(discussionMessageFlag);
+        } catch (NoSuchDiscussionMessageFlagException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected DiscussionMessageFlag removeImpl(
+        DiscussionMessageFlag discussionMessageFlag) throws SystemException {
+        discussionMessageFlag = toUnwrappedModel(discussionMessageFlag);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(discussionMessageFlag)) {
+                discussionMessageFlag = (DiscussionMessageFlag) session.get(DiscussionMessageFlagImpl.class,
+                        discussionMessageFlag.getPrimaryKeyObj());
+            }
+
+            if (discussionMessageFlag != null) {
+                session.delete(discussionMessageFlag);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (discussionMessageFlag != null) {
+            clearCache(discussionMessageFlag);
+        }
+
+        return discussionMessageFlag;
+    }
+
+    @Override
+    public DiscussionMessageFlag updateImpl(
+        com.ext.portlet.model.DiscussionMessageFlag discussionMessageFlag)
+        throws SystemException {
+        discussionMessageFlag = toUnwrappedModel(discussionMessageFlag);
+
+        boolean isNew = discussionMessageFlag.isNew();
+
+        DiscussionMessageFlagModelImpl discussionMessageFlagModelImpl = (DiscussionMessageFlagModelImpl) discussionMessageFlag;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (discussionMessageFlag.isNew()) {
+                session.save(discussionMessageFlag);
+
+                discussionMessageFlag.setNew(false);
+            } else {
+                session.merge(discussionMessageFlag);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !DiscussionMessageFlagModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((discussionMessageFlagModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        discussionMessageFlagModelImpl.getOriginalMessageId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
+                    args);
+
+                args = new Object[] {
+                        discussionMessageFlagModelImpl.getMessageId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+            DiscussionMessageFlagImpl.class,
+            discussionMessageFlag.getPrimaryKey(), discussionMessageFlag);
+
+        clearUniqueFindersCache(discussionMessageFlag);
+        cacheUniqueFindersCache(discussionMessageFlag);
+
+        return discussionMessageFlag;
+    }
+
+    protected DiscussionMessageFlag toUnwrappedModel(
+        DiscussionMessageFlag discussionMessageFlag) {
+        if (discussionMessageFlag instanceof DiscussionMessageFlagImpl) {
+            return discussionMessageFlag;
+        }
+
+        DiscussionMessageFlagImpl discussionMessageFlagImpl = new DiscussionMessageFlagImpl();
+
+        discussionMessageFlagImpl.setNew(discussionMessageFlag.isNew());
+        discussionMessageFlagImpl.setPrimaryKey(discussionMessageFlag.getPrimaryKey());
+
+        discussionMessageFlagImpl.setPk(discussionMessageFlag.getPk());
+        discussionMessageFlagImpl.setMessageId(discussionMessageFlag.getMessageId());
+        discussionMessageFlagImpl.setFlagType(discussionMessageFlag.getFlagType());
+        discussionMessageFlagImpl.setData(discussionMessageFlag.getData());
+        discussionMessageFlagImpl.setCreated(discussionMessageFlag.getCreated());
+        discussionMessageFlagImpl.setUserId(discussionMessageFlag.getUserId());
+
+        return discussionMessageFlagImpl;
+    }
+
+    /**
+     * Returns the discussion message flag with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the discussion message flag
+     * @return the discussion message flag
+     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        DiscussionMessageFlag discussionMessageFlag = fetchByPrimaryKey(primaryKey);
+
+        if (discussionMessageFlag == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchDiscussionMessageFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return discussionMessageFlag;
+    }
+
+    /**
+     * Returns the discussion message flag with the primary key or throws a {@link com.ext.portlet.NoSuchDiscussionMessageFlagException} if it could not be found.
+     *
+     * @param pk the primary key of the discussion message flag
+     * @return the discussion message flag
+     * @throws com.ext.portlet.NoSuchDiscussionMessageFlagException if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag findByPrimaryKey(long pk)
+        throws NoSuchDiscussionMessageFlagException, SystemException {
+        return findByPrimaryKey((Serializable) pk);
+    }
+
+    /**
+     * Returns the discussion message flag with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the discussion message flag
+     * @return the discussion message flag, or <code>null</code> if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        DiscussionMessageFlag discussionMessageFlag = (DiscussionMessageFlag) EntityCacheUtil.getResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+                DiscussionMessageFlagImpl.class, primaryKey);
+
+        if (discussionMessageFlag == _nullDiscussionMessageFlag) {
+            return null;
+        }
+
+        if (discussionMessageFlag == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                discussionMessageFlag = (DiscussionMessageFlag) session.get(DiscussionMessageFlagImpl.class,
+                        primaryKey);
+
+                if (discussionMessageFlag != null) {
+                    cacheResult(discussionMessageFlag);
+                } else {
+                    EntityCacheUtil.putResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+                        DiscussionMessageFlagImpl.class, primaryKey,
+                        _nullDiscussionMessageFlag);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(DiscussionMessageFlagModelImpl.ENTITY_CACHE_ENABLED,
+                    DiscussionMessageFlagImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return discussionMessageFlag;
+    }
+
+    /**
+     * Returns the discussion message flag with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param pk the primary key of the discussion message flag
+     * @return the discussion message flag, or <code>null</code> if a discussion message flag with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessageFlag fetchByPrimaryKey(long pk)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) pk);
     }
 
     /**
@@ -1244,6 +1476,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1252,7 +1485,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * Returns a range of all the discussion message flags.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of discussion message flags
@@ -1260,6 +1493,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the range of discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -1269,7 +1503,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * Returns an ordered range of all the discussion message flags.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of discussion message flags
@@ -1278,17 +1512,20 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the ordered range of discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessageFlag> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -1311,6 +1548,10 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_DISCUSSIONMESSAGEFLAG;
+
+                if (pagination) {
+                    sql = sql.concat(DiscussionMessageFlagModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -1320,26 +1561,26 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<DiscussionMessageFlag>(list);
                 } else {
                     list = (List<DiscussionMessageFlag>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -1348,160 +1589,15 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     }
 
     /**
-     * Removes all the discussion message flags where messageId = &#63; from the database.
-     *
-     * @param messageId the message ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByMessageId(long messageId) throws SystemException {
-        for (DiscussionMessageFlag discussionMessageFlag : findByMessageId(
-                messageId)) {
-            remove(discussionMessageFlag);
-        }
-    }
-
-    /**
-     * Removes the discussion message flag where messageId = &#63; and flagType = &#63; from the database.
-     *
-     * @param messageId the message ID
-     * @param flagType the flag type
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByMessageIdFlagType(long messageId, String flagType)
-        throws NoSuchDiscussionMessageFlagException, SystemException {
-        DiscussionMessageFlag discussionMessageFlag = findByMessageIdFlagType(messageId,
-                flagType);
-
-        remove(discussionMessageFlag);
-    }
-
-    /**
      * Removes all the discussion message flags from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (DiscussionMessageFlag discussionMessageFlag : findAll()) {
             remove(discussionMessageFlag);
         }
-    }
-
-    /**
-     * Returns the number of discussion message flags where messageId = &#63;.
-     *
-     * @param messageId the message ID
-     * @return the number of matching discussion message flags
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByMessageId(long messageId) throws SystemException {
-        Object[] finderArgs = new Object[] { messageId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(messageId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of discussion message flags where messageId = &#63; and flagType = &#63;.
-     *
-     * @param messageId the message ID
-     * @param flagType the flag type
-     * @return the number of matching discussion message flags
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByMessageIdFlagType(long messageId, String flagType)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { messageId, flagType };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_COUNT_DISCUSSIONMESSAGEFLAG_WHERE);
-
-            query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_MESSAGEID_2);
-
-            if (flagType == null) {
-                query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_1);
-            } else {
-                if (flagType.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_3);
-                } else {
-                    query.append(_FINDER_COLUMN_MESSAGEIDFLAGTYPE_FLAGTYPE_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(messageId);
-
-                if (flagType != null) {
-                    qPos.add(flagType);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_MESSAGEIDFLAGTYPE,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -1510,6 +1606,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
      * @return the number of discussion message flags
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -1523,21 +1620,25 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
                 Query q = session.createQuery(_SQL_COUNT_DISCUSSIONMESSAGEFLAG);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -1554,7 +1655,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<DiscussionMessageFlag>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1567,6 +1668,7 @@ public class DiscussionMessageFlagPersistenceImpl extends BasePersistenceImpl<Di
     public void destroy() {
         EntityCacheUtil.removeCache(DiscussionMessageFlagImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

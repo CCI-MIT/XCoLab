@@ -24,6 +24,7 @@ public abstract class LandingPageBaseImpl extends LandingPageModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a landing page model instance should use the {@link LandingPage} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             LandingPageLocalServiceUtil.addLandingPage(this);

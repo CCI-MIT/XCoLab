@@ -24,7 +24,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlansUserSettings service. Represents a row in the &quot;xcolab_PlansUserSettings&quot; database table, with each column mapped to a property of this class.
@@ -59,6 +61,8 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlansUserSettings (planUserSettingsId LONG not null primary key,userId LONG,planTypeId LONG,sortColumn VARCHAR(75) null,sortDirection VARCHAR(75) null,filterEnabled BOOLEAN,filterPositionsAll BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlansUserSettings";
+    public static final String ORDER_BY_JPQL = " ORDER BY plansUserSettings.planUserSettingsId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlansUserSettings.planUserSettingsId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -73,10 +77,11 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
             true);
     public static long PLANTYPEID_COLUMN_BITMASK = 1L;
     public static long USERID_COLUMN_BITMASK = 2L;
+    public static long PLANUSERSETTINGSID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlansUserSettings"));
     private static ClassLoader _classLoader = PlansUserSettings.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlansUserSettings.class
         };
     private long _planUserSettingsId;
@@ -91,9 +96,8 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
     private String _sortDirection;
     private boolean _filterEnabled;
     private boolean _filterPositionsAll;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlansUserSettings _escapedModelProxy;
+    private PlansUserSettings _escapedModel;
 
     public PlansUserSettingsModelImpl() {
     }
@@ -105,6 +109,10 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
      * @return the normal model instance
      */
     public static PlansUserSettings toModel(PlansUserSettingsSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlansUserSettings model = new PlansUserSettingsImpl();
 
         model.setPlanUserSettingsId(soapModel.getPlanUserSettingsId());
@@ -126,6 +134,10 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
      */
     public static List<PlansUserSettings> toModels(
         PlansUserSettingsSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlansUserSettings> models = new ArrayList<PlansUserSettings>(soapModels.length);
 
         for (PlansUserSettingsSoap soapModel : soapModels) {
@@ -135,44 +147,115 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planUserSettingsId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanUserSettingsId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planUserSettingsId);
+        return _planUserSettingsId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlansUserSettings.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlansUserSettings.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planUserSettingsId", getPlanUserSettingsId());
+        attributes.put("userId", getUserId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("sortColumn", getSortColumn());
+        attributes.put("sortDirection", getSortDirection());
+        attributes.put("filterEnabled", getFilterEnabled());
+        attributes.put("filterPositionsAll", getFilterPositionsAll());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planUserSettingsId = (Long) attributes.get("planUserSettingsId");
+
+        if (planUserSettingsId != null) {
+            setPlanUserSettingsId(planUserSettingsId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        String sortColumn = (String) attributes.get("sortColumn");
+
+        if (sortColumn != null) {
+            setSortColumn(sortColumn);
+        }
+
+        String sortDirection = (String) attributes.get("sortDirection");
+
+        if (sortDirection != null) {
+            setSortDirection(sortDirection);
+        }
+
+        Boolean filterEnabled = (Boolean) attributes.get("filterEnabled");
+
+        if (filterEnabled != null) {
+            setFilterEnabled(filterEnabled);
+        }
+
+        Boolean filterPositionsAll = (Boolean) attributes.get(
+                "filterPositionsAll");
+
+        if (filterPositionsAll != null) {
+            setFilterPositionsAll(filterPositionsAll);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
+    @Override
     public void setPlanUserSettingsId(long planUserSettingsId) {
         _planUserSettingsId = planUserSettingsId;
     }
 
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -185,10 +268,12 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
@@ -198,10 +283,12 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
     }
 
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _columnBitmask |= PLANTYPEID_COLUMN_BITMASK;
 
@@ -219,6 +306,7 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
     }
 
     @JSON
+    @Override
     public String getSortColumn() {
         if (_sortColumn == null) {
             return StringPool.BLANK;
@@ -227,11 +315,13 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         }
     }
 
+    @Override
     public void setSortColumn(String sortColumn) {
         _sortColumn = sortColumn;
     }
 
     @JSON
+    @Override
     public String getSortDirection() {
         if (_sortDirection == null) {
             return StringPool.BLANK;
@@ -240,32 +330,39 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         }
     }
 
+    @Override
     public void setSortDirection(String sortDirection) {
         _sortDirection = sortDirection;
     }
 
     @JSON
+    @Override
     public boolean getFilterEnabled() {
         return _filterEnabled;
     }
 
+    @Override
     public boolean isFilterEnabled() {
         return _filterEnabled;
     }
 
+    @Override
     public void setFilterEnabled(boolean filterEnabled) {
         _filterEnabled = filterEnabled;
     }
 
     @JSON
+    @Override
     public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
+    @Override
     public boolean isFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
+    @Override
     public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
@@ -275,29 +372,26 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
     }
 
     @Override
-    public PlansUserSettings toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlansUserSettings) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlansUserSettings.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlansUserSettings.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlansUserSettings toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlansUserSettings) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -317,6 +411,7 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         return plansUserSettingsImpl;
     }
 
+    @Override
     public int compareTo(PlansUserSettings plansUserSettings) {
         long primaryKey = plansUserSettings.getPrimaryKey();
 
@@ -331,17 +426,15 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlansUserSettings)) {
             return false;
         }
 
-        PlansUserSettings plansUserSettings = null;
-
-        try {
-            plansUserSettings = (PlansUserSettings) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlansUserSettings plansUserSettings = (PlansUserSettings) obj;
 
         long primaryKey = plansUserSettings.getPrimaryKey();
 
@@ -428,6 +521,7 @@ public class PlansUserSettingsModelImpl extends BaseModelImpl<PlansUserSettings>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

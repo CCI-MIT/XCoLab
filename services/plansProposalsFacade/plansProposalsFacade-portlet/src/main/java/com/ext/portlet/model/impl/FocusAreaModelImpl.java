@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the FocusArea service. Represents a row in the &quot;xcolab_FocusArea&quot; database table, with each column mapped to a property of this class.
@@ -68,19 +70,19 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.FocusArea"),
             true);
     public static long NAME_COLUMN_BITMASK = 1L;
+    public static long ORDER_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.FocusArea"));
     private static ClassLoader _classLoader = FocusArea.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             FocusArea.class
         };
     private long _id;
     private String _name;
     private String _originalName;
     private int _order;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private FocusArea _escapedModelProxy;
+    private FocusArea _escapedModel;
 
     public FocusAreaModelImpl() {
     }
@@ -92,6 +94,10 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
      * @return the normal model instance
      */
     public static FocusArea toModel(FocusAreaSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         FocusArea model = new FocusAreaImpl();
 
         model.setId(soapModel.getId());
@@ -108,6 +114,10 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
      * @return the normal model instances
      */
     public static List<FocusArea> toModels(FocusAreaSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<FocusArea> models = new ArrayList<FocusArea>(soapModels.length);
 
         for (FocusAreaSoap soapModel : soapModels) {
@@ -117,40 +127,81 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return FocusArea.class;
     }
 
+    @Override
     public String getModelClassName() {
         return FocusArea.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("name", getName());
+        attributes.put("order", getOrder());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        Integer order = (Integer) attributes.get("order");
+
+        if (order != null) {
+            setOrder(order);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -159,6 +210,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         }
     }
 
+    @Override
     public void setName(String name) {
         _columnBitmask |= NAME_COLUMN_BITMASK;
 
@@ -174,10 +226,12 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
     }
 
     @JSON
+    @Override
     public int getOrder() {
         return _order;
     }
 
+    @Override
     public void setOrder(int order) {
         _columnBitmask = -1L;
 
@@ -189,29 +243,26 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
     }
 
     @Override
-    public FocusArea toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (FocusArea) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    FocusArea.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            FocusArea.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public FocusArea toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (FocusArea) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -227,6 +278,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         return focusAreaImpl;
     }
 
+    @Override
     public int compareTo(FocusArea focusArea) {
         int value = 0;
 
@@ -247,17 +299,15 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FocusArea)) {
             return false;
         }
 
-        FocusArea focusArea = null;
-
-        try {
-            focusArea = (FocusArea) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        FocusArea focusArea = (FocusArea) obj;
 
         long primaryKey = focusArea.getPrimaryKey();
 
@@ -316,6 +366,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(13);
 

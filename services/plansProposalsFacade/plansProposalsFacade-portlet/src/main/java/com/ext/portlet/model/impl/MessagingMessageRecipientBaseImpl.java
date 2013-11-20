@@ -25,6 +25,7 @@ public abstract class MessagingMessageRecipientBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a messaging message recipient model instance should use the {@link MessagingMessageRecipient} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             MessagingMessageRecipientLocalServiceUtil.addMessagingMessageRecipient(this);

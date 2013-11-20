@@ -3,12 +3,10 @@ package com.ext.portlet.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link OntologyTermEntityService}.
- * </p>
+ * Provides a wrapper for {@link OntologyTermEntityService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       OntologyTermEntityService
+ * @author Brian Wing Shun Chan
+ * @see OntologyTermEntityService
  * @generated
  */
 public class OntologyTermEntityServiceWrapper
@@ -22,24 +20,54 @@ public class OntologyTermEntityServiceWrapper
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
+    * Returns the Spring bean ID for this bean.
+    *
+    * @return the Spring bean ID for this bean
+    */
+    @Override
+    public java.lang.String getBeanIdentifier() {
+        return _ontologyTermEntityService.getBeanIdentifier();
+    }
+
+    /**
+    * Sets the Spring bean ID for this bean.
+    *
+    * @param beanIdentifier the Spring bean ID for this bean
+    */
+    @Override
+    public void setBeanIdentifier(java.lang.String beanIdentifier) {
+        _ontologyTermEntityService.setBeanIdentifier(beanIdentifier);
+    }
+
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return _ontologyTermEntityService.invokeMethod(name, parameterTypes,
+            arguments);
+    }
+
+    /**
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public OntologyTermEntityService getWrappedOntologyTermEntityService() {
         return _ontologyTermEntityService;
     }
 
     /**
-     * @deprecated Renamed to {@link #setWrappedService}
+     * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
      */
     public void setWrappedOntologyTermEntityService(
         OntologyTermEntityService ontologyTermEntityService) {
         _ontologyTermEntityService = ontologyTermEntityService;
     }
 
+    @Override
     public OntologyTermEntityService getWrappedService() {
         return _ontologyTermEntityService;
     }
 
+    @Override
     public void setWrappedService(
         OntologyTermEntityService ontologyTermEntityService) {
         _ontologyTermEntityService = ontologyTermEntityService;

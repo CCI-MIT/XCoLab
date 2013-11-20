@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class DiscussionMessageCacheModel implements CacheModel<DiscussionMessage>,
-    Serializable {
+    Externalizable {
     public long pk;
     public long messageId;
     public String subject;
@@ -71,6 +74,7 @@ public class DiscussionMessageCacheModel implements CacheModel<DiscussionMessage
         return sb.toString();
     }
 
+    @Override
     public DiscussionMessage toEntityModel() {
         DiscussionMessageImpl discussionMessageImpl = new DiscussionMessageImpl();
 
@@ -121,5 +125,53 @@ public class DiscussionMessageCacheModel implements CacheModel<DiscussionMessage
         discussionMessageImpl.resetOriginalValues();
 
         return discussionMessageImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        pk = objectInput.readLong();
+        messageId = objectInput.readLong();
+        subject = objectInput.readUTF();
+        body = objectInput.readUTF();
+        threadId = objectInput.readLong();
+        categoryId = objectInput.readLong();
+        categoryGroupId = objectInput.readLong();
+        authorId = objectInput.readLong();
+        createDate = objectInput.readLong();
+        version = objectInput.readLong();
+        deleted = objectInput.readLong();
+        responsesCount = objectInput.readInt();
+        lastActivityDate = objectInput.readLong();
+        lastActivityAuthorId = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(pk);
+        objectOutput.writeLong(messageId);
+
+        if (subject == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(subject);
+        }
+
+        if (body == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(body);
+        }
+
+        objectOutput.writeLong(threadId);
+        objectOutput.writeLong(categoryId);
+        objectOutput.writeLong(categoryGroupId);
+        objectOutput.writeLong(authorId);
+        objectOutput.writeLong(createDate);
+        objectOutput.writeLong(version);
+        objectOutput.writeLong(deleted);
+        objectOutput.writeInt(responsesCount);
+        objectOutput.writeLong(lastActivityDate);
+        objectOutput.writeLong(lastActivityAuthorId);
     }
 }

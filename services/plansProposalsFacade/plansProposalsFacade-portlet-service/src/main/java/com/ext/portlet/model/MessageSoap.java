@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.MessageServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.MessageServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.MessageServiceSoap
  * @generated
  */
 public class MessageSoap implements Serializable {

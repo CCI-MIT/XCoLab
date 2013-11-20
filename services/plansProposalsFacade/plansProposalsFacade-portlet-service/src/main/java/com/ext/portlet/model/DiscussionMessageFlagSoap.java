@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * This class is used by SOAP remote services, specifically {@link com.ext.portlet.service.http.DiscussionMessageFlagServiceSoap}.
  *
- * @author    Brian Wing Shun Chan
- * @see       com.ext.portlet.service.http.DiscussionMessageFlagServiceSoap
+ * @author Brian Wing Shun Chan
+ * @see com.ext.portlet.service.http.DiscussionMessageFlagServiceSoap
  * @generated
  */
 public class DiscussionMessageFlagSoap implements Serializable {

@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the ContestPhaseColumn service. Represents a row in the &quot;xcolab_ContestPhaseColumn&quot; database table, with each column mapped to a property of this class.
@@ -70,10 +72,11 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.ContestPhaseColumn"),
             true);
     public static long CONTESTPHASEPK_COLUMN_BITMASK = 1L;
+    public static long COLUMNWEIGHT_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.ContestPhaseColumn"));
     private static ClassLoader _classLoader = ContestPhaseColumn.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ContestPhaseColumn.class
         };
     private long _id;
@@ -83,9 +86,8 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
     private String _columnName;
     private int _columnWeight;
     private boolean _defaultSort;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private ContestPhaseColumn _escapedModelProxy;
+    private ContestPhaseColumn _escapedModel;
 
     public ContestPhaseColumnModelImpl() {
     }
@@ -97,6 +99,10 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
      * @return the normal model instance
      */
     public static ContestPhaseColumn toModel(ContestPhaseColumnSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         ContestPhaseColumn model = new ContestPhaseColumnImpl();
 
         model.setId(soapModel.getId());
@@ -116,6 +122,10 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
      */
     public static List<ContestPhaseColumn> toModels(
         ContestPhaseColumnSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<ContestPhaseColumn> models = new ArrayList<ContestPhaseColumn>(soapModels.length);
 
         for (ContestPhaseColumnSoap soapModel : soapModels) {
@@ -125,44 +135,100 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _id;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_id);
+        return _id;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return ContestPhaseColumn.class;
     }
 
+    @Override
     public String getModelClassName() {
         return ContestPhaseColumn.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("ContestPhasePK", getContestPhasePK());
+        attributes.put("columnName", getColumnName());
+        attributes.put("columnWeight", getColumnWeight());
+        attributes.put("defaultSort", getDefaultSort());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long ContestPhasePK = (Long) attributes.get("ContestPhasePK");
+
+        if (ContestPhasePK != null) {
+            setContestPhasePK(ContestPhasePK);
+        }
+
+        String columnName = (String) attributes.get("columnName");
+
+        if (columnName != null) {
+            setColumnName(columnName);
+        }
+
+        Integer columnWeight = (Integer) attributes.get("columnWeight");
+
+        if (columnWeight != null) {
+            setColumnWeight(columnWeight);
+        }
+
+        Boolean defaultSort = (Boolean) attributes.get("defaultSort");
+
+        if (defaultSort != null) {
+            setDefaultSort(defaultSort);
+        }
+    }
+
     @JSON
+    @Override
     public long getId() {
         return _id;
     }
 
+    @Override
     public void setId(long id) {
         _id = id;
     }
 
     @JSON
+    @Override
     public long getContestPhasePK() {
         return _ContestPhasePK;
     }
 
+    @Override
     public void setContestPhasePK(long ContestPhasePK) {
         _columnBitmask |= CONTESTPHASEPK_COLUMN_BITMASK;
 
@@ -180,6 +246,7 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
     }
 
     @JSON
+    @Override
     public String getColumnName() {
         if (_columnName == null) {
             return StringPool.BLANK;
@@ -188,15 +255,18 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
         }
     }
 
+    @Override
     public void setColumnName(String columnName) {
         _columnName = columnName;
     }
 
     @JSON
+    @Override
     public int getColumnWeight() {
         return _columnWeight;
     }
 
+    @Override
     public void setColumnWeight(int columnWeight) {
         _columnBitmask = -1L;
 
@@ -204,14 +274,17 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
     }
 
     @JSON
+    @Override
     public boolean getDefaultSort() {
         return _defaultSort;
     }
 
+    @Override
     public boolean isDefaultSort() {
         return _defaultSort;
     }
 
+    @Override
     public void setDefaultSort(boolean defaultSort) {
         _defaultSort = defaultSort;
     }
@@ -221,29 +294,26 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
     }
 
     @Override
-    public ContestPhaseColumn toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ContestPhaseColumn) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    ContestPhaseColumn.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ContestPhaseColumn.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public ContestPhaseColumn toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (ContestPhaseColumn) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -261,6 +331,7 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
         return contestPhaseColumnImpl;
     }
 
+    @Override
     public int compareTo(ContestPhaseColumn contestPhaseColumn) {
         int value = 0;
 
@@ -281,17 +352,15 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ContestPhaseColumn)) {
             return false;
         }
 
-        ContestPhaseColumn contestPhaseColumn = null;
-
-        try {
-            contestPhaseColumn = (ContestPhaseColumn) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ContestPhaseColumn contestPhaseColumn = (ContestPhaseColumn) obj;
 
         long primaryKey = contestPhaseColumn.getPrimaryKey();
 
@@ -360,6 +429,7 @@ public class ContestPhaseColumnModelImpl extends BaseModelImpl<ContestPhaseColum
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(19);
 

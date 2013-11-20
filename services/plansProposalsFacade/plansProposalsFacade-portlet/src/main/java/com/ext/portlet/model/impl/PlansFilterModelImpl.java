@@ -22,7 +22,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlansFilter service. Represents a row in the &quot;xcolab_PlansFilter&quot; database table, with each column mapped to a property of this class.
@@ -67,6 +69,8 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlansFilter (userId LONG not null,planTypeId LONG not null,name VARCHAR(75) null,creator VARCHAR(75) null,description VARCHAR(75) null,CO2From DOUBLE,CO2To DOUBLE,votesFrom DOUBLE,votesTo DOUBLE,damageFrom DOUBLE,damageTo DOUBLE,mitigationFrom DOUBLE,mitigationTo DOUBLE,dateFrom DATE null,dateTo DATE null,filterPositionsAll BOOLEAN,enabled BOOLEAN,primary key (userId, planTypeId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlansFilter";
+    public static final String ORDER_BY_JPQL = " ORDER BY plansFilter.id.userId ASC, plansFilter.id.planTypeId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlansFilter.userId ASC, xcolab_PlansFilter.planTypeId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -80,7 +84,7 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlansFilter"));
     private static ClassLoader _classLoader = PlansFilter.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlansFilter.class
         };
     private long _userId;
@@ -101,7 +105,7 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
     private Date _dateTo;
     private boolean _filterPositionsAll;
     private boolean _enabled;
-    private PlansFilter _escapedModelProxy;
+    private PlansFilter _escapedModel;
 
     public PlansFilterModelImpl() {
     }
@@ -113,6 +117,10 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
      * @return the normal model instance
      */
     public static PlansFilter toModel(PlansFilterSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlansFilter model = new PlansFilterImpl();
 
         model.setUserId(soapModel.getUserId());
@@ -143,6 +151,10 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
      * @return the normal model instances
      */
     public static List<PlansFilter> toModels(PlansFilterSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlansFilter> models = new ArrayList<PlansFilter>(soapModels.length);
 
         for (PlansFilterSoap soapModel : soapModels) {
@@ -152,58 +164,202 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         return models;
     }
 
+    @Override
     public PlansFilterPK getPrimaryKey() {
         return new PlansFilterPK(_userId, _planTypeId);
     }
 
+    @Override
     public void setPrimaryKey(PlansFilterPK primaryKey) {
         setUserId(primaryKey.userId);
         setPlanTypeId(primaryKey.planTypeId);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new PlansFilterPK(_userId, _planTypeId);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((PlansFilterPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlansFilter.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlansFilter.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("userId", getUserId());
+        attributes.put("planTypeId", getPlanTypeId());
+        attributes.put("name", getName());
+        attributes.put("creator", getCreator());
+        attributes.put("description", getDescription());
+        attributes.put("CO2From", getCO2From());
+        attributes.put("CO2To", getCO2To());
+        attributes.put("votesFrom", getVotesFrom());
+        attributes.put("votesTo", getVotesTo());
+        attributes.put("damageFrom", getDamageFrom());
+        attributes.put("damageTo", getDamageTo());
+        attributes.put("mitigationFrom", getMitigationFrom());
+        attributes.put("mitigationTo", getMitigationTo());
+        attributes.put("dateFrom", getDateFrom());
+        attributes.put("dateTo", getDateTo());
+        attributes.put("filterPositionsAll", getFilterPositionsAll());
+        attributes.put("enabled", getEnabled());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Long planTypeId = (Long) attributes.get("planTypeId");
+
+        if (planTypeId != null) {
+            setPlanTypeId(planTypeId);
+        }
+
+        String name = (String) attributes.get("name");
+
+        if (name != null) {
+            setName(name);
+        }
+
+        String creator = (String) attributes.get("creator");
+
+        if (creator != null) {
+            setCreator(creator);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
+        }
+
+        Double CO2From = (Double) attributes.get("CO2From");
+
+        if (CO2From != null) {
+            setCO2From(CO2From);
+        }
+
+        Double CO2To = (Double) attributes.get("CO2To");
+
+        if (CO2To != null) {
+            setCO2To(CO2To);
+        }
+
+        Double votesFrom = (Double) attributes.get("votesFrom");
+
+        if (votesFrom != null) {
+            setVotesFrom(votesFrom);
+        }
+
+        Double votesTo = (Double) attributes.get("votesTo");
+
+        if (votesTo != null) {
+            setVotesTo(votesTo);
+        }
+
+        Double damageFrom = (Double) attributes.get("damageFrom");
+
+        if (damageFrom != null) {
+            setDamageFrom(damageFrom);
+        }
+
+        Double damageTo = (Double) attributes.get("damageTo");
+
+        if (damageTo != null) {
+            setDamageTo(damageTo);
+        }
+
+        Double mitigationFrom = (Double) attributes.get("mitigationFrom");
+
+        if (mitigationFrom != null) {
+            setMitigationFrom(mitigationFrom);
+        }
+
+        Double mitigationTo = (Double) attributes.get("mitigationTo");
+
+        if (mitigationTo != null) {
+            setMitigationTo(mitigationTo);
+        }
+
+        Date dateFrom = (Date) attributes.get("dateFrom");
+
+        if (dateFrom != null) {
+            setDateFrom(dateFrom);
+        }
+
+        Date dateTo = (Date) attributes.get("dateTo");
+
+        if (dateTo != null) {
+            setDateTo(dateTo);
+        }
+
+        Boolean filterPositionsAll = (Boolean) attributes.get(
+                "filterPositionsAll");
+
+        if (filterPositionsAll != null) {
+            setFilterPositionsAll(filterPositionsAll);
+        }
+
+        Boolean enabled = (Boolean) attributes.get("enabled");
+
+        if (enabled != null) {
+            setEnabled(enabled);
+        }
+    }
+
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
 
     @JSON
+    @Override
     public long getPlanTypeId() {
         return _planTypeId;
     }
 
+    @Override
     public void setPlanTypeId(long planTypeId) {
         _planTypeId = planTypeId;
     }
 
     @JSON
+    @Override
     public String getName() {
         if (_name == null) {
             return StringPool.BLANK;
@@ -212,11 +368,13 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         }
     }
 
+    @Override
     public void setName(String name) {
         _name = name;
     }
 
     @JSON
+    @Override
     public String getCreator() {
         if (_creator == null) {
             return StringPool.BLANK;
@@ -225,11 +383,13 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         }
     }
 
+    @Override
     public void setCreator(String creator) {
         _creator = creator;
     }
 
     @JSON
+    @Override
     public String getDescription() {
         if (_description == null) {
             return StringPool.BLANK;
@@ -238,135 +398,161 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         }
     }
 
+    @Override
     public void setDescription(String description) {
         _description = description;
     }
 
     @JSON
+    @Override
     public Double getCO2From() {
         return _CO2From;
     }
 
+    @Override
     public void setCO2From(Double CO2From) {
         _CO2From = CO2From;
     }
 
     @JSON
+    @Override
     public Double getCO2To() {
         return _CO2To;
     }
 
+    @Override
     public void setCO2To(Double CO2To) {
         _CO2To = CO2To;
     }
 
     @JSON
+    @Override
     public Double getVotesFrom() {
         return _votesFrom;
     }
 
+    @Override
     public void setVotesFrom(Double votesFrom) {
         _votesFrom = votesFrom;
     }
 
     @JSON
+    @Override
     public Double getVotesTo() {
         return _votesTo;
     }
 
+    @Override
     public void setVotesTo(Double votesTo) {
         _votesTo = votesTo;
     }
 
     @JSON
+    @Override
     public Double getDamageFrom() {
         return _damageFrom;
     }
 
+    @Override
     public void setDamageFrom(Double damageFrom) {
         _damageFrom = damageFrom;
     }
 
     @JSON
+    @Override
     public Double getDamageTo() {
         return _damageTo;
     }
 
+    @Override
     public void setDamageTo(Double damageTo) {
         _damageTo = damageTo;
     }
 
     @JSON
+    @Override
     public Double getMitigationFrom() {
         return _mitigationFrom;
     }
 
+    @Override
     public void setMitigationFrom(Double mitigationFrom) {
         _mitigationFrom = mitigationFrom;
     }
 
     @JSON
+    @Override
     public Double getMitigationTo() {
         return _mitigationTo;
     }
 
+    @Override
     public void setMitigationTo(Double mitigationTo) {
         _mitigationTo = mitigationTo;
     }
 
     @JSON
+    @Override
     public Date getDateFrom() {
         return _dateFrom;
     }
 
+    @Override
     public void setDateFrom(Date dateFrom) {
         _dateFrom = dateFrom;
     }
 
     @JSON
+    @Override
     public Date getDateTo() {
         return _dateTo;
     }
 
+    @Override
     public void setDateTo(Date dateTo) {
         _dateTo = dateTo;
     }
 
     @JSON
+    @Override
     public boolean getFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
+    @Override
     public boolean isFilterPositionsAll() {
         return _filterPositionsAll;
     }
 
+    @Override
     public void setFilterPositionsAll(boolean filterPositionsAll) {
         _filterPositionsAll = filterPositionsAll;
     }
 
     @JSON
+    @Override
     public boolean getEnabled() {
         return _enabled;
     }
 
+    @Override
     public boolean isEnabled() {
         return _enabled;
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         _enabled = enabled;
     }
 
     @Override
     public PlansFilter toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlansFilter) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (PlansFilter) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -396,6 +582,7 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         return plansFilterImpl;
     }
 
+    @Override
     public int compareTo(PlansFilter plansFilter) {
         PlansFilterPK primaryKey = plansFilter.getPrimaryKey();
 
@@ -404,17 +591,15 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlansFilter)) {
             return false;
         }
 
-        PlansFilter plansFilter = null;
-
-        try {
-            plansFilter = (PlansFilter) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlansFilter plansFilter = (PlansFilter) obj;
 
         PlansFilterPK primaryKey = plansFilter.getPrimaryKey();
 
@@ -548,6 +733,7 @@ public class PlansFilterModelImpl extends BaseModelImpl<PlansFilter>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(55);
 

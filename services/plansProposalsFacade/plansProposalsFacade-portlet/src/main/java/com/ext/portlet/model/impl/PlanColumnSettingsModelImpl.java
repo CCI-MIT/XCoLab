@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanColumnSettings service. Represents a row in the &quot;xcolab_PlanColumnSettings&quot; database table, with each column mapped to a property of this class.
@@ -54,6 +56,8 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanColumnSettings (planColumnSettingsId LONG not null primary key,columnName VARCHAR(75) null,planUserSettingsId LONG,visible BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanColumnSettings";
+    public static final String ORDER_BY_JPQL = " ORDER BY planColumnSettings.planColumnSettingsId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanColumnSettings.planColumnSettingsId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -68,10 +72,11 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
             true);
     public static long COLUMNNAME_COLUMN_BITMASK = 1L;
     public static long PLANUSERSETTINGSID_COLUMN_BITMASK = 2L;
+    public static long PLANCOLUMNSETTINGSID_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanColumnSettings"));
     private static ClassLoader _classLoader = PlanColumnSettings.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanColumnSettings.class
         };
     private long _planColumnSettingsId;
@@ -81,9 +86,8 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
     private long _originalPlanUserSettingsId;
     private boolean _setOriginalPlanUserSettingsId;
     private boolean _visible;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanColumnSettings _escapedModelProxy;
+    private PlanColumnSettings _escapedModel;
 
     public PlanColumnSettingsModelImpl() {
     }
@@ -95,6 +99,10 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
      * @return the normal model instance
      */
     public static PlanColumnSettings toModel(PlanColumnSettingsSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanColumnSettings model = new PlanColumnSettingsImpl();
 
         model.setPlanColumnSettingsId(soapModel.getPlanColumnSettingsId());
@@ -113,6 +121,10 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
      */
     public static List<PlanColumnSettings> toModels(
         PlanColumnSettingsSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanColumnSettings> models = new ArrayList<PlanColumnSettings>(soapModels.length);
 
         for (PlanColumnSettingsSoap soapModel : soapModels) {
@@ -122,40 +134,89 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _planColumnSettingsId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setPlanColumnSettingsId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_planColumnSettingsId);
+        return _planColumnSettingsId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanColumnSettings.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanColumnSettings.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("planColumnSettingsId", getPlanColumnSettingsId());
+        attributes.put("columnName", getColumnName());
+        attributes.put("planUserSettingsId", getPlanUserSettingsId());
+        attributes.put("visible", getVisible());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long planColumnSettingsId = (Long) attributes.get(
+                "planColumnSettingsId");
+
+        if (planColumnSettingsId != null) {
+            setPlanColumnSettingsId(planColumnSettingsId);
+        }
+
+        String columnName = (String) attributes.get("columnName");
+
+        if (columnName != null) {
+            setColumnName(columnName);
+        }
+
+        Long planUserSettingsId = (Long) attributes.get("planUserSettingsId");
+
+        if (planUserSettingsId != null) {
+            setPlanUserSettingsId(planUserSettingsId);
+        }
+
+        Boolean visible = (Boolean) attributes.get("visible");
+
+        if (visible != null) {
+            setVisible(visible);
+        }
+    }
+
     @JSON
+    @Override
     public long getPlanColumnSettingsId() {
         return _planColumnSettingsId;
     }
 
+    @Override
     public void setPlanColumnSettingsId(long planColumnSettingsId) {
         _planColumnSettingsId = planColumnSettingsId;
     }
 
     @JSON
+    @Override
     public String getColumnName() {
         if (_columnName == null) {
             return StringPool.BLANK;
@@ -164,6 +225,7 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
         }
     }
 
+    @Override
     public void setColumnName(String columnName) {
         _columnBitmask |= COLUMNNAME_COLUMN_BITMASK;
 
@@ -179,10 +241,12 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
     }
 
     @JSON
+    @Override
     public long getPlanUserSettingsId() {
         return _planUserSettingsId;
     }
 
+    @Override
     public void setPlanUserSettingsId(long planUserSettingsId) {
         _columnBitmask |= PLANUSERSETTINGSID_COLUMN_BITMASK;
 
@@ -200,14 +264,17 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
     }
 
     @JSON
+    @Override
     public boolean getVisible() {
         return _visible;
     }
 
+    @Override
     public boolean isVisible() {
         return _visible;
     }
 
+    @Override
     public void setVisible(boolean visible) {
         _visible = visible;
     }
@@ -217,29 +284,26 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
     }
 
     @Override
-    public PlanColumnSettings toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanColumnSettings) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanColumnSettings.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanColumnSettings.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanColumnSettings toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanColumnSettings) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -256,6 +320,7 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
         return planColumnSettingsImpl;
     }
 
+    @Override
     public int compareTo(PlanColumnSettings planColumnSettings) {
         long primaryKey = planColumnSettings.getPrimaryKey();
 
@@ -270,17 +335,15 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanColumnSettings)) {
             return false;
         }
 
-        PlanColumnSettings planColumnSettings = null;
-
-        try {
-            planColumnSettings = (PlanColumnSettings) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanColumnSettings planColumnSettings = (PlanColumnSettings) obj;
 
         long primaryKey = planColumnSettings.getPrimaryKey();
 
@@ -347,6 +410,7 @@ public class PlanColumnSettingsModelImpl extends BaseModelImpl<PlanColumnSetting
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchOntologyTermException;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.impl.OntologyTermImpl;
 import com.ext.portlet.model.impl.OntologyTermModelImpl;
+<<<<<<< HEAD
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -41,47 +42,10 @@ import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
 import com.ext.portlet.service.persistence.ModelPositionPersistence;
 import com.ext.portlet.service.persistence.OntologySpacePersistence;
 import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
+=======
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -98,14 +62,14 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -113,6 +77,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the ontology term service.
@@ -138,14 +103,23 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         ".List1";
     public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
         ".List2";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PARENTID = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByParentId",
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID =
         new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
@@ -157,6 +131,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParentId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_PARENTID_PARENTID_2 = "ontologyTerm.parentId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PARENTIDSPACEID =
         new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
@@ -164,8 +139,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             new String[] {
                 Long.class.getName(), Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID =
         new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
@@ -179,14 +154,17 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
             "countByParentIdSpaceId",
             new String[] { Long.class.getName(), Long.class.getName() });
+    private static final String _FINDER_COLUMN_PARENTIDSPACEID_PARENTID_2 = "ontologyTerm.parentId = ? AND ";
+    private static final String _FINDER_COLUMN_PARENTIDSPACEID_ONTOLOGYSPACEID_2 =
+        "ontologyTerm.ontologySpaceId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_SPACEID = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySpaceId",
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID =
         new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
@@ -198,14 +176,15 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySpaceId",
             new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_SPACEID_ONTOLOGYSPACEID_2 = "ontologyTerm.ontologySpaceId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_NAME = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
             new String[] {
                 String.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
@@ -216,33 +195,22 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
             new String[] { String.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+    private static final String _FINDER_COLUMN_NAME_NAME_1 = "ontologyTerm.name IS NULL";
+    private static final String _FINDER_COLUMN_NAME_NAME_2 = "ontologyTerm.name = ?";
+    private static final String _FINDER_COLUMN_NAME_NAME_3 = "(ontologyTerm.name IS NULL OR ontologyTerm.name = '')";
     private static final String _SQL_SELECT_ONTOLOGYTERM = "SELECT ontologyTerm FROM OntologyTerm ontologyTerm";
     private static final String _SQL_SELECT_ONTOLOGYTERM_WHERE = "SELECT ontologyTerm FROM OntologyTerm ontologyTerm WHERE ";
     private static final String _SQL_COUNT_ONTOLOGYTERM = "SELECT COUNT(ontologyTerm) FROM OntologyTerm ontologyTerm";
     private static final String _SQL_COUNT_ONTOLOGYTERM_WHERE = "SELECT COUNT(ontologyTerm) FROM OntologyTerm ontologyTerm WHERE ";
-    private static final String _FINDER_COLUMN_PARENTID_PARENTID_2 = "ontologyTerm.parentId = ?";
-    private static final String _FINDER_COLUMN_PARENTIDSPACEID_PARENTID_2 = "ontologyTerm.parentId = ? AND ";
-    private static final String _FINDER_COLUMN_PARENTIDSPACEID_ONTOLOGYSPACEID_2 =
-        "ontologyTerm.ontologySpaceId = ?";
-    private static final String _FINDER_COLUMN_SPACEID_ONTOLOGYSPACEID_2 = "ontologyTerm.ontologySpaceId = ?";
-    private static final String _FINDER_COLUMN_NAME_NAME_1 = "ontologyTerm.name IS NULL";
-    private static final String _FINDER_COLUMN_NAME_NAME_2 = "ontologyTerm.name = ?";
-    private static final String _FINDER_COLUMN_NAME_NAME_3 = "(ontologyTerm.name IS NULL OR ontologyTerm.name = ?)";
     private static final String _ORDER_BY_ENTITY_ALIAS = "ontologyTerm.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No OntologyTerm exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No OntologyTerm exists with the key {";
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(OntologyTermPersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id"
+            });
     private static OntologyTerm _nullOntologyTerm = new OntologyTermImpl() {
             @Override
             public Object clone() {
@@ -256,11 +224,13 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         };
 
     private static CacheModel<OntologyTerm> _nullOntologyTermCacheModel = new CacheModel<OntologyTerm>() {
+            @Override
             public OntologyTerm toEntityModel() {
                 return _nullOntologyTerm;
             }
         };
 
+<<<<<<< HEAD
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
@@ -415,399 +385,11 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
-
-    /**
-     * Caches the ontology term in the entity cache if it is enabled.
-     *
-     * @param ontologyTerm the ontology term
-     */
-    public void cacheResult(OntologyTerm ontologyTerm) {
-        EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermImpl.class, ontologyTerm.getPrimaryKey(), ontologyTerm);
-
-        ontologyTerm.resetOriginalValues();
+=======
+    public OntologyTermPersistenceImpl() {
+        setModelClass(OntologyTerm.class);
     }
-
-    /**
-     * Caches the ontology terms in the entity cache if it is enabled.
-     *
-     * @param ontologyTerms the ontology terms
-     */
-    public void cacheResult(List<OntologyTerm> ontologyTerms) {
-        for (OntologyTerm ontologyTerm : ontologyTerms) {
-            if (EntityCacheUtil.getResult(
-                        OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                        OntologyTermImpl.class, ontologyTerm.getPrimaryKey()) == null) {
-                cacheResult(ontologyTerm);
-            } else {
-                ontologyTerm.resetOriginalValues();
-            }
-        }
-    }
-
-    /**
-     * Clears the cache for all ontology terms.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
-            CacheRegistryUtil.clear(OntologyTermImpl.class.getName());
-        }
-
-        EntityCacheUtil.clearCache(OntologyTermImpl.class.getName());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    /**
-     * Clears the cache for the ontology term.
-     *
-     * <p>
-     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
-     * </p>
-     */
-    @Override
-    public void clearCache(OntologyTerm ontologyTerm) {
-        EntityCacheUtil.removeResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermImpl.class, ontologyTerm.getPrimaryKey());
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-    }
-
-    @Override
-    public void clearCache(List<OntologyTerm> ontologyTerms) {
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        for (OntologyTerm ontologyTerm : ontologyTerms) {
-            EntityCacheUtil.removeResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                OntologyTermImpl.class, ontologyTerm.getPrimaryKey());
-        }
-    }
-
-    /**
-     * Creates a new ontology term with the primary key. Does not add the ontology term to the database.
-     *
-     * @param id the primary key for the new ontology term
-     * @return the new ontology term
-     */
-    public OntologyTerm create(long id) {
-        OntologyTerm ontologyTerm = new OntologyTermImpl();
-
-        ontologyTerm.setNew(true);
-        ontologyTerm.setPrimaryKey(id);
-
-        return ontologyTerm;
-    }
-
-    /**
-     * Removes the ontology term with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param id the primary key of the ontology term
-     * @return the ontology term that was removed
-     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public OntologyTerm remove(long id)
-        throws NoSuchOntologyTermException, SystemException {
-        return remove(Long.valueOf(id));
-    }
-
-    /**
-     * Removes the ontology term with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param primaryKey the primary key of the ontology term
-     * @return the ontology term that was removed
-     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public OntologyTerm remove(Serializable primaryKey)
-        throws NoSuchOntologyTermException, SystemException {
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            OntologyTerm ontologyTerm = (OntologyTerm) session.get(OntologyTermImpl.class,
-                    primaryKey);
-
-            if (ontologyTerm == null) {
-                if (_log.isWarnEnabled()) {
-                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
-                }
-
-                throw new NoSuchOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    primaryKey);
-            }
-
-            return remove(ontologyTerm);
-        } catch (NoSuchOntologyTermException nsee) {
-            throw nsee;
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-    }
-
-    @Override
-    protected OntologyTerm removeImpl(OntologyTerm ontologyTerm)
-        throws SystemException {
-        ontologyTerm = toUnwrappedModel(ontologyTerm);
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.delete(session, ontologyTerm);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        clearCache(ontologyTerm);
-
-        return ontologyTerm;
-    }
-
-    @Override
-    public OntologyTerm updateImpl(
-        com.ext.portlet.model.OntologyTerm ontologyTerm, boolean merge)
-        throws SystemException {
-        ontologyTerm = toUnwrappedModel(ontologyTerm);
-
-        boolean isNew = ontologyTerm.isNew();
-
-        OntologyTermModelImpl ontologyTermModelImpl = (OntologyTermModelImpl) ontologyTerm;
-
-        Session session = null;
-
-        try {
-            session = openSession();
-
-            BatchSessionUtil.update(session, ontologyTerm, merge);
-
-            ontologyTerm.setNew(false);
-        } catch (Exception e) {
-            throw processException(e);
-        } finally {
-            closeSession(session);
-        }
-
-        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-
-        if (isNew || !OntologyTermModelImpl.COLUMN_BITMASK_ENABLED) {
-            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-        }
-        else {
-            if ((ontologyTermModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getOriginalParentId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getParentId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID,
-                    args);
-            }
-
-            if ((ontologyTermModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getOriginalParentId()),
-                        Long.valueOf(ontologyTermModelImpl.getOriginalOntologySpaceId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getParentId()),
-                        Long.valueOf(ontologyTermModelImpl.getOntologySpaceId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
-                    args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID,
-                    args);
-            }
-
-            if ((ontologyTermModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getOriginalOntologySpaceId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SPACEID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(ontologyTermModelImpl.getOntologySpaceId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SPACEID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID,
-                    args);
-            }
-
-            if ((ontologyTermModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        ontologyTermModelImpl.getOriginalName()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
-                    args);
-
-                args = new Object[] { ontologyTermModelImpl.getName() };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
-                    args);
-            }
-        }
-
-        EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-            OntologyTermImpl.class, ontologyTerm.getPrimaryKey(), ontologyTerm);
-
-        return ontologyTerm;
-    }
-
-    protected OntologyTerm toUnwrappedModel(OntologyTerm ontologyTerm) {
-        if (ontologyTerm instanceof OntologyTermImpl) {
-            return ontologyTerm;
-        }
-
-        OntologyTermImpl ontologyTermImpl = new OntologyTermImpl();
-
-        ontologyTermImpl.setNew(ontologyTerm.isNew());
-        ontologyTermImpl.setPrimaryKey(ontologyTerm.getPrimaryKey());
-
-        ontologyTermImpl.setId(ontologyTerm.getId());
-        ontologyTermImpl.setParentId(ontologyTerm.getParentId());
-        ontologyTermImpl.setOntologySpaceId(ontologyTerm.getOntologySpaceId());
-        ontologyTermImpl.setName(ontologyTerm.getName());
-        ontologyTermImpl.setDescriptionUrl(ontologyTerm.getDescriptionUrl());
-
-        return ontologyTermImpl;
-    }
-
-    /**
-     * Returns the ontology term with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
-     *
-     * @param primaryKey the primary key of the ontology term
-     * @return the ontology term
-     * @throws com.liferay.portal.NoSuchModelException if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public OntologyTerm findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the ontology term with the primary key or throws a {@link com.ext.portlet.NoSuchOntologyTermException} if it could not be found.
-     *
-     * @param id the primary key of the ontology term
-     * @return the ontology term
-     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public OntologyTerm findByPrimaryKey(long id)
-        throws NoSuchOntologyTermException, SystemException {
-        OntologyTerm ontologyTerm = fetchByPrimaryKey(id);
-
-        if (ontologyTerm == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + id);
-            }
-
-            throw new NoSuchOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                id);
-        }
-
-        return ontologyTerm;
-    }
-
-    /**
-     * Returns the ontology term with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param primaryKey the primary key of the ontology term
-     * @return the ontology term, or <code>null</code> if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public OntologyTerm fetchByPrimaryKey(Serializable primaryKey)
-        throws SystemException {
-        return fetchByPrimaryKey(((Long) primaryKey).longValue());
-    }
-
-    /**
-     * Returns the ontology term with the primary key or returns <code>null</code> if it could not be found.
-     *
-     * @param id the primary key of the ontology term
-     * @return the ontology term, or <code>null</code> if a ontology term with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    public OntologyTerm fetchByPrimaryKey(long id) throws SystemException {
-        OntologyTerm ontologyTerm = (OntologyTerm) EntityCacheUtil.getResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                OntologyTermImpl.class, id);
-
-        if (ontologyTerm == _nullOntologyTerm) {
-            return null;
-        }
-
-        if (ontologyTerm == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                ontologyTerm = (OntologyTerm) session.get(OntologyTermImpl.class,
-                        Long.valueOf(id));
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (ontologyTerm != null) {
-                    cacheResult(ontologyTerm);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
-                        OntologyTermImpl.class, id, _nullOntologyTerm);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return ontologyTerm;
-    }
+>>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the ontology terms where parentId = &#63;.
@@ -816,6 +398,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentId(long parentId)
         throws SystemException {
         return findByParentId(parentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -826,7 +409,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns a range of all the ontology terms where parentId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param parentId the parent ID
@@ -835,6 +418,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentId(long parentId, int start, int end)
         throws SystemException {
         return findByParentId(parentId, start, end, null);
@@ -844,7 +428,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns an ordered range of all the ontology terms where parentId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param parentId the parent ID
@@ -854,13 +438,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the ordered range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentId(long parentId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID;
             finderArgs = new Object[] { parentId };
         } else {
@@ -871,6 +458,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         List<OntologyTerm> list = (List<OntologyTerm>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (OntologyTerm ontologyTerm : list) {
+                if ((parentId != ontologyTerm.getParentId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -878,7 +475,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_ONTOLOGYTERM_WHERE);
@@ -888,6 +485,9 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -903,19 +503,26 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 qPos.add(parentId);
 
-                list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<OntologyTerm>(list);
+                } else {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -926,44 +533,58 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     /**
      * Returns the first ontology term in the ordered set where parentId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param parentId the parent ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching ontology term
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByParentId_First(long parentId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByParentId_First(parentId,
+                orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("parentId=");
+        msg.append(parentId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the first ontology term in the ordered set where parentId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByParentId_First(long parentId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<OntologyTerm> list = findByParentId(parentId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("parentId=");
-            msg.append(parentId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last ontology term in the ordered set where parentId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param parentId the parent ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -971,36 +592,58 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByParentId_Last(long parentId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByParentId_Last(parentId,
+                orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("parentId=");
+        msg.append(parentId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the last ontology term in the ordered set where parentId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByParentId_Last(long parentId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByParentId(parentId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<OntologyTerm> list = findByParentId(parentId, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("parentId=");
-            msg.append(parentId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the ontology terms before and after the current ontology term in the ordered set where parentId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current ontology term
      * @param parentId the parent ID
@@ -1009,6 +652,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm[] findByParentId_PrevAndNext(long id, long parentId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
@@ -1101,6 +745,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                     }
                 }
             }
+        } else {
+            query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1132,6 +778,71 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     }
 
     /**
+     * Removes all the ontology terms where parentId = &#63; from the database.
+     *
+     * @param parentId the parent ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByParentId(long parentId) throws SystemException {
+        for (OntologyTerm ontologyTerm : findByParentId(parentId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(ontologyTerm);
+        }
+    }
+
+    /**
+     * Returns the number of ontology terms where parentId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @return the number of matching ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByParentId(long parentId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PARENTID;
+
+        Object[] finderArgs = new Object[] { parentId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
+
+            query.append(_FINDER_COLUMN_PARENTID_PARENTID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(parentId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the ontology terms where parentId = &#63; and ontologySpaceId = &#63;.
      *
      * @param parentId the parent ID
@@ -1139,6 +850,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentIdSpaceId(long parentId,
         long ontologySpaceId) throws SystemException {
         return findByParentIdSpaceId(parentId, ontologySpaceId,
@@ -1149,7 +861,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns a range of all the ontology terms where parentId = &#63; and ontologySpaceId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param parentId the parent ID
@@ -1159,6 +871,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentIdSpaceId(long parentId,
         long ontologySpaceId, int start, int end) throws SystemException {
         return findByParentIdSpaceId(parentId, ontologySpaceId, start, end, null);
@@ -1168,7 +881,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns an ordered range of all the ontology terms where parentId = &#63; and ontologySpaceId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param parentId the parent ID
@@ -1179,14 +892,17 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the ordered range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByParentIdSpaceId(long parentId,
         long ontologySpaceId, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID;
             finderArgs = new Object[] { parentId, ontologySpaceId };
         } else {
@@ -1201,6 +917,17 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         List<OntologyTerm> list = (List<OntologyTerm>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (OntologyTerm ontologyTerm : list) {
+                if ((parentId != ontologyTerm.getParentId()) ||
+                        (ontologySpaceId != ontologyTerm.getOntologySpaceId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1208,7 +935,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 query = new StringBundler(4 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(3);
+                query = new StringBundler(4);
             }
 
             query.append(_SQL_SELECT_ONTOLOGYTERM_WHERE);
@@ -1220,6 +947,9 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1237,19 +967,26 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 qPos.add(ontologySpaceId);
 
-                list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<OntologyTerm>(list);
+                } else {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1260,10 +997,6 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     /**
      * Returns the first ontology term in the ordered set where parentId = &#63; and ontologySpaceId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param parentId the parent ID
      * @param ontologySpaceId the ontology space ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1271,37 +1004,57 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByParentIdSpaceId_First(long parentId,
         long ontologySpaceId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByParentIdSpaceId_First(parentId,
+                ontologySpaceId, orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("parentId=");
+        msg.append(parentId);
+
+        msg.append(", ontologySpaceId=");
+        msg.append(ontologySpaceId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the first ontology term in the ordered set where parentId = &#63; and ontologySpaceId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @param ontologySpaceId the ontology space ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByParentIdSpaceId_First(long parentId,
+        long ontologySpaceId, OrderByComparator orderByComparator)
+        throws SystemException {
         List<OntologyTerm> list = findByParentIdSpaceId(parentId,
                 ontologySpaceId, 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("parentId=");
-            msg.append(parentId);
-
-            msg.append(", ontologySpaceId=");
-            msg.append(ontologySpaceId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last ontology term in the ordered set where parentId = &#63; and ontologySpaceId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param parentId the parent ID
      * @param ontologySpaceId the ontology space ID
@@ -1310,39 +1063,63 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByParentIdSpaceId_Last(long parentId,
         long ontologySpaceId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByParentIdSpaceId_Last(parentId,
+                ontologySpaceId, orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(6);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("parentId=");
+        msg.append(parentId);
+
+        msg.append(", ontologySpaceId=");
+        msg.append(ontologySpaceId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the last ontology term in the ordered set where parentId = &#63; and ontologySpaceId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @param ontologySpaceId the ontology space ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByParentIdSpaceId_Last(long parentId,
+        long ontologySpaceId, OrderByComparator orderByComparator)
+        throws SystemException {
         int count = countByParentIdSpaceId(parentId, ontologySpaceId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<OntologyTerm> list = findByParentIdSpaceId(parentId,
                 ontologySpaceId, count - 1, count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(6);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("parentId=");
-            msg.append(parentId);
-
-            msg.append(", ontologySpaceId=");
-            msg.append(ontologySpaceId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the ontology terms before and after the current ontology term in the ordered set where parentId = &#63; and ontologySpaceId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current ontology term
      * @param parentId the parent ID
@@ -1352,6 +1129,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm[] findByParentIdSpaceId_PrevAndNext(long id,
         long parentId, long ontologySpaceId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
@@ -1446,6 +1224,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                     }
                 }
             }
+        } else {
+            query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1479,12 +1259,86 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     }
 
     /**
+     * Removes all the ontology terms where parentId = &#63; and ontologySpaceId = &#63; from the database.
+     *
+     * @param parentId the parent ID
+     * @param ontologySpaceId the ontology space ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByParentIdSpaceId(long parentId, long ontologySpaceId)
+        throws SystemException {
+        for (OntologyTerm ontologyTerm : findByParentIdSpaceId(parentId,
+                ontologySpaceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(ontologyTerm);
+        }
+    }
+
+    /**
+     * Returns the number of ontology terms where parentId = &#63; and ontologySpaceId = &#63;.
+     *
+     * @param parentId the parent ID
+     * @param ontologySpaceId the ontology space ID
+     * @return the number of matching ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByParentIdSpaceId(long parentId, long ontologySpaceId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_PARENTIDSPACEID;
+
+        Object[] finderArgs = new Object[] { parentId, ontologySpaceId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
+
+            query.append(_FINDER_COLUMN_PARENTIDSPACEID_PARENTID_2);
+
+            query.append(_FINDER_COLUMN_PARENTIDSPACEID_ONTOLOGYSPACEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(parentId);
+
+                qPos.add(ontologySpaceId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the ontology terms where ontologySpaceId = &#63;.
      *
      * @param ontologySpaceId the ontology space ID
      * @return the matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findBySpaceId(long ontologySpaceId)
         throws SystemException {
         return findBySpaceId(ontologySpaceId, QueryUtil.ALL_POS,
@@ -1495,7 +1349,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns a range of all the ontology terms where ontologySpaceId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param ontologySpaceId the ontology space ID
@@ -1504,6 +1358,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findBySpaceId(long ontologySpaceId, int start,
         int end) throws SystemException {
         return findBySpaceId(ontologySpaceId, start, end, null);
@@ -1513,7 +1368,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns an ordered range of all the ontology terms where ontologySpaceId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param ontologySpaceId the ontology space ID
@@ -1523,13 +1378,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the ordered range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findBySpaceId(long ontologySpaceId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID;
             finderArgs = new Object[] { ontologySpaceId };
         } else {
@@ -1544,6 +1402,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         List<OntologyTerm> list = (List<OntologyTerm>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (OntologyTerm ontologyTerm : list) {
+                if ((ontologySpaceId != ontologyTerm.getOntologySpaceId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1551,7 +1419,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_ONTOLOGYTERM_WHERE);
@@ -1561,6 +1429,9 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1576,19 +1447,26 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 qPos.add(ontologySpaceId);
 
-                list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<OntologyTerm>(list);
+                } else {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1599,44 +1477,58 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     /**
      * Returns the first ontology term in the ordered set where ontologySpaceId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param ontologySpaceId the ontology space ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching ontology term
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findBySpaceId_First(long ontologySpaceId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchBySpaceId_First(ontologySpaceId,
+                orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("ontologySpaceId=");
+        msg.append(ontologySpaceId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the first ontology term in the ordered set where ontologySpaceId = &#63;.
+     *
+     * @param ontologySpaceId the ontology space ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchBySpaceId_First(long ontologySpaceId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<OntologyTerm> list = findBySpaceId(ontologySpaceId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("ontologySpaceId=");
-            msg.append(ontologySpaceId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last ontology term in the ordered set where ontologySpaceId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param ontologySpaceId the ontology space ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1644,36 +1536,58 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findBySpaceId_Last(long ontologySpaceId,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchBySpaceId_Last(ontologySpaceId,
+                orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("ontologySpaceId=");
+        msg.append(ontologySpaceId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the last ontology term in the ordered set where ontologySpaceId = &#63;.
+     *
+     * @param ontologySpaceId the ontology space ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchBySpaceId_Last(long ontologySpaceId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countBySpaceId(ontologySpaceId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<OntologyTerm> list = findBySpaceId(ontologySpaceId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("ontologySpaceId=");
-            msg.append(ontologySpaceId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the ontology terms before and after the current ontology term in the ordered set where ontologySpaceId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current ontology term
      * @param ontologySpaceId the ontology space ID
@@ -1682,6 +1596,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm[] findBySpaceId_PrevAndNext(long id,
         long ontologySpaceId, OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
@@ -1774,6 +1689,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                     }
                 }
             }
+        } else {
+            query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -1805,12 +1722,78 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     }
 
     /**
+     * Removes all the ontology terms where ontologySpaceId = &#63; from the database.
+     *
+     * @param ontologySpaceId the ontology space ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeBySpaceId(long ontologySpaceId) throws SystemException {
+        for (OntologyTerm ontologyTerm : findBySpaceId(ontologySpaceId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(ontologyTerm);
+        }
+    }
+
+    /**
+     * Returns the number of ontology terms where ontologySpaceId = &#63;.
+     *
+     * @param ontologySpaceId the ontology space ID
+     * @return the number of matching ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countBySpaceId(long ontologySpaceId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_SPACEID;
+
+        Object[] finderArgs = new Object[] { ontologySpaceId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
+
+            query.append(_FINDER_COLUMN_SPACEID_ONTOLOGYSPACEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(ontologySpaceId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the ontology terms where name = &#63;.
      *
      * @param name the name
      * @return the matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByName(String name) throws SystemException {
         return findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -1819,7 +1802,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns a range of all the ontology terms where name = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param name the name
@@ -1828,6 +1811,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByName(String name, int start, int end)
         throws SystemException {
         return findByName(name, start, end, null);
@@ -1837,7 +1821,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns an ordered range of all the ontology terms where name = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param name the name
@@ -1847,13 +1831,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the ordered range of matching ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findByName(String name, int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME;
             finderArgs = new Object[] { name };
         } else {
@@ -1864,6 +1851,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         List<OntologyTerm> list = (List<OntologyTerm>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
 
+        if ((list != null) && !list.isEmpty()) {
+            for (OntologyTerm ontologyTerm : list) {
+                if (!Validator.equals(name, ontologyTerm.getName())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
         if (list == null) {
             StringBundler query = null;
 
@@ -1871,24 +1868,29 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 query = new StringBundler(3 +
                         (orderByComparator.getOrderByFields().length * 3));
             } else {
-                query = new StringBundler(2);
+                query = new StringBundler(3);
             }
 
             query.append(_SQL_SELECT_ONTOLOGYTERM_WHERE);
 
+            boolean bindName = false;
+
             if (name == null) {
                 query.append(_FINDER_COLUMN_NAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_NAME_NAME_3);
             } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_NAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_NAME_NAME_2);
-                }
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_NAME_NAME_2);
             }
 
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
+            } else
+             if (pagination) {
+                query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
             }
 
             String sql = query.toString();
@@ -1902,23 +1904,30 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                if (name != null) {
+                if (bindName) {
                     qPos.add(name);
                 }
 
-                list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
-                        start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<OntologyTerm>(list);
+                } else {
+                    list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -1929,43 +1938,56 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     /**
      * Returns the first ontology term in the ordered set where name = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param name the name
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching ontology term
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByName_First(String name,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByName_First(name, orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("name=");
+        msg.append(name);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the first ontology term in the ordered set where name = &#63;.
+     *
+     * @param name the name
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByName_First(String name,
+        OrderByComparator orderByComparator) throws SystemException {
         List<OntologyTerm> list = findByName(name, 0, 1, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("name=");
-            msg.append(name);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last ontology term in the ordered set where name = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param name the name
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -1973,36 +1995,57 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a matching ontology term could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm findByName_Last(String name,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByName_Last(name, orderByComparator);
+
+        if (ontologyTerm != null) {
+            return ontologyTerm;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("name=");
+        msg.append(name);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchOntologyTermException(msg.toString());
+    }
+
+    /**
+     * Returns the last ontology term in the ordered set where name = &#63;.
+     *
+     * @param name the name
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching ontology term, or <code>null</code> if a matching ontology term could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByName_Last(String name,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByName(name);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<OntologyTerm> list = findByName(name, count - 1, count,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("name=");
-            msg.append(name);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchOntologyTermException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the ontology terms before and after the current ontology term in the ordered set where name = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param id the primary key of the current ontology term
      * @param name the name
@@ -2011,6 +2054,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public OntologyTerm[] findByName_PrevAndNext(long id, String name,
         OrderByComparator orderByComparator)
         throws NoSuchOntologyTermException, SystemException {
@@ -2053,14 +2097,16 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
         query.append(_SQL_SELECT_ONTOLOGYTERM_WHERE);
 
+        boolean bindName = false;
+
         if (name == null) {
             query.append(_FINDER_COLUMN_NAME_NAME_1);
+        } else if (name.equals(StringPool.BLANK)) {
+            query.append(_FINDER_COLUMN_NAME_NAME_3);
         } else {
-            if (name.equals(StringPool.BLANK)) {
-                query.append(_FINDER_COLUMN_NAME_NAME_3);
-            } else {
-                query.append(_FINDER_COLUMN_NAME_NAME_2);
-            }
+            bindName = true;
+
+            query.append(_FINDER_COLUMN_NAME_NAME_2);
         }
 
         if (orderByComparator != null) {
@@ -2111,6 +2157,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                     }
                 }
             }
+        } else {
+            query.append(OntologyTermModelImpl.ORDER_BY_JPQL);
         }
 
         String sql = query.toString();
@@ -2122,7 +2170,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
         QueryPos qPos = QueryPos.getInstance(q);
 
-        if (name != null) {
+        if (bindName) {
             qPos.add(name);
         }
 
@@ -2144,11 +2192,496 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     }
 
     /**
+     * Removes all the ontology terms where name = &#63; from the database.
+     *
+     * @param name the name
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByName(String name) throws SystemException {
+        for (OntologyTerm ontologyTerm : findByName(name, QueryUtil.ALL_POS,
+                QueryUtil.ALL_POS, null)) {
+            remove(ontologyTerm);
+        }
+    }
+
+    /**
+     * Returns the number of ontology terms where name = &#63;.
+     *
+     * @param name the name
+     * @return the number of matching ontology terms
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByName(String name) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_NAME;
+
+        Object[] finderArgs = new Object[] { name };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
+
+            boolean bindName = false;
+
+            if (name == null) {
+                query.append(_FINDER_COLUMN_NAME_NAME_1);
+            } else if (name.equals(StringPool.BLANK)) {
+                query.append(_FINDER_COLUMN_NAME_NAME_3);
+            } else {
+                bindName = true;
+
+                query.append(_FINDER_COLUMN_NAME_NAME_2);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                if (bindName) {
+                    qPos.add(name);
+                }
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
+     * Caches the ontology term in the entity cache if it is enabled.
+     *
+     * @param ontologyTerm the ontology term
+     */
+    @Override
+    public void cacheResult(OntologyTerm ontologyTerm) {
+        EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermImpl.class, ontologyTerm.getPrimaryKey(), ontologyTerm);
+
+        ontologyTerm.resetOriginalValues();
+    }
+
+    /**
+     * Caches the ontology terms in the entity cache if it is enabled.
+     *
+     * @param ontologyTerms the ontology terms
+     */
+    @Override
+    public void cacheResult(List<OntologyTerm> ontologyTerms) {
+        for (OntologyTerm ontologyTerm : ontologyTerms) {
+            if (EntityCacheUtil.getResult(
+                        OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                        OntologyTermImpl.class, ontologyTerm.getPrimaryKey()) == null) {
+                cacheResult(ontologyTerm);
+            } else {
+                ontologyTerm.resetOriginalValues();
+            }
+        }
+    }
+
+    /**
+     * Clears the cache for all ontology terms.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache() {
+        if (_HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE) {
+            CacheRegistryUtil.clear(OntologyTermImpl.class.getName());
+        }
+
+        EntityCacheUtil.clearCache(OntologyTermImpl.class.getName());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    /**
+     * Clears the cache for the ontology term.
+     *
+     * <p>
+     * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
+     * </p>
+     */
+    @Override
+    public void clearCache(OntologyTerm ontologyTerm) {
+        EntityCacheUtil.removeResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermImpl.class, ontologyTerm.getPrimaryKey());
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+    }
+
+    @Override
+    public void clearCache(List<OntologyTerm> ontologyTerms) {
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        for (OntologyTerm ontologyTerm : ontologyTerms) {
+            EntityCacheUtil.removeResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                OntologyTermImpl.class, ontologyTerm.getPrimaryKey());
+        }
+    }
+
+    /**
+     * Creates a new ontology term with the primary key. Does not add the ontology term to the database.
+     *
+     * @param id the primary key for the new ontology term
+     * @return the new ontology term
+     */
+    @Override
+    public OntologyTerm create(long id) {
+        OntologyTerm ontologyTerm = new OntologyTermImpl();
+
+        ontologyTerm.setNew(true);
+        ontologyTerm.setPrimaryKey(id);
+
+        return ontologyTerm;
+    }
+
+    /**
+     * Removes the ontology term with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param id the primary key of the ontology term
+     * @return the ontology term that was removed
+     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm remove(long id)
+        throws NoSuchOntologyTermException, SystemException {
+        return remove((Serializable) id);
+    }
+
+    /**
+     * Removes the ontology term with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param primaryKey the primary key of the ontology term
+     * @return the ontology term that was removed
+     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm remove(Serializable primaryKey)
+        throws NoSuchOntologyTermException, SystemException {
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            OntologyTerm ontologyTerm = (OntologyTerm) session.get(OntologyTermImpl.class,
+                    primaryKey);
+
+            if (ontologyTerm == null) {
+                if (_log.isWarnEnabled()) {
+                    _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+                }
+
+                throw new NoSuchOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                    primaryKey);
+            }
+
+            return remove(ontologyTerm);
+        } catch (NoSuchOntologyTermException nsee) {
+            throw nsee;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    @Override
+    protected OntologyTerm removeImpl(OntologyTerm ontologyTerm)
+        throws SystemException {
+        ontologyTerm = toUnwrappedModel(ontologyTerm);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (!session.contains(ontologyTerm)) {
+                ontologyTerm = (OntologyTerm) session.get(OntologyTermImpl.class,
+                        ontologyTerm.getPrimaryKeyObj());
+            }
+
+            if (ontologyTerm != null) {
+                session.delete(ontologyTerm);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        if (ontologyTerm != null) {
+            clearCache(ontologyTerm);
+        }
+
+        return ontologyTerm;
+    }
+
+    @Override
+    public OntologyTerm updateImpl(
+        com.ext.portlet.model.OntologyTerm ontologyTerm)
+        throws SystemException {
+        ontologyTerm = toUnwrappedModel(ontologyTerm);
+
+        boolean isNew = ontologyTerm.isNew();
+
+        OntologyTermModelImpl ontologyTermModelImpl = (OntologyTermModelImpl) ontologyTerm;
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            if (ontologyTerm.isNew()) {
+                session.save(ontologyTerm);
+
+                ontologyTerm.setNew(false);
+            } else {
+                session.merge(ontologyTerm);
+            }
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+
+        FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew || !OntologyTermModelImpl.COLUMN_BITMASK_ENABLED) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
+        else {
+            if ((ontologyTermModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        ontologyTermModelImpl.getOriginalParentId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID,
+                    args);
+
+                args = new Object[] { ontologyTermModelImpl.getParentId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTID,
+                    args);
+            }
+
+            if ((ontologyTermModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        ontologyTermModelImpl.getOriginalParentId(),
+                        ontologyTermModelImpl.getOriginalOntologySpaceId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID,
+                    args);
+
+                args = new Object[] {
+                        ontologyTermModelImpl.getParentId(),
+                        ontologyTermModelImpl.getOntologySpaceId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARENTIDSPACEID,
+                    args);
+            }
+
+            if ((ontologyTermModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        ontologyTermModelImpl.getOriginalOntologySpaceId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SPACEID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID,
+                    args);
+
+                args = new Object[] { ontologyTermModelImpl.getOntologySpaceId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_SPACEID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SPACEID,
+                    args);
+            }
+
+            if ((ontologyTermModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        ontologyTermModelImpl.getOriginalName()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
+                    args);
+
+                args = new Object[] { ontologyTermModelImpl.getName() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
+                    args);
+            }
+        }
+
+        EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+            OntologyTermImpl.class, ontologyTerm.getPrimaryKey(), ontologyTerm);
+
+        return ontologyTerm;
+    }
+
+    protected OntologyTerm toUnwrappedModel(OntologyTerm ontologyTerm) {
+        if (ontologyTerm instanceof OntologyTermImpl) {
+            return ontologyTerm;
+        }
+
+        OntologyTermImpl ontologyTermImpl = new OntologyTermImpl();
+
+        ontologyTermImpl.setNew(ontologyTerm.isNew());
+        ontologyTermImpl.setPrimaryKey(ontologyTerm.getPrimaryKey());
+
+        ontologyTermImpl.setId(ontologyTerm.getId());
+        ontologyTermImpl.setParentId(ontologyTerm.getParentId());
+        ontologyTermImpl.setOntologySpaceId(ontologyTerm.getOntologySpaceId());
+        ontologyTermImpl.setName(ontologyTerm.getName());
+        ontologyTermImpl.setDescriptionUrl(ontologyTerm.getDescriptionUrl());
+
+        return ontologyTermImpl;
+    }
+
+    /**
+     * Returns the ontology term with the primary key or throws a {@link com.liferay.portal.NoSuchModelException} if it could not be found.
+     *
+     * @param primaryKey the primary key of the ontology term
+     * @return the ontology term
+     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm findByPrimaryKey(Serializable primaryKey)
+        throws NoSuchOntologyTermException, SystemException {
+        OntologyTerm ontologyTerm = fetchByPrimaryKey(primaryKey);
+
+        if (ontologyTerm == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchOntologyTermException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return ontologyTerm;
+    }
+
+    /**
+     * Returns the ontology term with the primary key or throws a {@link com.ext.portlet.NoSuchOntologyTermException} if it could not be found.
+     *
+     * @param id the primary key of the ontology term
+     * @return the ontology term
+     * @throws com.ext.portlet.NoSuchOntologyTermException if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm findByPrimaryKey(long id)
+        throws NoSuchOntologyTermException, SystemException {
+        return findByPrimaryKey((Serializable) id);
+    }
+
+    /**
+     * Returns the ontology term with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param primaryKey the primary key of the ontology term
+     * @return the ontology term, or <code>null</code> if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByPrimaryKey(Serializable primaryKey)
+        throws SystemException {
+        OntologyTerm ontologyTerm = (OntologyTerm) EntityCacheUtil.getResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                OntologyTermImpl.class, primaryKey);
+
+        if (ontologyTerm == _nullOntologyTerm) {
+            return null;
+        }
+
+        if (ontologyTerm == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                ontologyTerm = (OntologyTerm) session.get(OntologyTermImpl.class,
+                        primaryKey);
+
+                if (ontologyTerm != null) {
+                    cacheResult(ontologyTerm);
+                } else {
+                    EntityCacheUtil.putResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                        OntologyTermImpl.class, primaryKey, _nullOntologyTerm);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
+                    OntologyTermImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return ontologyTerm;
+    }
+
+    /**
+     * Returns the ontology term with the primary key or returns <code>null</code> if it could not be found.
+     *
+     * @param id the primary key of the ontology term
+     * @return the ontology term, or <code>null</code> if a ontology term with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public OntologyTerm fetchByPrimaryKey(long id) throws SystemException {
+        return fetchByPrimaryKey((Serializable) id);
+    }
+
+    /**
      * Returns all the ontology terms.
      *
      * @return the ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -2157,7 +2690,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns a range of all the ontology terms.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of ontology terms
@@ -2165,6 +2698,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the range of ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -2174,7 +2708,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * Returns an ordered range of all the ontology terms.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.OntologyTermModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of ontology terms
@@ -2183,17 +2717,20 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the ordered range of ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<OntologyTerm> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -2216,6 +2753,10 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_ONTOLOGYTERM;
+
+                if (pagination) {
+                    sql = sql.concat(OntologyTermModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -2225,26 +2766,26 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
                             start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<OntologyTerm>(list);
                 } else {
                     list = (List<OntologyTerm>) QueryUtil.list(q, getDialect(),
                             start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -2253,285 +2794,15 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     }
 
     /**
-     * Removes all the ontology terms where parentId = &#63; from the database.
-     *
-     * @param parentId the parent ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByParentId(long parentId) throws SystemException {
-        for (OntologyTerm ontologyTerm : findByParentId(parentId)) {
-            remove(ontologyTerm);
-        }
-    }
-
-    /**
-     * Removes all the ontology terms where parentId = &#63; and ontologySpaceId = &#63; from the database.
-     *
-     * @param parentId the parent ID
-     * @param ontologySpaceId the ontology space ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByParentIdSpaceId(long parentId, long ontologySpaceId)
-        throws SystemException {
-        for (OntologyTerm ontologyTerm : findByParentIdSpaceId(parentId,
-                ontologySpaceId)) {
-            remove(ontologyTerm);
-        }
-    }
-
-    /**
-     * Removes all the ontology terms where ontologySpaceId = &#63; from the database.
-     *
-     * @param ontologySpaceId the ontology space ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeBySpaceId(long ontologySpaceId) throws SystemException {
-        for (OntologyTerm ontologyTerm : findBySpaceId(ontologySpaceId)) {
-            remove(ontologyTerm);
-        }
-    }
-
-    /**
-     * Removes all the ontology terms where name = &#63; from the database.
-     *
-     * @param name the name
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByName(String name) throws SystemException {
-        for (OntologyTerm ontologyTerm : findByName(name)) {
-            remove(ontologyTerm);
-        }
-    }
-
-    /**
      * Removes all the ontology terms from the database.
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (OntologyTerm ontologyTerm : findAll()) {
             remove(ontologyTerm);
         }
-    }
-
-    /**
-     * Returns the number of ontology terms where parentId = &#63;.
-     *
-     * @param parentId the parent ID
-     * @return the number of matching ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByParentId(long parentId) throws SystemException {
-        Object[] finderArgs = new Object[] { parentId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PARENTID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
-
-            query.append(_FINDER_COLUMN_PARENTID_PARENTID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(parentId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PARENTID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of ontology terms where parentId = &#63; and ontologySpaceId = &#63;.
-     *
-     * @param parentId the parent ID
-     * @param ontologySpaceId the ontology space ID
-     * @return the number of matching ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByParentIdSpaceId(long parentId, long ontologySpaceId)
-        throws SystemException {
-        Object[] finderArgs = new Object[] { parentId, ontologySpaceId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(3);
-
-            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
-
-            query.append(_FINDER_COLUMN_PARENTIDSPACEID_PARENTID_2);
-
-            query.append(_FINDER_COLUMN_PARENTIDSPACEID_ONTOLOGYSPACEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(parentId);
-
-                qPos.add(ontologySpaceId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PARENTIDSPACEID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of ontology terms where ontologySpaceId = &#63;.
-     *
-     * @param ontologySpaceId the ontology space ID
-     * @return the number of matching ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public int countBySpaceId(long ontologySpaceId) throws SystemException {
-        Object[] finderArgs = new Object[] { ontologySpaceId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_SPACEID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
-
-            query.append(_FINDER_COLUMN_SPACEID_ONTOLOGYSPACEID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(ontologySpaceId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_SPACEID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
-    }
-
-    /**
-     * Returns the number of ontology terms where name = &#63;.
-     *
-     * @param name the name
-     * @return the number of matching ontology terms
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByName(String name) throws SystemException {
-        Object[] finderArgs = new Object[] { name };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_NAME,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_ONTOLOGYTERM_WHERE);
-
-            if (name == null) {
-                query.append(_FINDER_COLUMN_NAME_NAME_1);
-            } else {
-                if (name.equals(StringPool.BLANK)) {
-                    query.append(_FINDER_COLUMN_NAME_NAME_3);
-                } else {
-                    query.append(_FINDER_COLUMN_NAME_NAME_2);
-                }
-            }
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                if (name != null) {
-                    qPos.add(name);
-                }
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_NAME,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**
@@ -2540,6 +2811,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
      * @return the number of ontology terms
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -2553,21 +2825,25 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
                 Query q = session.createQuery(_SQL_COUNT_ONTOLOGYTERM);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**
@@ -2584,7 +2860,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<OntologyTerm>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -2597,6 +2873,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
     public void destroy() {
         EntityCacheUtil.removeCache(OntologyTermImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

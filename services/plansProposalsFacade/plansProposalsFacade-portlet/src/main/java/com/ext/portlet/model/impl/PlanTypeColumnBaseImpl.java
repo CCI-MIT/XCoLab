@@ -24,6 +24,7 @@ public abstract class PlanTypeColumnBaseImpl extends PlanTypeColumnModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan type column model instance should use the {@link PlanTypeColumn} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanTypeColumnLocalServiceUtil.addPlanTypeColumn(this);

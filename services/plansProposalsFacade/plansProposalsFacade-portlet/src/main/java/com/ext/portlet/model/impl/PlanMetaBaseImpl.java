@@ -24,6 +24,7 @@ public abstract class PlanMetaBaseImpl extends PlanMetaModelImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan meta model instance should use the {@link PlanMeta} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanMetaLocalServiceUtil.addPlanMeta(this);

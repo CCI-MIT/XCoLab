@@ -24,7 +24,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the Message service. Represents a row in the &quot;xcolab_Message&quot; database table, with each column mapped to a property of this class.
@@ -73,10 +75,11 @@ public class MessageModelImpl extends BaseModelImpl<Message>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.Message"),
             true);
     public static long FROMID_COLUMN_BITMASK = 1L;
+    public static long CREATEDATE_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Message"));
     private static ClassLoader _classLoader = Message.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             Message.class
         };
     private long _messageId;
@@ -87,9 +90,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
     private Date _createDate;
     private String _subject;
     private String _content;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private Message _escapedModelProxy;
+    private Message _escapedModel;
 
     public MessageModelImpl() {
     }
@@ -101,6 +103,10 @@ public class MessageModelImpl extends BaseModelImpl<Message>
      * @return the normal model instance
      */
     public static Message toModel(MessageSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         Message model = new MessageImpl();
 
         model.setMessageId(soapModel.getMessageId());
@@ -120,6 +126,10 @@ public class MessageModelImpl extends BaseModelImpl<Message>
      * @return the normal model instances
      */
     public static List<Message> toModels(MessageSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<Message> models = new ArrayList<Message>(soapModels.length);
 
         for (MessageSoap soapModel : soapModels) {
@@ -129,44 +139,107 @@ public class MessageModelImpl extends BaseModelImpl<Message>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _messageId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setMessageId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_messageId);
+        return _messageId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return Message.class;
     }
 
+    @Override
     public String getModelClassName() {
         return Message.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("messageId", getMessageId());
+        attributes.put("fromId", getFromId());
+        attributes.put("repliesTo", getRepliesTo());
+        attributes.put("createDate", getCreateDate());
+        attributes.put("subject", getSubject());
+        attributes.put("content", getContent());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long messageId = (Long) attributes.get("messageId");
+
+        if (messageId != null) {
+            setMessageId(messageId);
+        }
+
+        Long fromId = (Long) attributes.get("fromId");
+
+        if (fromId != null) {
+            setFromId(fromId);
+        }
+
+        Long repliesTo = (Long) attributes.get("repliesTo");
+
+        if (repliesTo != null) {
+            setRepliesTo(repliesTo);
+        }
+
+        Date createDate = (Date) attributes.get("createDate");
+
+        if (createDate != null) {
+            setCreateDate(createDate);
+        }
+
+        String subject = (String) attributes.get("subject");
+
+        if (subject != null) {
+            setSubject(subject);
+        }
+
+        String content = (String) attributes.get("content");
+
+        if (content != null) {
+            setContent(content);
+        }
+    }
+
     @JSON
+    @Override
     public long getMessageId() {
         return _messageId;
     }
 
+    @Override
     public void setMessageId(long messageId) {
         _messageId = messageId;
     }
 
     @JSON
+    @Override
     public long getFromId() {
         return _fromId;
     }
 
+    @Override
     public void setFromId(long fromId) {
         _columnBitmask |= FROMID_COLUMN_BITMASK;
 
@@ -184,19 +257,23 @@ public class MessageModelImpl extends BaseModelImpl<Message>
     }
 
     @JSON
+    @Override
     public long getRepliesTo() {
         return _repliesTo;
     }
 
+    @Override
     public void setRepliesTo(long repliesTo) {
         _repliesTo = repliesTo;
     }
 
     @JSON
+    @Override
     public Date getCreateDate() {
         return _createDate;
     }
 
+    @Override
     public void setCreateDate(Date createDate) {
         _columnBitmask = -1L;
 
@@ -204,6 +281,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
     }
 
     @JSON
+    @Override
     public String getSubject() {
         if (_subject == null) {
             return StringPool.BLANK;
@@ -212,11 +290,13 @@ public class MessageModelImpl extends BaseModelImpl<Message>
         }
     }
 
+    @Override
     public void setSubject(String subject) {
         _subject = subject;
     }
 
     @JSON
+    @Override
     public String getContent() {
         if (_content == null) {
             return StringPool.BLANK;
@@ -225,6 +305,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
         }
     }
 
+    @Override
     public void setContent(String content) {
         _content = content;
     }
@@ -234,29 +315,26 @@ public class MessageModelImpl extends BaseModelImpl<Message>
     }
 
     @Override
-    public Message toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (Message) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    Message.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            Message.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public Message toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (Message) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -275,6 +353,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
         return messageImpl;
     }
 
+    @Override
     public int compareTo(Message message) {
         int value = 0;
 
@@ -291,17 +370,15 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Message)) {
             return false;
         }
 
-        Message message = null;
-
-        try {
-            message = (Message) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        Message message = (Message) obj;
 
         long primaryKey = message.getPrimaryKey();
 
@@ -386,6 +463,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(22);
 

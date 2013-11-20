@@ -24,6 +24,7 @@ public abstract class PlanSectionDefinitionBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a plan section definition model instance should use the {@link PlanSectionDefinition} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             PlanSectionDefinitionLocalServiceUtil.addPlanSectionDefinition(this);

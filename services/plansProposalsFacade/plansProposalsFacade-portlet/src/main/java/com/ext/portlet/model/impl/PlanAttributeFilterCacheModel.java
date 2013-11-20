@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing PlanAttributeFilter in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class PlanAttributeFilterCacheModel implements CacheModel<PlanAttributeFilter>,
-    Serializable {
+    Externalizable {
     public long planAttributeFilterId;
     public String attributeName;
     public long planUserSettingsId;
@@ -45,6 +48,7 @@ public class PlanAttributeFilterCacheModel implements CacheModel<PlanAttributeFi
         return sb.toString();
     }
 
+    @Override
     public PlanAttributeFilter toEntityModel() {
         PlanAttributeFilterImpl planAttributeFilterImpl = new PlanAttributeFilterImpl();
 
@@ -69,5 +73,37 @@ public class PlanAttributeFilterCacheModel implements CacheModel<PlanAttributeFi
         planAttributeFilterImpl.resetOriginalValues();
 
         return planAttributeFilterImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        planAttributeFilterId = objectInput.readLong();
+        attributeName = objectInput.readUTF();
+        planUserSettingsId = objectInput.readLong();
+        max = objectInput.readDouble();
+        min = objectInput.readDouble();
+        stringVal = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(planAttributeFilterId);
+
+        if (attributeName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(attributeName);
+        }
+
+        objectOutput.writeLong(planUserSettingsId);
+        objectOutput.writeDouble(max);
+        objectOutput.writeDouble(min);
+
+        if (stringVal == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(stringVal);
+        }
     }
 }

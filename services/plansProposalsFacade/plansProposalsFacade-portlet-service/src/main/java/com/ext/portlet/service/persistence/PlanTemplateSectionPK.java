@@ -35,6 +35,7 @@ public class PlanTemplateSectionPK implements Comparable<PlanTemplateSectionPK>,
         this.planSectionId = planSectionId;
     }
 
+    @Override
     public int compareTo(PlanTemplateSectionPK pk) {
         if (pk == null) {
             return -1;
@@ -71,17 +72,15 @@ public class PlanTemplateSectionPK implements Comparable<PlanTemplateSectionPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanTemplateSectionPK)) {
             return false;
         }
 
-        PlanTemplateSectionPK pk = null;
-
-        try {
-            pk = (PlanTemplateSectionPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanTemplateSectionPK pk = (PlanTemplateSectionPK) obj;
 
         if ((planTemplateId == pk.planTemplateId) &&
                 (planSectionId == pk.planSectionId)) {

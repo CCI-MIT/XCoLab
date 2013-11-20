@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the PlanAttribute service. Represents a row in the &quot;xcolab_PlanAttribute&quot; database table, with each column mapped to a property of this class.
@@ -54,6 +56,8 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_PlanAttribute (attributeId LONG not null primary key,planId LONG,attributeName VARCHAR(256) null,attributeValue VARCHAR(2048) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanAttribute";
+    public static final String ORDER_BY_JPQL = " ORDER BY planAttribute.attributeId ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanAttribute.attributeId ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -69,10 +73,11 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
     public static long ATTRIBUTENAME_COLUMN_BITMASK = 1L;
     public static long ATTRIBUTEVALUE_COLUMN_BITMASK = 2L;
     public static long PLANID_COLUMN_BITMASK = 4L;
+    public static long ATTRIBUTEID_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.PlanAttribute"));
     private static ClassLoader _classLoader = PlanAttribute.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             PlanAttribute.class
         };
     private long _attributeId;
@@ -83,9 +88,8 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
     private String _originalAttributeName;
     private String _attributeValue;
     private String _originalAttributeValue;
-    private transient ExpandoBridge _expandoBridge;
     private long _columnBitmask;
-    private PlanAttribute _escapedModelProxy;
+    private PlanAttribute _escapedModel;
 
     public PlanAttributeModelImpl() {
     }
@@ -97,6 +101,10 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
      * @return the normal model instance
      */
     public static PlanAttribute toModel(PlanAttributeSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         PlanAttribute model = new PlanAttributeImpl();
 
         model.setAttributeId(soapModel.getAttributeId());
@@ -114,6 +122,10 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
      * @return the normal model instances
      */
     public static List<PlanAttribute> toModels(PlanAttributeSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<PlanAttribute> models = new ArrayList<PlanAttribute>(soapModels.length);
 
         for (PlanAttributeSoap soapModel : soapModels) {
@@ -123,44 +135,93 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         return models;
     }
 
+    @Override
     public long getPrimaryKey() {
         return _attributeId;
     }
 
+    @Override
     public void setPrimaryKey(long primaryKey) {
         setAttributeId(primaryKey);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
-        return new Long(_attributeId);
+        return _attributeId;
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
+    @Override
     public Class<?> getModelClass() {
         return PlanAttribute.class;
     }
 
+    @Override
     public String getModelClassName() {
         return PlanAttribute.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("attributeId", getAttributeId());
+        attributes.put("planId", getPlanId());
+        attributes.put("attributeName", getAttributeName());
+        attributes.put("attributeValue", getAttributeValue());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long attributeId = (Long) attributes.get("attributeId");
+
+        if (attributeId != null) {
+            setAttributeId(attributeId);
+        }
+
+        Long planId = (Long) attributes.get("planId");
+
+        if (planId != null) {
+            setPlanId(planId);
+        }
+
+        String attributeName = (String) attributes.get("attributeName");
+
+        if (attributeName != null) {
+            setAttributeName(attributeName);
+        }
+
+        String attributeValue = (String) attributes.get("attributeValue");
+
+        if (attributeValue != null) {
+            setAttributeValue(attributeValue);
+        }
+    }
+
     @JSON
+    @Override
     public long getAttributeId() {
         return _attributeId;
     }
 
+    @Override
     public void setAttributeId(long attributeId) {
         _attributeId = attributeId;
     }
 
     @JSON
+    @Override
     public long getPlanId() {
         return _planId;
     }
 
+    @Override
     public void setPlanId(long planId) {
         _columnBitmask |= PLANID_COLUMN_BITMASK;
 
@@ -178,6 +239,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
     }
 
     @JSON
+    @Override
     public String getAttributeName() {
         if (_attributeName == null) {
             return StringPool.BLANK;
@@ -186,6 +248,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         }
     }
 
+    @Override
     public void setAttributeName(String attributeName) {
         _columnBitmask |= ATTRIBUTENAME_COLUMN_BITMASK;
 
@@ -201,6 +264,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
     }
 
     @JSON
+    @Override
     public String getAttributeValue() {
         if (_attributeValue == null) {
             return StringPool.BLANK;
@@ -209,6 +273,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         }
     }
 
+    @Override
     public void setAttributeValue(String attributeValue) {
         _columnBitmask |= ATTRIBUTEVALUE_COLUMN_BITMASK;
 
@@ -228,29 +293,26 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
     }
 
     @Override
-    public PlanAttribute toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (PlanAttribute) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
-        }
-
-        return _escapedModelProxy;
-    }
-
-    @Override
     public ExpandoBridge getExpandoBridge() {
-        if (_expandoBridge == null) {
-            _expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-                    PlanAttribute.class.getName(), getPrimaryKey());
-        }
-
-        return _expandoBridge;
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            PlanAttribute.class.getName(), getPrimaryKey());
     }
 
     @Override
     public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        getExpandoBridge().setAttributes(serviceContext);
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
+    public PlanAttribute toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (PlanAttribute) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
+
+        return _escapedModel;
     }
 
     @Override
@@ -267,6 +329,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         return planAttributeImpl;
     }
 
+    @Override
     public int compareTo(PlanAttribute planAttribute) {
         long primaryKey = planAttribute.getPrimaryKey();
 
@@ -281,17 +344,15 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PlanAttribute)) {
             return false;
         }
 
-        PlanAttribute planAttribute = null;
-
-        try {
-            planAttribute = (PlanAttribute) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        PlanAttribute planAttribute = (PlanAttribute) obj;
 
         long primaryKey = planAttribute.getPrimaryKey();
 
@@ -366,6 +427,7 @@ public class PlanAttributeModelImpl extends BaseModelImpl<PlanAttribute>
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(16);
 

@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link BalloonStatsEntry}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       BalloonStatsEntry
+ * @author Brian Wing Shun Chan
+ * @see BalloonStatsEntry
  * @generated
  */
 public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
@@ -19,12 +23,74 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
         _balloonStatsEntry = balloonStatsEntry;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return BalloonStatsEntry.class;
     }
 
+    @Override
     public String getModelClassName() {
         return BalloonStatsEntry.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("id", getId());
+        attributes.put("firstContestId", getFirstContestId());
+        attributes.put("secondContestId", getSecondContestId());
+        attributes.put("choosenContest", getChoosenContest());
+        attributes.put("cookie", getCookie());
+        attributes.put("ip", getIp());
+        attributes.put("extraData", getExtraData());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
+        Long firstContestId = (Long) attributes.get("firstContestId");
+
+        if (firstContestId != null) {
+            setFirstContestId(firstContestId);
+        }
+
+        Long secondContestId = (Long) attributes.get("secondContestId");
+
+        if (secondContestId != null) {
+            setSecondContestId(secondContestId);
+        }
+
+        Integer choosenContest = (Integer) attributes.get("choosenContest");
+
+        if (choosenContest != null) {
+            setChoosenContest(choosenContest);
+        }
+
+        String cookie = (String) attributes.get("cookie");
+
+        if (cookie != null) {
+            setCookie(cookie);
+        }
+
+        String ip = (String) attributes.get("ip");
+
+        if (ip != null) {
+            setIp(ip);
+        }
+
+        String extraData = (String) attributes.get("extraData");
+
+        if (extraData != null) {
+            setExtraData(extraData);
+        }
     }
 
     /**
@@ -32,6 +98,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the primary key of this balloon stats entry
     */
+    @Override
     public long getPrimaryKey() {
         return _balloonStatsEntry.getPrimaryKey();
     }
@@ -41,6 +108,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param primaryKey the primary key of this balloon stats entry
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _balloonStatsEntry.setPrimaryKey(primaryKey);
     }
@@ -50,6 +118,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the ID of this balloon stats entry
     */
+    @Override
     public long getId() {
         return _balloonStatsEntry.getId();
     }
@@ -59,6 +128,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param id the ID of this balloon stats entry
     */
+    @Override
     public void setId(long id) {
         _balloonStatsEntry.setId(id);
     }
@@ -68,6 +138,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the first contest ID of this balloon stats entry
     */
+    @Override
     public long getFirstContestId() {
         return _balloonStatsEntry.getFirstContestId();
     }
@@ -77,6 +148,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param firstContestId the first contest ID of this balloon stats entry
     */
+    @Override
     public void setFirstContestId(long firstContestId) {
         _balloonStatsEntry.setFirstContestId(firstContestId);
     }
@@ -86,6 +158,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the second contest ID of this balloon stats entry
     */
+    @Override
     public long getSecondContestId() {
         return _balloonStatsEntry.getSecondContestId();
     }
@@ -95,6 +168,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param secondContestId the second contest ID of this balloon stats entry
     */
+    @Override
     public void setSecondContestId(long secondContestId) {
         _balloonStatsEntry.setSecondContestId(secondContestId);
     }
@@ -104,6 +178,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the choosen contest of this balloon stats entry
     */
+    @Override
     public int getChoosenContest() {
         return _balloonStatsEntry.getChoosenContest();
     }
@@ -113,6 +188,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param choosenContest the choosen contest of this balloon stats entry
     */
+    @Override
     public void setChoosenContest(int choosenContest) {
         _balloonStatsEntry.setChoosenContest(choosenContest);
     }
@@ -122,6 +198,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the cookie of this balloon stats entry
     */
+    @Override
     public java.lang.String getCookie() {
         return _balloonStatsEntry.getCookie();
     }
@@ -131,6 +208,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param cookie the cookie of this balloon stats entry
     */
+    @Override
     public void setCookie(java.lang.String cookie) {
         _balloonStatsEntry.setCookie(cookie);
     }
@@ -140,6 +218,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the ip of this balloon stats entry
     */
+    @Override
     public java.lang.String getIp() {
         return _balloonStatsEntry.getIp();
     }
@@ -149,6 +228,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param ip the ip of this balloon stats entry
     */
+    @Override
     public void setIp(java.lang.String ip) {
         _balloonStatsEntry.setIp(ip);
     }
@@ -158,6 +238,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @return the extra data of this balloon stats entry
     */
+    @Override
     public java.lang.String getExtraData() {
         return _balloonStatsEntry.getExtraData();
     }
@@ -167,42 +248,64 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     *
     * @param extraData the extra data of this balloon stats entry
     */
+    @Override
     public void setExtraData(java.lang.String extraData) {
         _balloonStatsEntry.setExtraData(extraData);
     }
 
+    @Override
     public boolean isNew() {
         return _balloonStatsEntry.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _balloonStatsEntry.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _balloonStatsEntry.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _balloonStatsEntry.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _balloonStatsEntry.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _balloonStatsEntry.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _balloonStatsEntry.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _balloonStatsEntry.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _balloonStatsEntry.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _balloonStatsEntry.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _balloonStatsEntry.setExpandoBridgeAttributes(serviceContext);
@@ -213,6 +316,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
         return new BalloonStatsEntryWrapper((BalloonStatsEntry) _balloonStatsEntry.clone());
     }
 
+    @Override
     public int compareTo(BalloonStatsEntry balloonStatsEntry) {
         return _balloonStatsEntry.compareTo(balloonStatsEntry);
     }
@@ -222,12 +326,19 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
         return _balloonStatsEntry.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<BalloonStatsEntry> toCacheModel() {
         return _balloonStatsEntry.toCacheModel();
     }
 
+    @Override
     public BalloonStatsEntry toEscapedModel() {
         return new BalloonStatsEntryWrapper(_balloonStatsEntry.toEscapedModel());
+    }
+
+    @Override
+    public BalloonStatsEntry toUnescapedModel() {
+        return new BalloonStatsEntryWrapper(_balloonStatsEntry.toUnescapedModel());
     }
 
     @Override
@@ -235,26 +346,50 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
         return _balloonStatsEntry.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _balloonStatsEntry.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _balloonStatsEntry.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof BalloonStatsEntryWrapper)) {
+            return false;
+        }
+
+        BalloonStatsEntryWrapper balloonStatsEntryWrapper = (BalloonStatsEntryWrapper) obj;
+
+        if (Validator.equals(_balloonStatsEntry,
+                    balloonStatsEntryWrapper._balloonStatsEntry)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public BalloonStatsEntry getWrappedBalloonStatsEntry() {
         return _balloonStatsEntry;
     }
 
+    @Override
     public BalloonStatsEntry getWrappedModel() {
         return _balloonStatsEntry;
     }
 
+    @Override
     public void resetOriginalValues() {
         _balloonStatsEntry.resetOriginalValues();
     }

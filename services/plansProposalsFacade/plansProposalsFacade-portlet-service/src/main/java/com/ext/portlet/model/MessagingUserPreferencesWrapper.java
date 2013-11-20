@@ -1,14 +1,18 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link MessagingUserPreferences}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       MessagingUserPreferences
+ * @author Brian Wing Shun Chan
+ * @see MessagingUserPreferences
  * @generated
  */
 public class MessagingUserPreferencesWrapper implements MessagingUserPreferences,
@@ -20,12 +24,61 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
         _messagingUserPreferences = messagingUserPreferences;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return MessagingUserPreferences.class;
     }
 
+    @Override
     public String getModelClassName() {
         return MessagingUserPreferences.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("messagingPreferencesId", getMessagingPreferencesId());
+        attributes.put("userId", getUserId());
+        attributes.put("emailOnSend", getEmailOnSend());
+        attributes.put("emailOnReceipt", getEmailOnReceipt());
+        attributes.put("emailOnActivity", getEmailOnActivity());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long messagingPreferencesId = (Long) attributes.get(
+                "messagingPreferencesId");
+
+        if (messagingPreferencesId != null) {
+            setMessagingPreferencesId(messagingPreferencesId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        Boolean emailOnSend = (Boolean) attributes.get("emailOnSend");
+
+        if (emailOnSend != null) {
+            setEmailOnSend(emailOnSend);
+        }
+
+        Boolean emailOnReceipt = (Boolean) attributes.get("emailOnReceipt");
+
+        if (emailOnReceipt != null) {
+            setEmailOnReceipt(emailOnReceipt);
+        }
+
+        Boolean emailOnActivity = (Boolean) attributes.get("emailOnActivity");
+
+        if (emailOnActivity != null) {
+            setEmailOnActivity(emailOnActivity);
+        }
     }
 
     /**
@@ -33,6 +86,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the primary key of this messaging user preferences
     */
+    @Override
     public long getPrimaryKey() {
         return _messagingUserPreferences.getPrimaryKey();
     }
@@ -42,6 +96,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param primaryKey the primary key of this messaging user preferences
     */
+    @Override
     public void setPrimaryKey(long primaryKey) {
         _messagingUserPreferences.setPrimaryKey(primaryKey);
     }
@@ -51,6 +106,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the messaging preferences ID of this messaging user preferences
     */
+    @Override
     public long getMessagingPreferencesId() {
         return _messagingUserPreferences.getMessagingPreferencesId();
     }
@@ -60,6 +116,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param messagingPreferencesId the messaging preferences ID of this messaging user preferences
     */
+    @Override
     public void setMessagingPreferencesId(long messagingPreferencesId) {
         _messagingUserPreferences.setMessagingPreferencesId(messagingPreferencesId);
     }
@@ -69,6 +126,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the user ID of this messaging user preferences
     */
+    @Override
     public long getUserId() {
         return _messagingUserPreferences.getUserId();
     }
@@ -78,6 +136,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param userId the user ID of this messaging user preferences
     */
+    @Override
     public void setUserId(long userId) {
         _messagingUserPreferences.setUserId(userId);
     }
@@ -88,6 +147,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     * @return the user uuid of this messaging user preferences
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.lang.String getUserUuid()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _messagingUserPreferences.getUserUuid();
@@ -98,6 +158,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param userUuid the user uuid of this messaging user preferences
     */
+    @Override
     public void setUserUuid(java.lang.String userUuid) {
         _messagingUserPreferences.setUserUuid(userUuid);
     }
@@ -107,6 +168,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on send of this messaging user preferences
     */
+    @Override
     public boolean getEmailOnSend() {
         return _messagingUserPreferences.getEmailOnSend();
     }
@@ -116,6 +178,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return <code>true</code> if this messaging user preferences is email on send; <code>false</code> otherwise
     */
+    @Override
     public boolean isEmailOnSend() {
         return _messagingUserPreferences.isEmailOnSend();
     }
@@ -125,6 +188,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param emailOnSend the email on send of this messaging user preferences
     */
+    @Override
     public void setEmailOnSend(boolean emailOnSend) {
         _messagingUserPreferences.setEmailOnSend(emailOnSend);
     }
@@ -134,6 +198,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on receipt of this messaging user preferences
     */
+    @Override
     public boolean getEmailOnReceipt() {
         return _messagingUserPreferences.getEmailOnReceipt();
     }
@@ -143,6 +208,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return <code>true</code> if this messaging user preferences is email on receipt; <code>false</code> otherwise
     */
+    @Override
     public boolean isEmailOnReceipt() {
         return _messagingUserPreferences.isEmailOnReceipt();
     }
@@ -152,6 +218,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param emailOnReceipt the email on receipt of this messaging user preferences
     */
+    @Override
     public void setEmailOnReceipt(boolean emailOnReceipt) {
         _messagingUserPreferences.setEmailOnReceipt(emailOnReceipt);
     }
@@ -161,6 +228,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return the email on activity of this messaging user preferences
     */
+    @Override
     public boolean getEmailOnActivity() {
         return _messagingUserPreferences.getEmailOnActivity();
     }
@@ -170,6 +238,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @return <code>true</code> if this messaging user preferences is email on activity; <code>false</code> otherwise
     */
+    @Override
     public boolean isEmailOnActivity() {
         return _messagingUserPreferences.isEmailOnActivity();
     }
@@ -179,42 +248,64 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     *
     * @param emailOnActivity the email on activity of this messaging user preferences
     */
+    @Override
     public void setEmailOnActivity(boolean emailOnActivity) {
         _messagingUserPreferences.setEmailOnActivity(emailOnActivity);
     }
 
+    @Override
     public boolean isNew() {
         return _messagingUserPreferences.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _messagingUserPreferences.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _messagingUserPreferences.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _messagingUserPreferences.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _messagingUserPreferences.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _messagingUserPreferences.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _messagingUserPreferences.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _messagingUserPreferences.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _messagingUserPreferences.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _messagingUserPreferences.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _messagingUserPreferences.setExpandoBridgeAttributes(serviceContext);
@@ -225,6 +316,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
         return new MessagingUserPreferencesWrapper((MessagingUserPreferences) _messagingUserPreferences.clone());
     }
 
+    @Override
     public int compareTo(MessagingUserPreferences messagingUserPreferences) {
         return _messagingUserPreferences.compareTo(messagingUserPreferences);
     }
@@ -234,12 +326,19 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
         return _messagingUserPreferences.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<MessagingUserPreferences> toCacheModel() {
         return _messagingUserPreferences.toCacheModel();
     }
 
+    @Override
     public MessagingUserPreferences toEscapedModel() {
         return new MessagingUserPreferencesWrapper(_messagingUserPreferences.toEscapedModel());
+    }
+
+    @Override
+    public MessagingUserPreferences toUnescapedModel() {
+        return new MessagingUserPreferencesWrapper(_messagingUserPreferences.toUnescapedModel());
     }
 
     @Override
@@ -247,26 +346,50 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
         return _messagingUserPreferences.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _messagingUserPreferences.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _messagingUserPreferences.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof MessagingUserPreferencesWrapper)) {
+            return false;
+        }
+
+        MessagingUserPreferencesWrapper messagingUserPreferencesWrapper = (MessagingUserPreferencesWrapper) obj;
+
+        if (Validator.equals(_messagingUserPreferences,
+                    messagingUserPreferencesWrapper._messagingUserPreferences)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public MessagingUserPreferences getWrappedMessagingUserPreferences() {
         return _messagingUserPreferences;
     }
 
+    @Override
     public MessagingUserPreferences getWrappedModel() {
         return _messagingUserPreferences;
     }
 
+    @Override
     public void resetOriginalValues() {
         _messagingUserPreferences.resetOriginalValues();
     }

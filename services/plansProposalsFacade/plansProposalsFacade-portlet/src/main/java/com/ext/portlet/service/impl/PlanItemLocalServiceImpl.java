@@ -1,8 +1,17 @@
 package com.ext.portlet.service.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
-import com.liferay.portal.kernel.dao.orm.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,6 +71,10 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.base.PlanItemLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -89,7 +102,7 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.GroupServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
-import com.liferay.portal.service.PermissionLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
@@ -582,10 +595,11 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 		rolesActionsMap.put(moderator, moderatorActions);
 
 		for (Role role : rolesActionsMap.keySet()) {
-			PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(),
+			ResourcePermissionLocalServiceUtil.setResourcePermissions(
 					companyId, DiscussionCategoryGroup.class.getName(),
 					ResourceConstants.SCOPE_GROUP,
 					String.valueOf(group.getGroupId()),
+					role.getRoleId(),
 					rolesActionsMap.get(role));
 		}
 

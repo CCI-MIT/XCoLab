@@ -49,7 +49,7 @@ public class PlanSectionDefinitionUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,22 +83,20 @@ public class PlanSectionDefinitionUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static PlanSectionDefinition update(
-        PlanSectionDefinition planSectionDefinition, boolean merge)
-        throws SystemException {
-        return getPersistence().update(planSectionDefinition, merge);
+        PlanSectionDefinition planSectionDefinition) throws SystemException {
+        return getPersistence().update(planSectionDefinition);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static PlanSectionDefinition update(
-        PlanSectionDefinition planSectionDefinition, boolean merge,
+        PlanSectionDefinition planSectionDefinition,
         ServiceContext serviceContext) throws SystemException {
-        return getPersistence()
-                   .update(planSectionDefinition, merge, serviceContext);
+        return getPersistence().update(planSectionDefinition, serviceContext);
     }
 
     /**
@@ -146,10 +144,9 @@ public class PlanSectionDefinitionUtil {
     }
 
     public static com.ext.portlet.model.PlanSectionDefinition updateImpl(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition,
-        boolean merge)
+        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(planSectionDefinition, merge);
+        return getPersistence().updateImpl(planSectionDefinition);
     }
 
     /**
@@ -194,7 +191,7 @@ public class PlanSectionDefinitionUtil {
     * Returns a range of all the plan section definitions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan section definitions
@@ -212,7 +209,7 @@ public class PlanSectionDefinitionUtil {
     * Returns an ordered range of all the plan section definitions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.PlanSectionDefinitionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of plan section definitions
@@ -261,10 +258,9 @@ public class PlanSectionDefinitionUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(PlanSectionDefinitionPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(PlanSectionDefinitionUtil.class,
-            "_persistence");
     }
 }

@@ -1,16 +1,16 @@
 package com.ext.portlet.service;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
+import com.liferay.portal.service.InvokableLocalService;
 
 /**
- * The utility for the activity subscription local service. This utility wraps {@link com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl} and is the primary access point for service operations in application layer code running on the local server.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * Provides the local service utility for ActivitySubscription. This utility wraps
+ * {@link com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl} and is the
+ * primary access point for service operations in application layer code running
+ * on the local server. Methods of this service will not have security checks
+ * based on the propagated JAAS credentials because this service can only be
+ * accessed from within the same VM.
  *
  * @author Brian Wing Shun Chan
  * @see ActivitySubscriptionLocalService
@@ -55,25 +55,32 @@ public class ActivitySubscriptionLocalServiceUtil {
     * Deletes the activity subscription with the primary key from the database. Also notifies the appropriate model listeners.
     *
     * @param pk the primary key of the activity subscription
+    * @return the activity subscription that was removed
     * @throws PortalException if a activity subscription with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteActivitySubscription(long pk)
+    public static com.ext.portlet.model.ActivitySubscription deleteActivitySubscription(
+        long pk)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteActivitySubscription(pk);
+        return getService().deleteActivitySubscription(pk);
     }
 
     /**
     * Deletes the activity subscription from the database. Also notifies the appropriate model listeners.
     *
     * @param activitySubscription the activity subscription
+    * @return the activity subscription that was removed
     * @throws SystemException if a system exception occurred
     */
-    public static void deleteActivitySubscription(
+    public static com.ext.portlet.model.ActivitySubscription deleteActivitySubscription(
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException {
-        getService().deleteActivitySubscription(activitySubscription);
+        return getService().deleteActivitySubscription(activitySubscription);
+    }
+
+    public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        return getService().dynamicQuery();
     }
 
     /**
@@ -94,7 +101,7 @@ public class ActivitySubscriptionLocalServiceUtil {
     * Performs a dynamic query on the database and returns a range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ActivitySubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -114,7 +121,7 @@ public class ActivitySubscriptionLocalServiceUtil {
     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ActivitySubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param dynamicQuery the dynamic query
@@ -145,6 +152,21 @@ public class ActivitySubscriptionLocalServiceUtil {
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().dynamicQueryCount(dynamicQuery);
+    }
+
+    /**
+    * Returns the number of rows that match the dynamic query.
+    *
+    * @param dynamicQuery the dynamic query
+    * @param projection the projection to apply to the query
+    * @return the number of rows that match the dynamic query
+    * @throws SystemException if a system exception occurred
+    */
+    public static long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().dynamicQueryCount(dynamicQuery, projection);
     }
 
     public static com.ext.portlet.model.ActivitySubscription fetchActivitySubscription(
@@ -178,7 +200,7 @@ public class ActivitySubscriptionLocalServiceUtil {
     * Returns a range of all the activity subscriptions.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ActivitySubscriptionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of activity subscriptions
@@ -217,22 +239,6 @@ public class ActivitySubscriptionLocalServiceUtil {
     }
 
     /**
-    * Updates the activity subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-    *
-    * @param activitySubscription the activity subscription
-    * @param merge whether to merge the activity subscription with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-    * @return the activity subscription that was updated
-    * @throws SystemException if a system exception occurred
-    */
-    public static com.ext.portlet.model.ActivitySubscription updateActivitySubscription(
-        com.ext.portlet.model.ActivitySubscription activitySubscription,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .updateActivitySubscription(activitySubscription, merge);
-    }
-
-    /**
     * Returns the Spring bean ID for this bean.
     *
     * @return the Spring bean ID for this bean
@@ -248,6 +254,12 @@ public class ActivitySubscriptionLocalServiceUtil {
     */
     public static void setBeanIdentifier(java.lang.String beanIdentifier) {
         getService().setBeanIdentifier(beanIdentifier);
+    }
+
+    public static java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
     public static java.util.List<com.ext.portlet.model.ActivitySubscription> getActivitySubscriptions(
@@ -405,34 +417,25 @@ public class ActivitySubscriptionLocalServiceUtil {
 
     public static ActivitySubscriptionLocalService getService() {
         if (_service == null) {
-            Object object = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+            InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
                     ActivitySubscriptionLocalService.class.getName());
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-                    "portletClassLoader");
 
-            ClassLoaderProxy classLoaderProxy = new ClassLoaderProxy(object,
-                    ActivitySubscriptionLocalService.class.getName(),
-                    portletClassLoader);
-
-            _service = new ActivitySubscriptionLocalServiceClp(classLoaderProxy);
-
-            ClpSerializer.setClassLoader(portletClassLoader);
+            if (invokableLocalService instanceof ActivitySubscriptionLocalService) {
+                _service = (ActivitySubscriptionLocalService) invokableLocalService;
+            } else {
+                _service = new ActivitySubscriptionLocalServiceClp(invokableLocalService);
+            }
 
             ReferenceRegistry.registerReference(ActivitySubscriptionLocalServiceUtil.class,
                 "_service");
-            MethodCache.remove(ActivitySubscriptionLocalService.class);
         }
 
         return _service;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setService(ActivitySubscriptionLocalService service) {
-        MethodCache.remove(ActivitySubscriptionLocalService.class);
-
-        _service = service;
-
-        ReferenceRegistry.registerReference(ActivitySubscriptionLocalServiceUtil.class,
-            "_service");
-        MethodCache.remove(ActivitySubscriptionLocalService.class);
     }
 }

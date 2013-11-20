@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing OntologySpace in entity cache.
@@ -16,7 +19,7 @@ import java.io.Serializable;
  * @generated
  */
 public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
-    Serializable {
+    Externalizable {
     public long id;
     public String name;
     public String description;
@@ -36,6 +39,7 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
         return sb.toString();
     }
 
+    @Override
     public OntologySpace toEntityModel() {
         OntologySpaceImpl ontologySpaceImpl = new OntologySpaceImpl();
 
@@ -56,5 +60,30 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
         ontologySpaceImpl.resetOriginalValues();
 
         return ontologySpaceImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
+        name = objectInput.readUTF();
+        description = objectInput.readUTF();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(id);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
+        }
     }
 }

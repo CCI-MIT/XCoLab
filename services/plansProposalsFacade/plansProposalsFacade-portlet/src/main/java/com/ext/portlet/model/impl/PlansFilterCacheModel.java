@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class PlansFilterCacheModel implements CacheModel<PlansFilter>,
-    Serializable {
+    Externalizable {
     public long userId;
     public long planTypeId;
     public String name;
@@ -80,6 +83,7 @@ public class PlansFilterCacheModel implements CacheModel<PlansFilter>,
         return sb.toString();
     }
 
+    @Override
     public PlansFilter toEntityModel() {
         PlansFilterImpl plansFilterImpl = new PlansFilterImpl();
 
@@ -131,5 +135,64 @@ public class PlansFilterCacheModel implements CacheModel<PlansFilter>,
         plansFilterImpl.resetOriginalValues();
 
         return plansFilterImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        userId = objectInput.readLong();
+        planTypeId = objectInput.readLong();
+        name = objectInput.readUTF();
+        creator = objectInput.readUTF();
+        description = objectInput.readUTF();
+        CO2From = objectInput.readDouble();
+        CO2To = objectInput.readDouble();
+        votesFrom = objectInput.readDouble();
+        votesTo = objectInput.readDouble();
+        damageFrom = objectInput.readDouble();
+        damageTo = objectInput.readDouble();
+        mitigationFrom = objectInput.readDouble();
+        mitigationTo = objectInput.readDouble();
+        dateFrom = objectInput.readLong();
+        dateTo = objectInput.readLong();
+        filterPositionsAll = objectInput.readBoolean();
+        enabled = objectInput.readBoolean();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(userId);
+        objectOutput.writeLong(planTypeId);
+
+        if (name == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(name);
+        }
+
+        if (creator == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(creator);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
+        }
+
+        objectOutput.writeDouble(CO2From);
+        objectOutput.writeDouble(CO2To);
+        objectOutput.writeDouble(votesFrom);
+        objectOutput.writeDouble(votesTo);
+        objectOutput.writeDouble(damageFrom);
+        objectOutput.writeDouble(damageTo);
+        objectOutput.writeDouble(mitigationFrom);
+        objectOutput.writeDouble(mitigationTo);
+        objectOutput.writeLong(dateFrom);
+        objectOutput.writeLong(dateTo);
+        objectOutput.writeBoolean(filterPositionsAll);
+        objectOutput.writeBoolean(enabled);
     }
 }
