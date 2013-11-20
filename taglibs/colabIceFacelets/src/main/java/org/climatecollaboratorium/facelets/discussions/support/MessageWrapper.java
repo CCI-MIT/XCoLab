@@ -10,6 +10,7 @@ import java.util.List;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 
+import com.ext.portlet.DiscussionActivityKeys;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
@@ -176,7 +177,7 @@ public class MessageWrapper implements Serializable {
 
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
-                    DiscussionActivityKeys.ADD_DISCUSSION.id(), 
+                    DiscussionActivityKeys.ADD_DISCUSSION.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId(), wrapped.getMessageId()), 0);
         }
     }

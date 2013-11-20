@@ -51,4 +51,12 @@
         <path>/META-INF/tags/collab/proposalLink.tagx</path>
     </tag-file>
 
+
+
+    <tag-file>
+        <description>Date and Time Formatter</description>
+        <name>dateTime</name>
+        <path>/META-INF/tags/collab/dateTime.tagx</path>
+    </tag-file>
+
 </taglib>  
