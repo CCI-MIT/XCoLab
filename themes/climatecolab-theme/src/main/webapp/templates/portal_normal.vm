@@ -97,8 +97,14 @@
   </ul>
 
 #if ($themeDisplay.signedIn)
-  <ul id="menu-right">
-   <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a></li>
+  #set($messageService = $serviceLocator.findService("plansProposalsFacade-portlet","com.ext.portlet.service.MessageRecipientStatusLocalService"))
+  #set($unreadMessages = $messageService.countInboxMessagesForUser($user.userId))
+    <ul id="menu-right">
+   <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
+    #if ($unreadMessages > 0)
+       <div class="user-notification user-notification-top">$unreadMessages</div>
+    #end
+   </li>
    <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
   </ul>
   
@@ -108,7 +114,12 @@
    <div class="userbox">
     <ul>
      <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
-     <li><a href="/web/guest/messaging">My messages</a></li>
+     <li>
+         <a href="/web/guest/messaging">My messages</a>
+         #if ($unreadMessages > 0)
+             <div class="user-notification user-notification-message">$unreadMessages</div>
+         #end
+     </li>
      <li><a href="/web/guest/member/-/member/userId/$user.userId/page/subscriptions">My subscriptions</a></li>
      #if ($permissionChecker.isOmniadmin())
      #if ($show_control_panel)
