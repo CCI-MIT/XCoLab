@@ -63,10 +63,6 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/userprofileportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/userprofile/*</url-pattern>
 	</servlet-mapping>
 	
