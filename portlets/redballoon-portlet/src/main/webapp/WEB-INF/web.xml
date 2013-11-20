@@ -69,10 +69,6 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/redballoonportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/redballoon/*</url-pattern>
 	</servlet-mapping>
 

@@ -55,10 +55,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/searchportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
 		<url-pattern>/search/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
