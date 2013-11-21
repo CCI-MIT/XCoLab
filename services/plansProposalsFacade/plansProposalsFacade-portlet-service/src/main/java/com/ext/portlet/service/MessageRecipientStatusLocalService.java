@@ -249,4 +249,8 @@ public interface MessageRecipientStatusLocalService
         long userid, long messageid)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    public int countUnreadMessages(long userId)
+        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

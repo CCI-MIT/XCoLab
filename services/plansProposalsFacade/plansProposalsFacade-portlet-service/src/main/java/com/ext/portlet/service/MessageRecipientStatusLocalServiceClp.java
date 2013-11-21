@@ -32,6 +32,7 @@ public class MessageRecipientStatusLocalServiceClp
     private MethodKey _countInboxMessagesForUserMethodKey21;
     private MethodKey _findInboxMessagesForUserMethodKey22;
     private MethodKey _findByMessageRecipientMethodKey23;
+    private MethodKey _countUnreadMessagesMethodKey24;
 
     public MessageRecipientStatusLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -120,6 +121,9 @@ public class MessageRecipientStatusLocalServiceClp
 
         _findByMessageRecipientMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
                 "findByMessageRecipient", long.class, long.class);
+
+        _countUnreadMessagesMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
+                "countUnreadMessages", long.class);
     }
 
     public com.ext.portlet.model.MessageRecipientStatus addMessageRecipientStatus(
@@ -735,6 +739,36 @@ public class MessageRecipientStatusLocalServiceClp
         }
 
         return (com.ext.portlet.model.MessageRecipientStatus) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public int countUnreadMessages(long userId)
+        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_countUnreadMessagesMethodKey24,
+                userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.ext.portlet.NoSuchMessageRecipientStatusException) {
+                throw (com.ext.portlet.NoSuchMessageRecipientStatusException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

@@ -29,8 +29,13 @@
                 <f:facet name="header">
                     Subject
                 </f:facet>
-                <a href="javascript:;" class="showContent" id="message_#{message.messageId}">#{message.subject}</a>
-                <div class="msgContent hidden"> 
+
+                <ice:commandLink actionListener="#{messagingBean.markMessageAsOpened}" value="#{message.subject}" onclick="showMessageByElem(this);">
+                    <f:attribute name="messageId" value="#{message.messageId}" />
+                </ice:commandLink>
+
+
+                <div class="msgContent hidden">
                     <p><ice:outputText value="#{message.filteredContent}" escape="false" /></p>
                     <div class="floatRight">
                     <div class="blue-button">
@@ -116,7 +121,6 @@
     
     <div class="right_col3 v1">
                        <script type="text/javascript">
-                            jQuery(function() {initShowMessage();});
                                 <f:subview rendered="#{messagingBean.messageToShow != null}">
                                     showMessageById("message_#{messagingBean.messageToShow}");
                                 </f:subview>

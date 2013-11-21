@@ -32,16 +32,6 @@ function showMessageByElem(elem, highlight) {
 function showMessageById(id) {
 	showMessageByElem(document.getElementById(id), true);
 }
-var initialized = false;
-function initShowMessage() {
-    if (initialized) return;
-    
-    jQuery(document).on("click", ".showContent", function() {
-    	showMessageByElem(this);
-    });
-    initialized = true;
-}
-
 
 
 function initSendMessageForm(users, usersMapParam, preFill) {

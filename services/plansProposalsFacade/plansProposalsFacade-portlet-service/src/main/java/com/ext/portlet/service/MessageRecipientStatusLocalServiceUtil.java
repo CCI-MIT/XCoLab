@@ -291,6 +291,12 @@ public class MessageRecipientStatusLocalServiceUtil {
         return getService().findByMessageRecipient(userid, messageid);
     }
 
+    public static int countUnreadMessages(long userId)
+        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().countUnreadMessages(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

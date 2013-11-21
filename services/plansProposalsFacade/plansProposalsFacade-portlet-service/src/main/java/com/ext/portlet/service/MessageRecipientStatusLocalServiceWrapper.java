@@ -291,6 +291,12 @@ public class MessageRecipientStatusLocalServiceWrapper
             messageid);
     }
 
+    public int countUnreadMessages(long userId)
+        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _messageRecipientStatusLocalService.countUnreadMessages(userId);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

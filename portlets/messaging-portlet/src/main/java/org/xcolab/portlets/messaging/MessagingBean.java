@@ -10,11 +10,13 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.mail.internet.AddressException;
 
+import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import org.xcolab.portlets.messaging.utils.DataPage;
 import org.xcolab.portlets.messaging.utils.PagedListDataModel;
 
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Message;
+import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -247,5 +249,19 @@ public class MessagingBean implements Serializable {
 	public void cancel(ActionEvent e) throws PortalException, SystemException {
 		sendMessageBean.cancel(e);
 	}
+
+    public void markMessageAsOpened(ActionEvent e) throws PortalException, SystemException{
+        Object messageIdObject = e.getComponent().getAttributes()
+                .get("messageId");
+        if (messageIdObject == null) return;
+        Long messageId = Long.parseLong(messageIdObject.toString());
+        List<MessageRecipientStatus> statuses = MessageRecipientStatusLocalServiceUtil.findByMessageId(messageId,0,Integer.MAX_VALUE);
+        for (MessageRecipientStatus mr : statuses){
+            if (mr.getUserId() == user.getUserId()){
+                mr.setOpened(true);
+                MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(mr);
+            }
+        }
+    }
 
 }

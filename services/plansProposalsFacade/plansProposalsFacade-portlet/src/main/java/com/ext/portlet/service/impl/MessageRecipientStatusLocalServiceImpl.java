@@ -58,4 +58,12 @@ public class MessageRecipientStatusLocalServiceImpl
         return messageRecipientStatusPersistence.findByMessageReciever(messageid,userid);
 
     }
+
+    public int countUnreadMessages(long userId) throws SystemException, NoSuchMessageRecipientStatusException{
+        List<MessageRecipientStatus> threads = messageRecipientStatusPersistence.findByReceivingUser(userId);
+        int unreadMessages = 0;
+        for (MessageRecipientStatus mr : threads)
+            if (!mr.getOpened()) unreadMessages++;
+        return unreadMessages;
+    }
 }
