@@ -382,8 +382,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
         long proposalsCommentsCount = 0;
-        for (PlanItem pi : PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
-            proposalsCommentsCount += PlanItemLocalServiceUtil.getCommentsCount(pi);
+        for (Proposal proposal: proposalLocalService.getProposalsInContest(contest.getContestPK())) {
+            proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
         }
         return proposalsCommentsCount;
     }

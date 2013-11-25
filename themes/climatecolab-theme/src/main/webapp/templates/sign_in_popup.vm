@@ -15,6 +15,7 @@
            <div class="login_popup_box">
                 <form id="signInForm_form" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true"
                         onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+                    <input type="hidden" name="isLoggingIn" value="true" />
                     <label>Username:</label> 
                     <input name="login" type="text" class="username" onkeypress="return submitenter(this,event)" />
                     

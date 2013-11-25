@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.utils.PropertiesUtils;
+import org.xcolab.commons.utils.PropertiesUtils;
 
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
@@ -87,7 +87,7 @@ public class ContactController {
 
     @RequestMapping(params = "captcha=true")
     public String getCaptchaImage(PortletRequest request, PortletResponse response) throws IOException {
-        CaptchaUtil.serveImage(request, response);
+        CaptchaUtil.serveImage(PortalUtil.getHttpServletRequest(request), PortalUtil.getHttpServletResponse(response));
 
         return null;
     }

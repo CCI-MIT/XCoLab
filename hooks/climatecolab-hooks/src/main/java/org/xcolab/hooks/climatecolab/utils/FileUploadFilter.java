@@ -53,8 +53,10 @@ public class FileUploadFilter implements Filter {
 						byte[] imgBArr = IOUtils.toByteArray(is);
 						imgBArr = resizeAndCropImage(imgBArr);
 						
-						Image img = ImageLocalServiceUtil.getImage(imgBArr);
-						img.setImageId(imageId);
+						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
+						Image img = ImageLocalServiceUtil.createImage(imageId);
+						//ImageLocalServiceUtil.u
+						//img.setImageId(imageId);
 						img.setModifiedDate(new Date());
 						ImageLocalServiceUtil.addImage(img);
 						ImageLocalServiceUtil.updateImage(imageId, imgBArr);

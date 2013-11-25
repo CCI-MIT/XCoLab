@@ -15,9 +15,10 @@
 	</c:if>
     <div id="contactForm" style="${not error ? 'display:none;' : ''};">
 		
-		<portlet:actionURL var="sendContactForm" />
+		<portlet:actionURL var="sendContactForm" >
+			<portlet:param name="action" value="send" />
+		</portlet:actionURL>
 		<form:form action="${sendContactForm }" commandName="contactBean" id="contactFormForm">
-			<input type="hidden" name="action" value="send" />
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-error" />
 			

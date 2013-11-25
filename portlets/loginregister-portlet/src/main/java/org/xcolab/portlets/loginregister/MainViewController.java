@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalClassInvoker;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
@@ -83,6 +85,9 @@ public class MainViewController {
 	@RequestMapping
 	public String register(PortletRequest request, PortletResponse response,
 			Model model) {
+		
+		System.out.println(this.getClass().getClassLoader());
+		System.out.println(PortalClassLoaderUtil.getClassLoader());
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -138,7 +143,7 @@ public class MainViewController {
 
     @RequestMapping(params = "captcha=true")
     public String getCaptchaImage(PortletRequest request, PortletResponse response) throws IOException {
-        CaptchaUtil.serveImage(request, response);
+        CaptchaUtil.serveImage(PortalUtil.getHttpServletRequest(request), PortalUtil.getHttpServletResponse(response));
         
         return null;
     }

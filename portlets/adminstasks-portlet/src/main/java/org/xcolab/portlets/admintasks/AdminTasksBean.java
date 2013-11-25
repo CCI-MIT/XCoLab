@@ -50,21 +50,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -122,6 +121,7 @@ public class AdminTasksBean {
 
     public String fixWikiPermissions() throws SystemException, PortalException {
 
+    	if (true) throw new PortalException("Fix wiki permissions method needs to be adjusted to liferay 6.2");
         Long companyId = defaultCompanyId;
         Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
         Role userRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
@@ -138,24 +138,24 @@ public class AdminTasksBean {
 
             Resource resource = null;
 
-            try {
+            /*try {
                 resource = ResourceLocalServiceUtil.getResource(defaultCompanyId,
                         WikiPage.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(wp.getResourcePrimKey()));
             } catch (NoSuchResourceException nsre) {
                 System.out.println("Can't find resource for page: " + wp.getPageId());
-                resource = ResourceLocalServiceUtil.addResource(defaultCompanyId, WikiPage.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(wp.getResourcePrimKey()));
+                //resource = ResourceLocalServiceUtil.addResource(defaultCompanyId, WikiPage.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(wp.getResourcePrimKey()));
                 System.out.println("New resource created: " + resource.getResourceId());
-                ResourceLocalServiceUtil.updateResource(resource);
+                //ResourceLocalServiceUtil.updateResource(resource);
             }
-
+*/
             /*PermissionLocalServiceUtil.setRolePermissions(guest.getRoleId(), companyId,
                     WikiPage.class.getName(), ResourceConstants.SCOPE_COMPANY,
                     String.valueOf(wp.getResourcePrimKey()), guestActions);
                     */
-            PermissionLocalServiceUtil.setRolePermissions(guest.getRoleId(), actionIds, resource.getResourceId());
+            /*PermissionLocalServiceUtil.setRolePermissions(guest.getRoleId(), actionIds, resource.getResourceId());
             PermissionLocalServiceUtil.setRolePermissions(userRole.getRoleId(), actionIds, resource.getResourceId());
             PermissionLocalServiceUtil.setRolePermissions(siteMemberRole.getRoleId(), actionIds, resource.getResourceId());
-            
+            */
 			/*PermissionServiceUtil.setRolePermissions(
                     guest.getRoleId(), wp.getGroupId(), actionIds,
 					resource.getResourceId());
@@ -302,29 +302,15 @@ public class AdminTasksBean {
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             for (Role role : rolesActionsMap.keySet()) {
 
-                PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(), companyId,
+                ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
                         DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                        String.valueOf(contest.getGroupId()), rolesActionsMap.get(role));
+                        String.valueOf(contest.getGroupId()), role.getRoleId(), rolesActionsMap.get(role));
             }
 
         }
 
         return null;
 
-    }
-
-    public String fixResourceReferencesInPermissions() throws SystemException, PortalException {
-
-        for (Permission p : PermissionLocalServiceUtil.getPermissions(0, Integer.MAX_VALUE)) {
-            try {
-                ResourceLocalServiceUtil.getResource(p.getResourceId());
-            } catch (NoSuchResourceException e) {
-                PermissionLocalServiceUtil.deletePermission(p);
-            }
-        }
-
-
-        return null;
     }
 
 

@@ -22,6 +22,7 @@ import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
@@ -566,6 +567,30 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         for (Proposal2Phase proposal2Phase : proposal2PhasePersistence.findByContestPhaseId(contestPhaseId)) {
             proposals.add(proposalPersistence.findByPrimaryKey(proposal2Phase.getProposalId()));
+        }
+        return proposals;
+    }
+    
+    /**
+     * <p>Returns a list of proposals associated with given contest</p>
+     *
+     * @param contestId id of a contest phase
+     * @return list of proposals from given contest
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<Proposal> getProposalsInContest(long contestId) throws PortalException, SystemException {
+        List<Proposal> proposals = new ArrayList<>();
+
+        ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contestId));
+        for (Proposal2Phase proposal2Phase : proposal2PhasePersistence.findByContestPhaseId(lastOrActivePhase.getContestPhasePK())) {
+            Proposal proposal = getProposal(proposal2Phase.getProposalId());
+
+            // set proper version for proposal to reflect max version that proposal has reached at given phase
+            if (proposal2Phase.getVersionTo() > 0) {
+                proposal.setCurrentVersion(proposal2Phase.getVersionTo());
+            }
+            proposals.add(proposal);
         }
         return proposals;
     }

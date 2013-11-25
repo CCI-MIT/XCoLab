@@ -8,11 +8,4 @@
 		</dir>
 	</classpath>
 
-	<web>
-		<link target="/">
-			<dir name="${xcolab.root}/services/plansProposalsFacade/plansProposalsFacade-portlet/src/main/webapp">
-			</dir>
-		</link>
-	</web>
-
 </application>

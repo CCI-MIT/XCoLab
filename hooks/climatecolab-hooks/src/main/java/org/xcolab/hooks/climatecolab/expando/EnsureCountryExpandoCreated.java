@@ -50,7 +50,7 @@ public class EnsureCountryExpandoCreated extends SimpleAction {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			_log.warn("Expando table probably already exists", dtne);
+			//_log.warn("Expando table probably already exists", dtne);
 		}
 		
 		try {
@@ -58,7 +58,7 @@ public class EnsureCountryExpandoCreated extends SimpleAction {
 					CommunityConstants.COUNTRY, ExpandoColumnConstants.STRING);
 		}
 		catch (Exception dcne) {
-			_log.warn("Expando column already exists",dcne);
+			//_log.warn("Expando column already exists",dcne);
 
 		}
 

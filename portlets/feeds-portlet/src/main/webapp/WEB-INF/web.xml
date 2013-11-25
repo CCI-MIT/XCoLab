@@ -32,9 +32,12 @@
       	<param-value>false</param-value>
 	</context-param>
 	<!-- Guarantee order of startup listeners (JSF implementation must be specified before the bridge). -->
+	<!-- In LR6.2 this causes errors
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
+	 -->
+	
 	<listener>
 		<listener-class>com.liferay.faces.bridge.servlet.BridgeSessionListener</listener-class>
 	</listener>
@@ -49,23 +52,7 @@
         <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>    
-    <servlet>
-		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/feeds-portlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/feedsportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/feeds/*</url-pattern>
-	</servlet-mapping>
-
+    
     <servlet-mapping>
         <servlet-name>Resource Servlet</servlet-name>
         <url-pattern>/xmlhttp/*</url-pattern>

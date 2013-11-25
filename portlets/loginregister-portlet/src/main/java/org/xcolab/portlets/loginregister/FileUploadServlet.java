@@ -50,8 +50,7 @@ public class FileUploadServlet extends HttpServlet {
 						byte[] imgBArr = IOUtils.toByteArray(is);
 						imgBArr = resizeAndCropImage(imgBArr);
 						
-						Image img = ImageLocalServiceUtil.getImage(imgBArr);
-						img.setImageId(imageId);
+						Image img = ImageLocalServiceUtil.createImage(imageId);
 						img.setModifiedDate(new Date());
 						ImageLocalServiceUtil.addImage(img);
 						ImageLocalServiceUtil.updateImage(imageId, imgBArr);

@@ -8,16 +8,14 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
-import com.ext.portlet.model.MessagingIgnoredRecipients;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
+import com.ext.portlet.model.MessagingIgnoredRecipients;
+import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
+import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -26,10 +24,15 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
@@ -40,7 +43,7 @@ public class LoginController {
 
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {
-
+    	
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
@@ -70,8 +73,8 @@ public class LoginController {
                     login = user.getScreenName();
                 }
             }
-            
-            LoginUtil.logUserIn(request, response, login, request.getParameter("password"));
+
+    		AuthenticationServiceUtil.logUserIn(request, response, login, request.getParameter("password"));
 
             if (user == null) {
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
@@ -112,10 +115,10 @@ public class LoginController {
                     redirect = "/web/guest/member/-/member/userId/" + user.getUserId();
                 }
             } catch (Exception e) {
-
+            	_log.error("can't log user in", e);
             }
         }
-
+        
         if (!SessionErrors.isEmpty(request)) {
             // url parameters
             Map<String, String> parameters = new HashMap<String, String>();
@@ -133,4 +136,6 @@ public class LoginController {
 
         response.sendRedirect(redirect);
     }
+    
+    private final static Log _log = LogFactoryUtil.getLog(LoginController.class);
 }

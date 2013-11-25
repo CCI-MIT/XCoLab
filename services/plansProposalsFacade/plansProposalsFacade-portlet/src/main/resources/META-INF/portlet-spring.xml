@@ -259,4 +259,6 @@
 	<bean id="com.ext.utils.userInput.service.UserInputFilterUtil" class="com.ext.utils.userInput.service.UserInputFilterUtil">
 		<property name="service" ref="com.ext.utils.userInput.UserInputFilter" />
 	</bean>
+	
+	<bean id="com.ext.utils.authentication.AuthenticationService" class="com.ext.utils.authentication.AuthenticationServiceImpl" />
 </beans>
