@@ -473,13 +473,6 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     }
 
     @Override
-    public boolean hasPermission(PermissionChecker permissionChecker, long entryClassPK, String actionId)
-            throws Exception {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public boolean isFilterSearch() {
         // TODO Auto-generated method stub
         return false;
@@ -591,5 +584,33 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void addRelatedEntryFields(Document document, Object obj)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getSortField(String orderByCol, int sortType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasPermission(PermissionChecker permissionChecker,
+			String entryClassName, long entryClassPK, String actionId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void reindexDDMStructures(List<Long> ddmStructureIds)
+			throws SearchException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

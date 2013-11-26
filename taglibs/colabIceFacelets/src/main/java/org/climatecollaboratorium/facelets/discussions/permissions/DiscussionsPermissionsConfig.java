@@ -1,6 +1,5 @@
 package org.climatecollaboratorium.facelets.discussions.permissions;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +20,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.ResourcePermission;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
-import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
 public class DiscussionsPermissionsConfig implements Serializable {
@@ -55,14 +55,8 @@ public class DiscussionsPermissionsConfig implements Serializable {
 		this.discussionBean = discussionBean;
 		long companyId = Helper.getThemeDisplay().getCompanyId();
 
-		try {
-			resource = ResourceLocalServiceUtil.getResource(companyId,
-					RESOURCE_NAME, scope, primKey);
-		} catch (Exception e) {
-			_log.debug(e);
-			resource = ResourceLocalServiceUtil.addResource(companyId,
-					RESOURCE_NAME, scope, primKey);
-		}
+		resource = ResourceLocalServiceUtil.getResource(companyId,
+				RESOURCE_NAME, scope, primKey);
 
 	}
 
@@ -84,15 +78,17 @@ public class DiscussionsPermissionsConfig implements Serializable {
 
 		public String[] getActionIds() throws SystemException {
 			Resource res = getResource();
-			List<Permission> permissions = PermissionLocalServiceUtil
-					.getRolePermissions(role.getRoleId(), getResource()
-							.getResourceId());
+			List<ResourcePermission> permissions = ResourcePermissionLocalServiceUtil
+					.getResourcePermissions(companyId, res.getName(), 
+							res.getScope(), res.getPrimKey());
 			actionIds = new String[permissions.size()];
 			int i = 0;
-			for (Permission perm : permissions) {
-				actionIds[i++] = perm.getActionId();
+			for (ResourcePermission perm : permissions) {
+				if (perm.getRoleId() == role.getRoleId()) {
+					actionIds[i++] = String.valueOf(perm.getActionIds());
+				}
 			}
-			return actionIds;
+			return Arrays.copyOf(actionIds, i);
 		}
 
 		public void setActionIds(String[] actionIds) {
@@ -109,14 +105,12 @@ public class DiscussionsPermissionsConfig implements Serializable {
 			// remove all actions that have been disabled
 			for (int i = 0; i < oldActionIds.length; i++) {
 				if (Arrays.binarySearch(newActionIds, oldActionIds[i]) < 0) {
-					PermissionLocalServiceUtil.unsetRolePermission(
-							role.getRoleId(), companyId, RESOURCE_NAME, scope,
-							primKey, oldActionIds[i]);
+					ResourcePermissionLocalServiceUtil.removeResourcePermission(companyId, RESOURCE_NAME, scope, primKey, role.getRoleId(), oldActionIds[1]);
 				}
 			}
 
-			PermissionLocalServiceUtil.setRolePermissions(role.getRoleId(),
-					companyId, RESOURCE_NAME, scope, primKey(), newActionIds);
+			ResourcePermissionLocalServiceUtil.setResourcePermissions(
+					companyId, RESOURCE_NAME, scope, primKey(), role.getRoleId(), newActionIds);
 		}
 	}
 
@@ -157,15 +151,8 @@ public class DiscussionsPermissionsConfig implements Serializable {
 	}
 
 	public Resource getResource() {
-		try {
-			return ResourceLocalServiceUtil.getResource(companyId,
-					RESOURCE_NAME, scope, discussionBean.getOwningGroupId()
-							.toString());
-		} catch (PortalException e) {
-			_log.error(e);
-		} catch (SystemException e) {
-			_log.error(e);
-		}
-		return null;
+		return ResourceLocalServiceUtil.getResource(companyId,
+				RESOURCE_NAME, scope, discussionBean.getOwningGroupId()
+						.toString());
 	}
 }

@@ -145,12 +145,12 @@ public class ContestWrapper {
     }
     
     private Image addImage(File file) throws  SystemException, IOException, PortalException{
-    	Image i = ImageLocalServiceUtil.getImage(file);   
-        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-        
+    	Image i = ImageLocalServiceUtil.createImage(CounterLocalServiceUtil.increment(Image.class.getName()));
+    	//Image i = ImageLocalServiceUtil.getImage(file);   
+        //i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
         ImageLocalServiceUtil.addImage(i);
-
-        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
+        ImageLocalServiceUtil.updateImage(i.getImageId(), file);
+        
         return i;
     }
     

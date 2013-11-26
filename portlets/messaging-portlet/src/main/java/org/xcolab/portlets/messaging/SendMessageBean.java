@@ -36,7 +36,7 @@ public class SendMessageBean implements Serializable {
     
     public SendMessageBean() throws SystemException {
         users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
-        Collections.sort(users, new Comparator<User>() {
+        Collections.sort(new ArrayList(users), new Comparator<User>() {
 
             @Override
             public int compare(User o1, User o2) {

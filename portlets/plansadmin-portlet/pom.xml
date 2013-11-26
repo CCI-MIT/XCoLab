@@ -16,7 +16,7 @@
 			<plugin>
 				<groupId>com.liferay.maven.plugins</groupId>
 				<artifactId>liferay-maven-plugin</artifactId>
-				<version>${liferay.version}</version>
+				<version>${liferay.maven.plugin.version}</version>
 				<configuration>
 					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
@@ -89,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-xcolab</artifactId>
+			<artifactId>icefaces</artifactId>
 			<version>1.8.2</version>
 		</dependency>
 		<dependency>

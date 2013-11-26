@@ -1,7 +1,5 @@
 package com.ext.portlet.Activity.nameGenerators;
 
-import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
-
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -9,6 +7,7 @@ import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.utils.NavigationUrl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

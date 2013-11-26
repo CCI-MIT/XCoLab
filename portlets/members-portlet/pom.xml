@@ -13,7 +13,7 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
-		<icefaces.version>3.2.0</icefaces.version>
+		<icefaces.version>3.3.0</icefaces.version>
 	</properties>
 	
 	<build>
@@ -21,7 +21,7 @@
 			<plugin>
 				<groupId>com.liferay.maven.plugins</groupId>
 				<artifactId>liferay-maven-plugin</artifactId>
-				<version>${liferay.version}</version>
+				<version>${liferay.maven.plugin.version}</version>
 				<configuration>
 					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
@@ -57,18 +57,7 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>1.2_15</version>
-		</dependency>
-            
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<version>1.2_15</version>
-		</dependency>
-            
+		
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
@@ -112,7 +101,7 @@
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-bridge-impl</artifactId>
-			<version>3.1.1-ga2</version>
+			<version>3.2.4-ga5-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
@@ -159,16 +148,4 @@
   			<version>1.0-SNAPSHOT</version>
   		</dependency>
   	</dependencies>
-  		<repositories>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-		<repository>
-			<id>maven2-repository.jboss.org</id>
-			<name>JBoss Maven Repository</name>
-			<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
-		</repository>
-	</repositories>
 </project>

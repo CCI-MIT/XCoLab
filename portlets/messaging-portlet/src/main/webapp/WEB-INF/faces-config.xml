@@ -9,35 +9,6 @@
 		<phase-listener>com.liferay.faces.util.lifecycle.ViewScopePhaseListener</phase-listener>
 	</lifecycle>
 	<managed-bean>
-		<managed-bean-name>edit</managed-bean-name>
-		<managed-bean-class>com.liferay.util.bridges.jsf.common.PortletPreferencesManagedBean</managed-bean-class>
-		<managed-bean-scope>view</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>language</managed-bean-name>
-		<managed-bean-class>com.liferay.util.bridges.jsf.common.LanguageManagedBean</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>renderManager</managed-bean-name>
-		<managed-bean-class>com.icesoft.faces.async.render.RenderManager</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>resumeUploader</managed-bean-name>
-		<managed-bean-class>com.liferay.util.bridges.jsf.icefaces.FileUploadManagedBean</managed-bean-class>
-		<managed-bean-scope>view</managed-bean-scope>
-		<managed-property>
-			<property-name>renderManager</property-name>
-			<value>#{renderManager}</value>
-		</managed-property>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>themeDisplay</managed-bean-name>
-		<managed-bean-class>com.liferay.util.bridges.jsf.common.ThemeDisplayManagedBean</managed-bean-class>
-		<managed-bean-scope>view</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>messagingBean</managed-bean-name>
 		<managed-bean-class>org.xcolab.portlets.messaging.MessagingBean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.faces.event.ActionEvent;
+
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.Helper;
 
@@ -83,7 +85,7 @@ public class ActivitiesBean implements Serializable {
         }
         return activities;
     }
-
+    
     public void setFeedStyle(String feedStyle) {
         this.feedStyle = feedStyle;
     }

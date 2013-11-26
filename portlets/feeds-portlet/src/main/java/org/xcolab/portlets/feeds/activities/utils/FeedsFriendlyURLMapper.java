@@ -28,7 +28,7 @@ public class FeedsFriendlyURLMapper extends BaseFriendlyURLMapper {
         String memberId = portletURL.getParameter("userId");
 
 
-        if (portletURL.getLifecycle().equals(PortletRequest.RESOURCE_PHASE)) {
+        if (! portletURL.getLifecycle().equals(PortletRequest.RESOURCE_PHASE)) {
             friendlyURLPathSB.append("/feeds");
             if (Validator.isNotNull(memberId)) {
                 friendlyURLPathSB.append("userId/");

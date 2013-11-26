@@ -58,17 +58,6 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>1.2_15</version>
-		</dependency>
-            
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<version>1.2_15</version>
-		</dependency>
             
 		<dependency>
 			<groupId>javax.el</groupId>
@@ -111,7 +100,7 @@
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-bridge-impl</artifactId>
-			<version>3.1.1-ga2</version>
+			<version>3.2.4-ga5-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>

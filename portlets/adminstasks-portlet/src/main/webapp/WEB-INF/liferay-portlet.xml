@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>adminstasks-portlet</portlet-name>
 		<icon>/icon.png</icon>
+		<!-- 
 		<scheduler-entry>
 			<scheduler-event-listener-class>org.xcolab.portlets.admintasks.SyncProposalSupportersBetweenPhasesTask</scheduler-event-listener-class>
 			<trigger>
@@ -14,6 +15,7 @@
 				</simple>
 			</trigger>
 		</scheduler-entry>
+		 -->
 		<control-panel-entry-category>portal</control-panel-entry-category>
 		<control-panel-entry-weight>202.0</control-panel-entry-weight>
 		<use-default-template>false</use-default-template>

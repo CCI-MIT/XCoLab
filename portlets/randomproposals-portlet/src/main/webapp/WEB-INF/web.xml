@@ -27,34 +27,12 @@
        	<param-name>org.icefaces.compressResources</param-name>
       	<param-value>false</param-value>
 	</context-param>
-	<!-- Guarantee order of startup listeners (JSF implementation must be specified before the bridge). -->
-	<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>com.liferay.faces.bridge.servlet.BridgeSessionListener</listener-class>
-	</listener>
 	<!-- Although the FacesServlet will not be invoked by any portlet requests, it is required to initialize JSF. -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
-	</servlet><servlet>
-		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/randomproposals-portlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/contestsportlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/contests/*</url-pattern>
-	</servlet-mapping>
 	<!-- MyFaces will not initialize unless a servlet-mapping to the Faces Servlet is present. -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>

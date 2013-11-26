@@ -22,7 +22,7 @@
 			<plugin>
 				<groupId>com.liferay.maven.plugins</groupId>
 				<artifactId>liferay-maven-plugin</artifactId>
-				<version>${liferay.version}</version>
+				<version>${liferay.maven.plugin.version}</version>
 				<configuration>
 					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
@@ -102,7 +102,7 @@
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-bridge-impl</artifactId>
-			<version>3.1.1-ga2</version>
+			<version>3.2.4-ga5-SNAPSHOT</version>
 		</dependency>
 
 		<!-- <dependency> <groupId>org.icefaces</groupId> <artifactId>icefaces-xcolab</artifactId> 

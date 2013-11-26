@@ -38,14 +38,6 @@
 	</context-param>
 
 
-	<!-- Guarantee order of startup listeners (JSF implementation must be specified 
-		before the bridge). -->
-	<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>com.liferay.faces.bridge.servlet.BridgeSessionListener</listener-class>
-	</listener>
 	<!-- Although the FacesServlet will not be invoked by any portlet requests, 
 		it is required to initialize JSF. -->
 	<servlet>
@@ -58,19 +50,6 @@
         <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>	
-    
-    <servlet>
-		<servlet-name>PortletServlet</servlet-name>
-		<servlet-class>org.xcolab.utils.PortletServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/redballoon-portlet/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>PortletServlet</servlet-name>
-		<url-pattern>/redballoon/*</url-pattern>
-	</servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Resource Servlet</servlet-name>

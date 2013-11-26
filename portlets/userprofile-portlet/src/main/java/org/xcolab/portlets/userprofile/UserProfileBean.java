@@ -108,8 +108,9 @@ public class UserProfileBean implements Serializable {
         } catch (Exception e) {
 
         }
-
-        badges = new BadgeBean(currentUser.getUserId());
+        if (currentUser != null) {
+        	badges = new BadgeBean(currentUser.getUserId());
+        }
     }
 
     public boolean isDisplayEMailErrorMessage() {

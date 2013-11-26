@@ -26,7 +26,7 @@ public class UserprofileFriendlyURLMapper extends BaseFriendlyURLMapper {
         String memberId = portletURL.getParameter("userId");
 
 
-        if (portletURL.getLifecycle().equals(PortletRequest.RESOURCE_PHASE)) {
+        if (!portletURL.getLifecycle().equals(PortletRequest.RESOURCE_PHASE)) {
             friendlyURLPathSB.append("/member");
             if (Validator.isNotNull(memberId)) {
                 friendlyURLPathSB.append("userId/");
