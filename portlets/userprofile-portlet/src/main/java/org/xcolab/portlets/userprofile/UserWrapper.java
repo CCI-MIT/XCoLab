@@ -19,22 +19,14 @@ import javax.mail.internet.InternetAddress;
 
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
-import com.ext.portlet.service.persistence.ProposalSupporterUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.util.mail.MailEngine;
 import org.apache.commons.io.FileUtils;
 import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
-import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
+import org.xcolab.commons.utils.PwdEncryptor;
 
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.PlanFan;
-import com.ext.portlet.service.PlanFanLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;

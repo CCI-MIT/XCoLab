@@ -9,7 +9,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.userprofile.UserWrapper;
-import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
+import org.xcolab.commons.utils.PwdEncryptor;
 
 import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.model.User;

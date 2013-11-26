@@ -151,16 +151,16 @@
 			<artifactId>simulation</artifactId> </exclusion> </exclusions> </dependency> -->
 
 		<dependency>
-			<groupId>org.jodd</groupId>
-			<artifactId>jodd-core</artifactId>
-			<version>3.4.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.xcolab.taglibs</groupId>
 			<artifactId>sharedColabIceFacelets</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+
+        <dependency>
+            <groupId>org.xcolab.taglibs</groupId>
+            <artifactId>colabJspTags</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

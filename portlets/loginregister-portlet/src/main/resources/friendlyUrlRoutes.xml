@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+    <route>
+        <pattern>/SSO/facebook</pattern>
+        <generated-parameter name="SSO">facebook</generated-parameter>
+    </route>
+    <route>
+        <pattern>/SSO/registerOrLogin</pattern>
+        <generated-parameter name="SSO">facebook</generated-parameter>
+        <generated-parameter name="status">registerOrLogin</generated-parameter>
+    </route>
+</routes>

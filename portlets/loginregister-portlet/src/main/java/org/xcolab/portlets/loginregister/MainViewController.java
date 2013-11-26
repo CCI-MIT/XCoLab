@@ -2,12 +2,7 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
@@ -26,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
+import org.xcolab.portlets.loginregister.singlesignon.SingleSignOnController;
 import org.xcolab.utils.PropertiesUtils;
 
 import com.ext.portlet.community.CommunityConstants;
@@ -111,8 +107,25 @@ public class MainViewController {
 		if (themeDisplay.isSignedIn()) {
 			return "signedIn_logout";
 		} else {
-			model.addAttribute("createUserBean", new CreateUserBean());
+
 			model.addAttribute("redirect", HtmlUtil.escape(redirect));
+
+            // append FB attributes
+            PortletSession portletSession = request.getPortletSession();
+            String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
+            String firstName = (String) portletSession.getAttribute("FACEBOOK_FIRST_NAME",PortletSession.APPLICATION_SCOPE);
+            portletSession.removeAttribute("FACEBOOK_FIRST_NAME",PortletSession.APPLICATION_SCOPE);
+            String lastName = (String) portletSession.getAttribute("FACEBOOK_LAST_NAME",PortletSession.APPLICATION_SCOPE);
+            portletSession.removeAttribute("FACEBOOK_LAST_NAME",PortletSession.APPLICATION_SCOPE);
+            String eMail = (String) portletSession.getAttribute("FACEBOOK_EMAIL",PortletSession.APPLICATION_SCOPE);
+            portletSession.removeAttribute("FACEBOOK_EMAIL",PortletSession.APPLICATION_SCOPE);
+            CreateUserBean userBean = new CreateUserBean();
+            if (StringUtils.isNotBlank(fbIdString) && StringUtils.isNotBlank(eMail)){
+                userBean.setFirstName(firstName);
+                userBean.setLastName(lastName);
+                userBean.setEmail(eMail);
+            }
+            model.addAttribute("createUserBean", userBean);
 		}
 		return "view";
 	}
@@ -220,6 +233,20 @@ public class MainViewController {
 					            CommunityConstants.RED_BALLOON, user.getUserId(), balloonCookie.getUuid());
 					}
 
+                    // FB
+                    PortletSession portletSession = request.getPortletSession();
+                    String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
+                    if (StringUtils.isNotBlank(fbIdString)){
+                        try{
+                            long fbId = Long.parseLong(fbIdString);
+                            user.setFacebookId(fbId);
+                            UserLocalServiceUtil.updateUser(user);
+                            portletSession.removeAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
 					if (newAccountBean.getImageId() != null
 							&& newAccountBean.getImageId().length() > 0) {
 						Image img = ImageLocalServiceUtil.getImage(Long
@@ -276,6 +303,5 @@ public class MainViewController {
 	    
 	    CaptchaUtil.serveImage(request, response);
 	}
-
 
 }
