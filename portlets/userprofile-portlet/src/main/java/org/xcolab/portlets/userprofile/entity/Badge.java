@@ -28,23 +28,13 @@ public class Badge implements Serializable {
         this.contestId = contestId;
         this.planTitle = planTitle;
         this.planId = planId;
+        this.badgeText = ribbonText;
 
-
-        // ** THIS PART HAS TO BE CODED DIFFERENTLY **
         if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Semi-Finalist")){
             this.badgeTitle = ribbonText;
         } else{
             this.badgeTitle = "Winner";
-            this.badgeText = ribbonText;
         }
-
-        if (ribbonText.equalsIgnoreCase("Judges' Choice and Popular Choice")){
-            this.badgeText="Judges' & Popular Choice";
-        } else if (ribbonText.equalsIgnoreCase("Popular Choice (at large)")){
-            this.badgeText="Popular Choice at large";
-        }
-        // ** THIS PART HAS TO BE CODED DIFFERENTLY **
-
     }
 
     public String getBadgeTitle(){
