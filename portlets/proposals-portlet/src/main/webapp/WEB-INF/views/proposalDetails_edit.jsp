@@ -9,7 +9,7 @@
     xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 <jsp:directive.include file="./init.jspx" />
 
-<script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js" ><!-- --></script>
+<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 <jsp:directive.include file="./proposalDetails/header.jspx" />
 	
 <div id="content">

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.1.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_1_0.dtd">
+<!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.2.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_2_0.dtd">
 
 <hook>
 
@@ -33,6 +33,10 @@
 	<servlet-filter>
 		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.captcha.CaptchaFilter</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
+		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.wiki.GetWikiImageFixFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
                 <servlet-filter-name>URL Rewrite Filter</servlet-filter-name>
@@ -79,6 +83,10 @@
 	<servlet-filter-mapping>
 		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
 		<url-pattern>/captchaFilter</url-pattern>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
+		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
 	
 </hook>

@@ -179,7 +179,7 @@
 
 			<form:hidden id="userRegistrationImageId" path="imageId" />
 		</form:form>
-		<script type="text/javascript" src="/html/js/editor/ckeditor/ckeditor.js"><!-- --></script>
+		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 		<script>
 			function updateTextarea() {
 				for ( var instance in CKEDITOR.instances) {
