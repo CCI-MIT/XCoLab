@@ -131,6 +131,7 @@ public class MainViewController {
             createUserBean.setFirstName(firstName);
             createUserBean.setLastName(lastName);
             createUserBean.setEmail(eMail);
+            createUserBean.setCaptchaNeeded(false);
         }
     }
 	
@@ -165,14 +166,20 @@ public class MainViewController {
 			@RequestParam(required = false) String redirect) {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
+        PortletSession portletSession = request.getPortletSession();
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
 		
 		if (!result.hasErrors()) {
 		    boolean captchaValid = true;
-		    try {
-		        CaptchaUtil.check(request);
-		    }
-		    catch (CaptchaException e) {
-                captchaValid = false;
+            // require capcha if user is not logged in via SSO
+		    if (fbIdString == null && openId == null){
+                try {
+                    CaptchaUtil.check(request);
+                }
+                catch (CaptchaException e) {
+                    captchaValid = false;
+                }
             }
 			if (!captchaValid) {
 				SessionErrors.clear(request);
@@ -237,15 +244,24 @@ public class MainViewController {
 					            CommunityConstants.RED_BALLOON, user.getUserId(), balloonCookie.getUuid());
 					}
 
-                    // FB
-                    PortletSession portletSession = request.getPortletSession();
-                    String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
+                    // SSO
                     if (StringUtils.isNotBlank(fbIdString)){
                         try{
                             long fbId = Long.parseLong(fbIdString);
                             user.setFacebookId(fbId);
                             UserLocalServiceUtil.updateUser(user);
-                            portletSession.removeAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
+                            portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+                            redirect = null;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if (StringUtils.isNotBlank(openId)){
+                        try{
+                            user.setOpenId(openId);
+                            UserLocalServiceUtil.updateUser(user);
+                            portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+                            redirect = null;
                         } catch (Exception e){
                             e.printStackTrace();
                         }
