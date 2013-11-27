@@ -7,8 +7,24 @@
         <generated-parameter name="SSO">facebook</generated-parameter>
     </route>
     <route>
+        <pattern>/SSO/google</pattern>
+        <implicit-parameter name="SSO">google</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">initiateOpenIdLogin</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/SSO/google/readresponse</pattern>
+        <implicit-parameter name="SSO">google</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">readOpenIdResponse</implicit-parameter>
+    </route>
+    <route>
         <pattern>/SSO/registerOrLogin</pattern>
-        <generated-parameter name="SSO">facebook</generated-parameter>
+        <generated-parameter name="SSO">general</generated-parameter>
         <generated-parameter name="status">registerOrLogin</generated-parameter>
     </route>
 </routes>

@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
-import org.xcolab.portlets.loginregister.singlesignon.SingleSignOnController;
-import org.xcolab.utils.PropertiesUtils;
+import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.liferay.portal.kernel.captcha.CaptchaException;
@@ -110,25 +109,30 @@ public class MainViewController {
 
 			model.addAttribute("redirect", HtmlUtil.escape(redirect));
 
-            // append FB attributes
-            PortletSession portletSession = request.getPortletSession();
-            String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
-            String firstName = (String) portletSession.getAttribute("FACEBOOK_FIRST_NAME",PortletSession.APPLICATION_SCOPE);
-            portletSession.removeAttribute("FACEBOOK_FIRST_NAME",PortletSession.APPLICATION_SCOPE);
-            String lastName = (String) portletSession.getAttribute("FACEBOOK_LAST_NAME",PortletSession.APPLICATION_SCOPE);
-            portletSession.removeAttribute("FACEBOOK_LAST_NAME",PortletSession.APPLICATION_SCOPE);
-            String eMail = (String) portletSession.getAttribute("FACEBOOK_EMAIL",PortletSession.APPLICATION_SCOPE);
-            portletSession.removeAttribute("FACEBOOK_EMAIL",PortletSession.APPLICATION_SCOPE);
+            // append SSO attributes
             CreateUserBean userBean = new CreateUserBean();
-            if (StringUtils.isNotBlank(fbIdString) && StringUtils.isNotBlank(eMail)){
-                userBean.setFirstName(firstName);
-                userBean.setLastName(lastName);
-                userBean.setEmail(eMail);
-            }
+            getSSOUserInfo(request.getPortletSession(),userBean);
             model.addAttribute("createUserBean", userBean);
 		}
 		return "view";
 	}
+
+    private void getSSOUserInfo(PortletSession portletSession, CreateUserBean createUserBean){
+        // append SSO attributes from session
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID ,PortletSession.APPLICATION_SCOPE);
+        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+        String firstName = (String) portletSession.getAttribute(SSOKeys.SSO_FIRST_NAME,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_FIRST_NAME,PortletSession.APPLICATION_SCOPE);
+        String lastName = (String) portletSession.getAttribute(SSOKeys.SSO_LAST_NAME,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_LAST_NAME,PortletSession.APPLICATION_SCOPE);
+        String eMail = (String) portletSession.getAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
+        if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )&& StringUtils.isNotBlank(eMail)){
+            createUserBean.setFirstName(firstName);
+            createUserBean.setLastName(lastName);
+            createUserBean.setEmail(eMail);
+        }
+    }
 	
 
     @RequestMapping(params = "captcha=true")

@@ -17,7 +17,11 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
+
 	<div class="popupreg_form">
+
+
+
 		<div class="popupreg_head">
 			<h1>Join the CoLab</h1>
 		</div>

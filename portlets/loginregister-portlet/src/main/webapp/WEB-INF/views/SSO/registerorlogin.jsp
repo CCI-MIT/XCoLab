@@ -15,6 +15,7 @@
 
     <portlet:actionURL var="provideSSOCredentials">
         <portlet:param name="action" value="provideSSOCredentials" />
+        <portlet:param name="SSO" value="general" />
     </portlet:actionURL>
 
 
