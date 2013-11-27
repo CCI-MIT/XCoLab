@@ -1192,6 +1192,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 	padding-bottom: 20px;
 }
 
+<<<<<<< HEAD
 /* Contest Badges */
 
 .badge-container{
@@ -1259,4 +1260,10 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     -moz-transform: rotate(396deg);
     -o-transform: rotate(396deg);
     writing-mode: lr-tb;
+}
+
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+	border: none;
+	padding: 0;
 }

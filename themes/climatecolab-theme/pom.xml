@@ -124,7 +124,7 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<liferay.theme.parent>_styled</liferay.theme.parent>
+		<liferay.theme.parent>_unstyled</liferay.theme.parent>
 		<liferay.theme.type>vm</liferay.theme.type>
 	</properties>
 </project>

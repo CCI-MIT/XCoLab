@@ -1,6 +1,6 @@
 <%--
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,13 +26,12 @@ DateFormat entryDisplayDateFormat = new SimpleDateFormat("MMMM d, yyyy");
 long classNameId = PortalUtil.getClassNameId(BlogsEntry.class.getName());
 
 int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNameId, entry.getEntryId(), WorkflowConstants.STATUS_APPROVED);
-
-
 %>
+
 <c:choose>
 	<c:when test="<%= BlogsEntryPermission.contains(permissionChecker, entry, ActionKeys.VIEW) && (entry.isVisible() || (entry.getUserId() == user.getUserId()) || BlogsEntryPermission.contains(permissionChecker, entry, ActionKeys.UPDATE)) %>">
 	<div class="comm_news">
-		<div class="entry <%= WorkflowConstants.toLabel(entry.getStatus()) %>">
+		<div class="entry <%= WorkflowConstants.getStatusLabel(entry.getStatus()) %>" id="<portlet:namespace /><%= entry.getEntryId() %>">
 			<div class="entry-content">
 
 				<%
@@ -41,7 +40,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 
 				<c:if test="<%= !entry.isApproved() %>">
 					<h3>
-						<liferay-ui:message key='<%= entry.isPending() ? "pending-approval" : WorkflowConstants.toLabel(entry.getStatus()) %>' />
+						<liferay-ui:message key='<%= entry.isPending() ? "pending-approval" : WorkflowConstants.getStatusLabel(entry.getStatus()) %>' />
 					</h3>
 				</c:if>
 
@@ -56,12 +55,12 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 						<h2><aui:a href="<%= viewEntryURL %>"><%= HtmlUtil.escape(entry.getTitle()) %></aui:a></h2>
 					</div>
 				</c:if>
-
-<div class="comm_meta">
-                <div class="comm_date">
-				    <%= entryDisplayDateFormat.format(entry.getDisplayDate()) %>
-                </div>
-                
+				
+			<div class="comm_meta">
+				<div class="comm_date">
+					<%= entryDisplayDateFormat.format(entry.getDisplayDate()) %>
+				</div>
+				
                 
                 <div class="comm_icons">
                     <a href="<%= viewEntryURL %>#_33_messages_top" title="comments">
@@ -96,7 +95,6 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
                 
                 </div>
 			</div>
-                
 			</div>
 
 			<portlet:renderURL var="bookmarkURL" windowState="<%= WindowState.NORMAL.toString() %>">
@@ -109,6 +107,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					displayStyle="<%= socialBookmarksDisplayStyle %>"
 					target="_blank"
 					title="<%= entry.getTitle() %>"
+					types="<%= socialBookmarksTypes %>"
 					url="<%= PortalUtil.getCanonicalURL(bookmarkURL.toString(), themeDisplay, layout) %>"
 				/>
 			</c:if>
@@ -141,12 +140,15 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 									modelResourceDescription="<%= entry.getTitle() %>"
 									resourcePrimKey="<%= String.valueOf(entry.getEntryId()) %>"
 									var="permissionsEntryURL"
+									windowState="<%= LiferayWindowState.POP_UP.toString() %>"
 								/>
 
 								<liferay-ui:icon
 									image="permissions"
 									label="<%= true %>"
+									method="get"
 									url="<%= permissionsEntryURL %>"
+									useDialog="<%= true %>"
 								/>
 							</td>
 						</c:if>
@@ -159,13 +161,14 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 
 								<portlet:actionURL var="deleteEntryURL">
 									<portlet:param name="struts_action" value="/blogs/edit_entry" />
-									<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.DELETE %>" />
+									<portlet:param name="<%= Constants.CMD %>" value="<%= TrashUtil.isTrashEnabled(scopeGroupId) ? Constants.MOVE_TO_TRASH : Constants.DELETE %>" />
 									<portlet:param name="redirect" value="<%= viewURL %>" />
 									<portlet:param name="entryId" value="<%= String.valueOf(entry.getEntryId()) %>" />
 								</portlet:actionURL>
 
 								<liferay-ui:icon-delete
 									label="<%= true %>"
+									trash="<%= TrashUtil.isTrashEnabled(scopeGroupId) %>"
 									url="<%= deleteEntryURL %>"
 								/>
 							</td>
@@ -178,22 +181,10 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
         	<div class="comm_div"></div>
 			<div class="entry-body">
 				<c:choose>
-					<c:when test='<%= pageDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_ABSTRACT) && !strutsAction.equals("/blogs/view_entry") %>'>
+					<c:when test='<%= displayStyle.equals(BlogsUtil.DISPLAY_STYLE_ABSTRACT) && !strutsAction.equals("/blogs/view_entry") %>'>
 						<c:if test="<%= entry.isSmallImage() %>">
-
-							<%
-							String src = StringPool.BLANK;
-
-							if (Validator.isNotNull(entry.getSmallImageURL())) {
-								src = entry.getSmallImageURL();
-							}
-							else {
-								src = themeDisplay.getPathImage() + "/blogs/article?img_id=" + entry.getSmallImageId() + "&t=" + WebServerServletTokenUtil.getToken(entry.getSmallImageId());
-							}
-							%>
-
 							<div class="asset-small-image">
-								<img alt="" class="asset-small-image" src="<%= HtmlUtil.escape(src) %>" width="150" />
+								<img alt="" class="asset-small-image" src="<%= HtmlUtil.escape(entry.getEntryImageURL(themeDisplay)) %>" width="150" />
 							</div>
 						</c:if>
 
@@ -209,10 +200,19 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 
 						<br />
 
-						 <aui:a href="<%= viewEntryURL %>"><liferay-ui:message arguments='<%= new Object[] {"aui-helper-hidden-accessible", entry.getTitle()} %>' key="read-more-x-about-x" /> &raquo;</aui:a>
+						<aui:a href="<%= viewEntryURL %>"><liferay-ui:message arguments='<%= new Object[] {"hide-accessible", HtmlUtil.escape(entry.getTitle())} %>' key="read-more-x-about-x" /> &raquo;</aui:a>
 					</c:when>
-					<c:when test='<%= pageDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT) || strutsAction.equals("/blogs/view_entry") %>'>
-						<%= entry.getContent() %>
+					<c:when test='<%= displayStyle.equals(BlogsUtil.DISPLAY_STYLE_FULL_CONTENT) || strutsAction.equals("/blogs/view_entry") %>'>
+
+						<%
+						String entryContentId = "blogs-entry-content-" + entry.getEntryId();
+
+						boolean inlineEditEnabled = BlogsEntryPermission.contains(permissionChecker, entry, ActionKeys.UPDATE) && BrowserSnifferUtil.isRtf(request) && !WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), scopeGroupId, BlogsEntry.class.getName());
+						%>
+
+						<div <%= inlineEditEnabled ? "class=\"lfr-editable\" contenteditable=\"true\" id=\"" + entryContentId + "\" spellcheck=\"false\"" : StringPool.BLANK %>>
+							<%= entry.getContent() %>
+						</div>
 
 						<liferay-ui:custom-attributes-available className="<%= BlogsEntry.class.getName() %>">
 							<liferay-ui:custom-attribute-list
@@ -222,9 +222,24 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 								label="<%= true %>"
 							/>
 						</liferay-ui:custom-attributes-available>
+
+						<c:if test="<%= inlineEditEnabled %>">
+							<portlet:actionURL var="updateEntryContent">
+								<portlet:param name="struts_action" value="/blogs/edit_entry" />
+								<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.UPDATE_CONTENT %>" />
+								<portlet:param name="entryId" value="<%= String.valueOf(entry.getEntryId()) %>" />
+							</portlet:actionURL>
+
+							<liferay-ui:input-editor
+								editorImpl="ckeditor"
+								inlineEdit="<%= true %>"
+								inlineEditSaveURL="<%= updateEntryContent %>"
+								name="<%= entryContentId %>"
+							/>
+						</c:if>
 					</c:when>
-					<c:when test='<%= pageDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_TITLE) && !strutsAction.equals("/blogs/view_entry") %>'>
-						<aui:a href="<%= viewEntryURL %>"><liferay-ui:message arguments='<%= new Object[] {"aui-helper-hidden-accessible", entry.getTitle()} %>' key="read-more-x-about-x" /> &raquo;</aui:a>
+					<c:when test='<%= displayStyle.equals(BlogsUtil.DISPLAY_STYLE_TITLE) && !strutsAction.equals("/blogs/view_entry") %>'>
+						<aui:a href="<%= viewEntryURL %>"><liferay-ui:message arguments='<%= new Object[] {"hide-accessible", HtmlUtil.escape(entry.getTitle())} %>' key="read-more-x-about-x" /> &raquo;</aui:a>
 					</c:when>
 				</c:choose>
 			</div>
@@ -234,6 +249,35 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					<liferay-ui:message key="written-by" /> 
 					<a href="/web/guest/member/-/member/userId/<%= entry.getUserId() %>"><%= HtmlUtil.escape(PortalUtil.getUserName(entry.getUserId(), entry.getUserName())) %></a>
 					
+				</div>
+
+				<div class="stats">
+					<c:if test="<%= assetEntry != null %>">
+						<span class="view-count">
+							<c:choose>
+								<c:when test="<%= assetEntry.getViewCount() == 1 %>">
+									<%= assetEntry.getViewCount() %> <liferay-ui:message key="view" />,
+								</c:when>
+								<c:when test="<%= assetEntry.getViewCount() > 1 %>">
+									<%= assetEntry.getViewCount() %> <liferay-ui:message key="views" />,
+								</c:when>
+							</c:choose>
+						</span>
+					</c:if>
+
+					<c:if test="<%= enableComments %>">
+						<span class="comments">
+
+							<c:choose>
+								<c:when test='<%= strutsAction.equals("/blogs/view_entry") %>'>
+									<%= messagesCount %> <liferay-ui:message key='<%= (messagesCount == 1) ? "comment" : "comments" %>' />
+								</c:when>
+								<c:otherwise>
+									<aui:a href='<%= PropsValues.PORTLET_URL_ANCHOR_ENABLE ? viewEntryURL : viewEntryURL + StringPool.POUND + "blogsCommentsPanelContainer" %>'><%= messagesCount %> <liferay-ui:message key='<%= (messagesCount == 1) ? "comment" : "comments" %>' /></aui:a>
+								</c:otherwise>
+							</c:choose>
+						</span>
+					</c:if>
 				</div>
 
 				<c:if test="<%= enableFlags %>">
@@ -261,7 +305,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					/>
 				</span>
 
-				<c:if test='<%= pageDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT) || strutsAction.equals("/blogs/view_entry") %>'>
+				<c:if test='<%= displayStyle.equals(BlogsUtil.DISPLAY_STYLE_FULL_CONTENT) || strutsAction.equals("/blogs/view_entry") %>'>
 					<c:if test="<%= enableRelatedAssets %>">
 						<div class="entry-links">
 							<liferay-ui:asset-links
@@ -271,7 +315,6 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 							/>
 						</div>
 					</c:if>
-
 
 					<c:if test="<%= enableRatings %>">
 						<liferay-ui:ratings

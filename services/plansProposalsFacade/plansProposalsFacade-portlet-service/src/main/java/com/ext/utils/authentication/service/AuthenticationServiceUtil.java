@@ -19,13 +19,14 @@ public class AuthenticationServiceUtil {
     }
 
     public static void logUserIn(PortletRequest portletRequest,
-			PortletResponse portletResponse, String username, String password) throws PortalException {
-    	try {
-    		getService().logUserIn(portletRequest, portletResponse, username, password);
-    	}
-    	catch (Exception e) {
-    		throw new PortalException("Can't log user in", e);
-    	}
+			PortletResponse portletResponse, String username, String password) throws Exception {
+    	
+    	getService().logUserIn(portletRequest, portletResponse, username, password);
+    }
+    public static void sendPassword(PortletRequest request, String emailFromName, String emailFromAddress, 
+            String emailToAddress, String subject, String body) throws Exception {
+    	
+    	getService().sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
     }
     
     public static void clearService() {
@@ -36,9 +37,6 @@ public class AuthenticationServiceUtil {
         if (_service == null) {
         	Object tmp = PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
             		AuthenticationService.class.getName());
-        	System.out.println(tmp.getClass());
-        	System.out.println(AuthenticationService.class.isAssignableFrom(tmp.getClass()));
-        	System.out.println(tmp instanceof AuthenticationService);
             InvokableLocalService invokableLocalService = (InvokableLocalService) PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
             		AuthenticationService.class.getName());
 

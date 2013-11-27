@@ -6,6 +6,10 @@
 			<dir name="${xcolab.root}/themes/climatecolab-theme/src/main/webapp">
 			</dir>
 		</link>
+		<link target="/">
+			<dir name="${xcolab.root}/themes/climatecolab-theme/target/climatecolab-theme-1.0-SNAPSHOT">
+			</dir>
+		</link>
 	</web>
 
 </application>

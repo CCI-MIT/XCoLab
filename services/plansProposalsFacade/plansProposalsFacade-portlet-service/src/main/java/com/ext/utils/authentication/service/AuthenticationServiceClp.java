@@ -1,11 +1,13 @@
 package com.ext.utils.authentication.service;
 
-import javax.portlet.ActionRequest;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
 import com.ext.utils.authentication.AuthenticationService;
 import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.InvokableLocalService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 
@@ -24,29 +26,45 @@ public class AuthenticationServiceClp implements AuthenticationService, Invokabl
 			PortletResponse portletResponse, String username, String password)
 			throws Exception {
         try {
-        	System.out.println("mam logUserIn w clp");
             _invokableLocalService.invokeMethod("logUserIn", 
             		new String[] {"javax.portlet.PortletRequest", "javax.portlet.PortletResponse",
             			"java.lang.String", "java.lang.String"
             		}, new Object[] { portletRequest, portletResponse, username, password });
+            
         } catch (Throwable t) {
+        	if (t instanceof InvocationTargetException) {
+        		t = t.getCause();
+        	}
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
-            } else {
-            	t.printStackTrace();
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
             }
+            if (t instanceof AuthException) {
+            	throw (AuthException) t;
+            }
+            if (t instanceof Exception) {
+            	throw (Exception) t;
+            }
+            
         }
 		
 	}
 
 
 	@Override
-	public void sendPassword(ActionRequest request, String emailFromName,
+	public void sendPassword(PortletRequest request, String emailFromName,
 			String emailFromAddress, String emailToAddress, String subject,
 			String body) throws Exception {
-		// TODO Auto-generated method stub
+        try {
+            _invokableLocalService.invokeMethod("sendPassword", 
+            		new String[] {"javax.portlet.PortletRequest", "java.lang.String",
+            			"java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String"
+            		}, new Object[] { request, emailFromName, emailFromAddress, emailToAddress, 
+            		subject, body });
+        } catch (Throwable t) {
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+        }
 		
 	}
 
@@ -54,7 +72,6 @@ public class AuthenticationServiceClp implements AuthenticationService, Invokabl
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
     	
-    	System.out.println("mam invoke method w clp");
         Thread currentThread = Thread.currentThread();
 
         ClassLoader contextClassLoader = currentThread.getContextClassLoader();
@@ -82,4 +99,6 @@ public class AuthenticationServiceClp implements AuthenticationService, Invokabl
         PersistedModelLocalServiceRegistryUtil.unregister(
             "com.ext.portlet.model.Proposal");
     }
+
+
 }

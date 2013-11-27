@@ -1,6 +1,6 @@
 <%--
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,88 +17,115 @@
 <%
 boolean showAddEntryButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_ENTRY);
 boolean showPermissionsButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS);
-boolean showSubscribeButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.SUBSCRIBE);
-showSearch = showSearch && !results.isEmpty();
+boolean showSubscribeButton = BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.SUBSCRIBE) && (BlogsUtil.getEmailEntryAddedEnabled(portletPreferences) || BlogsUtil.getEmailEntryUpdatedEnabled(portletPreferences));
+//showSearch = showSearch && !results.isEmpty();
+showSearch = false;
+showSubscribeButton = false;
+showPermissionsButton = false;
 %>
+<c:if test="<%= showAddEntryButton || showPermissionsButton || showSearch %>">
+	<aui:nav-bar>
+		<c:if test="<%= showAddEntryButton || showPermissionsButton %>">
+			<aui:nav>
+				<c:if test="<%= showAddEntryButton %>">
+					<portlet:renderURL var="editEntryURL">
+						<portlet:param name="struts_action" value="/blogs/edit_entry" />
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="backURL" value="<%= currentURL %>" />
+					</portlet:renderURL>
 
+					<aui:nav-item href="<%= editEntryURL %>" label="add-blog-entry" name="addEntryButton" />
+				</c:if>
 
-	<c:if test="<%= showAddEntryButton %>">
-		<portlet:renderURL var="editEntryURL">
-			<portlet:param name="struts_action" value="/blogs/edit_entry" />
-			<portlet:param name="redirect" value="<%= currentURL %>" />
-			<portlet:param name="backURL" value="<%= currentURL %>" />
-		</portlet:renderURL>
+				<c:if test="<%= showPermissionsButton %>">
+					<liferay-security:permissionsURL
+						modelResource="com.liferay.portlet.blogs"
+						modelResourceDescription="<%= HtmlUtil.escape(themeDisplay.getScopeGroupName()) %>"
+						resourcePrimKey="<%= String.valueOf(scopeGroupId) %>"
+						var="permissionsURL"
+						windowState="<%= LiferayWindowState.POP_UP.toString() %>"
+					/>
 
-		<aui:button href="<%= editEntryURL %>" name="addEntryButton" value="add-blog-entry" />
-	</c:if>
+					<aui:nav-item href="<%= permissionsURL %>" label="permissions" title="edit-permissions" useDialog="<%= true %>" />
+				</c:if>
+			</aui:nav>
+		</c:if>
+
+		<c:if test="<%= showSearch %>">
+			<aui:nav-bar-search cssClass="pull-right">
+				<div class="form-search">
+					<liferay-ui:input-search autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>" id="keywords1" name="keywords" placeholder='<%= LanguageUtil.get(locale, "keywords") %>' />
+				</div>
+			</aui:nav-bar-search>
+		</c:if>
+	</aui:nav-bar>
+</c:if>
+
+<liferay-ui:categorization-filter
+	assetType="entries"
+	portletURL="<%= portletURL %>"
+/>
 
 <%
-for (Object result : results) {
-	BlogsEntry entry = null;
+long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(displayStyleGroupId, displayStyle);
 
-	AssetEntry assetEntry = null;
+if (portletDisplayDDMTemplateId > 0) {
+%>
 
-	if (result instanceof AssetEntry) {
-		assetEntry = (AssetEntry)result;
+	<%= PortletDisplayTemplateUtil.renderDDMTemplate(pageContext, portletDisplayDDMTemplateId, _convertToBlogEntries(results)) %>
 
-		entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
+<%
+}
+else {
+	for (Object result : results) {
+		BlogsEntry entry = null;
 
-		AssetUtil.addLayoutTags(request, assetEntry.getTags());
-	}
-	else {
-		entry = (BlogsEntry)result;
-	}
+		AssetEntry assetEntry = null;
 
-	if (((entry.getStatus() == WorkflowConstants.STATUS_DRAFT) || (entry.getDisplayDate().after(new Date()))) && (entry.getUserId() != user.getUserId()) && !permissionChecker.isGroupAdmin(scopeGroupId)) {
-		searchContainer.setTotal(searchContainer.getTotal() - 1);
+		if (result instanceof AssetEntry) {
+			assetEntry = (AssetEntry)result;
 
-		continue;
-	}
+			entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
 
-	request.setAttribute("view_entry_content.jsp-searchContainer", searchContainer);
+			AssetUtil.addLayoutTags(request, assetEntry.getTags());
+		}
+		else {
+			entry = (BlogsEntry)result;
+		}
 
-	request.setAttribute("view_entry_content.jsp-entry", entry);
+		if (((entry.getStatus() == WorkflowConstants.STATUS_DRAFT) || entry.getDisplayDate().after(new Date())) && (entry.getUserId() != user.getUserId()) && !permissionChecker.isGroupAdmin(scopeGroupId)) {
+			searchContainer.setTotal(searchContainer.getTotal() - 1);
 
-	request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
+			continue;
+		}
+
+		request.setAttribute("view_entry_content.jsp-searchContainer", searchContainer);
+
+		request.setAttribute("view_entry_content.jsp-entry", entry);
+
+		request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
 %>
 
 	<liferay-util:include page="/html/portlet/blogs/view_entry_content.jsp" />
 
 <%
-}
-
-ResourceURL rssURL = liferayPortletResponse.createResourceURL();
-
-rssURL.setCacheability(ResourceURL.FULL);
-rssURL.setParameter("struts_action", "/blogs/rss");
-
-if ((rssDelta != SearchContainer.DEFAULT_DELTA) || !rssFormatType.equals(RSSUtil.TYPE_DEFAULT) || (rssFormatVersion != RSSUtil.VERSION_DEFAULT) || !rssDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT)) {
-	if (rssDelta != SearchContainer.DEFAULT_DELTA) {
-		rssURL.setParameter("max", String.valueOf(rssDelta));
-	}
-
-	if (!rssFormatType.equals(RSSUtil.TYPE_DEFAULT)) {
-		rssURL.setParameter("type", rssFormatType);
-	}
-
-	if (rssFormatVersion != RSSUtil.VERSION_DEFAULT) {
-		rssURL.setParameter("version", String.valueOf(rssFormatVersion));
-	}
-
-	if (!rssDisplayStyle.equals(RSSUtil.DISPLAY_STYLE_FULL_CONTENT)) {
-		rssURL.setParameter("displayStyle", rssDisplayStyle);
 	}
 }
 %>
 
 <div class="subscribe">
-	<liferay-ui:icon
-		image="rss"
-		label="<%= true %>"
-		method="get"
-		target="_blank"
-		url="<%= rssURL.toString() %>"
-	/>
+	<c:if test="<%= enableRSS %>">
+		<liferay-portlet:resourceURL varImpl="rssURL">
+			<portlet:param name="struts_action" value="/blogs/rss" />
+		</liferay-portlet:resourceURL>
+
+		<liferay-ui:rss
+			delta="<%= rssDelta %>"
+			displayStyle="<%= rssDisplayStyle %>"
+			feedType="<%= rssFeedType %>"
+			resourceURL="<%= rssURL %>"
+		/>
+	</c:if>
 
 	<c:if test="<%= showSubscribeButton %>">
 		<c:choose>
@@ -132,8 +159,24 @@ if ((rssDelta != SearchContainer.DEFAULT_DELTA) || !rssFormatType.equals(RSSUtil
 	</c:if>
 </div>
 
-<liferay-util:html-top>
-	<link href="<%= rssURL %>" rel="alternate" title="RSS" type="application/rss+xml" />
-</liferay-util:html-top>
-
 <liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />
+
+<%!
+private List<BlogsEntry> _convertToBlogEntries(List results) throws PortalException, SystemException {
+	if (results.isEmpty() || (results.get(0) instanceof BlogsEntry)) {
+		return results;
+	}
+
+	List<BlogsEntry> entries = new ArrayList<BlogsEntry>(results.size());
+
+	for (Object result : results) {
+		AssetEntry assetEntry = (AssetEntry)result;
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
+
+		entries.add(entry);
+	}
+
+	return entries;
+}
+%>

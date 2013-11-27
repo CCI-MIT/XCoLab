@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.Cookie;
@@ -19,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
@@ -36,7 +36,10 @@ import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.security.auth.AuthenticatedUserUUIDStoreUtil;
 import com.liferay.portal.security.auth.Authenticator;
 import com.liferay.portal.service.InvokableLocalService;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.Encryptor;
 
@@ -61,50 +64,50 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 
     public void logUserIn(PortletRequest portletRequest, PortletResponse portletResponse, String username, String password) throws Exception {
 
-		System.out.println("mam logUserIn");
-    	AuthenticationServiceImpl.login(PortalUtil.getHttpServletRequest(portletRequest), 
+    	login(PortalUtil.getHttpServletRequest(portletRequest), 
     			PortalUtil.getHttpServletResponse(portletResponse), username, password, true, null);
-    	System.out.println("Authentication service impl.logUserIn");
-    	//Class loginUtilClass = getClass().getClassLoader().loadClass("com.liferay.portlet.login.util.LoginUtil");
-    	//bSystem.out.println(loginUtilClass);
-    	/*
-        MethodKey key = new MethodKey("com.liferay.portlet.login.util.LoginUtil", "login", HttpServletRequest.class, 
-                HttpServletResponse.class, String.class, String.class, boolean.class, String.class);
-        PortalClassInvoker.invoke(false, key, new Object[] { PortalUtil.getHttpServletRequest(portletRequest), 
-                PortalUtil.getHttpServletResponse(portletResponse), username, password, true, null});
-                */
     }
     
-    public void sendPassword(ActionRequest request, String emailFromName, String emailFromAddress, 
-            String emailToAddress, String subject, String body) throws Exception {
-    	/*
-        MethodKey key = new MethodKey("com.liferay.portlet.login.util.LoginUtil", "sendPassword", ActionRequest.class, 
-                String.class, String.class, String.class, String.class, String.class);
+    public void sendPassword(PortletRequest portletRequest, String fromName, String fromAddress, 
+            String toAddress, String subject, String body) throws Exception {
 
-        PortalClassInvoker.invoke(false, key, 
-                new Object[] {request, emailFromName, emailFromAddress, emailToAddress, subject, body});
-                */
-    }
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			portletRequest);
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Company company = themeDisplay.getCompany();
+
+		if (!company.isSendPassword() && !company.isSendPasswordResetLink()) {
+			return;
+		}
+
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+			User.class.getName(), portletRequest);
+
+		UserLocalServiceUtil.sendPassword(
+			company.getCompanyId(), toAddress, fromName, fromAddress, subject,
+			body, serviceContext);
+
+		SessionMessages.add(portletRequest, "requestProcessed", toAddress);
+	}
 
 	@Override
 	public Object invokeMethod(String name, String[] parameterTypes,
 			Object[] arguments) throws Throwable {
-		System.out.println("mam invoke method");
-		
 		Class[] parameterTypesClass = new Class[parameterTypes.length];
 		for (int i=0; i < parameterTypes.length; i++) {
 			parameterTypesClass[i] = getClass().getClassLoader().loadClass(parameterTypes[i]);
 		}
 		
 		Method m = this.getClass().getMethod(name, parameterTypesClass);
-		System.out.println(m);
 		Object ret = m.invoke(this, arguments);
-		// TODO Auto-generated method stub
 		return ret;
 	}
 
 
-	public static void login(
+	private void login(
 			HttpServletRequest request, HttpServletResponse response,
 			String login, String password, boolean rememberMe, String authType)
 		throws Exception {
@@ -308,7 +311,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 	}
 	
 
-	public static long getAuthenticatedUserId(
+	private long getAuthenticatedUserId(
 			HttpServletRequest request, String login, String password,
 			String authType)
 		throws PortalException, SystemException {
@@ -376,6 +379,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 			}
 
 			if (authResult != Authenticator.SUCCESS) {
+				System.out.println("auth exception będzie");
 				throw new AuthException();
 			}
 		}
@@ -384,7 +388,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 	}
 	
 
-	public static HttpSession renewSession(
+	private HttpSession renewSession(
 			HttpServletRequest request, HttpSession session)
 		throws Exception {
 

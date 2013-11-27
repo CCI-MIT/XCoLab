@@ -1,6 +1,6 @@
 <%--
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,10 +17,26 @@
 <%@ include file="/html/portlet/blogs/init.jsp" %>
 
 <%
+String strutsAction = ParamUtil.getString(request, "struts_action");
+
 String redirect = ParamUtil.getString(request, "redirect");
 
-if (Validator.isNull(redirect) || layoutTypePortlet.hasPortletId(PortletKeys.BLOGS_AGGREGATOR)) {
-	redirect = PortalUtil.getLayoutURL(layout, themeDisplay) + Portal.FRIENDLY_URL_SEPARATOR + "blogs";
+String portletId = portletDisplay.getId();
+
+if (Validator.isNull(redirect) || (strutsAction.equals("/blogs/view_entry") && !portletId.equals(PortletKeys.BLOGS))) {
+	PortletURL portletURL = renderResponse.createRenderURL();
+
+	if (portletId.equals(PortletKeys.BLOGS_ADMIN)) {
+		portletURL.setParameter("struts_action", "/blogs_admin/view");
+	}
+	else if (portletId.equals(PortletKeys.BLOGS_AGGREGATOR)) {
+		portletURL.setParameter("struts_action", "/blogs_aggregator/view");
+	}
+	else {
+		portletURL.setParameter("struts_action", "/blogs/view");
+	}
+
+	redirect = portletURL.toString();
 }
 
 BlogsEntry entry = (BlogsEntry)request.getAttribute(WebKeys.BLOGS_ENTRY);
@@ -29,7 +45,7 @@ BlogsEntry entry = (BlogsEntry)request.getAttribute(WebKeys.BLOGS_ENTRY);
 
 long entryId = BeanParamUtil.getLong(entry, request, "entryId");
 
-pageDisplayStyle = RSSUtil.DISPLAY_STYLE_FULL_CONTENT;
+displayStyle = BlogsUtil.DISPLAY_STYLE_FULL_CONTENT;
 
 AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getEntryId());
 
@@ -42,10 +58,6 @@ request.setAttribute(WebKeys.LAYOUT_ASSET_ENTRY, assetEntry);
 request.setAttribute("view_entry_content.jsp-entry", entry);
 
 request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
-
-enableComments = false;
-enableRatings = false;
-enableRelatedAssets = false;
 %>
 
 <liferay-ui:header
@@ -65,6 +77,47 @@ enableRelatedAssets = false;
 	<liferay-util:include page="/html/portlet/blogs/view_entry_content.jsp" />
 </aui:form>
 
+<c:if test="<%= PropsValues.BLOGS_ENTRY_PREVIOUS_AND_NEXT_NAVIGATION_ENABLED %>">
+
+	<%
+	BlogsEntry[] prevAndNext = BlogsEntryLocalServiceUtil.getEntriesPrevAndNext(entryId);
+
+	BlogsEntry previousEntry = prevAndNext[0];
+	BlogsEntry nextEntry = prevAndNext[2];
+	%>
+
+	<div class="entry-navigation">
+		<c:choose>
+			<c:when test="<%= previousEntry != null %>">
+				<portlet:renderURL var="previousEntryURL">
+					<portlet:param name="struts_action" value="/blogs/view_entry" />
+					<portlet:param name="redirect" value="<%= redirect %>" />
+					<portlet:param name="entryId" value="<%= String.valueOf(previousEntry.getEntryId()) %>" />
+				</portlet:renderURL>
+
+				<aui:a cssClass="previous" href="<%= previousEntryURL %>" label="previous" />
+			</c:when>
+			<c:otherwise>
+				<span class="previous"><liferay-ui:message key="previous" /></span>
+			</c:otherwise>
+		</c:choose>
+
+		<c:choose>
+			<c:when test="<%= nextEntry != null %>">
+				<portlet:renderURL var="nextEntryURL">
+					<portlet:param name="struts_action" value="/blogs/view_entry" />
+					<portlet:param name="redirect" value="<%= redirect %>" />
+					<portlet:param name="entryId" value="<%= String.valueOf(nextEntry.getEntryId()) %>" />
+				</portlet:renderURL>
+
+				<aui:a cssClass="next" href="<%= nextEntryURL %>" label="next" />
+			</c:when>
+			<c:otherwise>
+				<span class="next"><liferay-ui:message key="next" /></span>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>
 
 <c:if test="<%= enableComments %>">
 	<liferay-ui:panel-container extended="<%= false %>" id="blogsCommentsPanelContainer" persistState="<%= true %>">
@@ -90,7 +143,6 @@ enableRelatedAssets = false;
 				formName="fm2"
 				ratingsEnabled="<%= enableCommentRatings %>"
 				redirect="<%= currentURL %>"
-				subject="<%= entry.getTitle() %>"
 				userId="<%= entry.getUserId() %>"
 			/>
 		</liferay-ui:panel>

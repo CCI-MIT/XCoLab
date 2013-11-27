@@ -8,6 +8,6 @@ public interface AuthenticationService {
 
     public void logUserIn(PortletRequest portletRequest, PortletResponse portletResponse,
     		String username, String password) throws Exception;
-    public void sendPassword(ActionRequest request, String emailFromName, String emailFromAddress, 
+    public void sendPassword(PortletRequest request, String emailFromName, String emailFromAddress, 
             String emailToAddress, String subject, String body) throws Exception;
 }

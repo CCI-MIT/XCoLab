@@ -12,12 +12,13 @@ import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.util.PortalUtil;
 
 public class LoginUtil {
+	private final static String LOGIN_PORTLET_ID = "58";
 
     public static void logUserIn(PortletRequest portletRequest, PortletResponse portletResponse, String username, String password) throws Exception {
         MethodKey key = new MethodKey("com.liferay.portlet.login.util.LoginUtil", "login", HttpServletRequest.class, 
                 HttpServletResponse.class, String.class, String.class, boolean.class, String.class);
-        PortalClassInvoker.invoke(false, key, new Object[] { PortalUtil.getHttpServletRequest(portletRequest), 
-                PortalUtil.getHttpServletResponse(portletResponse), username, password, true, CompanyConstants.AUTH_TYPE_SN});
+        PortletClassInvoker.invoke(false, LOGIN_PORTLET_ID, key, new Object[] { PortalUtil.getHttpServletRequest(portletRequest), 
+                PortalUtil.getHttpServletResponse(portletResponse), username, password, true, null});
     }
     
     public static void sendPassword(ActionRequest request, String emailFromName, String emailFromAddress, 

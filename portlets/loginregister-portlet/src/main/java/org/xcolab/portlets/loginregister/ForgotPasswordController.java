@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.utils.GlobalMessagesUtil;
 
+import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -87,7 +88,7 @@ public class ForgotPasswordController {
             String body = preferences.getValue(
                 emailParam + "Body_" + languageId, null);
             
-            LoginUtil.sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
+            AuthenticationServiceUtil.sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
         }
         catch (Exception e) {
             if (e instanceof AuthException) {

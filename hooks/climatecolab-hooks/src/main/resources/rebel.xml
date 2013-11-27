@@ -8,6 +8,10 @@
 
 	<web>
 		<link target="/">
+			<dir name="${xcolab.root}/hooks/climatecolab-hooks/target/climatecolab-hooks-1.0-SNAPSHOT">
+			</dir>
+		</link>
+		<link target="/">
 			<dir name="${xcolab.root}/hooks/climatecolab-hooks/src/main/webapp">
 			</dir>
 		</link>

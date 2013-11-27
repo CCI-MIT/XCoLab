@@ -2,7 +2,7 @@
 
 #parse ($init)
 
-<html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml">
+<html dir="#language ("lang.dir")" xmlns="http://www.w3.org/1999/xhtml"  class="$root_css_class" >
 
 <head>
 	<title>$the_title - $company_name</title>
@@ -82,7 +82,6 @@
 <body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
 
 #if ($permissionChecker.isOmniadmin())
-	<link rel='stylesheet' href='$css_folder/dockbar.css?tt=$themeTimestamp' />
 	#dockbar()
 #end
 
