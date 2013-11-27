@@ -155,7 +155,7 @@
     <div class="loginwith">
      Login with: &nbsp;
      <a href="/web/guest/loginregister/-/login/SSO/google" class="sketchy-icon google-sketchy">Google</a>
-     <a href="javascript:;" class="sketchy-icon facebook-sketchy" onclick="var facebookConnectLoginWindow = window.open('$facebookAuthURL','facebook', 'align=center,directories=no,height=560,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1000'); void(''); facebookConnectLoginWindow.focus();">Facebook</a>
+     <a href="$facebookAuthURL" class="sketchy-icon facebook-sketchy">Facebook</a>
     </div>
 
     use your username &amp; password

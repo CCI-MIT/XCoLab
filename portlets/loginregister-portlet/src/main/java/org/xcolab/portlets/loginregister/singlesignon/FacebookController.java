@@ -13,18 +13,17 @@ import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
+import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-    @RequestMapping
-    public String fbCallback(PortletRequest request, PortletResponse response) {
+    @RequestMapping(params = "action=fbCallback")
+    public void fbCallback(ActionRequest request, ActionResponse response) throws IOException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -40,7 +39,11 @@ public class FacebookController {
                 themeDisplay.getCompanyId(), "/me", token,
                 "id,email,first_name,last_name,gender,verified");
 
-        if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)) return "SSO/error";
+        if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)){
+            response.setRenderParameter("error", "true");
+            response.setRenderParameter("SSO", "general");
+            return;
+        }
         //if (!jsonObject.getBoolean("verified")) return;
 
 
@@ -48,9 +51,6 @@ public class FacebookController {
 
         long facebookId = jsonObject.getLong("id");
 
-
-
-        HttpServletRequest httpServletRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
         PortletSession portletSession = request.getPortletSession();
 
 
@@ -60,7 +60,11 @@ public class FacebookController {
             try {
                 user = UserLocalServiceUtil.getUserByFacebookId(
                         themeDisplay.getCompanyId(), facebookId);
-                if (!updateUserWithFBId(user,facebookId)) return "SSO/error"; // weg?
+                if (!updateUserWithFBId(user,facebookId)) {   // is this needed?
+                    response.setRenderParameter("error", "true");
+                    response.setRenderParameter("SSO", "general");
+                    return;
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -77,7 +81,11 @@ public class FacebookController {
             try {
                 user = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
-                if (!updateUserWithFBId(user,facebookId)) return "SSO/error"; // update fbId
+                if (!updateUserWithFBId(user,facebookId)){
+                    response.setRenderParameter("error", "true");
+                    response.setRenderParameter("SSO", "general");
+                    return;
+                }
             }
             catch (Exception e) { e.printStackTrace(); }
         }
@@ -94,19 +102,12 @@ public class FacebookController {
         }
 
         if (user != null) {
-            System.out.println("");
-            return "SSO/autoLoginSuccessful";
-
+            response.sendRedirect(themeDisplay.getPortalURL());
         }
         else {
-            return "SSO/redirectToRegisterOrLogin";
+            response.setRenderParameter("status", "registerOrLogin");
+            response.setRenderParameter("SSO", "general");
         }
-    }
-
-
-    @RequestMapping(params = {"login=successful"})
-    public String autoLogin(PortletRequest request, PortletResponse response) {
-        return "SSO/autoLoginSuccessful";
     }
 
     private boolean updateUserWithFBId(User u, long fbId){
