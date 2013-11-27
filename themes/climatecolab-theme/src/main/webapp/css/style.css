@@ -179,7 +179,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .loginbox span a {color:#fff;}
 .loginbox span a:hover {border-bottom:1px dashed #fff;}
 .loginbox span {font-weight:400;}
-.loginwith {margin-bottom:15px;}
+.loginwith {margin-bottom:25px;}
 .loginwith img {vertical-align:middle; margin-right:5px;}
 .loginform {margin-top:5px;}
 .username, .password {width:254px; height:29px; padding-left:5px; margin-bottom:8px; border:none; font:12px "Lucida Grande", Arial, sans-serif; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
@@ -361,6 +361,10 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .pinterest {background:url(../images/icon-pinterest.png) no-repeat;}
 .linkedin {background:url(../images/icon-linkedin.png) no-repeat;}
 .googleplus {background:url(../images/icon-googleplus.png) no-repeat;}
+
+.sketchy-icon {width: 32px; height: 32px; text-indent: -999px; overflow: hidden; display: block; float: right; margin-right: 15px;}
+.facebook-sketchy {background:url(../images/facebook_sketchy.png) no-repeat; background-size: 32px; }
+.google-sketchy {background:url(../images/google_sketchy.png) no-repeat; background-size: 32px; }
 
 /* <Conference Countdown Flipclock>*/
 #conference-countdown{ position: absolute; top: 342px; left: 539px; width: 420px; }

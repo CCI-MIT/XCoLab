@@ -151,16 +151,13 @@
   <div class="loginpop" id="loginPopupContainer">
    <div class="logintop"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
    <div class="loginbox">
-    <!--
+
     <div class="loginwith">
      Login with: &nbsp;
-     <a href="javascript:;"><img src="$images_folder/icon-login-twitter.png" width="24" height="24" alt="Twitter" /></a>
-     <a href="javascript:;"><img src="$images_folder/icon-login-facebook.png" width="24" height="24" alt="Facebook" /></a>
-     <a href="javascript:;"><img src="$images_folder/icon-login-google.png" width="24" height="24" alt="Google" /></a>
+     <a href="/web/guest/loginregister/-/login/SSO/google" class="sketchy-icon google-sketchy">Google</a>
+     <a href="javascript:;" class="sketchy-icon facebook-sketchy" onclick="var facebookConnectLoginWindow = window.open('$facebookAuthURL','facebook', 'align=center,directories=no,height=560,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1000'); void(''); facebookConnectLoginWindow.focus();">Facebook</a>
      <span><a href="javascript">other &raquo;</a></span>
     </div>
-    -->
-       <a href="javascript:;" onclick="var facebookConnectLoginWindow = window.open('$facebookAuthURL','facebook', 'align=center,directories=no,height=560,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1000'); void(''); facebookConnectLoginWindow.focus();">FB</a>
 
     use your username &amp; password
     <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true">
