@@ -386,6 +386,14 @@ public class UserWrapper implements Serializable {
         return user.getUserId();
     }
 
+    public boolean getHasFacebookId() {
+        return user.getFacebookId() != 0;
+    }
+
+    public boolean getHasOpenId() {
+        return (user.getOpenId() != null && !user.getOpenId().isEmpty());
+    }
+
     public String getUploadedFileName() throws UnsupportedEncodingException {
         if (newUserProfile != null) {
             return URLEncoder.encode(newUserProfile.getName(), "UTF-8");

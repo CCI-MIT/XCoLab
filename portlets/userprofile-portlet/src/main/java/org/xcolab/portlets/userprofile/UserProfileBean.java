@@ -262,4 +262,14 @@ public class UserProfileBean implements Serializable {
         return badges;
     }
 
+    public void unlinkSSOAccount(ActionEvent event) throws SystemException, PortalException {
+        String accountType = event.getComponent().getAttributes().get("accountType").toString();
+        User u = UserLocalServiceUtil.getUser(wrappedUser.getUserId());
+        if (accountType.equalsIgnoreCase("FACEBOOK")) u.setFacebookId(0);
+        else if (accountType.equalsIgnoreCase("GOOGLE")) u.setOpenId("");
+        UserLocalServiceUtil.updateUser(u);
+        editing = !editing;
+        pageType = PageType.PROFILE_DETAILS;
+    }
+
 }

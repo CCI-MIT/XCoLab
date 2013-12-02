@@ -137,6 +137,26 @@
                   <ice:message for="newPasswordRetypeInput" styleClass="form_error_message"/>
               </td>
           </tr>
+
+          <ice:panelGroup rendered="#{currentUser.hasFacebookId}">
+          <tr>
+              <td class="b m">Facebook</td>
+              <td>
+                  <div class="blue-button"><ice:commandLink  actionListener="#{userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Facebook account"><f:attribute name="accountType" value="FACEBOOK" /> </ice:commandLink></div>
+              </td>
+          </tr>
+          </ice:panelGroup>
+          <ice:panelGroup rendered="#{currentUser.hasOpenId}">
+              <tr>
+                  <td class="b m">Google</td>
+                  <td>
+                      <div class="blue-button"><ice:commandLink  actionListener="#{userprofileBean.unlinkSSOAccount}" onclick="updateTextarea();" value="Unlink Google account"><f:attribute name="accountType" value="GOOGLE" /> </ice:commandLink></div>
+                  </td>
+              </tr>
+          </ice:panelGroup>
+
+
+
       </table>
 
       <div class="profile_about-head">About me</div>
