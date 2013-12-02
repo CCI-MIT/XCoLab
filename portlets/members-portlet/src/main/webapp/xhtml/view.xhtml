@@ -68,17 +68,16 @@
 			</ice:panelGroup>
 
 
-			<!-- HELP DIVS -->
-			<ice:panelGroup rendered="#{membersBean.categoryFilter == 'ADVISOR'}">
-				<p>
-					Climate CoLab <a
-						href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
-					are experts who provide overall guidance to CoLab contests by
-					defining topics, recruiting Judges, and communicating results to
-					key stakeholders.
-				</p>
-			</ice:panelGroup>
-
+            <!-- HELP DIVS -->
+            <ice:panelGroup rendered="#{membersBean.categoryFilter == 'ADVISOR'}">
+                <p>
+                    Climate CoLab <a
+                        href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
+                    are experts who provide overall guidance to CoLab contests by
+                    defining topics, recruiting Judges, and communicating results to
+                    key stakeholders.
+                </p>
+            </ice:panelGroup>
 
 
 			<ice:form>
@@ -245,15 +244,24 @@
 									<f:attribute name="category" value="ADVISOR" />
 								</ice:commandLink>
 							</li>
-							<li class="#{membersBean.categoryFilter == 'EXPERT' ? 'c' : ''}">
-								<img src="/climatecolab-theme/images/icon_mem-expert.png"
-								width="16" height="16" />&#160; <ice:commandLink
-									actionListener="#{membersBean.updateCategoryFilter}"
-									value="Experts"
-									onclick="Collab.nav.navigateAddParams('members', {filter: 'EXPERT'}); document.location.reload(true);  return false;">
-									<f:attribute name="category" value="EXPERT" />
-								</ice:commandLink>
-							</li>
+                            <li class="#{membersBean.categoryFilter == 'EXPERT' ? 'c' : ''}">
+                                <img src="/climatecolab-theme/images/icon_mem-expert.png"
+                                     width="16" height="16" />&#160; <ice:commandLink
+                                    actionListener="#{membersBean.updateCategoryFilter}"
+                                    value="Experts"
+                                    onclick="Collab.nav.navigateAddParams('members', {filter: 'EXPERT'}); document.location.reload(true);  return false;">
+                                <f:attribute name="category" value="EXPERT" />
+                            </ice:commandLink>
+                            </li>
+                            <li class="#{membersBean.categoryFilter == 'JUDGES' ? 'c' : ''}">
+                                <img src="/climatecolab-theme/images/icon_mem-judges.png"
+                                     width="16" height="16" />&#160; <ice:commandLink
+                                    actionListener="#{membersBean.updateCategoryFilter}"
+                                    value="Judges"
+                                    onclick="Collab.nav.navigateAddParams('members', {filter: 'JUDGES'}); document.location.reload(true);  return false;">
+                                <f:attribute name="category" value="EXPERT" />
+                            </ice:commandLink>
+                            </li>
 							<li class="#{membersBean.categoryFilter == 'STAFF' ? 'c' : ''}">
 								<img src="/climatecolab-theme/images/icon_mem-staff.png"
 								width="16" height="16" />&#160; <ice:commandLink
