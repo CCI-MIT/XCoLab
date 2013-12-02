@@ -30,7 +30,7 @@ public class SingleSignOnController {
             u = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(),login);
         } catch (NoSuchUserException nsu){
             // username incorrect
-            response.setRenderParameter("error", "true");
+            response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
             return;
         }
@@ -39,7 +39,7 @@ public class SingleSignOnController {
 
         // passwords don't match
         if (!encPassword.equalsIgnoreCase(u.getPassword())) {
-            response.setRenderParameter("error", "true");
+            response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
             return;
         }
