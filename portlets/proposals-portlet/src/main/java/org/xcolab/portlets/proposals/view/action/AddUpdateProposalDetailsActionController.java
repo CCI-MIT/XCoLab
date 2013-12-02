@@ -9,7 +9,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -140,10 +142,21 @@ public class AddUpdateProposalDetailsActionController {
         Whitelist w = Whitelist.relaxed();
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
+        w.addAttributes("iframe"); //allow iframes first for youtube. will be disabled later.
 
         String xssCleaned = Jsoup.clean(sectionData, w);
 
-        return xssCleaned;
+        //iframe cleaning
+        Element parent = Jsoup.parse(xssCleaned);
+        Elements iframes = parent.select("iframe");
+        for(Element iframe:iframes) {
+            //only allow youtube
+            if(!iframe.attr("src").startsWith("//www.youtube.com/embed/")) {
+                iframe.remove();
+            }
+        }
+
+        return parent.html();
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
