@@ -1,16 +1,15 @@
 package org.xcolab.portlets.userprofile;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.event.ActionEvent;
-
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import javax.faces.event.ActionEvent;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserSubscriptionsBean implements Serializable {
     /**

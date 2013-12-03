@@ -14,23 +14,15 @@
 
 package org.xcolab.portlets.userprofile.utils;
 
+import com.liferay.portal.PwdEncryptorException;
+import com.liferay.portal.kernel.util.*;
+import jodd.util.BCrypt;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
-
-import jodd.util.BCrypt;
-
-import com.liferay.portal.PwdEncryptorException;
-import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Brian Wing Shun Chan

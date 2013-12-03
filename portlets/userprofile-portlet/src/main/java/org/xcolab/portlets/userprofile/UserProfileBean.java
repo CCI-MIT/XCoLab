@@ -1,13 +1,5 @@
 package org.xcolab.portlets.userprofile;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.event.ActionEvent;
-import javax.mail.internet.AddressException;
-
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Message;
@@ -25,6 +17,13 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.util.mail.MailEngineException;
+
+import javax.faces.event.ActionEvent;
+import javax.mail.internet.AddressException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UserProfileBean implements Serializable {
     /**

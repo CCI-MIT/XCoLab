@@ -1,18 +1,17 @@
 package org.xcolab.portlets.userprofile.validators;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.portlets.userprofile.Helper;
+import org.xcolab.portlets.userprofile.UserWrapper;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
-import org.xcolab.portlets.userprofile.Helper;
-import org.xcolab.portlets.userprofile.UserWrapper;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 public class UserEmailValidator implements Validator {
 
