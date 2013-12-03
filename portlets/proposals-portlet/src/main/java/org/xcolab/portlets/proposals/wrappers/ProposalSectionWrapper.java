@@ -17,6 +17,9 @@ import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class ProposalSectionWrapper {
     
@@ -46,8 +49,12 @@ public class ProposalSectionWrapper {
         ProposalAttribute attr = getSectionAttribute();
         
         if (attr == null) return null;
-        
-        return attr.getStringValue().trim();
+
+        Document d = Jsoup.parse(attr.getStringValue().trim());
+        for (Element e : d.select("a.utube")) {
+            e.after("<br/><iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/"+e.attr("href").substring("http://www.youtube.com/watch?v=".length())+"\" frameborder=\"0\" allowfullscreen></iframe>");
+        }
+        return d.select("body").html();
     }
     
     public PlanSectionTypeKeys getType() {

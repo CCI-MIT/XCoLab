@@ -142,21 +142,8 @@ public class AddUpdateProposalDetailsActionController {
         Whitelist w = Whitelist.relaxed();
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
-        w.addAttributes("iframe"); //allow iframes first for youtube. will be disabled later.
 
-        String xssCleaned = Jsoup.clean(sectionData, w);
-
-        //iframe cleaning
-        Element parent = Jsoup.parse(xssCleaned);
-        Elements iframes = parent.select("iframe");
-        for(Element iframe:iframes) {
-            //only allow youtube
-            if(!iframe.attr("src").startsWith("//www.youtube.com/embed/")) {
-                iframe.remove();
-            }
-        }
-
-        return parent.html();
+        return Jsoup.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
