@@ -1,22 +1,19 @@
 package org.xcolab.portlets.userprofile;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
-import com.ext.portlet.plans.PlanConstants;
-
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.userprofile.entity.Badge;
-import com.ext.portlet.model.Proposal;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

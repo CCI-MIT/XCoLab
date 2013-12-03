@@ -1,14 +1,12 @@
 package org.xcolab.portlets.userprofile.utils;
 
-import java.util.Map;
-
-import javax.portlet.PortletRequest;
-
-import org.xcolab.portlets.userprofile.Helper;
-
 import com.liferay.portal.kernel.portlet.BaseFriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.portlets.userprofile.Helper;
+
+import javax.portlet.PortletRequest;
+import java.util.Map;
 
 public class UserprofileFriendlyURLMapper extends BaseFriendlyURLMapper {
     private static final String _MAPPING = "member";

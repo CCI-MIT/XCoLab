@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <f:view xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core" 
-    xmlns:liferay-faces="http://liferay.com/tld/faces"
-    xmlns:h="http://java.sun.com/jsf/html"  
-    xmlns:ui="http://java.sun.com/jsf/facelets" 
-    xmlns:ice="http://www.icesoft.com/icefaces/component" 
-    xmlns:ace="http://www.icefaces.org/icefaces/components"
-    >
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ace="http://www.icefaces.org/icefaces/components"
+        >
     <div class="fileUploadContainer">
     <h:form>
 		<ace:fileEntry id="profileImage" fileEntryListener="#{currentUser.uploadPortrait}" styleClass="filepc fileUpload" autoUpload="true" >

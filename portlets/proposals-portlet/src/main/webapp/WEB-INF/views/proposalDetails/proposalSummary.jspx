@@ -55,7 +55,7 @@
             </div> <!-- /votebox shade -->
         </div> <!-- /votebox wrapper -->
         <div class="share">
-            <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left; width: 155px;">
                 <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                 <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                 <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
@@ -88,7 +88,17 @@
             </script>
             <div class="clear"><!--  --></div>
         </div>
-        
+
+        <c:if test="${proposal.ribbon > 0}">
+            <div class="badge-big badge-${proposal.ribbon}" style="float:none; text-align:center; margin: 0 0 36px 76px;">
+                        <span class="badge-title">
+                            <a href="#" style="${(proposal.ribbonText.length() gt 8 and proposal.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonText.length() gt 13 ? 'Winner' : proposal.ribbonText}</a>
+                        </span>
+                <div class="badge-text" style="${proposal.ribbonText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(proposal.ribbonText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${proposal.ribbonText.length() gt 13 ? proposal.ribbonText : ''}</div>
+                <span class="badge-year">2013</span>
+            </div>
+        </c:if>
+
         <h5 class="topbox">Proposal Summary</h5>
   
         <div class="prop-title addprop">

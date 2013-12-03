@@ -6,6 +6,7 @@ public enum MemberCategory {
     FELLOW("Fellow"),
     ADVISOR("Advisor"),
     EXPERT("Experts"),
+    JUDGES("Judges"),
     STAFF("Staff", "Moderator"),
     MODERATOR("Staff");
     
