@@ -22,7 +22,7 @@ public class MemberListItemBean implements Serializable {
     public MemberListItemBean(Document userDoc) throws SystemException, NumberFormatException, PortalException, ParseException {
         userId = Long.parseLong(userDoc.get("userId"));
         //activityCount = SocialActivityLocalServiceUtil.getUserActivitiesCount(userId);
-        activityCount = Integer.parseInt(userDoc.get("activities"));
+        activityCount = parseInt(userDoc.get("activities"));
         realName = userDoc.get("realName");
         String screenName = userDoc.get("screenName");
         String firstName = userDoc.get("firstName");
@@ -66,6 +66,16 @@ public class MemberListItemBean implements Serializable {
                 // ignore
             }
         }
+    }
+
+    private int parseInt(String str) {
+        int ret = 0;
+        try {
+            ret = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+
+        }
+        return ret;
     }
     
     public MemberListItemBean(Document userDoc, MemberCategory categoryFilter) throws NumberFormatException, 

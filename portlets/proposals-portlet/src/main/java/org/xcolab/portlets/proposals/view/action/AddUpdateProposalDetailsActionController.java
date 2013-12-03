@@ -9,7 +9,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -141,9 +143,7 @@ public class AddUpdateProposalDetailsActionController {
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-        String xssCleaned = Jsoup.clean(sectionData, w);
-
-        return xssCleaned;
+        return Jsoup.clean(sectionData, w);
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})

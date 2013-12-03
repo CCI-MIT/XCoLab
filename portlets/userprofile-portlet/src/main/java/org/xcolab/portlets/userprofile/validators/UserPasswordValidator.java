@@ -1,5 +1,11 @@
 package org.xcolab.portlets.userprofile.validators;
 
+import com.liferay.portal.PwdEncryptorException;
+import com.liferay.portal.model.User;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.userprofile.UserWrapper;
+import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -7,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+<<<<<<< HEAD
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.userprofile.UserWrapper;
 import org.xcolab.commons.utils.PwdEncryptor;
@@ -14,6 +21,8 @@ import org.xcolab.commons.utils.PwdEncryptor;
 import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.model.User;
 
+=======
+>>>>>>> master
 public class UserPasswordValidator implements Validator {
 
     @Override

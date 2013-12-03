@@ -1,11 +1,11 @@
 package org.xcolab.portlets.userprofile;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.ext.portlet.Activity.SubscriptionType;
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+
+import java.io.Serializable;
+import java.util.Date;
 
 public class ActivitySubscriptionWrapper implements Serializable {
     /**

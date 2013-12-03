@@ -1,17 +1,15 @@
 package org.xcolab.portlets.userprofile;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import com.ext.portlet.NoSuchPlanItemException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.io.Serializable;
+import java.util.Date;
 
 public class SupportedPlanBean implements Serializable {
     
