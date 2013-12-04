@@ -79,8 +79,6 @@ public class FacebookController {
         // if email matches -> autologin
         String emailAddress = jsonObject.getString("email");
         if ((user == null) && Validator.isNotNull(emailAddress)) {
-            portletSession.setAttribute(SSOKeys.FACEBOOK_USER_EMAIL_ADDRESS, emailAddress,PortletSession.APPLICATION_SCOPE);
-
             try {
                 user = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
@@ -111,6 +109,7 @@ public class FacebookController {
         else {
             response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
+            request.setAttribute("credentialsError",false);
         }
     }
 

@@ -15,7 +15,7 @@ public class SSOKeys {
     // SESSION KEYS
     // Facebook Autologin
     public final static String FACEBOOK_USER_ID = "FACEBOOK_USER_ID";
-    public final static String FACEBOOK_USER_EMAIL_ADDRESS = "FACEBOOK_USER_EMAIL_ADDRESS";
+
     // OpenId Autologin
     public final static String OPEN_ID_LOGIN = "OPEN_ID_LOGIN";
     // SSO Credentials

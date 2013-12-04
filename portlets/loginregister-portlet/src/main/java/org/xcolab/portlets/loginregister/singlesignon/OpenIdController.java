@@ -167,7 +167,7 @@ public class OpenIdController {
                     if (Validator.isNotNull(lastName)) session.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
                     actionResponse.setRenderParameter("SSO", "general");
                     actionResponse.setRenderParameter("status", "registerOrLogin");
-
+                    actionRequest.setAttribute("credentialsError",false);
                 }
         }
     }

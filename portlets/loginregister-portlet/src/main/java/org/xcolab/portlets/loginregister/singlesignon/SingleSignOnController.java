@@ -32,6 +32,7 @@ public class SingleSignOnController {
             // username incorrect
             response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
+            request.setAttribute("credentialsError",true);
             return;
         }
 
@@ -41,6 +42,7 @@ public class SingleSignOnController {
         if (!encPassword.equalsIgnoreCase(u.getPassword())) {
             response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
+            request.setAttribute("credentialsError",true);
             return;
         }
 

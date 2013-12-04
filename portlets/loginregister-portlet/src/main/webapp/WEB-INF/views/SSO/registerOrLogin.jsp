@@ -21,7 +21,11 @@
                 <h2 style="text-align: center;">Sign in as existing CoLab member</h2>
                 <br />
                 <span>You can sign in to your account to link your social media and Climate CoLab account and use the social media login when returning to the site.</span>
-                <div class="loginbox" style="margin: 30px auto 0 auto;">
+                <div style="height:15px;">&#160;</div>
+                <c:if test="${credentialsError}">
+                    <div class="error-message-registerOrLogin"><p>Authentication failed</p></div>
+                </c:if>
+                <div class="loginbox" style="margin: 15px auto 0 auto;">
                     <form id="signInFormPopup" method="post" action="${provideSSOCredentials}">
                         <input name="login" type="text" class="username" placeholder="username" />
                         <input name="password" type="password" class="password" placeholder="password" />
