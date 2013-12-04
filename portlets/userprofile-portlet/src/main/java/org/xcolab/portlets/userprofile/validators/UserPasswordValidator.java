@@ -43,7 +43,6 @@ public class UserPasswordValidator implements Validator {
                     errorMsg.setSummary("Invalid password");
                 }
             } catch (PwdEncryptorException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 isError = true;
                 errorMsg.setDetail("Invalid password");
