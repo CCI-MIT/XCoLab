@@ -65,6 +65,7 @@ public class SingleSignOnController {
         }
         response.setRenderParameter("error", "true");
         response.setRenderParameter("SSO", "general");
+        request.setAttribute("error","An unknown error occured.");
     }
 
     @RequestMapping(params = "error=true")

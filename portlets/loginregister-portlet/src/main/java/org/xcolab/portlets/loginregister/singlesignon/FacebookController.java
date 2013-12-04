@@ -41,12 +41,14 @@ public class FacebookController {
         if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)){
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
+            request.setAttribute("error","No data received.");
             return;
         }
 
         if (FacebookConnectUtil.isVerifiedAccountRequired(themeDisplay.getCompanyId()) && !jsonObject.getBoolean("verified")){
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
+            request.setAttribute("error","Verified account required.");
             return;
         }
 

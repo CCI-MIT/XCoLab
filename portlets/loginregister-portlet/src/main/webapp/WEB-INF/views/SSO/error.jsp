@@ -8,5 +8,6 @@
         xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <h1>Error</h1>
+    <div class="error-message-registerOrLogin"><p>${error}</p></div>
 
 </jsp:root>

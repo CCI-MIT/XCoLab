@@ -7,7 +7,7 @@
         xmlns:form="http://www.springframework.org/tags/form"
         xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <h1>Welcome to the Climate CoLab!</h1>
+    <h1 style="padding-left: 20px;">Welcome to the Climate CoLab!</h1>
     <br /><br />
     <br />
     <portlet:actionURL var="provideSSOCredentials">
@@ -18,7 +18,7 @@
     <table>
         <tr>
             <td style="width:50%; padding: 0 20px;">
-                <h2 style="text-align: center;">Sign in as existing CoLab member</h2>
+                <h2>Sign in as existing CoLab member</h2>
                 <br />
                 <span>You can sign in to your account to link your social media and Climate CoLab account and use the social media login when returning to the site.</span>
                 <div style="height:15px;">&#160;</div>
@@ -34,7 +34,7 @@
                 </div>
             </td>
             <td style="width:50%; padding: 0 20px;">
-                <h2 style="text-align: center;">Register as new CoLab member</h2>
+                <h2>Register as new CoLab member</h2>
                 <br />
                 <span>You can register as new member of the Climate CoLab to be part of the community.</span>
                 <br /><br /><br /><br />
