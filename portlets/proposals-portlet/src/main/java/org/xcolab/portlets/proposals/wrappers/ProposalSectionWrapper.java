@@ -83,7 +83,6 @@ public class ProposalSectionWrapper {
         return PlanSectionTypeKeys.valueOf(definition.getType());
     }
 
-
     public Long getSectionDefinitionId() {
         return definition.getId();
     }
@@ -108,6 +107,32 @@ public class ProposalSectionWrapper {
         return OntologyTermLocalServiceUtil.getOntologyTerm(attr.getNumericValue());
     }
 
+    public ProposalWrapper getNumericValueAsProposal() throws SystemException, PortalException {
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null || attr.getNumericValue() <= 0) {
+            return null;
+        }
+        return new ProposalWrapper(ProposalLocalServiceUtil.getProposal(attr.getNumericValue()));
+    }
+
+    public ProposalWrapper[] getStringValueAsProposalArray() throws SystemException, PortalException {
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null || attr.getStringValue() == null || attr.getStringValue().equals("")) {
+            return null;
+        }
+
+        String props[] = attr.getStringValue().split(",");
+        ProposalWrapper[] ret = new ProposalWrapper[props.length];
+        for(int i=0;i<props.length;i++) {
+            try {
+                ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+    
     public long getNumericValue() throws SystemException, PortalException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
