@@ -184,7 +184,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .loginform {margin-top:5px;}
 .username, .password {width:254px; height:29px; padding-left:5px; margin-bottom:8px; border:none; font:12px "Lucida Grande", Arial, sans-serif; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
 .forgot {vertical-align:top; margin:0 15px 0 5px;}
-.login-submit {width:92px; height:30px; padding-top:3px; background:#0090ff; border:none; font-size:15px; font-weight:700; color:#fff; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; cursor:pointer;}
+.login-submit {width:88px; height:30px; padding-top:3px; background:#0090ff; border:none; font-size:15px; font-weight:700; color:#fff; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; cursor:pointer;}
 .login-submit:hover {background:#0081e6;}
 .user-notification{display: inline; text-align: center; font: 12px Arial, Helvetica, sans-serif; color: #fff; padding: 0 5px; margin-left: 5px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; position: absolute;}
 .user-notification-top { top: 13px; right: 78px; background: #0f558a;}
@@ -362,9 +362,13 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .linkedin {background:url(../images/icon-linkedin.png) no-repeat;}
 .googleplus {background:url(../images/icon-googleplus.png) no-repeat;}
 
-.sketchy-icon {width: 32px; height: 32px; text-indent: -999px; overflow: hidden; display: block; float: right; margin-right: 15px;}
+.sketchy-icon {height: 32px; display: block; float: left; padding: 8px 0 0 41px; color: #d4d4d4 !important;}
+.sketchy-icon span:hover { border-bottom:1px dashed #fff; }
 .facebook-sketchy {background:url(../images/facebook_sketchy.png) no-repeat; background-size: 32px; }
 .google-sketchy {background:url(../images/google_sketchy.png) no-repeat; background-size: 32px; }
+
+.loginwith-del{height: 0; width: 35%; border-bottom: 1px solid; margin: 8px 4%; float: left;}
+.loginwith-or{width: 23px; float: left;}
 
 /* <Conference Countdown Flipclock>*/
 #conference-countdown{ position: absolute; top: 342px; left: 539px; width: 420px; }
