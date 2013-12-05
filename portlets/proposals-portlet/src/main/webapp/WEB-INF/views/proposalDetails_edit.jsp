@@ -136,6 +136,20 @@
                 });
             </script>
         </div>
+
+        <!-- legacy for old proposals-->
+        <c:if test="${fn:length(proposal.description) gt 0}">
+            <div class="addpropbox q3">
+                <label>
+                    <strong>Description</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                </label>
+
+                <div class="addpropInputContainer">
+                    <form:textarea cssClass="rte"  cols="54" rows="7" path="description" />
+                </div>
+            </div>
+        </c:if>
 		
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">

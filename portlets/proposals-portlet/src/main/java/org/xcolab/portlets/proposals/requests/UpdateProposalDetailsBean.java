@@ -21,6 +21,9 @@ public class UpdateProposalDetailsBean {
     private String team;
     private long imageId;
 
+    // legacy
+    private String description;
+
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
         for (ProposalSectionWrapper section : proposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
@@ -29,6 +32,7 @@ public class UpdateProposalDetailsBean {
         name = proposal.getName();
         team = proposal.getTeam();
         imageId = proposal.getImageId();
+        description = proposal.getDescription();
     }
 
     public UpdateProposalDetailsBean() {
@@ -48,6 +52,14 @@ public class UpdateProposalDetailsBean {
 
     public void setPitch(String pitch) {
         this.pitch = pitch;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
