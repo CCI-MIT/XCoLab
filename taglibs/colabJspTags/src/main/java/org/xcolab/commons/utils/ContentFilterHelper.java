@@ -129,6 +129,7 @@ public class ContentFilterHelper {
         }
         tmp = filterUrlEmbeddedLinks(tmp);
         tmp = filterLinkifyUrls(tmp);
+        tmp = tmp.replaceAll("\"", "'");
         
         return tmp;
     }

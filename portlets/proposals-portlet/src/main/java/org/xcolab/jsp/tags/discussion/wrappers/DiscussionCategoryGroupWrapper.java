@@ -39,7 +39,7 @@ public class DiscussionCategoryGroupWrapper {
     }
     
     public String getDescription() {
-        return discussionCategoryGroup.getDescription();
+        return discussionCategoryGroup.getDescription().replaceAll("\"", "'"); //remove " to ensure addthis works
     }
     
     public String getDiscussionUrl() {
