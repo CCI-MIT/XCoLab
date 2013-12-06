@@ -186,6 +186,10 @@ public class ProposalWrapper {
         return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, 0, 0);
     }
 
+    public Boolean getJudgingStatus() throws SystemException, PortalException {
+        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGING_STATUS, 0, 0) == 1L;
+    }
+
     public Long getFellowRating() throws SystemException, PortalException {
         return getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, 0, 0);
     }

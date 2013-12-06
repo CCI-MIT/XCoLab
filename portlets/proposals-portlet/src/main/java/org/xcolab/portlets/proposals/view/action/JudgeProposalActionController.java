@@ -24,14 +24,6 @@ import javax.portlet.ActionResponse;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 10/16/13
- * Time: 11:27 AM
- * To change this template use File | Settings | File Templates.
- */
-
 @Controller
 @RequestMapping("view")
 public class JudgeProposalActionController {
@@ -39,7 +31,10 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-
+    @RequestMapping(params={"action=sendEmails"})
+    public void sendEmails(ActionRequest request, Model model, ActionResponse response) {
+        //TODO code me
+    }
 
     @RequestMapping(params = {"action=saveJudgeRating"})
     public void saveJudgeRating(ActionRequest request, Model model,

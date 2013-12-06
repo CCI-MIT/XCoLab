@@ -23,6 +23,7 @@ public class JudgeProposalBean {
     private String judgeComment;
     private String fellowComment;
     private List<Long> selectedJudges;
+    private Boolean judgingStatus;
 
     public JudgeProposalBean(ProposalWrapper wrapper) throws PortalException, SystemException {
 
@@ -36,10 +37,19 @@ public class JudgeProposalBean {
         judgeComment = wrapper.getJudgeComment();
         fellowComment = wrapper.getFellowComment();
 
+        judgingStatus = wrapper.getJudgingStatus();
     }
 
     public JudgeProposalBean(){
 
+    }
+
+    public Boolean getJudgingStatus() {
+        return judgingStatus;
+    }
+
+    public void setJudgingStatus(Boolean judgingStatus) {
+        this.judgingStatus = judgingStatus;
     }
 
     public Long getJudgeRating() {
