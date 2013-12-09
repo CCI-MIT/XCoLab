@@ -11,7 +11,15 @@
 
 <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 <jsp:directive.include file="./proposalDetails/header.jspx" />
-	
+
+<style>
+    em {
+        background: #000; border-radius: 5px; font-style: normal;
+        box-shadow: 0 0 2px #000;
+    }
+</style>
+
+
 <div id="content">
 	<div class="prop-left">
 		
@@ -236,6 +244,81 @@
 
 <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
+<!--  Proposals Picker  -->
+<portlet:resourceURL var="mySubscriptionsURL" id="mySubscriptions">
+    <portlet:param name="type" value="@@REPLACE-TYPE@@" />
+    <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+    <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+    <portlet:param name="start" value="@@REPLACE-START@@" />
+    <portlet:param name="end" value="@@REPLACE-END@@" />
+    <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+    <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+</portlet:resourceURL>
+
+<script>
+    var mySubscriptionsURL = '${mySubscriptionsURL}';
+    var filterKey = 'WINNERSONLY';
+    var proposalType;
+</script>
+
+<div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:none;">
+    <div class="popup">
+        <div class="closepopuplogin">
+            <a href="javascript:;" onclick="jQuery('#popup_login').hide()">
+                <img src="http://localhost:8080/climatecolab-theme/images/help_close.png" width="20" height="20"
+                     alt="X"/>
+            </a>
+        </div>
+        <h4>Choose your proposal</h4>
+
+
+
+        <div class="prop-tabs">
+            <ul>
+                <li class="c">
+                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'subscriptions'; loadProposals();"> My subscriptions <div id="numberOfSubscriptions">&#160;</div></a>
+                </li>
+                <li class="">
+                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'supporting';  loadProposals();"> Supporting <div id="numberOfSupporting">&#160;</div></a></li>
+                <li class="">
+                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'all';  loadProposals();"> All proposals <div id="numberOfProposals">&#160;</div></a>
+                </li>
+                <li style="float: right; margin:0;">
+                    <input id="prop-search" name="searchField" type="text" placeholder="Filter" maxcharacters="80" validatelength="true" class="rteInitialized" style="display: block; height: 22px; width: 175px; padding: 0 5px;" />
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="popup-tabcontainer">
+            <table id ="proposalPickerTable">
+                <thead>
+                    <tr class="blueheaderbar tooltips" style="border-top: none;">
+                        <td style="width: 35%;">
+                            <a href="javascript:;" onclick="sortByColumn($(this), 'contest');">Contest</a>
+                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by contest name <div class="tt-arrow"></div></div>
+                        </td>
+                        <td style="width: 35%;">
+                            <a href="javascript:;" onclick="sortByColumn($(this), 'proposal');">Proposal</a>
+                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by proposal name <div class="tt-arrow"></div></div>
+                        </td>
+                        <td style="width: 15%;">
+                            <a href="javascript:;" onclick="sortByColumn($(this), 'dateSubscribed');">Subscribed</a>
+                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by date subscribed <div class="tt-arrow"></div></div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div id="warning"></div>
+    </div>
+</div>
+<!--  /Proposals Picker  -->
+
 <script type="text/javascript">
 	jQuery("#fileUploadInput").change(function() {
 		jQuery("#fileUploadForm").submit();
@@ -304,7 +387,11 @@
 		
 		enableDirtyCheck();
 	});
-			
+
+
+
+
+
 </script>
 
 </jsp:root>

@@ -832,7 +832,13 @@ display: inline;
 	width:432px;
 	margin-left:-216px;
 }  
-.popup .error-message, .error-message-registerOrLogin {
+
+.popup-wrap.proposal-picker {
+    width: 832px;
+    margin-left: -416px;
+}
+
+.popup .error-message {
     border: 1px dashed #f00;
     background: #ffeeee;
 }
@@ -888,7 +894,7 @@ display: inline;
 	padding: 5px;
 }
 
-.historyTable .even td {
+.historyTable .even td, #proposalPickerTable .ui-datatable-odd {
 	background-color: #f1f1e9;
 	
 }

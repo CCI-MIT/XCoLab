@@ -1,0 +1,102 @@
+package org.xcolab.portlets.proposals.utils;
+
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+
+
+import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
+import com.ext.portlet.model.Proposal;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: patrickhiesel
+ * Date: 04/12/13
+ * Time: 10:25
+ * To change this template use File | Settings | File Templates.
+ */
+public enum ProposalPickerFilterUtil {
+
+    // why are lamdba expressions not supported here?
+    ACCEPTALL(new ProposalPickerFilter() {
+        @Override
+        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
+            return proposals;
+        }
+    }),
+    TEXTBASED(new ProposalPickerFilter() {
+        @Override
+        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
+            List<Proposal> filteredProposals = new ArrayList<>();
+            if (!(additionalFilterCriterion instanceof String)) return filteredProposals;
+            String searchCriterion = (String) additionalFilterCriterion;
+            for (Proposal p : proposals){
+                 try{
+                     // PROPOSAL NAME
+                     String proposalName = ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0l).getStringValue();
+                     if (StringUtils.containsIgnoreCase(proposalName,searchCriterion)){
+                         filteredProposals.add(p);
+                         continue;
+                     }
+
+                     // CONTEST NAME
+                     String contestName = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestName();
+                     if (StringUtils.containsIgnoreCase(contestName,searchCriterion)){
+                         filteredProposals.add(p);
+                         continue;
+                     }
+                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
+            }
+            return filteredProposals;
+        }
+    }),
+    WINNERSONLY(new ProposalPickerFilter() {
+        @Override
+        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
+            List<Proposal> filteredProposals = new ArrayList<>();
+            for (Proposal p : proposals){
+                try{
+                    List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+                    for (long phase : phases){
+                        try{
+                            ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),phase,"RIBBON");
+                            filteredProposals.add(p);
+                        }catch (NoSuchProposalContestPhaseAttributeException nspcpae){ /* NO WINNER */ }
+                    }
+                } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
+            }
+            return filteredProposals;
+        }
+    });
+
+    private final ProposalPickerFilter proposalPickerFilter;
+
+    private ProposalPickerFilterUtil(ProposalPickerFilter proposalPickerFilter) {
+        this.proposalPickerFilter = proposalPickerFilter;
+    }
+
+    public ProposalPickerFilter getProposalPickerFilter() {
+        return proposalPickerFilter;
+    }
+
+    // CONVENIENCE METHODS
+    public List<Proposal> filter(List<Proposal> proposals){
+        return this.getProposalPickerFilter().filter(proposals, null);
+    }
+
+    public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion){
+        return this.getProposalPickerFilter().filter(proposals, additionalFilterCriterion);
+    }
+
+    // PARSE FILTER FROM FRONT END PARAMETER
+    public static ProposalPickerFilterUtil getFilterByParameter(String filterKey) {
+        if (filterKey == null) return ACCEPTALL;
+        if (filterKey.equalsIgnoreCase("WINNERSONLY")) return WINNERSONLY;
+        return ACCEPTALL;
+    }
+
+}
