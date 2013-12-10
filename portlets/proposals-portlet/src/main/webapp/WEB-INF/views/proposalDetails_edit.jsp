@@ -287,12 +287,12 @@
         <div class="prop-tabs">
             <ul>
                 <li class="c">
-                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'subscriptions'; loadProposals();"> My subscriptions <div id="numberOfSubscriptions">&#160;</div></a>
+                    <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'subscriptions');"> My subscriptions <div id="numberOfSubscriptions">&#160;</div></a>
                 </li>
                 <li class="">
-                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'supporting';  loadProposals();"> Supporting <div id="numberOfSupporting">&#160;</div></a></li>
+                    <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'supporting');"> Supporting <div id="numberOfSupporting">&#160;</div></a></li>
                 <li class="">
-                    <a href="javascript:;" onclick="$(this).parent().parent().children().removeClass('c');$(this).parent().addClass('c'); proposalPickerPage = 0; proposalType = 'all';  loadProposals();"> All proposals <div id="numberOfProposals">&#160;</div></a>
+                    <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'all');"> All proposals <div id="numberOfProposals">&#160;</div></a>
                 </li>
                 <li style="float: right; margin:0;">
                     <input id="prop-search" name="searchField" type="text" placeholder="Filter" maxcharacters="80" validatelength="true" class="rteInitialized" style="display: block; height: 22px; width: 175px; padding: 0 5px;" />
@@ -301,7 +301,7 @@
             </ul>
         </div>
 
-        <div class="popup-tabcontainer">
+        <div class="popup-tabcontainer" style="min-height: 200px;" id="proposalPickerTableContainer">
             <table id ="proposalPickerTable">
                 <thead>
                     <tr class="blueheaderbar tooltips" style="border-top: none;">
