@@ -3,15 +3,9 @@ var proposalPickerPage = 0;
 var sortOrder = 'ASC';
 var sortColumn = 'Contest';
 
+/* Load Proposals for a given tab (determined by var) */
 function loadProposals(){
-    var URL = mySubscriptionsURL.replace('%40%40REPLACE-TYPE%40%40',proposalType).replace('%40%40REPLACE-FILTERKEY%40%40',filterKey);
-    if ($('#prop-search').val() != 'Filter') URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$('#prop-search').val());
-    else URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40','');
-    URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
-    URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
-    URL = URL.replace('%40%40REPLACE-SORTCOLOMN%40%40',sortColumn);
-    URL = URL.replace('%40%40REPLACE-SORTORDER%40%40',sortOrder);
-
+    var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#proposalPickerTable > tbody').empty();
         var even = true;
@@ -19,12 +13,32 @@ function loadProposals(){
             addToProposalPickerTable(attr,even);
             even = ! even;
         });
+        highlighter();
+        if (data.proposals.length > 0) addPaginationToProposalPickerTable(proposalPickerPage > 0,data.totalCount > ((proposalPickerPage+1) * proposalsPerPage),Math.ceil(data.totalCount / proposalsPerPage));
+    });
+}
+
+/* Update the small badges holding the counter for each tab*/
+function updateTabRibbons(){
+    var URL = replaceURLPlaceholders(proposalPickerCounterURL);
+
+    $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#numberOfProposals').html(data.numberOfProposals);
         $('#numberOfSubscriptions').html(data.numberOfSubscriptions);
         $('#numberOfSupporting').html(data.numberOfSupporting);
-        highlighter();
-        addPaginationToProposalPickerTable(proposalPickerPage > 0,data.totalCount > ((proposalPickerPage+1) * proposalsPerPage),Math.ceil(data.totalCount / proposalsPerPage));
     });
+}
+
+/* Replace the URL placeholders with actual values */
+function replaceURLPlaceholders(rawUrl){
+    var URL = rawUrl.replace('%40%40REPLACE-TYPE%40%40',proposalType).replace('%40%40REPLACE-FILTERKEY%40%40',filterKey);
+    if ($('#prop-search').val() != 'Filter') URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$('#prop-search').val());
+    else URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40','');
+    URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
+    URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
+    URL = URL.replace('%40%40REPLACE-SORTCOLOMN%40%40',sortColumn);
+    URL = URL.replace('%40%40REPLACE-SORTORDER%40%40',sortOrder);
+    return URL;
 }
 
 function addToProposalPickerTable(data, even){
@@ -44,7 +58,7 @@ function addPaginationToProposalPickerTable(prev,next,totalPages){
 var pickerTimer;
 var inputHandler =  function(){
     pickerTimer && clearTimeout(pickerTimer);
-    pickerTimer = setTimeout(loadProposals, 800);
+    pickerTimer = setTimeout(loadProposals, 400);
 }
 
 // SORT ARROWS

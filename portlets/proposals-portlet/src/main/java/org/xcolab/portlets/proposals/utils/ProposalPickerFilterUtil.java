@@ -8,8 +8,14 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 
 
 import java.util.ArrayList;
+
+
 import org.apache.commons.lang3.StringUtils;
 import com.ext.portlet.model.Proposal;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,52 +30,52 @@ public enum ProposalPickerFilterUtil {
     // why are lamdba expressions not supported here?
     ACCEPTALL(new ProposalPickerFilter() {
         @Override
-        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
-            return proposals;
+        public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
+            // do not modify the list
         }
     }),
     TEXTBASED(new ProposalPickerFilter() {
         @Override
-        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
-            List<Proposal> filteredProposals = new ArrayList<>();
-            if (!(additionalFilterCriterion instanceof String)) return filteredProposals;
+        public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
+            if (!(additionalFilterCriterion instanceof String)) return;
             String searchCriterion = (String) additionalFilterCriterion;
-            for (Proposal p : proposals){
+            for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                Proposal p = i.next().getLeft();
                  try{
                      // PROPOSAL NAME
                      String proposalName = ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0l).getStringValue();
                      if (StringUtils.containsIgnoreCase(proposalName,searchCriterion)){
-                         filteredProposals.add(p);
                          continue;
                      }
-
                      // CONTEST NAME
                      String contestName = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestName();
                      if (StringUtils.containsIgnoreCase(contestName,searchCriterion)){
-                         filteredProposals.add(p);
                          continue;
                      }
+                     // Remove element if it does not match any criterion
+                     i.remove();
                  } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
             }
-            return filteredProposals;
+
         }
     }),
     WINNERSONLY(new ProposalPickerFilter() {
         @Override
-        public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion) {
-            List<Proposal> filteredProposals = new ArrayList<>();
-            for (Proposal p : proposals){
+        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
+            for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                Proposal p = i.next().getLeft();
                 try{
                     List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+                    boolean winner = false;
                     for (long phase : phases){
                         try{
                             ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),phase,"RIBBON");
-                            filteredProposals.add(p);
+                            winner = true;
                         }catch (NoSuchProposalContestPhaseAttributeException nspcpae){ /* NO WINNER */ }
                     }
+                    if (!winner) i.remove();
                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
             }
-            return filteredProposals;
         }
     });
 
@@ -84,12 +90,12 @@ public enum ProposalPickerFilterUtil {
     }
 
     // CONVENIENCE METHODS
-    public List<Proposal> filter(List<Proposal> proposals){
-        return this.getProposalPickerFilter().filter(proposals, null);
+    public void filter(List<Pair<Proposal,Date>> proposals){
+        this.getProposalPickerFilter().filter(proposals, null);
     }
 
-    public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion){
-        return this.getProposalPickerFilter().filter(proposals, additionalFilterCriterion);
+    public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion){
+        this.getProposalPickerFilter().filter(proposals, additionalFilterCriterion);
     }
 
     // PARSE FILTER FROM FRONT END PARAMETER
