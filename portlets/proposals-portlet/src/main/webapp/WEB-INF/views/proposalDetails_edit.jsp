@@ -245,7 +245,17 @@
 <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
 <!--  Proposals Picker  -->
-<portlet:resourceURL var="mySubscriptionsURL" id="mySubscriptions">
+<portlet:resourceURL var="proposalPickerURL" id="proposalPicker">
+    <portlet:param name="type" value="@@REPLACE-TYPE@@" />
+    <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+    <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+    <portlet:param name="start" value="@@REPLACE-START@@" />
+    <portlet:param name="end" value="@@REPLACE-END@@" />
+    <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+    <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+</portlet:resourceURL>
+
+<portlet:resourceURL var="proposalPickerCounterURL" id="proposalPickerCounter">
     <portlet:param name="type" value="@@REPLACE-TYPE@@" />
     <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
     <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
@@ -256,12 +266,13 @@
 </portlet:resourceURL>
 
 <script>
-    var mySubscriptionsURL = '${mySubscriptionsURL}';
+    var proposalPickerURL = '${proposalPickerURL}';
+    var proposalPickerCounterURL = '${proposalPickerCounterURL}';
     var filterKey = 'WINNERSONLY';
     var proposalType;
 </script>
 
-<div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:none;">
+<div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:block;">
     <div class="popup">
         <div class="closepopuplogin">
             <a href="javascript:;" onclick="jQuery('#popup_login').hide()">
@@ -303,7 +314,7 @@
                             <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by proposal name <div class="tt-arrow"></div></div>
                         </td>
                         <td style="width: 15%;">
-                            <a href="javascript:;" onclick="sortByColumn($(this), 'dateSubscribed');">Subscribed</a>
+                            <a href="javascript:;" onclick="sortByColumn($(this), 'date');">Subscribed</a>
                             <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by date subscribed <div class="tt-arrow"></div></div>
                         </td>
                         <td></td>

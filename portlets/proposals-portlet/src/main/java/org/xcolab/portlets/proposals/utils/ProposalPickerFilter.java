@@ -1,7 +1,9 @@
 package org.xcolab.portlets.proposals.utils;
 
+import java.util.Date;
 import java.util.List;
 import com.ext.portlet.model.Proposal;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +13,5 @@ import com.ext.portlet.model.Proposal;
  * To change this template use File | Settings | File Templates.
  */
 public interface ProposalPickerFilter {
-    public List<Proposal> filter(List<Proposal> proposals, Object additionalFilterCriterion);
+    public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion);
 }
