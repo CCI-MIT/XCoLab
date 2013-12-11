@@ -139,7 +139,10 @@ public class ProposalSectionWrapper {
             return 0;
         }
         return attr.getNumericValue();
+    }
 
+    public String getStringValue() throws SystemException, PortalException {
+        return getSectionAttribute().getStringValue();
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {

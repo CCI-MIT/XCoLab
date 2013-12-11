@@ -154,6 +154,18 @@ public class AddUpdateProposalDetailsActionController {
                 	filledAll = false;
                 }
             }
+            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
+                if (StringUtils.isNumeric(newSectionValue)) ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), Long.parseLong(newSectionValue));
+            }
+            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
+                // check if all parts are numeric
+                String[]referencedProposals = newSectionValue.split(",");
+                String cleanedReferences = "";
+                for (int i = 0; i < referencedProposals.length; i++){
+                    if(StringUtils.isNumeric(referencedProposals[i])) cleanedReferences += Long.parseLong(referencedProposals[i]) + ",";
+                }
+                ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.substring(0, cleanedReferences.length() - 1));
+            }
         }
 
         int analyticsValue = 0;

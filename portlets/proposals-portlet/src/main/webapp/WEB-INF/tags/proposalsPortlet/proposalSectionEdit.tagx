@@ -41,25 +41,32 @@
                 <c:set var="p" value="${section.numericValueAsProposal }" />
                 <c:choose>
                     <c:when test="${empty p  }">
-                        Value not set.
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
                     </c:when>
                     <c:otherwise>
-                        <collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" /> in Contest ${p.contest.contestShortName}
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
+                        <span><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
+                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span>
                     </c:otherwise>
                 </c:choose>
+                <a href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId});">Select Proposal</a>
             </c:when>
             <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
                 <c:set var="pl" value="${section.stringValueAsProposalArray }" />
                 <c:choose>
                     <c:when test="${empty pl  }">
-                        Value not set.
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
                     </c:when>
                     <c:otherwise>
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${section.stringValue}," />
+                        <ul>
                         <c:forEach var="p" items="${pl}">
-                            <li><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" /> in Contest ${p.contest.contestShortName}</li>
+                            <li><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" /> (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)</li>
                         </c:forEach>
+                        </ul>
                     </c:otherwise>
                 </c:choose>
+                <a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Select Proposal</a>
             </c:when>
 
 
