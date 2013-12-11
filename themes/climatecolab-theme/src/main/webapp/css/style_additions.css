@@ -832,7 +832,7 @@ display: inline;
 	width:432px;
 	margin-left:-216px;
 }  
-.popup .error-message {
+.popup .error-message, .error-message-registerOrLogin {
     border: 1px dashed #f00;
     background: #ffeeee;
 }
@@ -842,7 +842,7 @@ display: inline;
     background: #eeeeff;
 }
 
-.popup .error-message, .popup .popup-message {
+.popup .error-message, .popup .popup-message, .error-message-registerOrLogin {
     border-left: 0;
     border-right: 0;
     padding: 10px 10px;
@@ -850,7 +850,7 @@ display: inline;
 }
 
 
-.popup .error-message p, .popup .popup-message p {
+.popup .error-message p, .popup .popup-message p, .error-message-registerOrLogin p {
 	margin: 0;
 }
 

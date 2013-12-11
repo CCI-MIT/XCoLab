@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+    <route>
+        <pattern>/SSO/facebook</pattern>
+        <generated-parameter name="SSO">facebook</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">fbCallback</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/SSO/google</pattern>
+        <implicit-parameter name="SSO">google</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">initiateOpenIdLogin</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/SSO/google/readresponse</pattern>
+        <implicit-parameter name="SSO">google</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">readOpenIdResponse</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/SSO/registerOrLogin</pattern>
+        <generated-parameter name="SSO">general</generated-parameter>
+        <generated-parameter name="status">registerOrLogin</generated-parameter>
+    </route>
+</routes>

@@ -17,7 +17,11 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
+
 	<div class="popupreg_form">
+
+
+
 		<div class="popupreg_head">
 			<h1>Join the CoLab</h1>
 		</div>
@@ -137,6 +141,7 @@
 						</div></td>
 				</tr>
 
+                <c:if test="${ createUserBean.captchaNeeded }">
 				<tr>
 					<th nowrap="nowrap">Retype the numbers <img
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
@@ -150,7 +155,7 @@
 						</div>
 					</td>
 				</tr>
-
+                </c:if>
 				<tr>
 					<th nowrap="nowrap">Terms of use</th>
 					<td class="popupreg_terms-right" colspan="3">By registering

@@ -52,6 +52,8 @@ public class CreateUserBean implements Serializable{
 
     private String captchaText;
 
+    private boolean isCaptchaNeeded = true;
+
 	/**
 	 * @return the imageId
 	 */
@@ -168,5 +170,13 @@ public class CreateUserBean implements Serializable{
 
     public void setCaptchaText(String captchaText) {
         this.captchaText = captchaText;
+    }
+
+    public boolean getCaptchaNeeded() {
+        return isCaptchaNeeded;
+    }
+
+    public void setCaptchaNeeded(boolean captchaNeeded) {
+        isCaptchaNeeded = captchaNeeded;
     }
 }

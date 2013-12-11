@@ -2,12 +2,7 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
@@ -26,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
-import org.xcolab.utils.PropertiesUtils;
+import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.liferay.portal.kernel.captcha.CaptchaException;
@@ -111,11 +106,34 @@ public class MainViewController {
 		if (themeDisplay.isSignedIn()) {
 			return "signedIn_logout";
 		} else {
-			model.addAttribute("createUserBean", new CreateUserBean());
+
 			model.addAttribute("redirect", HtmlUtil.escape(redirect));
+
+            // append SSO attributes
+            CreateUserBean userBean = new CreateUserBean();
+            getSSOUserInfo(request.getPortletSession(),userBean);
+            model.addAttribute("createUserBean", userBean);
 		}
 		return "view";
 	}
+
+    private void getSSOUserInfo(PortletSession portletSession, CreateUserBean createUserBean){
+        // append SSO attributes from session
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID ,PortletSession.APPLICATION_SCOPE);
+        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+        String firstName = (String) portletSession.getAttribute(SSOKeys.SSO_FIRST_NAME,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_FIRST_NAME,PortletSession.APPLICATION_SCOPE);
+        String lastName = (String) portletSession.getAttribute(SSOKeys.SSO_LAST_NAME,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_LAST_NAME,PortletSession.APPLICATION_SCOPE);
+        String eMail = (String) portletSession.getAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
+        if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )&& StringUtils.isNotBlank(eMail)){
+            createUserBean.setFirstName(firstName);
+            createUserBean.setLastName(lastName);
+            createUserBean.setEmail(eMail);
+            createUserBean.setCaptchaNeeded(false);
+        }
+    }
 	
 
     @RequestMapping(params = "captcha=true")
@@ -148,14 +166,20 @@ public class MainViewController {
 			@RequestParam(required = false) String redirect) {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
+        PortletSession portletSession = request.getPortletSession();
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
 		
 		if (!result.hasErrors()) {
 		    boolean captchaValid = true;
-		    try {
-		        CaptchaUtil.check(request);
-		    }
-		    catch (CaptchaException e) {
-                captchaValid = false;
+            // require capcha if user is not logged in via SSO
+		    if (fbIdString == null && openId == null){
+                try {
+                    CaptchaUtil.check(request);
+                }
+                catch (CaptchaException e) {
+                    captchaValid = false;
+                }
             }
 			if (!captchaValid) {
 				SessionErrors.clear(request);
@@ -220,6 +244,29 @@ public class MainViewController {
 					            CommunityConstants.RED_BALLOON, user.getUserId(), balloonCookie.getUuid());
 					}
 
+                    // SSO
+                    if (StringUtils.isNotBlank(fbIdString)){
+                        try{
+                            long fbId = Long.parseLong(fbIdString);
+                            user.setFacebookId(fbId);
+                            UserLocalServiceUtil.updateUser(user);
+                            portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+                            redirect = null;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if (StringUtils.isNotBlank(openId)){
+                        try{
+                            user.setOpenId(openId);
+                            UserLocalServiceUtil.updateUser(user);
+                            portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+                            redirect = null;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
 					if (newAccountBean.getImageId() != null
 							&& newAccountBean.getImageId().length() > 0) {
 						Image img = ImageLocalServiceUtil.getImage(Long
@@ -276,6 +323,5 @@ public class MainViewController {
 	    
 	    CaptchaUtil.serveImage(request, response);
 	}
-
 
 }

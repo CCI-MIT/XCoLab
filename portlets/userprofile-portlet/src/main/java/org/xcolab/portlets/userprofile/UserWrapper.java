@@ -1,8 +1,32 @@
 package org.xcolab.portlets.userprofile;
 
-import com.ext.portlet.community.CommunityConstants;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import javax.faces.event.ActionEvent;
+import javax.imageio.ImageIO;
+import javax.mail.internet.InternetAddress;
+
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
+import com.liferay.util.mail.MailEngine;
+import org.apache.commons.io.FileUtils;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.xcolab.commons.utils.PwdEncryptor;
+
+import com.ext.portlet.community.CommunityConstants;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,27 +45,6 @@ import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import com.liferay.util.mail.MailEngine;
-import org.apache.commons.io.FileUtils;
-import org.icefaces.ace.component.fileentry.FileEntry;
-import org.icefaces.ace.component.fileentry.FileEntryEvent;
-import org.icefaces.ace.component.fileentry.FileEntryResults;
-import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
-
-import javax.faces.event.ActionEvent;
-import javax.imageio.ImageIO;
-import javax.mail.internet.InternetAddress;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 public class UserWrapper implements Serializable {
 
@@ -106,7 +109,7 @@ public class UserWrapper implements Serializable {
         }
 
         supportedPlans.clear();
-        for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+        for(Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
             ProposalSupporter ps = (ProposalSupporter) o;
             try {
                 supportedPlans.add(new SupportedPlanBean(ps));
@@ -121,7 +124,7 @@ public class UserWrapper implements Serializable {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
             UserActivityBean a = new UserActivityBean(activity);
-            if (a.getBody() != null && !a.getBody().equals(""))
+            if(a.getBody() !=null && !a.getBody().equals(""))
                 userActivities.add(a);
         }
 
@@ -319,7 +322,7 @@ public class UserWrapper implements Serializable {
         }
 
 
-        if (changedExpando || changedUserPart) {
+        if(changedExpando || changedUserPart) {
             fireGoogleEvent = !profileWasComplete && profileIsComplete();
         }
 
@@ -381,6 +384,14 @@ public class UserWrapper implements Serializable {
 
     public Long getUserId() {
         return user.getUserId();
+    }
+
+    public boolean getHasFacebookId() {
+        return user.getFacebookId() != 0;
+    }
+
+    public boolean getHasOpenId() {
+        return (user.getOpenId() != null && !user.getOpenId().isEmpty());
     }
 
     public String getUploadedFileName() throws UnsupportedEncodingException {

@@ -151,17 +151,14 @@
   <div class="loginpop" id="loginPopupContainer">
    <div class="logintop"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
    <div class="loginbox">
-    <!--
+
     <div class="loginwith">
-     Login with: &nbsp;
-     <a href="javascript:;"><img src="$images_folder/icon-login-twitter.png" width="24" height="24" alt="Twitter" /></a>
-     <a href="javascript:;"><img src="$images_folder/icon-login-facebook.png" width="24" height="24" alt="Facebook" /></a>
-     <a href="javascript:;"><img src="$images_folder/icon-login-google.png" width="24" height="24" alt="Google" /></a>
-     <span><a href="javascript">other &raquo;</a></span>
+     <a href="$facebookAuthURL" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
+     <a href="/web/guest/loginregister/-/login/SSO/google" class="sketchy-icon google-sketchy"><span>Google</span></a>
     </div>
-    -->
-    use your username &amp; password
-    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true">
+    <div class="loginwith-del"></div><div class="loginwith-or">OR</div><div class="loginwith-del"></div>
+    <div class="clearfix"></div>
+    <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true" style="margin-top: 10px;">
      <input name="login" type="text" class="username" placeholder="username"  />
      <input name="password" type="password" class="password" placeholder="password" />
      <input name="redirect" type="hidden" />

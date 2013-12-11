@@ -4,7 +4,7 @@ import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.userprofile.UserWrapper;
-import org.xcolab.portlets.userprofile.utils.PwdEncryptor;
+import org.xcolab.commons.utils.PwdEncryptor;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -43,7 +43,6 @@ public class UserPasswordValidator implements Validator {
                     errorMsg.setSummary("Invalid password");
                 }
             } catch (PwdEncryptorException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 isError = true;
                 errorMsg.setDetail("Invalid password");
