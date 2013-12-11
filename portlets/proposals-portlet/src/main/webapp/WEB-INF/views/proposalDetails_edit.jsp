@@ -268,14 +268,14 @@
 <script>
     var proposalPickerURL = '${proposalPickerURL}';
     var proposalPickerCounterURL = '${proposalPickerCounterURL}';
-    var filterKey = 'WINNERSONLY';
+    var filterKey = 'ACCEPTALL';
     var proposalType;
 </script>
 
-<div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:block;">
+<div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:none;">
     <div class="popup">
         <div class="closepopuplogin">
-            <a href="javascript:;" onclick="jQuery('#popup_login').hide()">
+            <a href="javascript:;" onclick="jQuery('#popup_proposalPicker').hide()">
                 <img src="http://localhost:8080/climatecolab-theme/images/help_close.png" width="20" height="20"
                      alt="X"/>
             </a>

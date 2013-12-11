@@ -2,6 +2,8 @@ var proposalsPerPage = 5;
 var proposalPickerPage = 0;
 var sortOrder = 'ASC';
 var sortColumn = 'Contest';
+var currentSectionId;
+var pickMultipleProposals = false;
 
 /* Load Proposals for a given tab (determined by var) */
 function loadProposals(){
@@ -51,8 +53,62 @@ function proposalPickerTabSelected(element, type){
     loadProposals();
 }
 
+
+/* Pick just a single proposal */
+function pickProposal(sectionId){
+    currentSectionId = sectionId;
+    pickMultipleProposals = false;
+    updateTabRibbons();
+    loadProposals();
+    $('#popup_proposalPicker').show();
+}
+
+/* Pick a list of proposals */
+function pickProposalList(sectionId){
+    currentSectionId = sectionId;
+    pickMultipleProposals = true;
+    updateTabRibbons();
+    loadProposals();
+    $('#popup_proposalPicker').show();
+}
+
+/* click "select" in the picker */
+function selectProposal(proposalId, proposalName, contestName){
+    var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
+    if(pickMultipleProposals) {
+        if($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
+            inputField.val(inputField.val() + proposalId + ',');
+            inputField.siblings('ul').append('<li>' + proposalName + '(<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+        }
+    } else{
+        if (inputField.val()) inputField.next().remove();
+        inputField.val(proposalId);
+        inputField.after('<span>' + proposalName + '(<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
+        $('#popup_proposalPicker').hide();
+    }
+}
+
+/* Remove picked proposal from list or single field */
+function removePickedProposal(sectionId,proposalId,element, multipleProposals){
+    var inputField = $("input[name='sectionsContent[" + sectionId + "]']");
+    if (multipleProposals){
+        var proposalIds = inputField.val().split(',');
+        var output = "";
+        proposalIds.splice( $.inArray(proposalId.toString(), proposalIds), 1 );
+        for (var i = 0; i < (proposalIds.length - 1); i++){
+            output +=  proposalIds[i] + ',';
+        }
+        inputField.val(output);
+        element.parent().remove();
+    } else{
+        inputField.val('');
+        element.parent().remove();
+    }
+
+}
+
 function addToProposalPickerTable(data, even){
-    $('#proposalPickerTable > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td>' + data.contestName + '</td><td>' + data.proposalName + '</td><td>' + dateTimeFormatter.date(data.dateSubscribed) + '</td><td style="text-align: center;">' + '<a href="#">choose</a>' + '</td></tr>');
+    $('#proposalPickerTable > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + '"><td>' + data.contestName + '</td><td>' + data.proposalName + '</td><td>' + dateTimeFormatter.date(data.dateSubscribed) + '</td><td style="text-align: center;">' + '<a href="javascript:;" onclick="selectProposal(' + data.id + ',\'' + data.proposalName + ',' + data.contestName + '\');">choose</a>' + '</td></tr>');
 }
 
 
@@ -64,6 +120,8 @@ function addPaginationToProposalPickerTable(prev,next,totalPages){
     output += '</span>';
     $('#proposalPickerTable > tbody').append('<tr><td colspan="4" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
+
+
 
 var pickerTimer;
 var inputHandler =  function(){
