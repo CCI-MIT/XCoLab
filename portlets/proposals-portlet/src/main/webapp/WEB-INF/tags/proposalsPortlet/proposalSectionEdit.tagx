@@ -46,10 +46,10 @@
                     <c:otherwise>
                         <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
                         <span><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
-                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span>
+                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
                     </c:otherwise>
                 </c:choose>
-                <a href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId});">Select Proposal</a>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId});">Select Proposal</a></div>
             </c:when>
             <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
                 <c:set var="pl" value="${section.stringValueAsProposalArray }" />
@@ -66,7 +66,7 @@
                         </ul>
                     </c:otherwise>
                 </c:choose>
-                <a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Select Proposal</a>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Add Proposals</a></div>
             </c:when>
 
 

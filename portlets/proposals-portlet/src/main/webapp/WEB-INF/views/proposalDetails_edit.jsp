@@ -253,6 +253,7 @@
     <portlet:param name="end" value="@@REPLACE-END@@" />
     <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
     <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+    <portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
 </portlet:resourceURL>
 
 <portlet:resourceURL var="proposalPickerCounterURL" id="proposalPickerCounter">
@@ -263,6 +264,7 @@
     <portlet:param name="end" value="@@REPLACE-END@@" />
     <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
     <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+    <portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
 </portlet:resourceURL>
 
 <script>

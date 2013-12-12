@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -76,6 +77,13 @@ public enum ProposalPickerFilterUtil {
                     if (!winner) i.remove();
                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
             }
+        }
+    }),
+    ONTOLOGY(new ProposalPickerFilter() {
+        @Override
+        public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
+            long sectionId = Long.parseLong((String) additionalFilterCriterion);
+            /* ToDo */
         }
     });
 

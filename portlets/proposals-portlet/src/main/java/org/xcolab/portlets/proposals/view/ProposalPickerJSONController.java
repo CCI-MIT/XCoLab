@@ -50,6 +50,7 @@ public class ProposalPickerJSONController {
         int end = Integer.parseInt(request.getParameter("end"));
         String sortOrder =  request.getParameter("sortOrder");
         String sortColumn =  request.getParameter("sortColumn");
+        String sectionId =  request.getParameter("sectionId");
 
         String user = request.getRemoteUser();
 
@@ -68,12 +69,12 @@ public class ProposalPickerJSONController {
             }
         } else if(requestType.equalsIgnoreCase("all")){
             for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)){
-                proposals.add(Pair.of(p,new Date()));
+                proposals.add(Pair.of(p,new Date(0)));
             }
         }
 
-
         ProposalPickerFilterUtil.getFilterByParameter(filterType).filter(proposals);
+        ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
         if (filterText != null && filterText.length() > 0) ProposalPickerFilterUtil.TEXTBASED.filter(proposals,filterText);
         int totalCount = proposals.size();
 
