@@ -53,7 +53,7 @@ function proposalPickerTabSelected(element, type){
     element.parent().addClass('c'); proposalPickerPage = 0;
     // check if date should be displayed
     if (type == 'all'){
-        $('#proposalPickerTable > thead > tr > td:nth-child(3) > a').hide();
+        $('#proposalPickerTable > thead > tr > td:nth-child(3)').children().hide();
     } else {
         $('#proposalPickerTable > thead > tr > td:nth-child(3) > a').show();
     }
@@ -66,8 +66,8 @@ function pickProposal(sectionId){
     currentSectionId = sectionId;
     pickMultipleProposals = false;
     updateTabRibbons();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'subscriptions');
     $('#popup_proposalPicker').show();
+    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'subscriptions');
 }
 
 /* Pick a list of proposals */
@@ -75,8 +75,8 @@ function pickProposalList(sectionId){
     currentSectionId = sectionId;
     pickMultipleProposals = true;
     updateTabRibbons();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'subscriptions');
     $('#popup_proposalPicker').show();
+    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'subscriptions');
 }
 
 /* click "select" in the picker */
