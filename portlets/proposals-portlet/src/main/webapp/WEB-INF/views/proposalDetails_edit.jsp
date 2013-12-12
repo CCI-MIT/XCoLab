@@ -13,7 +13,7 @@
 <jsp:directive.include file="./proposalDetails/header.jspx" />
 
 <style>
-    em {
+    td em {
         background: #000; border-radius: 5px; font-style: normal;
         box-shadow: 0 0 2px #000;
     }

@@ -899,7 +899,7 @@ display: inline;
 	
 }
 
-.historyTable .ui-datatable-highlighted a {
+.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
     color: #66b035 !important;
 }
 
