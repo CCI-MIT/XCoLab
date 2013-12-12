@@ -51,30 +51,18 @@ public class ProposalPickerJSONController {
         String sortOrder =  request.getParameter("sortOrder");
         String sortColumn =  request.getParameter("sortColumn");
         String sectionId =  request.getParameter("sectionId");
-
         String user = request.getRemoteUser();
 
-        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        List<Pair<Proposal, Date>> proposals = null;
 
         if (requestType.equalsIgnoreCase("subscriptions")){
-            List <ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(Long.parseLong(user));
-            for (ActivitySubscription as : activitySubscriptions){
-                if (as.getClassNameId() == ClassNameLocalServiceUtil.getClassNameId(Proposal.class)){
-                    proposals.add(Pair.of(ProposalLocalServiceUtil.getProposal(as.getClassPK()),as.getCreateDate()));
-                }
-            }
+            proposals = getFilteredSubscribedProposalsForUser(Long.parseLong(user), filterType, Long.parseLong(sectionId));
         } else if(requestType.equalsIgnoreCase("supporting")){
-            for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(Long.parseLong(user))){
-                proposals.add(Pair.of(ProposalLocalServiceUtil.getProposal(ps.getProposalId()),ps.getCreateDate()));
-            }
+            proposals = getFilteredSupportingProposalsForUser(Long.parseLong(user),filterType,Long.parseLong(sectionId));
         } else if(requestType.equalsIgnoreCase("all")){
-            for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)){
-                proposals.add(Pair.of(p,new Date(0)));
-            }
+            proposals = getFilteredAllProposalsForUser(Long.parseLong(user),filterType,Long.parseLong(sectionId));
         }
 
-        ProposalPickerFilterUtil.getFilterByParameter(filterType).filter(proposals);
-        ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
         if (filterText != null && filterText.length() > 0) ProposalPickerFilterUtil.TEXTBASED.filter(proposals,filterText);
         int totalCount = proposals.size();
 
@@ -92,9 +80,13 @@ public class ProposalPickerJSONController {
      */
     @ResourceMapping("proposalPickerCounter")
     public void proposalPickerCounter(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
-        int numberOfSubscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(Long.parseLong(request.getRemoteUser())).size();
-        int numberOfSupporting = ProposalSupporterLocalServiceUtil.getProposals(Long.parseLong(request.getRemoteUser())).size();
-        int numberOfProposals = ProposalLocalServiceUtil.getProposalsCount();
+        String filterType = request.getParameter("filterKey");
+        long sectionId =  Long.parseLong(request.getParameter("sectionId"));
+        long userId = Long.parseLong(request.getRemoteUser());
+
+        int numberOfSubscriptions = getFilteredSubscribedProposalsForUser(userId,filterType,sectionId).size();
+        int numberOfSupporting = getFilteredSupportingProposalsForUser(userId,filterType,sectionId).size();
+        int numberOfProposals = getFilteredAllProposalsForUser(userId,filterType,sectionId).size();
         JSONObject wrapper = JSONFactoryUtil.createJSONObject();
         wrapper.put("numberOfSubscriptions",numberOfSubscriptions);
         wrapper.put("numberOfSupporting",numberOfSupporting);
@@ -160,5 +152,38 @@ public class ProposalPickerJSONController {
 
 
         if (sortOrder.equalsIgnoreCase("DESC")) Collections.reverse(proposals);
+    }
+
+    private List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(long userId, String filterKey, long sectionId) throws SystemException, PortalException  {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        List<ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
+        for (ActivitySubscription as : activitySubscriptions) {
+            if (as.getClassNameId() == ClassNameLocalServiceUtil.getClassNameId(Proposal.class)) {
+                proposals.add(Pair.of(ProposalLocalServiceUtil.getProposal(as.getClassPK()), as.getCreateDate()));
+            }
+        }
+        ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(proposals);
+        ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
+        return proposals;
+    }
+
+    private List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(long userId, String filterKey, long sectionId) throws SystemException, PortalException  {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(userId)){
+            proposals.add(Pair.of(ProposalLocalServiceUtil.getProposal(ps.getProposalId()),ps.getCreateDate()));
+        }
+        ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(proposals);
+        ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
+        return proposals;
+    }
+
+    private List<Pair<Proposal, Date>> getFilteredAllProposalsForUser(long userId, String filterKey, long sectionId) throws SystemException, PortalException  {
+        List<Pair<Proposal, Date>> proposals = new ArrayList<>();
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)){
+            proposals.add(Pair.of(p,new Date(0)));
+        }
+        ProposalPickerFilterUtil.getFilterByParameter(filterKey).filter(proposals);
+        ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
+        return proposals;
     }
 }

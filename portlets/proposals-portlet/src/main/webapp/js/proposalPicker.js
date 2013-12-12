@@ -9,6 +9,7 @@ var pickMultipleProposals = false;
 function loadProposals(){
     spinner.spin(document.getElementById('proposalPickerTableContainer'));
     var URL = replaceURLPlaceholders(proposalPickerURL);
+    console.log(URL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#proposalPickerTable > tbody').empty();
         var even = true;
