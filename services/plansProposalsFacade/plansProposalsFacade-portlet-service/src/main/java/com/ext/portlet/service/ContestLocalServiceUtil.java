@@ -511,6 +511,7 @@ public class ContestLocalServiceUtil {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static int getNumberOfProposalsForJudge(
         com.liferay.portal.model.User u, com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -528,6 +529,13 @@ public class ContestLocalServiceUtil {
 >>>>>>> added service builder
 =======
 >>>>>>> rollback
+=======
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsMatchingOntologyTerms(ontologyTerms);
+>>>>>>> fixed service builder
     }
 
     public static void clearService() {

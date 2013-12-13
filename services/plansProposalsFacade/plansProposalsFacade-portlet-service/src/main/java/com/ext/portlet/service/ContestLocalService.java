@@ -426,6 +426,7 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
 =======
@@ -436,6 +437,10 @@ public interface ContestLocalService extends BaseLocalService,
     public java.util.List<Contest> getContestsMatchingOntologyTerms(
         java.util.List<OntologyTerm> ontologyTerms)
 >>>>>>> rollback
+=======
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+>>>>>>> fixed service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }
