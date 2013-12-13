@@ -14,6 +14,7 @@ import java.util.Set;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.discussions.DiscussionActions;
+<<<<<<< HEAD
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.model.ContestPhase;
@@ -41,8 +42,17 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+=======
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
+>>>>>>> added new service method for sorting by ontology
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -91,6 +101,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Random rand = new Random();
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
+
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+    private static ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+            ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
 
     public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
         return contestPersistence.findBycontestActive(contestActive);
@@ -497,6 +511,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
     }
 
+<<<<<<< HEAD
     public int getNumberOfProposalsForJudge(User u, Contest c) throws PortalException, SystemException{
         long lastContestPhase = ContestPhaseLocalServiceUtil.getPhasesForContest(c).get(ContestPhaseLocalServiceUtil.getPhasesForContest(c).size()-1).getContestPhasePK();
 
@@ -510,5 +525,44 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             if (StringUtils.containsIgnoreCase(judges,u.getUserId()+"")) counter++;
         }
         return counter;
+=======
+    public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
+        // remove terms that are root elements
+        for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
+            OntologyTerm o = i.next();
+            if (o.getParentId() == 0) i.remove();
+        }
+        Long[][] terms = new Long[ontologyTerms.size()][];
+        // get all child elements and add id's to array
+        int i = 0;
+        for (OntologyTerm ot : ontologyTerms){
+            List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getChildTerms(ot); /* TODO Recursiv*/
+            terms[i] = new Long[childTerms.size()];
+            int k = 0;
+            for (OntologyTerm child : childTerms){
+                terms[i][k] = child.getId();
+                k++;
+            }
+            i++;
+        }
+        // for each first dimension execute a query
+        List<Contest>[] contestsMatchingTerms = new List[terms.length];
+        for (int l=0; l<terms.length; l++){
+            DynamicQuery dq =  DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, portletClassLoader);
+            dq.add(PropertyFactoryUtil.forName("ontologyTermId").in(terms[l]));
+            dq.setProjection(ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("focusAreaId")));
+            //FocusAreaOntologyTermLocalServiceUtil.dynamicQuery(dq);
+
+            DynamicQuery contestQuery =  DynamicQueryFactoryUtil.forClass(Contest.class, portletClassLoader);
+            contestQuery.add(PropertyFactoryUtil.forName("focusAreaId").in(dq));
+            contestsMatchingTerms[l] = ContestLocalServiceUtil.dynamicQuery(contestQuery);
+        }
+
+        for (int m=0; m<terms.length; m++){
+            contestsMatchingTerms[0].retainAll(contestsMatchingTerms[m]);
+        }
+
+        return contestsMatchingTerms[0];
+>>>>>>> added new service method for sorting by ontology
     }
 }
