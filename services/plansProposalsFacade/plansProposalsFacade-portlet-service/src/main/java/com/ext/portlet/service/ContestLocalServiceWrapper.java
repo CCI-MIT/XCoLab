@@ -809,6 +809,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
@@ -827,6 +828,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 >>>>>>> added service builder
 =======
 >>>>>>> rollback
+=======
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
+>>>>>>> fixed service builder
     }
 
     /**

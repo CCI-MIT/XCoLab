@@ -569,9 +569,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _getContestsMatchingOntologyTermsMethodKey53 = new MethodKey(_classLoaderProxy.getClassName(),
                 "getContestsMatchingOntologyTerms", java.util.List.class);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> added service builder
 =======
 >>>>>>> rollback
+=======
+>>>>>>> fixed service builder
     }
 
     @Override
@@ -2522,6 +2525,37 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return (java.util.List<Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getContestsMatchingOntologyTermsMethodKey53,
+                ClpSerializer.translateInput(ontologyTerms));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {
