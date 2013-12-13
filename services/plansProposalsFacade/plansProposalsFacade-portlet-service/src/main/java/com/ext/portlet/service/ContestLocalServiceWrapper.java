@@ -263,6 +263,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -279,11 +280,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public Contest getContestByActiveFlag(boolean contestActive)
 >>>>>>> rollback
+=======
+    public Contest getContestByActiveFlag(boolean contestActive)
+>>>>>>> service builder
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestByActiveFlag(contestActive);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -295,6 +300,9 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public Contest createNewContest(java.lang.Long userId, java.lang.String name)
 >>>>>>> rollback
+=======
+    public Contest createNewContest(java.lang.Long userId, java.lang.String name)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.createNewContest(userId, name);
@@ -309,6 +317,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
@@ -320,10 +329,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     public java.util.List<Contest> findByActiveFeatured(boolean active,
         boolean featured)
 >>>>>>> rollback
+=======
+    public java.util.List<Contest> findByActiveFeatured(boolean active,
+        boolean featured)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFeatured(active, featured);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -335,10 +349,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.util.List<Contest> findByActiveFlag(boolean active, int flag)
 >>>>>>> rollback
+=======
+    public java.util.List<Contest> findByActiveFlag(boolean active, int flag)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFlag(active, flag);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -352,6 +370,10 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     public java.util.List<Contest> findByActiveFlagText(boolean active,
         java.lang.String flagText)
 >>>>>>> rollback
+=======
+    public java.util.List<Contest> findByActiveFlagText(boolean active,
+        java.lang.String flagText)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFlagText(active, flagText);
     }
@@ -359,6 +381,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     /**
     * Methods from ContestImpl *
     */
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -384,11 +407,19 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 
     public PlanType getPlanType(Contest contest)
 >>>>>>> rollback
+=======
+    public java.util.List<ContestPhase> getPhases(Contest contest) {
+        return _contestLocalService.getPhases(contest);
+    }
+
+    public PlanType getPlanType(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getPlanType(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -400,11 +431,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.util.List<ContestPhase> getActivePhases(Contest contest)
 >>>>>>> rollback
+=======
+    public java.util.List<ContestPhase> getActivePhases(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhases(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -416,11 +451,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public ContestPhase getActivePhase(Contest contest)
 >>>>>>> rollback
+=======
+    public ContestPhase getActivePhase(Contest contest)
+>>>>>>> service builder
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhase(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -432,11 +471,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public ContestPhase getActiveOrLastPhase(Contest contest)
 >>>>>>> rollback
+=======
+    public ContestPhase getActiveOrLastPhase(Contest contest)
+>>>>>>> service builder
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActiveOrLastPhase(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -447,10 +490,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public boolean isActive(Contest contest)
 >>>>>>> rollback
+=======
+    public boolean isActive(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.isActive(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -462,10 +509,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.util.List<java.lang.Long> getDebatesIds(Contest contest)
 >>>>>>> rollback
+=======
+    public java.util.List<java.lang.Long> getDebatesIds(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDebatesIds(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -477,10 +528,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.lang.Integer getTotalVotes(Contest contest)
 >>>>>>> rollback
+=======
+    public java.lang.Integer getTotalVotes(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTotalVotes(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -494,10 +549,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     public void updateDefaultPlanDescription(Contest contest,
         java.lang.String description)
 >>>>>>> rollback
+=======
+    public void updateDefaultPlanDescription(Contest contest,
+        java.lang.String description)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.updateDefaultPlanDescription(contest, description);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -508,10 +568,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public void store(Contest contest)
 >>>>>>> rollback
+=======
+    public void store(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.store(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -523,11 +587,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public PlanTemplate getPlanTemplate(Contest contest)
 >>>>>>> rollback
+=======
+    public PlanTemplate getPlanTemplate(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getPlanTemplate(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -539,11 +607,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public FocusArea getFocusArea(Contest contest)
 >>>>>>> rollback
+=======
+    public FocusArea getFocusArea(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getFocusArea(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -555,11 +627,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public com.liferay.portal.model.Image getLogo(Contest contest)
 >>>>>>> rollback
+=======
+    public com.liferay.portal.model.Image getLogo(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getLogo(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -571,11 +647,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public com.liferay.portal.model.Image getSponsorLogo(Contest contest)
 >>>>>>> rollback
+=======
+    public com.liferay.portal.model.Image getSponsorLogo(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSponsorLogo(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -587,12 +667,16 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public void setLogo(Contest contest, java.io.File logoFile)
 >>>>>>> rollback
+=======
+    public void setLogo(Contest contest, java.io.File logoFile)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         _contestLocalService.setLogo(contest, logoFile);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -604,12 +688,16 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public void setSponsorLogo(Contest contest, java.io.File logoFile)
 >>>>>>> rollback
+=======
+    public void setSponsorLogo(Contest contest, java.io.File logoFile)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         _contestLocalService.setSponsorLogo(contest, logoFile);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -620,11 +708,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.lang.String getLogoPath(Contest contest)
 >>>>>>> rollback
+=======
+    public java.lang.String getLogoPath(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getLogoPath(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -636,11 +728,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.lang.String getSponsorLogoPath(Contest contest)
 >>>>>>> rollback
+=======
+    public java.lang.String getSponsorLogoPath(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSponsorLogoPath(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -651,11 +747,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public long getProposalsCount(Contest contest)
 >>>>>>> rollback
+=======
+    public long getProposalsCount(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalsCount(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -667,11 +767,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest)
 >>>>>>> rollback
+=======
+    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDiscussionCategoryGroup(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -682,11 +786,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public long getCommentsCount(Contest contest)
 >>>>>>> rollback
+=======
+    public long getCommentsCount(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getCommentsCount(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -697,11 +805,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public long getProposalsCommentsCount(Contest contest)
 >>>>>>> rollback
+=======
+    public long getProposalsCommentsCount(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalsCommentsCount(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -712,11 +824,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public long getVotesCount(Contest contest)
 >>>>>>> rollback
+=======
+    public long getVotesCount(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getVotesCount(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -727,11 +843,15 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public long getTotalComments(Contest contest)
 >>>>>>> rollback
+=======
+    public long getTotalComments(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTotalComments(contest);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     @Override
@@ -743,6 +863,9 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
     public java.util.List<ContestTeamMember> getTeamMembers(Contest contest)
 >>>>>>> rollback
+=======
+    public java.util.List<ContestTeamMember> getTeamMembers(Contest contest)
+>>>>>>> service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTeamMembers(contest);
     }
@@ -810,6 +933,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
@@ -829,8 +953,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
 =======
 >>>>>>> rollback
 =======
+=======
+>>>>>>> service builder
     public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+=======
+    public java.util.List<Contest> getContestsMatchingOntologyTerms(
+        java.util.List<OntologyTerm> ontologyTerms)
+>>>>>>> 69efe520051cd256c40af7d81fb2b9ec8060eec4
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
