@@ -261,6 +261,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         _contestLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+<<<<<<< HEAD
     @Override
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -271,14 +272,21 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
+=======
+    public Contest getContestByActiveFlag(boolean contestActive)
+>>>>>>> added service builder
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestByActiveFlag(contestActive);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.Contest createNewContest(
         java.lang.Long userId, java.lang.String name)
+=======
+    public Contest createNewContest(java.lang.Long userId, java.lang.String name)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.createNewContest(userId, name);
@@ -291,23 +299,37 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         _contestLocalService.updateContestGroupsAndDiscussions();
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
+=======
+    public java.util.List<Contest> findByActiveFeatured(boolean active,
+        boolean featured)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFeatured(active, featured);
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFlag(
         boolean active, int flag)
+=======
+    public java.util.List<Contest> findByActiveFlag(boolean active, int flag)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFlag(active, flag);
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
         boolean active, java.lang.String flagText)
+=======
+    public java.util.List<Contest> findByActiveFlagText(boolean active,
+        java.lang.String flagText)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.findByActiveFlagText(active, flagText);
     }
@@ -315,6 +337,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     /**
     * Methods from ContestImpl *
     */
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
         com.ext.portlet.model.Contest contest) {
@@ -324,179 +347,279 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public com.ext.portlet.model.PlanType getPlanType(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.util.List<ContestPhase> getPhases(Contest contest) {
+        return _contestLocalService.getPhases(contest);
+    }
+
+    public PlanType getPlanType(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getPlanType(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.util.List<ContestPhase> getActivePhases(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhases(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
+=======
+    public ContestPhase getActivePhase(Contest contest)
+>>>>>>> added service builder
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhase(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
+=======
+    public ContestPhase getActiveOrLastPhase(Contest contest)
+>>>>>>> added service builder
         throws com.ext.portlet.NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActiveOrLastPhase(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public boolean isActive(com.ext.portlet.model.Contest contest)
+=======
+    public boolean isActive(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.isActive(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<java.lang.Long> getDebatesIds(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.util.List<java.lang.Long> getDebatesIds(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDebatesIds(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public java.lang.Integer getTotalVotes(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.lang.Integer getTotalVotes(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTotalVotes(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public void updateDefaultPlanDescription(
         com.ext.portlet.model.Contest contest, java.lang.String description)
+=======
+    public void updateDefaultPlanDescription(Contest contest,
+        java.lang.String description)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.updateDefaultPlanDescription(contest, description);
     }
 
+<<<<<<< HEAD
     @Override
     public void store(com.ext.portlet.model.Contest contest)
+=======
+    public void store(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.store(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.PlanTemplate getPlanTemplate(
         com.ext.portlet.model.Contest contest)
+=======
+    public PlanTemplate getPlanTemplate(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getPlanTemplate(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.FocusArea getFocusArea(
         com.ext.portlet.model.Contest contest)
+=======
+    public FocusArea getFocusArea(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getFocusArea(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.liferay.portal.model.Image getLogo(
         com.ext.portlet.model.Contest contest)
+=======
+    public com.liferay.portal.model.Image getLogo(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getLogo(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.liferay.portal.model.Image getSponsorLogo(
         com.ext.portlet.model.Contest contest)
+=======
+    public com.liferay.portal.model.Image getSponsorLogo(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSponsorLogo(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public void setLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
+=======
+    public void setLogo(Contest contest, java.io.File logoFile)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         _contestLocalService.setLogo(contest, logoFile);
     }
 
+<<<<<<< HEAD
     @Override
     public void setSponsorLogo(com.ext.portlet.model.Contest contest,
         java.io.File logoFile)
+=======
+    public void setSponsorLogo(Contest contest, java.io.File logoFile)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException {
         _contestLocalService.setSponsorLogo(contest, logoFile);
     }
 
+<<<<<<< HEAD
     @Override
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
+=======
+    public java.lang.String getLogoPath(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getLogoPath(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public java.lang.String getSponsorLogoPath(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.lang.String getSponsorLogoPath(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getSponsorLogoPath(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public long getProposalsCount(com.ext.portlet.model.Contest contest)
+=======
+    public long getProposalsCount(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalsCount(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public com.ext.portlet.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
         com.ext.portlet.model.Contest contest)
+=======
+    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getDiscussionCategoryGroup(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public long getCommentsCount(com.ext.portlet.model.Contest contest)
+=======
+    public long getCommentsCount(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getCommentsCount(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public long getProposalsCommentsCount(com.ext.portlet.model.Contest contest)
+=======
+    public long getProposalsCommentsCount(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalsCommentsCount(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public long getVotesCount(com.ext.portlet.model.Contest contest)
+=======
+    public long getVotesCount(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getVotesCount(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public long getTotalComments(com.ext.portlet.model.Contest contest)
+=======
+    public long getTotalComments(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTotalComments(contest);
     }
 
+<<<<<<< HEAD
     @Override
     public java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(
         com.ext.portlet.model.Contest contest)
+=======
+    public java.util.List<ContestTeamMember> getTeamMembers(Contest contest)
+>>>>>>> added service builder
         throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getTeamMembers(contest);
     }
@@ -561,12 +684,20 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getDefaultModelId(contestPK);
     }
 
+<<<<<<< HEAD
     @Override
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getNumberOfProposalsForJudge(u, c);
+=======
+    public java.util.List<Contest> getContestsMatchingOntologyTerms(
+        java.util.List<OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
+>>>>>>> added service builder
     }
 
     /**

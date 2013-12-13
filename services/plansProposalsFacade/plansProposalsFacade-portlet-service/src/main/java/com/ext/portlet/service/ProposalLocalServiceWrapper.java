@@ -380,7 +380,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * <li>new proposal version is created</li>
     * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
     * it is copied to the new version</li>
-    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
+    * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new val`ue</li>
     * </ol>
     *
     * @param authorId      id of a change author
