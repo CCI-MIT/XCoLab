@@ -254,6 +254,7 @@ public class ContestLocalServiceUtil {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
@@ -265,6 +266,9 @@ public class ContestLocalServiceUtil {
 =======
     public static Contest getContestByActiveFlag(boolean contestActive)
 >>>>>>> added service builder
+=======
+    public static Contest getContestByActiveFlag(boolean contestActive)
+>>>>>>> rollback
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestByActiveFlag(contestActive);
@@ -506,18 +510,24 @@ public class ContestLocalServiceUtil {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static int getNumberOfProposalsForJudge(
         com.liferay.portal.model.User u, com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getNumberOfProposalsForJudge(u, c);
 =======
+=======
+>>>>>>> rollback
     public static java.util.List<Contest> getContestsMatchingOntologyTerms(
         java.util.List<OntologyTerm> ontologyTerms)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsMatchingOntologyTerms(ontologyTerms);
+<<<<<<< HEAD
 >>>>>>> added service builder
+=======
+>>>>>>> rollback
     }
 
     public static void clearService() {
