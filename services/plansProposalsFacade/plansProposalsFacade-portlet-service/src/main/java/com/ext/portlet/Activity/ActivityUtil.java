@@ -92,7 +92,7 @@ public class ActivityUtil {
         return groupActivities(activities);
     }
 
-    private static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
+    public static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
         //find all activities of same type
         Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
         for (SocialActivity a : activities) {

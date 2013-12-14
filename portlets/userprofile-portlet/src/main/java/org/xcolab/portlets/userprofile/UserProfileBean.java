@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile;
 
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Message;
@@ -196,7 +197,7 @@ public class UserProfileBean implements Serializable {
     public List<UserActivityBean> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<UserActivityBean>();
-            for (SocialActivity activity: ActivitySubscriptionLocalServiceUtil.getActivities(wrappedUser.getUserId(), 0, 200)) {
+            for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(wrappedUser.getUserId(), 0, 200))) {
                 try {
                     subscribedActivities.add(new UserActivityBean(activity));
                 } catch (Exception e) {

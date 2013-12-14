@@ -1,5 +1,6 @@
 package org.xcolab.portlets.userprofile;
 
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
@@ -116,8 +117,8 @@ public class UserWrapper implements Serializable {
         }
 
         userActivities.clear();
-        for (SocialActivity activity : SocialActivityLocalServiceUtil
-                .getUserActivities(user.getUserId(), 0, maxActivitiesCount)) {
+        for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
+                .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
             ;// userActivitiesCount - maxActivitiesCount, userActivitiesCount))
             // {
             UserActivityBean a = new UserActivityBean(activity);
