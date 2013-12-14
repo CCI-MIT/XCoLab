@@ -65,7 +65,7 @@ public class ActivitiesBean implements Serializable {
                 }
             }
             
-            for (SocialActivity activity : filterUserId == null ? ActivityUtil.retrieveAllActivities(0, MAX_QUERY) : ActivityUtil.retrieveActivities(filterUserId, 0, MAX_QUERY)) {
+            for (SocialActivity activity : filterUserId == null ? ActivityUtil.retrieveWindowedActivities(0, MAX_QUERY) : ActivityUtil.retrieveWindowedActivities(filterUserId, 0, MAX_QUERY)) {
                 if (SocialActivityWrapper.isEmpty(activity) || (!showAdmin && Helper.isUserAdmin(activity.getUserId()))) {
                     continue;
                 }

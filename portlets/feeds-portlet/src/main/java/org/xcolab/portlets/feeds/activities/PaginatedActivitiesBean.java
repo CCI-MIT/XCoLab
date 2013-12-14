@@ -89,7 +89,7 @@ public class PaginatedActivitiesBean extends DataSource implements Serializable 
         Date now = new Date();
         
         int i=0; 
-        for (SocialActivity activity: ActivityUtil.retrieveAllActivities(startRow, endIndex)) {
+        for (SocialActivity activity: ActivityUtil.retrieveWindowedActivities(startRow, endIndex)) {
             if (SocialActivityWrapper.isEmpty(activity) || (!showAdmin && Helper.isUserAdmin(activity.getUserId()))) {
                 continue;
             }

@@ -10,9 +10,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
@@ -24,72 +22,130 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 public class ActivityUtil {
-    
+
     private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
     private final static String encoding = "UTF-8";
 
-	private static SubscriptionProvider provider = new SubscriptionProvider() {
+    private static SubscriptionProvider provider = new SubscriptionProvider() {
 
-		public void createSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
-			ActivityUtil.createSubscription(portlet, userid, entityid, type);
-			
-		}
+        public void createSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
+            ActivityUtil.createSubscription(portlet, userid, entityid, type);
 
-		public void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
-			ActivityUtil.deleteSubscription(portlet, userid, entityid, type);
-			
-		}
+        }
+
+        public void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
+            ActivityUtil.deleteSubscription(portlet, userid, entityid, type);
+
+        }
 
         @Override
         public boolean isSubscribed(String portlet, long userid, long entityid, int type) throws SystemException {
-            return ActivityUtil.isSubscribed(portlet,userid,entityid,type);
+            return ActivityUtil.isSubscribed(portlet, userid, entityid, type);
         }
 
     };
-	
-	public static SubscriberFactory getAssociatedSubscriptionFactory(ActivitySubscription a) {
-		/*
-		int activity = Integer.parseInt(a.getActivitytype());
+
+    public static SubscriberFactory getAssociatedSubscriptionFactory(ActivitySubscription a) {
+        /*
+        int activity = Integer.parseInt(a.getActivitytype());
 		if ("plans".equals(a.getPortletId())){
 			return PlanActivityKeys.fromId(activity);
 		} else if ("debates".equals(a.getPortletId())) {
 			return DebateActivityKeys.fromId(activity);
 		}
 		*/
-		return null;
-		
-	}
-	
-	public static Map<String,CompositeSubscriptionHolder> getCompositeSubscriptions(long userId) throws SystemException {
-		List<ActivitySubscription> subscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
-		Map<String,CompositeSubscriptionHolder> subs = new HashMap<String,CompositeSubscriptionHolder>();
-		for (ActivitySubscription sub:subscriptions) {
-			String hash = CompositeSubscriptionHolder.createHash(sub);
-			if (!subs.containsKey(hash)) {
-				subs.put(hash, new CompositeSubscriptionHolder(sub));
-			} else {
-				subs.get(hash).addSubscription(sub);
-			}
-		}
-		return subs;	
-	}
-	
-	public static List<SocialActivity> retrieveAllActivities(int pagestart,int next) throws SystemException {
-		
-		List<SocialActivity> activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
-		return activities;
-	}
-	
-	public static int getAllActivitiesCount() throws SystemException {
-		return SocialActivityLocalServiceUtil.getSocialActivitiesCount();
-	}
-	
-	public static List<SocialActivity> retrieveActivities(long userId, int pagestart, int count) throws SystemException, PortalException {
+        return null;
+
+    }
+
+    public static Map<String, CompositeSubscriptionHolder> getCompositeSubscriptions(long userId) throws SystemException {
+        List<ActivitySubscription> subscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
+        Map<String, CompositeSubscriptionHolder> subs = new HashMap<String, CompositeSubscriptionHolder>();
+        for (ActivitySubscription sub : subscriptions) {
+            String hash = CompositeSubscriptionHolder.createHash(sub);
+            if (!subs.containsKey(hash)) {
+                subs.put(hash, new CompositeSubscriptionHolder(sub));
+            } else {
+                subs.get(hash).addSubscription(sub);
+            }
+        }
+        return subs;
+    }
+
+    public static List<SocialActivity> retrieveAllActivities(int pagestart, int next) throws SystemException {
+
+        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+
+        return activities;
+    }
+
+    public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next) throws SystemException {
+        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+
+        return groupActivities(activities);
+    }
+
+    public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException {
+        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, pagestart, next);
+
+        return groupActivities(activities);
+    }
+
+    private static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
+        //find all activities of same type
+        Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
+        for (SocialActivity a : activities) {
+            if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
+                activitiesMap.put(getSocialActivityKey(a), new LinkedList<SocialActivity>());
+            }
+            activitiesMap.get(getSocialActivityKey(a)).add(a);
+        }
+
+        //cluster
+        List<SocialActivity> ret = new LinkedList<>();
+        Comparator<SocialActivity> sorter = new Comparator<SocialActivity>() {
+            @Override
+            public int compare(SocialActivity o1, SocialActivity o2) {
+                return new Long(o1.getCreateDate()).compareTo(o2.getCreateDate());
+            }
+        };
+        for (Collection<SocialActivity> sal : activitiesMap.values()) {
+            List<SocialActivity> ascending = new ArrayList<>(sal); //convert to array for sorting
+            Collections.sort(ascending, sorter);
+
+            final long groupSize = 1000 * 60 * 5l; //5 minutes
+            SocialActivity curMin = null;
+            for (SocialActivity sa : ascending) {
+                if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < groupSize) curMin = sa;
+                else {
+                    ret.add(curMin);
+                    curMin = sa;
+                }
+            }
+            ret.add(curMin);
+        }
+        //horrible code start
+        Collections.sort(ret, sorter);
+        Collections.reverse(ret);
+        //horrible code end
+
+        return ret;
+    }
+
+    private static String getSocialActivityKey(SocialActivity sa) {
+        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType();
+    }
+
+    public static int getAllActivitiesCount() throws SystemException {
+        return SocialActivityLocalServiceUtil.getSocialActivitiesCount();
+    }
+
+    public static List<SocialActivity> retrieveActivities(long userId, int pagestart, int count) throws SystemException, PortalException {
         List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, pagestart, count);
         return activities;
-	/*
-		List<ActivitySubscription> subscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
+    /*
+        List<ActivitySubscription> subscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
 		Long companyId = UserLocalServiceUtil.getUser(userId).getCompanyId();
 		if (subscriptions.size() ==0) return Collections.emptyList();
 		DynamicQuery query = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
@@ -131,10 +187,10 @@ public class ActivityUtil {
 		
 		return activities;
 		*/
-	    //return null;
-	}
-	
-	public static void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
+        //return null;
+    }
+
+    public static void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
 	    /*
 		ActivitySubscriptionPK subscriptionPK = new ActivitySubscriptionPK();
 		subscriptionPK.setEntityId(entityid);
@@ -153,7 +209,7 @@ public class ActivityUtil {
             ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(subscription);
         }
 		*/
-	}
+    }
 
     public static boolean isSubscribed(String portlet, long userid, long entityid, int type) throws SystemException {
         /*
@@ -171,27 +227,27 @@ public class ActivityUtil {
         */
         return false;
 
-	}
+    }
 
-	public static int getActivitiesCount(long userId) throws SystemException, PortalException {
-		
-		return retrieveActivities(userId,0,Integer.MAX_VALUE).size();
-	}
-	
-	
-	public static void addSubscription(SubscriberFactory key, long userid, long entityid) throws SystemException {
-		key.subcribe(userid, entityid, provider);
-	}
+    public static int getActivitiesCount(long userId) throws SystemException, PortalException {
+
+        return retrieveActivities(userId, 0, Integer.MAX_VALUE).size();
+    }
+
+
+    public static void addSubscription(SubscriberFactory key, long userid, long entityid) throws SystemException {
+        key.subcribe(userid, entityid, provider);
+    }
 
     public static boolean isSubscribed(SubscriberFactory key, long userid, long entityid) throws SystemException {
-        return key.isSubscribed(userid,entityid,provider);
+        return key.isSubscribed(userid, entityid, provider);
     }
-	
-	public static void removeSubscription(SubscriberFactory key, long userid, long entityid) throws SystemException {
-		key.unsubcribe(userid, entityid, provider);
-	}
-	
-	public static void createSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
+
+    public static void removeSubscription(SubscriberFactory key, long userid, long entityid) throws SystemException {
+        key.unsubcribe(userid, entityid, provider);
+    }
+
+    public static void createSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
 		/*
 		
 		ActivitySubscriptionPK subscriptionPK= new ActivitySubscriptionPK();
@@ -214,25 +270,23 @@ public class ActivityUtil {
 		subscription.setModifiedDate(new Date());
 		ActivitySubscriptionLocalServiceUtil.addActivitySubscription(subscription);
 		*/
-	}
-	
-	
-	
-	
-	public static void addDefaultSubscriptions(long userid) throws SystemException {
+    }
+
+
+    public static void addDefaultSubscriptions(long userid) throws SystemException {
 		/*for (SubscriberFactory factory:ActivityConstants.SUBS_DEFAULTS) {
 			factory.subcribe(userid,-1, provider);
 		}
 		*/
-	}
-	
-	public static void clearSubscriptions(long userId) throws SystemException {
-		List<ActivitySubscription> subs = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
-		for (ActivitySubscription sub:subs) {
-			ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(sub);
-		}
-	}
-	
+    }
+
+    public static void clearSubscriptions(long userId) throws SystemException {
+        List<ActivitySubscription> subs = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
+        for (ActivitySubscription sub : subs) {
+            ActivitySubscriptionLocalServiceUtil.deleteActivitySubscription(sub);
+        }
+    }
+
     public static String encodeMap(Map<String, Serializable> map) {
         StringBuilder encodedString = new StringBuilder();
         for (String attribute : map.keySet()) {
@@ -247,11 +301,11 @@ public class ActivityUtil {
         }
         return encodedString.toString();
     }
-    
+
     public static Map<String, String> decodeMap(String encodedMap) {
         Map<String, String> decodedMap = new HashMap<String, String>();
         String[] parameters = encodedMap.split("&");
-        for (String parameter: parameters) {
+        for (String parameter : parameters) {
             if (parameter.trim().equals("")) {
                 continue;
             }
@@ -263,16 +317,16 @@ public class ActivityUtil {
                 decodedMap.put(URLDecoder.decode(parts[0], encoding), URLDecoder.decode(parts[1], encoding));
             } catch (UnsupportedEncodingException e) {
                 _log.error(e);
-            }   
+            }
         }
-        
+
         return decodedMap;
     }
-    
+
 
     public static String getExtraDataForIds(Long... ids) {
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i < ids.length; i++) {
+        for (int i = 0; i < ids.length; i++) {
             if (i > 0) {
                 sb.append(",");
             }
@@ -280,23 +334,22 @@ public class ActivityUtil {
         }
         return sb.toString();
     }
-    
+
     public static Long[] getIdsFromExtraData(String extraData) {
         if (extraData == null || extraData.trim().length() == 0) {
-            return new Long[] {};
+            return new Long[]{};
         }
         String[] idStrs = extraData.split(",");
         Long[] ret = new Long[idStrs.length];
-        
-        for (int i=0; i < idStrs.length; i++) {
+
+        for (int i = 0; i < idStrs.length; i++) {
             try {
                 ret[i] = Long.parseLong(idStrs[i]);
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 ret[i] = 0L;
             }
         }
         return ret;
     }
-	
+
 }
