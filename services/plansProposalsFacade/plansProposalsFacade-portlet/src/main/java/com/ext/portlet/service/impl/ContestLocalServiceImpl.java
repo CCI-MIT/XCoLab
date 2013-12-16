@@ -132,8 +132,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
-    private static ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
-            ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
 
     public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
         return contestPersistence.findBycontestActive(contestActive);
@@ -574,6 +572,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             i++;
         }
         // for each first dimension execute a query
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+            ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
         List<Contest>[] contestsMatchingTerms = new List[terms.length];
         for (int l=0; l<terms.length; l++){
             DynamicQuery dq =  DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, portletClassLoader);
