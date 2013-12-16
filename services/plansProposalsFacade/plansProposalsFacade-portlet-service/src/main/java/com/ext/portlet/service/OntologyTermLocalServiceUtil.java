@@ -312,6 +312,12 @@ public class OntologyTermLocalServiceUtil {
         return getService().getChildTerms(ontologyTerm);
     }
 
+    public static java.util.List<com.ext.portlet.model.OntologyTerm> getAllDescendantTerms(
+        com.ext.portlet.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllDescendantTerms(ontologyTerm);
+    }
+
     public static com.ext.portlet.model.OntologySpace getSpace(
         com.ext.portlet.model.OntologyTerm ontologyTerm)
         throws com.liferay.portal.kernel.exception.PortalException,

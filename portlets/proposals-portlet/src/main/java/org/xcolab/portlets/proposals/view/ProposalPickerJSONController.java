@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,8 @@ import java.io.IOException;
 @Controller
 @RequestMapping("view")
 public class ProposalPickerJSONController {
+
+    private static int MAXCHARS_FOR_NAMES = 75;
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -65,7 +68,7 @@ public class ProposalPickerJSONController {
 
         sortList(sortOrder,sortColumn,proposals);
 
-        if (proposals.size()>end) proposals = proposals.subList(start,end);
+        if (proposals.size()>(end-start)) proposals = proposals.subList(start,end);
 
         response.getPortletOutputStream().write(getJSONObjectMapping(proposals,totalCount).getBytes());
     }
@@ -99,8 +102,8 @@ public class ProposalPickerJSONController {
         for (Pair<Proposal,Date> p : proposals){
             JSONObject o = JSONFactoryUtil.createJSONObject();
             o.put("id",p.getLeft().getProposalId());
-            o.put("proposalName", ProposalLocalServiceUtil.getAttribute(p.getLeft().getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue());
-            o.put("contestName",Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getLeft().getProposalId()).getContestName());
+            o.put("proposalName", StringUtils.abbreviate(ProposalLocalServiceUtil.getAttribute(p.getLeft().getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue(),MAXCHARS_FOR_NAMES));
+            o.put("contestName",StringUtils.abbreviate(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getLeft().getProposalId()).getContestName(),MAXCHARS_FOR_NAMES));
             o.put("dateSubscribed",p.getRight().getTime());
             proposalsJSON.put(o);
         }
@@ -183,4 +186,6 @@ public class ProposalPickerJSONController {
         ProposalPickerFilterUtil.ONTOLOGY.filter(proposals,sectionId);
         return proposals;
     }
+
+
 }
