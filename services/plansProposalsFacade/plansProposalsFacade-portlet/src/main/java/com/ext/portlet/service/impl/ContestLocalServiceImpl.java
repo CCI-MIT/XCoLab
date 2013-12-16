@@ -563,8 +563,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         int i = 0;
         for (OntologyTerm ot : ontologyTerms){
             List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getChildTerms(ot); /* TODO Recursiv*/
-            terms[i] = new Long[childTerms.size()];
-            int k = 0;
+            terms[i] = new Long[childTerms.size() + 1];
+            terms[i][0] = ot.getId();
+            int k = 1;
             for (OntologyTerm child : childTerms){
                 terms[i][k] = child.getId();
                 k++;
@@ -577,19 +578,21 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         List<Contest>[] contestsMatchingTerms = new List[terms.length];
         for (int l=0; l<terms.length; l++){
             DynamicQuery dq =  DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, portletClassLoader);
-            dq.add(PropertyFactoryUtil.forName("ontologyTermId").in(terms[l]));
-            dq.setProjection(ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("focusAreaId")));
-            //FocusAreaOntologyTermLocalServiceUtil.dynamicQuery(dq);
+            dq.add(PropertyFactoryUtil.forName("primaryKey.ontologyTermId").in(terms[l]));
+            dq.setProjection(ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("primaryKey.focusAreaId")));
 
             DynamicQuery contestQuery =  DynamicQueryFactoryUtil.forClass(Contest.class, portletClassLoader);
             contestQuery.add(PropertyFactoryUtil.forName("focusAreaId").in(dq));
             contestsMatchingTerms[l] = ContestLocalServiceUtil.dynamicQuery(contestQuery);
         }
 
-        for (int m=0; m<terms.length; m++){
-            contestsMatchingTerms[0].retainAll(contestsMatchingTerms[m]);
+        List<Contest> listOfContests = new ArrayList<>(contestsMatchingTerms[0]);
+
+        // take only contests matching all requirements
+        for (int m=1; m<contestsMatchingTerms.length; m++){
+            listOfContests.retainAll(contestsMatchingTerms[m]);
         }
 
-        return contestsMatchingTerms[0];
+        return listOfContests;
     }
 }

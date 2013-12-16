@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.*;
@@ -81,26 +82,20 @@ public enum ProposalPickerFilterUtil {
     ONTOLOGY(new ProposalPickerFilter() {
         @Override
         public void filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            long sectionId = (Long) additionalFilterCriterion;
-            /*
             try{
-                // section definition Id
-                long definitionId = PlanSectionLocalServiceUtil.getPlanSection(sectionId).getPlanSectionDefinitionId();
+                long definitionId = (Long) additionalFilterCriterion;
                 // FocusArea
                 FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId));
                 // List of terms in this area
                 List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getTerms(fa);
-                // get all children
-                for (OntologyTerm ot : terms){
-                    List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getChildTerms(ot);
-                    for (OntologyTerm child : terms){
-                        // now what?
-                    }
-                }
-            } catch (Exception e){
 
-            }
-        */
+                List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
+
+                for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                    Proposal p = i.next().getLeft();
+                    if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                }
+            } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
         }
     });
 
