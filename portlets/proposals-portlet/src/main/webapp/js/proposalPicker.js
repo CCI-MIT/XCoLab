@@ -81,19 +81,19 @@ function pickProposalList(sectionId){
 }
 
 /* click "select" in the picker */
-function selectProposal(proposalId, proposalName, contestName, linkClicked){
+function selectProposal(proposalId, proposalName, contestName, linkClicked, contestId){
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     linkClicked.parent().parent().addClass('ui-datatable-highlight');
     linkClicked.remove();
     if(pickMultipleProposals) {
         if($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
             inputField.val(inputField.val() + proposalId + ',');
-            inputField.siblings('ul').append('<li>' + proposalName + ' (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+            inputField.siblings('ul').append('<li><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
         }
     } else{
         if (inputField.val()) inputField.next().remove();
         inputField.val(proposalId);
-        inputField.after('<span>' + proposalName + ' (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
+        inputField.after('<span><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
         $('#popup_proposalPicker').hide();
     }
 }
@@ -122,7 +122,7 @@ function addToProposalPickerTable(data, even){
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     var highlight = ($.inArray(data.id.toString(), inputField.val().split(','))>=0);
     var displayDate = (data.dateSubscribed != 0);
-    var link = '<a href="javascript:;" onclick="selectProposal(' + data.id + ',\'' + data.proposalName.replace(/"/g, '\\\'') + '\',\'' + data.contestName.replace(/"/g, '\\\'') + '\',$(this));">choose</a>';
+    var link = '<a href="javascript:;" onclick="selectProposal(' + data.id + ',\'' + data.proposalName.replace(/"/g, '\\\'') + '\',\'' + data.contestName.replace(/"/g, '\\\'') + '\',$(this),' + data.contestId + ' );">choose</a>';
     var dateCol = '<td>' + dateTimeFormatter.date(data.dateSubscribed) + '</td>';
     $('#proposalPickerTable > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (highlight ? ' ui-datatable-highlight' : '') + '"><td>' + data.contestName + '</td><td' + (displayDate ? '' : ' colspan="2"') + '>' + data.proposalName + '</td>' + (displayDate ? dateCol : '') + '<td style="text-align: center;">' + (highlight ? '' : link) + '</td></tr>');
 }

@@ -104,6 +104,7 @@ public class ProposalPickerJSONController {
             o.put("id",p.getLeft().getProposalId());
             o.put("proposalName", StringUtils.abbreviate(ProposalLocalServiceUtil.getAttribute(p.getLeft().getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue(),MAXCHARS_FOR_NAMES));
             o.put("contestName",StringUtils.abbreviate(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getLeft().getProposalId()).getContestName(),MAXCHARS_FOR_NAMES));
+            o.put("contestId",Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getLeft().getProposalId()).getPrimaryKey());
             o.put("dateSubscribed",p.getRight().getTime());
             proposalsJSON.put(o);
         }
