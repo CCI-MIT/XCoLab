@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ext.portlet.model.OntologySpace;
@@ -7,6 +8,7 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.OntologyTermEntity;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalService;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.base.OntologyTermLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -100,7 +102,17 @@ public class OntologyTermLocalServiceImpl
     
     public List<OntologyTerm> getChildTerms(OntologyTerm ontologyTerm) throws SystemException {
         return OntologyTermLocalServiceUtil.findByParentId(ontologyTerm.getId());
-        
+    }
+
+    public List<OntologyTerm> getAllDescendantTerms(OntologyTerm ontologyTerm) throws SystemException {
+        List<OntologyTerm> terms = new ArrayList<>();
+
+        for (OntologyTerm t : OntologyTermLocalServiceUtil.getChildTerms(ontologyTerm)){
+            terms.add(t);
+            terms.addAll(OntologyTermLocalServiceUtil.getAllDescendantTerms(t));
+        }
+
+        return terms;
     }
     
     public OntologySpace getSpace(OntologyTerm ontologyTerm) throws PortalException, SystemException {

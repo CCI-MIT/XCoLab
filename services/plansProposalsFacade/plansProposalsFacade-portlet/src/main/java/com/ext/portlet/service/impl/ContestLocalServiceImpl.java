@@ -562,7 +562,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // get all child elements and add id's to array
         int i = 0;
         for (OntologyTerm ot : ontologyTerms){
-            List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getChildTerms(ot); /* TODO Recursiv*/
+            List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(ot);
             terms[i] = new Long[childTerms.size() + 1];
             terms[i][0] = ot.getId();
             int k = 1;

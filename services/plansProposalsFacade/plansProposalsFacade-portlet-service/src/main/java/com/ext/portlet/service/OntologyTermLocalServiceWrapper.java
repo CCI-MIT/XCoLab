@@ -334,7 +334,16 @@ public class OntologyTermLocalServiceWrapper implements OntologyTermLocalService
         return _ontologyTermLocalService.getChildTerms(ontologyTerm);
     }
 
+<<<<<<< HEAD
     @Override
+=======
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getAllDescendantTerms(
+        com.ext.portlet.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _ontologyTermLocalService.getAllDescendantTerms(ontologyTerm);
+    }
+
+>>>>>>> added recursive ontology traversal and several bug fixes
     public com.ext.portlet.model.OntologySpace getSpace(
         com.ext.portlet.model.OntologyTerm ontologyTerm)
         throws com.liferay.portal.kernel.exception.PortalException,

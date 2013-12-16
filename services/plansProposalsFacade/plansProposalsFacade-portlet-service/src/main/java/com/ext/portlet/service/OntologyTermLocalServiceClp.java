@@ -7,6 +7,7 @@ import com.liferay.portal.service.InvokableLocalService;
  * @generated
  */
 public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
+<<<<<<< HEAD
     private InvokableLocalService _invokableLocalService;
     private String _methodName0;
     private String[] _methodParameterTypes0;
@@ -179,6 +180,112 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
                 "java.lang.Long", "java.lang.String", "java.lang.Long",
                 "java.lang.String"
             };
+=======
+    private ClassLoaderProxy _classLoaderProxy;
+    private MethodKey _addOntologyTermMethodKey0;
+    private MethodKey _createOntologyTermMethodKey1;
+    private MethodKey _deleteOntologyTermMethodKey2;
+    private MethodKey _deleteOntologyTermMethodKey3;
+    private MethodKey _dynamicQueryMethodKey4;
+    private MethodKey _dynamicQueryMethodKey5;
+    private MethodKey _dynamicQueryMethodKey6;
+    private MethodKey _dynamicQueryCountMethodKey7;
+    private MethodKey _fetchOntologyTermMethodKey8;
+    private MethodKey _getOntologyTermMethodKey9;
+    private MethodKey _getPersistedModelMethodKey10;
+    private MethodKey _getOntologyTermsMethodKey11;
+    private MethodKey _getOntologyTermsCountMethodKey12;
+    private MethodKey _updateOntologyTermMethodKey13;
+    private MethodKey _updateOntologyTermMethodKey14;
+    private MethodKey _getBeanIdentifierMethodKey15;
+    private MethodKey _setBeanIdentifierMethodKey16;
+    private MethodKey _findByParentIdMethodKey17;
+    private MethodKey _findByParentIdSpaceIdMethodKey18;
+    private MethodKey _createTermMethodKey19;
+    private MethodKey _countChildTermsMethodKey20;
+    private MethodKey _clearClassTagsMethodKey21;
+    private MethodKey _storeMethodKey22;
+    private MethodKey _getParentMethodKey23;
+    private MethodKey _getChildTermsCountMethodKey24;
+    private MethodKey _getChildTermsMethodKey25;
+    private MethodKey _getAllDescendantTermsMethodKey26;
+    private MethodKey _getSpaceMethodKey27;
+    private MethodKey _tagClassMethodKey28;
+    private MethodKey _findTagedIdsForClassMethodKey29;
+
+    public OntologyTermLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
+        _classLoaderProxy = classLoaderProxy;
+
+        _addOntologyTermMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
+                "addOntologyTerm", com.ext.portlet.model.OntologyTerm.class);
+
+        _createOntologyTermMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
+                "createOntologyTerm", long.class);
+
+        _deleteOntologyTermMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
+                "deleteOntologyTerm", long.class);
+
+        _deleteOntologyTermMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
+                "deleteOntologyTerm", com.ext.portlet.model.OntologyTerm.class);
+
+        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
+                "dynamicQuery",
+                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+
+        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
+                "dynamicQuery",
+                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
+                int.class, int.class);
+
+        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
+                "dynamicQuery",
+                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
+                int.class, int.class,
+                com.liferay.portal.kernel.util.OrderByComparator.class);
+
+        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
+                "dynamicQueryCount",
+                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+
+        _fetchOntologyTermMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
+                "fetchOntologyTerm", long.class);
+
+        _getOntologyTermMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getOntologyTerm", long.class);
+
+        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getPersistedModel", java.io.Serializable.class);
+
+        _getOntologyTermsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getOntologyTerms", int.class, int.class);
+
+        _getOntologyTermsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getOntologyTermsCount");
+
+        _updateOntologyTermMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
+                "updateOntologyTerm", com.ext.portlet.model.OntologyTerm.class);
+
+        _updateOntologyTermMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
+                "updateOntologyTerm", com.ext.portlet.model.OntologyTerm.class,
+                boolean.class);
+
+        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getBeanIdentifier");
+
+        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
+                "setBeanIdentifier", java.lang.String.class);
+
+        _findByParentIdMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
+                "findByParentId", java.lang.Long.class);
+
+        _findByParentIdSpaceIdMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
+                "findByParentIdSpaceId", java.lang.Long.class,
+                java.lang.Long.class);
+
+        _createTermMethodKey19 = new MethodKey(_classLoaderProxy.getClassName(),
+                "createTerm", java.lang.Long.class, java.lang.String.class,
+                java.lang.Long.class, java.lang.String.class);
+>>>>>>> added recursive ontology traversal and several bug fixes
 
         _methodName22 = "countChildTerms";
 
@@ -196,6 +303,7 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
+<<<<<<< HEAD
         _methodName25 = "getParent";
 
         _methodParameterTypes25 = new String[] {
@@ -232,6 +340,22 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         _methodParameterTypes30 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
             };
+=======
+        _getAllDescendantTermsMethodKey26 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getAllDescendantTerms",
+                com.ext.portlet.model.OntologyTerm.class);
+
+        _getSpaceMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getSpace", com.ext.portlet.model.OntologyTerm.class);
+
+        _tagClassMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
+                "tagClass", com.ext.portlet.model.OntologyTerm.class,
+                java.lang.Class.class, java.lang.Long.class);
+
+        _findTagedIdsForClassMethodKey29 = new MethodKey(_classLoaderProxy.getClassName(),
+                "findTagedIdsForClass",
+                com.ext.portlet.model.OntologyTerm.class, java.lang.Class.class);
+>>>>>>> added recursive ontology traversal and several bug fixes
     }
 
     @Override
@@ -1007,13 +1131,48 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         return (java.util.List<com.ext.portlet.model.OntologyTerm>) ClpSerializer.translateOutput(returnObj);
     }
 
+<<<<<<< HEAD
     @Override
+=======
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getAllDescendantTerms(
+        com.ext.portlet.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getAllDescendantTermsMethodKey26,
+                ClpSerializer.translateInput(ontologyTerm));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.OntologyTerm>) ClpSerializer.translateOutput(returnObj);
+    }
+
+>>>>>>> added recursive ontology traversal and several bug fixes
     public com.ext.portlet.model.OntologySpace getSpace(
         com.ext.portlet.model.OntologyTerm ontologyTerm)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
+<<<<<<< HEAD
+=======
+        MethodHandler methodHandler = new MethodHandler(_getSpaceMethodKey27,
+                ClpSerializer.translateInput(ontologyTerm));
+
+>>>>>>> added recursive ontology traversal and several bug fixes
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName28,
                     _methodParameterTypes28,
@@ -1044,6 +1203,14 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
     public void tagClass(com.ext.portlet.model.OntologyTerm ontologyTerm,
         java.lang.Class clasz, java.lang.Long id)
         throws com.liferay.portal.kernel.exception.SystemException {
+<<<<<<< HEAD
+=======
+        MethodHandler methodHandler = new MethodHandler(_tagClassMethodKey28,
+                ClpSerializer.translateInput(ontologyTerm),
+                ClpSerializer.translateInput(clasz),
+                ClpSerializer.translateInput(id));
+
+>>>>>>> added recursive ontology traversal and several bug fixes
         try {
             _invokableLocalService.invokeMethod(_methodName29,
                 _methodParameterTypes29,
@@ -1076,6 +1243,13 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
+<<<<<<< HEAD
+=======
+        MethodHandler methodHandler = new MethodHandler(_findTagedIdsForClassMethodKey29,
+                ClpSerializer.translateInput(ontologyTerm),
+                ClpSerializer.translateInput(clasz));
+
+>>>>>>> added recursive ontology traversal and several bug fixes
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName30,
                     _methodParameterTypes30,
