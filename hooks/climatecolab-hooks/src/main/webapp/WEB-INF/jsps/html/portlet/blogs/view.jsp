@@ -130,7 +130,7 @@ month--;
 		results = BlogsEntryServiceUtil.getGroupEntries(scopeGroupId, status, searchContainer.getStart(), searchContainer.getEnd());
 	}
 */
-    System.out.println("total: " + total);
+    //System.out.println("total: " + total);
 	searchContainer.setTotal(total);
 	searchContainer.setResults(results);
 	%>
