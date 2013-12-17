@@ -197,7 +197,7 @@ public class UserProfileBean implements Serializable {
     public List<UserActivityBean> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<UserActivityBean>();
-            for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(wrappedUser.getUserId(), 0, 200))) {
+            for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(wrappedUser.getUserId(), 0, 1000))) {
                 try {
                     subscribedActivities.add(new UserActivityBean(activity));
                 } catch (Exception e) {

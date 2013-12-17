@@ -58,7 +58,7 @@ public class UserWrapper implements Serializable {
     private String email;
     private List<SupportedPlanBean> supportedPlans = new ArrayList<SupportedPlanBean>();
     private List<UserActivityBean> userActivities = new ArrayList<UserActivityBean>();
-    private int maxActivitiesCount = 10;
+    private int maxActivitiesCount = 20;
     private String screenName;
     private File newUserProfile;
     private String filteredAbout;

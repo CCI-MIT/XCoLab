@@ -42,6 +42,7 @@ public class DiscussionMessageWrapper {
 
     public long getCategoryGroupId() {
         return wrapped.getCategoryGroupId();
+
     }
 
     public long getAuthorId() {
