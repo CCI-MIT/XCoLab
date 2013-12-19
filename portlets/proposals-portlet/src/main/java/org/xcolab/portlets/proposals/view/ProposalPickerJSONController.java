@@ -67,7 +67,7 @@ public class ProposalPickerJSONController {
         int totalCount = proposals.size();
 
         sortList(sortOrder,sortColumn,proposals);
-
+        if (end >= proposals.size() && proposals.size() > 0) end = proposals.size();
         if (proposals.size()>(end-start)) proposals = proposals.subList(start,end);
 
         response.getPortletOutputStream().write(getJSONObjectMapping(proposals,totalCount).getBytes());
