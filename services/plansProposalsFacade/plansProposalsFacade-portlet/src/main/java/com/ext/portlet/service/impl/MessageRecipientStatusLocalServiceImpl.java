@@ -75,14 +75,12 @@ public class MessageRecipientStatusLocalServiceImpl
     }
 
     public boolean didReceiveJudgeCommentForProposal(Proposal p, User judge) throws SystemException, PortalException {
-        List<MessageRecipientStatus> threads = messageRecipientStatusPersistence.findByReceivingUser(judge.getUserId());
         Pattern pattern = Pattern.compile("\\[(.*?)\\]");
-        for (MessageRecipientStatus mr : threads){
-            Message message = MessageLocalServiceUtil.getMessage(mr.getMessageId());
+        for (Message message : MessageLocalServiceUtil.findSentMessages(judge.getUserId(),0,Integer.MAX_VALUE)){
             Matcher m = pattern.matcher(message.getSubject());
             while (m.find()) {
                 String s = m.group(1);
-                if (s.equalsIgnoreCase(p.getPrimaryKey() + "") && mr.getUserId() == judge.getUserId()) return true;
+                if (s.equalsIgnoreCase(p.getPrimaryKey() + "")) return true;
             }
         }
         return false;

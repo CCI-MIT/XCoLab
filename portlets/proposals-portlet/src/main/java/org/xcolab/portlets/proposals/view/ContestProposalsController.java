@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
 
@@ -46,14 +47,23 @@ public class ContestProposalsController extends BaseProposalsController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
 
-        User u = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
+        User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
+        List<ProposalJudgeWrapper> proposalJudgeWrappers = new ArrayList<ProposalJudgeWrapper>();
         for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            ProposalWrapper proposalWrapper;
 
-            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
-            if(proposalWrapper.getVisible())
+            if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())){  // judge
+                proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
+            }
+            else{
+                proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+            }
+
+            if(proposalWrapper.getVisible()){
                 proposals.add(proposalWrapper);
+            }
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
