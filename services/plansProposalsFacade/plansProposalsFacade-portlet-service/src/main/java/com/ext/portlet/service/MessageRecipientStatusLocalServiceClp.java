@@ -33,6 +33,7 @@ public class MessageRecipientStatusLocalServiceClp
     private MethodKey _findInboxMessagesForUserMethodKey22;
     private MethodKey _findByMessageRecipientMethodKey23;
     private MethodKey _countUnreadMessagesMethodKey24;
+    private MethodKey _didReceiveJudgeCommentForProposalMethodKey25;
 
     public MessageRecipientStatusLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -124,6 +125,11 @@ public class MessageRecipientStatusLocalServiceClp
 
         _countUnreadMessagesMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
                 "countUnreadMessages", long.class);
+
+        _didReceiveJudgeCommentForProposalMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
+                "didReceiveJudgeCommentForProposal",
+                com.ext.portlet.model.Proposal.class,
+                com.liferay.portal.model.User.class);
     }
 
     public com.ext.portlet.model.MessageRecipientStatus addMessageRecipientStatus(
@@ -769,6 +775,38 @@ public class MessageRecipientStatusLocalServiceClp
         }
 
         return ((Integer) returnObj).intValue();
+    }
+
+    public boolean didReceiveJudgeCommentForProposal(
+        com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_didReceiveJudgeCommentForProposalMethodKey25,
+                ClpSerializer.translateInput(p),
+                ClpSerializer.translateInput(judge));
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

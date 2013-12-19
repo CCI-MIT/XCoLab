@@ -39,6 +39,8 @@ public class ProposalWrapper {
 
     private ProposalAttributeUtil proposalAttributeUtil;
 
+    private User currentUser;
+
     public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
     }
@@ -48,12 +50,16 @@ public class ProposalWrapper {
     }
 
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+        this(proposal, version, contest, contestPhase, proposal2Phase, null);
+    }
+
+    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase, User u) {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
-
+        this.currentUser = u;
         proposalAttributeUtil = new ProposalAttributeUtil(proposal, version);
     }
 
@@ -199,6 +205,13 @@ public class ProposalWrapper {
         return JudgingSystemActions.JudgeAction.fromInt(action.intValue());
     }
 
+    public boolean getIsJudgeAssignedAndIncomplete() throws SystemException, PortalException {
+        for (long l : this.getSelectedJudges()){
+            if (currentUser.getUserId() == l) return MessageRecipientStatusLocalServiceUtil.didReceiveJudgeCommentForProposal(proposal,currentUser);
+        }
+        return false;
+    }
+
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
         Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, 0, 0);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
@@ -224,6 +237,8 @@ public class ProposalWrapper {
         for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
         return selectedJudges;
     }
+
+
 
     public String getTeam() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");

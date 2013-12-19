@@ -35,9 +35,26 @@
         </portlet:actionURL>
 
         <div class="judging_left">
-            <div class="addpropbox">
-                <form:form id="fellowRatingForm" action="${saveJudgeRatingURL }" method="post"
-                           commandName="judgeProposalBean">
+            <form:form id="fellowRatingForm" action="${saveJudgeRatingURL }" method="post"
+                       commandName="judgeProposalBean">
+                <div class="addpropbox">
+
+                    <h3>Comment</h3>
+                    <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
+
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
+                        <div class="blue-button" style="display:block; float:left;">
+                            <a class="requestMembershipSubmitButton" href="${sendEmailsURL}">Send e-Mails</a>
+                        </div>
+                    </c:if>
+
+                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                        <a href="javascript:;" class="requestMembershipSubmitButton"
+                           onclick="jQuery(this).parents('form').submit();">Save</a>
+                    </div>
+                </div>
+
+                <div class="addpropbox">
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     <table class="judgingForm">
@@ -58,25 +75,23 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h3>Promotion</h3>
-                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
 
-                    <h3>Comment</h3>
-                    <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
-
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
-                        <div class="blue-button" style="display:block; float:left;">
-                            <a class="requestMembershipSubmitButton" href="${sendEmailsURL}">Send e-Mails</a>
-                        </div>
-                    </c:if>
-
-                    <div class="blue-button" style="display:block; float:right;">
+                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                </div>
 
-                </form:form>
-            </div>
+                <div class="addpropbox">
+                    <h3>Promotion</h3>
+                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
+
+                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                        <a href="javascript:;" class="requestMembershipSubmitButton"
+                           onclick="jQuery(this).parents('form').submit();">Save</a>
+                    </div>
+                </div>
+            </form:form>
         </div>
         <div class="judging_right">
             <div class="addpropbox">
@@ -96,11 +111,6 @@
                 <span>Proposals that are well-presented will be favored over those that aren't. Presentation quality includes how well written a proposal is, how well it uses graphics or other visual elements, and how compelling are its artistic representations of possible future worlds (if any).</span>
             </div>
         </div>
-
-        <div style="padding-top:40px; clear:both;"></div>
-        <discussionsTagFiles:discussionComments discussionId="${discussionId }"/>
-
-
     </div>
 
 

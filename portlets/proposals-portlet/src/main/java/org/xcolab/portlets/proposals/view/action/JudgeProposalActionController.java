@@ -3,12 +3,18 @@ package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.MessageLocalServiceUtil;
+import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +24,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ContestTeamRoleWrapper;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
+import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -49,6 +61,25 @@ public class JudgeProposalActionController {
         persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_ACTION,0, judgeProposalBean.getJudgeAction().getAttributeValue() , null);
         // save judge comment
         persistAttribute(proposalId, contestPhaseId,ProposalAttributeKeys.JUDGE_COMMENT,0, -1 , judgeProposalBean.getJudgeComment());
+    }
+
+    @RequestMapping(params = {"action=sendJudgeRating"})
+    public void sendJudgeRating(ActionRequest request, Model model,
+                                ActionResponse response, @RequestParam("judgeComment") String judgeComment)
+            throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException {
+        long proposalId = proposalsContext.getProposal(request).getProposalId();
+
+        List<Long> recipientIds = new ArrayList<Long>();
+        String subject = "Judge comment from " + proposalsContext.getUser(request).getScreenName() + " for proposal [" + proposalId + "]";
+
+        ContestWrapper cr = new ContestWrapper(proposalsContext.getContest(request));
+        for (User fellow : cr.getContestFellows()) {
+            recipientIds.add(fellow.getUserId());
+        }
+
+        MessageUtil.sendMessage(subject, judgeComment, proposalsContext.getUser(request).getUserId(),
+                proposalsContext.getUser(request).getUserId(), recipientIds, null);
+
     }
 
     @RequestMapping(params = {"action=saveFellowRating"})
@@ -120,4 +151,6 @@ public class JudgeProposalActionController {
             return null;
         }
     }
+
+
 }

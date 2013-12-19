@@ -16,6 +16,9 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.liferay.portal.model.User;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -30,6 +33,7 @@ import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -53,6 +57,7 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 import edu.mit.cci.roma.client.Simulation;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The implementation of the contest local service.
@@ -480,5 +485,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         } catch (SearchException e) {
             _log.error("Can't reindex contest " + contest.getContestPK(), e);
         }
+    }
+
+    public int getNumberOfProposalsForJudge(User u, Contest c) throws PortalException, SystemException{
+        long lastContestPhase = ContestPhaseLocalServiceUtil.getPhasesForContest(c).get(ContestPhaseLocalServiceUtil.getPhasesForContest(c).size()-1).getContestPhasePK();
+
+        List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(lastContestPhase);
+        int counter=0;
+        for (Proposal p : proposals){
+            String judges = "";
+            try{
+                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), lastContestPhase, ProposalAttributeKeys.SELECTED_JUDGES).getStringValue();
+            } catch (NoSuchProposalContestPhaseAttributeException e) {  }
+            if (StringUtils.containsIgnoreCase(judges,u.getUserId()+"")) counter++;
+        }
+        return counter;
     }
 }

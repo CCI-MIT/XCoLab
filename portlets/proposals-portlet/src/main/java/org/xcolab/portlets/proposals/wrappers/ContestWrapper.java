@@ -404,7 +404,20 @@ public class ContestWrapper {
                 judges = c.getUsers();
             }
         }
+        for (User u : judges){
+            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u,contest));
+        }
         return judges;
+    }
+
+    public List<User> getContestFellows() throws PortalException, SystemException {
+        List<User> fellows = null;
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()){
+            if (c.getRoleName().equalsIgnoreCase("Fellow")){
+                fellows = c.getUsers();
+            }
+        }
+        return fellows;
     }
 
     /**

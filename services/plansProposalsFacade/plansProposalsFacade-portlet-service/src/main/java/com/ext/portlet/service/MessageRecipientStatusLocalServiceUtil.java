@@ -297,6 +297,13 @@ public class MessageRecipientStatusLocalServiceUtil {
         return getService().countUnreadMessages(userId);
     }
 
+    public static boolean didReceiveJudgeCommentForProposal(
+        com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().didReceiveJudgeCommentForProposal(p, judge);
+    }
+
     public static void clearService() {
         _service = null;
     }

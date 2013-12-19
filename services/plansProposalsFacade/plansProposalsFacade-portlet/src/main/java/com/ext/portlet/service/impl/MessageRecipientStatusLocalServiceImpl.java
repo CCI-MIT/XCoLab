@@ -1,11 +1,18 @@
 package com.ext.portlet.service.impl;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.ext.portlet.NoSuchMessageRecipientStatusException;
+import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.ext.portlet.service.base.MessageRecipientStatusLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 
 /**
  * The implementation of the message recipient status local service.
@@ -65,5 +72,19 @@ public class MessageRecipientStatusLocalServiceImpl
         for (MessageRecipientStatus mr : threads)
             if (!mr.getOpened()) unreadMessages++;
         return unreadMessages;
+    }
+
+    public boolean didReceiveJudgeCommentForProposal(Proposal p, User judge) throws SystemException, PortalException {
+        List<MessageRecipientStatus> threads = messageRecipientStatusPersistence.findByReceivingUser(judge.getUserId());
+        Pattern pattern = Pattern.compile("\\[(.*?)\\]");
+        for (MessageRecipientStatus mr : threads){
+            Message message = MessageLocalServiceUtil.getMessage(mr.getMessageId());
+            Matcher m = pattern.matcher(message.getSubject());
+            while (m.find()) {
+                String s = m.group(1);
+                if (s.equalsIgnoreCase(p.getPrimaryKey() + "") && mr.getUserId() == judge.getUserId()) return true;
+            }
+        }
+        return false;
     }
 }
