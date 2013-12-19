@@ -278,7 +278,7 @@
     <div class="popup">
         <div class="closepopuplogin">
             <a href="javascript:;" onclick="jQuery('#popup_proposalPicker').hide()">
-                <img src="http://localhost:8080/climatecolab-theme/images/help_close.png" width="20" height="20"
+                <img src="/climatecolab-theme/images/help_close.png" width="20" height="20"
                      alt="X"/>
             </a>
         </div>
