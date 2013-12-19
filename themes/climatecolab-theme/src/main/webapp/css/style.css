@@ -692,8 +692,8 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .propbox.featured h4 {/*height:23px;*/}
 .propbox.featured .ribbonPlaceholder {height:28px; width: 30px; float: left;}
 .propbox.featured .row2 {padding-left: 30px;}
-.propbox-red { background-color: #ff8686; }
-.propbox-green { background-color: lightgreen; }
+.propbox-red { background-color: #ff8686 !important; }
+.propbox-green { background-color: lightgreen !important; }
 
 /* right column */
 .votebox-wrap {width:334px; margin-top:-34px;}
