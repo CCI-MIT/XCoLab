@@ -114,7 +114,7 @@ public class ActivityUtil {
             List<SocialActivity> ascending = new ArrayList<>(sal); //convert to array for sorting
             Collections.sort(ascending, sorter);
 
-            final long groupSize = 1000 * 60 * 5l; //5 minutes
+            final long groupSize = 1000 * 60 * 60 * 24l; //1 day
             SocialActivity curMin = null;
             for (SocialActivity sa : ascending) {
                 if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < groupSize) curMin = sa;

@@ -28,8 +28,8 @@ public class ActivitiesBean implements Serializable {
      * Max query to handle the bug with no activity body - sufficiently high number that we're very likely to get enough
      * non-null entres to meet the feedSize param
      */
-    private int MAX_QUERY = 500;
-    private int feedSize = 20;
+    private int MAX_QUERY = 500000;
+    private int feedSize = 40;
     private boolean showAdmin = true;
     private String feedStyle = "FULL";
     private List<SocialActivityWrapper> activities;
