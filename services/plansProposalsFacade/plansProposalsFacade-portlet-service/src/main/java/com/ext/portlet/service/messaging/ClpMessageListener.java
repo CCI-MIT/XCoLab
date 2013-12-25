@@ -2,6 +2,8 @@ package com.ext.portlet.service.messaging;
 
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ActivitySubscriptionServiceUtil;
+import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
+import com.ext.portlet.service.AnalyticsUserEventServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -171,6 +173,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ActivitySubscriptionLocalServiceUtil.clearService();
 
             ActivitySubscriptionServiceUtil.clearService();
+            AnalyticsUserEventLocalServiceUtil.clearService();
+
+            AnalyticsUserEventServiceUtil.clearService();
             BalloonStatsEntryLocalServiceUtil.clearService();
 
             BalloonStatsEntryServiceUtil.clearService();

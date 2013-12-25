@@ -36,6 +36,7 @@ public class DiscussionCategoryGroupLocalServiceClp
     private MethodKey _getCommentsCountMethodKey25;
     private MethodKey _getCommentsCountMethodKey26;
     private MethodKey _copyEverythingMethodKey27;
+    private MethodKey _getUserMessagesMethodKey28;
 
     public DiscussionCategoryGroupLocalServiceClp(
         ClassLoaderProxy classLoaderProxy) {
@@ -147,6 +148,9 @@ public class DiscussionCategoryGroupLocalServiceClp
                 "copyEverything",
                 com.ext.portlet.model.DiscussionCategoryGroup.class,
                 com.ext.portlet.model.DiscussionCategoryGroup.class);
+
+        _getUserMessagesMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getUserMessages", long.class);
     }
 
     public com.ext.portlet.model.DiscussionCategoryGroup addDiscussionCategoryGroup(
@@ -899,6 +903,31 @@ public class DiscussionCategoryGroupLocalServiceClp
                     " is not a valid exception");
             }
         }
+    }
+
+    public int getUserMessages(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getUserMessagesMethodKey28,
+                userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

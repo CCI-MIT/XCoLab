@@ -5,6 +5,7 @@ import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.impl.PlanItemGroupImpl;
 import com.ext.portlet.model.impl.PlanItemGroupModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
@@ -199,6 +200,8 @@ public class PlanItemGroupPersistenceImpl extends BasePersistenceImpl<PlanItemGr
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = AnalyticsUserEventPersistence.class)
+    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)

@@ -5,6 +5,7 @@ import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.model.impl.MessageRecipientStatusImpl;
 import com.ext.portlet.model.impl.MessageRecipientStatusModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
@@ -267,6 +268,8 @@ public class MessageRecipientStatusPersistenceImpl extends BasePersistenceImpl<M
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = AnalyticsUserEventPersistence.class)
+    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)

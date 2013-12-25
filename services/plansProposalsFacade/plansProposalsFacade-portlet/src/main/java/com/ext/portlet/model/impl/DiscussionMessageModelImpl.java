@@ -80,12 +80,13 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.DiscussionMessage"),
             true);
-    public static long BODY_COLUMN_BITMASK = 1L;
-    public static long CATEGORYGROUPID_COLUMN_BITMASK = 2L;
-    public static long CATEGORYID_COLUMN_BITMASK = 4L;
-    public static long MESSAGEID_COLUMN_BITMASK = 8L;
-    public static long SUBJECT_COLUMN_BITMASK = 16L;
-    public static long THREADID_COLUMN_BITMASK = 32L;
+    public static long AUTHORID_COLUMN_BITMASK = 1L;
+    public static long BODY_COLUMN_BITMASK = 2L;
+    public static long CATEGORYGROUPID_COLUMN_BITMASK = 4L;
+    public static long CATEGORYID_COLUMN_BITMASK = 8L;
+    public static long MESSAGEID_COLUMN_BITMASK = 16L;
+    public static long SUBJECT_COLUMN_BITMASK = 32L;
+    public static long THREADID_COLUMN_BITMASK = 64L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionMessage"));
     private static ClassLoader _classLoader = DiscussionMessage.class.getClassLoader();
@@ -110,6 +111,8 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
     private long _originalCategoryGroupId;
     private boolean _setOriginalCategoryGroupId;
     private long _authorId;
+    private long _originalAuthorId;
+    private boolean _setOriginalAuthorId;
     private Date _createDate;
     private long _version;
     private Date _deleted;
@@ -336,7 +339,19 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
     }
 
     public void setAuthorId(long authorId) {
+        _columnBitmask |= AUTHORID_COLUMN_BITMASK;
+
+        if (!_setOriginalAuthorId) {
+            _setOriginalAuthorId = true;
+
+            _originalAuthorId = _authorId;
+        }
+
         _authorId = authorId;
+    }
+
+    public long getOriginalAuthorId() {
+        return _originalAuthorId;
     }
 
     @JSON
@@ -515,6 +530,10 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
         discussionMessageModelImpl._originalCategoryGroupId = discussionMessageModelImpl._categoryGroupId;
 
         discussionMessageModelImpl._setOriginalCategoryGroupId = false;
+
+        discussionMessageModelImpl._originalAuthorId = discussionMessageModelImpl._authorId;
+
+        discussionMessageModelImpl._setOriginalAuthorId = false;
 
         discussionMessageModelImpl._columnBitmask = 0;
     }

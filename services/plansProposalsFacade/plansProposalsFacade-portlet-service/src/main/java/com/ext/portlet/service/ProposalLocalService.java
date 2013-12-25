@@ -972,4 +972,26 @@ public interface ProposalLocalService extends PersistedModelLocalService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean hasUserVoted(long proposalId, long contestPhaseId,
         long userId) throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns number of proposals that user supports
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getUserSupportedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns number of proposals that user has given his vote to
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getUserVotedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

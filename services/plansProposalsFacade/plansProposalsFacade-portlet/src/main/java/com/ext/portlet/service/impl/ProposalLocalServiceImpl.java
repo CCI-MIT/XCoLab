@@ -1032,7 +1032,26 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             return false;
         }
     }
+    
+    /**
+     * Returns number of proposals that user supports
+     * @param userId
+     * @return
+     * @throws SystemException
+     */
+    public int getUserSupportedProposalsCount(long userId) throws SystemException {
+    	return proposalSupporterPersistence.countByUserId(userId);
+    }
 
+    /**
+     * Returns number of proposals that user has given his vote to
+     * @param userId
+     * @return
+     * @throws SystemException
+     */
+    public int getUserVotedProposalsCount(long userId) throws SystemException {
+    	return proposalVotePersistence.countByUserId(userId);
+    }
 
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>

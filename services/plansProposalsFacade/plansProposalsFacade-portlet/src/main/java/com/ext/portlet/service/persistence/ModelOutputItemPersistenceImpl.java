@@ -5,6 +5,7 @@ import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.model.impl.ModelOutputItemImpl;
 import com.ext.portlet.model.impl.ModelOutputItemModelImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
@@ -189,6 +190,8 @@ public class ModelOutputItemPersistenceImpl extends BasePersistenceImpl<ModelOut
 
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = AnalyticsUserEventPersistence.class)
+    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = ContestPersistence.class)

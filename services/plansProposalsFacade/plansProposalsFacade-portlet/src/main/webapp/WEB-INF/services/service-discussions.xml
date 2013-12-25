@@ -98,6 +98,10 @@
         <finder name="MessageId" return-type="DiscussionMessage" where="deleted is null">
             <finder-column name="messageId" />
         </finder>
+        
+        <finder name="AuthorId" return-type="Collection" where="deleted is null">
+            <finder-column name="authorId" />
+        </finder>
     </entity>
     
     <entity name="DiscussionMessageFlag" local-service="true">

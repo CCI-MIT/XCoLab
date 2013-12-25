@@ -1091,6 +1091,30 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns number of proposals that user supports
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    public int getUserSupportedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getUserSupportedProposalsCount(userId);
+    }
+
+    /**
+    * Returns number of proposals that user has given his vote to
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    public int getUserVotedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getUserVotedProposalsCount(userId);
+    }
+
+    /**
      * @deprecated Renamed to {@link #getWrappedService}
      */
     public ProposalLocalService getWrappedProposalLocalService() {

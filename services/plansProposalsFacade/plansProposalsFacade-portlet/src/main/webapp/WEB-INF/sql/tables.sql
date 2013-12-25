@@ -10,6 +10,17 @@ create table xcolab_ActivitySubscription (
 	modifiedDate DATE null
 );
 
+create table xcolab_AnalyticsUserEvent (
+	userId LONG not null,
+	idString VARCHAR(75) not null,
+	category VARCHAR(75) null,
+	action VARCHAR(75) null,
+	label VARCHAR(75) null,
+	value INTEGER,
+	created DATE null,
+	primary key (userId, idString)
+);
+
 create table xcolab_BalloonStatsEntry (
 	id_ LONG not null primary key,
 	firstContestId LONG,

@@ -3,6 +3,7 @@
 
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.ext.portlet.model.ActivitySubscription" />
+	<import class="com.ext.portlet.model.AnalyticsUserEvent" />
 	<import class="com.ext.portlet.model.BalloonStatsEntry" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
@@ -90,6 +91,18 @@
 		<property name="receiverId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.AnalyticsUserEventImpl" table="xcolab_AnalyticsUserEvent">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.AnalyticsUserEventPK">
+			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="idString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		</composite-id>
+		<property name="category" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="action" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="created" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.BalloonStatsEntryImpl" table="xcolab_BalloonStatsEntry">
 		<cache usage="read-write" />

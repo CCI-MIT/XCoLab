@@ -1110,6 +1110,30 @@ public class ProposalLocalServiceUtil {
         return getService().hasUserVoted(proposalId, contestPhaseId, userId);
     }
 
+    /**
+    * Returns number of proposals that user supports
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    public static int getUserSupportedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserSupportedProposalsCount(userId);
+    }
+
+    /**
+    * Returns number of proposals that user has given his vote to
+    *
+    * @param userId
+    * @return
+    * @throws SystemException
+    */
+    public static int getUserVotedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserVotedProposalsCount(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

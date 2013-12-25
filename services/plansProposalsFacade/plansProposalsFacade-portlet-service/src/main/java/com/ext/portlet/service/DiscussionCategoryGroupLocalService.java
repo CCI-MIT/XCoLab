@@ -281,4 +281,8 @@ public interface DiscussionCategoryGroupLocalService
         com.ext.portlet.model.DiscussionCategoryGroup source)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getUserMessages(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

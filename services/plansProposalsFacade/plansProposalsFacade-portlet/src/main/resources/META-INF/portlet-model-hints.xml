@@ -14,6 +14,15 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.AnalyticsUserEvent">
+		<field name="userId" type="long" />
+		<field name="idString" type="String" />
+		<field name="category" type="String" />
+		<field name="action" type="String" />
+		<field name="label" type="String" />
+		<field name="value" type="int" />
+		<field name="created" type="Date" />
+	</model>
 	<model name="com.ext.portlet.model.BalloonStatsEntry">
 		<field name="id" type="long" />
 		<field name="firstContestId" type="long" />

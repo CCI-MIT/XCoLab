@@ -73,6 +73,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private MethodKey _unsubscribeMethodKey63;
     private MethodKey _unsubscribeMethodKey64;
     private MethodKey _hasUserVotedMethodKey65;
+    private MethodKey _getUserSupportedProposalsCountMethodKey66;
+    private MethodKey _getUserVotedProposalsCountMethodKey67;
 
     public ProposalLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
         _classLoaderProxy = classLoaderProxy;
@@ -299,6 +301,12 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _hasUserVotedMethodKey65 = new MethodKey(_classLoaderProxy.getClassName(),
                 "hasUserVoted", long.class, long.class, long.class);
+
+        _getUserSupportedProposalsCountMethodKey66 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getUserSupportedProposalsCount", long.class);
+
+        _getUserVotedProposalsCountMethodKey67 = new MethodKey(_classLoaderProxy.getClassName(),
+                "getUserVotedProposalsCount", long.class);
     }
 
     public com.ext.portlet.model.Proposal addProposal(
@@ -2191,6 +2199,56 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return ((Boolean) returnObj).booleanValue();
+    }
+
+    public int getUserSupportedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getUserSupportedProposalsCountMethodKey66,
+                userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
+    }
+
+    public int getUserVotedProposalsCount(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        MethodHandler methodHandler = new MethodHandler(_getUserVotedProposalsCountMethodKey67,
+                userId);
+
+        try {
+            returnObj = _classLoaderProxy.invoke(methodHandler);
+        } catch (Throwable t) {
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
     }
 
     public ClassLoaderProxy getClassLoaderProxy() {

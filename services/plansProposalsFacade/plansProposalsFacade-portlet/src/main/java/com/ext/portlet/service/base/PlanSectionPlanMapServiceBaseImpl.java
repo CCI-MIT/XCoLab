@@ -3,6 +3,8 @@ package com.ext.portlet.service.base;
 import com.ext.portlet.model.PlanSectionPlanMap;
 import com.ext.portlet.service.ActivitySubscriptionLocalService;
 import com.ext.portlet.service.ActivitySubscriptionService;
+import com.ext.portlet.service.AnalyticsUserEventLocalService;
+import com.ext.portlet.service.AnalyticsUserEventService;
 import com.ext.portlet.service.BalloonStatsEntryLocalService;
 import com.ext.portlet.service.BalloonStatsEntryService;
 import com.ext.portlet.service.ContestDebateLocalService;
@@ -152,6 +154,7 @@ import com.ext.portlet.service.ProposalVersionService;
 import com.ext.portlet.service.ProposalVoteLocalService;
 import com.ext.portlet.service.ProposalVoteService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
+import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
@@ -264,6 +267,12 @@ public abstract class PlanSectionPlanMapServiceBaseImpl extends PrincipalBean
     protected ActivitySubscriptionService activitySubscriptionService;
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
+    @BeanReference(type = AnalyticsUserEventLocalService.class)
+    protected AnalyticsUserEventLocalService analyticsUserEventLocalService;
+    @BeanReference(type = AnalyticsUserEventService.class)
+    protected AnalyticsUserEventService analyticsUserEventService;
+    @BeanReference(type = AnalyticsUserEventPersistence.class)
+    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
     @BeanReference(type = BalloonStatsEntryLocalService.class)
     protected BalloonStatsEntryLocalService balloonStatsEntryLocalService;
     @BeanReference(type = BalloonStatsEntryService.class)
@@ -785,6 +794,63 @@ public abstract class PlanSectionPlanMapServiceBaseImpl extends PrincipalBean
     public void setActivitySubscriptionPersistence(
         ActivitySubscriptionPersistence activitySubscriptionPersistence) {
         this.activitySubscriptionPersistence = activitySubscriptionPersistence;
+    }
+
+    /**
+     * Returns the analytics user event local service.
+     *
+     * @return the analytics user event local service
+     */
+    public AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
+        return analyticsUserEventLocalService;
+    }
+
+    /**
+     * Sets the analytics user event local service.
+     *
+     * @param analyticsUserEventLocalService the analytics user event local service
+     */
+    public void setAnalyticsUserEventLocalService(
+        AnalyticsUserEventLocalService analyticsUserEventLocalService) {
+        this.analyticsUserEventLocalService = analyticsUserEventLocalService;
+    }
+
+    /**
+     * Returns the analytics user event remote service.
+     *
+     * @return the analytics user event remote service
+     */
+    public AnalyticsUserEventService getAnalyticsUserEventService() {
+        return analyticsUserEventService;
+    }
+
+    /**
+     * Sets the analytics user event remote service.
+     *
+     * @param analyticsUserEventService the analytics user event remote service
+     */
+    public void setAnalyticsUserEventService(
+        AnalyticsUserEventService analyticsUserEventService) {
+        this.analyticsUserEventService = analyticsUserEventService;
+    }
+
+    /**
+     * Returns the analytics user event persistence.
+     *
+     * @return the analytics user event persistence
+     */
+    public AnalyticsUserEventPersistence getAnalyticsUserEventPersistence() {
+        return analyticsUserEventPersistence;
+    }
+
+    /**
+     * Sets the analytics user event persistence.
+     *
+     * @param analyticsUserEventPersistence the analytics user event persistence
+     */
+    public void setAnalyticsUserEventPersistence(
+        AnalyticsUserEventPersistence analyticsUserEventPersistence) {
+        this.analyticsUserEventPersistence = analyticsUserEventPersistence;
     }
 
     /**

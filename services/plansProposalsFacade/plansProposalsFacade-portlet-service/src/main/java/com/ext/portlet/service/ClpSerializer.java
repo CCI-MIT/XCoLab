@@ -1,6 +1,7 @@
 package com.ext.portlet.service;
 
 import com.ext.portlet.model.ActivitySubscriptionClp;
+import com.ext.portlet.model.AnalyticsUserEventClp;
 import com.ext.portlet.model.BalloonStatsEntryClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
@@ -160,6 +161,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ActivitySubscriptionClp.class.getName())) {
             return translateInputActivitySubscription(oldModel);
+        }
+
+        if (oldModelClassName.equals(AnalyticsUserEventClp.class.getName())) {
+            return translateInputAnalyticsUserEvent(oldModel);
         }
 
         if (oldModelClassName.equals(BalloonStatsEntryClp.class.getName())) {
@@ -555,6 +560,82 @@ public class ClpSerializer {
                 Date value8 = oldCplModel.getModifiedDate();
 
                 method8.invoke(newModel, value8);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateInputAnalyticsUserEvent(BaseModel<?> oldModel) {
+        AnalyticsUserEventClp oldCplModel = (AnalyticsUserEventClp) oldModel;
+
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                Class<?> newModelClass = Class.forName("com.ext.portlet.model.impl.AnalyticsUserEventImpl",
+                        true, _classLoader);
+
+                Object newModel = newModelClass.newInstance();
+
+                Method method0 = newModelClass.getMethod("setUserId",
+                        new Class[] { Long.TYPE });
+
+                Long value0 = new Long(oldCplModel.getUserId());
+
+                method0.invoke(newModel, value0);
+
+                Method method1 = newModelClass.getMethod("setIdString",
+                        new Class[] { String.class });
+
+                String value1 = oldCplModel.getIdString();
+
+                method1.invoke(newModel, value1);
+
+                Method method2 = newModelClass.getMethod("setCategory",
+                        new Class[] { String.class });
+
+                String value2 = oldCplModel.getCategory();
+
+                method2.invoke(newModel, value2);
+
+                Method method3 = newModelClass.getMethod("setAction",
+                        new Class[] { String.class });
+
+                String value3 = oldCplModel.getAction();
+
+                method3.invoke(newModel, value3);
+
+                Method method4 = newModelClass.getMethod("setLabel",
+                        new Class[] { String.class });
+
+                String value4 = oldCplModel.getLabel();
+
+                method4.invoke(newModel, value4);
+
+                Method method5 = newModelClass.getMethod("setValue",
+                        new Class[] { Integer.TYPE });
+
+                Integer value5 = new Integer(oldCplModel.getValue());
+
+                method5.invoke(newModel, value5);
+
+                Method method6 = newModelClass.getMethod("setCreated",
+                        new Class[] { Date.class });
+
+                Date value6 = oldCplModel.getCreated();
+
+                method6.invoke(newModel, value6);
 
                 return newModel;
             } catch (Exception e) {
@@ -5729,6 +5810,11 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.AnalyticsUserEventImpl")) {
+            return translateOutputAnalyticsUserEvent(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.BalloonStatsEntryImpl")) {
             return translateOutputBalloonStatsEntry(oldModel);
         }
@@ -6179,6 +6265,78 @@ public class ClpSerializer {
                 Date value8 = (Date) method8.invoke(oldModel, (Object[]) null);
 
                 newModel.setModifiedDate(value8);
+
+                return newModel;
+            } catch (Exception e) {
+                _log.error(e, e);
+            }
+        } finally {
+            currentThread.setContextClassLoader(contextClassLoader);
+        }
+
+        return oldModel;
+    }
+
+    public static Object translateOutputAnalyticsUserEvent(
+        BaseModel<?> oldModel) {
+        Thread currentThread = Thread.currentThread();
+
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+        try {
+            currentThread.setContextClassLoader(_classLoader);
+
+            try {
+                AnalyticsUserEventClp newModel = new AnalyticsUserEventClp();
+
+                Class<?> oldModelClass = oldModel.getClass();
+
+                Method method0 = oldModelClass.getMethod("getUserId");
+
+                Long value0 = (Long) method0.invoke(oldModel, (Object[]) null);
+
+                newModel.setUserId(value0);
+
+                Method method1 = oldModelClass.getMethod("getIdString");
+
+                String value1 = (String) method1.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setIdString(value1);
+
+                Method method2 = oldModelClass.getMethod("getCategory");
+
+                String value2 = (String) method2.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setCategory(value2);
+
+                Method method3 = oldModelClass.getMethod("getAction");
+
+                String value3 = (String) method3.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setAction(value3);
+
+                Method method4 = oldModelClass.getMethod("getLabel");
+
+                String value4 = (String) method4.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setLabel(value4);
+
+                Method method5 = oldModelClass.getMethod("getValue");
+
+                Integer value5 = (Integer) method5.invoke(oldModel,
+                        (Object[]) null);
+
+                newModel.setValue(value5);
+
+                Method method6 = oldModelClass.getMethod("getCreated");
+
+                Date value6 = (Date) method6.invoke(oldModel, (Object[]) null);
+
+                newModel.setCreated(value6);
 
                 return newModel;
             } catch (Exception e) {

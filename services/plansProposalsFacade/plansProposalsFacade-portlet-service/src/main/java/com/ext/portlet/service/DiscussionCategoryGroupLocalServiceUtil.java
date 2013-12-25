@@ -327,6 +327,11 @@ public class DiscussionCategoryGroupLocalServiceUtil {
         getService().copyEverything(dcg, source);
     }
 
+    public static int getUserMessages(long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserMessages(userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

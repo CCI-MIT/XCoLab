@@ -237,7 +237,7 @@ $theme.include($top_messages_include)
 #if ($request.getSession().getAttribute('user_from_landing_page'))
     <script type="text/javascript">
         try {
-		pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
+			pageTracker._trackPageview('$request.getSession().getAttribute("user_from_landing_page")');
         	$request.getSession().removeAttribute('user_from_landing_page')
 	}
 	catch(err) {
@@ -256,6 +256,25 @@ $theme.include($top_messages_include)
 	</script>
 	// remove attribute to prevent displaying messages on other pages 
 	$request.getSession().removeAttribute('xcolab_global_messages');
+#end
+
+<h1>$request.getSession().getAttribute('xcolab_analytics_events')</h1>
+
+#if ($request.getSession().getAttribute('xcolab_analytics_events'))
+	<script type="text/javascript">
+		try {
+			if (pageTracker) {
+				#foreach ($event in $request.getSession().getAttribute('xcolab_analytics_events'))
+					alert("tracking event");
+					pageTracker._trackEvent('$event.category', '$event.action', '$event.label', $event.value);
+				#end
+			}
+		} catch (e) {
+			if (window['console']) console.log(e);
+		}
+	</script>
+	// remove attribute to prevent displaying messages on other pages 
+	
 #end
 
 </body>

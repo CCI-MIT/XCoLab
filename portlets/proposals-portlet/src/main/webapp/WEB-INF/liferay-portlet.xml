@@ -20,6 +20,7 @@
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
 		<social-activity-interpreter-class>org.xcolab.portlets.proposals.activity.ProposalsSocialActivityInterpreter</social-activity-interpreter-class>
 		<instanceable>false</instanceable>
+        <private-session-attributes>false</private-session-attributes>
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>
         <header-portlet-javascript>/js/historyWidget.js</header-portlet-javascript>

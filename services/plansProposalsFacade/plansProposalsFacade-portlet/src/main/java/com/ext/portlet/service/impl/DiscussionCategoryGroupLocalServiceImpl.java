@@ -210,4 +210,8 @@ public class DiscussionCategoryGroupLocalServiceImpl
         }
         
     }
+    
+    public int getUserMessages(long userId) throws SystemException {
+    	return discussionMessagePersistence.countByAuthorId(userId);
+    }
 }

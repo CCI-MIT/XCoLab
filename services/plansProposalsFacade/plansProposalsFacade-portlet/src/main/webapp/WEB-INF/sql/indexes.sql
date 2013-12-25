@@ -26,6 +26,7 @@ create index IX_E1468F04 on xcolab_ContestTeamMember (contestId);
 create index IX_8526458A on xcolab_DiscussionCategory (categoryGroupId);
 create index IX_306B69EF on xcolab_DiscussionCategory (categoryId);
 
+create index IX_EB07D049 on xcolab_DiscussionMessage (authorId);
 create index IX_23E0BE87 on xcolab_DiscussionMessage (body, categoryGroupId);
 create index IX_39430975 on xcolab_DiscussionMessage (categoryId, threadId);
 create index IX_189EA1C3 on xcolab_DiscussionMessage (messageId);

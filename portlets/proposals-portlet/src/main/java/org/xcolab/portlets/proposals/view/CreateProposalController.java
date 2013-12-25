@@ -5,13 +5,16 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionController;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.model.Proposal;
@@ -36,6 +39,7 @@ public class CreateProposalController extends BaseProposalsController {
         if(!proposalsContext.getPermissions(request).getCanCreate()) throw new IllegalAccessError("creation not allowed");
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long userId = themeDisplay.getUserId();
         
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
         proposal.setVisible(true);
@@ -48,6 +52,13 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposal", proposalWrapped);
 
         setSeoTexts(request, "Create proposal in " + proposalsContext.getContest(request), null, null);
+        
+
+        AnalyticsUtil.publishEvent(request, userId, AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_KEY + 1, 
+        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_CATEGORY, 
+        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_ACTION , 
+        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_LABEL, 
+    			1);
         
         return "proposalDetails_edit";
     }

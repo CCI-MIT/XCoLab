@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2013. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
+<service-builder package-path="org.xcolab.analytics">
+	<entity name="AnalyticsUserEvent" local-service="true">
+		<column name="userId" type="long" primary="true" />
+		<column name="idString" type="String" primary="true" />
+		<column name="category" type="String" />
+		<column name="action" type="String" />
+		<column name="label" type="String" />
+		<column name="value" type="int" />
+		
+		<column name="created" type="Date" />
+    </entity>
+
+</service-builder>

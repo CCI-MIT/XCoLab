@@ -776,6 +776,125 @@ public class DiscussionMessageUtil {
     }
 
     /**
+    * Returns all the discussion messages where authorId = &#63;.
+    *
+    * @param authorId the author ID
+    * @return the matching discussion messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.DiscussionMessage> findByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAuthorId(authorId);
+    }
+
+    /**
+    * Returns a range of all the discussion messages where authorId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param authorId the author ID
+    * @param start the lower bound of the range of discussion messages
+    * @param end the upper bound of the range of discussion messages (not inclusive)
+    * @return the range of matching discussion messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.DiscussionMessage> findByAuthorId(
+        long authorId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAuthorId(authorId, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the discussion messages where authorId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param authorId the author ID
+    * @param start the lower bound of the range of discussion messages
+    * @param end the upper bound of the range of discussion messages (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching discussion messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.DiscussionMessage> findByAuthorId(
+        long authorId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAuthorId(authorId, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first discussion message in the ordered set where authorId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param authorId the author ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching discussion message
+    * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.DiscussionMessage findByAuthorId_First(
+        long authorId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAuthorId_First(authorId, orderByComparator);
+    }
+
+    /**
+    * Returns the last discussion message in the ordered set where authorId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param authorId the author ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching discussion message
+    * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.DiscussionMessage findByAuthorId_Last(
+        long authorId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByAuthorId_Last(authorId, orderByComparator);
+    }
+
+    /**
+    * Returns the discussion messages before and after the current discussion message in the ordered set where authorId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param pk the primary key of the current discussion message
+    * @param authorId the author ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next discussion message
+    * @throws com.ext.portlet.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.DiscussionMessage[] findByAuthorId_PrevAndNext(
+        long pk, long authorId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchDiscussionMessageException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByAuthorId_PrevAndNext(pk, authorId, orderByComparator);
+    }
+
+    /**
     * Returns all the discussion messages.
     *
     * @return the discussion messages
@@ -898,6 +1017,17 @@ public class DiscussionMessageUtil {
     }
 
     /**
+    * Removes all the discussion messages where authorId = &#63; from the database.
+    *
+    * @param authorId the author ID
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByAuthorId(long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByAuthorId(authorId);
+    }
+
+    /**
     * Removes all the discussion messages from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -982,6 +1112,18 @@ public class DiscussionMessageUtil {
     public static int countByMessageId(long messageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().countByMessageId(messageId);
+    }
+
+    /**
+    * Returns the number of discussion messages where authorId = &#63;.
+    *
+    * @param authorId the author ID
+    * @return the number of matching discussion messages
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByAuthorId(long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByAuthorId(authorId);
     }
 
     /**

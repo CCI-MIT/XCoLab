@@ -28,6 +28,23 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.AnalyticsUserEventModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.AnalyticsUserEventPK" />
+		<attributes>
+			<id name="userId" />
+			<id name="idString" />
+			<basic name="category" />
+			<basic name="action" />
+			<basic name="label" />
+			<basic name="value" />
+			<basic name="created">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.BalloonStatsEntryModelImpl">
 		<attributes>
 			<id name="id">
@@ -1088,6 +1105,10 @@
 	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
 		<table name="xcolab_ActivitySubscription" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.AnalyticsUserEventImpl" name="AnalyticsUserEvent">
+		<table name="xcolab_AnalyticsUserEvent" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.BalloonStatsEntryImpl" name="BalloonStatsEntry">
