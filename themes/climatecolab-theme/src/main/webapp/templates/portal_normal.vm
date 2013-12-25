@@ -258,8 +258,6 @@ $theme.include($top_messages_include)
 	$request.getSession().removeAttribute('xcolab_global_messages');
 #end
 
-<h1>$request.getSession().getAttribute('xcolab_analytics_events')</h1>
-
 #if ($request.getSession().getAttribute('xcolab_analytics_events'))
 	<script type="text/javascript">
 		try {
