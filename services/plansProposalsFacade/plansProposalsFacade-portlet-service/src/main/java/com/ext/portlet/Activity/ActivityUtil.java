@@ -14,10 +14,18 @@ import java.util.*;
 
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
@@ -80,8 +88,28 @@ public class ActivityUtil {
         return activities;
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next) throws SystemException {
-        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+    public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next) throws SystemException, PortalException {
+    	return retrieveWindowedActivities(pagestart, next, false);
+    }
+    
+    public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next, boolean showAdmin) throws SystemException, PortalException {
+    	List<SocialActivity> activities = null;
+    	if (showAdmin) { 
+    		activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+    	}
+    	else {
+
+            Role r = RoleLocalServiceUtil.getRole(10112L,"Administrator");
+            
+            List<Object> administratorsIds = new ArrayList<Object>();
+            for (long userId: UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
+            	administratorsIds.add(userId);
+            }
+    		DynamicQuery dq = DynamicQueryFactoryUtil.forClass(SocialActivity.class, PortalClassLoaderUtil.getClassLoader());
+    		dq.add(RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", administratorsIds)));
+    		dq.addOrder(OrderFactoryUtil.desc("createDate"));
+    		activities = SocialActivityLocalServiceUtil.dynamicQuery(dq, pagestart, next);
+    	}
 
         return groupActivities(activities);
     }

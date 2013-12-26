@@ -41,7 +41,7 @@ public class ActivitiesBean implements Serializable {
         showAdmin = !preferences.getRemoveAdmin();
         feedStyle = preferences.getFeedStyle();
         if (feedStyle.equals("FULL")) {
-            MAX_QUERY = 100;
+            MAX_QUERY = 800;
             feedSize = MAX_QUERY/2;
         }
     }
@@ -66,8 +66,11 @@ public class ActivitiesBean implements Serializable {
             }
             
             for (SocialActivity activity : filterUserId == null ? ActivityUtil.retrieveWindowedActivities(0, MAX_QUERY) : ActivityUtil.retrieveWindowedActivities(filterUserId, 0, MAX_QUERY)) {
-                if (SocialActivityWrapper.isEmpty(activity) || (!showAdmin && Helper.isUserAdmin(activity.getUserId()))) {
+                if (SocialActivityWrapper.isEmpty(activity)) {
                     continue;
+                }
+                if (!showAdmin && Helper.isUserAdmin(activity.getUserId())) {
+                	continue;
                 }
 
                 int curDaysBetween = DateUtil.getDaysBetween(new Date(activity.getCreateDate()), now, TimeZone.getDefault());

@@ -520,7 +520,7 @@ font-weight: 400;
 margin-top: 5px;
 }
 .pager {
-float: right;
+margin:auto;
 width: 600px;
 height: 20px;
 text-align: right;
