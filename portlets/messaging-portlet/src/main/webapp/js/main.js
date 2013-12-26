@@ -117,10 +117,6 @@ function receipientsValid() {
     }
     return true;
 }
-
-jQuery(document).ready(function() {
-    initShowMessage();
-});
 function unblockForm() {
 	jQuery("#ComposeMessage").unblock();
 }
