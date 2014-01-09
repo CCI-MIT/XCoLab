@@ -57,7 +57,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 
->>>>>>> fixed service builder
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
