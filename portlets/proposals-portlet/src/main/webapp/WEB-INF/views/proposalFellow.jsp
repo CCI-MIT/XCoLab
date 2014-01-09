@@ -17,8 +17,7 @@
 
     <div id="content">
 
-
-        <h1>Rating</h1>
+        This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveFellowRatingURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW" />
             <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -33,14 +32,15 @@
                 <form:form id="fellowRatingForm" action="${saveFellowRatingURL }" method="post" commandName="judgeProposalBean">
 
                     <h3 style="margin-top: 0;">Rating</h3>
+                    Rate the proposal based on the four criteria to the right.
                     <table class="judgingForm">
                         <tbody>
                         <tr>
-                            <td>poor</td>
-                            <td>fair</td>
-                            <td>good</td>
-                            <td>very good</td>
-                            <td>outstanding</td>
+                            <td>Poor</td>
+                            <td>Fair</td>
+                            <td>Good</td>
+                            <td>Very good</td>
+                            <td>Outstanding</td>
                         </tr>
                         <tr>
                             <td><form:radiobutton path="fellowRating" value="1" /></td>
@@ -51,13 +51,14 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h3>Promotion</h3>
+                    <h3>Advance Proposal</h3>
 
 
                     <form:select path="fellowAction" items="${judgingOptions}" itemLabel="description"/>
 
 
-                    <h3>Select judges</h3>
+                    <h3>Select Judge(s)</h3>
+                    Select which Judge(s) will review this proposal.
                     <table class="judgingForm">
                         <tbody>
                             <tr>
@@ -85,13 +86,13 @@
         <div class="judging_right">
             <div class="addpropbox">
 
-                <h2>Evaluation criteria</h2>
+                <h2>Evaluation Criteria</h2>
                 <h3>Feasibility of the actions proposed</h3>
                 <span>Technical, economic, social, and political feasibility of the proposals.</span>
                 <h3>Novelty of the proposal's ideas</h3>
-                <span>Innovative thinking and originality will be valued more than encyclopedic knowledge. In addition, instead of selecting a roster of finalists that are very similar, Judges will try to select a group of proposals that represent a diverse range of approaches.</span>
+                <span>Innovative thinking and originality is to be valued more than strict encyclopedic knowledge.  Judges may consider selecting a roster of finalists that represent a diverse range of approaches rather than proposals that are very similar.</span>
                 <h3>Likely impact on climate change and desirability of other impacts</h3>
-                <span>For impact of mitigation actions, the amount of greenhouse gas emission reductions; for adaptation actions, the extent to which the actions counteract the effects of climate change. Desirability can be assessed across multiple dimensions, e.g. economic, social, lifestyle.</span>
+                <span>The extent to which the actions will fulfill on the stated mission.  For example, for mitigation actions, the impact should be based on the amount of greenhouse gas emission reductions; for adaptation actions, the extent to which the actions counteract the effects of climate change; etc.  Some proposals mention other impacts outside of the initial intention, and the potential of these should be taken into consideration.</span>
                 <h3>Presentation quality</h3>
                 <span>Proposals that are well-presented will be favored over those that aren't. Presentation quality includes how well written a proposal is, how well it uses graphics or other visual elements, and how compelling are its artistic representations of possible future worlds (if any).</span>
             </div>

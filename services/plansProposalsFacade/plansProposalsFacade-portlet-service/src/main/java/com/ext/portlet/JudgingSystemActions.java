@@ -34,7 +34,7 @@ public class JudgingSystemActions {
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "no decision"), INCOMPLETE(1, "incomplete"), OFFTOPIC(2, "offtopic"), PASSTOJUDGES(3, "pass to judges");
+        NO_DECISION(0, "No decision"), INCOMPLETE(1, "Incomplete"), OFFTOPIC(2, "Off-topic"), PASSTOJUDGES(3, "Advance to judges");
 
         int attributeValue;
         String description;
