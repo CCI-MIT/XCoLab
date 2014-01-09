@@ -25,6 +25,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 
 public class ProposalSectionWrapper {
 
@@ -47,6 +48,7 @@ public class ProposalSectionWrapper {
         this.version = version;
         this.wrappedProposal = wrappedProposal;
     }
+
 
     public String getTitle() {
         return definition.getTitle();
@@ -73,6 +75,29 @@ public class ProposalSectionWrapper {
                 }
             }
         }
+
+        for (Element e : d.select("a")) {
+            String href = e.attr("href");
+            if (href.contains("/web/guest/plans/-/plans/contestId/")) {
+                final String planId = "/planId/";
+                int beginIndex = href.indexOf(planId);
+                if (beginIndex > -1) {
+                    String proposalIdSuffix = href.substring(beginIndex+planId.length(), href.length());
+                    int slashIndex = proposalIdSuffix.indexOf("/");
+                    String idStr = slashIndex > -1 ? proposalIdSuffix.substring(0, slashIndex) : proposalIdSuffix;
+
+                    try {
+                        Long id = Long.parseLong(idStr);
+
+                        ProposalWrapper proposalWrapper = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(id));
+                        e.text(proposalWrapper.getName());
+                    } catch (Throwable ex) {
+
+                    }
+                }
+            }
+        }
+
         return d.select("body").html();
     }
 
@@ -123,7 +148,7 @@ public class ProposalSectionWrapper {
 
         String props[] = attr.getStringValue().split(",");
         ProposalWrapper[] ret = new ProposalWrapper[props.length];
-        for(int i=0;i<props.length;i++) {
+        for (int i = 0; i < props.length; i++) {
             try {
                 ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
             } catch (Exception e) {
@@ -132,7 +157,7 @@ public class ProposalSectionWrapper {
         }
         return ret;
     }
-    
+
     public long getNumericValue() throws SystemException, PortalException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
@@ -158,15 +183,12 @@ public class ProposalSectionWrapper {
         try {
             if (version != null && version > 0) {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
-            }
-            else {
+            } else {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
             }
-        }
-        catch (NoSuchProposalAttributeException e) {
+        } catch (NoSuchProposalAttributeException e) {
             return null;
-        }
-        catch (NoSuchProposalException e) {
+        } catch (NoSuchProposalException e) {
             return null;
         }
         */
