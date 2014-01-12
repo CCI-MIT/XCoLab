@@ -48,7 +48,7 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
 
-    private ClientRepository repository;
+    //private ClientRepository repository;
 
     /*
      * NOTE FOR DEVELOPERS:
@@ -58,13 +58,12 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
      * runner remote service.
      */
     public ModelRunnerServiceImpl() throws SystemException {
-        repository = CollaboratoriumModelingService.repository();
     }
 
     @JSONWebService
     public JSONObject getScenario(long scenarioId) {
         try {
-            Scenario scenario = repository.getScenario(scenarioId);
+            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
             return convertScenario(scenario);
 
         } catch (SystemException e) {
@@ -83,7 +82,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     @JSONWebService
     public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
 
-        Simulation simulation = repository.getSimulation(modelId);
+        Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
         
         return convertModel(simulation);
     }
@@ -98,9 +97,9 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             inputsValues.put(Long.parseLong(key), inputsObject.getString(key));
         }
 
-        Simulation simulation = repository.getSimulation(modelId);
+        Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
 
-        Scenario scenario = repository.runModel(simulation, inputsValues, 0L, false);
+        Scenario scenario = CollaboratoriumModelingService.repository().runModel(simulation, inputsValues, 0L, false);
         return convertScenario(scenario); 
     }
     
