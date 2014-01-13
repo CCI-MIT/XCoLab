@@ -1155,14 +1155,6 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     margin-bottom: 5px;
 }
 
-.portlet-topper {
-	display: none;
-}
-
-.dockbar-ready .portlet-topper {
-	display: block;
-}
-
 .portlet-blogs .entry-tags {
 	clear: both;
 }
