@@ -260,15 +260,9 @@ $theme.include($top_messages_include)
 
 #if ($request.getSession().getAttribute('xcolab_analytics_events'))
 	<script type="text/javascript">
-		try {
-			if (pageTracker) {
-				#foreach ($event in $request.getSession().getAttribute('xcolab_analytics_events'))
-					pageTracker._trackEvent('$event.category', '$event.action', '$event.label', $event.value);
-				#end
-			}
-		} catch (e) {
-			if (window['console']) console.log(e);
-		}
+		#foreach ($event in $request.getSession().getAttribute('xcolab_analytics_events'))
+			pageTracker._trackEvent('$event.category', '$event.action', '$event.label', $event.value);
+		#end
 	</script>
 	// remove attribute as events should be reported only once
 	$request.getSession().removeAttribute('xcolab_analytics_events');
