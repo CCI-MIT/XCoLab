@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.security.ac.AccessControlled;
 
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
@@ -61,6 +62,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
 
     @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
     public JSONObject getScenario(long scenarioId) {
         try {
             Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
@@ -80,6 +82,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
 
     @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
     public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
 
         Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
@@ -88,6 +91,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
 
     @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
     public JSONObject runModel(long modelId, String inputs) throws IOException, ScenarioNotFoundException,
             ModelNotFoundException, JSONException, SystemException, IllegalUIConfigurationException {
         JSONObject inputsObject = JSONFactoryUtil.createJSONObject(inputs);

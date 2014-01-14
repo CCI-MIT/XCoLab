@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
     /* TODO IMPROVE CODE QUALITY */
     @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
         Date oldDate = new Date();
 
@@ -120,6 +122,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     }
 
     @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
         return  getProposalVersions(-1, proposalId, start, end);
     }

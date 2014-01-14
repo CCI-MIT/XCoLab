@@ -354,7 +354,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .newslinks a.readmore:hover {border-bottom:1px solid #000;}
 
 
-.social-icon{ float: left; height: 17px; padding: 1px 0px 0px 25px; text-indent: -999px; overflow: hidden; }
+.social-icon{ float: left; height: 17px; padding: 1px 0px 0px 25px; text-indent: -999px; overflow: hidden; font-size: 0px;}
 .facebook {background:url(../images/icon-facebook.png) no-repeat;}
 .twitter {background:url(../images/icon-twitter.png) no-repeat;}
 .reddit {background:url(../images/icon-reddit.png) no-repeat;}

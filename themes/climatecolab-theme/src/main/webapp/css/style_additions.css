@@ -1192,7 +1192,12 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 	padding-bottom: 20px;
 }
 
-<<<<<<< HEAD
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+	border: none;
+	padding: 0;
+}
+
 /* Contest Badges */
 
 .badge-container{

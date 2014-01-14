@@ -1,5 +1,6 @@
 package com.ext.portlet.service.persistence;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -721,6 +722,14 @@ public class PlanItemFinderImpl extends BasePersistenceImpl implements PlanItemF
         Session session = openSession();
 
         String sql = CustomSQLUtil.get(GET_LATEST_VERSION_OF_PLAN);
+        if (sql == null) {
+        	try {
+				CustomSQLUtil.reloadCustomSQL();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+            sql = CustomSQLUtil.get(GET_LATEST_VERSION_OF_PLAN);
+        }
 
         SQLQuery query = session.createSQLQuery(sql);
 

@@ -394,10 +394,10 @@ long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayT
 				
 			</div>
 
-			<c:if test="<%= enableRelatedAssets %>">
+			<c:if test="<%= enableRelatedAssets && layoutAssetEntry != null %>">
 				<div class="entry-links">
 					<liferay-ui:asset-links
-						assetEntryId="<%= assetEntry.getEntryId() %>"
+						assetEntryId="<%= layoutAssetEntry.getEntryId() %>"
 					/>
 				</div>
 			</c:if>

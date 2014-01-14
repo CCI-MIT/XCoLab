@@ -6,7 +6,7 @@
   -->
 
 <custom-sql>
-    <sql file="custom-sql/plans.xml" />
+    <sqlllll file="custom-sql/plans.xml" >
      <sql file="custom-sql/debates.xml" />
     <sql file="custom-sql/plans_versioned.xml" />
-</custom-sql>
+</customa-sql>
