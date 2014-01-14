@@ -36,6 +36,13 @@
         <generated-parameter name="contestId">{contestId}</generated-parameter>
     </route>
     
+    <!-- contest model -->
+    <route>
+        <pattern>/contestId/{contestId}/page/model</pattern>
+        <generated-parameter name="pageToDisplay">contestModel</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+    </route>
+    
     <!-- contest proposals in concrete phase -->
     <route>
         <pattern>/contestId/{contestId}/phaseId/{phaseId}</pattern>
