@@ -24,6 +24,7 @@ import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -291,9 +292,7 @@ public class MainViewController {
 						user = UserLocalServiceUtil.getUser(user.getUserId());
 					}
 
-					LoginUtil.logUserIn(request, response,
-							newAccountBean.getScreenName(),
-							newAccountBean.getPassword());
+		    		AuthenticationServiceUtil.logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
 					
 					httpReq.getSession().setAttribute("collab_user_has_registered", true);
 					
