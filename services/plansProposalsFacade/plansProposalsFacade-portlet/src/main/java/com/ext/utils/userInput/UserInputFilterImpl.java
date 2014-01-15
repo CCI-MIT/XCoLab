@@ -1,11 +1,15 @@
 package com.ext.utils.userInput;
 
+import java.lang.reflect.Method;
+
 import org.owasp.validator.html.AntiSamy;
 import org.owasp.validator.html.CleanResults;
 import org.owasp.validator.html.PolicyException;
 import org.owasp.validator.html.ScanException;
 
-public class UserInputFilterImpl implements UserInputFilter {
+import com.liferay.portal.service.InvokableLocalService;
+
+public class UserInputFilterImpl implements UserInputFilter, InvokableLocalService {
     
     
     private AntiSamy as;
@@ -34,5 +38,18 @@ public class UserInputFilterImpl implements UserInputFilter {
             throw new UserInputException("Can't process user input", e);
         }
     }
+
+	@Override
+	public Object invokeMethod(String name, String[] parameterTypes,
+			Object[] arguments) throws Throwable {
+		Class[] parameterTypesClass = new Class[parameterTypes.length];
+		for (int i=0; i < parameterTypes.length; i++) {
+			parameterTypesClass[i] = getClass().getClassLoader().loadClass(parameterTypes[i]);
+		}
+		
+		Method m = this.getClass().getMethod(name, parameterTypesClass);
+		Object ret = m.invoke(this, arguments);
+		return ret;
+	}
 
 }

@@ -36,7 +36,18 @@
     <link rel="stylesheet" href="$css_folder/autoSuggest.css?tt=$themeTimestamp" type="text/css" />
     <link rel="stylesheet" href="$css_folder/ui.dynatree.css?tt=$themeTimestamp" type="text/css" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    
+    
+    <!-- production typekit -->
+    <!--
     <script type="text/javascript" src="http://use.typekit.com/bmu2xym.js?akisc"></script>
+    -->
+    <!-- cognosis typekit -->
+    <!-- <script type="text/javascript" src="//use.typekit.net/zdq3gry.js"></script> -->
+    
+    <!-- local typekit -->
+    <script type="text/javascript" src="http://use.typekit.com/uvv6okq.js"></script>
+    
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <!--[if IE]>
         <script type="text/javascript" src="$javascript_folder/excanvas.js"></script>

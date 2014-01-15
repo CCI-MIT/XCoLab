@@ -75,6 +75,7 @@ public class LoginController {
             }
 
     		AuthenticationServiceUtil.logUserIn(request, response, login, request.getParameter("password"));
+            //LoginUtil.logUserIn(request, response, login, request.getParameter("password"));
 
             if (user == null) {
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);

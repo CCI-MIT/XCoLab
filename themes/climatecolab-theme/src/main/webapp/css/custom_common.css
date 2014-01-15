@@ -8,14 +8,10 @@
 
 .aui {
 	body {
-		color: #555;
-		font-weight: 200;
 	}
 
 	a {
 		color: #009AE5;
-		font-weight: 200;
-
 		&:hover {
 			color: #009AE5;
 		}
@@ -89,7 +85,6 @@
 	}
 
 	li {
-		line-height: 27px;
 	}
 
 	select:focus {
@@ -167,7 +162,6 @@
 
 	.logo, .logo:hover {
 		color: #333;
-		line-height: 20px;
 	}
 
 	.portlet, .portlet-borderless-container {
@@ -263,7 +257,6 @@
 			> li {
 				> a {
 					color: #FFF;
-					line-height: 31px;
 
 					&:focus, &:hover {
 						color: #FFF;
@@ -789,7 +782,6 @@
 			color: #009AE5;
 			font-size: 26px;
 			font-weight: normal;
-			line-height: 26px;
 		}
 	}
 
