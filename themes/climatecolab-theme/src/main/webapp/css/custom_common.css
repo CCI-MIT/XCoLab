@@ -165,7 +165,6 @@
 	}
 
 	.portlet, .portlet-borderless-container {
-		background: #FFF;
 		margin-bottom: 10px;
 		padding: 0;
 	}
@@ -676,7 +675,6 @@
 
 	.add-content-menu, .lfr-edit-layout-panel, .panel-page-menu .portlet-borderless-container {
 		.accordion {
-			background: #FFF;
 			border: 1px solid #D3D3D3;
 			border-top-width: 0;
 
