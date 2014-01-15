@@ -6,7 +6,10 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     xmlns:ice="http://www.icesoft.com/icefaces/component" 
     >
-    <f:subview rendered="#{feedsBean.activitiesBean.feedStyle != 'FULL'}">
+    <f:subview rendered="#{empty feedsBean.activitiesBean.activities}">
+    	There are no activities.
+    </f:subview>
+    <f:subview rendered="#{not empty feedsBean.activitiesBean.activities and feedsBean.activitiesBean.feedStyle != 'FULL'}">
     
   
         <ui:repeat value="#{feedsBean.activitiesBean.activities}" var="activity">
@@ -21,12 +24,12 @@
         </ui:repeat>
   
      </f:subview>
-     <f:subview rendered="#{feedsBean.activitiesBean.feedStyle == 'FULL'}">
+     <f:subview rendered="#{not empty feedsBean.activitiesBean.activities and feedsBean.activitiesBean.feedStyle == 'FULL'}">
      <ice:form>
      	<ice:panelSeries value="#{feedsBean.activitiesBean.activities}" var="activity" id="activitiesTable" rows="20">
             <ice:panelGroup styleClass="activitybox #{activity.odd ? '' : 'blu'}" style="width: 100%;">
                 <ice:panelGroup styleClass="status #{activity.type.displayName}"></ice:panelGroup>
-                <ice:panelGroup styleClass="text" style="width: 750px; margin-top: 20px;">Cannot add the same component twice
+                <ice:panelGroup styleClass="text" style="width: 750px; margin-top: 20px;">
                     <ice:outputText value="#{activity.body}" escape="false" nospan="true" />
                 </ice:panelGroup>
                  <h3 style="float: right; margin-top: 20px; margin-right:10px;">#{activity.activityDateAgo}</h3>

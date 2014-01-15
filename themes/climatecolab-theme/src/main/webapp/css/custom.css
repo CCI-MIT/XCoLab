@@ -659,3 +659,8 @@ $dockbarOpenGradientStart: #0EA6F9;
 		}
 	}
 }
+
+
+.ltr .column, .rtl .column-last {
+	float: none;
+}

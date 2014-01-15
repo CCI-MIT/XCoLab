@@ -11,10 +11,6 @@
 	}
 
 	a {
-		color: #009AE5;
-		&:hover {
-			color: #009AE5;
-		}
 
 		[class^="icon-"], [class*=" icon-"] {
 			display: inline-block;
@@ -30,7 +26,6 @@
 		overflow: hidden;
 
 		td {
-			background-color: #F9F9F9;
 		}
 
 		thead th {

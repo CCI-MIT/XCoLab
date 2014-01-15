@@ -5,6 +5,7 @@
 		<property name="nameGenerators">
 			<list>
 				<bean id="com.ext.portlet.Activity.nameGenerators.PlanSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.PlanSubscriptionNameGenerator" />
+				<bean id="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" />
 				<bean id="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" />
 				<bean id="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" />
 				<bean id="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" />

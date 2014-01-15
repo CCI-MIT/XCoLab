@@ -22,7 +22,7 @@
         
             <div class="contestbox">
                 <div class="img-wrap">
-                    <a href="/web/guest/plans/-/plans/contestId/${contest.primaryKey}">
+                    <a href="/web/guest/plans/-/plans/contestId/${proposal.contestId}/planId/${proposal.proposalId}">
                         <f:subview rendered="#{proposal.image > 0}">
                             <img src="#{randomProposalsBean.baseImagePath}#{proposal.image}" width="151" height="151" alt="#{proposal.name}" />
                         </f:subview>
