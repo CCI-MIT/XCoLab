@@ -297,6 +297,14 @@ public class MessageRecipientStatusLocalServiceWrapper
         return _messageRecipientStatusLocalService.countUnreadMessages(userId);
     }
 
+    public boolean didReceiveJudgeCommentForProposal(
+        com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _messageRecipientStatusLocalService.didReceiveJudgeCommentForProposal(p,
+            judge);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

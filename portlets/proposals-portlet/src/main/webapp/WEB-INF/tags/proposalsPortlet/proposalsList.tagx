@@ -14,7 +14,19 @@
 	<div class="shadebar"><!--  --></div>
 </c:if>
 <c:forEach var="proposal" items="${proposals }">
-<div class="propbox ${proposal.featured ? 'featured' : ''}">
+
+    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
+        <c:choose>
+            <c:when test="${proposal.isJudgeAssignedAndIncomplete}">
+                <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+
+<div class="propbox ${proposal.featured ? 'featured' : ''} ${additionalCSSClasses}">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">

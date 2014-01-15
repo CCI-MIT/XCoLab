@@ -65,7 +65,7 @@
                                 <c:forEach var="judge" items="${contest.contestJudges }">
                                     <td>
                                         <proposalsPortlet:userPortrait screenName="${judge.screenName }"	portraitId="${judge.portraitId}" width="30"	height="30" /><br />
-                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}" text="${judge.fullName}" /><br />
+                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}" text="${judge.fullName} (${judge.comments})" /><br />
                                         <form:checkbox path="selectedJudges" value="${judge.userId}"/>
                                     </td>
                                 </c:forEach>

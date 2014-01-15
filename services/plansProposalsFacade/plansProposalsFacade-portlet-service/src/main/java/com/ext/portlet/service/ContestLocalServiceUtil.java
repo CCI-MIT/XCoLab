@@ -504,6 +504,13 @@ public class ContestLocalServiceUtil {
         return getService().getDefaultModelId(contestPK);
     }
 
+    public static int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User u, com.ext.portlet.model.Contest c)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getNumberOfProposalsForJudge(u, c);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -47,10 +47,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));
 
-
-
-        //ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase)
-
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 
         return "proposalFellow";

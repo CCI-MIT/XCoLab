@@ -2,12 +2,10 @@ package org.xcolab.portlets.proposals.utils;
 
 import javax.portlet.PortletRequest;
 
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Component;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.portlets.proposals.wrappers.*;
 
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.model.Contest;
@@ -193,15 +191,19 @@ public class ProposalsContextImpl implements ProposalsContext {
                 
                 if (proposal != null) {
                     ProposalWrapper proposalWrapper = null;
+                    User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
+
                     if (version != null && version > 0) {
-                        proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
+                        else proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
                     }
                     else {
-                        proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ? 
-                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
+                                        proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
+                        else proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
+                                proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);
                     }
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
-              
                 }
             }
         }

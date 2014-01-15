@@ -225,6 +225,8 @@ public class ProposalWrapper {
         return selectedJudges;
     }
 
+
+
     public String getTeam() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }

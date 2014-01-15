@@ -427,4 +427,10 @@ public interface ContestLocalService extends PersistedModelLocalService {
     public java.lang.Long getDefaultModelId(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
+        com.ext.portlet.model.Contest c)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }
