@@ -1280,3 +1280,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .colab .nt td {
 	background: #fafafa;
 }
+
+.portlet-topper {
+	display: none;
+}
