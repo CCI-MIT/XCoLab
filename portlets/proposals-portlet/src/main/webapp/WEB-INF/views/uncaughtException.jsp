@@ -10,7 +10,7 @@
 <div id="content">
     Internal error has ocurred, please contact the administrator.
 
-    <!--
+    <div style="display:none;">
     <c:if test="${not empty exception}">
         <p class="error">An error occured: <c:out value="${exception}"/></p>
         <pre>
@@ -19,6 +19,6 @@
             </c:forEach>
         </pre>
     </c:if>
-    -->
+    </div>
 </div>
 </jsp:root>

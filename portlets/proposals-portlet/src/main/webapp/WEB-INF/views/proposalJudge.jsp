@@ -18,6 +18,7 @@
     }</style>
 
     <div id="content">
+        This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page
 
 
         <h1>Rating</h1>

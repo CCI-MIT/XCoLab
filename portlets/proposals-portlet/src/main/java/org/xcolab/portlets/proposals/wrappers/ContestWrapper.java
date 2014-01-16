@@ -405,7 +405,7 @@ public class ContestWrapper {
             }
         }
         for (User u : judges){
-            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u,contest));
+            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u,contest)); //ew!
         }
         return judges;
     }
