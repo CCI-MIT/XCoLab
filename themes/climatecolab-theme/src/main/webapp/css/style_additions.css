@@ -1160,7 +1160,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 }
 
 .dockbar-ready .portlet-topper {
-      display: block;
+      display: none;
 }
 
 .portlet-blogs .entry-tags {
@@ -1279,8 +1279,4 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 
 .colab .nt td {
 	background: #fafafa;
-}
-
-.portlet-topper {
-	display: none;
 }
