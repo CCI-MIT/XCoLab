@@ -16,6 +16,7 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.utils.UrlBuilder;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
@@ -30,6 +31,7 @@ import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
@@ -174,9 +176,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setAuthorId(authorId);
         proposal.setCreateDate(new Date());
 
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
         // create discussions
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
+        
+        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
+        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
+        
         proposal.setDiscussionId(proposalDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService

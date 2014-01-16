@@ -21,8 +21,7 @@
             		<div class="comm-share">
                     	<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
                         	addthis:title="${discussion.description}"
-                        	addthis:description="${discussion.description}"
-                        	addthis:url="${discussion.discussionUrl}" >
+                        	addthis:description="${discussion.description}">
 	                    	<img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="icon_share" />
     	                	Share conversation
         	        	</a>
@@ -60,7 +59,8 @@
                         			|
                         			<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"  
                         				addthis:title="${discussion.description}" addthis:description="${message.body}"
-                        				addthis:url="${discussion.discussionUrl}" >
+                        				addthis:url="${discussion.discussionUrl}" 
+                        				data-hash="#_message_${message.messageId}">
 	                    				<span>share</span>
                         			</a>
 								</td>
@@ -170,6 +170,20 @@
                 $('#message_' + messageId).next().remove();
             }
             ]]>
+            
+            /**
+            Update add this urls to messages
+            **/
+            jQuery(function() {
+            	var baseLocation = window.location.toString();
+            	if (baseLocation.indexOf("#") >= 0) {
+            		baseLocation = baseLocation.substring(0, baseLocation.indexOf("#"));
+            	}
+            	jQuery(".message_add_this").each(function() {
+            		var self = jQuery(this);
+            		self.attr("addthis:url", baseLocation + self.attr("data-hash"));
+            	});
+            });
         	</script>
 
 		</discussions:loadDiscussion>

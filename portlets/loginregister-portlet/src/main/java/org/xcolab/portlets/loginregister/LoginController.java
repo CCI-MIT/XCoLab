@@ -104,6 +104,7 @@ public class LoginController {
 
                 SessionErrors.add(request, e.getClass().getName());
             } else {
+            	_log.error("Can't log user in", e);
                 PortalUtil.sendError(e, request, response);
             }
         }
