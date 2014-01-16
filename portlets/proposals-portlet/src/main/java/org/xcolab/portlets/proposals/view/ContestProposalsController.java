@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
@@ -35,42 +36,44 @@ import com.liferay.portal.kernel.exception.SystemException;
 @Controller
 @RequestMapping("view")
 public class ContestProposalsController extends BaseProposalsController {
-    
+
     @Autowired
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = "pageToDisplay=contestProposals")
     public String showContestProposals(RenderRequest request, RenderResponse response,
-            final SortFilterPage sortFilterPage, Model model) 
+                                       final SortFilterPage sortFilterPage, Model model)
             throws PortalException, SystemException {
-        
+
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
+
+        ContestPhaseWrapper contestPhaseWrapper = new ContestPhaseWrapper(contestPhase);
 
         User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
         List<ProposalJudgeWrapper> proposalJudgeWrappers = new ArrayList<ProposalJudgeWrapper>();
-        for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
 
-            if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())){  // judge
+            if (u != null && UserLocalServiceUtil.hasRoleUser(1251483, u.getUserId())) {  // judge
                 proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
-            }
-            else{
+            } else {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
-            if(proposalWrapper.getVisible()){
+            if (proposalWrapper.getVisible()
+                    && contestPhaseWrapper.getProposalVisibility(proposalWrapper.getProposalId())) {
                 proposals.add(proposalWrapper);
             }
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
-        
+
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
-        
+
         return "contestProposals";
     }
 

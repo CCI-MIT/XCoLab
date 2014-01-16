@@ -2,6 +2,10 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.Date;
 
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchContestPhaseException;
@@ -15,9 +19,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ContestPhaseWrapper {
     private ContestPhase contestPhase;
     private ContestStatus status;
-    
+
     public ContestPhaseWrapper(ContestPhase contestPhase) {
-        if(contestPhase == null) throw new IllegalArgumentException("contestphase must not be null");
+        if (contestPhase == null) throw new IllegalArgumentException("contestphase must not be null");
         this.contestPhase = contestPhase;
     }
 
@@ -84,7 +88,7 @@ public class ContestPhaseWrapper {
     public void setAuthorId(long authorId) {
         contestPhase.setAuthorId(authorId);
     }
-    
+
     public ContestStatus getStatus() throws PortalException, SystemException {
         if (status == null) {
             String statusStr = ContestPhaseLocalServiceUtil.getContestStatusStr(contestPhase);
@@ -96,45 +100,62 @@ public class ContestPhaseWrapper {
     }
 
     public boolean getCanVote() throws PortalException, SystemException {
-        if(getStatus() == null) return false;
+        if (getStatus() == null) return false;
         return getStatus().isCanVote();
     }
 
     public boolean getCanEdit() throws PortalException, SystemException {
-        if(getStatus() == null) return false;
+        if (getStatus() == null) return false;
         return getStatus().isCanEdit();
     }
 
     public boolean isActive() {
         return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase);
     }
-    
+
     public long getMilisecondsTillEnd() {
         return contestPhase.getPhaseEndDate() != null ? contestPhase.getPhaseEndDate().getTime() - System.currentTimeMillis() : -1;
     }
-    
+
     public String getName() throws PortalException, SystemException {
         return ContestPhaseLocalServiceUtil.getName(contestPhase);
     }
-    
+
     public boolean isEnded() {
         Date now = new Date();
         if (contestPhase.getPhaseEndDate() != null) return contestPhase.getPhaseEndDate().before(now);
         return false;
     }
-    
+
     public boolean isAlreadyStarted() {
         Date now = new Date();
         return contestPhase.getPhaseStartDate().before(now);
     }
-    
+
+    public Boolean getProposalVisibility(long proposalId) {
+        try {
+            ProposalContestPhaseAttribute attr = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+            return attr.getNumericValue() == 1;
+        } catch (Throwable e) {
+            return true;
+        }
+    }
+
+    public boolean setProposalVisibility(long proposalId, boolean visible) {
+        try {
+            ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE, visible ? 1 : 0);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
     public String getPhaseStatusDescription() throws PortalException, SystemException {
         String descriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
         if (StringUtils.isBlank(descriptionOverride)) {
             try {
                 return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getDescription();
-            }
-            catch (NoSuchContestPhaseException e) {
+            } catch (NoSuchContestPhaseException e) {
                 // ignore
             }
             return null;

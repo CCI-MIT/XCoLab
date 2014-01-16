@@ -85,7 +85,7 @@
         	<c:set var="addBlueClass" value='${not addBlueClass }' />
         </c:if>
         
-        <c:if test="${proposalsPermissions.canDelete }">
+        <c:if test="${proposalsPermissions.canDelete and contestPhase.getProposalVisibility(proposal.proposalId) }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Owner actions</strong>
             	<div>            		

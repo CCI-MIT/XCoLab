@@ -16,7 +16,6 @@
             <h2>
                 <span>${fn:length(proposals.proposals)}</span> proposals
             </h2>
-            <!--  TODO should check if user can see createProposalButton -->
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
                     <div class="blue-button">

@@ -28,7 +28,7 @@ public class ToggleProposalOpenController {
                     throws PortalException, SystemException, ProposalsAuthorizationException {
         
         if (proposalsContext.getPermissions(request).getCanDelete()) {
-            ProposalLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(), 
+            ProposalLocalServiceUtil.setAttribute(proposalsContext.getUser(request).getUserId(),
                     proposalsContext.getProposal(request).getProposalId(), ProposalAttributeKeys.OPEN, planOpen ? 1 : 0);
         }
         else {
