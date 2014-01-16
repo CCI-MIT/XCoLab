@@ -25,23 +25,25 @@ public class ProposalSectionWrapper {
     
     private PlanSectionDefinition definition;
     private Proposal proposal;
+    private ProposalWrapper wrappedProposal;
     private Integer version;
     
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal) {
+    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, ProposalWrapper wrappedProposal) {
         super();
         this.definition = definition;
         this.proposal = proposal;
+        this.wrappedProposal = wrappedProposal;
     }
     
-    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version) {
+    public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version, ProposalWrapper wrappedProposal) {
         super();
         this.definition = definition;
         this.proposal = proposal;
         this.version = version;
+        this.wrappedProposal = wrappedProposal;
     }
     
-    
-    public String getTitle() {
+	public String getTitle() {
         return definition.getTitle();
     }
     
@@ -107,6 +109,7 @@ public class ProposalSectionWrapper {
     }
     
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
+        /*
         try {
             if (version != null && version > 0) {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
@@ -121,6 +124,8 @@ public class ProposalSectionWrapper {
         catch (NoSuchProposalException e) {
             return null;
         }
+        */
+        return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
         
     }
 }

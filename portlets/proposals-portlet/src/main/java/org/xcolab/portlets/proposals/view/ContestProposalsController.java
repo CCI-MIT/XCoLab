@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -15,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
@@ -28,7 +24,9 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -47,6 +45,8 @@ public class ContestProposalsController extends BaseProposalsController {
 
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
+        List<ProposalContestPhaseAttribute> phaseAttributes = 
+        		ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(contestPhase.getContestPhasePK());
 
         ContestPhaseWrapper contestPhaseWrapper = new ContestPhaseWrapper(contestPhase);
 
@@ -67,6 +67,15 @@ public class ContestProposalsController extends BaseProposalsController {
                     && contestPhaseWrapper.getProposalVisibility(proposalWrapper.getProposalId())) {
                 proposals.add(proposalWrapper);
             }
+            
+            // set phase attributes
+            List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
+            for (ProposalContestPhaseAttribute attribute: phaseAttributes) {
+            	if (attribute.getProposalId() == proposal.getProposalId()) {
+            		attributes.add(attribute);
+            	}
+            }
+            proposalWrapper.setContestPhaseAttributes(attributes);
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);

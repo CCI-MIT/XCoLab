@@ -1272,3 +1272,11 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 	border: none;
 	padding: 0;
 }
+
+.colab .t td {
+	background: #fff;
+}
+
+.colab .nt td {
+	background: #fafafa;
+}

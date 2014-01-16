@@ -377,7 +377,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
     }
 
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
@@ -389,12 +389,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
-        long commentsCount = 0;
+        long votesCount = 0;
         for (PlanItem pi : PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
-            commentsCount += PlanItemLocalServiceUtil.getVotes(pi);
+            votesCount += PlanItemLocalServiceUtil.getVotes(pi);
         }
 
-        return commentsCount;
+        return votesCount;
     }
 
     public long getTotalComments(Contest contest) throws PortalException, SystemException {
@@ -480,8 +480,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);
-        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
-        return planType.getDefaultModelId();
+        if (contest.getPlanTypeId() > 0) {
+        	PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
+        	return planType.getDefaultModelId();
+        }
+        return 0L;
     }
 
     private void reindex(Contest contest) {

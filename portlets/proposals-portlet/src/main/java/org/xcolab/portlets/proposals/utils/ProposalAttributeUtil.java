@@ -1,5 +1,7 @@
 package org.xcolab.portlets.proposals.utils;
 
+import java.util.List;
+
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.model.Proposal;
@@ -15,6 +17,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ProposalAttributeUtil {
     Proposal proposal;
     int version;
+    private List<ProposalAttribute> attributes;
 
     public ProposalAttributeUtil(Proposal proposal, int version) {
         this.proposal = proposal;
@@ -56,10 +59,17 @@ public class ProposalAttributeUtil {
 
     public ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
         try {
-            return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, attributeName, additionalId);
+        	if (attributes == null) {
+        		attributes = ProposalLocalServiceUtil.getAttributes(proposal.getProposalId(), version);
+        	}
+        	for (ProposalAttribute attr: attributes) {
+        		if (attr.getName().equals(attributeName) && attr.getAdditionalId() == additionalId) { 
+        			return attr;
+        		}
+        	}
         }
         catch (NoSuchProposalAttributeException e) {
-            return null;
         }
+        return null;
     }
 }

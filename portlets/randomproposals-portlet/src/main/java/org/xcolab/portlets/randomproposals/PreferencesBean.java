@@ -80,7 +80,7 @@ public class PreferencesBean {
 
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.addMessage(null, fm);
-        
+        RandomProposalsBean.reset();
         return "";
     }
     

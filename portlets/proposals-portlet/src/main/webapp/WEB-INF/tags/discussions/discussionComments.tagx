@@ -60,7 +60,7 @@
                         			|
                         			<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"  
                         				addthis:title="${discussion.description}" addthis:description="${message.body}"
-                        				addthis:url="${discussion.discussionUrl}#_message_${message.messageId }" >
+                        				addthis:url="${discussion.discussionUrl}" >
 	                    				<span>share</span>
                         			</a>
 								</td>

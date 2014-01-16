@@ -320,6 +320,21 @@ public class ProposalContestPhaseAttributeLocalServiceUtil {
     }
 
     /**
+    * <p>Returns all contest phase attributes</p>
+    *
+    * @param contestPhaseId id of a phase
+    * @return proposal phase attributes
+    * @throws NoSuchProposalContestPhaseAttributeException if there is no attribute with given name
+    * @throws SystemException in case of lr error
+    */
+    public static java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> getAllContestPhaseAttributes(
+        long contestPhaseId)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getAllContestPhaseAttributes(contestPhaseId);
+    }
+
+    /**
     * <p>Sets numeric value for contest phase attribute, sets default values to other "values" - 0 and null where applicable</p>
     *
     * @param proposalId id of a proposal

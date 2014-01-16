@@ -213,6 +213,29 @@ public class ProposalContestPhaseAttributePersistenceImpl
         "proposalContestPhaseAttribute.proposalId = ? AND ";
     private static final String _FINDER_COLUMN_PROPOSALIDCONTESTPHASEID_CONTESTPHASEID_2 =
         "proposalContestPhaseAttribute.contestPhaseId = ?";
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTPHASEID =
+        new FinderPath(ProposalContestPhaseAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalContestPhaseAttributeModelImpl.FINDER_CACHE_ENABLED,
+            ProposalContestPhaseAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByContestPhaseId",
+            new String[] {
+                Long.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID =
+        new FinderPath(ProposalContestPhaseAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalContestPhaseAttributeModelImpl.FINDER_CACHE_ENABLED,
+            ProposalContestPhaseAttributeImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByContestPhaseId",
+            new String[] { Long.class.getName() },
+            ProposalContestPhaseAttributeModelImpl.CONTESTPHASEID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_CONTESTPHASEID = new FinderPath(ProposalContestPhaseAttributeModelImpl.ENTITY_CACHE_ENABLED,
+            ProposalContestPhaseAttributeModelImpl.FINDER_CACHE_ENABLED,
+            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByContestPhaseId", new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2 = "proposalContestPhaseAttribute.contestPhaseId = ?";
     private static final String _SQL_SELECT_PROPOSALCONTESTPHASEATTRIBUTE = "SELECT proposalContestPhaseAttribute FROM ProposalContestPhaseAttribute proposalContestPhaseAttribute";
     private static final String _SQL_SELECT_PROPOSALCONTESTPHASEATTRIBUTE_WHERE = "SELECT proposalContestPhaseAttribute FROM ProposalContestPhaseAttribute proposalContestPhaseAttribute WHERE ";
     private static final String _SQL_COUNT_PROPOSALCONTESTPHASEATTRIBUTE = "SELECT COUNT(proposalContestPhaseAttribute) FROM ProposalContestPhaseAttribute proposalContestPhaseAttribute";
@@ -1244,6 +1267,470 @@ public class ProposalContestPhaseAttributePersistenceImpl
     }
 
     /**
+     * Returns all the proposal contest phase attributes where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @return the matching proposal contest phase attributes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalContestPhaseAttribute> findByContestPhaseId(
+        long contestPhaseId) throws SystemException {
+        return findByContestPhaseId(contestPhaseId, QueryUtil.ALL_POS,
+            QueryUtil.ALL_POS, null);
+    }
+
+    /**
+     * Returns a range of all the proposal contest phase attributes where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param start the lower bound of the range of proposal contest phase attributes
+     * @param end the upper bound of the range of proposal contest phase attributes (not inclusive)
+     * @return the range of matching proposal contest phase attributes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalContestPhaseAttribute> findByContestPhaseId(
+        long contestPhaseId, int start, int end) throws SystemException {
+        return findByContestPhaseId(contestPhaseId, start, end, null);
+    }
+
+    /**
+     * Returns an ordered range of all the proposal contest phase attributes where contestPhaseId = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ProposalContestPhaseAttributeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param start the lower bound of the range of proposal contest phase attributes
+     * @param end the upper bound of the range of proposal contest phase attributes (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching proposal contest phase attributes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<ProposalContestPhaseAttribute> findByContestPhaseId(
+        long contestPhaseId, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
+
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID;
+            finderArgs = new Object[] { contestPhaseId };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTPHASEID;
+            finderArgs = new Object[] {
+                    contestPhaseId,
+                    
+                    start, end, orderByComparator
+                };
+        }
+
+        List<ProposalContestPhaseAttribute> list = (List<ProposalContestPhaseAttribute>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (ProposalContestPhaseAttribute proposalContestPhaseAttribute : list) {
+                if ((contestPhaseId != proposalContestPhaseAttribute.getContestPhaseId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
+
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
+
+            query.append(_SQL_SELECT_PROPOSALCONTESTPHASEATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ProposalContestPhaseAttributeModelImpl.ORDER_BY_JPQL);
+            }
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestPhaseId);
+
+                if (!pagination) {
+                    list = (List<ProposalContestPhaseAttribute>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
+
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<ProposalContestPhaseAttribute>(list);
+                } else {
+                    list = (List<ProposalContestPhaseAttribute>) QueryUtil.list(q,
+                            getDialect(), start, end);
+                }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Returns the first proposal contest phase attribute in the ordered set where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal contest phase attribute
+     * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a matching proposal contest phase attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalContestPhaseAttribute findByContestPhaseId_First(
+        long contestPhaseId, OrderByComparator orderByComparator)
+        throws NoSuchProposalContestPhaseAttributeException, SystemException {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = fetchByContestPhaseId_First(contestPhaseId,
+                orderByComparator);
+
+        if (proposalContestPhaseAttribute != null) {
+            return proposalContestPhaseAttribute;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestPhaseId=");
+        msg.append(contestPhaseId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalContestPhaseAttributeException(msg.toString());
+    }
+
+    /**
+     * Returns the first proposal contest phase attribute in the ordered set where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching proposal contest phase attribute, or <code>null</code> if a matching proposal contest phase attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalContestPhaseAttribute fetchByContestPhaseId_First(
+        long contestPhaseId, OrderByComparator orderByComparator)
+        throws SystemException {
+        List<ProposalContestPhaseAttribute> list = findByContestPhaseId(contestPhaseId,
+                0, 1, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last proposal contest phase attribute in the ordered set where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal contest phase attribute
+     * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a matching proposal contest phase attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalContestPhaseAttribute findByContestPhaseId_Last(
+        long contestPhaseId, OrderByComparator orderByComparator)
+        throws NoSuchProposalContestPhaseAttributeException, SystemException {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = fetchByContestPhaseId_Last(contestPhaseId,
+                orderByComparator);
+
+        if (proposalContestPhaseAttribute != null) {
+            return proposalContestPhaseAttribute;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestPhaseId=");
+        msg.append(contestPhaseId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchProposalContestPhaseAttributeException(msg.toString());
+    }
+
+    /**
+     * Returns the last proposal contest phase attribute in the ordered set where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching proposal contest phase attribute, or <code>null</code> if a matching proposal contest phase attribute could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalContestPhaseAttribute fetchByContestPhaseId_Last(
+        long contestPhaseId, OrderByComparator orderByComparator)
+        throws SystemException {
+        int count = countByContestPhaseId(contestPhaseId);
+
+        if (count == 0) {
+            return null;
+        }
+
+        List<ProposalContestPhaseAttribute> list = findByContestPhaseId(contestPhaseId,
+                count - 1, count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the proposal contest phase attributes before and after the current proposal contest phase attribute in the ordered set where contestPhaseId = &#63;.
+     *
+     * @param id the primary key of the current proposal contest phase attribute
+     * @param contestPhaseId the contest phase ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next proposal contest phase attribute
+     * @throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException if a proposal contest phase attribute with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public ProposalContestPhaseAttribute[] findByContestPhaseId_PrevAndNext(
+        long id, long contestPhaseId, OrderByComparator orderByComparator)
+        throws NoSuchProposalContestPhaseAttributeException, SystemException {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = findByPrimaryKey(id);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            ProposalContestPhaseAttribute[] array = new ProposalContestPhaseAttributeImpl[3];
+
+            array[0] = getByContestPhaseId_PrevAndNext(session,
+                    proposalContestPhaseAttribute, contestPhaseId,
+                    orderByComparator, true);
+
+            array[1] = proposalContestPhaseAttribute;
+
+            array[2] = getByContestPhaseId_PrevAndNext(session,
+                    proposalContestPhaseAttribute, contestPhaseId,
+                    orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected ProposalContestPhaseAttribute getByContestPhaseId_PrevAndNext(
+        Session session,
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute,
+        long contestPhaseId, OrderByComparator orderByComparator,
+        boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
+        } else {
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_PROPOSALCONTESTPHASEATTRIBUTE_WHERE);
+
+        query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(ProposalContestPhaseAttributeModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(contestPhaseId);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(proposalContestPhaseAttribute);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<ProposalContestPhaseAttribute> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes all the proposal contest phase attributes where contestPhaseId = &#63; from the database.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public void removeByContestPhaseId(long contestPhaseId)
+        throws SystemException {
+        for (ProposalContestPhaseAttribute proposalContestPhaseAttribute : findByContestPhaseId(
+                contestPhaseId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(proposalContestPhaseAttribute);
+        }
+    }
+
+    /**
+     * Returns the number of proposal contest phase attributes where contestPhaseId = &#63;.
+     *
+     * @param contestPhaseId the contest phase ID
+     * @return the number of matching proposal contest phase attributes
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByContestPhaseId(long contestPhaseId)
+        throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTESTPHASEID;
+
+        Object[] finderArgs = new Object[] { contestPhaseId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_PROPOSALCONTESTPHASEATTRIBUTE_WHERE);
+
+            query.append(_FINDER_COLUMN_CONTESTPHASEID_CONTESTPHASEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(contestPhaseId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Caches the proposal contest phase attribute in the entity cache if it is enabled.
      *
      * @param proposalContestPhaseAttribute the proposal contest phase attribute
@@ -1566,6 +2053,27 @@ public class ProposalContestPhaseAttributePersistenceImpl
                 FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_PROPOSALIDCONTESTPHASEID,
                     args);
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PROPOSALIDCONTESTPHASEID,
+                    args);
+            }
+
+            if ((proposalContestPhaseAttributeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        proposalContestPhaseAttributeModelImpl.getOriginalContestPhaseId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID,
+                    args);
+
+                args = new Object[] {
+                        proposalContestPhaseAttributeModelImpl.getContestPhaseId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTPHASEID,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTPHASEID,
                     args);
             }
         }

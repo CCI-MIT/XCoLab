@@ -61,6 +61,23 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes490;
     private String _methodName491;
     private String[] _methodParameterTypes491;
+<<<<<<< HEAD
+=======
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
+    private String _methodName493;
+    private String[] _methodParameterTypes493;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
+>>>>>>> Fixes for LR6.2 - performance mostly
 
     public ProposalContestPhaseAttributeLocalServiceClpInvoker() {
         _methodName0 = "addProposalContestPhaseAttribute";
@@ -169,34 +186,66 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
                 "long", "long", "java.lang.String"
             };
 
+<<<<<<< HEAD
         _methodName487 = "setProposalContestPhaseAttribute";
 
         _methodParameterTypes487 = new String[] {
                 "long", "long", "java.lang.String", "long"
             };
+=======
+        _methodName493 = "getAllContestPhaseAttributes";
+
+        _methodParameterTypes493 = new String[] { "long" };
+>>>>>>> Fixes for LR6.2 - performance mostly
 
         _methodName488 = "setProposalContestPhaseAttribute";
 
+<<<<<<< HEAD
         _methodParameterTypes488 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
+=======
+        _methodParameterTypes494 = new String[] {
+                "long", "long", "java.lang.String", "long"
+>>>>>>> Fixes for LR6.2 - performance mostly
             };
 
         _methodName489 = "setProposalContestPhaseAttribute";
 
+<<<<<<< HEAD
         _methodParameterTypes489 = new String[] {
                 "long", "long", "java.lang.String", "double"
+=======
+        _methodParameterTypes495 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+>>>>>>> Fixes for LR6.2 - performance mostly
             };
 
         _methodName490 = "setProposalContestPhaseAttribute";
 
+<<<<<<< HEAD
         _methodParameterTypes490 = new String[] {
+=======
+        _methodParameterTypes496 = new String[] {
+                "long", "long", "java.lang.String", "double"
+            };
+
+        _methodName497 = "setProposalContestPhaseAttribute";
+
+        _methodParameterTypes497 = new String[] {
+>>>>>>> Fixes for LR6.2 - performance mostly
                 "long", "long", "java.lang.String", "long", "java.lang.String",
                 "double"
             };
 
+<<<<<<< HEAD
         _methodName491 = "deleteProposalContestPhaseAttribute";
 
         _methodParameterTypes491 = new String[] {
+=======
+        _methodName498 = "deleteProposalContestPhaseAttribute";
+
+        _methodParameterTypes498 = new String[] {
+>>>>>>> Fixes for LR6.2 - performance mostly
                 "long", "long", "java.lang.String"
             };
     }
@@ -323,8 +372,18 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
                 (java.lang.String) arguments[2]);
         }
 
+<<<<<<< HEAD
         if (_methodName487.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes487, parameterTypes)) {
+=======
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
+>>>>>>> Fixes for LR6.2 - performance mostly
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -333,8 +392,13 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
+<<<<<<< HEAD
         if (_methodName488.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+=======
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
+>>>>>>> Fixes for LR6.2 - performance mostly
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
@@ -342,8 +406,13 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
+<<<<<<< HEAD
         if (_methodName489.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+=======
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
+>>>>>>> Fixes for LR6.2 - performance mostly
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -352,8 +421,13 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
+<<<<<<< HEAD
         if (_methodName490.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
+=======
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
+>>>>>>> Fixes for LR6.2 - performance mostly
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -364,8 +438,13 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
+<<<<<<< HEAD
         if (_methodName491.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
+=======
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
+>>>>>>> Fixes for LR6.2 - performance mostly
             ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);

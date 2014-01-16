@@ -7,7 +7,9 @@ import java.util.List;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import com.ext.portlet.service.persistence.ContestPhaseActionableDynamicQuery;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -20,6 +22,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portal.model.MembershipRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -36,6 +39,7 @@ public class ProposalWrapper {
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
+    private List<ProposalContestPhaseAttribute> contestPhaseAttributes;
 
     private ProposalAttributeUtil proposalAttributeUtil;
 
@@ -281,7 +285,7 @@ public class ProposalWrapper {
                 PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
                 if (planTemplate != null) {
                     for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-                        sections.add(new ProposalSectionWrapper(psd, proposal, version));
+                        sections.add(new ProposalSectionWrapper(psd, proposal, version, this));
                     }
                 }
             }
@@ -321,11 +325,15 @@ public class ProposalWrapper {
 
     private ProposalContestPhaseAttribute getContestPhaseAttributeOrNull(String attributeName, long additionalId) throws PortalException, SystemException {
         try {
-            return ProposalContestPhaseAttributeLocalServiceUtil
-                    .getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), attributeName, additionalId);
+        	if (contestPhaseAttributes == null) {
+        		contestPhaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(proposal.getProposalId(), contestPhase.getContestPhasePK());
+        	}
+        	for (ProposalContestPhaseAttribute attr: contestPhaseAttributes) {
+        		if (attr.getName().equals(attributeName) && attr.getAdditionalId() == additionalId) return attr;
+        	}
         } catch (Exception e) {
-            return null;
         }
+        return null;
     }
 
     public String getAuthorName() throws PortalException, SystemException {
@@ -340,13 +348,10 @@ public class ProposalWrapper {
 
     private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
-            try {
-                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(),
-                        contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
-                contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                // ignore
-            }
+        	long typeId = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.RIBBON, 0, -1);
+        	if (typeId >= 0) {
+        		contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+        	}
         }
         return contestPhaseRibbonType;
     }
@@ -446,4 +451,12 @@ public class ProposalWrapper {
     public ProposalAttributeUtil getProposalAttributeUtil() {
         return proposalAttributeUtil;
     }
+
+	public List<ProposalContestPhaseAttribute> getContestPhaseAttributes() {
+		return contestPhaseAttributes;
+	}
+
+	public void setContestPhaseAttributes(List<ProposalContestPhaseAttribute> contestPhaseAttributes) {
+		this.contestPhaseAttributes = contestPhaseAttributes;
+	}
 }

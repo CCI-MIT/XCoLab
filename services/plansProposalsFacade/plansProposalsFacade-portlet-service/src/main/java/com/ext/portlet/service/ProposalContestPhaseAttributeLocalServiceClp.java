@@ -61,6 +61,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     private String[] _methodParameterTypes25;
     private String _methodName26;
     private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
 
     public ProposalContestPhaseAttributeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -172,34 +174,38 @@ public class ProposalContestPhaseAttributeLocalServiceClp
                 "long", "long", "java.lang.String"
             };
 
-        _methodName22 = "setProposalContestPhaseAttribute";
+        _methodName22 = "getAllContestPhaseAttributes";
 
-        _methodParameterTypes22 = new String[] {
-                "long", "long", "java.lang.String", "long"
-            };
+        _methodParameterTypes22 = new String[] { "long" };
 
         _methodName23 = "setProposalContestPhaseAttribute";
 
         _methodParameterTypes23 = new String[] {
-                "long", "long", "java.lang.String", "java.lang.String"
+                "long", "long", "java.lang.String", "long"
             };
 
         _methodName24 = "setProposalContestPhaseAttribute";
 
         _methodParameterTypes24 = new String[] {
-                "long", "long", "java.lang.String", "double"
+                "long", "long", "java.lang.String", "java.lang.String"
             };
 
         _methodName25 = "setProposalContestPhaseAttribute";
 
         _methodParameterTypes25 = new String[] {
+                "long", "long", "java.lang.String", "double"
+            };
+
+        _methodName26 = "setProposalContestPhaseAttribute";
+
+        _methodParameterTypes26 = new String[] {
                 "long", "long", "java.lang.String", "long", "java.lang.String",
                 "double"
             };
 
-        _methodName26 = "deleteProposalContestPhaseAttribute";
+        _methodName27 = "deleteProposalContestPhaseAttribute";
 
-        _methodParameterTypes26 = new String[] {
+        _methodParameterTypes27 = new String[] {
                 "long", "long", "java.lang.String"
             };
     }
@@ -836,12 +842,44 @@ public class ProposalContestPhaseAttributeLocalServiceClp
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute> getAllContestPhaseAttributes(
+        long contestPhaseId)
+        throws com.ext.portlet.NoSuchProposalContestPhaseAttributeException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22, new Object[] { contestPhaseId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.ext.portlet.NoSuchProposalContestPhaseAttributeException) {
+                throw (com.ext.portlet.NoSuchProposalContestPhaseAttributeException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalContestPhaseAttribute>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public void setProposalContestPhaseAttribute(long proposalId,
         long contestPhaseId, java.lang.String attributeName, long value)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22,
+            _invokableLocalService.invokeMethod(_methodName23,
+                _methodParameterTypes23,
                 new Object[] {
                     proposalId,
                     
@@ -873,8 +911,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         java.lang.String value)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName23,
-                _methodParameterTypes23,
+            _invokableLocalService.invokeMethod(_methodName24,
+                _methodParameterTypes24,
                 new Object[] {
                     proposalId,
                     
@@ -905,8 +943,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         long contestPhaseId, java.lang.String attributeName, double value)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName24,
-                _methodParameterTypes24,
+            _invokableLocalService.invokeMethod(_methodName25,
+                _methodParameterTypes25,
                 new Object[] {
                     proposalId,
                     
@@ -938,8 +976,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         java.lang.String stringValue, double realValue)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName25,
-                _methodParameterTypes25,
+            _invokableLocalService.invokeMethod(_methodName26,
+                _methodParameterTypes26,
                 new Object[] {
                     proposalId,
                     
@@ -974,8 +1012,8 @@ public class ProposalContestPhaseAttributeLocalServiceClp
         long contestPhaseId, java.lang.String attributeName)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName26,
-                _methodParameterTypes26,
+            _invokableLocalService.invokeMethod(_methodName27,
+                _methodParameterTypes27,
                 new Object[] {
                     proposalId,
                     

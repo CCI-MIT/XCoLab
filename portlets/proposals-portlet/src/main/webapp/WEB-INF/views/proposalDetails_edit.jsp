@@ -239,7 +239,7 @@
 <script type="text/javascript">
 	jQuery("#fileUploadInput").change(function() {
 		jQuery("#fileUploadForm").submit();
-		jQuery("#proposalImage").block();
+		jQuery("#proposalImage").block({message: "", css: {"font-size":"12px", margin: "0px", padding: 0}});
 	});
 	jQuery("#fileUploadFrame").load(
 		function() {

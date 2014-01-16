@@ -164,6 +164,7 @@ public class SearchBean extends DataSource implements Serializable {
         List<SearchResultItem> items = new ArrayList<SearchResultItem>();
         int i=0; 
         for (Document doc: hits.getDocs()) {
+        	SearchResultItem item = new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0);
             items.add(new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0));
         }
 
