@@ -159,16 +159,32 @@
 
       <div class="profile_about-head">About me</div>
       <ice:panelGroup styleClass="userProfileAbout" >
-      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor" value="#{currentUser.about}" onblur="return false;" />
-      </ice:panelGroup>
+      <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor-placeholder" value="#{currentUser.about}" onblur="return false;" />
       <script>
+      	var data = $('.ckeditor-placeholder').val();
         function updateTextarea() {
         	for (var instance in CKEDITOR.instances) {
         		CKEDITOR.instances[instance].updateElement();
         	}
+            data = jQuery('.ckeditor-placeholder').val();
         }
       
+      	function initializeCkeditor() {
+    		jQuery('.ckeditor-placeholder').val(data);
+        	for (var key in CKEDITOR.instances) {
+				CKEDITOR.instances[key].destroy(true);
+        	}
+        
+        	CKEDITOR.replaceAll();
+      	}
+      	ice.onBeforeSubmit(updateTextarea);
+      	ice.onAfterUpdate(initializeCkeditor );
+      
+      	initializeCkeditor();
+      	
+      	
       </script>
+      </ice:panelGroup>
       
       
       

@@ -21,8 +21,10 @@ import com.liferay.util.mail.MailEngineException;
 
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -271,6 +273,10 @@ public class UserProfileBean implements Serializable {
         UserLocalServiceUtil.updateUser(u);
         editing = !editing;
         pageType = PageType.PROFILE_DETAILS;
+    }
+    
+    public long getTimestamp() {
+    	return new Date().getTime();
     }
 
 }

@@ -13,8 +13,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 
-@ManagedBean(name="contestsBean")
-@ViewScoped
 public class ContestsBean implements Serializable {
     
     /**

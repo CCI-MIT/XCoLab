@@ -88,6 +88,8 @@
     #set ($parentPageName = '')
 #end
 
+#if ($permissionChecker.isOmniadmin())
+#end
 
 
 <body class="$css_class $page.getName($locale).toLowerCase() $body_style_class">
@@ -278,8 +280,10 @@ $theme.include($top_messages_include)
 	$request.getSession().removeAttribute('xcolab_analytics_events');
 #end
 
-</body>
+$theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
+
+</body>
 
 </html>

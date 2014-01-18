@@ -67,7 +67,15 @@ public enum ContestsColumn {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
-                return o1.getWhatName().toLowerCase().compareTo(o2.getWhatName().toLowerCase());
+            	String s1 = o1.getWhatName();
+            	String s2 = o2.getWhatName();
+            	
+            	if (s1 == null) {
+            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
+            		return -1;
+            	}
+            	else if (s2 == null) return 1;
+            	return s1.toLowerCase().compareTo(s2.toLowerCase());
             } catch (PortalException e) {
                 _log.error("Can't get what for contest", e);
             } catch (SystemException e) {
@@ -81,7 +89,15 @@ public enum ContestsColumn {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
-                return o1.getWhereName().toLowerCase().compareTo(o2.getWhereName().toLowerCase());
+            	String s1 = o1.getWhereName();
+            	String s2 = o2.getWhereName();
+            	
+            	if (s1 == null) {
+            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
+            		return -1;
+            	}
+            	else if (s2 == null) return 1;
+            	return s1.toLowerCase().compareTo(s2.toLowerCase());
             } catch (PortalException e) {
                 _log.error("Can't get where for contest", e);
             } catch (SystemException e) {
@@ -95,7 +111,15 @@ public enum ContestsColumn {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
-                return o1.getWhoName().toLowerCase().compareTo(o2.getWhoName().toLowerCase());
+            	String s1 = o1.getWhoName();
+            	String s2 = o2.getWhoName();
+            	
+            	if (s1 == null) {
+            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
+            		return -1;
+            	}
+            	else if (s2 == null) return 1;
+            	return s1.toLowerCase().compareTo(s2.toLowerCase());
             } catch (PortalException e) {
                 _log.error("Can't get who for contest", e);
             } catch (SystemException e) {
