@@ -37,14 +37,14 @@
                         <td class="b m" width="170">First Name</td>
                         <td>
                             <ice:inputText id="firstName" value="#{currentUser.firstName}" styleClass="profile_input" required="true" partialSubmit="true" /><br />
-                            <ice:message for="firstName" styleClass="form_error_message"/>
+                            <ice:message for="firstName" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="b">Last Name</td>
                         <td>
                             <ice:inputText id="lastName" value="#{currentUser.lastName}" styleClass="profile_input" required="true"  partialSubmit="true"/><br />
-                            <ice:message for="lastName" styleClass="form_error_message"/>
+                            <ice:message for="lastName" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
                         </td>
                     </tr>
                 </table>
@@ -58,11 +58,11 @@
             </ice:panelGroup>
             
             <f:subview rendered="#{not empty currentUser.fileErrorMessage}">
-                <span class="iceMsgError portlet-msg-error Error form_error_message form_error_messageError">
+                <span class="iceMsgError portlet-msg-error Error form_error_message alert alert-error">
                     #{currentUser.fileErrorMessage}
                 </span>
             </f:subview>
-            <ice:message for="profileImage" styleClass="form_error_message" />
+            <ice:message for="profileImage" styleClass="form_error_message alert alert-error" errorClass="alert alert-error" />
         </div>
         <div class="clearfix"></div>
       </div>
@@ -76,7 +76,7 @@
                     <f:attribute name="currentUser" value="#{currentUser}"/>
                     <f:validator validatorId="screenNameValidator"/>
                 </ice:inputText><br />
-                <ice:message for="screenNameMessage" styleClass="form_error_message"/>
+                <ice:message for="screenNameMessage" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
             </td></tr>
         <tr><td class="b">Member Since</td><td class="l">
             <ice:outputText value="#{currentUser.joinDate}" >
@@ -90,7 +90,7 @@
                     <f:attribute name="currentUser" value="#{currentUser}"/>
                     <f:validator validatorId="emailValidator"/>
                 </ice:inputText><br />
-                <ice:message for="email" styleClass="form_error_message"/>
+                <ice:message for="email" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
             </td>
         </tr>
                 <tr>
@@ -99,7 +99,7 @@
                 <ice:inputText  id="country" styleClass="profile_input" value="#{currentUser.country}" partialSubmit="true">
                     <f:attribute name="currentUser" value="#{currentUser}"/>
                 </ice:inputText><br />
-                <ice:message for="country" styleClass="form_error_message"/>
+                <ice:message for="country" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
             </td>
         </tr>
         <tr>
@@ -110,7 +110,7 @@
                     <f:validator validatorId="userPasswordValidator"/>
                     <f:attribute name="type" value="current" />
                 </ice:inputSecret><br />
-                <ice:message for="currentPasswordInput" styleClass="form_error_message"/>
+                <ice:message for="currentPasswordInput" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
             </td>
         </tr>
         <tr>
@@ -121,7 +121,7 @@
                     <f:validator validatorId="userPasswordValidator"/>
                     <f:attribute name="type" value="new" />
                 </ice:inputSecret><br />
-                <ice:message for="newPasswordInput" styleClass="form_error_message"/>
+                <ice:message for="newPasswordInput" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
             </td>
         </tr>
           <tr>
@@ -132,7 +132,7 @@
                       <f:attribute name="type" value="newRetype" />
                       <f:validator validatorId="userPasswordValidator"/>
                   </ice:inputSecret><br />
-                  <ice:message for="newPasswordRetypeInput" styleClass="form_error_message"/>
+                  <ice:message for="newPasswordRetypeInput" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
               </td>
           </tr>
 
