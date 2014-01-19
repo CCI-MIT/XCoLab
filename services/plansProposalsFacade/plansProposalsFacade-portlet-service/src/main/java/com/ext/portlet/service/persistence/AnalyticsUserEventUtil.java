@@ -49,7 +49,7 @@ public class AnalyticsUserEventUtil {
     /**
      * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
      */
-    public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+    public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
         throws SystemException {
         return getPersistence().countWithDynamicQuery(dynamicQuery);
     }
@@ -83,21 +83,20 @@ public class AnalyticsUserEventUtil {
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
      */
     public static AnalyticsUserEvent update(
-        AnalyticsUserEvent analyticsUserEvent, boolean merge)
-        throws SystemException {
-        return getPersistence().update(analyticsUserEvent, merge);
+        AnalyticsUserEvent analyticsUserEvent) throws SystemException {
+        return getPersistence().update(analyticsUserEvent);
     }
 
     /**
-     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+     * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
      */
     public static AnalyticsUserEvent update(
-        AnalyticsUserEvent analyticsUserEvent, boolean merge,
-        ServiceContext serviceContext) throws SystemException {
-        return getPersistence().update(analyticsUserEvent, merge, serviceContext);
+        AnalyticsUserEvent analyticsUserEvent, ServiceContext serviceContext)
+        throws SystemException {
+        return getPersistence().update(analyticsUserEvent, serviceContext);
     }
 
     /**
@@ -147,10 +146,9 @@ public class AnalyticsUserEventUtil {
     }
 
     public static com.ext.portlet.model.AnalyticsUserEvent updateImpl(
-        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent,
-        boolean merge)
+        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().updateImpl(analyticsUserEvent, merge);
+        return getPersistence().updateImpl(analyticsUserEvent);
     }
 
     /**
@@ -196,7 +194,7 @@ public class AnalyticsUserEventUtil {
     * Returns a range of all the analytics user events.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.AnalyticsUserEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of analytics user events
@@ -214,7 +212,7 @@ public class AnalyticsUserEventUtil {
     * Returns an ordered range of all the analytics user events.
     *
     * <p>
-    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.AnalyticsUserEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param start the lower bound of the range of analytics user events
@@ -263,10 +261,9 @@ public class AnalyticsUserEventUtil {
         return _persistence;
     }
 
+    /**
+     * @deprecated As of 6.2.0
+     */
     public void setPersistence(AnalyticsUserEventPersistence persistence) {
-        _persistence = persistence;
-
-        ReferenceRegistry.registerReference(AnalyticsUserEventUtil.class,
-            "_persistence");
     }
 }

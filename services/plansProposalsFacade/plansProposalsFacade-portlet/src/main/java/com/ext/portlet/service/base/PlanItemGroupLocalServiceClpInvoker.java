@@ -41,14 +41,14 @@ public class PlanItemGroupLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
     private String _methodName484;
     private String[] _methodParameterTypes484;
     private String _methodName485;
     private String[] _methodParameterTypes485;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
 
     public PlanItemGroupLocalServiceClpInvoker() {
         _methodName0 = "addPlanItemGroup";
@@ -133,23 +133,23 @@ public class PlanItemGroupLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanItemGroup"
             };
 
-        _methodName478 = "getBeanIdentifier";
+        _methodName484 = "getBeanIdentifier";
 
-        _methodParameterTypes478 = new String[] {  };
+        _methodParameterTypes484 = new String[] {  };
 
-        _methodName479 = "setBeanIdentifier";
+        _methodName485 = "setBeanIdentifier";
 
-        _methodParameterTypes479 = new String[] { "java.lang.String" };
+        _methodParameterTypes485 = new String[] { "java.lang.String" };
 
-        _methodName484 = "addToGroup";
+        _methodName490 = "addToGroup";
 
-        _methodParameterTypes484 = new String[] {
+        _methodParameterTypes490 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName485 = "getPlansInGroup";
+        _methodName491 = "getPlansInGroup";
 
-        _methodParameterTypes485 = new String[] { "java.lang.Long" };
+        _methodParameterTypes491 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -241,28 +241,28 @@ public class PlanItemGroupLocalServiceClpInvoker {
             return PlanItemGroupLocalServiceUtil.updatePlanItemGroup((com.ext.portlet.model.PlanItemGroup) arguments[0]);
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName484.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
             return PlanItemGroupLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName485.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
             PlanItemGroupLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             PlanItemGroupLocalServiceUtil.addToGroup((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             return PlanItemGroupLocalServiceUtil.getPlansInGroup((java.lang.Long) arguments[0]);
         }
 

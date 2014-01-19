@@ -19,13 +19,7 @@
 	<bean id="com.ext.portlet.service.ActivitySubscriptionService" class="com.ext.portlet.service.impl.ActivitySubscriptionServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ActivitySubscriptionPersistence" class="com.ext.portlet.service.persistence.ActivitySubscriptionPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.AnalyticsUserEventLocalService" class="com.ext.portlet.service.impl.AnalyticsUserEventLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil" class="com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil">
-		<property name="service" ref="com.ext.portlet.service.AnalyticsUserEventLocalService" />
-	</bean>
 	<bean id="com.ext.portlet.service.AnalyticsUserEventService" class="com.ext.portlet.service.impl.AnalyticsUserEventServiceImpl" />
-	<bean id="com.ext.portlet.service.AnalyticsUserEventServiceUtil" class="com.ext.portlet.service.AnalyticsUserEventServiceUtil">
-		<property name="service" ref="com.ext.portlet.service.AnalyticsUserEventService" />
-	</bean>
 	<bean id="com.ext.portlet.service.persistence.AnalyticsUserEventPersistence" class="com.ext.portlet.service.persistence.AnalyticsUserEventPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.BalloonStatsEntryLocalService" class="com.ext.portlet.service.impl.BalloonStatsEntryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.BalloonStatsEntryService" class="com.ext.portlet.service.impl.BalloonStatsEntryServiceImpl" />
@@ -260,6 +254,5 @@
 	<bean id="com.ext.utils.userInput.service.UserInputFilterUtil" class="com.ext.utils.userInput.service.UserInputFilterUtil">
 		<property name="service" ref="com.ext.utils.userInput.UserInputFilter" />
 	</bean>
-	
 	<bean id="com.ext.utils.authentication.AuthenticationService" class="com.ext.utils.authentication.AuthenticationServiceImpl" />
 </beans>

@@ -82,7 +82,6 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.DiscussionMessage"),
             true);
-<<<<<<< HEAD
     public static long AUTHORID_COLUMN_BITMASK = 1L;
     public static long BODY_COLUMN_BITMASK = 2L;
     public static long CATEGORYGROUPID_COLUMN_BITMASK = 4L;
@@ -90,15 +89,7 @@ public class DiscussionMessageModelImpl extends BaseModelImpl<DiscussionMessage>
     public static long MESSAGEID_COLUMN_BITMASK = 16L;
     public static long SUBJECT_COLUMN_BITMASK = 32L;
     public static long THREADID_COLUMN_BITMASK = 64L;
-=======
-    public static long BODY_COLUMN_BITMASK = 1L;
-    public static long CATEGORYGROUPID_COLUMN_BITMASK = 2L;
-    public static long CATEGORYID_COLUMN_BITMASK = 4L;
-    public static long MESSAGEID_COLUMN_BITMASK = 8L;
-    public static long SUBJECT_COLUMN_BITMASK = 16L;
-    public static long THREADID_COLUMN_BITMASK = 32L;
-    public static long CREATEDATE_COLUMN_BITMASK = 64L;
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+    public static long CREATEDATE_COLUMN_BITMASK = 128L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.DiscussionMessage"));
     private static ClassLoader _classLoader = DiscussionMessage.class.getClassLoader();

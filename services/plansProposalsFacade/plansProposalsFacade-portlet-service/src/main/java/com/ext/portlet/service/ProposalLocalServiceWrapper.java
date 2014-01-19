@@ -1188,13 +1188,13 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-<<<<<<< HEAD
     * Returns number of proposals that user supports
     *
     * @param userId
     * @return
     * @throws SystemException
     */
+    @Override
     public int getUserSupportedProposalsCount(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getUserSupportedProposalsCount(userId);
@@ -1207,16 +1207,14 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return
     * @throws SystemException
     */
+    @Override
     public int getUserVotedProposalsCount(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getUserVotedProposalsCount(userId);
     }
 
     /**
-     * @deprecated Renamed to {@link #getWrappedService}
-=======
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
      */
     public ProposalLocalService getWrappedProposalLocalService() {
         return _proposalLocalService;

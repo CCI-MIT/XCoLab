@@ -4,35 +4,6 @@ import com.ext.portlet.NoSuchMessagingUserPreferencesException;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.model.impl.MessagingUserPreferencesImpl;
 import com.ext.portlet.model.impl.MessagingUserPreferencesModelImpl;
-<<<<<<< HEAD
-import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
-import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
-import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
-import com.ext.portlet.service.persistence.ContestDebatePersistence;
-import com.ext.portlet.service.persistence.ContestPersistence;
-import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
-import com.ext.portlet.service.persistence.ContestPhasePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
-import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
-import com.ext.portlet.service.persistence.EmailListPersistence;
-import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
-import com.ext.portlet.service.persistence.FocusAreaPersistence;
-import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
-import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
 
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -141,162 +112,6 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
             }
         };
 
-<<<<<<< HEAD
-    @BeanReference(type = ActivitySubscriptionPersistence.class)
-    protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
-    @BeanReference(type = AnalyticsUserEventPersistence.class)
-    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = BalloonStatsEntryPersistence.class)
-    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
-    @BeanReference(type = ContestPersistence.class)
-    protected ContestPersistence contestPersistence;
-    @BeanReference(type = ContestDebatePersistence.class)
-    protected ContestDebatePersistence contestDebatePersistence;
-    @BeanReference(type = ContestPhasePersistence.class)
-    protected ContestPhasePersistence contestPhasePersistence;
-    @BeanReference(type = ContestPhaseColumnPersistence.class)
-    protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
-    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
-    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
-    @BeanReference(type = ContestPhaseTypePersistence.class)
-    protected ContestPhaseTypePersistence contestPhaseTypePersistence;
-    @BeanReference(type = ContestTeamMemberPersistence.class)
-    protected ContestTeamMemberPersistence contestTeamMemberPersistence;
-    @BeanReference(type = DiscussionCategoryPersistence.class)
-    protected DiscussionCategoryPersistence discussionCategoryPersistence;
-    @BeanReference(type = DiscussionCategoryGroupPersistence.class)
-    protected DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence;
-    @BeanReference(type = DiscussionMessagePersistence.class)
-    protected DiscussionMessagePersistence discussionMessagePersistence;
-    @BeanReference(type = DiscussionMessageFlagPersistence.class)
-    protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
-    @BeanReference(type = EmailListPersistence.class)
-    protected EmailListPersistence emailListPersistence;
-    @BeanReference(type = FocusAreaPersistence.class)
-    protected FocusAreaPersistence focusAreaPersistence;
-    @BeanReference(type = FocusAreaOntologyTermPersistence.class)
-    protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
-    @BeanReference(type = LandingPagePersistence.class)
-    protected LandingPagePersistence landingPagePersistence;
-    @BeanReference(type = MessagePersistence.class)
-    protected MessagePersistence messagePersistence;
-    @BeanReference(type = MessageRecipientStatusPersistence.class)
-    protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
-    @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
-    protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
-    @BeanReference(type = MessagingMessagePersistence.class)
-    protected MessagingMessagePersistence messagingMessagePersistence;
-    @BeanReference(type = MessagingMessageConversionPersistence.class)
-    protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
-    @BeanReference(type = MessagingMessageConversionTypePersistence.class)
-    protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
-    @BeanReference(type = MessagingMessageRecipientPersistence.class)
-    protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
-    @BeanReference(type = MessagingRedirectLinkPersistence.class)
-    protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
-    @BeanReference(type = MessagingUserPreferencesPersistence.class)
-    protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
-    @BeanReference(type = ModelCategoryPersistence.class)
-    protected ModelCategoryPersistence modelCategoryPersistence;
-    @BeanReference(type = ModelDiscussionPersistence.class)
-    protected ModelDiscussionPersistence modelDiscussionPersistence;
-    @BeanReference(type = ModelGlobalPreferencePersistence.class)
-    protected ModelGlobalPreferencePersistence modelGlobalPreferencePersistence;
-    @BeanReference(type = ModelInputGroupPersistence.class)
-    protected ModelInputGroupPersistence modelInputGroupPersistence;
-    @BeanReference(type = ModelInputItemPersistence.class)
-    protected ModelInputItemPersistence modelInputItemPersistence;
-    @BeanReference(type = ModelOutputChartOrderPersistence.class)
-    protected ModelOutputChartOrderPersistence modelOutputChartOrderPersistence;
-    @BeanReference(type = ModelOutputItemPersistence.class)
-    protected ModelOutputItemPersistence modelOutputItemPersistence;
-    @BeanReference(type = ModelPositionPersistence.class)
-    protected ModelPositionPersistence modelPositionPersistence;
-    @BeanReference(type = OntologySpacePersistence.class)
-    protected OntologySpacePersistence ontologySpacePersistence;
-    @BeanReference(type = OntologyTermPersistence.class)
-    protected OntologyTermPersistence ontologyTermPersistence;
-    @BeanReference(type = OntologyTermEntityPersistence.class)
-    protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
-    @BeanReference(type = Plan2ProposalPersistence.class)
-    protected Plan2ProposalPersistence plan2ProposalPersistence;
-    @BeanReference(type = PlanAttributePersistence.class)
-    protected PlanAttributePersistence planAttributePersistence;
-    @BeanReference(type = PlanAttributeFilterPersistence.class)
-    protected PlanAttributeFilterPersistence planAttributeFilterPersistence;
-    @BeanReference(type = PlanColumnSettingsPersistence.class)
-    protected PlanColumnSettingsPersistence planColumnSettingsPersistence;
-    @BeanReference(type = PlanDescriptionPersistence.class)
-    protected PlanDescriptionPersistence planDescriptionPersistence;
-    @BeanReference(type = PlanFanPersistence.class)
-    protected PlanFanPersistence planFanPersistence;
-    @BeanReference(type = PlanItemPersistence.class)
-    protected PlanItemPersistence planItemPersistence;
-    @BeanReference(type = PlanItemGroupPersistence.class)
-    protected PlanItemGroupPersistence planItemGroupPersistence;
-    @BeanReference(type = PlanMetaPersistence.class)
-    protected PlanMetaPersistence planMetaPersistence;
-    @BeanReference(type = PlanModelRunPersistence.class)
-    protected PlanModelRunPersistence planModelRunPersistence;
-    @BeanReference(type = PlanPositionPersistence.class)
-    protected PlanPositionPersistence planPositionPersistence;
-    @BeanReference(type = PlanPositionItemPersistence.class)
-    protected PlanPositionItemPersistence planPositionItemPersistence;
-    @BeanReference(type = PlanPositionsPersistence.class)
-    protected PlanPositionsPersistence planPositionsPersistence;
-    @BeanReference(type = PlanPropertyFilterPersistence.class)
-    protected PlanPropertyFilterPersistence planPropertyFilterPersistence;
-    @BeanReference(type = PlanRelatedPersistence.class)
-    protected PlanRelatedPersistence planRelatedPersistence;
-    @BeanReference(type = PlanSectionPersistence.class)
-    protected PlanSectionPersistence planSectionPersistence;
-    @BeanReference(type = PlanSectionDefinitionPersistence.class)
-    protected PlanSectionDefinitionPersistence planSectionDefinitionPersistence;
-    @BeanReference(type = PlanSectionPlanMapPersistence.class)
-    protected PlanSectionPlanMapPersistence planSectionPlanMapPersistence;
-    @BeanReference(type = PlansFilterPersistence.class)
-    protected PlansFilterPersistence plansFilterPersistence;
-    @BeanReference(type = PlansFilterPositionPersistence.class)
-    protected PlansFilterPositionPersistence plansFilterPositionPersistence;
-    @BeanReference(type = PlansUserSettingsPersistence.class)
-    protected PlansUserSettingsPersistence plansUserSettingsPersistence;
-    @BeanReference(type = PlanTeamHistoryPersistence.class)
-    protected PlanTeamHistoryPersistence planTeamHistoryPersistence;
-    @BeanReference(type = PlanTemplatePersistence.class)
-    protected PlanTemplatePersistence planTemplatePersistence;
-    @BeanReference(type = PlanTemplateSectionPersistence.class)
-    protected PlanTemplateSectionPersistence planTemplateSectionPersistence;
-    @BeanReference(type = PlanTypePersistence.class)
-    protected PlanTypePersistence planTypePersistence;
-    @BeanReference(type = PlanTypeAttributePersistence.class)
-    protected PlanTypeAttributePersistence planTypeAttributePersistence;
-    @BeanReference(type = PlanTypeColumnPersistence.class)
-    protected PlanTypeColumnPersistence planTypeColumnPersistence;
-    @BeanReference(type = PlanVotePersistence.class)
-    protected PlanVotePersistence planVotePersistence;
-    @BeanReference(type = ProposalPersistence.class)
-    protected ProposalPersistence proposalPersistence;
-    @BeanReference(type = Proposal2PhasePersistence.class)
-    protected Proposal2PhasePersistence proposal2PhasePersistence;
-    @BeanReference(type = ProposalAttributePersistence.class)
-    protected ProposalAttributePersistence proposalAttributePersistence;
-    @BeanReference(type = ProposalAttributeTypePersistence.class)
-    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
-    @BeanReference(type = ProposalSupporterPersistence.class)
-    protected ProposalSupporterPersistence proposalSupporterPersistence;
-    @BeanReference(type = ProposalVersionPersistence.class)
-    protected ProposalVersionPersistence proposalVersionPersistence;
-    @BeanReference(type = ProposalVotePersistence.class)
-    protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = ResourcePersistence.class)
-    protected ResourcePersistence resourcePersistence;
-    @BeanReference(type = UserPersistence.class)
-    protected UserPersistence userPersistence;
-=======
     public MessagingUserPreferencesPersistenceImpl() {
         setModelClass(MessagingUserPreferences.class);
     }
@@ -502,7 +317,6 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
 
         return count.intValue();
     }
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Caches the messaging user preferences in the entity cache if it is enabled.

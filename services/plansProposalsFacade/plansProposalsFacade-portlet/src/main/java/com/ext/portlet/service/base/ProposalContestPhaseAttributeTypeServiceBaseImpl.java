@@ -1,152 +1,6 @@
 package com.ext.portlet.service.base;
 
 import com.ext.portlet.model.ProposalContestPhaseAttributeType;
-<<<<<<< HEAD
-import com.ext.portlet.service.ActivitySubscriptionLocalService;
-import com.ext.portlet.service.ActivitySubscriptionService;
-import com.ext.portlet.service.AnalyticsUserEventLocalService;
-import com.ext.portlet.service.AnalyticsUserEventService;
-import com.ext.portlet.service.BalloonStatsEntryLocalService;
-import com.ext.portlet.service.BalloonStatsEntryService;
-import com.ext.portlet.service.ContestDebateLocalService;
-import com.ext.portlet.service.ContestDebateService;
-import com.ext.portlet.service.ContestLocalService;
-import com.ext.portlet.service.ContestPhaseColumnLocalService;
-import com.ext.portlet.service.ContestPhaseColumnService;
-import com.ext.portlet.service.ContestPhaseLocalService;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalService;
-import com.ext.portlet.service.ContestPhaseRibbonTypeService;
-import com.ext.portlet.service.ContestPhaseService;
-import com.ext.portlet.service.ContestPhaseTypeLocalService;
-import com.ext.portlet.service.ContestPhaseTypeService;
-import com.ext.portlet.service.ContestService;
-import com.ext.portlet.service.ContestTeamMemberLocalService;
-import com.ext.portlet.service.ContestTeamMemberService;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalService;
-import com.ext.portlet.service.DiscussionCategoryGroupService;
-import com.ext.portlet.service.DiscussionCategoryLocalService;
-import com.ext.portlet.service.DiscussionCategoryService;
-import com.ext.portlet.service.DiscussionMessageFlagLocalService;
-import com.ext.portlet.service.DiscussionMessageFlagService;
-import com.ext.portlet.service.DiscussionMessageLocalService;
-import com.ext.portlet.service.DiscussionMessageService;
-import com.ext.portlet.service.EmailListLocalService;
-import com.ext.portlet.service.EmailListService;
-import com.ext.portlet.service.FocusAreaLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermService;
-import com.ext.portlet.service.FocusAreaService;
-import com.ext.portlet.service.LandingPageLocalService;
-import com.ext.portlet.service.LandingPageService;
-import com.ext.portlet.service.MessageLocalService;
-import com.ext.portlet.service.MessageRecipientStatusLocalService;
-import com.ext.portlet.service.MessageRecipientStatusService;
-import com.ext.portlet.service.MessageService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsService;
-import com.ext.portlet.service.MessagingMessageConversionLocalService;
-import com.ext.portlet.service.MessagingMessageConversionService;
-import com.ext.portlet.service.MessagingMessageConversionTypeLocalService;
-import com.ext.portlet.service.MessagingMessageConversionTypeService;
-import com.ext.portlet.service.MessagingMessageLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientService;
-import com.ext.portlet.service.MessagingMessageService;
-import com.ext.portlet.service.MessagingRedirectLinkLocalService;
-import com.ext.portlet.service.MessagingRedirectLinkService;
-import com.ext.portlet.service.MessagingUserPreferencesLocalService;
-import com.ext.portlet.service.MessagingUserPreferencesService;
-import com.ext.portlet.service.ModelCategoryLocalService;
-import com.ext.portlet.service.ModelCategoryService;
-import com.ext.portlet.service.ModelDiscussionLocalService;
-import com.ext.portlet.service.ModelDiscussionService;
-import com.ext.portlet.service.ModelGlobalPreferenceLocalService;
-import com.ext.portlet.service.ModelGlobalPreferenceService;
-import com.ext.portlet.service.ModelInputGroupLocalService;
-import com.ext.portlet.service.ModelInputGroupService;
-import com.ext.portlet.service.ModelInputItemLocalService;
-import com.ext.portlet.service.ModelInputItemService;
-import com.ext.portlet.service.ModelOutputChartOrderLocalService;
-import com.ext.portlet.service.ModelOutputChartOrderService;
-import com.ext.portlet.service.ModelOutputItemLocalService;
-import com.ext.portlet.service.ModelOutputItemService;
-import com.ext.portlet.service.ModelPositionLocalService;
-import com.ext.portlet.service.ModelPositionService;
-import com.ext.portlet.service.ModelRunnerLocalService;
-import com.ext.portlet.service.ModelRunnerService;
-import com.ext.portlet.service.OntologySpaceLocalService;
-import com.ext.portlet.service.OntologySpaceService;
-import com.ext.portlet.service.OntologyTermEntityLocalService;
-import com.ext.portlet.service.OntologyTermEntityService;
-import com.ext.portlet.service.OntologyTermLocalService;
-import com.ext.portlet.service.OntologyTermService;
-import com.ext.portlet.service.Plan2ProposalLocalService;
-import com.ext.portlet.service.Plan2ProposalService;
-import com.ext.portlet.service.PlanAttributeFilterLocalService;
-import com.ext.portlet.service.PlanAttributeFilterService;
-import com.ext.portlet.service.PlanAttributeLocalService;
-import com.ext.portlet.service.PlanAttributeService;
-import com.ext.portlet.service.PlanColumnSettingsLocalService;
-import com.ext.portlet.service.PlanColumnSettingsService;
-import com.ext.portlet.service.PlanDescriptionLocalService;
-import com.ext.portlet.service.PlanDescriptionService;
-import com.ext.portlet.service.PlanFanLocalService;
-import com.ext.portlet.service.PlanFanService;
-import com.ext.portlet.service.PlanItemGroupLocalService;
-import com.ext.portlet.service.PlanItemGroupService;
-import com.ext.portlet.service.PlanItemLocalService;
-import com.ext.portlet.service.PlanItemService;
-import com.ext.portlet.service.PlanMetaLocalService;
-import com.ext.portlet.service.PlanMetaService;
-import com.ext.portlet.service.PlanModelRunLocalService;
-import com.ext.portlet.service.PlanModelRunService;
-import com.ext.portlet.service.PlanPositionItemLocalService;
-import com.ext.portlet.service.PlanPositionItemService;
-import com.ext.portlet.service.PlanPositionLocalService;
-import com.ext.portlet.service.PlanPositionService;
-import com.ext.portlet.service.PlanPositionsLocalService;
-import com.ext.portlet.service.PlanPositionsService;
-import com.ext.portlet.service.PlanPropertyFilterLocalService;
-import com.ext.portlet.service.PlanPropertyFilterService;
-import com.ext.portlet.service.PlanRelatedLocalService;
-import com.ext.portlet.service.PlanRelatedService;
-import com.ext.portlet.service.PlanSectionDefinitionLocalService;
-import com.ext.portlet.service.PlanSectionDefinitionService;
-import com.ext.portlet.service.PlanSectionLocalService;
-import com.ext.portlet.service.PlanSectionPlanMapLocalService;
-import com.ext.portlet.service.PlanSectionPlanMapService;
-import com.ext.portlet.service.PlanSectionService;
-import com.ext.portlet.service.PlanTeamHistoryLocalService;
-import com.ext.portlet.service.PlanTeamHistoryService;
-import com.ext.portlet.service.PlanTemplateLocalService;
-import com.ext.portlet.service.PlanTemplateSectionLocalService;
-import com.ext.portlet.service.PlanTemplateSectionService;
-import com.ext.portlet.service.PlanTemplateService;
-import com.ext.portlet.service.PlanTypeAttributeLocalService;
-import com.ext.portlet.service.PlanTypeAttributeService;
-import com.ext.portlet.service.PlanTypeColumnLocalService;
-import com.ext.portlet.service.PlanTypeColumnService;
-import com.ext.portlet.service.PlanTypeLocalService;
-import com.ext.portlet.service.PlanTypeService;
-import com.ext.portlet.service.PlanVoteLocalService;
-import com.ext.portlet.service.PlanVoteService;
-import com.ext.portlet.service.PlansFilterLocalService;
-import com.ext.portlet.service.PlansFilterPositionLocalService;
-import com.ext.portlet.service.PlansFilterPositionService;
-import com.ext.portlet.service.PlansFilterService;
-import com.ext.portlet.service.PlansUserSettingsLocalService;
-import com.ext.portlet.service.PlansUserSettingsService;
-import com.ext.portlet.service.Proposal2PhaseLocalService;
-import com.ext.portlet.service.Proposal2PhaseService;
-import com.ext.portlet.service.ProposalAttributeLocalService;
-import com.ext.portlet.service.ProposalAttributeService;
-import com.ext.portlet.service.ProposalAttributeTypeLocalService;
-import com.ext.portlet.service.ProposalAttributeTypeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeService;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalService;
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.ProposalContestPhaseAttributeTypeService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
@@ -256,23 +110,16 @@ public abstract class ProposalContestPhaseAttributeTypeServiceBaseImpl
     protected com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService;
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
-<<<<<<< HEAD
-    @BeanReference(type = AnalyticsUserEventLocalService.class)
-    protected AnalyticsUserEventLocalService analyticsUserEventLocalService;
-    @BeanReference(type = AnalyticsUserEventService.class)
-    protected AnalyticsUserEventService analyticsUserEventService;
+    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventLocalService.class)
+    protected com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService;
+    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventService.class)
+    protected com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
     protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = BalloonStatsEntryLocalService.class)
-    protected BalloonStatsEntryLocalService balloonStatsEntryLocalService;
-    @BeanReference(type = BalloonStatsEntryService.class)
-    protected BalloonStatsEntryService balloonStatsEntryService;
-=======
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryLocalService.class)
     protected com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService;
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryService.class)
     protected com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService;
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
@@ -795,7 +642,7 @@ public abstract class ProposalContestPhaseAttributeTypeServiceBaseImpl
      *
      * @return the analytics user event local service
      */
-    public AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
+    public com.ext.portlet.service.AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
         return analyticsUserEventLocalService;
     }
 
@@ -805,7 +652,7 @@ public abstract class ProposalContestPhaseAttributeTypeServiceBaseImpl
      * @param analyticsUserEventLocalService the analytics user event local service
      */
     public void setAnalyticsUserEventLocalService(
-        AnalyticsUserEventLocalService analyticsUserEventLocalService) {
+        com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService) {
         this.analyticsUserEventLocalService = analyticsUserEventLocalService;
     }
 
@@ -814,7 +661,7 @@ public abstract class ProposalContestPhaseAttributeTypeServiceBaseImpl
      *
      * @return the analytics user event remote service
      */
-    public AnalyticsUserEventService getAnalyticsUserEventService() {
+    public com.ext.portlet.service.AnalyticsUserEventService getAnalyticsUserEventService() {
         return analyticsUserEventService;
     }
 
@@ -824,7 +671,7 @@ public abstract class ProposalContestPhaseAttributeTypeServiceBaseImpl
      * @param analyticsUserEventService the analytics user event remote service
      */
     public void setAnalyticsUserEventService(
-        AnalyticsUserEventService analyticsUserEventService) {
+        com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService) {
         this.analyticsUserEventService = analyticsUserEventService;
     }
 

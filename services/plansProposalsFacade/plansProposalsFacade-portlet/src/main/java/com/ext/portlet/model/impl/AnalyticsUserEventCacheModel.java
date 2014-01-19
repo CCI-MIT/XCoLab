@@ -6,7 +6,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import java.util.Date;
  * @generated
  */
 public class AnalyticsUserEventCacheModel implements CacheModel<AnalyticsUserEvent>,
-    Serializable {
+    Externalizable {
     public long userId;
     public String idString;
     public String category;
@@ -50,6 +53,7 @@ public class AnalyticsUserEventCacheModel implements CacheModel<AnalyticsUserEve
         return sb.toString();
     }
 
+    @Override
     public AnalyticsUserEvent toEntityModel() {
         AnalyticsUserEventImpl analyticsUserEventImpl = new AnalyticsUserEventImpl();
 
@@ -90,5 +94,49 @@ public class AnalyticsUserEventCacheModel implements CacheModel<AnalyticsUserEve
         analyticsUserEventImpl.resetOriginalValues();
 
         return analyticsUserEventImpl;
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException {
+        userId = objectInput.readLong();
+        idString = objectInput.readUTF();
+        category = objectInput.readUTF();
+        action = objectInput.readUTF();
+        label = objectInput.readUTF();
+        value = objectInput.readInt();
+        created = objectInput.readLong();
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput)
+        throws IOException {
+        objectOutput.writeLong(userId);
+
+        if (idString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(idString);
+        }
+
+        if (category == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(category);
+        }
+
+        if (action == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(action);
+        }
+
+        if (label == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(label);
+        }
+
+        objectOutput.writeInt(value);
+        objectOutput.writeLong(created);
     }
 }

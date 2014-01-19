@@ -41,28 +41,28 @@ public class PlanModelRunLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
     private String _methodName484;
     private String[] _methodParameterTypes484;
     private String _methodName485;
     private String[] _methodParameterTypes485;
-    private String _methodName486;
-    private String[] _methodParameterTypes486;
-    private String _methodName487;
-    private String[] _methodParameterTypes487;
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
     private String _methodName490;
     private String[] _methodParameterTypes490;
     private String _methodName491;
     private String[] _methodParameterTypes491;
     private String _methodName492;
     private String[] _methodParameterTypes492;
+    private String _methodName493;
+    private String[] _methodParameterTypes493;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
 
     public PlanModelRunLocalServiceClpInvoker() {
         _methodName0 = "addPlanModelRun";
@@ -147,56 +147,56 @@ public class PlanModelRunLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanModelRun"
             };
 
-        _methodName478 = "getBeanIdentifier";
+        _methodName484 = "getBeanIdentifier";
 
-        _methodParameterTypes478 = new String[] {  };
+        _methodParameterTypes484 = new String[] {  };
 
-        _methodName479 = "setBeanIdentifier";
+        _methodName485 = "setBeanIdentifier";
 
-        _methodParameterTypes479 = new String[] { "java.lang.String" };
+        _methodParameterTypes485 = new String[] { "java.lang.String" };
 
-        _methodName484 = "createPlanModelRun";
+        _methodName490 = "createPlanModelRun";
 
-        _methodParameterTypes484 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes490 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName485 = "getCurrentForPlan";
+        _methodName491 = "getCurrentForPlan";
 
-        _methodParameterTypes485 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes491 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName486 = "getAllForPlan";
+        _methodName492 = "getAllForPlan";
 
-        _methodParameterTypes486 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes492 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName487 = "getForPlan";
+        _methodName493 = "getForPlan";
 
-        _methodParameterTypes487 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes493 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName488 = "createNewVersionForPlan";
+        _methodName494 = "createNewVersionForPlan";
 
-        _methodParameterTypes488 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes494 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName489 = "createNewVersionForPlan";
+        _methodName495 = "createNewVersionForPlan";
 
-        _methodParameterTypes489 = new String[] {
+        _methodParameterTypes495 = new String[] {
                 "com.ext.portlet.model.PlanItem", "boolean"
             };
 
-        _methodName490 = "createNewVersionForPlanFrom";
+        _methodName496 = "createNewVersionForPlanFrom";
 
-        _methodParameterTypes490 = new String[] {
+        _methodParameterTypes496 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanModelRun", "boolean"
             };
 
-        _methodName491 = "store";
+        _methodName497 = "store";
 
-        _methodParameterTypes491 = new String[] {
+        _methodParameterTypes497 = new String[] {
                 "com.ext.portlet.model.PlanModelRun"
             };
 
-        _methodName492 = "getUpdateAuthor";
+        _methodName498 = "getUpdateAuthor";
 
-        _methodParameterTypes492 = new String[] {
+        _methodParameterTypes498 = new String[] {
                 "com.ext.portlet.model.PlanModelRun"
             };
     }
@@ -290,65 +290,65 @@ public class PlanModelRunLocalServiceClpInvoker {
             return PlanModelRunLocalServiceUtil.updatePlanModelRun((com.ext.portlet.model.PlanModelRun) arguments[0]);
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName484.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName485.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
             PlanModelRunLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.createPlanModelRun((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName486.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes486, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName487.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes487, parameterTypes)) {
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.getForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
         }
 
-        if (_methodName490.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.createNewVersionForPlanFrom((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanModelRun) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName491.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             PlanModelRunLocalServiceUtil.store((com.ext.portlet.model.PlanModelRun) arguments[0]);
 
             return null;
         }
 
-        if (_methodName492.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
             return PlanModelRunLocalServiceUtil.getUpdateAuthor((com.ext.portlet.model.PlanModelRun) arguments[0]);
         }
 

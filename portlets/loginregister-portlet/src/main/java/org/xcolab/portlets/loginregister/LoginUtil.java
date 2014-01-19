@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortalClassInvoker;
+import com.liferay.portal.kernel.util.PortletClassInvoker;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.util.PortalUtil;
 

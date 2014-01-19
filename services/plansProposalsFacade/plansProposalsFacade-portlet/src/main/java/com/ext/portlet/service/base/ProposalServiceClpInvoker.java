@@ -9,57 +9,57 @@ import java.util.Arrays;
  * @generated
  */
 public class ProposalServiceClpInvoker {
-    private String _methodName462;
-    private String[] _methodParameterTypes462;
-    private String _methodName463;
-    private String[] _methodParameterTypes463;
     private String _methodName468;
     private String[] _methodParameterTypes468;
     private String _methodName469;
     private String[] _methodParameterTypes469;
+    private String _methodName474;
+    private String[] _methodParameterTypes474;
+    private String _methodName475;
+    private String[] _methodParameterTypes475;
 
     public ProposalServiceClpInvoker() {
-        _methodName462 = "getBeanIdentifier";
+        _methodName468 = "getBeanIdentifier";
 
-        _methodParameterTypes462 = new String[] {  };
+        _methodParameterTypes468 = new String[] {  };
 
-        _methodName463 = "setBeanIdentifier";
+        _methodName469 = "setBeanIdentifier";
 
-        _methodParameterTypes463 = new String[] { "java.lang.String" };
+        _methodParameterTypes469 = new String[] { "java.lang.String" };
 
-        _methodName468 = "getProposalVersions";
+        _methodName474 = "getProposalVersions";
 
-        _methodParameterTypes468 = new String[] { "long", "long", "int", "int" };
+        _methodParameterTypes474 = new String[] { "long", "long", "int", "int" };
 
-        _methodName469 = "getProposalVersions";
+        _methodName475 = "getProposalVersions";
 
-        _methodParameterTypes469 = new String[] { "long", "int", "int" };
+        _methodParameterTypes475 = new String[] { "long", "int", "int" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName462.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes462, parameterTypes)) {
+        if (_methodName468.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes468, parameterTypes)) {
             return ProposalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName463.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes463, parameterTypes)) {
+        if (_methodName469.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes469, parameterTypes)) {
             ProposalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName468.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes468, parameterTypes)) {
+        if (_methodName474.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes474, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Integer) arguments[2]).intValue(),
                 ((Integer) arguments[3]).intValue());
         }
 
-        if (_methodName469.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes469, parameterTypes)) {
+        if (_methodName475.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes475, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());

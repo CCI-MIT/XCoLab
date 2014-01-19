@@ -8,35 +8,6 @@ import com.liferay.portal.service.InvokableLocalService;
  */
 public class MessageRecipientStatusLocalServiceClp
     implements MessageRecipientStatusLocalService {
-<<<<<<< HEAD
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addMessageRecipientStatusMethodKey0;
-    private MethodKey _createMessageRecipientStatusMethodKey1;
-    private MethodKey _deleteMessageRecipientStatusMethodKey2;
-    private MethodKey _deleteMessageRecipientStatusMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchMessageRecipientStatusMethodKey8;
-    private MethodKey _getMessageRecipientStatusMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getMessageRecipientStatusesMethodKey11;
-    private MethodKey _getMessageRecipientStatusesCountMethodKey12;
-    private MethodKey _updateMessageRecipientStatusMethodKey13;
-    private MethodKey _updateMessageRecipientStatusMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _countByMessageIdMethodKey17;
-    private MethodKey _findByMessageIdMethodKey18;
-    private MethodKey _countArchivedMessagesForUserMethodKey19;
-    private MethodKey _findArchivedMessagesForUserMethodKey20;
-    private MethodKey _countInboxMessagesForUserMethodKey21;
-    private MethodKey _findInboxMessagesForUserMethodKey22;
-    private MethodKey _findByMessageRecipientMethodKey23;
-    private MethodKey _countUnreadMessagesMethodKey24;
-    private MethodKey _didReceiveJudgeCommentForProposalMethodKey25;
-=======
     private InvokableLocalService _invokableLocalService;
     private String _methodName0;
     private String[] _methodParameterTypes0;
@@ -88,7 +59,10 @@ public class MessageRecipientStatusLocalServiceClp
     private String[] _methodParameterTypes24;
     private String _methodName25;
     private String[] _methodParameterTypes25;
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
 
     public MessageRecipientStatusLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -192,18 +166,6 @@ public class MessageRecipientStatusLocalServiceClp
 
         _methodParameterTypes20 = new String[] { "long", "int", "int" };
 
-<<<<<<< HEAD
-        _findByMessageRecipientMethodKey23 = new MethodKey(_classLoaderProxy.getClassName(),
-                "findByMessageRecipient", long.class, long.class);
-
-        _countUnreadMessagesMethodKey24 = new MethodKey(_classLoaderProxy.getClassName(),
-                "countUnreadMessages", long.class);
-
-        _didReceiveJudgeCommentForProposalMethodKey25 = new MethodKey(_classLoaderProxy.getClassName(),
-                "didReceiveJudgeCommentForProposal",
-                com.ext.portlet.model.Proposal.class,
-                com.liferay.portal.model.User.class);
-=======
         _methodName21 = "countArchivedMessagesForUser";
 
         _methodParameterTypes21 = new String[] { "long" };
@@ -223,7 +185,17 @@ public class MessageRecipientStatusLocalServiceClp
         _methodName25 = "findByMessageRecipient";
 
         _methodParameterTypes25 = new String[] { "long", "long" };
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+
+        _methodName26 = "countUnreadMessages";
+
+        _methodParameterTypes26 = new String[] { "long" };
+
+        _methodName27 = "didReceiveJudgeCommentForProposal";
+
+        _methodParameterTypes27 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.liferay.portal.model.User"
+            };
     }
 
     @Override
@@ -937,19 +909,19 @@ public class MessageRecipientStatusLocalServiceClp
 
         return (com.ext.portlet.model.MessageRecipientStatus) ClpSerializer.translateOutput(returnObj);
     }
-<<<<<<< HEAD
 
+    @Override
     public int countUnreadMessages(long userId)
         throws com.ext.portlet.NoSuchMessageRecipientStatusException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_countUnreadMessagesMethodKey24,
-                userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26, new Object[] { userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.ext.portlet.NoSuchMessageRecipientStatusException) {
                 throw (com.ext.portlet.NoSuchMessageRecipientStatusException) t;
             }
@@ -969,19 +941,24 @@ public class MessageRecipientStatusLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public boolean didReceiveJudgeCommentForProposal(
         com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_didReceiveJudgeCommentForProposalMethodKey25,
-                ClpSerializer.translateInput(p),
-                ClpSerializer.translateInput(judge));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
+                    new Object[] {
+                        ClpSerializer.translateInput(p),
+                        
+                    ClpSerializer.translateInput(judge)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -1000,10 +977,4 @@ public class MessageRecipientStatusLocalServiceClp
 
         return ((Boolean) returnObj).booleanValue();
     }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
-    }
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 }

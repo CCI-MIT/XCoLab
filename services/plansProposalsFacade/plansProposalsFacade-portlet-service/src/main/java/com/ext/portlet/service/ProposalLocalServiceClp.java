@@ -7,145 +7,6 @@ import com.liferay.portal.service.InvokableLocalService;
  * @generated
  */
 public class ProposalLocalServiceClp implements ProposalLocalService {
-<<<<<<< HEAD
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addProposalMethodKey0;
-    private MethodKey _createProposalMethodKey1;
-    private MethodKey _deleteProposalMethodKey2;
-    private MethodKey _deleteProposalMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchProposalMethodKey8;
-    private MethodKey _getProposalMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getProposalsMethodKey11;
-    private MethodKey _getProposalsCountMethodKey12;
-    private MethodKey _updateProposalMethodKey13;
-    private MethodKey _updateProposalMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _createMethodKey17;
-    private MethodKey _createMethodKey18;
-    private MethodKey _setVisibilityMethodKey19;
-    private MethodKey _setAttributeMethodKey20;
-    private MethodKey _setAttributeMethodKey21;
-    private MethodKey _setAttributeMethodKey22;
-    private MethodKey _setAttributeMethodKey23;
-    private MethodKey _setAttributeMethodKey24;
-    private MethodKey _setAttributeMethodKey25;
-    private MethodKey _setAttributeMethodKey26;
-    private MethodKey _setAttributeMethodKey27;
-    private MethodKey _setAttributeMethodKey28;
-    private MethodKey _getAttributesMethodKey29;
-    private MethodKey _getAttributesMethodKey30;
-    private MethodKey _getAttributeMethodKey31;
-    private MethodKey _getAttributeMethodKey32;
-    private MethodKey _getProposalVersionsMethodKey33;
-    private MethodKey _getProposalVersionMethodKey34;
-    private MethodKey _getProposalsInContestPhaseMethodKey35;
-    private MethodKey _getProposalsInContestPhaseMethodKey36;
-    private MethodKey _countProposalsInContestPhaseMethodKey37;
-    private MethodKey _getMembersMethodKey38;
-    private MethodKey _getSupportersMethodKey39;
-    private MethodKey _getSupportersCountMethodKey40;
-    private MethodKey _isSupporterMethodKey41;
-    private MethodKey _addSupporterMethodKey42;
-    private MethodKey _addSupporterMethodKey43;
-    private MethodKey _removeSupporterMethodKey44;
-    private MethodKey _getVotersMethodKey45;
-    private MethodKey _getVotesCountMethodKey46;
-    private MethodKey _addVoteMethodKey47;
-    private MethodKey _addVoteMethodKey48;
-    private MethodKey _removeVoteMethodKey49;
-    private MethodKey _getCommentsCountMethodKey50;
-    private MethodKey _isUserAMemberMethodKey51;
-    private MethodKey _isOpenMethodKey52;
-    private MethodKey _getMembershipRequestsMethodKey53;
-    private MethodKey _addMembershipRequestMethodKey54;
-    private MethodKey _removeUserFromTeamMethodKey55;
-    private MethodKey _dennyMembershipRequestMethodKey56;
-    private MethodKey _approveMembershipRequestMethodKey57;
-    private MethodKey _hasUserRequestedMembershipMethodKey58;
-    private MethodKey _joinIfNotAMemberAndProposalIsOpenMethodKey59;
-    private MethodKey _isSubscribedMethodKey60;
-    private MethodKey _subscribeMethodKey61;
-    private MethodKey _subscribeMethodKey62;
-    private MethodKey _unsubscribeMethodKey63;
-    private MethodKey _unsubscribeMethodKey64;
-    private MethodKey _hasUserVotedMethodKey65;
-    private MethodKey _getUserSupportedProposalsCountMethodKey66;
-    private MethodKey _getUserVotedProposalsCountMethodKey67;
-
-    public ProposalLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
-
-        _addProposalMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addProposal", com.ext.portlet.model.Proposal.class);
-
-        _createProposalMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createProposal", long.class);
-
-        _deleteProposalMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposal", long.class);
-
-        _deleteProposalMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteProposal", com.ext.portlet.model.Proposal.class);
-
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
-
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
-
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
-
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
-
-        _fetchProposalMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchProposal", long.class);
-
-        _getProposalMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposal", long.class);
-
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
-
-        _getProposalsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposals", int.class, int.class);
-
-        _getProposalsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getProposalsCount");
-
-        _updateProposalMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposal", com.ext.portlet.model.Proposal.class);
-
-        _updateProposalMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateProposal", com.ext.portlet.model.Proposal.class,
-                boolean.class);
-
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
-
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
-
-        _createMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", long.class, long.class);
-
-        _createMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "create", long.class, long.class, long.class, boolean.class);
-=======
     private InvokableLocalService _invokableLocalService;
     private String _methodName0;
     private String[] _methodParameterTypes0;
@@ -283,6 +144,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes67;
     private String _methodName68;
     private String[] _methodParameterTypes68;
+    private String _methodName69;
+    private String[] _methodParameterTypes69;
+    private String _methodName70;
+    private String[] _methodParameterTypes70;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -484,12 +349,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodParameterTypes39 = new String[] { "long" };
 
-<<<<<<< HEAD
-        _methodName40 = "getMembers";
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
-=======
         _methodName40 = "countProposalsInContestPhase";
->>>>>>> LR6.2 migration - working login (register not yet), contactform, contests, admintasks, blogstats, feeds work but there are exceptions in the log
 
         _methodParameterTypes40 = new String[] { "long" };
 
@@ -591,16 +451,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodName63 = "isSubscribed";
 
-<<<<<<< HEAD
-        _hasUserVotedMethodKey65 = new MethodKey(_classLoaderProxy.getClassName(),
-                "hasUserVoted", long.class, long.class, long.class);
-
-        _getUserSupportedProposalsCountMethodKey66 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getUserSupportedProposalsCount", long.class);
-
-        _getUserVotedProposalsCountMethodKey67 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getUserVotedProposalsCount", long.class);
-=======
         _methodParameterTypes63 = new String[] { "long", "long" };
 
         _methodName64 = "subscribe";
@@ -617,16 +467,19 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodName67 = "unsubscribe";
 
-<<<<<<< HEAD
-        _methodParameterTypes67 = new String[] { "long", "long", "long" };
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
-=======
         _methodParameterTypes67 = new String[] { "long", "long", "boolean" };
 
         _methodName68 = "hasUserVoted";
 
         _methodParameterTypes68 = new String[] { "long", "long", "long" };
->>>>>>> LR6.2 migration - working login (register not yet), contactform, contests, admintasks, blogstats, feeds work but there are exceptions in the log
+
+        _methodName69 = "getUserSupportedProposalsCount";
+
+        _methodParameterTypes69 = new String[] { "long" };
+
+        _methodName70 = "getUserVotedProposalsCount";
+
+        _methodParameterTypes70 = new String[] { "long" };
     }
 
     @Override
@@ -2846,18 +2699,18 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         return ((Boolean) returnObj).booleanValue();
     }
-<<<<<<< HEAD
 
+    @Override
     public int getUserSupportedProposalsCount(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getUserSupportedProposalsCountMethodKey66,
-                userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName69,
+                    _methodParameterTypes69, new Object[] { userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -2873,16 +2726,17 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public int getUserVotedProposalsCount(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getUserVotedProposalsCountMethodKey67,
-                userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName70,
+                    _methodParameterTypes70, new Object[] { userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -2897,10 +2751,4 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         return ((Integer) returnObj).intValue();
     }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
-    }
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 }

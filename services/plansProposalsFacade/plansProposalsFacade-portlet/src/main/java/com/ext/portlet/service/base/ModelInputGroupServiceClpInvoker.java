@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ModelInputGroupServiceClpInvoker {
-    private String _methodName462;
-    private String[] _methodParameterTypes462;
-    private String _methodName463;
-    private String[] _methodParameterTypes463;
+    private String _methodName468;
+    private String[] _methodParameterTypes468;
+    private String _methodName469;
+    private String[] _methodParameterTypes469;
 
     public ModelInputGroupServiceClpInvoker() {
-        _methodName462 = "getBeanIdentifier";
+        _methodName468 = "getBeanIdentifier";
 
-        _methodParameterTypes462 = new String[] {  };
+        _methodParameterTypes468 = new String[] {  };
 
-        _methodName463 = "setBeanIdentifier";
+        _methodName469 = "setBeanIdentifier";
 
-        _methodParameterTypes463 = new String[] { "java.lang.String" };
+        _methodParameterTypes469 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName462.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes462, parameterTypes)) {
+        if (_methodName468.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes468, parameterTypes)) {
             return ModelInputGroupServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName463.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes463, parameterTypes)) {
+        if (_methodName469.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes469, parameterTypes)) {
             ModelInputGroupServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

@@ -365,6 +365,7 @@ public class DiscussionCategoryGroupLocalServiceWrapper
         _discussionCategoryGroupLocalService.copyEverything(dcg, source);
     }
 
+    @Override
     public int getUserMessages(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _discussionCategoryGroupLocalService.getUserMessages(userId);

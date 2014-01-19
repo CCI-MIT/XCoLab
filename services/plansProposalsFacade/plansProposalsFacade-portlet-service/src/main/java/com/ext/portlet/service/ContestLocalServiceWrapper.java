@@ -561,6 +561,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getDefaultModelId(contestPK);
     }
 
+    @Override
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,

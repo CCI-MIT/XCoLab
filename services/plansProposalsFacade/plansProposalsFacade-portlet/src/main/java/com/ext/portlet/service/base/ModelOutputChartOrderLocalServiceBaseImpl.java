@@ -1,73 +1,6 @@
 package com.ext.portlet.service.base;
 
 import com.ext.portlet.model.ModelOutputChartOrder;
-<<<<<<< HEAD
-import com.ext.portlet.service.ActivitySubscriptionLocalService;
-import com.ext.portlet.service.ActivitySubscriptionService;
-import com.ext.portlet.service.AnalyticsUserEventLocalService;
-import com.ext.portlet.service.AnalyticsUserEventService;
-import com.ext.portlet.service.BalloonStatsEntryLocalService;
-import com.ext.portlet.service.BalloonStatsEntryService;
-import com.ext.portlet.service.ContestDebateLocalService;
-import com.ext.portlet.service.ContestDebateService;
-import com.ext.portlet.service.ContestLocalService;
-import com.ext.portlet.service.ContestPhaseColumnLocalService;
-import com.ext.portlet.service.ContestPhaseColumnService;
-import com.ext.portlet.service.ContestPhaseLocalService;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalService;
-import com.ext.portlet.service.ContestPhaseRibbonTypeService;
-import com.ext.portlet.service.ContestPhaseService;
-import com.ext.portlet.service.ContestPhaseTypeLocalService;
-import com.ext.portlet.service.ContestPhaseTypeService;
-import com.ext.portlet.service.ContestService;
-import com.ext.portlet.service.ContestTeamMemberLocalService;
-import com.ext.portlet.service.ContestTeamMemberService;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalService;
-import com.ext.portlet.service.DiscussionCategoryGroupService;
-import com.ext.portlet.service.DiscussionCategoryLocalService;
-import com.ext.portlet.service.DiscussionCategoryService;
-import com.ext.portlet.service.DiscussionMessageFlagLocalService;
-import com.ext.portlet.service.DiscussionMessageFlagService;
-import com.ext.portlet.service.DiscussionMessageLocalService;
-import com.ext.portlet.service.DiscussionMessageService;
-import com.ext.portlet.service.EmailListLocalService;
-import com.ext.portlet.service.EmailListService;
-import com.ext.portlet.service.FocusAreaLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalService;
-import com.ext.portlet.service.FocusAreaOntologyTermService;
-import com.ext.portlet.service.FocusAreaService;
-import com.ext.portlet.service.LandingPageLocalService;
-import com.ext.portlet.service.LandingPageService;
-import com.ext.portlet.service.MessageLocalService;
-import com.ext.portlet.service.MessageRecipientStatusLocalService;
-import com.ext.portlet.service.MessageRecipientStatusService;
-import com.ext.portlet.service.MessageService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalService;
-import com.ext.portlet.service.MessagingIgnoredRecipientsService;
-import com.ext.portlet.service.MessagingMessageConversionLocalService;
-import com.ext.portlet.service.MessagingMessageConversionService;
-import com.ext.portlet.service.MessagingMessageConversionTypeLocalService;
-import com.ext.portlet.service.MessagingMessageConversionTypeService;
-import com.ext.portlet.service.MessagingMessageLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientLocalService;
-import com.ext.portlet.service.MessagingMessageRecipientService;
-import com.ext.portlet.service.MessagingMessageService;
-import com.ext.portlet.service.MessagingRedirectLinkLocalService;
-import com.ext.portlet.service.MessagingRedirectLinkService;
-import com.ext.portlet.service.MessagingUserPreferencesLocalService;
-import com.ext.portlet.service.MessagingUserPreferencesService;
-import com.ext.portlet.service.ModelCategoryLocalService;
-import com.ext.portlet.service.ModelCategoryService;
-import com.ext.portlet.service.ModelDiscussionLocalService;
-import com.ext.portlet.service.ModelDiscussionService;
-import com.ext.portlet.service.ModelGlobalPreferenceLocalService;
-import com.ext.portlet.service.ModelGlobalPreferenceService;
-import com.ext.portlet.service.ModelInputGroupLocalService;
-import com.ext.portlet.service.ModelInputGroupService;
-import com.ext.portlet.service.ModelInputItemLocalService;
-import com.ext.portlet.service.ModelInputItemService;
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.ModelOutputChartOrderLocalService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
@@ -190,23 +123,16 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
     protected com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService;
     @BeanReference(type = ActivitySubscriptionPersistence.class)
     protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
-<<<<<<< HEAD
-    @BeanReference(type = AnalyticsUserEventLocalService.class)
-    protected AnalyticsUserEventLocalService analyticsUserEventLocalService;
-    @BeanReference(type = AnalyticsUserEventService.class)
-    protected AnalyticsUserEventService analyticsUserEventService;
+    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventLocalService.class)
+    protected com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService;
+    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventService.class)
+    protected com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
     protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = BalloonStatsEntryLocalService.class)
-    protected BalloonStatsEntryLocalService balloonStatsEntryLocalService;
-    @BeanReference(type = BalloonStatsEntryService.class)
-    protected BalloonStatsEntryService balloonStatsEntryService;
-=======
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryLocalService.class)
     protected com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService;
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryService.class)
     protected com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService;
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
@@ -948,7 +874,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      *
      * @return the analytics user event local service
      */
-    public AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
+    public com.ext.portlet.service.AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
         return analyticsUserEventLocalService;
     }
 
@@ -958,7 +884,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      * @param analyticsUserEventLocalService the analytics user event local service
      */
     public void setAnalyticsUserEventLocalService(
-        AnalyticsUserEventLocalService analyticsUserEventLocalService) {
+        com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService) {
         this.analyticsUserEventLocalService = analyticsUserEventLocalService;
     }
 
@@ -967,7 +893,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      *
      * @return the analytics user event remote service
      */
-    public AnalyticsUserEventService getAnalyticsUserEventService() {
+    public com.ext.portlet.service.AnalyticsUserEventService getAnalyticsUserEventService() {
         return analyticsUserEventService;
     }
 
@@ -977,7 +903,7 @@ public abstract class ModelOutputChartOrderLocalServiceBaseImpl
      * @param analyticsUserEventService the analytics user event remote service
      */
     public void setAnalyticsUserEventService(
-        AnalyticsUserEventService analyticsUserEventService) {
+        com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService) {
         this.analyticsUserEventService = analyticsUserEventService;
     }
 

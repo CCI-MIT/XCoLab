@@ -35,6 +35,7 @@ public class AnalyticsUserEventPK implements Comparable<AnalyticsUserEventPK>,
         this.idString = idString;
     }
 
+    @Override
     public int compareTo(AnalyticsUserEventPK pk) {
         if (pk == null) {
             return -1;
@@ -65,17 +66,15 @@ public class AnalyticsUserEventPK implements Comparable<AnalyticsUserEventPK>,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AnalyticsUserEventPK)) {
             return false;
         }
 
-        AnalyticsUserEventPK pk = null;
-
-        try {
-            pk = (AnalyticsUserEventPK) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        AnalyticsUserEventPK pk = (AnalyticsUserEventPK) obj;
 
         if ((userId == pk.userId) && (idString.equals(pk.idString))) {
             return true;

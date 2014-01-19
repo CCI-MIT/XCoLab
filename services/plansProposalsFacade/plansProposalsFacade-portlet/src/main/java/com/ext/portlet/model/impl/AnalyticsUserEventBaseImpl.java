@@ -24,6 +24,7 @@ public abstract class AnalyticsUserEventBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a analytics user event model instance should use the {@link AnalyticsUserEvent} interface instead.
      */
+    @Override
     public void persist() throws SystemException {
         if (this.isNew()) {
             AnalyticsUserEventLocalServiceUtil.addAnalyticsUserEvent(this);

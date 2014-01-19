@@ -41,16 +41,16 @@ public class OntologyTermEntityLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
     private String _methodName484;
     private String[] _methodParameterTypes484;
     private String _methodName485;
     private String[] _methodParameterTypes485;
-    private String _methodName486;
-    private String[] _methodParameterTypes486;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
 
     public OntologyTermEntityLocalServiceClpInvoker() {
         _methodName0 = "addOntologyTermEntity";
@@ -135,29 +135,29 @@ public class OntologyTermEntityLocalServiceClpInvoker {
                 "com.ext.portlet.model.OntologyTermEntity"
             };
 
-        _methodName478 = "getBeanIdentifier";
+        _methodName484 = "getBeanIdentifier";
 
-        _methodParameterTypes478 = new String[] {  };
+        _methodParameterTypes484 = new String[] {  };
 
-        _methodName479 = "setBeanIdentifier";
+        _methodName485 = "setBeanIdentifier";
 
-        _methodParameterTypes479 = new String[] { "java.lang.String" };
+        _methodParameterTypes485 = new String[] { "java.lang.String" };
 
-        _methodName484 = "findTagedIdsForClass";
+        _methodName490 = "findTagedIdsForClass";
 
-        _methodParameterTypes484 = new String[] {
+        _methodParameterTypes490 = new String[] {
                 "java.lang.Long", "java.lang.Class"
             };
 
-        _methodName485 = "store";
+        _methodName491 = "store";
 
-        _methodParameterTypes485 = new String[] {
+        _methodParameterTypes491 = new String[] {
                 "com.ext.portlet.model.OntologyTermEntity"
             };
 
-        _methodName486 = "remove";
+        _methodName492 = "remove";
 
-        _methodParameterTypes486 = new String[] {
+        _methodParameterTypes492 = new String[] {
                 "com.ext.portlet.model.OntologyTermEntity"
             };
     }
@@ -251,33 +251,33 @@ public class OntologyTermEntityLocalServiceClpInvoker {
             return OntologyTermEntityLocalServiceUtil.updateOntologyTermEntity((com.ext.portlet.model.OntologyTermEntity) arguments[0]);
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName484.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
             return OntologyTermEntityLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName485.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
             OntologyTermEntityLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return OntologyTermEntityLocalServiceUtil.findTagedIdsForClass((java.lang.Long) arguments[0],
                 (java.lang.Class) arguments[1]);
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             OntologyTermEntityLocalServiceUtil.store((com.ext.portlet.model.OntologyTermEntity) arguments[0]);
 
             return null;
         }
 
-        if (_methodName486.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes486, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             OntologyTermEntityLocalServiceUtil.remove((com.ext.portlet.model.OntologyTermEntity) arguments[0]);
 
             return null;

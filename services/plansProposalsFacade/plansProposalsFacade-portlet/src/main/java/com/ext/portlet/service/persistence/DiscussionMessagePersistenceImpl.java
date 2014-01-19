@@ -4,22 +4,6 @@ import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.impl.DiscussionMessageImpl;
 import com.ext.portlet.model.impl.DiscussionMessageModelImpl;
-<<<<<<< HEAD
-import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
-import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
-import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
-import com.ext.portlet.service.persistence.ContestDebatePersistence;
-import com.ext.portlet.service.persistence.ContestPersistence;
-import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
-import com.ext.portlet.service.persistence.ContestPhasePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
-import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -197,7 +181,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
             new String[] { Long.class.getName() });
-<<<<<<< HEAD
+    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
             DiscussionMessageImpl.class,
@@ -205,8 +189,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             new String[] {
                 Long.class.getName(),
                 
-            "java.lang.Integer", "java.lang.Integer",
-                "com.liferay.portal.kernel.util.OrderByComparator"
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
             });
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID =
         new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
@@ -214,46 +198,17 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             DiscussionMessageImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAuthorId",
             new String[] { Long.class.getName() },
-            DiscussionMessageModelImpl.AUTHORID_COLUMN_BITMASK);
+            DiscussionMessageModelImpl.AUTHORID_COLUMN_BITMASK |
+            DiscussionMessageModelImpl.CREATEDATE_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_AUTHORID = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
             DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAuthorId",
             new String[] { Long.class.getName() });
-    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED,
-            DiscussionMessageImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-    public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(DiscussionMessageModelImpl.ENTITY_CACHE_ENABLED,
-            DiscussionMessageModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-=======
-    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+    private static final String _FINDER_COLUMN_AUTHORID_AUTHORID_2 = "discussionMessage.authorId = ? AND discussionMessage.deleted is null";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGE = "SELECT discussionMessage FROM DiscussionMessage discussionMessage";
     private static final String _SQL_SELECT_DISCUSSIONMESSAGE_WHERE = "SELECT discussionMessage FROM DiscussionMessage discussionMessage WHERE ";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGE = "SELECT COUNT(discussionMessage) FROM DiscussionMessage discussionMessage";
     private static final String _SQL_COUNT_DISCUSSIONMESSAGE_WHERE = "SELECT COUNT(discussionMessage) FROM DiscussionMessage discussionMessage WHERE ";
-<<<<<<< HEAD
-    private static final String _FINDER_COLUMN_CATEGORYIDTHREADID_CATEGORYID_2 = "discussionMessage.categoryId = ? AND ";
-    private static final String _FINDER_COLUMN_CATEGORYIDTHREADID_THREADID_2 = "discussionMessage.threadId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_THREADID_THREADID_2 = "discussionMessage.threadId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_SINGLETHREADID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_SUBJECTLIKE_SUBJECT_1 = "discussionMessage.subject LIKE NULL AND ";
-    private static final String _FINDER_COLUMN_SUBJECTLIKE_SUBJECT_2 = "discussionMessage.subject LIKE ? AND ";
-    private static final String _FINDER_COLUMN_SUBJECTLIKE_SUBJECT_3 = "(discussionMessage.subject IS NULL OR discussionMessage.subject LIKE ?) AND ";
-    private static final String _FINDER_COLUMN_SUBJECTLIKE_CATEGORYGROUPID_2 = "discussionMessage.categoryGroupId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_BODYLIKE_BODY_1 = "discussionMessage.body LIKE NULL AND ";
-    private static final String _FINDER_COLUMN_BODYLIKE_BODY_2 = "discussionMessage.body LIKE ? AND ";
-    private static final String _FINDER_COLUMN_BODYLIKE_BODY_3 = "(discussionMessage.body IS NULL OR discussionMessage.body LIKE ?) AND ";
-    private static final String _FINDER_COLUMN_BODYLIKE_CATEGORYGROUPID_2 = "discussionMessage.categoryGroupId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_MESSAGEID_MESSAGEID_2 = "discussionMessage.messageId = ? AND discussionMessage.deleted is null";
-    private static final String _FINDER_COLUMN_AUTHORID_AUTHORID_2 = "discussionMessage.authorId = ? AND discussionMessage.deleted is null";
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
     private static final String _ORDER_BY_ENTITY_ALIAS = "discussionMessage.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DiscussionMessage exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DiscussionMessage exists with the key {";
@@ -280,166 +235,9 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             }
         };
 
-<<<<<<< HEAD
-    @BeanReference(type = ActivitySubscriptionPersistence.class)
-    protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
-    @BeanReference(type = AnalyticsUserEventPersistence.class)
-    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = BalloonStatsEntryPersistence.class)
-    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
-    @BeanReference(type = ContestPersistence.class)
-    protected ContestPersistence contestPersistence;
-    @BeanReference(type = ContestDebatePersistence.class)
-    protected ContestDebatePersistence contestDebatePersistence;
-    @BeanReference(type = ContestPhasePersistence.class)
-    protected ContestPhasePersistence contestPhasePersistence;
-    @BeanReference(type = ContestPhaseColumnPersistence.class)
-    protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
-    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
-    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
-    @BeanReference(type = ContestPhaseTypePersistence.class)
-    protected ContestPhaseTypePersistence contestPhaseTypePersistence;
-    @BeanReference(type = ContestTeamMemberPersistence.class)
-    protected ContestTeamMemberPersistence contestTeamMemberPersistence;
-    @BeanReference(type = DiscussionCategoryPersistence.class)
-    protected DiscussionCategoryPersistence discussionCategoryPersistence;
-    @BeanReference(type = DiscussionCategoryGroupPersistence.class)
-    protected DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence;
-    @BeanReference(type = DiscussionMessagePersistence.class)
-    protected DiscussionMessagePersistence discussionMessagePersistence;
-    @BeanReference(type = DiscussionMessageFlagPersistence.class)
-    protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
-    @BeanReference(type = EmailListPersistence.class)
-    protected EmailListPersistence emailListPersistence;
-    @BeanReference(type = FocusAreaPersistence.class)
-    protected FocusAreaPersistence focusAreaPersistence;
-    @BeanReference(type = FocusAreaOntologyTermPersistence.class)
-    protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
-    @BeanReference(type = LandingPagePersistence.class)
-    protected LandingPagePersistence landingPagePersistence;
-    @BeanReference(type = MessagePersistence.class)
-    protected MessagePersistence messagePersistence;
-    @BeanReference(type = MessageRecipientStatusPersistence.class)
-    protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
-    @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
-    protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
-    @BeanReference(type = MessagingMessagePersistence.class)
-    protected MessagingMessagePersistence messagingMessagePersistence;
-    @BeanReference(type = MessagingMessageConversionPersistence.class)
-    protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
-    @BeanReference(type = MessagingMessageConversionTypePersistence.class)
-    protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
-    @BeanReference(type = MessagingMessageRecipientPersistence.class)
-    protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
-    @BeanReference(type = MessagingRedirectLinkPersistence.class)
-    protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
-    @BeanReference(type = MessagingUserPreferencesPersistence.class)
-    protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
-    @BeanReference(type = ModelCategoryPersistence.class)
-    protected ModelCategoryPersistence modelCategoryPersistence;
-    @BeanReference(type = ModelDiscussionPersistence.class)
-    protected ModelDiscussionPersistence modelDiscussionPersistence;
-    @BeanReference(type = ModelGlobalPreferencePersistence.class)
-    protected ModelGlobalPreferencePersistence modelGlobalPreferencePersistence;
-    @BeanReference(type = ModelInputGroupPersistence.class)
-    protected ModelInputGroupPersistence modelInputGroupPersistence;
-    @BeanReference(type = ModelInputItemPersistence.class)
-    protected ModelInputItemPersistence modelInputItemPersistence;
-    @BeanReference(type = ModelOutputChartOrderPersistence.class)
-    protected ModelOutputChartOrderPersistence modelOutputChartOrderPersistence;
-    @BeanReference(type = ModelOutputItemPersistence.class)
-    protected ModelOutputItemPersistence modelOutputItemPersistence;
-    @BeanReference(type = ModelPositionPersistence.class)
-    protected ModelPositionPersistence modelPositionPersistence;
-    @BeanReference(type = OntologySpacePersistence.class)
-    protected OntologySpacePersistence ontologySpacePersistence;
-    @BeanReference(type = OntologyTermPersistence.class)
-    protected OntologyTermPersistence ontologyTermPersistence;
-    @BeanReference(type = OntologyTermEntityPersistence.class)
-    protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
-    @BeanReference(type = Plan2ProposalPersistence.class)
-    protected Plan2ProposalPersistence plan2ProposalPersistence;
-    @BeanReference(type = PlanAttributePersistence.class)
-    protected PlanAttributePersistence planAttributePersistence;
-    @BeanReference(type = PlanAttributeFilterPersistence.class)
-    protected PlanAttributeFilterPersistence planAttributeFilterPersistence;
-    @BeanReference(type = PlanColumnSettingsPersistence.class)
-    protected PlanColumnSettingsPersistence planColumnSettingsPersistence;
-    @BeanReference(type = PlanDescriptionPersistence.class)
-    protected PlanDescriptionPersistence planDescriptionPersistence;
-    @BeanReference(type = PlanFanPersistence.class)
-    protected PlanFanPersistence planFanPersistence;
-    @BeanReference(type = PlanItemPersistence.class)
-    protected PlanItemPersistence planItemPersistence;
-    @BeanReference(type = PlanItemGroupPersistence.class)
-    protected PlanItemGroupPersistence planItemGroupPersistence;
-    @BeanReference(type = PlanMetaPersistence.class)
-    protected PlanMetaPersistence planMetaPersistence;
-    @BeanReference(type = PlanModelRunPersistence.class)
-    protected PlanModelRunPersistence planModelRunPersistence;
-    @BeanReference(type = PlanPositionPersistence.class)
-    protected PlanPositionPersistence planPositionPersistence;
-    @BeanReference(type = PlanPositionItemPersistence.class)
-    protected PlanPositionItemPersistence planPositionItemPersistence;
-    @BeanReference(type = PlanPositionsPersistence.class)
-    protected PlanPositionsPersistence planPositionsPersistence;
-    @BeanReference(type = PlanPropertyFilterPersistence.class)
-    protected PlanPropertyFilterPersistence planPropertyFilterPersistence;
-    @BeanReference(type = PlanRelatedPersistence.class)
-    protected PlanRelatedPersistence planRelatedPersistence;
-    @BeanReference(type = PlanSectionPersistence.class)
-    protected PlanSectionPersistence planSectionPersistence;
-    @BeanReference(type = PlanSectionDefinitionPersistence.class)
-    protected PlanSectionDefinitionPersistence planSectionDefinitionPersistence;
-    @BeanReference(type = PlanSectionPlanMapPersistence.class)
-    protected PlanSectionPlanMapPersistence planSectionPlanMapPersistence;
-    @BeanReference(type = PlansFilterPersistence.class)
-    protected PlansFilterPersistence plansFilterPersistence;
-    @BeanReference(type = PlansFilterPositionPersistence.class)
-    protected PlansFilterPositionPersistence plansFilterPositionPersistence;
-    @BeanReference(type = PlansUserSettingsPersistence.class)
-    protected PlansUserSettingsPersistence plansUserSettingsPersistence;
-    @BeanReference(type = PlanTeamHistoryPersistence.class)
-    protected PlanTeamHistoryPersistence planTeamHistoryPersistence;
-    @BeanReference(type = PlanTemplatePersistence.class)
-    protected PlanTemplatePersistence planTemplatePersistence;
-    @BeanReference(type = PlanTemplateSectionPersistence.class)
-    protected PlanTemplateSectionPersistence planTemplateSectionPersistence;
-    @BeanReference(type = PlanTypePersistence.class)
-    protected PlanTypePersistence planTypePersistence;
-    @BeanReference(type = PlanTypeAttributePersistence.class)
-    protected PlanTypeAttributePersistence planTypeAttributePersistence;
-    @BeanReference(type = PlanTypeColumnPersistence.class)
-    protected PlanTypeColumnPersistence planTypeColumnPersistence;
-    @BeanReference(type = PlanVotePersistence.class)
-    protected PlanVotePersistence planVotePersistence;
-    @BeanReference(type = ProposalPersistence.class)
-    protected ProposalPersistence proposalPersistence;
-    @BeanReference(type = Proposal2PhasePersistence.class)
-    protected Proposal2PhasePersistence proposal2PhasePersistence;
-    @BeanReference(type = ProposalAttributePersistence.class)
-    protected ProposalAttributePersistence proposalAttributePersistence;
-    @BeanReference(type = ProposalAttributeTypePersistence.class)
-    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
-    @BeanReference(type = ProposalSupporterPersistence.class)
-    protected ProposalSupporterPersistence proposalSupporterPersistence;
-    @BeanReference(type = ProposalVersionPersistence.class)
-    protected ProposalVersionPersistence proposalVersionPersistence;
-    @BeanReference(type = ProposalVotePersistence.class)
-    protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = ResourcePersistence.class)
-    protected ResourcePersistence resourcePersistence;
-    @BeanReference(type = UserPersistence.class)
-    protected UserPersistence userPersistence;
-=======
     public DiscussionMessagePersistenceImpl() {
         setModelClass(DiscussionMessage.class);
     }
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
     /**
      * Returns all the discussion messages where categoryId = &#63; and threadId = &#63;.
@@ -825,30 +623,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     }
                 }
             }
-<<<<<<< HEAD
-
-            if ((discussionMessageModelImpl.getColumnBitmask() &
-                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        Long.valueOf(discussionMessageModelImpl.getOriginalAuthorId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID,
-                    args);
-
-                args = new Object[] {
-                        Long.valueOf(discussionMessageModelImpl.getAuthorId())
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORID, args);
-                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID,
-                    args);
-            }
-=======
         } else {
             query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
         }
 
         String sql = query.toString();
@@ -2785,13 +2561,79 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     /**
-<<<<<<< HEAD
+     * Removes the discussion message where messageId = &#63; from the database.
+     *
+     * @param messageId the message ID
+     * @return the discussion message that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage removeByMessageId(long messageId)
+        throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = findByMessageId(messageId);
+
+        return remove(discussionMessage);
+    }
+
+    /**
+     * Returns the number of discussion messages where messageId = &#63;.
+     *
+     * @param messageId the message ID
+     * @return the number of matching discussion messages
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByMessageId(long messageId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEID;
+
+        Object[] finderArgs = new Object[] { messageId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
+
+            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(messageId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the discussion messages where authorId = &#63;.
      *
      * @param authorId the author ID
      * @return the matching discussion messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessage> findByAuthorId(long authorId)
         throws SystemException {
         return findByAuthorId(authorId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -2802,7 +2644,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * Returns a range of all the discussion messages where authorId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param authorId the author ID
@@ -2811,6 +2653,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessage> findByAuthorId(long authorId, int start,
         int end) throws SystemException {
         return findByAuthorId(authorId, start, end, null);
@@ -2820,7 +2663,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * Returns an ordered range of all the discussion messages where authorId = &#63;.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.DiscussionMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param authorId the author ID
@@ -2830,13 +2673,16 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @return the ordered range of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<DiscussionMessage> findByAuthorId(long authorId, int start,
         int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
         Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
+            pagination = false;
             finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID;
             finderArgs = new Object[] { authorId };
         } else {
@@ -2846,6 +2692,16 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
         List<DiscussionMessage> list = (List<DiscussionMessage>) FinderCacheUtil.getResult(finderPath,
                 finderArgs, this);
+
+        if ((list != null) && !list.isEmpty()) {
+            for (DiscussionMessage discussionMessage : list) {
+                if ((authorId != discussionMessage.getAuthorId())) {
+                    list = null;
+
+                    break;
+                }
+            }
+        }
 
         if (list == null) {
             StringBundler query = null;
@@ -2864,8 +2720,8 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
             if (orderByComparator != null) {
                 appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
                     orderByComparator);
-            }
-            else {
+            } else
+             if (pagination) {
                 query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
             }
 
@@ -2882,19 +2738,26 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 qPos.add(authorId);
 
-                list = (List<DiscussionMessage>) QueryUtil.list(q,
-                        getDialect(), start, end);
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
+                if (!pagination) {
+                    list = (List<DiscussionMessage>) QueryUtil.list(q,
+                            getDialect(), start, end, false);
 
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<DiscussionMessage>(list);
+                } else {
+                    list = (List<DiscussionMessage>) QueryUtil.list(q,
+                            getDialect(), start, end);
                 }
 
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -2905,44 +2768,58 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     /**
      * Returns the first discussion message in the ordered set where authorId = &#63;.
      *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
-     *
      * @param authorId the author ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
      * @return the first matching discussion message
      * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessage findByAuthorId_First(long authorId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = fetchByAuthorId_First(authorId,
+                orderByComparator);
+
+        if (discussionMessage != null) {
+            return discussionMessage;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("authorId=");
+        msg.append(authorId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageException(msg.toString());
+    }
+
+    /**
+     * Returns the first discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByAuthorId_First(long authorId,
+        OrderByComparator orderByComparator) throws SystemException {
         List<DiscussionMessage> list = findByAuthorId(authorId, 0, 1,
                 orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("authorId=");
-            msg.append(authorId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchDiscussionMessageException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the last discussion message in the ordered set where authorId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param authorId the author ID
      * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -2950,36 +2827,58 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.NoSuchDiscussionMessageException if a matching discussion message could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessage findByAuthorId_Last(long authorId,
         OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
+        DiscussionMessage discussionMessage = fetchByAuthorId_Last(authorId,
+                orderByComparator);
+
+        if (discussionMessage != null) {
+            return discussionMessage;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("authorId=");
+        msg.append(authorId);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchDiscussionMessageException(msg.toString());
+    }
+
+    /**
+     * Returns the last discussion message in the ordered set where authorId = &#63;.
+     *
+     * @param authorId the author ID
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching discussion message, or <code>null</code> if a matching discussion message could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public DiscussionMessage fetchByAuthorId_Last(long authorId,
+        OrderByComparator orderByComparator) throws SystemException {
         int count = countByAuthorId(authorId);
+
+        if (count == 0) {
+            return null;
+        }
 
         List<DiscussionMessage> list = findByAuthorId(authorId, count - 1,
                 count, orderByComparator);
 
-        if (list.isEmpty()) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("authorId=");
-            msg.append(authorId);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            throw new NoSuchDiscussionMessageException(msg.toString());
-        } else {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
+
+        return null;
     }
 
     /**
      * Returns the discussion messages before and after the current discussion message in the ordered set where authorId = &#63;.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-     * </p>
      *
      * @param pk the primary key of the current discussion message
      * @param authorId the author ID
@@ -2988,6 +2887,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
      * @throws com.ext.portlet.NoSuchDiscussionMessageException if a discussion message with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public DiscussionMessage[] findByAuthorId_PrevAndNext(long pk,
         long authorId, OrderByComparator orderByComparator)
         throws NoSuchDiscussionMessageException, SystemException {
@@ -3080,8 +2980,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
                     }
                 }
             }
-        }
-        else {
+        } else {
             query.append(DiscussionMessageModelImpl.ORDER_BY_JPQL);
         }
 
@@ -3114,35 +3013,31 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     /**
-     * Returns all the discussion messages.
-=======
-     * Removes the discussion message where messageId = &#63; from the database.
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+     * Removes all the discussion messages where authorId = &#63; from the database.
      *
-     * @param messageId the message ID
-     * @return the discussion message that was removed
+     * @param authorId the author ID
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public DiscussionMessage removeByMessageId(long messageId)
-        throws NoSuchDiscussionMessageException, SystemException {
-        DiscussionMessage discussionMessage = findByMessageId(messageId);
-
-        return remove(discussionMessage);
+    public void removeByAuthorId(long authorId) throws SystemException {
+        for (DiscussionMessage discussionMessage : findByAuthorId(authorId,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(discussionMessage);
+        }
     }
 
     /**
-     * Returns the number of discussion messages where messageId = &#63;.
+     * Returns the number of discussion messages where authorId = &#63;.
      *
-     * @param messageId the message ID
+     * @param authorId the author ID
      * @return the number of matching discussion messages
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countByMessageId(long messageId) throws SystemException {
-        FinderPath finderPath = FINDER_PATH_COUNT_BY_MESSAGEID;
+    public int countByAuthorId(long authorId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_AUTHORID;
 
-        Object[] finderArgs = new Object[] { messageId };
+        Object[] finderArgs = new Object[] { authorId };
 
         Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
                 this);
@@ -3152,7 +3047,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
             query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
 
-            query.append(_FINDER_COLUMN_MESSAGEID_MESSAGEID_2);
+            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
 
             String sql = query.toString();
 
@@ -3165,7 +3060,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 QueryPos qPos = QueryPos.getInstance(q);
 
-                qPos.add(messageId);
+                qPos.add(authorId);
 
                 count = (Long) q.uniqueResult();
 
@@ -3365,23 +3260,7 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
     }
 
     /**
-<<<<<<< HEAD
-     * Removes all the discussion messages where authorId = &#63; from the database.
-     *
-     * @param authorId the author ID
-     * @throws SystemException if a system exception occurred
-     */
-    public void removeByAuthorId(long authorId) throws SystemException {
-        for (DiscussionMessage discussionMessage : findByAuthorId(authorId)) {
-            remove(discussionMessage);
-        }
-    }
-
-    /**
-     * Removes all the discussion messages from the database.
-=======
      * Removes the discussion message with the primary key from the database. Also notifies the appropriate model listeners.
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
      *
      * @param pk the primary key of the discussion message
      * @return the discussion message that was removed
@@ -3534,6 +3413,23 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
 
                 FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_THREADID, args);
                 FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_THREADID,
+                    args);
+            }
+
+            if ((discussionMessageModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        discussionMessageModelImpl.getOriginalAuthorId()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID,
+                    args);
+
+                args = new Object[] { discussionMessageModelImpl.getAuthorId() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_AUTHORID, args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AUTHORID,
                     args);
             }
         }
@@ -3803,57 +3699,6 @@ public class DiscussionMessagePersistenceImpl extends BasePersistenceImpl<Discus
         for (DiscussionMessage discussionMessage : findAll()) {
             remove(discussionMessage);
         }
-    }
-
-    /**
-     * Returns the number of discussion messages where authorId = &#63;.
-     *
-     * @param authorId the author ID
-     * @return the number of matching discussion messages
-     * @throws SystemException if a system exception occurred
-     */
-    public int countByAuthorId(long authorId) throws SystemException {
-        Object[] finderArgs = new Object[] { authorId };
-
-        Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_AUTHORID,
-                finderArgs, this);
-
-        if (count == null) {
-            StringBundler query = new StringBundler(2);
-
-            query.append(_SQL_COUNT_DISCUSSIONMESSAGE_WHERE);
-
-            query.append(_FINDER_COLUMN_AUTHORID_AUTHORID_2);
-
-            String sql = query.toString();
-
-            Session session = null;
-
-            try {
-                session = openSession();
-
-                Query q = session.createQuery(sql);
-
-                QueryPos qPos = QueryPos.getInstance(q);
-
-                qPos.add(authorId);
-
-                count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_AUTHORID,
-                    finderArgs, count);
-
-                closeSession(session);
-            }
-        }
-
-        return count.intValue();
     }
 
     /**

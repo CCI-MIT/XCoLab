@@ -8,38 +8,6 @@ import com.liferay.portal.service.InvokableLocalService;
  */
 public class DiscussionCategoryGroupLocalServiceClp
     implements DiscussionCategoryGroupLocalService {
-<<<<<<< HEAD
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addDiscussionCategoryGroupMethodKey0;
-    private MethodKey _createDiscussionCategoryGroupMethodKey1;
-    private MethodKey _deleteDiscussionCategoryGroupMethodKey2;
-    private MethodKey _deleteDiscussionCategoryGroupMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchDiscussionCategoryGroupMethodKey8;
-    private MethodKey _getDiscussionCategoryGroupMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getDiscussionCategoryGroupsMethodKey11;
-    private MethodKey _getDiscussionCategoryGroupsCountMethodKey12;
-    private MethodKey _updateDiscussionCategoryGroupMethodKey13;
-    private MethodKey _updateDiscussionCategoryGroupMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _createDiscussionCategoryGroupMethodKey17;
-    private MethodKey _getCategoryByIdMethodKey18;
-    private MethodKey _getThreadByIdMethodKey19;
-    private MethodKey _getCategoriesMethodKey20;
-    private MethodKey _addCategoryMethodKey21;
-    private MethodKey _storeMethodKey22;
-    private MethodKey _getCommentThreadMethodKey23;
-    private MethodKey _addCommentMethodKey24;
-    private MethodKey _getCommentsCountMethodKey25;
-    private MethodKey _getCommentsCountMethodKey26;
-    private MethodKey _copyEverythingMethodKey27;
-    private MethodKey _getUserMessagesMethodKey28;
-=======
     private InvokableLocalService _invokableLocalService;
     private String _methodName0;
     private String[] _methodParameterTypes0;
@@ -99,7 +67,8 @@ public class DiscussionCategoryGroupLocalServiceClp
     private String[] _methodParameterTypes28;
     private String _methodName29;
     private String[] _methodParameterTypes29;
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+    private String _methodName30;
+    private String[] _methodParameterTypes30;
 
     public DiscussionCategoryGroupLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -215,15 +184,6 @@ public class DiscussionCategoryGroupLocalServiceClp
 
         _methodName23 = "addCategory";
 
-<<<<<<< HEAD
-        _copyEverythingMethodKey27 = new MethodKey(_classLoaderProxy.getClassName(),
-                "copyEverything",
-                com.ext.portlet.model.DiscussionCategoryGroup.class,
-                com.ext.portlet.model.DiscussionCategoryGroup.class);
-
-        _getUserMessagesMethodKey28 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getUserMessages", long.class);
-=======
         _methodParameterTypes23 = new String[] {
                 "com.ext.portlet.model.DiscussionCategoryGroup",
                 "java.lang.String", "java.lang.String",
@@ -266,7 +226,10 @@ public class DiscussionCategoryGroupLocalServiceClp
                 "com.ext.portlet.model.DiscussionCategoryGroup",
                 "com.ext.portlet.model.DiscussionCategoryGroup"
             };
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+
+        _methodName30 = "getUserMessages";
+
+        _methodParameterTypes30 = new String[] { "long" };
     }
 
     @Override
@@ -1141,18 +1104,18 @@ public class DiscussionCategoryGroupLocalServiceClp
             }
         }
     }
-<<<<<<< HEAD
 
+    @Override
     public int getUserMessages(long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getUserMessagesMethodKey28,
-                userId);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName30,
+                    _methodParameterTypes30, new Object[] { userId });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1167,10 +1130,4 @@ public class DiscussionCategoryGroupLocalServiceClp
 
         return ((Integer) returnObj).intValue();
     }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
-    }
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 }

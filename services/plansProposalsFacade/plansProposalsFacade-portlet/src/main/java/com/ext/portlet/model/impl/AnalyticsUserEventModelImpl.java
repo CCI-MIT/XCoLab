@@ -22,7 +22,9 @@ import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The base model implementation for the AnalyticsUserEvent service. Represents a row in the &quot;xcolab_AnalyticsUserEvent&quot; database table, with each column mapped to a property of this class.
@@ -57,6 +59,8 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         };
     public static final String TABLE_SQL_CREATE = "create table xcolab_AnalyticsUserEvent (userId LONG not null,idString VARCHAR(75) not null,category VARCHAR(75) null,action VARCHAR(75) null,label VARCHAR(75) null,value INTEGER,created DATE null,primary key (userId, idString))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_AnalyticsUserEvent";
+    public static final String ORDER_BY_JPQL = " ORDER BY analyticsUserEvent.id.userId ASC, analyticsUserEvent.id.idString ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_AnalyticsUserEvent.userId ASC, xcolab_AnalyticsUserEvent.idString ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -70,7 +74,7 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.AnalyticsUserEvent"));
     private static ClassLoader _classLoader = AnalyticsUserEvent.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             AnalyticsUserEvent.class
         };
     private long _userId;
@@ -81,7 +85,7 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
     private String _label;
     private int _value;
     private Date _created;
-    private AnalyticsUserEvent _escapedModelProxy;
+    private AnalyticsUserEvent _escapedModel;
 
     public AnalyticsUserEventModelImpl() {
     }
@@ -93,6 +97,10 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
      * @return the normal model instance
      */
     public static AnalyticsUserEvent toModel(AnalyticsUserEventSoap soapModel) {
+        if (soapModel == null) {
+            return null;
+        }
+
         AnalyticsUserEvent model = new AnalyticsUserEventImpl();
 
         model.setUserId(soapModel.getUserId());
@@ -114,6 +122,10 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
      */
     public static List<AnalyticsUserEvent> toModels(
         AnalyticsUserEventSoap[] soapModels) {
+        if (soapModels == null) {
+            return null;
+        }
+
         List<AnalyticsUserEvent> models = new ArrayList<AnalyticsUserEvent>(soapModels.length);
 
         for (AnalyticsUserEventSoap soapModel : soapModels) {
@@ -123,49 +135,120 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         return models;
     }
 
+    @Override
     public AnalyticsUserEventPK getPrimaryKey() {
         return new AnalyticsUserEventPK(_userId, _idString);
     }
 
+    @Override
     public void setPrimaryKey(AnalyticsUserEventPK primaryKey) {
         setUserId(primaryKey.userId);
         setIdString(primaryKey.idString);
     }
 
+    @Override
     public Serializable getPrimaryKeyObj() {
         return new AnalyticsUserEventPK(_userId, _idString);
     }
 
+    @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
         setPrimaryKey((AnalyticsUserEventPK) primaryKeyObj);
     }
 
+    @Override
     public Class<?> getModelClass() {
         return AnalyticsUserEvent.class;
     }
 
+    @Override
     public String getModelClassName() {
         return AnalyticsUserEvent.class.getName();
     }
 
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("userId", getUserId());
+        attributes.put("idString", getIdString());
+        attributes.put("category", getCategory());
+        attributes.put("action", getAction());
+        attributes.put("label", getLabel());
+        attributes.put("value", getValue());
+        attributes.put("created", getCreated());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String idString = (String) attributes.get("idString");
+
+        if (idString != null) {
+            setIdString(idString);
+        }
+
+        String category = (String) attributes.get("category");
+
+        if (category != null) {
+            setCategory(category);
+        }
+
+        String action = (String) attributes.get("action");
+
+        if (action != null) {
+            setAction(action);
+        }
+
+        String label = (String) attributes.get("label");
+
+        if (label != null) {
+            setLabel(label);
+        }
+
+        Integer value = (Integer) attributes.get("value");
+
+        if (value != null) {
+            setValue(value);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
+    }
+
     @JSON
+    @Override
     public long getUserId() {
         return _userId;
     }
 
+    @Override
     public void setUserId(long userId) {
         _userId = userId;
     }
 
+    @Override
     public String getUserUuid() throws SystemException {
         return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
     }
 
+    @Override
     public void setUserUuid(String userUuid) {
         _userUuid = userUuid;
     }
 
     @JSON
+    @Override
     public String getIdString() {
         if (_idString == null) {
             return StringPool.BLANK;
@@ -174,11 +257,13 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         }
     }
 
+    @Override
     public void setIdString(String idString) {
         _idString = idString;
     }
 
     @JSON
+    @Override
     public String getCategory() {
         if (_category == null) {
             return StringPool.BLANK;
@@ -187,11 +272,13 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         }
     }
 
+    @Override
     public void setCategory(String category) {
         _category = category;
     }
 
     @JSON
+    @Override
     public String getAction() {
         if (_action == null) {
             return StringPool.BLANK;
@@ -200,11 +287,13 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         }
     }
 
+    @Override
     public void setAction(String action) {
         _action = action;
     }
 
     @JSON
+    @Override
     public String getLabel() {
         if (_label == null) {
             return StringPool.BLANK;
@@ -213,37 +302,41 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         }
     }
 
+    @Override
     public void setLabel(String label) {
         _label = label;
     }
 
     @JSON
+    @Override
     public int getValue() {
         return _value;
     }
 
+    @Override
     public void setValue(int value) {
         _value = value;
     }
 
     @JSON
+    @Override
     public Date getCreated() {
         return _created;
     }
 
+    @Override
     public void setCreated(Date created) {
         _created = created;
     }
 
     @Override
     public AnalyticsUserEvent toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (AnalyticsUserEvent) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (AnalyticsUserEvent) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
     }
 
     @Override
@@ -263,6 +356,7 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         return analyticsUserEventImpl;
     }
 
+    @Override
     public int compareTo(AnalyticsUserEvent analyticsUserEvent) {
         AnalyticsUserEventPK primaryKey = analyticsUserEvent.getPrimaryKey();
 
@@ -271,17 +365,15 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AnalyticsUserEvent)) {
             return false;
         }
 
-        AnalyticsUserEvent analyticsUserEvent = null;
-
-        try {
-            analyticsUserEvent = (AnalyticsUserEvent) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        AnalyticsUserEvent analyticsUserEvent = (AnalyticsUserEvent) obj;
 
         AnalyticsUserEventPK primaryKey = analyticsUserEvent.getPrimaryKey();
 
@@ -375,6 +467,7 @@ public class AnalyticsUserEventModelImpl extends BaseModelImpl<AnalyticsUserEven
         return sb.toString();
     }
 
+    @Override
     public String toXmlString() {
         StringBundler sb = new StringBundler(25);
 

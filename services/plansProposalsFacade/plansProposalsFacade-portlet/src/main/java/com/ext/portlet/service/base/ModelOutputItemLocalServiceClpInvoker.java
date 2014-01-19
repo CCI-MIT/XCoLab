@@ -41,12 +41,12 @@ public class ModelOutputItemLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
     private String _methodName484;
     private String[] _methodParameterTypes484;
+    private String _methodName485;
+    private String[] _methodParameterTypes485;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
 
     public ModelOutputItemLocalServiceClpInvoker() {
         _methodName0 = "addModelOutputItem";
@@ -131,17 +131,17 @@ public class ModelOutputItemLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelOutputItem"
             };
 
-        _methodName478 = "getBeanIdentifier";
+        _methodName484 = "getBeanIdentifier";
 
-        _methodParameterTypes478 = new String[] {  };
+        _methodParameterTypes484 = new String[] {  };
 
-        _methodName479 = "setBeanIdentifier";
+        _methodName485 = "setBeanIdentifier";
 
-        _methodParameterTypes479 = new String[] { "java.lang.String" };
+        _methodParameterTypes485 = new String[] { "java.lang.String" };
 
-        _methodName484 = "getOutputItem";
+        _methodName490 = "getOutputItem";
 
-        _methodParameterTypes484 = new String[] {
+        _methodParameterTypes490 = new String[] {
                 "edu.mit.cci.roma.client.MetaData"
             };
     }
@@ -235,20 +235,20 @@ public class ModelOutputItemLocalServiceClpInvoker {
             return ModelOutputItemLocalServiceUtil.updateModelOutputItem((com.ext.portlet.model.ModelOutputItem) arguments[0]);
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName484.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
             return ModelOutputItemLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName485.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
             ModelOutputItemLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return ModelOutputItemLocalServiceUtil.getOutputItem((edu.mit.cci.roma.client.MetaData) arguments[0]);
         }
 

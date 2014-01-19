@@ -41,14 +41,14 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
     private String _methodName484;
     private String[] _methodParameterTypes484;
     private String _methodName485;
     private String[] _methodParameterTypes485;
+    private String _methodName490;
+    private String[] _methodParameterTypes490;
+    private String _methodName491;
+    private String[] _methodParameterTypes491;
 
     public DiscussionMessageFlagLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionMessageFlag";
@@ -133,21 +133,21 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
                 "com.ext.portlet.model.DiscussionMessageFlag"
             };
 
-        _methodName478 = "getBeanIdentifier";
+        _methodName484 = "getBeanIdentifier";
 
-        _methodParameterTypes478 = new String[] {  };
+        _methodParameterTypes484 = new String[] {  };
 
-        _methodName479 = "setBeanIdentifier";
+        _methodName485 = "setBeanIdentifier";
 
-        _methodParameterTypes479 = new String[] { "java.lang.String" };
+        _methodParameterTypes485 = new String[] { "java.lang.String" };
 
-        _methodName484 = "findMessageFlags";
+        _methodName490 = "findMessageFlags";
 
-        _methodParameterTypes484 = new String[] { "java.lang.Long" };
+        _methodParameterTypes490 = new String[] { "java.lang.Long" };
 
-        _methodName485 = "createFlag";
+        _methodName491 = "createFlag";
 
-        _methodParameterTypes485 = new String[] {
+        _methodParameterTypes491 = new String[] {
                 "java.lang.Long", "java.lang.String", "java.lang.String",
                 "java.lang.Long"
             };
@@ -242,25 +242,25 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
             return DiscussionMessageFlagLocalServiceUtil.updateDiscussionMessageFlag((com.ext.portlet.model.DiscussionMessageFlag) arguments[0]);
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName484.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName485.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
             DiscussionMessageFlagLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName490.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.findMessageFlags((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName491.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.createFlag((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2], (java.lang.Long) arguments[3]);

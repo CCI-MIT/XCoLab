@@ -4,84 +4,8 @@ import com.ext.portlet.NoSuchAnalyticsUserEventException;
 import com.ext.portlet.model.AnalyticsUserEvent;
 import com.ext.portlet.model.impl.AnalyticsUserEventImpl;
 import com.ext.portlet.model.impl.AnalyticsUserEventModelImpl;
-import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
-import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
-import com.ext.portlet.service.persistence.ContestDebatePersistence;
-import com.ext.portlet.service.persistence.ContestPersistence;
-import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
-import com.ext.portlet.service.persistence.ContestPhasePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseRibbonTypePersistence;
-import com.ext.portlet.service.persistence.ContestPhaseTypePersistence;
-import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
-import com.ext.portlet.service.persistence.EmailListPersistence;
-import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
-import com.ext.portlet.service.persistence.FocusAreaPersistence;
-import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
-import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
-import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
-import com.ext.portlet.service.persistence.MessagingMessagePersistence;
-import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
-import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
-import com.ext.portlet.service.persistence.ModelCategoryPersistence;
-import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
-import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
-import com.ext.portlet.service.persistence.ModelInputGroupPersistence;
-import com.ext.portlet.service.persistence.ModelInputItemPersistence;
-import com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence;
-import com.ext.portlet.service.persistence.ModelOutputItemPersistence;
-import com.ext.portlet.service.persistence.ModelPositionPersistence;
-import com.ext.portlet.service.persistence.OntologySpacePersistence;
-import com.ext.portlet.service.persistence.OntologyTermEntityPersistence;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-import com.ext.portlet.service.persistence.Plan2ProposalPersistence;
-import com.ext.portlet.service.persistence.PlanAttributeFilterPersistence;
-import com.ext.portlet.service.persistence.PlanAttributePersistence;
-import com.ext.portlet.service.persistence.PlanColumnSettingsPersistence;
-import com.ext.portlet.service.persistence.PlanDescriptionPersistence;
-import com.ext.portlet.service.persistence.PlanFanPersistence;
-import com.ext.portlet.service.persistence.PlanItemGroupPersistence;
-import com.ext.portlet.service.persistence.PlanItemPersistence;
-import com.ext.portlet.service.persistence.PlanMetaPersistence;
-import com.ext.portlet.service.persistence.PlanModelRunPersistence;
-import com.ext.portlet.service.persistence.PlanPositionItemPersistence;
-import com.ext.portlet.service.persistence.PlanPositionPersistence;
-import com.ext.portlet.service.persistence.PlanPositionsPersistence;
-import com.ext.portlet.service.persistence.PlanPropertyFilterPersistence;
-import com.ext.portlet.service.persistence.PlanRelatedPersistence;
-import com.ext.portlet.service.persistence.PlanSectionDefinitionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPersistence;
-import com.ext.portlet.service.persistence.PlanSectionPlanMapPersistence;
-import com.ext.portlet.service.persistence.PlanTeamHistoryPersistence;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-import com.ext.portlet.service.persistence.PlanTypeAttributePersistence;
-import com.ext.portlet.service.persistence.PlanTypeColumnPersistence;
-import com.ext.portlet.service.persistence.PlanTypePersistence;
-import com.ext.portlet.service.persistence.PlanVotePersistence;
-import com.ext.portlet.service.persistence.PlansFilterPersistence;
-import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
-import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
-import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
-import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
-import com.ext.portlet.service.persistence.ProposalPersistence;
-import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
-import com.ext.portlet.service.persistence.ProposalVersionPersistence;
-import com.ext.portlet.service.persistence.ProposalVotePersistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -99,11 +23,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
@@ -139,11 +61,11 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
             AnalyticsUserEventModelImpl.FINDER_CACHE_ENABLED,
             AnalyticsUserEventImpl.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
             AnalyticsUserEventModelImpl.FINDER_CACHE_ENABLED,
             AnalyticsUserEventImpl.class,
-            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
     public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
             AnalyticsUserEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
@@ -168,171 +90,22 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
 
     private static CacheModel<AnalyticsUserEvent> _nullAnalyticsUserEventCacheModel =
         new CacheModel<AnalyticsUserEvent>() {
+            @Override
             public AnalyticsUserEvent toEntityModel() {
                 return _nullAnalyticsUserEvent;
             }
         };
 
-    @BeanReference(type = ActivitySubscriptionPersistence.class)
-    protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
-    @BeanReference(type = AnalyticsUserEventPersistence.class)
-    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = BalloonStatsEntryPersistence.class)
-    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
-    @BeanReference(type = ContestPersistence.class)
-    protected ContestPersistence contestPersistence;
-    @BeanReference(type = ContestDebatePersistence.class)
-    protected ContestDebatePersistence contestDebatePersistence;
-    @BeanReference(type = ContestPhasePersistence.class)
-    protected ContestPhasePersistence contestPhasePersistence;
-    @BeanReference(type = ContestPhaseColumnPersistence.class)
-    protected ContestPhaseColumnPersistence contestPhaseColumnPersistence;
-    @BeanReference(type = ContestPhaseRibbonTypePersistence.class)
-    protected ContestPhaseRibbonTypePersistence contestPhaseRibbonTypePersistence;
-    @BeanReference(type = ContestPhaseTypePersistence.class)
-    protected ContestPhaseTypePersistence contestPhaseTypePersistence;
-    @BeanReference(type = ContestTeamMemberPersistence.class)
-    protected ContestTeamMemberPersistence contestTeamMemberPersistence;
-    @BeanReference(type = DiscussionCategoryPersistence.class)
-    protected DiscussionCategoryPersistence discussionCategoryPersistence;
-    @BeanReference(type = DiscussionCategoryGroupPersistence.class)
-    protected DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence;
-    @BeanReference(type = DiscussionMessagePersistence.class)
-    protected DiscussionMessagePersistence discussionMessagePersistence;
-    @BeanReference(type = DiscussionMessageFlagPersistence.class)
-    protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
-    @BeanReference(type = EmailListPersistence.class)
-    protected EmailListPersistence emailListPersistence;
-    @BeanReference(type = FocusAreaPersistence.class)
-    protected FocusAreaPersistence focusAreaPersistence;
-    @BeanReference(type = FocusAreaOntologyTermPersistence.class)
-    protected FocusAreaOntologyTermPersistence focusAreaOntologyTermPersistence;
-    @BeanReference(type = LandingPagePersistence.class)
-    protected LandingPagePersistence landingPagePersistence;
-    @BeanReference(type = MessagePersistence.class)
-    protected MessagePersistence messagePersistence;
-    @BeanReference(type = MessageRecipientStatusPersistence.class)
-    protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
-    @BeanReference(type = MessagingIgnoredRecipientsPersistence.class)
-    protected MessagingIgnoredRecipientsPersistence messagingIgnoredRecipientsPersistence;
-    @BeanReference(type = MessagingMessagePersistence.class)
-    protected MessagingMessagePersistence messagingMessagePersistence;
-    @BeanReference(type = MessagingMessageConversionPersistence.class)
-    protected MessagingMessageConversionPersistence messagingMessageConversionPersistence;
-    @BeanReference(type = MessagingMessageConversionTypePersistence.class)
-    protected MessagingMessageConversionTypePersistence messagingMessageConversionTypePersistence;
-    @BeanReference(type = MessagingMessageRecipientPersistence.class)
-    protected MessagingMessageRecipientPersistence messagingMessageRecipientPersistence;
-    @BeanReference(type = MessagingRedirectLinkPersistence.class)
-    protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
-    @BeanReference(type = MessagingUserPreferencesPersistence.class)
-    protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
-    @BeanReference(type = ModelCategoryPersistence.class)
-    protected ModelCategoryPersistence modelCategoryPersistence;
-    @BeanReference(type = ModelDiscussionPersistence.class)
-    protected ModelDiscussionPersistence modelDiscussionPersistence;
-    @BeanReference(type = ModelGlobalPreferencePersistence.class)
-    protected ModelGlobalPreferencePersistence modelGlobalPreferencePersistence;
-    @BeanReference(type = ModelInputGroupPersistence.class)
-    protected ModelInputGroupPersistence modelInputGroupPersistence;
-    @BeanReference(type = ModelInputItemPersistence.class)
-    protected ModelInputItemPersistence modelInputItemPersistence;
-    @BeanReference(type = ModelOutputChartOrderPersistence.class)
-    protected ModelOutputChartOrderPersistence modelOutputChartOrderPersistence;
-    @BeanReference(type = ModelOutputItemPersistence.class)
-    protected ModelOutputItemPersistence modelOutputItemPersistence;
-    @BeanReference(type = ModelPositionPersistence.class)
-    protected ModelPositionPersistence modelPositionPersistence;
-    @BeanReference(type = OntologySpacePersistence.class)
-    protected OntologySpacePersistence ontologySpacePersistence;
-    @BeanReference(type = OntologyTermPersistence.class)
-    protected OntologyTermPersistence ontologyTermPersistence;
-    @BeanReference(type = OntologyTermEntityPersistence.class)
-    protected OntologyTermEntityPersistence ontologyTermEntityPersistence;
-    @BeanReference(type = Plan2ProposalPersistence.class)
-    protected Plan2ProposalPersistence plan2ProposalPersistence;
-    @BeanReference(type = PlanAttributePersistence.class)
-    protected PlanAttributePersistence planAttributePersistence;
-    @BeanReference(type = PlanAttributeFilterPersistence.class)
-    protected PlanAttributeFilterPersistence planAttributeFilterPersistence;
-    @BeanReference(type = PlanColumnSettingsPersistence.class)
-    protected PlanColumnSettingsPersistence planColumnSettingsPersistence;
-    @BeanReference(type = PlanDescriptionPersistence.class)
-    protected PlanDescriptionPersistence planDescriptionPersistence;
-    @BeanReference(type = PlanFanPersistence.class)
-    protected PlanFanPersistence planFanPersistence;
-    @BeanReference(type = PlanItemPersistence.class)
-    protected PlanItemPersistence planItemPersistence;
-    @BeanReference(type = PlanItemGroupPersistence.class)
-    protected PlanItemGroupPersistence planItemGroupPersistence;
-    @BeanReference(type = PlanMetaPersistence.class)
-    protected PlanMetaPersistence planMetaPersistence;
-    @BeanReference(type = PlanModelRunPersistence.class)
-    protected PlanModelRunPersistence planModelRunPersistence;
-    @BeanReference(type = PlanPositionPersistence.class)
-    protected PlanPositionPersistence planPositionPersistence;
-    @BeanReference(type = PlanPositionItemPersistence.class)
-    protected PlanPositionItemPersistence planPositionItemPersistence;
-    @BeanReference(type = PlanPositionsPersistence.class)
-    protected PlanPositionsPersistence planPositionsPersistence;
-    @BeanReference(type = PlanPropertyFilterPersistence.class)
-    protected PlanPropertyFilterPersistence planPropertyFilterPersistence;
-    @BeanReference(type = PlanRelatedPersistence.class)
-    protected PlanRelatedPersistence planRelatedPersistence;
-    @BeanReference(type = PlanSectionPersistence.class)
-    protected PlanSectionPersistence planSectionPersistence;
-    @BeanReference(type = PlanSectionDefinitionPersistence.class)
-    protected PlanSectionDefinitionPersistence planSectionDefinitionPersistence;
-    @BeanReference(type = PlanSectionPlanMapPersistence.class)
-    protected PlanSectionPlanMapPersistence planSectionPlanMapPersistence;
-    @BeanReference(type = PlansFilterPersistence.class)
-    protected PlansFilterPersistence plansFilterPersistence;
-    @BeanReference(type = PlansFilterPositionPersistence.class)
-    protected PlansFilterPositionPersistence plansFilterPositionPersistence;
-    @BeanReference(type = PlansUserSettingsPersistence.class)
-    protected PlansUserSettingsPersistence plansUserSettingsPersistence;
-    @BeanReference(type = PlanTeamHistoryPersistence.class)
-    protected PlanTeamHistoryPersistence planTeamHistoryPersistence;
-    @BeanReference(type = PlanTemplatePersistence.class)
-    protected PlanTemplatePersistence planTemplatePersistence;
-    @BeanReference(type = PlanTemplateSectionPersistence.class)
-    protected PlanTemplateSectionPersistence planTemplateSectionPersistence;
-    @BeanReference(type = PlanTypePersistence.class)
-    protected PlanTypePersistence planTypePersistence;
-    @BeanReference(type = PlanTypeAttributePersistence.class)
-    protected PlanTypeAttributePersistence planTypeAttributePersistence;
-    @BeanReference(type = PlanTypeColumnPersistence.class)
-    protected PlanTypeColumnPersistence planTypeColumnPersistence;
-    @BeanReference(type = PlanVotePersistence.class)
-    protected PlanVotePersistence planVotePersistence;
-    @BeanReference(type = ProposalPersistence.class)
-    protected ProposalPersistence proposalPersistence;
-    @BeanReference(type = Proposal2PhasePersistence.class)
-    protected Proposal2PhasePersistence proposal2PhasePersistence;
-    @BeanReference(type = ProposalAttributePersistence.class)
-    protected ProposalAttributePersistence proposalAttributePersistence;
-    @BeanReference(type = ProposalAttributeTypePersistence.class)
-    protected ProposalAttributeTypePersistence proposalAttributeTypePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
-    protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
-    @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
-    protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
-    @BeanReference(type = ProposalSupporterPersistence.class)
-    protected ProposalSupporterPersistence proposalSupporterPersistence;
-    @BeanReference(type = ProposalVersionPersistence.class)
-    protected ProposalVersionPersistence proposalVersionPersistence;
-    @BeanReference(type = ProposalVotePersistence.class)
-    protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = ResourcePersistence.class)
-    protected ResourcePersistence resourcePersistence;
-    @BeanReference(type = UserPersistence.class)
-    protected UserPersistence userPersistence;
+    public AnalyticsUserEventPersistenceImpl() {
+        setModelClass(AnalyticsUserEvent.class);
+    }
 
     /**
      * Caches the analytics user event in the entity cache if it is enabled.
      *
      * @param analyticsUserEvent the analytics user event
      */
+    @Override
     public void cacheResult(AnalyticsUserEvent analyticsUserEvent) {
         EntityCacheUtil.putResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
             AnalyticsUserEventImpl.class, analyticsUserEvent.getPrimaryKey(),
@@ -346,6 +119,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      *
      * @param analyticsUserEvents the analytics user events
      */
+    @Override
     public void cacheResult(List<AnalyticsUserEvent> analyticsUserEvents) {
         for (AnalyticsUserEvent analyticsUserEvent : analyticsUserEvents) {
             if (EntityCacheUtil.getResult(
@@ -412,6 +186,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @param analyticsUserEventPK the primary key for the new analytics user event
      * @return the new analytics user event
      */
+    @Override
     public AnalyticsUserEvent create(AnalyticsUserEventPK analyticsUserEventPK) {
         AnalyticsUserEvent analyticsUserEvent = new AnalyticsUserEventImpl();
 
@@ -429,6 +204,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @throws com.ext.portlet.NoSuchAnalyticsUserEventException if a analytics user event with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public AnalyticsUserEvent remove(AnalyticsUserEventPK analyticsUserEventPK)
         throws NoSuchAnalyticsUserEventException, SystemException {
         return remove((Serializable) analyticsUserEventPK);
@@ -482,32 +258,47 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
         try {
             session = openSession();
 
-            BatchSessionUtil.delete(session, analyticsUserEvent);
+            if (!session.contains(analyticsUserEvent)) {
+                analyticsUserEvent = (AnalyticsUserEvent) session.get(AnalyticsUserEventImpl.class,
+                        analyticsUserEvent.getPrimaryKeyObj());
+            }
+
+            if (analyticsUserEvent != null) {
+                session.delete(analyticsUserEvent);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
             closeSession(session);
         }
 
-        clearCache(analyticsUserEvent);
+        if (analyticsUserEvent != null) {
+            clearCache(analyticsUserEvent);
+        }
 
         return analyticsUserEvent;
     }
 
     @Override
     public AnalyticsUserEvent updateImpl(
-        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent,
-        boolean merge) throws SystemException {
+        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent)
+        throws SystemException {
         analyticsUserEvent = toUnwrappedModel(analyticsUserEvent);
+
+        boolean isNew = analyticsUserEvent.isNew();
 
         Session session = null;
 
         try {
             session = openSession();
 
-            BatchSessionUtil.update(session, analyticsUserEvent, merge);
+            if (analyticsUserEvent.isNew()) {
+                session.save(analyticsUserEvent);
 
-            analyticsUserEvent.setNew(false);
+                analyticsUserEvent.setNew(false);
+            } else {
+                session.merge(analyticsUserEvent);
+            }
         } catch (Exception e) {
             throw processException(e);
         } finally {
@@ -515,6 +306,10 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
         }
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+
+        if (isNew) {
+            FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+        }
 
         EntityCacheUtil.putResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
             AnalyticsUserEventImpl.class, analyticsUserEvent.getPrimaryKey(),
@@ -550,13 +345,24 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      *
      * @param primaryKey the primary key of the analytics user event
      * @return the analytics user event
-     * @throws com.liferay.portal.NoSuchModelException if a analytics user event with the primary key could not be found
+     * @throws com.ext.portlet.NoSuchAnalyticsUserEventException if a analytics user event with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
     public AnalyticsUserEvent findByPrimaryKey(Serializable primaryKey)
-        throws NoSuchModelException, SystemException {
-        return findByPrimaryKey((AnalyticsUserEventPK) primaryKey);
+        throws NoSuchAnalyticsUserEventException, SystemException {
+        AnalyticsUserEvent analyticsUserEvent = fetchByPrimaryKey(primaryKey);
+
+        if (analyticsUserEvent == null) {
+            if (_log.isWarnEnabled()) {
+                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+            }
+
+            throw new NoSuchAnalyticsUserEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+                primaryKey);
+        }
+
+        return analyticsUserEvent;
     }
 
     /**
@@ -567,22 +373,11 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @throws com.ext.portlet.NoSuchAnalyticsUserEventException if a analytics user event with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public AnalyticsUserEvent findByPrimaryKey(
         AnalyticsUserEventPK analyticsUserEventPK)
         throws NoSuchAnalyticsUserEventException, SystemException {
-        AnalyticsUserEvent analyticsUserEvent = fetchByPrimaryKey(analyticsUserEventPK);
-
-        if (analyticsUserEvent == null) {
-            if (_log.isWarnEnabled()) {
-                _log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                    analyticsUserEventPK);
-            }
-
-            throw new NoSuchAnalyticsUserEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-                analyticsUserEventPK);
-        }
-
-        return analyticsUserEvent;
+        return findByPrimaryKey((Serializable) analyticsUserEventPK);
     }
 
     /**
@@ -595,7 +390,40 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
     @Override
     public AnalyticsUserEvent fetchByPrimaryKey(Serializable primaryKey)
         throws SystemException {
-        return fetchByPrimaryKey((AnalyticsUserEventPK) primaryKey);
+        AnalyticsUserEvent analyticsUserEvent = (AnalyticsUserEvent) EntityCacheUtil.getResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
+                AnalyticsUserEventImpl.class, primaryKey);
+
+        if (analyticsUserEvent == _nullAnalyticsUserEvent) {
+            return null;
+        }
+
+        if (analyticsUserEvent == null) {
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                analyticsUserEvent = (AnalyticsUserEvent) session.get(AnalyticsUserEventImpl.class,
+                        primaryKey);
+
+                if (analyticsUserEvent != null) {
+                    cacheResult(analyticsUserEvent);
+                } else {
+                    EntityCacheUtil.putResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
+                        AnalyticsUserEventImpl.class, primaryKey,
+                        _nullAnalyticsUserEvent);
+                }
+            } catch (Exception e) {
+                EntityCacheUtil.removeResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
+                    AnalyticsUserEventImpl.class, primaryKey);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return analyticsUserEvent;
     }
 
     /**
@@ -605,43 +433,10 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @return the analytics user event, or <code>null</code> if a analytics user event with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public AnalyticsUserEvent fetchByPrimaryKey(
         AnalyticsUserEventPK analyticsUserEventPK) throws SystemException {
-        AnalyticsUserEvent analyticsUserEvent = (AnalyticsUserEvent) EntityCacheUtil.getResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
-                AnalyticsUserEventImpl.class, analyticsUserEventPK);
-
-        if (analyticsUserEvent == _nullAnalyticsUserEvent) {
-            return null;
-        }
-
-        if (analyticsUserEvent == null) {
-            Session session = null;
-
-            boolean hasException = false;
-
-            try {
-                session = openSession();
-
-                analyticsUserEvent = (AnalyticsUserEvent) session.get(AnalyticsUserEventImpl.class,
-                        analyticsUserEventPK);
-            } catch (Exception e) {
-                hasException = true;
-
-                throw processException(e);
-            } finally {
-                if (analyticsUserEvent != null) {
-                    cacheResult(analyticsUserEvent);
-                } else if (!hasException) {
-                    EntityCacheUtil.putResult(AnalyticsUserEventModelImpl.ENTITY_CACHE_ENABLED,
-                        AnalyticsUserEventImpl.class, analyticsUserEventPK,
-                        _nullAnalyticsUserEvent);
-                }
-
-                closeSession(session);
-            }
-        }
-
-        return analyticsUserEvent;
+        return fetchByPrimaryKey((Serializable) analyticsUserEventPK);
     }
 
     /**
@@ -650,6 +445,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @return the analytics user events
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<AnalyticsUserEvent> findAll() throws SystemException {
         return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
     }
@@ -658,7 +454,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * Returns a range of all the analytics user events.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.AnalyticsUserEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of analytics user events
@@ -666,6 +462,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @return the range of analytics user events
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<AnalyticsUserEvent> findAll(int start, int end)
         throws SystemException {
         return findAll(start, end, null);
@@ -675,7 +472,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * Returns an ordered range of all the analytics user events.
      *
      * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.AnalyticsUserEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
      * </p>
      *
      * @param start the lower bound of the range of analytics user events
@@ -684,17 +481,20 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @return the ordered range of analytics user events
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public List<AnalyticsUserEvent> findAll(int start, int end,
         OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
         FinderPath finderPath = null;
-        Object[] finderArgs = new Object[] { start, end, orderByComparator };
+        Object[] finderArgs = null;
 
         if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
                 (orderByComparator == null)) {
-            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
             finderArgs = FINDER_ARGS_EMPTY;
         } else {
-            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
             finderArgs = new Object[] { start, end, orderByComparator };
         }
 
@@ -717,6 +517,10 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
                 sql = query.toString();
             } else {
                 sql = _SQL_SELECT_ANALYTICSUSEREVENT;
+
+                if (pagination) {
+                    sql = sql.concat(AnalyticsUserEventModelImpl.ORDER_BY_JPQL);
+                }
             }
 
             Session session = null;
@@ -726,26 +530,26 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
 
                 Query q = session.createQuery(sql);
 
-                if (orderByComparator == null) {
+                if (!pagination) {
                     list = (List<AnalyticsUserEvent>) QueryUtil.list(q,
                             getDialect(), start, end, false);
 
                     Collections.sort(list);
+
+                    list = new UnmodifiableList<AnalyticsUserEvent>(list);
                 } else {
                     list = (List<AnalyticsUserEvent>) QueryUtil.list(q,
                             getDialect(), start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
                 throw processException(e);
             } finally {
-                if (list == null) {
-                    FinderCacheUtil.removeResult(finderPath, finderArgs);
-                } else {
-                    cacheResult(list);
-
-                    FinderCacheUtil.putResult(finderPath, finderArgs, list);
-                }
-
                 closeSession(session);
             }
         }
@@ -758,6 +562,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      *
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public void removeAll() throws SystemException {
         for (AnalyticsUserEvent analyticsUserEvent : findAll()) {
             remove(analyticsUserEvent);
@@ -770,6 +575,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
      * @return the number of analytics user events
      * @throws SystemException if a system exception occurred
      */
+    @Override
     public int countAll() throws SystemException {
         Long count = (Long) FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
                 FINDER_ARGS_EMPTY, this);
@@ -783,16 +589,15 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
                 Query q = session.createQuery(_SQL_COUNT_ANALYTICSUSEREVENT);
 
                 count = (Long) q.uniqueResult();
-            } catch (Exception e) {
-                throw processException(e);
-            } finally {
-                if (count == null) {
-                    count = Long.valueOf(0);
-                }
 
                 FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
                     FINDER_ARGS_EMPTY, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+                    FINDER_ARGS_EMPTY);
 
+                throw processException(e);
+            } finally {
                 closeSession(session);
             }
         }
@@ -814,7 +619,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
 
                 for (String listenerClassName : listenerClassNames) {
                     listenersList.add((ModelListener<AnalyticsUserEvent>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -827,6 +632,7 @@ public class AnalyticsUserEventPersistenceImpl extends BasePersistenceImpl<Analy
     public void destroy() {
         EntityCacheUtil.removeCache(AnalyticsUserEventImpl.class.getName());
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+        FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
     }
 }

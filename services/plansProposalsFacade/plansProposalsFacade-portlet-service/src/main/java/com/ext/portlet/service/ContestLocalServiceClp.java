@@ -7,122 +7,6 @@ import com.liferay.portal.service.InvokableLocalService;
  * @generated
  */
 public class ContestLocalServiceClp implements ContestLocalService {
-<<<<<<< HEAD
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addContestMethodKey0;
-    private MethodKey _createContestMethodKey1;
-    private MethodKey _deleteContestMethodKey2;
-    private MethodKey _deleteContestMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchContestMethodKey8;
-    private MethodKey _getContestMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getContestsMethodKey11;
-    private MethodKey _getContestsCountMethodKey12;
-    private MethodKey _updateContestMethodKey13;
-    private MethodKey _updateContestMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _getContestByActiveFlagMethodKey17;
-    private MethodKey _createNewContestMethodKey18;
-    private MethodKey _updateContestGroupsAndDiscussionsMethodKey19;
-    private MethodKey _findByActiveFeaturedMethodKey20;
-    private MethodKey _findByActiveFlagMethodKey21;
-    private MethodKey _findByActiveFlagTextMethodKey22;
-    private MethodKey _getPhasesMethodKey23;
-    private MethodKey _getPlanTypeMethodKey24;
-    private MethodKey _getActivePhasesMethodKey25;
-    private MethodKey _getActivePhaseMethodKey26;
-    private MethodKey _getActiveOrLastPhaseMethodKey27;
-    private MethodKey _isActiveMethodKey28;
-    private MethodKey _getDebatesIdsMethodKey29;
-    private MethodKey _getTotalVotesMethodKey30;
-    private MethodKey _updateDefaultPlanDescriptionMethodKey31;
-    private MethodKey _storeMethodKey32;
-    private MethodKey _getPlanTemplateMethodKey33;
-    private MethodKey _getFocusAreaMethodKey34;
-    private MethodKey _getLogoMethodKey35;
-    private MethodKey _getSponsorLogoMethodKey36;
-    private MethodKey _setLogoMethodKey37;
-    private MethodKey _setSponsorLogoMethodKey38;
-    private MethodKey _getLogoPathMethodKey39;
-    private MethodKey _getSponsorLogoPathMethodKey40;
-    private MethodKey _getProposalsCountMethodKey41;
-    private MethodKey _getDiscussionCategoryGroupMethodKey42;
-    private MethodKey _getCommentsCountMethodKey43;
-    private MethodKey _getProposalsCommentsCountMethodKey44;
-    private MethodKey _getVotesCountMethodKey45;
-    private MethodKey _getTotalCommentsMethodKey46;
-    private MethodKey _getTeamMembersMethodKey47;
-    private MethodKey _isSubscribedMethodKey48;
-    private MethodKey _subscribeMethodKey49;
-    private MethodKey _unsubscribeMethodKey50;
-    private MethodKey _getModelIdsMethodKey51;
-    private MethodKey _getDefaultModelIdMethodKey52;
-    private MethodKey _getNumberOfProposalsForJudgeMethodKey53;
-
-    public ContestLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
-
-        _addContestMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addContest", com.ext.portlet.model.Contest.class);
-
-        _createContestMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createContest", long.class);
-
-        _deleteContestMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteContest", long.class);
-
-        _deleteContestMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteContest", com.ext.portlet.model.Contest.class);
-
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
-
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
-
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
-
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
-
-        _fetchContestMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchContest", long.class);
-
-        _getContestMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContest", long.class);
-
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
-
-        _getContestsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContests", int.class, int.class);
-
-        _getContestsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getContestsCount");
-
-        _updateContestMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateContest", com.ext.portlet.model.Contest.class);
-
-        _updateContestMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateContest", com.ext.portlet.model.Contest.class,
-                boolean.class);
-
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
-=======
     private InvokableLocalService _invokableLocalService;
     private String _methodName0;
     private String[] _methodParameterTypes0;
@@ -232,6 +116,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes53;
     private String _methodName54;
     private String[] _methodParameterTypes54;
+    private String _methodName55;
+    private String[] _methodParameterTypes55;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -375,7 +261,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodParameterTypes31 = new String[] { "com.ext.portlet.model.Contest" };
 
         _methodName32 = "getTotalVotes";
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 
         _methodParameterTypes32 = new String[] { "com.ext.portlet.model.Contest" };
 
@@ -455,15 +340,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _methodName50 = "isSubscribed";
 
-<<<<<<< HEAD
-        _getDefaultModelIdMethodKey52 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getDefaultModelId", long.class);
-
-        _getNumberOfProposalsForJudgeMethodKey53 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getNumberOfProposalsForJudge",
-                com.liferay.portal.model.User.class,
-                com.ext.portlet.model.Contest.class);
-=======
         _methodParameterTypes50 = new String[] { "long", "long" };
 
         _methodName51 = "subscribe";
@@ -481,7 +357,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName54 = "getDefaultModelId";
 
         _methodParameterTypes54 = new String[] { "long" };
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
+
+        _methodName55 = "getNumberOfProposalsForJudge";
+
+        _methodParameterTypes55 = new String[] {
+                "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
+            };
     }
 
     @Override
@@ -2102,20 +1983,25 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         return (java.lang.Long) ClpSerializer.translateOutput(returnObj);
     }
-<<<<<<< HEAD
 
+    @Override
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getNumberOfProposalsForJudgeMethodKey53,
-                ClpSerializer.translateInput(u), ClpSerializer.translateInput(c));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName55,
+                    _methodParameterTypes55,
+                    new Object[] {
+                        ClpSerializer.translateInput(u),
+                        
+                    ClpSerializer.translateInput(c)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -2134,10 +2020,4 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         return ((Integer) returnObj).intValue();
     }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
-    }
-=======
->>>>>>> First steps toward lr6.2 (proposals/plansProposalFacade deploy and seem to work)
 }

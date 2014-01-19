@@ -1,122 +1,184 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.service.InvokableLocalService;
 
-
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
 public class AnalyticsUserEventLocalServiceClp
     implements AnalyticsUserEventLocalService {
-    private ClassLoaderProxy _classLoaderProxy;
-    private MethodKey _addAnalyticsUserEventMethodKey0;
-    private MethodKey _createAnalyticsUserEventMethodKey1;
-    private MethodKey _deleteAnalyticsUserEventMethodKey2;
-    private MethodKey _deleteAnalyticsUserEventMethodKey3;
-    private MethodKey _dynamicQueryMethodKey4;
-    private MethodKey _dynamicQueryMethodKey5;
-    private MethodKey _dynamicQueryMethodKey6;
-    private MethodKey _dynamicQueryCountMethodKey7;
-    private MethodKey _fetchAnalyticsUserEventMethodKey8;
-    private MethodKey _getAnalyticsUserEventMethodKey9;
-    private MethodKey _getPersistedModelMethodKey10;
-    private MethodKey _getAnalyticsUserEventsMethodKey11;
-    private MethodKey _getAnalyticsUserEventsCountMethodKey12;
-    private MethodKey _updateAnalyticsUserEventMethodKey13;
-    private MethodKey _updateAnalyticsUserEventMethodKey14;
-    private MethodKey _getBeanIdentifierMethodKey15;
-    private MethodKey _setBeanIdentifierMethodKey16;
-    private MethodKey _eventExistsMethodKey17;
-    private MethodKey _createEventMethodKey18;
+    private InvokableLocalService _invokableLocalService;
+    private String _methodName0;
+    private String[] _methodParameterTypes0;
+    private String _methodName1;
+    private String[] _methodParameterTypes1;
+    private String _methodName2;
+    private String[] _methodParameterTypes2;
+    private String _methodName3;
+    private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
+    private String _methodName7;
+    private String[] _methodParameterTypes7;
+    private String _methodName8;
+    private String[] _methodParameterTypes8;
+    private String _methodName9;
+    private String[] _methodParameterTypes9;
+    private String _methodName10;
+    private String[] _methodParameterTypes10;
+    private String _methodName11;
+    private String[] _methodParameterTypes11;
+    private String _methodName12;
+    private String[] _methodParameterTypes12;
+    private String _methodName13;
+    private String[] _methodParameterTypes13;
+    private String _methodName14;
+    private String[] _methodParameterTypes14;
+    private String _methodName15;
+    private String[] _methodParameterTypes15;
+    private String _methodName16;
+    private String[] _methodParameterTypes16;
+    private String _methodName17;
+    private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
 
-    public AnalyticsUserEventLocalServiceClp(ClassLoaderProxy classLoaderProxy) {
-        _classLoaderProxy = classLoaderProxy;
+    public AnalyticsUserEventLocalServiceClp(
+        InvokableLocalService invokableLocalService) {
+        _invokableLocalService = invokableLocalService;
 
-        _addAnalyticsUserEventMethodKey0 = new MethodKey(_classLoaderProxy.getClassName(),
-                "addAnalyticsUserEvent",
-                com.ext.portlet.model.AnalyticsUserEvent.class);
+        _methodName0 = "addAnalyticsUserEvent";
 
-        _createAnalyticsUserEventMethodKey1 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createAnalyticsUserEvent",
-                com.ext.portlet.service.persistence.AnalyticsUserEventPK.class);
+        _methodParameterTypes0 = new String[] {
+                "com.ext.portlet.model.AnalyticsUserEvent"
+            };
 
-        _deleteAnalyticsUserEventMethodKey2 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteAnalyticsUserEvent",
-                com.ext.portlet.service.persistence.AnalyticsUserEventPK.class);
+        _methodName1 = "createAnalyticsUserEvent";
 
-        _deleteAnalyticsUserEventMethodKey3 = new MethodKey(_classLoaderProxy.getClassName(),
-                "deleteAnalyticsUserEvent",
-                com.ext.portlet.model.AnalyticsUserEvent.class);
+        _methodParameterTypes1 = new String[] {
+                "com.ext.portlet.service.persistence.AnalyticsUserEventPK"
+            };
 
-        _dynamicQueryMethodKey4 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodName2 = "deleteAnalyticsUserEvent";
 
-        _dynamicQueryMethodKey5 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class);
+        _methodParameterTypes2 = new String[] {
+                "com.ext.portlet.service.persistence.AnalyticsUserEventPK"
+            };
 
-        _dynamicQueryMethodKey6 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQuery",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class,
-                int.class, int.class,
-                com.liferay.portal.kernel.util.OrderByComparator.class);
+        _methodName3 = "deleteAnalyticsUserEvent";
 
-        _dynamicQueryCountMethodKey7 = new MethodKey(_classLoaderProxy.getClassName(),
-                "dynamicQueryCount",
-                com.liferay.portal.kernel.dao.orm.DynamicQuery.class);
+        _methodParameterTypes3 = new String[] {
+                "com.ext.portlet.model.AnalyticsUserEvent"
+            };
 
-        _fetchAnalyticsUserEventMethodKey8 = new MethodKey(_classLoaderProxy.getClassName(),
-                "fetchAnalyticsUserEvent",
-                com.ext.portlet.service.persistence.AnalyticsUserEventPK.class);
+        _methodName4 = "dynamicQuery";
 
-        _getAnalyticsUserEventMethodKey9 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getAnalyticsUserEvent",
-                com.ext.portlet.service.persistence.AnalyticsUserEventPK.class);
+        _methodParameterTypes4 = new String[] {  };
 
-        _getPersistedModelMethodKey10 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getPersistedModel", java.io.Serializable.class);
+        _methodName5 = "dynamicQuery";
 
-        _getAnalyticsUserEventsMethodKey11 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getAnalyticsUserEvents", int.class, int.class);
+        _methodParameterTypes5 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _getAnalyticsUserEventsCountMethodKey12 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getAnalyticsUserEventsCount");
+        _methodName6 = "dynamicQuery";
 
-        _updateAnalyticsUserEventMethodKey13 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateAnalyticsUserEvent",
-                com.ext.portlet.model.AnalyticsUserEvent.class);
+        _methodParameterTypes6 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+            };
 
-        _updateAnalyticsUserEventMethodKey14 = new MethodKey(_classLoaderProxy.getClassName(),
-                "updateAnalyticsUserEvent",
-                com.ext.portlet.model.AnalyticsUserEvent.class, boolean.class);
+        _methodName7 = "dynamicQuery";
 
-        _getBeanIdentifierMethodKey15 = new MethodKey(_classLoaderProxy.getClassName(),
-                "getBeanIdentifier");
+        _methodParameterTypes7 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+                "com.liferay.portal.kernel.util.OrderByComparator"
+            };
 
-        _setBeanIdentifierMethodKey16 = new MethodKey(_classLoaderProxy.getClassName(),
-                "setBeanIdentifier", java.lang.String.class);
+        _methodName8 = "dynamicQueryCount";
 
-        _eventExistsMethodKey17 = new MethodKey(_classLoaderProxy.getClassName(),
-                "eventExists", long.class, java.lang.String.class);
+        _methodParameterTypes8 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery"
+            };
 
-        _createEventMethodKey18 = new MethodKey(_classLoaderProxy.getClassName(),
-                "createEvent", long.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, int.class);
+        _methodName9 = "dynamicQueryCount";
+
+        _methodParameterTypes9 = new String[] {
+                "com.liferay.portal.kernel.dao.orm.DynamicQuery",
+                "com.liferay.portal.kernel.dao.orm.Projection"
+            };
+
+        _methodName10 = "fetchAnalyticsUserEvent";
+
+        _methodParameterTypes10 = new String[] {
+                "com.ext.portlet.service.persistence.AnalyticsUserEventPK"
+            };
+
+        _methodName11 = "getAnalyticsUserEvent";
+
+        _methodParameterTypes11 = new String[] {
+                "com.ext.portlet.service.persistence.AnalyticsUserEventPK"
+            };
+
+        _methodName12 = "getPersistedModel";
+
+        _methodParameterTypes12 = new String[] { "java.io.Serializable" };
+
+        _methodName13 = "getAnalyticsUserEvents";
+
+        _methodParameterTypes13 = new String[] { "int", "int" };
+
+        _methodName14 = "getAnalyticsUserEventsCount";
+
+        _methodParameterTypes14 = new String[] {  };
+
+        _methodName15 = "updateAnalyticsUserEvent";
+
+        _methodParameterTypes15 = new String[] {
+                "com.ext.portlet.model.AnalyticsUserEvent"
+            };
+
+        _methodName16 = "getBeanIdentifier";
+
+        _methodParameterTypes16 = new String[] {  };
+
+        _methodName17 = "setBeanIdentifier";
+
+        _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "eventExists";
+
+        _methodParameterTypes19 = new String[] { "long", "java.lang.String" };
+
+        _methodName20 = "createEvent";
+
+        _methodParameterTypes20 = new String[] {
+                "long", "java.lang.String", "java.lang.String",
+                "java.lang.String", "java.lang.String", "int"
+            };
     }
 
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent addAnalyticsUserEvent(
         com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_addAnalyticsUserEventMethodKey0,
-                ClpSerializer.translateInput(analyticsUserEvent));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName0,
+                    _methodParameterTypes0,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEvent)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -132,16 +194,20 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent createAnalyticsUserEvent(
         com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createAnalyticsUserEventMethodKey1,
-                ClpSerializer.translateInput(analyticsUserEventPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName1,
+                    _methodParameterTypes1,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEventPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -153,16 +219,22 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteAnalyticsUserEvent(
+    @Override
+    public com.ext.portlet.model.AnalyticsUserEvent deleteAnalyticsUserEvent(
         com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteAnalyticsUserEventMethodKey2,
-                ClpSerializer.translateInput(analyticsUserEventPK));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName2,
+                    _methodParameterTypes2,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEventPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -178,17 +250,25 @@ public class AnalyticsUserEventLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
-    public void deleteAnalyticsUserEvent(
+    @Override
+    public com.ext.portlet.model.AnalyticsUserEvent deleteAnalyticsUserEvent(
         com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent)
         throws com.liferay.portal.kernel.exception.SystemException {
-        MethodHandler methodHandler = new MethodHandler(_deleteAnalyticsUserEventMethodKey3,
-                ClpSerializer.translateInput(analyticsUserEvent));
+        Object returnObj = null;
 
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName3,
+                    _methodParameterTypes3,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEvent)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -200,20 +280,45 @@ public class AnalyticsUserEventLocalServiceClp
                     " is not a valid exception");
             }
         }
+
+        return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
+    public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.dao.orm.DynamicQuery) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey4,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -229,18 +334,26 @@ public class AnalyticsUserEventLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey5,
-                ClpSerializer.translateInput(dynamicQuery), start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -256,6 +369,7 @@ public class AnalyticsUserEventLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     @SuppressWarnings("rawtypes")
     public java.util.List dynamicQuery(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -264,13 +378,21 @@ public class AnalyticsUserEventLocalServiceClp
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryMethodKey6,
-                ClpSerializer.translateInput(dynamicQuery), start, end,
-                ClpSerializer.translateInput(orderByComparator));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName7,
+                    _methodParameterTypes7,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    start,
+                        
+                    end,
+                        
+                    ClpSerializer.translateInput(orderByComparator)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -286,17 +408,19 @@ public class AnalyticsUserEventLocalServiceClp
         return (java.util.List) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public long dynamicQueryCount(
         com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_dynamicQueryCountMethodKey7,
-                ClpSerializer.translateInput(dynamicQuery));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName8,
+                    _methodParameterTypes8,
+                    new Object[] { ClpSerializer.translateInput(dynamicQuery) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -312,17 +436,54 @@ public class AnalyticsUserEventLocalServiceClp
         return ((Long) returnObj).longValue();
     }
 
+    @Override
+    public long dynamicQueryCount(
+        com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+        com.liferay.portal.kernel.dao.orm.Projection projection)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName9,
+                    _methodParameterTypes9,
+                    new Object[] {
+                        ClpSerializer.translateInput(dynamicQuery),
+                        
+                    ClpSerializer.translateInput(projection)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent fetchAnalyticsUserEvent(
         com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_fetchAnalyticsUserEventMethodKey8,
-                ClpSerializer.translateInput(analyticsUserEventPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName10,
+                    _methodParameterTypes10,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEventPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -338,18 +499,22 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent getAnalyticsUserEvent(
         com.ext.portlet.service.persistence.AnalyticsUserEventPK analyticsUserEventPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAnalyticsUserEventMethodKey9,
-                ClpSerializer.translateInput(analyticsUserEventPK));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName11,
+                    _methodParameterTypes11,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEventPK)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -369,18 +534,20 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public com.liferay.portal.model.PersistedModel getPersistedModel(
         java.io.Serializable primaryKeyObj)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getPersistedModelMethodKey10,
-                ClpSerializer.translateInput(primaryKeyObj));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName12,
+                    _methodParameterTypes12,
+                    new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
@@ -400,17 +567,18 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.liferay.portal.model.PersistedModel) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public java.util.List<com.ext.portlet.model.AnalyticsUserEvent> getAnalyticsUserEvents(
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAnalyticsUserEventsMethodKey11,
-                start, end);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13, new Object[] { start, end });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -426,15 +594,17 @@ public class AnalyticsUserEventLocalServiceClp
         return (java.util.List<com.ext.portlet.model.AnalyticsUserEvent>) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public int getAnalyticsUserEventsCount()
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getAnalyticsUserEventsCountMethodKey12);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName14,
+                    _methodParameterTypes14, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -450,17 +620,21 @@ public class AnalyticsUserEventLocalServiceClp
         return ((Integer) returnObj).intValue();
     }
 
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent updateAnalyticsUserEvent(
         com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_updateAnalyticsUserEventMethodKey13,
-                ClpSerializer.translateInput(analyticsUserEvent));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName15,
+                    _methodParameterTypes15,
+                    new Object[] {
+                        ClpSerializer.translateInput(analyticsUserEvent)
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -476,41 +650,16 @@ public class AnalyticsUserEventLocalServiceClp
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 
-    public com.ext.portlet.model.AnalyticsUserEvent updateAnalyticsUserEvent(
-        com.ext.portlet.model.AnalyticsUserEvent analyticsUserEvent,
-        boolean merge)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        MethodHandler methodHandler = new MethodHandler(_updateAnalyticsUserEventMethodKey14,
-                ClpSerializer.translateInput(analyticsUserEvent), merge);
-
-        try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
-        } catch (Throwable t) {
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
-    }
-
+    @Override
     public java.lang.String getBeanIdentifier() {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_getBeanIdentifierMethodKey15);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName16,
+                    _methodParameterTypes16, new Object[] {  });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -522,13 +671,15 @@ public class AnalyticsUserEventLocalServiceClp
         return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
+    @Override
     public void setBeanIdentifier(java.lang.String beanIdentifier) {
-        MethodHandler methodHandler = new MethodHandler(_setBeanIdentifierMethodKey16,
-                ClpSerializer.translateInput(beanIdentifier));
-
         try {
-            _classLoaderProxy.invoke(methodHandler);
+            _invokableLocalService.invokeMethod(_methodName17,
+                _methodParameterTypes17,
+                new Object[] { ClpSerializer.translateInput(beanIdentifier) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -538,15 +689,25 @@ public class AnalyticsUserEventLocalServiceClp
         }
     }
 
+    @Override
+    public java.lang.Object invokeMethod(java.lang.String name,
+        java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+        throws java.lang.Throwable {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public boolean eventExists(long userId, java.lang.String idString) {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_eventExistsMethodKey17,
-                userId, ClpSerializer.translateInput(idString));
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { userId, ClpSerializer.translateInput(
+                            idString) });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
             } else {
@@ -558,21 +719,32 @@ public class AnalyticsUserEventLocalServiceClp
         return ((Boolean) returnObj).booleanValue();
     }
 
+    @Override
     public com.ext.portlet.model.AnalyticsUserEvent createEvent(long userId,
         java.lang.String idString, java.lang.String category,
         java.lang.String action, java.lang.String label, int value)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
-        MethodHandler methodHandler = new MethodHandler(_createEventMethodKey18,
-                userId, ClpSerializer.translateInput(idString),
-                ClpSerializer.translateInput(category),
-                ClpSerializer.translateInput(action),
-                ClpSerializer.translateInput(label), value);
-
         try {
-            returnObj = _classLoaderProxy.invoke(methodHandler);
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        userId,
+                        
+                    ClpSerializer.translateInput(idString),
+                        
+                    ClpSerializer.translateInput(category),
+                        
+                    ClpSerializer.translateInput(action),
+                        
+                    ClpSerializer.translateInput(label),
+                        
+                    value
+                    });
         } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -586,9 +758,5 @@ public class AnalyticsUserEventLocalServiceClp
         }
 
         return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
-    }
-
-    public ClassLoaderProxy getClassLoaderProxy() {
-        return _classLoaderProxy;
     }
 }

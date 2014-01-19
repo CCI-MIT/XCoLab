@@ -1,14 +1,19 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
  * This class is a wrapper for {@link AnalyticsUserEvent}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       AnalyticsUserEvent
+ * @author Brian Wing Shun Chan
+ * @see AnalyticsUserEvent
  * @generated
  */
 public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
@@ -19,12 +24,74 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
         _analyticsUserEvent = analyticsUserEvent;
     }
 
+    @Override
     public Class<?> getModelClass() {
         return AnalyticsUserEvent.class;
     }
 
+    @Override
     public String getModelClassName() {
         return AnalyticsUserEvent.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("userId", getUserId());
+        attributes.put("idString", getIdString());
+        attributes.put("category", getCategory());
+        attributes.put("action", getAction());
+        attributes.put("label", getLabel());
+        attributes.put("value", getValue());
+        attributes.put("created", getCreated());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String idString = (String) attributes.get("idString");
+
+        if (idString != null) {
+            setIdString(idString);
+        }
+
+        String category = (String) attributes.get("category");
+
+        if (category != null) {
+            setCategory(category);
+        }
+
+        String action = (String) attributes.get("action");
+
+        if (action != null) {
+            setAction(action);
+        }
+
+        String label = (String) attributes.get("label");
+
+        if (label != null) {
+            setLabel(label);
+        }
+
+        Integer value = (Integer) attributes.get("value");
+
+        if (value != null) {
+            setValue(value);
+        }
+
+        Date created = (Date) attributes.get("created");
+
+        if (created != null) {
+            setCreated(created);
+        }
     }
 
     /**
@@ -32,6 +99,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the primary key of this analytics user event
     */
+    @Override
     public com.ext.portlet.service.persistence.AnalyticsUserEventPK getPrimaryKey() {
         return _analyticsUserEvent.getPrimaryKey();
     }
@@ -41,6 +109,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param primaryKey the primary key of this analytics user event
     */
+    @Override
     public void setPrimaryKey(
         com.ext.portlet.service.persistence.AnalyticsUserEventPK primaryKey) {
         _analyticsUserEvent.setPrimaryKey(primaryKey);
@@ -51,6 +120,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the user ID of this analytics user event
     */
+    @Override
     public long getUserId() {
         return _analyticsUserEvent.getUserId();
     }
@@ -60,6 +130,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param userId the user ID of this analytics user event
     */
+    @Override
     public void setUserId(long userId) {
         _analyticsUserEvent.setUserId(userId);
     }
@@ -70,6 +141,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     * @return the user uuid of this analytics user event
     * @throws SystemException if a system exception occurred
     */
+    @Override
     public java.lang.String getUserUuid()
         throws com.liferay.portal.kernel.exception.SystemException {
         return _analyticsUserEvent.getUserUuid();
@@ -80,6 +152,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param userUuid the user uuid of this analytics user event
     */
+    @Override
     public void setUserUuid(java.lang.String userUuid) {
         _analyticsUserEvent.setUserUuid(userUuid);
     }
@@ -89,6 +162,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the id string of this analytics user event
     */
+    @Override
     public java.lang.String getIdString() {
         return _analyticsUserEvent.getIdString();
     }
@@ -98,6 +172,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param idString the id string of this analytics user event
     */
+    @Override
     public void setIdString(java.lang.String idString) {
         _analyticsUserEvent.setIdString(idString);
     }
@@ -107,6 +182,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the category of this analytics user event
     */
+    @Override
     public java.lang.String getCategory() {
         return _analyticsUserEvent.getCategory();
     }
@@ -116,6 +192,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param category the category of this analytics user event
     */
+    @Override
     public void setCategory(java.lang.String category) {
         _analyticsUserEvent.setCategory(category);
     }
@@ -125,6 +202,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the action of this analytics user event
     */
+    @Override
     public java.lang.String getAction() {
         return _analyticsUserEvent.getAction();
     }
@@ -134,6 +212,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param action the action of this analytics user event
     */
+    @Override
     public void setAction(java.lang.String action) {
         _analyticsUserEvent.setAction(action);
     }
@@ -143,6 +222,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the label of this analytics user event
     */
+    @Override
     public java.lang.String getLabel() {
         return _analyticsUserEvent.getLabel();
     }
@@ -152,6 +232,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param label the label of this analytics user event
     */
+    @Override
     public void setLabel(java.lang.String label) {
         _analyticsUserEvent.setLabel(label);
     }
@@ -161,6 +242,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the value of this analytics user event
     */
+    @Override
     public int getValue() {
         return _analyticsUserEvent.getValue();
     }
@@ -170,6 +252,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param value the value of this analytics user event
     */
+    @Override
     public void setValue(int value) {
         _analyticsUserEvent.setValue(value);
     }
@@ -179,6 +262,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @return the created of this analytics user event
     */
+    @Override
     public java.util.Date getCreated() {
         return _analyticsUserEvent.getCreated();
     }
@@ -188,42 +272,64 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
     *
     * @param created the created of this analytics user event
     */
+    @Override
     public void setCreated(java.util.Date created) {
         _analyticsUserEvent.setCreated(created);
     }
 
+    @Override
     public boolean isNew() {
         return _analyticsUserEvent.isNew();
     }
 
+    @Override
     public void setNew(boolean n) {
         _analyticsUserEvent.setNew(n);
     }
 
+    @Override
     public boolean isCachedModel() {
         return _analyticsUserEvent.isCachedModel();
     }
 
+    @Override
     public void setCachedModel(boolean cachedModel) {
         _analyticsUserEvent.setCachedModel(cachedModel);
     }
 
+    @Override
     public boolean isEscapedModel() {
         return _analyticsUserEvent.isEscapedModel();
     }
 
+    @Override
     public java.io.Serializable getPrimaryKeyObj() {
         return _analyticsUserEvent.getPrimaryKeyObj();
     }
 
+    @Override
     public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
         _analyticsUserEvent.setPrimaryKeyObj(primaryKeyObj);
     }
 
+    @Override
     public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
         return _analyticsUserEvent.getExpandoBridge();
     }
 
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.model.BaseModel<?> baseModel) {
+        _analyticsUserEvent.setExpandoBridgeAttributes(baseModel);
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(
+        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+        _analyticsUserEvent.setExpandoBridgeAttributes(expandoBridge);
+    }
+
+    @Override
     public void setExpandoBridgeAttributes(
         com.liferay.portal.service.ServiceContext serviceContext) {
         _analyticsUserEvent.setExpandoBridgeAttributes(serviceContext);
@@ -234,6 +340,7 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
         return new AnalyticsUserEventWrapper((AnalyticsUserEvent) _analyticsUserEvent.clone());
     }
 
+    @Override
     public int compareTo(AnalyticsUserEvent analyticsUserEvent) {
         return _analyticsUserEvent.compareTo(analyticsUserEvent);
     }
@@ -243,12 +350,19 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
         return _analyticsUserEvent.hashCode();
     }
 
+    @Override
     public com.liferay.portal.model.CacheModel<AnalyticsUserEvent> toCacheModel() {
         return _analyticsUserEvent.toCacheModel();
     }
 
+    @Override
     public AnalyticsUserEvent toEscapedModel() {
         return new AnalyticsUserEventWrapper(_analyticsUserEvent.toEscapedModel());
+    }
+
+    @Override
+    public AnalyticsUserEvent toUnescapedModel() {
+        return new AnalyticsUserEventWrapper(_analyticsUserEvent.toUnescapedModel());
     }
 
     @Override
@@ -256,26 +370,50 @@ public class AnalyticsUserEventWrapper implements AnalyticsUserEvent,
         return _analyticsUserEvent.toString();
     }
 
+    @Override
     public java.lang.String toXmlString() {
         return _analyticsUserEvent.toXmlString();
     }
 
+    @Override
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _analyticsUserEvent.persist();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AnalyticsUserEventWrapper)) {
+            return false;
+        }
+
+        AnalyticsUserEventWrapper analyticsUserEventWrapper = (AnalyticsUserEventWrapper) obj;
+
+        if (Validator.equals(_analyticsUserEvent,
+                    analyticsUserEventWrapper._analyticsUserEvent)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
-     * @deprecated Renamed to {@link #getWrappedModel}
+     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
      */
     public AnalyticsUserEvent getWrappedAnalyticsUserEvent() {
         return _analyticsUserEvent;
     }
 
+    @Override
     public AnalyticsUserEvent getWrappedModel() {
         return _analyticsUserEvent;
     }
 
+    @Override
     public void resetOriginalValues() {
         _analyticsUserEvent.resetOriginalValues();
     }
