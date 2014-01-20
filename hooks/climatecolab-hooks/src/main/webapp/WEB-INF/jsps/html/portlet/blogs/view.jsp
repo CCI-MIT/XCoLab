@@ -62,7 +62,6 @@ month--;
 	<aui:input name="groupId" type="hidden" value="<%= String.valueOf(scopeGroupId) %>" />
 
 	<%
-	System.out.println("Container?");
 	SearchContainer searchContainer = new SearchContainer(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, pageDelta, portletURL, null, null);
 
 	searchContainer.setDelta(pageDelta);
