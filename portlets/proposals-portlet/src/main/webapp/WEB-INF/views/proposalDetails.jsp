@@ -102,7 +102,7 @@
 
             <h2>Description</h2>
             <c:choose>
-                <c:when test="${empty proposal.sections }">
+                <c:when test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
                         ${proposal.description }
                 </c:when>
                 <c:otherwise>
