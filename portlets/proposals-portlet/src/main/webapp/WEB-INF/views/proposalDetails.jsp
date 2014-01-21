@@ -101,22 +101,20 @@
             </c:if>
 
             <h2>Description</h2>
-            <c:choose>
-                <c:when test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
+            <c:if test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
                         ${proposal.description }
-                </c:when>
-                <c:otherwise>
-                    <c:forEach var="section" items="${proposal.sections }" varStatus="status">
-                    	<h3>${section.title }</h3>
+            </c:if>
+            <c:if test="${not empty proposal.sections }">
+            	<c:forEach var="section" items="${proposal.sections }" varStatus="status">
+                	<h3>${section.title }</h3>
+                    
+					<proposalsPortlet:proposalSectionContent section="${section }" />
                     	
-                    	<proposalsPortlet:proposalSectionContent section="${section }" />
-                    	
-                        <c:if test="${not status.last }">
-                            <div class="div2"><!--  --></div>
-                        </c:if>
-                    </c:forEach>
-                </c:otherwise>
-            </c:choose>
+					<c:if test="${not status.last }">
+                    	<div class="div2"><!--  --></div>
+                    </c:if>
+                </c:forEach>
+            </c:if>
         </div>
         <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>
