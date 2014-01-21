@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 
 public enum ContestsColumn {
-    
     CONTEST_NAME (new Comparator<ContestWrapper>() {
 
         @Override
@@ -128,6 +127,14 @@ public enum ContestsColumn {
             return 0;
         }
     }),
+
+    REFERENCE_DATE (new Comparator<ContestWrapper>() {
+        @Override
+        public int compare(ContestWrapper o1, ContestWrapper o2) {
+            return o1.getLastPhase().getPhaseReferenceDate().compareTo(o2.getLastPhase().getPhaseReferenceDate());
+        }
+    }),
+
     DEFAULT(new Comparator<ContestWrapper>() {
 
         @Override

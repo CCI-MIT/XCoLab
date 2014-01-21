@@ -25,7 +25,7 @@ public class ContestWrapper {
     private ContestPhaseWrapper activePhase;
 
     private List<ContestTeamRoleWrapper> contestTeamMembersByRole;
-    
+
     private Contest contest;
 
     public ContestWrapper(Contest contest) {
@@ -275,23 +275,32 @@ public class ContestWrapper {
     public void setResourcesUrl(String resourcesUrl) {
         contest.setResourcesUrl(resourcesUrl);
     }
-    
+
     public long getProposalsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }
-    
+
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
-    
+
     public long getVotesCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }
-    
+
+    public ContestPhaseWrapper getLastPhase() {
+        ContestPhaseWrapper last = null;
+        for (ContestPhaseWrapper ph : getPhases()) {
+            if (last == null || (ph.getPhaseReferenceDate() != null && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0))
+                last = ph;
+        }
+        return last;
+    }
+
     public ContestPhaseWrapper getActivePhase() throws NoSuchContestPhaseException, SystemException {
         if (activePhase == null) {
             ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
-            if(phase == null) return null;
+            if (phase == null) return null;
             activePhase = new ContestPhaseWrapper(phase);
         }
         return activePhase;
@@ -300,11 +309,11 @@ public class ContestWrapper {
     public List<OntologyTerm> getWho() throws PortalException, SystemException {
         return getTermFromSpace(WHO);
     }
-    
+
     public String getWhoName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHO);
     }
-    
+
     public List<OntologyTerm> getWhat() throws PortalException, SystemException {
         return getTermFromSpace(WHAT);
     }
@@ -321,23 +330,23 @@ public class ContestWrapper {
     public String getWhereName() throws PortalException, SystemException {
         return getTermNameFromSpace(WHERE);
     }
-    
+
     public String getTermNameFromSpace(String space) throws PortalException, SystemException {
         String ontologyJoinedName = ontologyJoinedNames.get(space);
         if (ontologyJoinedName == null) {
             getTermFromSpace(space);
             ontologyJoinedName = ontologyJoinedNames.get(space);
         }
-        
+
         return ontologyJoinedName;
     }
-    
-    
+
+
     private List<OntologyTerm> getTermFromSpace(String space)
             throws PortalException, SystemException {
 
         if (!ontologySpaceCache.containsKey(space) && getFocusAreaId() > 0) {
-            if (! faCache.containsKey(contest.getFocusAreaId())) {
+            if (!faCache.containsKey(contest.getFocusAreaId())) {
                 FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
                         .getFocusAreaId());
                 if (fa == null) {
@@ -359,24 +368,24 @@ public class ContestWrapper {
             ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
             ontologyJoinedNames.put(space, joinedTerms.toString());
 
-        }   
+        }
         return ontologySpaceCache.get(space);
     }
-    
+
     public List<ContestPhaseWrapper> getPhases() {
         if (phases == null) {
             phases = new ArrayList<ContestPhaseWrapper>();
-            for (ContestPhase phase: ContestLocalServiceUtil.getPhases(contest)) {
+            for (ContestPhase phase : ContestLocalServiceUtil.getPhases(contest)) {
                 phases.add(new ContestPhaseWrapper(phase));
             }
         }
         return phases;
     }
-    
+
     public boolean getHasFocusArea() {
         return contest.getFocusAreaId() > 0;
     }
-    
+
     public List<ContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new ArrayList<ContestTeamRoleWrapper>();
@@ -389,8 +398,8 @@ public class ContestWrapper {
                 }
                 roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
             }
-        
-            for (String role: teamRoleUsersMap.keySet()) {
+
+            for (String role : teamRoleUsersMap.keySet()) {
                 contestTeamMembersByRole.add(new ContestTeamRoleWrapper(role, teamRoleUsersMap.get(role)));
             }
         }
@@ -399,21 +408,21 @@ public class ContestWrapper {
 
     public List<User> getContestJudges() throws PortalException, SystemException {
         List<User> judges = null;
-        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()){
-            if (c.getRoleName().equalsIgnoreCase("Judge")){
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Judge")) {
                 judges = c.getUsers();
             }
         }
-        for (User u : judges){
-            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u,contest)); //ew!
+        for (User u : judges) {
+            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u, contest)); //ew!
         }
         return judges;
     }
 
     public List<User> getContestFellows() throws PortalException, SystemException {
         List<User> fellows = null;
-        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()){
-            if (c.getRoleName().equalsIgnoreCase("Fellow")){
+        for (ContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Fellow")) {
                 fellows = c.getUsers();
             }
         }
@@ -422,31 +431,39 @@ public class ContestWrapper {
 
     /**
      * Determine if judges are done with proposal
+     *
      * @return 0 if judge action is incomplete, 1 judge actions completed
      */
-    public boolean getJudgeStatus(){
-        try{
+    public boolean getJudgeStatus() {
+        try {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
-            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
+            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == 0) return false;
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == 0)
+                    return false;
             }
-        } catch (Exception e) { return false; }
-       return true;
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * Determine if fellow are done with proposal
+     *
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
-    public boolean getFellowStatus(){
-        try{
+    public boolean getFellowStatus() {
+        try {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
-            for (Proposal proposal: ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
+            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getFellowStatus() == 0) return false;
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getFellowStatus() == 0)
+                    return false;
             }
-        } catch (Exception e) { return false; }
+        } catch (Exception e) {
+            return false;
+        }
         return true;
     }
 
