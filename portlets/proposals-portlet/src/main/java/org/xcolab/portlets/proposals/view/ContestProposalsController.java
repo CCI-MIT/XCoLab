@@ -52,7 +52,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
-        List<ProposalJudgeWrapper> proposalJudgeWrappers = new ArrayList<ProposalJudgeWrapper>();
+
         for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
