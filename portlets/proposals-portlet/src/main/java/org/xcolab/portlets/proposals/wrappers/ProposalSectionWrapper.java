@@ -50,11 +50,14 @@ public class ProposalSectionWrapper {
     public String getContent() throws PortalException, SystemException {
         ProposalAttribute attr = getSectionAttribute();
         
-        if (attr == null) return null;
+        if (attr == null) return null; else return attr.getStringValue().trim();
+    }
 
-        Document d = Jsoup.parse(attr.getStringValue().trim());
+    public String getContentFormatted() throws SystemException, PortalException {
+        Document d = Jsoup.parse(getContent().trim());
         for (Element e : d.select("a.utube")) {
-            e.after("<br/><iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/"+e.attr("href").substring("http://www.youtube.com/watch?v=".length())+"\" frameborder=\"0\" allowfullscreen></iframe>");
+            e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/"+e.attr("href").substring("http://www.youtube.com/watch?v=".length())+"\" frameborder=\"0\" allowfullscreen></iframe><br/>");
+            e.remove();
         }
         return d.select("body").html();
     }

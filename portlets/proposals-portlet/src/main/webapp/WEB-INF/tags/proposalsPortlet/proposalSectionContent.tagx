@@ -23,7 +23,7 @@
 			</c:choose>
 		</c:when>
 		<c:otherwise>
-			<p>${section.content }</p>
+			<p>${section.contentFormatted }</p>
 		</c:otherwise>
 	</c:choose>
 	
