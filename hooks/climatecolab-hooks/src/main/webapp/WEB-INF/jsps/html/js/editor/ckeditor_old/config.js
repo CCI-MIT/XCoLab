@@ -18,8 +18,9 @@ CKEDITOR.editorConfig = function( config )
     config.skin = "colab";
     config.toolbarCanCollapse = false;
     config.contentsCss = '/climatecolab-theme/css/style.css';
+    config.resize_enabled = 'true';
+    config.extraPlugins = 'resize';
 };
-
 CKEDITOR.pasteFilterConfig = {
 };
 
