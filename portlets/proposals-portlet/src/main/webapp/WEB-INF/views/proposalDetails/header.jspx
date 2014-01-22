@@ -24,9 +24,9 @@
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">
-						Proposal for
+						Proposal for&amp;nbsp;
 						<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />
-						by
+						by&amp;nbsp;
 						<c:choose>
 							<c:when test="${empty proposal.team}">
 								<proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
