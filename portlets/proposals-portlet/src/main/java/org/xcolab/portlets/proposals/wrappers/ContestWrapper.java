@@ -1,11 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.*;
@@ -413,6 +408,7 @@ public class ContestWrapper {
                 judges = c.getUsers();
             }
         }
+        if(judges == null) return new LinkedList<>(); //return empty list if null
         for (User u : judges) {
             u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u, contest)); //ew!
         }
