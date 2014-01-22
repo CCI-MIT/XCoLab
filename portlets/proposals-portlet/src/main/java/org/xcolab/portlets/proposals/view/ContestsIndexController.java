@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.proposals.utils.ContestsColumn;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
 
@@ -46,7 +47,8 @@ public class ContestsIndexController extends BaseProposalsController {
         else {
             // we need to change the view type
             if (viewType.equals(VIEW_TYPE_GRID) || viewType.equals(VIEW_TYPE_LIST)) {
-                // we should set the cookie but it doesn't work currently https://issues.liferay.com/browse/LPS-25733 it should be handled in the view
+                // we should set the cookie but it doesn't work currently https://issues.liferay.com/browse/LPS-25733
+                // it should be handled in the view
                 response.addProperty(new Cookie(COOKIE_VIEW_TYPE, viewType));
             }
         }
@@ -61,7 +63,8 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         model.addAttribute("contests", contests);
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage));
+        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
+                showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);

@@ -73,6 +73,10 @@ public class ContestPhaseWrapper {
         return contestPhase.getPhaseEndDate();
     }
 
+    public Date getPhaseReferenceDate() {
+        return contestPhase.getPhaseEndDate() == null ? contestPhase.getPhaseStartDate() : contestPhase.getPhaseEndDate();
+    }
+
     public Date getCreated() {
         return contestPhase.getCreated();
     }

@@ -1,5 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,24 +20,26 @@ import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class ProposalSectionWrapper {
-    
+
     private PlanSectionDefinition definition;
     private Proposal proposal;
     private ProposalWrapper wrappedProposal;
     private Integer version;
-    
+
     public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, ProposalWrapper wrappedProposal) {
         super();
         this.definition = definition;
         this.proposal = proposal;
         this.wrappedProposal = wrappedProposal;
     }
-    
+
     public ProposalSectionWrapper(PlanSectionDefinition definition, Proposal proposal, int version, ProposalWrapper wrappedProposal) {
         super();
         this.definition = definition;
@@ -42,23 +47,33 @@ public class ProposalSectionWrapper {
         this.version = version;
         this.wrappedProposal = wrappedProposal;
     }
-    
-	public String getTitle() {
+
+    public String getTitle() {
         return definition.getTitle();
     }
-    
+
     public String getContent() throws PortalException, SystemException {
         ProposalAttribute attr = getSectionAttribute();
-        
-        if (attr == null) return null;
 
-        Document d = Jsoup.parse(attr.getStringValue().trim());
+        if (attr == null) return null;
+        else return attr.getStringValue().trim();
+    }
+
+    public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
+        Document d = Jsoup.parse(getContent().trim());
         for (Element e : d.select("a.utube")) {
-            e.after("<br/><iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/"+e.attr("href").substring("http://www.youtube.com/watch?v=".length())+"\" frameborder=\"0\" allowfullscreen></iframe>");
+            String curURL = e.attr("href");
+            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?")+1), Charset.defaultCharset());
+            for(NameValuePair nvp : params) {
+                if(nvp.getName().equals("v")) {
+                    e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + nvp.getValue() + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
+                    e.remove();
+                }
+            }
         }
         return d.select("body").html();
     }
-    
+
     public PlanSectionTypeKeys getType() {
         if (StringUtils.isBlank(definition.getType())) {
             return PlanSectionTypeKeys.TEXT;
@@ -74,15 +89,15 @@ public class ProposalSectionWrapper {
     public boolean isLocked() {
         return definition.getLocked();
     }
-    
+
     public int getCharacterLimit() {
         return definition.getCharacterLimit();
     }
-    
+
     public String getHelpText() {
         return definition.getHelpText();
     }
-    
+
     public OntologyTerm getNumericValueAsOntologyTerm() throws SystemException, PortalException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -90,24 +105,24 @@ public class ProposalSectionWrapper {
         }
         return OntologyTermLocalServiceUtil.getOntologyTerm(attr.getNumericValue());
     }
-    
+
     public long getNumericValue() throws SystemException, PortalException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
             return 0;
         }
         return attr.getNumericValue();
-        
+
     }
-    
+
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
         if (definition.getFocusAreaId() <= 0) return null;
-        
+
         FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
-        
+
         return FocusAreaLocalServiceUtil.getTerms(area);
     }
-    
+
     private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
         /*
         try {
@@ -126,6 +141,6 @@ public class ProposalSectionWrapper {
         }
         */
         return this.wrappedProposal.getProposalAttributeUtil().getAttributeOrNull("SECTION", definition.getId());
-        
+
     }
 }

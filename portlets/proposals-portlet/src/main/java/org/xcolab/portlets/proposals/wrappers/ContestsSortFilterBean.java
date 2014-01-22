@@ -18,30 +18,34 @@ public class ContestsSortFilterBean {
     private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
 
     public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
+        this(contests, sortFilterPage, null);
+    }
+
+    public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
         super();
         List<ContestWrapper> filteredContests = contests;
-        
+
         // filter contests
         if (StringUtils.isNotBlank(sortFilterPage.getFilter())) {
             String filterString = sortFilterPage.getFilter();
             filteredContests = new ArrayList<ContestWrapper>();
             for (ContestWrapper contest: contests) {
-                if (contest.getContestName().toLowerCase().contains(filterString) || 
+                if (contest.getContestName().toLowerCase().contains(filterString) ||
                         contest.getContestShortName().toLowerCase().contains(filterString)) {
                     filteredContests.add(contest);
                 }
             }
-            
+
         }
         this.contests = filteredContests;
-        
+
         // sort contests
-        
+
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             sortColumn = ContestsColumn.valueOf(sortFilterPage.getSortColumn());
         }
         else {
-            sortColumn = ContestsColumn.DEFAULT;
+            sortColumn = sortColumnConstruct == null ? ContestsColumn.DEFAULT : sortColumnConstruct;
         }
         Collections.sort(this.contests, new Comparator<ContestWrapper>() {
             final
@@ -54,7 +58,7 @@ public class ContestsSortFilterBean {
                     return 1;
                 }
                 int ret = sortColumn.getColumnComparator().compare(o1, o2);
-                
+
                 return sortFilterPage.isSortAscending() ? ret : - ret;
             }
         });
@@ -79,11 +83,11 @@ public class ContestsSortFilterBean {
     public void setContestsNormal(List<ContestWrapper> contestsNormal) {
         this.contestsNormal = contestsNormal;
     }
-    
+
     public List<ContestWrapper> getContests() {
         return contests;
     }
-    
-    
+
+
 
 }
