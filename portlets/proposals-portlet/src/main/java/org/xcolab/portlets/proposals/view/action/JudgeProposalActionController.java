@@ -55,12 +55,18 @@ public class JudgeProposalActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+
         // save judge rating
-        persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_RATING, 0, judgeProposalBean.getJudgeRating(), null);
+        if (judgeProposalBean.getJudgeRating() != null)
+            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_RATING, 0, judgeProposalBean.getJudgeRating(), null);
+
         // save judge action
-        persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
+        if (judgeProposalBean.getJudgeAction() != null)
+            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
         // save judge comment
-        persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
+
+        if (judgeProposalBean.getJudgeComment() != null)
+            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
     }
 
     @RequestMapping(params = {"action=sendJudgeRating"})
