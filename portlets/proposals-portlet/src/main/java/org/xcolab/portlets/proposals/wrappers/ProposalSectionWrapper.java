@@ -60,7 +60,9 @@ public class ProposalSectionWrapper {
     }
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
-        Document d = Jsoup.parse(getContent().trim());
+        String content = getContent();
+        if(content == null) return null;
+        Document d = Jsoup.parse(content.trim());
         for (Element e : d.select("a.utube")) {
             String curURL = e.attr("href");
             List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?")+1), Charset.defaultCharset());
