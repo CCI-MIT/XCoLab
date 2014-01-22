@@ -13,9 +13,29 @@
 		<portlet:param name="action" value="save" />
 	</portlet:actionURL>
 	<form:form commandName="preferences" action="${saveURL }">
+        <h2>General</h2>
 		<label for="termsOfService">Terms of service:</label>
 		<form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
 		<form:errors path="termsOfService"/>
+
+        <h2>Judging System</h2>
+        In the following templates, please include <strong>${prefs.getJudgingTemplatePlaceholder()}</strong>, which will be replaced by the individual judging-comment.
+
+        <label for="judgingIncompleteText">Judging Incomplete Text:</label>
+        <form:textarea path="judgingIncompleteText" id="judgingIncompleteText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="judgingIncompleteText" />
+
+        <label for="judgingRejectionText">Judging Rejection Text:</label>
+        <form:textarea path="judgingRejectionText" id="judgingRejectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="judgingRejectionText" />
+
+        <label for="judgingAcceptanceText">Judging Acceptance Text:</label>
+        <form:textarea path="judgingAcceptanceText" id="judgingAcceptanceText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="judgingAcceptanceText" />
+
+        <label for="judgingOfftopicText">Judging Offtopic Text:</label>
+        <form:textarea path="judgingOfftopicText" id="judgingOfftopicText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="judgingOfftopicText" />
 		
 		<input type="submit" value="Save" />
 	</form:form>

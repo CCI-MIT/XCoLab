@@ -44,8 +44,14 @@ public class JudgeProposalActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=sendEmails"})
-    public void sendEmails(ActionRequest request, Model model, ActionResponse response) {
-        //TODO code me
+    public void sendEmails(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException {
+        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+
+
+
+        //mark as finished
+        persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGING_STATUS, 0, 1, null);
     }
 
     @RequestMapping(params = {"action=saveJudgeRating"})
@@ -63,8 +69,8 @@ public class JudgeProposalActionController {
         // save judge action
         if (judgeProposalBean.getJudgeAction() != null)
             persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
-        // save judge comment
 
+        // save judge comment
         if (judgeProposalBean.getJudgeComment() != null)
             persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
     }
