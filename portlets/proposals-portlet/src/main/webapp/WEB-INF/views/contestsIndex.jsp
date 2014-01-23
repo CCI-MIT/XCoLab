@@ -9,9 +9,9 @@
 	<div id="content">
 		<jsp:directive.include file="./contestsIndex/header.jspx" />
 
-        <div>
+        <p>
             <a href="http://climatecolab.org/community/-/blogs/2014-contests-update">2014 Contest Update</a>
-        </div>
+        </p>
 
 		<c:choose>
 			<c:when test="${viewType == 'GRID' }">
