@@ -92,7 +92,9 @@
 							<c:if test="${not empty contest.resourcesUrl}">
 								<a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
 							</c:if>
-							<a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+                            <c:if test="${contest.lastPhase.phaseReferenceDate.year + 1900 lt 2014}">
+                                <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+                            </c:if>
 						</div>
 					</td>
 				</tr>
