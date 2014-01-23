@@ -17,7 +17,7 @@ del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, b, i, sub, sup, tt, var, caption,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, input,
-table, tbody, tfoot, thead, tr, th, td {margin:0; padding:0;word-wrap: normal;}
+table, tbody, tfoot, thead, tr, th, td {margin:0; padding:0;word-wrap: normal !important;}
 
 
 img {border:none;}
