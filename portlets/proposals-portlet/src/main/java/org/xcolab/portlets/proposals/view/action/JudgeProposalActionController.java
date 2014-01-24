@@ -1,19 +1,17 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.MessageLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,17 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestTeamRoleWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -43,15 +42,32 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @RequestMapping(params = {"action=sendEmails"})
+    @RequestMapping(params = {"action=sendEmail"})
     public void sendEmails(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
+        //get judges decision
+        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalsContext.getProposal(request), proposalsContext.getUser(request));
+        String message = proposalJudgeWrapper.getEmailMessage(contestPhaseId, new ProposalsPreferencesWrapper(request));
 
+        if (message != null) {
+            try {
+                String messageSubject = "Your Climate CoLab proposal";
+                ProposalWrapper wrapper = new ProposalWrapper(proposalsContext.getProposal(request));
+                InternetAddress[] addressTo = new InternetAddress[] {
+                        new InternetAddress(wrapper.getAuthor().getDisplayEmailAddress()) };
 
-        //mark as finished
-        persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGING_STATUS, 0, 1, null);
+                InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
+                MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, message, false,
+                        new InternetAddress[]{addressFrom}, null, null);
+
+                //mark as finished
+                persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 1, null);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @RequestMapping(params = {"action=saveJudgeRating"})
@@ -64,15 +80,15 @@ public class JudgeProposalActionController {
 
         // save judge rating
         if (judgeProposalBean.getJudgeRating() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_RATING, 0, judgeProposalBean.getJudgeRating(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_RATING, 0, judgeProposalBean.getJudgeRating(), null);
 
         // save judge action
         if (judgeProposalBean.getJudgeAction() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
 
         // save judge comment
         if (judgeProposalBean.getJudgeComment() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
     }
 
     @RequestMapping(params = {"action=sendJudgeRating"})
@@ -107,15 +123,15 @@ public class JudgeProposalActionController {
 
         // save fellow rating
         if (judgeProposalBean.getFellowRating() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.FELLOW_RATING, 0, judgeProposalBean.getFellowRating(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, judgeProposalBean.getFellowRating(), null);
 
         // save fellow action
         if (judgeProposalBean.getFellowAction() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.FELLOW_ACTION, 0, judgeProposalBean.getFellowAction().getAttributeValue(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, judgeProposalBean.getFellowAction().getAttributeValue(), null);
 
         // save fellow comment
         if (judgeProposalBean.getFellowComment() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalAttributeKeys.FELLOW_COMMENT, 0, -1, judgeProposalBean.getFellowComment());
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, -1, judgeProposalBean.getFellowComment());
     }
 
     private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue, String stringValue) {
@@ -135,7 +151,7 @@ public class JudgeProposalActionController {
     }
 
     private boolean persistSelectedJudges(long proposalId, long contestPhaseId, List<Long> selectedJudges) {
-        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, ProposalAttributeKeys.SELECTED_JUDGES, 0);
+        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
 
         String s = "";
         for (Long l : selectedJudges) s += l + ";";
