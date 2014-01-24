@@ -1,26 +1,17 @@
 package org.xcolab.portlets.feeds;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+
 public class Helper {
+	/*
     private static final String COLLAB_URL_PARAMETER_PREFIX = "_collab_param";
 
     //The user info is accessible using standard Portlet and JSF mechanisms
@@ -156,5 +147,14 @@ public class Helper {
     public static String getUrlParameterKey(String key) {
         return COLLAB_URL_PARAMETER_PREFIX + key;
     }
+    */
 
+    public static boolean isUserAnAdmin(PortletRequest request, long userId) throws PortalException, SystemException {
+        Role r = RoleLocalServiceUtil.getRole(((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(),"Administrator");
+        return RoleLocalServiceUtil.hasUserRole(userId, r.getRoleId());
+    }
+
+	public static ThemeDisplay getThemeDisplay(PortletRequest request) {
+		return (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+	}
 }
