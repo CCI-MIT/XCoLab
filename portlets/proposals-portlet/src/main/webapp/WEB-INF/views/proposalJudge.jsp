@@ -28,11 +28,11 @@
             <portlet:param name="planId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="saveJudgeRating"/>
         </portlet:actionURL>
-        <portlet:actionURL var="sendEmailsURL">
+        <portlet:actionURL var="sendEmailURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="sendEmails"/>
+            <portlet:param name="action" value="sendEmail"/>
         </portlet:actionURL>
 
         <div class="judging_left">
@@ -45,7 +45,7 @@
 
                     <c:if test="${!judgeProposalBean.judgingStatus}">
                         <div class="blue-button" style="display:block; float:left;">
-                            <a class="requestMembershipSubmitButton" href="${sendEmailsURL}">Send e-Mails</a>
+                            <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                         </div>
                     </c:if>
 

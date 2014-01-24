@@ -25,7 +25,12 @@
             <portlet:param name="action" value="saveFellowRating" />
         </portlet:actionURL>
 
-
+        <portlet:actionURL var="sendEmailURL">
+            <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW"/>
+            <portlet:param name="contestId" value="${contest.contestPK }"/>
+            <portlet:param name="planId" value="${proposal.proposalId }"/>
+            <portlet:param name="action" value="sendEmail"/>
+        </portlet:actionURL>
 
         <div class="judging_left">
             <div class="addpropbox">
@@ -82,7 +87,15 @@
 
                 </form:form>
             </div>
+            <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 0 and judgeProposalBean.fellowAction.attributeValue ne 3}">
+                <div class="addpropbox">
+                    <div class="blue-button" style="display:block; float:right;">
+                        <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
+                    </div>
+                </div>
+            </c:if>
         </div>
+
         <div class="judging_right">
             <div class="addpropbox">
 

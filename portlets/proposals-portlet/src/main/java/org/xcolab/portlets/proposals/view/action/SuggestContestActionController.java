@@ -49,10 +49,10 @@ public class SuggestContestActionController {
     public void sendContestSuggestion(String message, User u) throws MailEngineException, AddressException, NumberFormatException, PortalException, SystemException {
         String messageSubject = "New contest suggestion";
         String messageBody = message;
-        String[] receipients = new String[] {"lfi@mit.edu", "pdeboer@MIT.EDU", "rjl@MIT.EDU"};
-        InternetAddress[] addressTo = new InternetAddress[receipients.length];
-        for (int i=0; i < receipients.length; i++) {
-            addressTo[i] = new InternetAddress(receipients[i]);
+        String[] recipients = new String[] {"lfi@mit.edu", "pdeboer@MIT.EDU", "rjl@MIT.EDU"};
+        InternetAddress[] addressTo = new InternetAddress[recipients.length];
+        for (int i=0; i < recipients.length; i++) {
+            addressTo[i] = new InternetAddress(recipients[i]);
         }
         InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
         InternetAddress replyTo[] = {new InternetAddress(u.getEmailAddress())};
