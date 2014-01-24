@@ -43,16 +43,18 @@
                     <h3>Comment</h3>
                     <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
 
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
+                    <c:if test="${!judgeProposalBean.judgingStatus and judgeProposalBean.judgeAction.attributeValue ne 0}">
                         <div class="blue-button" style="display:block; float:left;">
                             <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                         </div>
                     </c:if>
 
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
 
                 <div class="addpropbox">
@@ -76,21 +78,24 @@
                         </tr>
                         </tbody>
                     </table>
-
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
 
                 <div class="addpropbox">
                     <h3>Promotion</h3>
                     <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
 
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
             </form:form>
         </div>
