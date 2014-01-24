@@ -86,8 +86,11 @@ CKEDITOR.config.contentsLanguage = '<%= HtmlUtil.escapeJS(contentsLanguageId.rep
 
 CKEDITOR.config.entities = false;
 
-CKEDITOR.config.extraPlugins = 'ajaxsave,media,restore,scayt,wsc,sourcedialog';
-CKEDITOR.config.removePlugins = 'sourcearea';
+CKEDITOR.config.extraPlugins = 'ajaxsave,media,restore,scayt,wsc';
+<c:if test="<%= inlineEdit %>">
+  CKEDITOR.config.extraPlugins += ',sourcedialog';
+</c:if>
+
 CKEDITOR.config.height = 265;
 
 CKEDITOR.config.language = '<%= HtmlUtil.escapeJS(languageId.replace("iw_", "he_")) %>';
@@ -134,7 +137,9 @@ CKEDITOR.config.toolbar_liferay = [
 	['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
 	['Image', 'Link', 'Unlink', 'Anchor'],
 	['Flash', <c:if test="<%= XugglerUtil.isEnabled() %>"> 'Audio', 'Video',</c:if> 'Table', '-', 'Smiley', 'SpecialChar'],
-	['SelectAll', 'RemoveFormat', 'Source', 'Sourcedialog']
+	['Find', 'Replace', 'SpellChecker', 'Scayt'],
+	['SelectAll', 'RemoveFormat']
+	<c:if test="<%= inlineEdit %>">,['Sourcedialog']</c:if>
 ];
 
 CKEDITOR.config.toolbar_liferayArticle = [
