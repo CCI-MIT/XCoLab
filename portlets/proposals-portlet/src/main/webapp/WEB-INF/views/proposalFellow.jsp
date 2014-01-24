@@ -87,7 +87,7 @@
 
                 </form:form>
             </div>
-            <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 0 and judgeProposalBean.fellowAction.attributeValue ne 3}">
+            <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 0 and judgeProposalBean.fellowAction.attributeValue ne 3 and !judgeProposalBean.judgingStatus}">
                 <div class="addpropbox">
                     <div class="blue-button" style="display:block; float:right;">
                         <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>

@@ -53,12 +53,12 @@ public class ProposalJudgeWrapper extends ProposalWrapper{
     public String getEmailMessage(long contestPhaseId, ProposalsPreferencesWrapper prefs) {
         //get fellow decision
         ProposalContestPhaseAttribute p = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
-        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.valueOf(p.getStringValue());
+        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int)p.getNumericValue());
         if(fellowAction == JudgingSystemActions.FellowAction.PASSTOJUDGES) {
             //judge decided
             String judgeText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0).getStringValue();
             ProposalContestPhaseAttribute pa = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0);
-            JudgingSystemActions.JudgeAction judgeAction = JudgingSystemActions.JudgeAction.valueOf(pa.getStringValue());
+            JudgingSystemActions.JudgeAction judgeAction = JudgingSystemActions.JudgeAction.fromInt((int)pa.getNumericValue());
             if(judgeAction == JudgingSystemActions.JudgeAction.DONT_MOVE_ON) {
                 return prefs.replaceJudgingTemplate(prefs.getJudgingRejectionText(), judgeText);
             }else if(judgeAction == JudgingSystemActions.JudgeAction.MOVE_ON) {
