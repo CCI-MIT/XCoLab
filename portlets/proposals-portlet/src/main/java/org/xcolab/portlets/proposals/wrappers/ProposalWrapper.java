@@ -7,12 +7,9 @@ import java.util.List;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.ext.portlet.service.persistence.ContestPhaseActionableDynamicQuery;
-import com.ext.portlet.service.persistence.ProposalVersionPK;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,9 +20,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portal.model.MembershipRequest;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 public class ProposalWrapper {
@@ -187,40 +181,40 @@ public class ProposalWrapper {
     }
 
     public Long getJudgeRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_RATING, 0, 0);
+        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGE_RATING, 0, 0);
     }
 
     public Boolean getJudgingStatus() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGING_STATUS, 0, 0) == 1L;
+        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 0) == 1L;
     }
 
     public Long getFellowRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_RATING, 0, 0);
+        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, 0);
     }
 
     public JudgingSystemActions.JudgeAction getJudgeAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.JUDGE_ACTION, 0, 0);
+        Long action = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0, 0);
         return JudgingSystemActions.JudgeAction.fromInt(action.intValue());
     }
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalAttributeKeys.FELLOW_ACTION, 0, 0);
+        Long action = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, 0);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
     public String getJudgeComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueString(ProposalAttributeKeys.JUDGE_COMMENT, 0, "");
+        return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0, "");
     }
 
     public String getFellowComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueString(ProposalAttributeKeys.FELLOW_COMMENT, 0, "");
+        return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, "");
     }
 
     public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<Long>();
         String s;
         try {
-            s = getContestPhaseAttributeValueString(ProposalAttributeKeys.SELECTED_JUDGES, 0, null);
+            s = getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, null);
         } catch (Exception e) {
             return selectedJudges;
         }

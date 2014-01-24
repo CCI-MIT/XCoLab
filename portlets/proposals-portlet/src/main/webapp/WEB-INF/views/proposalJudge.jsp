@@ -28,11 +28,11 @@
             <portlet:param name="planId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="saveJudgeRating"/>
         </portlet:actionURL>
-        <portlet:actionURL var="sendEmailsURL">
+        <portlet:actionURL var="sendEmailURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="sendEmails"/>
+            <portlet:param name="action" value="sendEmail"/>
         </portlet:actionURL>
 
         <div class="judging_left">
@@ -43,16 +43,18 @@
                     <h3>Comment</h3>
                     <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
 
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
+                    <c:if test="${!judgeProposalBean.judgingStatus and judgeProposalBean.judgeAction.attributeValue ne 0}">
                         <div class="blue-button" style="display:block; float:left;">
-                            <a class="requestMembershipSubmitButton" href="${sendEmailsURL}">Send e-Mails</a>
+                            <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                         </div>
                     </c:if>
 
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
 
                 <div class="addpropbox">
@@ -76,21 +78,24 @@
                         </tr>
                         </tbody>
                     </table>
-
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
 
                 <div class="addpropbox">
                     <h3>Promotion</h3>
                     <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
 
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
                            onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
+                    </c:if>
                 </div>
             </form:form>
         </div>
