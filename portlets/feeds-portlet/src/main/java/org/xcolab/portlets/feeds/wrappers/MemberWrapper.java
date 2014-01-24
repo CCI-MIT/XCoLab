@@ -1,7 +1,9 @@
-package org.xcolab.portlets.feeds.members;
+package org.xcolab.portlets.feeds.wrappers;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.portlet.PortletRequest;
 
 import org.xcolab.portlets.feeds.Helper;
 
@@ -15,9 +17,6 @@ import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceU
 import com.ocpsoft.pretty.time.PrettyTime;
 
 public class MemberWrapper implements Serializable{
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private User user;
     private int activitiesCount;
@@ -25,30 +24,33 @@ public class MemberWrapper implements Serializable{
     private String lastActivityBody;
     private Date lastActivityDate;
     private static PrettyTime timeAgoConverter = new PrettyTime();
+    private PortletRequest request;
     
-    public MemberWrapper(User user, int activitiesCount) {
+    public MemberWrapper(User user, int activitiesCount, PortletRequest request) {
         this.user = user;
         this.activitiesCount = activitiesCount;
+        this.request = request;
     }
     
     
-    public MemberWrapper(User user, SocialActivity activity) {
+    public MemberWrapper(User user, SocialActivity activity, PortletRequest request) {
         this.user = user;
         this.activity = activity;
         if (activity != null) {
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay());
+            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay(request));
             lastActivityBody = entry != null ? entry.getBody() : null;
             if (lastActivityBody == null || lastActivityBody.trim().length() == 0) {
                 lastActivityBody = entry != null ? entry.getTitle() : null;
             }
         }
         lastActivityDate = new Date(activity.getCreateDate());
+        this.request = request;
     }
     
-    public MemberWrapper(SocialActivity activity) throws PortalException, SystemException {
+    public MemberWrapper(SocialActivity activity, PortletRequest request) throws PortalException, SystemException {
         this.activity = activity;
         if (activity != null) {
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay());
+            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay(request));
             lastActivityBody = entry != null ? entry.getBody() : null;
             if (lastActivityBody == null || lastActivityBody.trim().length() == 0) {
                 lastActivityBody = entry != null ? entry.getTitle() : null;
@@ -57,6 +59,7 @@ public class MemberWrapper implements Serializable{
         }
         lastActivityDate = new Date(activity.getCreateDate());
         user = UserLocalServiceUtil.getUser(activity.getUserId());
+        this.request = request;
     }
 
 
@@ -88,4 +91,5 @@ public class MemberWrapper implements Serializable{
     public String getLastActivityDateAgo() {
         return timeAgoConverter.format(lastActivityDate);
     }
+    
 }

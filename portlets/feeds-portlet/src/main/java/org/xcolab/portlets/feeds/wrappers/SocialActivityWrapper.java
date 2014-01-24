@@ -1,15 +1,19 @@
-package org.xcolab.portlets.feeds.activities;
+package org.xcolab.portlets.feeds.wrappers;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
+
 import org.xcolab.portlets.feeds.Helper;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
@@ -29,14 +33,14 @@ public class SocialActivityWrapper implements Serializable {
     private String body;
     private static PrettyTime timeAgoConverter = new PrettyTime();
     private final boolean odd;
+    private PortletRequest request;
 
 
-    public SocialActivityWrapper(SocialActivity activity, int daysBetween, boolean indicateNewDate, boolean odd) {
-        Helper.getThemeDisplay();
+    public SocialActivityWrapper(SocialActivity activity, int daysBetween, boolean indicateNewDate, boolean odd, PortletRequest request) {
         this.activity = activity;
+        this.request = request;
         try {
-            activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret(activity,
-                Helper.getThemeDisplay());
+            activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY));
         } catch(Exception e) {
             e.printStackTrace();
             //ignore
@@ -89,12 +93,11 @@ public class SocialActivityWrapper implements Serializable {
         return body == null || body.trim().length() == 0;
     }
 
-    public static Boolean isEmpty(SocialActivity activity) {
+    public static Boolean isEmpty(SocialActivity activity, PortletRequest request) {
         try {
 
             UserLocalServiceUtil.getUser(activity.getUserId());
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity,
-            Helper.getThemeDisplay());
+            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY));
             return isEmpty(entry);
         } catch (Throwable e) {
             _log.error("Some error interpreting activity: "+e.getMessage());

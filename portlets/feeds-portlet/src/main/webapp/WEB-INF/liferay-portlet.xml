@@ -4,7 +4,9 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>feeds-portlet</portlet-name>
-        <friendly-url-mapper-class>org.xcolab.portlets.feeds.activities.utils.FeedsFriendlyURLMapper</friendly-url-mapper-class>
+        <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+        <friendly-url-mapping>feeds</friendly-url-mapping>
+        <friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
 		<instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
