@@ -22,12 +22,14 @@ import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
@@ -616,9 +618,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
         phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
         
+        final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
+        phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
+        
         final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
         proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
-            .add(PropertyFactoryUtil.forName("proposal.visible").eq(true));
+            .add(PropertyFactoryUtil.forName("proposal.visible").eq(true))
+            .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
         
         return dynamicQueryCount(proposalsInPhaseNotDeleted);
     }
