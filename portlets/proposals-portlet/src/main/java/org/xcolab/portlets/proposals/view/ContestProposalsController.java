@@ -63,8 +63,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
-            if (proposalWrapper.getVisible()
-                    && contestPhaseWrapper.getProposalVisibility(proposalWrapper.getProposalId())) {
+            if (proposalWrapper.isVisibleInPhase()) {
                 proposals.add(proposalWrapper);
             }
             

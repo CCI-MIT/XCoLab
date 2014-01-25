@@ -93,13 +93,15 @@ public class ProposalWrapper {
     public void setAuthorId(long authorId) {
         proposal.setAuthorId(authorId);
     }
-
+    
+    
     public boolean getVisible() {
         return proposal.getVisible();
     }
 
-    public boolean isVisible() {
-        return proposal.isVisible();
+    public boolean isVisibleInPhase() throws PortalException, SystemException {
+    	ProposalContestPhaseAttribute visibleInPhase = getContestPhaseAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+        return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0); 
     }
 
     public long getDiscussionId() {
@@ -216,6 +218,7 @@ public class ProposalWrapper {
     public String getFellowComment() throws SystemException, PortalException {
         return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, "");
     }
+    
 
     public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<Long>();
