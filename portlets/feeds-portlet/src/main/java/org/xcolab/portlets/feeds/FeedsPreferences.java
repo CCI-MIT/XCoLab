@@ -2,34 +2,19 @@ package org.xcolab.portlets.feeds;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
-import com.liferay.portal.model.User;
-
 public class FeedsPreferences implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int feedSize;
     private FeedType feedType;
     private String feedTitle;
-
-
-
     private Boolean removeAdmin;
-
-
-
     private String feedStyle;
 
     
@@ -41,7 +26,6 @@ public class FeedsPreferences implements Serializable {
 
 
     private final static String LONG = "LONG";
-    private final static String COLLAPSED = "COLLAPSED";
     
     private final static int defaultFeedSize = 20;
     private final static String defaultFeedTitle = null;
@@ -50,7 +34,10 @@ public class FeedsPreferences implements Serializable {
     private final static Boolean defaultRemoveAdmin = false;
         
     public FeedsPreferences() {
-        PortletPreferences prefs = Helper.getPortletPrefs();
+    	
+    }
+    public FeedsPreferences(PortletRequest request) {
+        PortletPreferences prefs = request.getPreferences();
         
         feedSize = defaultFeedSize; 
         try {
@@ -79,15 +66,12 @@ public class FeedsPreferences implements Serializable {
         }
 
         removeAdmin = Boolean.parseBoolean(prefs.getValue(FEED_REMOVE_ADMIN,String.valueOf(defaultRemoveAdmin)));
-        
-
-
     }
 
     
-    public String submit() throws ReadOnlyException, ValidatorException, IOException {
-        
-        PortletPreferences prefs = Helper.getPortletPrefs();
+    public String store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
+
+        PortletPreferences prefs = request.getPreferences();
         prefs.setValue(FEED_SIZE_PREF, String.valueOf(feedSize));
         prefs.setValue(FEED_TITLE_PREF, feedTitle);
         prefs.setValue(FEED_TYPE_PREF, feedType.name());
@@ -95,14 +79,6 @@ public class FeedsPreferences implements Serializable {
         prefs.setValue(FEED_DISPLAY_STYLE,feedStyle);
 
         prefs.store();
-            
-        
-        FacesMessage fm = new FacesMessage();
-        fm.setSummary("Settings saved successfully");
-        fm.setSeverity(FacesMessage.SEVERITY_INFO);
-
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(null, fm);
         
         return null;
     }
@@ -135,16 +111,6 @@ public class FeedsPreferences implements Serializable {
 
     public void setFeedTitle(String feedTitle) {
         this.feedTitle = feedTitle;
-    }
-    
-    
-    public List<SelectItem> getFeedTypes() {
-        List<SelectItem> ret = new ArrayList<SelectItem>();
-        
-        for (FeedType type: FeedType.values()) {
-            ret.add(new SelectItem(type, type.name()));
-        }
-        return ret;
     }
 
      public Boolean getRemoveAdmin() {
