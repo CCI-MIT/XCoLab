@@ -34,6 +34,17 @@ public class UpdateProposalDetailsBean {
         imageId = proposal.getImageId();
         description = proposal.getDescription();
     }
+    
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) throws PortalException, SystemException {
+        for (ProposalSectionWrapper section : baseProposal.getSections()) {
+            sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
+        }
+        pitch = baseProposal.getPitch();
+        name = baseProposal.getName();
+        team = baseProposal.getTeam();
+        imageId = baseProposal.getImageId();
+        description = baseProposal.getDescription();
+    }
 
     public UpdateProposalDetailsBean() {
     }

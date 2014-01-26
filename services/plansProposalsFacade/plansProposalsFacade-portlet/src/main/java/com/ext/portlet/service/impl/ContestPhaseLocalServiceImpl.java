@@ -141,7 +141,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
-    public ContestPhase getActivePhaseForContest(Contest contest) throws NoSuchContestPhaseException, SystemException {
+    public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException {
         Date now = new Date();
         try {
             return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
@@ -168,7 +168,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
         List<ContestPhase> phases = contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
         if (phases.isEmpty()) {
-        	throw new NoSuchContestPhaseException("Can't find active contest phase for contest" + contest.getContestPK());
+        	throw new SystemException("Can't find active contest phase for contest" + contest.getContestPK());
         }
         return phases.get(0);
     }

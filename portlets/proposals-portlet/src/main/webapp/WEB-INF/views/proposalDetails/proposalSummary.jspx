@@ -193,6 +193,14 @@
             </c:when>
         </c:choose>
     </c:if>
+    
+	<div class="blue-button">
+		<a href="javascript:;"
+			onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup()">
+			<span>Copy </span> this proposal
+		</a>
+	</div>
+                
     </div>
 
 </jsp:root>

@@ -93,14 +93,27 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByType",
             new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_TYPE_PLANTYPEID_2 = "contest.PlanTypeId = ?";
-    public static final FinderPath FINDER_PATH_FETCH_BY_CONTESTACTIVE = new FinderPath(ContestModelImpl.ENTITY_CACHE_ENABLED,
+    public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTACTIVE =
+        new FinderPath(ContestModelImpl.ENTITY_CACHE_ENABLED,
             ContestModelImpl.FINDER_CACHE_ENABLED, ContestImpl.class,
-            FINDER_CLASS_NAME_ENTITY, "fetchBycontestActive",
+            FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByContestActive",
+            new String[] {
+                Boolean.class.getName(),
+                
+            Integer.class.getName(), Integer.class.getName(),
+                OrderByComparator.class.getName()
+            });
+    public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTACTIVE =
+        new FinderPath(ContestModelImpl.ENTITY_CACHE_ENABLED,
+            ContestModelImpl.FINDER_CACHE_ENABLED, ContestImpl.class,
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByContestActive",
             new String[] { Boolean.class.getName() },
-            ContestModelImpl.CONTESTACTIVE_COLUMN_BITMASK);
+            ContestModelImpl.CONTESTACTIVE_COLUMN_BITMASK |
+            ContestModelImpl.WEIGHT_COLUMN_BITMASK |
+            ContestModelImpl.CREATED_COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_CONTESTACTIVE = new FinderPath(ContestModelImpl.ENTITY_CACHE_ENABLED,
             ContestModelImpl.FINDER_CACHE_ENABLED, Long.class,
-            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBycontestActive",
+            FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByContestActive",
             new String[] { Boolean.class.getName() });
     private static final String _FINDER_COLUMN_CONTESTACTIVE_CONTESTACTIVE_2 = "contest.contestActive = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ACTIVEFEATURED =
@@ -662,85 +675,107 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
     }
 
     /**
-     * Returns the contest where contestActive = &#63; or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
+     * Returns all the contests where contestActive = &#63;.
      *
      * @param contestActive the contest active
-     * @return the matching contest
-     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+     * @return the matching contests
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public Contest findBycontestActive(boolean contestActive)
-        throws NoSuchContestException, SystemException {
-        Contest contest = fetchBycontestActive(contestActive);
-
-        if (contest == null) {
-            StringBundler msg = new StringBundler(4);
-
-            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-            msg.append("contestActive=");
-            msg.append(contestActive);
-
-            msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-            if (_log.isWarnEnabled()) {
-                _log.warn(msg.toString());
-            }
-
-            throw new NoSuchContestException(msg.toString());
-        }
-
-        return contest;
-    }
-
-    /**
-     * Returns the contest where contestActive = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-     *
-     * @param contestActive the contest active
-     * @return the matching contest, or <code>null</code> if a matching contest could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public Contest fetchBycontestActive(boolean contestActive)
+    public List<Contest> findByContestActive(boolean contestActive)
         throws SystemException {
-        return fetchBycontestActive(contestActive, true);
+        return findByContestActive(contestActive, QueryUtil.ALL_POS,
+            QueryUtil.ALL_POS, null);
     }
 
     /**
-     * Returns the contest where contestActive = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     * Returns a range of all the contests where contestActive = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
      *
      * @param contestActive the contest active
-     * @param retrieveFromCache whether to use the finder cache
-     * @return the matching contest, or <code>null</code> if a matching contest could not be found
+     * @param start the lower bound of the range of contests
+     * @param end the upper bound of the range of contests (not inclusive)
+     * @return the range of matching contests
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public Contest fetchBycontestActive(boolean contestActive,
-        boolean retrieveFromCache) throws SystemException {
-        Object[] finderArgs = new Object[] { contestActive };
+    public List<Contest> findByContestActive(boolean contestActive, int start,
+        int end) throws SystemException {
+        return findByContestActive(contestActive, start, end, null);
+    }
 
-        Object result = null;
+    /**
+     * Returns an ordered range of all the contests where contestActive = &#63;.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+     * </p>
+     *
+     * @param contestActive the contest active
+     * @param start the lower bound of the range of contests
+     * @param end the upper bound of the range of contests (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching contests
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public List<Contest> findByContestActive(boolean contestActive, int start,
+        int end, OrderByComparator orderByComparator) throws SystemException {
+        boolean pagination = true;
+        FinderPath finderPath = null;
+        Object[] finderArgs = null;
 
-        if (retrieveFromCache) {
-            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                    finderArgs, this);
+        if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+                (orderByComparator == null)) {
+            pagination = false;
+            finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTACTIVE;
+            finderArgs = new Object[] { contestActive };
+        } else {
+            finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_CONTESTACTIVE;
+            finderArgs = new Object[] {
+                    contestActive,
+                    
+                    start, end, orderByComparator
+                };
         }
 
-        if (result instanceof Contest) {
-            Contest contest = (Contest) result;
+        List<Contest> list = (List<Contest>) FinderCacheUtil.getResult(finderPath,
+                finderArgs, this);
 
-            if ((contestActive != contest.getContestActive())) {
-                result = null;
+        if ((list != null) && !list.isEmpty()) {
+            for (Contest contest : list) {
+                if ((contestActive != contest.getContestActive())) {
+                    list = null;
+
+                    break;
+                }
             }
         }
 
-        if (result == null) {
-            StringBundler query = new StringBundler(3);
+        if (list == null) {
+            StringBundler query = null;
+
+            if (orderByComparator != null) {
+                query = new StringBundler(3 +
+                        (orderByComparator.getOrderByFields().length * 3));
+            } else {
+                query = new StringBundler(3);
+            }
 
             query.append(_SQL_SELECT_CONTEST_WHERE);
 
             query.append(_FINDER_COLUMN_CONTESTACTIVE_CONTESTACTIVE_2);
+
+            if (orderByComparator != null) {
+                appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+                    orderByComparator);
+            } else
+             if (pagination) {
+                query.append(ContestModelImpl.ORDER_BY_JPQL);
+            }
 
             String sql = query.toString();
 
@@ -755,33 +790,23 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
                 qPos.add(contestActive);
 
-                List<Contest> list = q.list();
+                if (!pagination) {
+                    list = (List<Contest>) QueryUtil.list(q, getDialect(),
+                            start, end, false);
 
-                if (list.isEmpty()) {
-                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                        finderArgs, list);
+                    Collections.sort(list);
+
+                    list = new UnmodifiableList<Contest>(list);
                 } else {
-                    if ((list.size() > 1) && _log.isWarnEnabled()) {
-                        _log.warn(
-                            "ContestPersistenceImpl.fetchBycontestActive(boolean, boolean) with parameters (" +
-                            StringUtil.merge(finderArgs) +
-                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-                    }
-
-                    Contest contest = list.get(0);
-
-                    result = contest;
-
-                    cacheResult(contest);
-
-                    if ((contest.getContestActive() != contestActive)) {
-                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                            finderArgs, contest);
-                    }
+                    list = (List<Contest>) QueryUtil.list(q, getDialect(),
+                            start, end);
                 }
+
+                cacheResult(list);
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, list);
             } catch (Exception e) {
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                    finderArgs);
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
 
                 throw processException(e);
             } finally {
@@ -789,26 +814,269 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
             }
         }
 
-        if (result instanceof List<?>) {
+        return list;
+    }
+
+    /**
+     * Returns the first contest in the ordered set where contestActive = &#63;.
+     *
+     * @param contestActive the contest active
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching contest
+     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Contest findByContestActive_First(boolean contestActive,
+        OrderByComparator orderByComparator)
+        throws NoSuchContestException, SystemException {
+        Contest contest = fetchByContestActive_First(contestActive,
+                orderByComparator);
+
+        if (contest != null) {
+            return contest;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestActive=");
+        msg.append(contestActive);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchContestException(msg.toString());
+    }
+
+    /**
+     * Returns the first contest in the ordered set where contestActive = &#63;.
+     *
+     * @param contestActive the contest active
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Contest fetchByContestActive_First(boolean contestActive,
+        OrderByComparator orderByComparator) throws SystemException {
+        List<Contest> list = findByContestActive(contestActive, 0, 1,
+                orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the last contest in the ordered set where contestActive = &#63;.
+     *
+     * @param contestActive the contest active
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching contest
+     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Contest findByContestActive_Last(boolean contestActive,
+        OrderByComparator orderByComparator)
+        throws NoSuchContestException, SystemException {
+        Contest contest = fetchByContestActive_Last(contestActive,
+                orderByComparator);
+
+        if (contest != null) {
+            return contest;
+        }
+
+        StringBundler msg = new StringBundler(4);
+
+        msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+        msg.append("contestActive=");
+        msg.append(contestActive);
+
+        msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+        throw new NoSuchContestException(msg.toString());
+    }
+
+    /**
+     * Returns the last contest in the ordered set where contestActive = &#63;.
+     *
+     * @param contestActive the contest active
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Contest fetchByContestActive_Last(boolean contestActive,
+        OrderByComparator orderByComparator) throws SystemException {
+        int count = countByContestActive(contestActive);
+
+        if (count == 0) {
             return null;
+        }
+
+        List<Contest> list = findByContestActive(contestActive, count - 1,
+                count, orderByComparator);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the contests before and after the current contest in the ordered set where contestActive = &#63;.
+     *
+     * @param ContestPK the primary key of the current contest
+     * @param contestActive the contest active
+     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+     * @return the previous, current, and next contest
+     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public Contest[] findByContestActive_PrevAndNext(long ContestPK,
+        boolean contestActive, OrderByComparator orderByComparator)
+        throws NoSuchContestException, SystemException {
+        Contest contest = findByPrimaryKey(ContestPK);
+
+        Session session = null;
+
+        try {
+            session = openSession();
+
+            Contest[] array = new ContestImpl[3];
+
+            array[0] = getByContestActive_PrevAndNext(session, contest,
+                    contestActive, orderByComparator, true);
+
+            array[1] = contest;
+
+            array[2] = getByContestActive_PrevAndNext(session, contest,
+                    contestActive, orderByComparator, false);
+
+            return array;
+        } catch (Exception e) {
+            throw processException(e);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    protected Contest getByContestActive_PrevAndNext(Session session,
+        Contest contest, boolean contestActive,
+        OrderByComparator orderByComparator, boolean previous) {
+        StringBundler query = null;
+
+        if (orderByComparator != null) {
+            query = new StringBundler(6 +
+                    (orderByComparator.getOrderByFields().length * 6));
         } else {
-            return (Contest) result;
+            query = new StringBundler(3);
+        }
+
+        query.append(_SQL_SELECT_CONTEST_WHERE);
+
+        query.append(_FINDER_COLUMN_CONTESTACTIVE_CONTESTACTIVE_2);
+
+        if (orderByComparator != null) {
+            String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+            if (orderByConditionFields.length > 0) {
+                query.append(WHERE_AND);
+            }
+
+            for (int i = 0; i < orderByConditionFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByConditionFields[i]);
+
+                if ((i + 1) < orderByConditionFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN_HAS_NEXT);
+                    } else {
+                        query.append(WHERE_LESSER_THAN_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(WHERE_GREATER_THAN);
+                    } else {
+                        query.append(WHERE_LESSER_THAN);
+                    }
+                }
+            }
+
+            query.append(ORDER_BY_CLAUSE);
+
+            String[] orderByFields = orderByComparator.getOrderByFields();
+
+            for (int i = 0; i < orderByFields.length; i++) {
+                query.append(_ORDER_BY_ENTITY_ALIAS);
+                query.append(orderByFields[i]);
+
+                if ((i + 1) < orderByFields.length) {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC_HAS_NEXT);
+                    } else {
+                        query.append(ORDER_BY_DESC_HAS_NEXT);
+                    }
+                } else {
+                    if (orderByComparator.isAscending() ^ previous) {
+                        query.append(ORDER_BY_ASC);
+                    } else {
+                        query.append(ORDER_BY_DESC);
+                    }
+                }
+            }
+        } else {
+            query.append(ContestModelImpl.ORDER_BY_JPQL);
+        }
+
+        String sql = query.toString();
+
+        Query q = session.createQuery(sql);
+
+        q.setFirstResult(0);
+        q.setMaxResults(2);
+
+        QueryPos qPos = QueryPos.getInstance(q);
+
+        qPos.add(contestActive);
+
+        if (orderByComparator != null) {
+            Object[] values = orderByComparator.getOrderByConditionValues(contest);
+
+            for (Object value : values) {
+                qPos.add(value);
+            }
+        }
+
+        List<Contest> list = q.list();
+
+        if (list.size() == 2) {
+            return list.get(1);
+        } else {
+            return null;
         }
     }
 
     /**
-     * Removes the contest where contestActive = &#63; from the database.
+     * Removes all the contests where contestActive = &#63; from the database.
      *
      * @param contestActive the contest active
-     * @return the contest that was removed
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public Contest removeBycontestActive(boolean contestActive)
-        throws NoSuchContestException, SystemException {
-        Contest contest = findBycontestActive(contestActive);
-
-        return remove(contest);
+    public void removeByContestActive(boolean contestActive)
+        throws SystemException {
+        for (Contest contest : findByContestActive(contestActive,
+                QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+            remove(contest);
+        }
     }
 
     /**
@@ -819,7 +1087,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public int countBycontestActive(boolean contestActive)
+    public int countByContestActive(boolean contestActive)
         throws SystemException {
         FinderPath finderPath = FINDER_PATH_COUNT_BY_CONTESTACTIVE;
 
@@ -2376,9 +2644,6 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         EntityCacheUtil.putResult(ContestModelImpl.ENTITY_CACHE_ENABLED,
             ContestImpl.class, contest.getPrimaryKey(), contest);
 
-        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-            new Object[] { contest.getContestActive() }, contest);
-
         contest.resetOriginalValues();
     }
 
@@ -2434,8 +2699,6 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-        clearUniqueFindersCache(contest);
     }
 
     @Override
@@ -2446,50 +2709,6 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         for (Contest contest : contests) {
             EntityCacheUtil.removeResult(ContestModelImpl.ENTITY_CACHE_ENABLED,
                 ContestImpl.class, contest.getPrimaryKey());
-
-            clearUniqueFindersCache(contest);
-        }
-    }
-
-    protected void cacheUniqueFindersCache(Contest contest) {
-        if (contest.isNew()) {
-            Object[] args = new Object[] { contest.getContestActive() };
-
-            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE, args,
-                Long.valueOf(1));
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE, args,
-                contest);
-        } else {
-            ContestModelImpl contestModelImpl = (ContestModelImpl) contest;
-
-            if ((contestModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_CONTESTACTIVE.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] { contest.getContestActive() };
-
-                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE,
-                    args, Long.valueOf(1));
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                    args, contest);
-            }
-        }
-    }
-
-    protected void clearUniqueFindersCache(Contest contest) {
-        ContestModelImpl contestModelImpl = (ContestModelImpl) contest;
-
-        Object[] args = new Object[] { contest.getContestActive() };
-
-        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE, args);
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE, args);
-
-        if ((contestModelImpl.getColumnBitmask() &
-                FINDER_PATH_FETCH_BY_CONTESTACTIVE.getColumnBitmask()) != 0) {
-            args = new Object[] { contestModelImpl.getOriginalContestActive() };
-
-            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE,
-                args);
-            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONTESTACTIVE,
-                args);
         }
     }
 
@@ -2642,6 +2861,25 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
             }
 
             if ((contestModelImpl.getColumnBitmask() &
+                    FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTACTIVE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        contestModelImpl.getOriginalContestActive()
+                    };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTACTIVE,
+                    args);
+
+                args = new Object[] { contestModelImpl.getContestActive() };
+
+                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONTESTACTIVE,
+                    args);
+                FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CONTESTACTIVE,
+                    args);
+            }
+
+            if ((contestModelImpl.getColumnBitmask() &
                     FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVEFEATURED.getColumnBitmask()) != 0) {
                 Object[] args = new Object[] {
                         contestModelImpl.getOriginalContestActive(),
@@ -2713,9 +2951,6 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
 
         EntityCacheUtil.putResult(ContestModelImpl.ENTITY_CACHE_ENABLED,
             ContestImpl.class, contest.getPrimaryKey(), contest);
-
-        clearUniqueFindersCache(contest);
-        cacheUniqueFindersCache(contest);
 
         return contest;
     }

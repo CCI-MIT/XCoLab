@@ -227,3 +227,22 @@ div.sponsorLogo img {
 .judging_right { float:left; width:454px; margin:50px 0 0 56px;}
 
 .fellow-judge-action {float:left; width:89px; padding-top:4px; text-align: center; margin-left: 12px;}
+
+#copyProposalPopupContent {
+	height: 150px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	
+}
+
+#copyProposalPopupContent tr:nth-child(even) {
+	background-color: #f3f8fa;
+}
+#copyProposalPopupContent td {
+	padding: 5px;
+
+}
+
+#copyProposalPopupContent td .sectionContent {
+	display: none;
+}

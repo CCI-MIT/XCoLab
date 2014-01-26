@@ -7,6 +7,9 @@
 	version="2.0">
 	<jsp:directive.attribute name="section" type="org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper" 
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
+		
+	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 
+		required="false" rtexprvalue="true" description="Tells if 'copy content from base proposal section' button should be shown" />
 	
 	<label>
 		<strong>${section.title}</strong> 
@@ -18,7 +21,7 @@
 	<div class="addprophelp">${section.helpText}</div>
 	
 	
-	<div class="addpropInputContainer">
+	<div class="addpropInputContainer" id="proposalSection_${section.sectionDefinitionId }"  >
 		<c:choose>
 			<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
 				<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
@@ -42,6 +45,11 @@
             			<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
             		</div>
         		</c:if>
+        		<c:if test="${showCopySectionContentButton }">
+        			<div class='blue-button alignright'>
+        				<a href="javascript:;" class="copyFromBaseProposalTrigger" data-section-id="${section.sectionDefinitionId}">Copy from base proposal</a>
+        			</div>
+        </c:if>
 			</c:otherwise>
 		</c:choose>
     </div>

@@ -89,8 +89,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
-    public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
-        return contestPersistence.findBycontestActive(contestActive);
+    public Contest getContestByActiveFlag(boolean contestActive) throws SystemException {
+    	List<Contest> contests = contestPersistence.findByContestActive(contestActive);
+    	return contests.isEmpty() ? null : contests.get(0);
     }
 
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
@@ -188,7 +189,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
     }
-
+    
+    public List<Contest> findByActive(boolean active) throws SystemException {
+        return contestPersistence.findByContestActive(active);
+    }
+    
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
         return contestPersistence.findByActiveFeatured(active, featured);
     }
@@ -234,7 +239,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return result;
     }
 
-    public ContestPhase getActivePhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+    public ContestPhase getActivePhase(Contest contest) throws SystemException {
 
         for (ContestPhase phase : getPhases(contest)) {
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
@@ -242,7 +247,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     }
 
-    public ContestPhase getActiveOrLastPhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+    public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException {
         ContestPhase lastPhase = null;
         for (ContestPhase phase : getPhases(contest)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
@@ -255,7 +260,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         try {
             ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
             return true;
-        } catch (NoSuchContestPhaseException e) {
+        } catch (Exception e) {
             // ignore
         }
         return false;

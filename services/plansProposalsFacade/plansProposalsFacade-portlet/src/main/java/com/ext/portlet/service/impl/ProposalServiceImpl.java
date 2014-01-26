@@ -1,11 +1,21 @@
 package com.ext.portlet.service.impl;
 
+import java.util.Date;
+
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PlanTemplate;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
@@ -19,10 +29,6 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * The implementation of the proposal remote service.
@@ -125,6 +131,32 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
         return  getProposalVersions(-1, proposalId, start, end);
+    }
+
+    @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
+    public JSONArray getProposalContestSections(long proposalId, int version, long contestId) throws PortalException, SystemException {
+    	JSONArray ret = JSONFactoryUtil.createJSONArray();
+    	
+    	Proposal proposal = proposalLocalService.getProposal(proposalId);
+    	Contest contest = contestLocalService.getContest(contestId);
+    	
+        PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
+
+        if (planTemplate != null) {
+            for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
+            	ProposalAttribute attribute = proposalLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
+            	if (attribute != null && attribute.getStringValue().trim().length() > 0) {
+            		JSONObject obj = JSONFactoryUtil.createJSONObject();
+            		obj.put("title", psd.getTitle());
+            		obj.put("sectionId", psd.getId());
+            		obj.put("content", attribute.getStringValue());
+            		
+            		ret.put(obj);
+            	}
+            }
+        }
+    	return ret;
     }
     
     private JSONObject converUserToJson(long userId) throws PortalException, SystemException {

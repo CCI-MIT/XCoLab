@@ -49,7 +49,7 @@
             <finder-column name="PlanTypeId" />
         </finder>
         
-        <finder name="contestActive" return-type="Contest">
+        <finder name="ContestActive" return-type="Collection">
             <finder-column name="contestActive" />
         </finder>
         <finder name="ActiveFeatured" return-type="Collection">
@@ -162,6 +162,7 @@
     <exceptions>
 
         <exception>NoSuchContestPhase</exception>
+        <exception>NoSuchContestPhaseException</exception>
         <exception>NoSuchContest</exception>
     </exceptions>
 

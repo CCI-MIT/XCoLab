@@ -51,6 +51,12 @@ public class ContestServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsOpenForProposals();
+    }
+
     public static void clearService() {
         _service = null;
     }

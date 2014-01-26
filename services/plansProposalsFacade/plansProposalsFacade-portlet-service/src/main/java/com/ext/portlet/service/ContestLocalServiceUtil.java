@@ -261,8 +261,7 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestByActiveFlag(contestActive);
     }
 
@@ -277,6 +276,12 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().updateContestGroupsAndDiscussions();
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByActive(active);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
@@ -321,15 +326,13 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getActivePhase(contest);
     }
 
     public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getActiveOrLastPhase(contest);
     }
 

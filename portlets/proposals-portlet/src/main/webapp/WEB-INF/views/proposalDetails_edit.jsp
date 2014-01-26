@@ -154,7 +154,7 @@
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">
 				<div class="addpropbox q3">
-					<proposalsPortlet:proposalSectionEdit section="${section }" />
+					<proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${not empty baseProposal }"/>
 				</div>
 			</c:if>
 		</c:forEach>	
@@ -306,5 +306,19 @@
 	});
 			
 </script>
+
+	<div id="copyProposalContainer" style="display: none;">
+    	<div class="popup-wrap p1" id="copyProposalPopup">
+			<div class="popup">
+				<h4>Choose section from base proposal, which content you want to copy</h4>
+				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+					<div id="copyProposalContests"><!--  --></div>
+					<center>
+						<div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </jsp:root>

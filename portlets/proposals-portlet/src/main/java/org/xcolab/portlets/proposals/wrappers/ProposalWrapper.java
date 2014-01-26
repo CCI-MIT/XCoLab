@@ -456,4 +456,8 @@ public class ProposalWrapper {
 	public void setContestPhaseAttributes(List<ProposalContestPhaseAttribute> contestPhaseAttributes) {
 		this.contestPhaseAttributes = contestPhaseAttributes;
 	}
+	
+	public int getVersion() {
+		return version;
+	}
 }

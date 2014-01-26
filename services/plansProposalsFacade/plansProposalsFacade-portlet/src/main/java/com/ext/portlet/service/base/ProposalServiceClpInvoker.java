@@ -17,6 +17,8 @@ public class ProposalServiceClpInvoker {
     private String[] _methodParameterTypes474;
     private String _methodName475;
     private String[] _methodParameterTypes475;
+    private String _methodName476;
+    private String[] _methodParameterTypes476;
 
     public ProposalServiceClpInvoker() {
         _methodName468 = "getBeanIdentifier";
@@ -34,6 +36,10 @@ public class ProposalServiceClpInvoker {
         _methodName475 = "getProposalVersions";
 
         _methodParameterTypes475 = new String[] { "long", "int", "int" };
+
+        _methodName476 = "getProposalContestSections";
+
+        _methodParameterTypes476 = new String[] { "long", "int", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -63,6 +69,13 @@ public class ProposalServiceClpInvoker {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
+        }
+
+        if (_methodName476.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes476, parameterTypes)) {
+            return ProposalServiceUtil.getProposalContestSections(((Long) arguments[0]).longValue(),
+                ((Integer) arguments[1]).intValue(),
+                ((Long) arguments[2]).longValue());
         }
 
         throw new UnsupportedOperationException();

@@ -352,8 +352,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getActivePhaseForContest(contest);
     }
 
