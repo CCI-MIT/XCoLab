@@ -139,7 +139,10 @@ CKEDITOR.config.toolbar_liferay = [
 	['Flash', <c:if test="<%= XugglerUtil.isEnabled() %>"> 'Audio', 'Video',</c:if> 'Table', '-', 'Smiley', 'SpecialChar'],
 	['Find', 'Replace', 'SpellChecker', 'Scayt'],
 	['SelectAll', 'RemoveFormat']
-	<c:if test="<%= inlineEdit %>">,['Sourcedialog']</c:if>
+	<c:choose>
+		<c:when test="<%= inlineEdit %>">,['Sourcedialog']</c:when>
+		<c:otherwise>,['Source']</c:otherwise>
+	</c:choose>
 ];
 
 CKEDITOR.config.toolbar_liferayArticle = [
