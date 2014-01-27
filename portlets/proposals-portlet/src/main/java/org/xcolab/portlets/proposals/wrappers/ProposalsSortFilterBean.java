@@ -39,6 +39,8 @@ public class ProposalsSortFilterBean {
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("VOTES")) proposalComparator = ProposalsColumn.VOTES.getComparator();
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("JUDGESTATUS")) proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator();
             if (sortFilterPage.getSortColumn().equalsIgnoreCase("FELLOWSTATUS")) proposalComparator = ProposalsColumn.FELLOWSTATUS.getComparator();
+
+            if (sortFilterPage.getSortColumn().equalsIgnoreCase("OVERALLSTATUS")) proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator();
         }
 
         

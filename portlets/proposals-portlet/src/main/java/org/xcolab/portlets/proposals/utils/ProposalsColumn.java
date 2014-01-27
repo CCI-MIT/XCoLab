@@ -76,6 +76,13 @@ public enum ProposalsColumn {
             return (o1.getJudgeStatus() - o2.getJudgeStatus());
         }
     }),
+    OVERALLSTATUS(new Comparator<ProposalWrapper>() {
+
+        @Override
+        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+            return (o1.getOverallStatus() - o2.getOverallStatus());
+        }
+    }),
     FELLOWSTATUS(new Comparator<ProposalWrapper>() {
 
         @Override

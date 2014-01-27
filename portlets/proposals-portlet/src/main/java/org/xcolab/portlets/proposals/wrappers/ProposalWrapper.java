@@ -395,6 +395,7 @@ public class ProposalWrapper {
         return 0;
     }
 
+
     /**
      * Determine if judges are done with proposal
      *
@@ -413,6 +414,20 @@ public class ProposalWrapper {
             return 0;
         }
         return 0;
+    }
+
+    public int getOverallStatus() {
+        try {
+            boolean emailsSent = getJudgingStatus();
+            if(!emailsSent) {
+                if(getFellowStatus() == 0 || getJudgeStatus() == 0) return 0;
+                else return 1;
+            }else return 2;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
     public boolean getIsLatestVersion() {

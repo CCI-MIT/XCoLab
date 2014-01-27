@@ -303,7 +303,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .modified a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .contributor {float:left; width:106px; height:37px;}
 .blueheaderbar .contributor a {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .judgefellow {float:left; height:37px; width: 108px; position: relative; text-align: center;}
+.blueheaderbar .judgefellow {float:left; height:37px; width: 159px; position: relative; text-align: center;}
 .blueheaderbar .judgefellow a {padding-top:10px; height:27px; display:inline-block;}
 
 /* contest page */

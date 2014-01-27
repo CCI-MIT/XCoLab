@@ -88,6 +88,33 @@
                     <div class="fellow-judge-action">
                         <span class="fieldWithTooltip">
                         <c:choose>
+                            <c:when test="${proposal.overallStatus == 0}">
+                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                            </c:when>
+                            <c:when test="${proposal.overallStatus == 1}">
+                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        </span>
+                        <div class="tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.overallStatus == 0}">
+                                    No decision yet.
+                                </c:when>
+                                <c:when test="${proposal.overallStatus == 1}">
+                                    E-Mails have not been sent out yet.
+                                </c:when>
+                                <c:otherwise>
+                                    E-Mails have been sent out.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <span class="fieldWithTooltip">
+                        <c:choose>
                             <c:when test="${proposal.judgeStatus == 0}">
                                 <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
                             </c:when>
