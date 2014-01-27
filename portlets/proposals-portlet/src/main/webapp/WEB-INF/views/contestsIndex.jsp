@@ -8,6 +8,7 @@
 	<jsp:directive.include file="./init.jspx" />
 	<div id="content">
 		<jsp:directive.include file="./contestsIndex/header.jspx" />
+
 		<c:choose>
 			<c:when test="${viewType == 'GRID' }">
 				<jsp:directive.include file="./contestsIndex/grid.jspx" />		

@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.*;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
@@ -23,8 +22,6 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.liferay.portal.model.User;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
@@ -545,7 +542,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         for (Proposal p : proposals){
             String judges = "";
             try{
-                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), lastContestPhase, ProposalAttributeKeys.SELECTED_JUDGES).getStringValue();
+                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), lastContestPhase, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
             } catch (NoSuchProposalContestPhaseAttributeException e) {  }
             if (StringUtils.containsIgnoreCase(judges,u.getUserId()+"")) counter++;
         }

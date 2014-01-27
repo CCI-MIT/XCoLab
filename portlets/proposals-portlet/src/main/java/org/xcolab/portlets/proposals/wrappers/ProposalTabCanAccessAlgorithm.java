@@ -42,7 +42,14 @@ interface ProposalTabCanAccessAlgorithm {
         
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-            return permissions.getCanJudgeActions();
+            if(!fellowAccess.canAccess(permissions, context, request)) return false;
+            try {
+                ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(context.getProposal(request), context.getUser(request));
+                return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
+            } catch (Throwable e) {
+
+            }
+            return false;
         }
     };
     
