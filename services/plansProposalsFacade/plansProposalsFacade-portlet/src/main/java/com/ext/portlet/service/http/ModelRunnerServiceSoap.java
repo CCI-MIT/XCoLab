@@ -72,7 +72,7 @@ public class ModelRunnerServiceSoap {
                     inputs);
 
             return returnValue.toString();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             _log.error(e, e);
 
             throw new RemoteException(e.getMessage());

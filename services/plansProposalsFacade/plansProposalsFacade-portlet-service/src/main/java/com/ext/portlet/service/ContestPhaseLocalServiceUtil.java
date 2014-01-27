@@ -1,5 +1,6 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
@@ -329,7 +330,7 @@ public class ContestPhaseLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
+        throws NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getActivePhaseForContest(contest);
     }

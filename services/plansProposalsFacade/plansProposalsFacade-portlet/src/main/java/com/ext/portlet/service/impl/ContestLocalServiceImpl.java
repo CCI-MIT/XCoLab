@@ -11,7 +11,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.ext.portlet.*;
+import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
@@ -38,39 +41,13 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.PlanType;
-import com.ext.portlet.model.ContestDebate;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.service.ClpSerializer;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.service.ContestDebateLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;

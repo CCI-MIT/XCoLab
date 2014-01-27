@@ -1,5 +1,6 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -293,7 +294,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
+        throws NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**

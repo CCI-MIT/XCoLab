@@ -119,6 +119,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes526;
     private String _methodName528;
     private String[] _methodParameterTypes528;
+    private String _methodName529;
+    private String[] _methodParameterTypes529;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -362,6 +364,10 @@ public class ContestLocalServiceClpInvoker {
         _methodParameterTypes528 = new String[] {
                 "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
             };
+
+        _methodName529 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes529 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -673,6 +679,11 @@ public class ContestLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
             return ContestLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
                 (com.ext.portlet.model.Contest) arguments[1]);
+        }
+
+        if (_methodName529.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestsMatchingOntologyTerms((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

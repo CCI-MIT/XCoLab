@@ -1,5 +1,7 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -233,11 +235,13 @@ public interface ContestLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Contest getContestByActiveFlag(boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
+    public com.ext.portlet.model.Contest getContestByActiveFlag(
+        boolean contestActive)
+        throws NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public Contest createNewContest(java.lang.Long userId, java.lang.String name)
+    public com.ext.portlet.model.Contest createNewContest(
+        java.lang.Long userId, java.lang.String name)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -245,134 +249,151 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<Contest> findByActiveFeatured(boolean active,
-        boolean featured)
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
+        boolean active, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<Contest> findByActiveFlag(boolean active, int flag)
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlag(
+        boolean active, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<Contest> findByActiveFlagText(boolean active,
-        java.lang.String flagText)
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
+        boolean active, java.lang.String flagText)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Methods from ContestImpl *
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<ContestPhase> getPhases(Contest contest);
+    public java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
+        com.ext.portlet.model.Contest contest);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public PlanType getPlanType(Contest contest)
+    public com.ext.portlet.model.PlanType getPlanType(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<ContestPhase> getActivePhases(Contest contest)
+    public java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public ContestPhase getActivePhase(Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
+    public com.ext.portlet.model.ContestPhase getActivePhase(
+        com.ext.portlet.model.Contest contest)
+        throws NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public ContestPhase getActiveOrLastPhase(Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
+    public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
+        com.ext.portlet.model.Contest contest)
+        throws NoSuchContestPhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean isActive(Contest contest)
+    public boolean isActive(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.Long> getDebatesIds(Contest contest)
+    public java.util.List<java.lang.Long> getDebatesIds(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.Integer getTotalVotes(Contest contest)
+    public java.lang.Integer getTotalVotes(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void updateDefaultPlanDescription(Contest contest,
-        java.lang.String description)
+    public void updateDefaultPlanDescription(
+        com.ext.portlet.model.Contest contest, java.lang.String description)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void store(Contest contest)
+    public void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public PlanTemplate getPlanTemplate(Contest contest)
+    public com.ext.portlet.model.PlanTemplate getPlanTemplate(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public FocusArea getFocusArea(Contest contest)
+    public com.ext.portlet.model.FocusArea getFocusArea(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portal.model.Image getLogo(Contest contest)
+    public com.liferay.portal.model.Image getLogo(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portal.model.Image getSponsorLogo(Contest contest)
+    public com.liferay.portal.model.Image getSponsorLogo(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public void setLogo(Contest contest, java.io.File logoFile)
+    public void setLogo(com.ext.portlet.model.Contest contest,
+        java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException;
 
-    public void setSponsorLogo(Contest contest, java.io.File logoFile)
+    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
+        java.io.File logoFile)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException,
             java.io.IOException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getLogoPath(Contest contest)
+    public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getSponsorLogoPath(Contest contest)
+    public java.lang.String getSponsorLogoPath(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getProposalsCount(Contest contest)
+    public long getProposalsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest)
+    public com.ext.portlet.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getCommentsCount(Contest contest)
+    public long getCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getProposalsCommentsCount(Contest contest)
+    public long getProposalsCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getVotesCount(Contest contest)
+    public long getVotesCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getTotalComments(Contest contest)
+    public long getTotalComments(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<ContestTeamMember> getTeamMembers(Contest contest)
+    public java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(
+        com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -424,23 +445,14 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
         com.ext.portlet.model.Contest c)
-=======
-    public java.util.List<Contest> getContestsMatchingOntologyTerms(
-        java.util.List<OntologyTerm> ontologyTerms)
->>>>>>> added service builder
-=======
-    public java.util.List<Contest> getContestsMatchingOntologyTerms(
-        java.util.List<OntologyTerm> ontologyTerms)
->>>>>>> rollback
-=======
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
->>>>>>> fixed service builder
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }
