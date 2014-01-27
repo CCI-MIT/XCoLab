@@ -69,6 +69,8 @@ public class OntologyTermLocalServiceClpInvoker {
     private String[] _methodParameterTypes500;
     private String _methodName501;
     private String[] _methodParameterTypes501;
+    private String _methodName502;
+    private String[] _methodParameterTypes502;
 
     public OntologyTermLocalServiceClpInvoker() {
         _methodName0 = "addOntologyTerm";
@@ -212,22 +214,28 @@ public class OntologyTermLocalServiceClpInvoker {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName499 = "getSpace";
+        _methodName499 = "getAllDescendantTerms";
 
         _methodParameterTypes499 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName500 = "tagClass";
+        _methodName500 = "getSpace";
 
         _methodParameterTypes500 = new String[] {
+                "com.ext.portlet.model.OntologyTerm"
+            };
+
+        _methodName501 = "tagClass";
+
+        _methodParameterTypes501 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class",
                 "java.lang.Long"
             };
 
-        _methodName501 = "findTagedIdsForClass";
+        _methodName502 = "findTagedIdsForClass";
 
-        _methodParameterTypes501 = new String[] {
+        _methodParameterTypes502 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
             };
     }
@@ -388,19 +396,24 @@ public class OntologyTermLocalServiceClpInvoker {
 
         if (_methodName499.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
-            return OntologyTermLocalServiceUtil.getSpace((com.ext.portlet.model.OntologyTerm) arguments[0]);
+            return OntologyTermLocalServiceUtil.getAllDescendantTerms((com.ext.portlet.model.OntologyTerm) arguments[0]);
         }
 
         if (_methodName500.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
+            return OntologyTermLocalServiceUtil.getSpace((com.ext.portlet.model.OntologyTerm) arguments[0]);
+        }
+
+        if (_methodName501.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
             OntologyTermLocalServiceUtil.tagClass((com.ext.portlet.model.OntologyTerm) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2]);
 
             return null;
         }
 
-        if (_methodName501.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
+        if (_methodName502.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
             return OntologyTermLocalServiceUtil.findTagedIdsForClass((com.ext.portlet.model.OntologyTerm) arguments[0],
                 (java.lang.Class) arguments[1]);
         }
