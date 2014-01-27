@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.ext.portlet.*;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;

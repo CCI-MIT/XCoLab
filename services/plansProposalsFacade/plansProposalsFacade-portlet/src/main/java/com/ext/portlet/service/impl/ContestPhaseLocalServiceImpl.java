@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ext.portlet.*;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
