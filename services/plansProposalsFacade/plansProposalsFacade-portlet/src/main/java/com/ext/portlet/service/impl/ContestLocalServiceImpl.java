@@ -11,6 +11,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
@@ -88,7 +92,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
-    public Contest getContestByActiveFlag(boolean contestActive) throws NoSuchContestException, SystemException {
+    public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
         return contestPersistence.findBycontestActive(contestActive);
     }
 
@@ -233,7 +237,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return result;
     }
 
-    public ContestPhase getActivePhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+    public ContestPhase getActivePhase(Contest contest) throws SystemException {
 
         for (ContestPhase phase : getPhases(contest)) {
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
@@ -241,7 +245,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     }
 
-    public ContestPhase getActiveOrLastPhase(Contest contest) throws NoSuchContestPhaseException, SystemException {
+    public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException {
         ContestPhase lastPhase = null;
         for (ContestPhase phase : getPhases(contest)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
