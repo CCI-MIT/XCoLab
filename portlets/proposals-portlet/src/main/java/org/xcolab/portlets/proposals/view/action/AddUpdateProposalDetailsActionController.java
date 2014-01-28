@@ -133,7 +133,7 @@ public class AddUpdateProposalDetailsActionController {
         
         for (ProposalSectionWrapper section: proposal.getSections()) {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            if (section.getType() == PlanSectionTypeKeys.TEXT) {
+            if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
                     ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionValue));
                 }
