@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.util.Date;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -145,14 +146,19 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
         if (planTemplate != null) {
             for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-            	ProposalAttribute attribute = proposalLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
-            	if (attribute != null && attribute.getStringValue().trim().length() > 0) {
-            		JSONObject obj = JSONFactoryUtil.createJSONObject();
-            		obj.put("title", psd.getTitle());
-            		obj.put("sectionId", psd.getId());
-            		obj.put("content", attribute.getStringValue());
+            	try {
+            		ProposalAttribute attribute = proposalLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
+            		if (attribute != null && attribute.getStringValue().trim().length() > 0) {
+            			JSONObject obj = JSONFactoryUtil.createJSONObject();
+            			obj.put("title", psd.getTitle());
+            			obj.put("sectionId", psd.getId());
+            			obj.put("content", attribute.getStringValue());
             		
-            		ret.put(obj);
+            			ret.put(obj);
+            		}
+            	}
+            	catch (NoSuchProposalAttributeException e) {
+            		// ignore
             	}
             }
         }
