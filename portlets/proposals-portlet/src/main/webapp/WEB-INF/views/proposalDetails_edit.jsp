@@ -36,10 +36,18 @@
 	</c:choose>
 
     <div class="headline addprop">
+    	<c:if test="${not empty baseProposal }">
+    		<p>
+    			You're about to create a proposal that will be based on 
+    			<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
+    		</p>
+    	</c:if>
+    	<p>
         Please complete your proposal based on the template below. 
         If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.  
         To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/2012+contest+rules" target="_blank">Contest rules</a> 
         and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+        </p>
     </div> <!-- /headline -->
     
     

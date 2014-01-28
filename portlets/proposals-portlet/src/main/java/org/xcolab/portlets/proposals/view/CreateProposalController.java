@@ -13,6 +13,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionController;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.model.Contest;
@@ -55,6 +56,7 @@ public class CreateProposalController extends BaseProposalsController {
         	
 
         	model.addAttribute("baseProposal", baseProposalWrapper);
+        	model.addAttribute("baseContest", new ContestWrapper(baseContest));
         	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
         }
         else {

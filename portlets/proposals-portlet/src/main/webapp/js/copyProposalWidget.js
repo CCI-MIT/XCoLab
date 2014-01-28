@@ -69,11 +69,22 @@ function loadProposalSections() {
     });
 }
 
+function updatePopupSize() {
+	var container = jQuery("#copyProposalContainer");
+	container.find("#copyProposalPopup").css({top: "20px"});
+	var availableHeight = jQuery(window).height();
+	console.log(container.find(".popup"));
+	container.find(".popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
+	
+}
+
 jQuery(function() {
 	jQuery(".copyFromBaseProposalTrigger").click(function() {
 		targetSectionId = jQuery(this).attr('data-section-id');
 		loadProposalSections();
 		jQuery("#copyProposalContainer").show();
+		updatePopupSize();
+		
 		
 		
 	});
@@ -82,6 +93,7 @@ jQuery(function() {
 function showCopyProposalPopup() {
 	loadContests();
 	jQuery("#copyProposalContainer").show();
+	updatePopupSize();
 }
 
 
