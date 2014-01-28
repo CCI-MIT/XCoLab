@@ -137,7 +137,6 @@
 				proposalId: ${proposal.proposalId},
 				version: ${proposal.version}
 		}
-		console.log(currentProposal);
 	</script>
 
 </jsp:root>

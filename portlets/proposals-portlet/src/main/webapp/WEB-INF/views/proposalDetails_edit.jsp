@@ -328,5 +328,19 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		var currentProposal = {
+				proposalId: ${proposal.proposalId},
+				version: ${proposal.version}
+		}
+		var baseProposal = {
+				proposalId: ${baseProposal.proposalId},
+				version: ${baseProposal.version}
+		}
+		var baseContest = {
+				contestPK: ${baseContest.contestPK}
+		}
+		
+	</script>
 
 </jsp:root>

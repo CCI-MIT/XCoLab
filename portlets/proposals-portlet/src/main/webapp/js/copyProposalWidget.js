@@ -35,11 +35,12 @@ function loadProposalSections() {
 	if (proposalsLoaded) return;
 	
     jQuery.getJSON('/api/jsonws/plansProposalsFacade-portlet.proposal/get-proposal-contest-sections', {
-        proposalId: 1702,
-        version: 67,
-        contestId: 1300103
+        proposalId: baseProposal.proposalId,
+        version: baseProposal.version,
+        contestId: baseContest.contestPK
       }, function(data) {
     	var html = ["<table>"];
+    	console.log(data);
     	jQuery(data).each(function(idx, obj) {
     		availableSections[obj.sectionId] = obj;
     		html.push("<tr>");
@@ -61,6 +62,7 @@ function loadProposalSections() {
     	
     	jQuery("#copyProposalContests a").click(function() {
     		var copyFromSectionId = jQuery(this).attr('data-section-id');
+    		
     		CKEDITOR.instances['sectionsContent' + targetSectionId].insertHtml(availableSections[copyFromSectionId].content);
     		jQuery("#copyProposalContainer").hide();
     	});

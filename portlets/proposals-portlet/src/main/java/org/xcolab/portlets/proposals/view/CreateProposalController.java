@@ -65,6 +65,7 @@ public class CreateProposalController extends BaseProposalsController {
         
         model.addAttribute("proposal", proposalWrapped);
 
+        model.addAttribute("isEditingProposal", true);
         setSeoTexts(request, "Create proposal in " + proposalsContext.getContest(request), null, null);
         
 
