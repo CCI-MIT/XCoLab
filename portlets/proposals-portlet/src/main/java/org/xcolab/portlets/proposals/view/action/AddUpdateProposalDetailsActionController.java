@@ -9,6 +9,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -181,7 +184,20 @@ public class AddUpdateProposalDetailsActionController {
     }
 
     private String removeHtml(String data) {
-        return Jsoup.clean(data, Whitelist.none());
+    	
+    	// fixing bug related to escaping html entities
+    	
+    	// Parse str into a Document
+    	Document doc = Jsoup.parse(data);
+
+    	// Clean the document.
+    	doc = new Cleaner(Whitelist.simpleText()).clean(doc);
+
+    	// Adjust escape mode
+    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
+
+    	// Get back the string of the body.
+    	return doc.body().html();
     }
 
     private String xssClean(String sectionData) {
