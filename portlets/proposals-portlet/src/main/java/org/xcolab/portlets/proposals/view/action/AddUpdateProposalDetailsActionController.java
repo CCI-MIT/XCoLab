@@ -186,6 +186,8 @@ public class AddUpdateProposalDetailsActionController {
     private String removeHtml(String data) {
     	
     	// fixing bug related to escaping html entities
+    	// http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities
+    	
     	
     	// Parse str into a Document
     	Document doc = Jsoup.parse(data);
