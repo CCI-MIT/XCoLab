@@ -135,8 +135,27 @@ Collab.nav = new function() {
 		// below is ugly hack, but without it webkit based browsers don't work
 		
 		setTimeout(function() {
-				jQuery(".navigationManagerForm .submit").click();
-			}, 0);
+				try {
+					var element = jQuery(".navigationManagerForm .submit").get(0);
+					var event = "click";
+					   if (document.createEvent) {
+					       // dispatch for firefox + others
+					       var evt = document.createEvent("HTMLEvents");
+					       evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+					       return !element.dispatchEvent(evt);
+					   } else {
+					       // dispatch for IE
+					       var evt = document.createEventObject();
+					       return element.fireEvent('on'+event,evt)
+					   }
+					//jQuery(".navigationManagerForm .submit").trigger('click');
+				}
+				catch (e) {
+					if (window[console]) {
+						window.console.log(e);
+					}
+				}
+			}, 1);
 		
 		return false;
 		
