@@ -26,6 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
+import org.xcolab.portlets.proposals.utils.LinkUtils;
 
 public class ProposalSectionWrapper {
 
@@ -63,13 +64,13 @@ public class ProposalSectionWrapper {
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
         String content = getContent();
-        if(content == null) return null;
+        if (content == null) return null;
         Document d = Jsoup.parse(content.trim());
         for (Element e : d.select("a.utube")) {
             String curURL = e.attr("href");
-            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?")+1), Charset.defaultCharset());
-            for(NameValuePair nvp : params) {
-                if(nvp.getName().equals("v")) {
+            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?") + 1), Charset.defaultCharset());
+            for (NameValuePair nvp : params) {
+                if (nvp.getName().equals("v")) {
                     e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + nvp.getValue() + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
                     e.remove();
                 }
@@ -77,25 +78,8 @@ public class ProposalSectionWrapper {
         }
 
         for (Element e : d.select("a")) {
-            String href = e.attr("href");
-            if (href.contains("/web/guest/plans/-/plans/contestId/")) {
-                final String planId = "/planId/";
-                int beginIndex = href.indexOf(planId);
-                if (beginIndex > -1) {
-                    String proposalIdSuffix = href.substring(beginIndex+planId.length(), href.length());
-                    int slashIndex = proposalIdSuffix.indexOf("/");
-                    String idStr = slashIndex > -1 ? proposalIdSuffix.substring(0, slashIndex) : proposalIdSuffix;
-
-                    try {
-                        Long id = Long.parseLong(idStr);
-
-                        ProposalWrapper proposalWrapper = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(id));
-                        e.text(proposalWrapper.getName());
-                    } catch (Throwable ex) {
-
-                    }
-                }
-            }
+            ProposalWrapper wr = LinkUtils.getProposalLinks(e.attr("href"));
+            if (wr != null) e.text(wr.getName());
         }
 
         return d.select("body").html();
