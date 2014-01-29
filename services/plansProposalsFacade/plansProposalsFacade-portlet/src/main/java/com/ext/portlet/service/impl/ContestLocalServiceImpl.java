@@ -93,7 +93,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
-        return contestPersistence.findBycontestActive(contestActive);
+        List<Contest> contests = contestPersistence.findByContestActive(contestActive);
+        if (contests.isEmpty()) {
+        	throw new NoSuchContestException();
+        }
+        return contests.get(0);
     }
 
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
@@ -510,5 +514,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             if (StringUtils.containsIgnoreCase(judges,u.getUserId()+"")) counter++;
         }
         return counter;
+    }
+    
+    public List<Contest> getContestsByActivePrivate(boolean active, boolean privateContest) throws SystemException {
+    	return contestPersistence.findByContestActivecontestPrivate(active, privateContest);	
     }
 }

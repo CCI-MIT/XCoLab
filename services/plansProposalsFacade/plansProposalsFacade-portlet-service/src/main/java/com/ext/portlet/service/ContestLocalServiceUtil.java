@@ -321,15 +321,13 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getActivePhase(contest);
     }
 
     public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getActiveOrLastPhase(contest);
     }
 
@@ -523,6 +521,12 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getNumberOfProposalsForJudge(u, c);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
+        boolean active, boolean privateContest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsByActivePrivate(active, privateContest);
     }
 
     public static void clearService() {

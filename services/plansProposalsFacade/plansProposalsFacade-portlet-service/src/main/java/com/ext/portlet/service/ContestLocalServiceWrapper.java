@@ -340,16 +340,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhase(contest);
     }
 
     @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActiveOrLastPhase(contest);
     }
 
@@ -567,6 +565,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getNumberOfProposalsForJudge(u, c);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
+        boolean active, boolean privateContest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsByActivePrivate(active,
+            privateContest);
     }
 
     /**

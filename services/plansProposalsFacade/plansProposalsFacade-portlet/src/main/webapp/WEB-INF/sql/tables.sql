@@ -57,7 +57,9 @@ create table xcolab_Contest (
 	groupId LONG,
 	discussionGroupId LONG,
 	weight INTEGER,
-	resourcesUrl VARCHAR(1024) null
+	resourcesUrl VARCHAR(1024) null,
+	contestPrivate BOOLEAN,
+	usePermissions BOOLEAN
 );
 
 create table xcolab_ContestDebate (

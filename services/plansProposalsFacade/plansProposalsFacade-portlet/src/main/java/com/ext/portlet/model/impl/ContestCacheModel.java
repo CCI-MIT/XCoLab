@@ -47,10 +47,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long discussionGroupId;
     public int weight;
     public String resourcesUrl;
+    public boolean contestPrivate;
+    public boolean usePermissions;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(53);
+        StringBundler sb = new StringBundler(57);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -104,6 +106,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(weight);
         sb.append(", resourcesUrl=");
         sb.append(resourcesUrl);
+        sb.append(", contestPrivate=");
+        sb.append(contestPrivate);
+        sb.append(", usePermissions=");
+        sb.append(usePermissions);
         sb.append("}");
 
         return sb.toString();
@@ -204,6 +210,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setResourcesUrl(resourcesUrl);
         }
 
+        contestImpl.setContestPrivate(contestPrivate);
+        contestImpl.setUsePermissions(usePermissions);
+
         contestImpl.resetOriginalValues();
 
         return contestImpl;
@@ -237,6 +246,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         discussionGroupId = objectInput.readLong();
         weight = objectInput.readInt();
         resourcesUrl = objectInput.readUTF();
+        contestPrivate = objectInput.readBoolean();
+        usePermissions = objectInput.readBoolean();
     }
 
     @Override
@@ -321,5 +332,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             objectOutput.writeUTF(resourcesUrl);
         }
+
+        objectOutput.writeBoolean(contestPrivate);
+        objectOutput.writeBoolean(usePermissions);
     }
 }

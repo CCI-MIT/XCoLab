@@ -281,14 +281,12 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isActive(com.ext.portlet.model.Contest contest)
@@ -447,4 +445,9 @@ public interface ContestLocalService extends BaseLocalService,
         com.ext.portlet.model.Contest c)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
+        boolean active, boolean privateContest)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

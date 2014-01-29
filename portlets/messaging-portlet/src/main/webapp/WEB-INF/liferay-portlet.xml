@@ -8,7 +8,7 @@
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/css/autoSuggest.css</header-portlet-css>
-		<header-portlet-javascript>/js/jquery.autoSuggest.js</header-portlet-javascript>
+		<!-- <header-portlet-javascript>/js/jquery.autoSuggest.js</header-portlet-javascript>-->
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>

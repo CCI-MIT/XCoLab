@@ -47,6 +47,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _discussionGroupId;
     private int _weight;
     private String _resourcesUrl;
+    private boolean _contestPrivate;
+    private boolean _usePermissions;
     private BaseModel<?> _contestRemoteModel;
 
     public ContestClp() {
@@ -113,6 +115,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("discussionGroupId", getDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
+        attributes.put("contestPrivate", getContestPrivate());
+        attributes.put("usePermissions", getUsePermissions());
 
         return attributes;
     }
@@ -278,6 +282,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (resourcesUrl != null) {
             setResourcesUrl(resourcesUrl);
+        }
+
+        Boolean contestPrivate = (Boolean) attributes.get("contestPrivate");
+
+        if (contestPrivate != null) {
+            setContestPrivate(contestPrivate);
+        }
+
+        Boolean usePermissions = (Boolean) attributes.get("usePermissions");
+
+        if (usePermissions != null) {
+            setUsePermissions(usePermissions);
         }
     }
 
@@ -877,6 +893,62 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public boolean getContestPrivate() {
+        return _contestPrivate;
+    }
+
+    @Override
+    public boolean isContestPrivate() {
+        return _contestPrivate;
+    }
+
+    @Override
+    public void setContestPrivate(boolean contestPrivate) {
+        _contestPrivate = contestPrivate;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestPrivate",
+                        boolean.class);
+
+                method.invoke(_contestRemoteModel, contestPrivate);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getUsePermissions() {
+        return _usePermissions;
+    }
+
+    @Override
+    public boolean isUsePermissions() {
+        return _usePermissions;
+    }
+
+    @Override
+    public void setUsePermissions(boolean usePermissions) {
+        _usePermissions = usePermissions;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setUsePermissions",
+                        boolean.class);
+
+                method.invoke(_contestRemoteModel, usePermissions);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -970,6 +1042,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setDiscussionGroupId(getDiscussionGroupId());
         clone.setWeight(getWeight());
         clone.setResourcesUrl(getResourcesUrl());
+        clone.setContestPrivate(getContestPrivate());
+        clone.setUsePermissions(getUsePermissions());
 
         return clone;
     }
@@ -1027,7 +1101,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(53);
+        StringBundler sb = new StringBundler(57);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1081,6 +1155,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getWeight());
         sb.append(", resourcesUrl=");
         sb.append(getResourcesUrl());
+        sb.append(", contestPrivate=");
+        sb.append(getContestPrivate());
+        sb.append(", usePermissions=");
+        sb.append(getUsePermissions());
         sb.append("}");
 
         return sb.toString();
@@ -1088,7 +1166,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(82);
+        StringBundler sb = new StringBundler(88);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1197,6 +1275,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>resourcesUrl</column-name><column-value><![CDATA[");
         sb.append(getResourcesUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestPrivate</column-name><column-value><![CDATA[");
+        sb.append(getContestPrivate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>usePermissions</column-name><column-value><![CDATA[");
+        sb.append(getUsePermissions());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

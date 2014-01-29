@@ -39,6 +39,8 @@
         <column name="discussionGroupId" type="long" />
         <column name="weight" type="int" />
         <column name="resourcesUrl" type="String" />
+        <column name="contestPrivate" type="boolean" />
+        <column name="usePermissions" type="boolean" />
         
         <order by="asc">
             <order-column name="weight" />
@@ -49,20 +51,39 @@
             <finder-column name="PlanTypeId" />
         </finder>
         
-        <finder name="contestActive" return-type="Contest">
+        <finder name="ContestActivecontestPrivate" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="contestPrivate" />
+        </finder>
+        <finder name="ContestActive" return-type="Collection">
             <finder-column name="contestActive" />
         </finder>
         <finder name="ActiveFeatured" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="featured" />
         </finder>
+        <finder name="ActiveFeaturedcontestPrivate" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="featured" />
+            <finder-column name="contestPrivate" />
+        </finder>
         <finder name="ActiveFlag" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flag" />
         </finder>
+        <finder name="ActiveFlagContest" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flag" />
+            <finder-column name="contestPrivate" />
+        </finder>
         <finder name="ActiveFlagText" return-type="Collection">
             <finder-column name="contestActive" />
             <finder-column name="flagText" />
+        </finder>
+        <finder name="ActiveFlagTextcontestPrivate" return-type="Collection">
+            <finder-column name="contestActive" />
+            <finder-column name="flagText" />
+            <finder-column name="contestPrivate" />
         </finder>
     </entity>
     
