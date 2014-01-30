@@ -57,7 +57,8 @@
 	
 	
 	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
-		<form:hidden path="baseProposal" />
+		<form:hidden path="baseProposalId" />
+		<form:hidden path="baseProposalContestId" />
 		
 		<div class="addpropbox q1">
             <label>

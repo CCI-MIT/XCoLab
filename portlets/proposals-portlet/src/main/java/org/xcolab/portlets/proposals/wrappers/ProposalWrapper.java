@@ -29,6 +29,7 @@ public class ProposalWrapper {
     private final ContestPhase contestPhase;
     private final Proposal2Phase proposal2Phase;
     private ContestPhaseRibbonType contestPhaseRibbonType;
+    private ProposalWrapper baseProposal;
 
     private List<ProposalTeamMemberWrapper> members;
     private List<ProposalSectionWrapper> sections;
@@ -374,6 +375,8 @@ public class ProposalWrapper {
     public Long getModelId() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
     }
+    
+    
 
     public Long getScenarioId() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
@@ -459,5 +462,22 @@ public class ProposalWrapper {
 	
 	public int getVersion() {
 		return version;
+	}
+	
+	public ProposalWrapper getBaseProposal() throws PortalException, SystemException {
+		if (baseProposal == null) {
+			long baseProposalId = proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
+			long baseProposalContestId = proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
+			if (baseProposalId > 0 && baseProposalContestId > 0) {
+				Proposal p = ProposalLocalServiceUtil.getProposal(baseProposalId);
+				Contest c = ContestLocalServiceUtil.getContest(baseProposalContestId);
+				baseProposal = new ProposalWrapper(p, p.getCurrentVersion(), c, null, null);
+			}
+		}
+		return baseProposal;
+	}
+
+	public long getContestPK() {
+		return contest.getContestPK();
 	}
 }

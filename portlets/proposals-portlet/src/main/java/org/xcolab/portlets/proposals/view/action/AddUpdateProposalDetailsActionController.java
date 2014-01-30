@@ -107,6 +107,7 @@ public class AddUpdateProposalDetailsActionController {
             if (updateProposalSectionsBean.getBaseProposalId() > 0) {
             	// we have a base proposal
             	ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID, updateProposalSectionsBean.getBaseProposalId());
+            	ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, updateProposalSectionsBean.getBaseProposalContestId());
             	
             	 
             	

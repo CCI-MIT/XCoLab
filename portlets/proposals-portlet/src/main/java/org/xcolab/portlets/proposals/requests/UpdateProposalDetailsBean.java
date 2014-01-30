@@ -21,6 +21,7 @@ public class UpdateProposalDetailsBean {
     private String team;
     private long imageId;
     private long baseProposalId;
+    private long baseProposalContestId;
 
     // legacy
     private String description;
@@ -46,6 +47,7 @@ public class UpdateProposalDetailsBean {
         imageId = baseProposal.getImageId();
         description = baseProposal.getDescription();
         baseProposalId = baseProposal.getProposalId();
+        baseProposalContestId = baseProposal.getContestPK();
     }
 
     public UpdateProposalDetailsBean() {
@@ -105,6 +107,14 @@ public class UpdateProposalDetailsBean {
 
 	public void setBaseProposalId(long baseProposalId) {
 		this.baseProposalId = baseProposalId;
+	}
+
+	public long getBaseProposalContestId() {
+		return baseProposalContestId;
+	}
+
+	public void setBaseProposalContestId(long baseProposalContestId) {
+		this.baseProposalContestId = baseProposalContestId;
 	}
 
 
