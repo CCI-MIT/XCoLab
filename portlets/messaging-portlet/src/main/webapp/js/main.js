@@ -148,14 +148,6 @@ function initSendMessageForm(users, usersMapParam, preFill) {
 
 function updateReceipients() {
     var receipients = [];
-    /*
-    jQuery(".as-selections li").each(function() {
-    	var thizText = jQuery(this).text().substring(1);
-    	if (jQuery.trim(thizText).length > 0) 
-    		receipients.push(usersMap[jQuery(this).text().substring(1)]);
-    });*/
-    console.log("updating", jQuery("#userSelectorInput").val());
-    console.log(jQuery("#userSelectorInput").val().split(","), jQuery("#userSelectorInput"));
 	jQuery(jQuery("#userSelectorInput").val().split(",")).each(function(idx, str) {
 		var userName = jQuery.trim(str);
 		if (userName.length > 0 && userName in usersMap) {
@@ -164,7 +156,6 @@ function updateReceipients() {
 	});
     
     receipients.sort();
-    console.log(receipients);
     jQuery(".messageReceipientsInput").val(receipients);
 }
 
