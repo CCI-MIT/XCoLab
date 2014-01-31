@@ -118,6 +118,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes54;
     private String _methodName55;
     private String[] _methodParameterTypes55;
+    private String _methodName56;
+    private String[] _methodParameterTypes56;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -363,6 +365,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodParameterTypes55 = new String[] {
                 "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
             };
+
+        _methodName56 = "getContestsByActivePrivate";
+
+        _methodParameterTypes56 = new String[] { "boolean", "boolean" };
     }
 
     @Override
@@ -1146,8 +1152,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1156,10 +1161,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchContestPhaseException) {
-                throw (com.ext.portlet.NoSuchContestPhaseException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
@@ -1179,8 +1180,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1189,10 +1189,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchContestPhaseException) {
-                throw (com.ext.portlet.NoSuchContestPhaseException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
@@ -2019,5 +2015,33 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return ((Integer) returnObj).intValue();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
+        boolean active, boolean privateContest)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName56,
+                    _methodParameterTypes56,
+                    new Object[] { active, privateContest });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
     }
 }

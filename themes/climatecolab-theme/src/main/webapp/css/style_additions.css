@@ -1287,3 +1287,8 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 #p_p_id_145_ {
 	display:none;
 }
+
+.add-comment textarea.field {
+	width: 100%;
+	max-width: 100% !important;
+}

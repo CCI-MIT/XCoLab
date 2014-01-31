@@ -76,9 +76,11 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "groupId", Types.BIGINT },
             { "discussionGroupId", Types.BIGINT },
             { "weight", Types.INTEGER },
-            { "resourcesUrl", Types.VARCHAR }
+            { "resourcesUrl", Types.VARCHAR },
+            { "contestPrivate", Types.BOOLEAN },
+            { "usePermissions", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(2048) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,focusAreaId LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(2048) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,focusAreaId LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -96,11 +98,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             true);
     public static long PLANTYPEID_COLUMN_BITMASK = 1L;
     public static long CONTESTACTIVE_COLUMN_BITMASK = 2L;
-    public static long FEATURED_COLUMN_BITMASK = 4L;
-    public static long FLAG_COLUMN_BITMASK = 8L;
-    public static long FLAGTEXT_COLUMN_BITMASK = 16L;
-    public static long WEIGHT_COLUMN_BITMASK = 32L;
-    public static long CREATED_COLUMN_BITMASK = 64L;
+    public static long CONTESTPRIVATE_COLUMN_BITMASK = 4L;
+    public static long FEATURED_COLUMN_BITMASK = 8L;
+    public static long FLAG_COLUMN_BITMASK = 16L;
+    public static long FLAGTEXT_COLUMN_BITMASK = 32L;
+    public static long WEIGHT_COLUMN_BITMASK = 64L;
+    public static long CREATED_COLUMN_BITMASK = 128L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
@@ -142,6 +145,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private long _discussionGroupId;
     private int _weight;
     private String _resourcesUrl;
+    private boolean _contestPrivate;
+    private boolean _originalContestPrivate;
+    private boolean _setOriginalContestPrivate;
+    private boolean _usePermissions;
     private long _columnBitmask;
     private Contest _escapedModel;
 
@@ -187,6 +194,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setDiscussionGroupId(soapModel.getDiscussionGroupId());
         model.setWeight(soapModel.getWeight());
         model.setResourcesUrl(soapModel.getResourcesUrl());
+        model.setContestPrivate(soapModel.getContestPrivate());
+        model.setUsePermissions(soapModel.getUsePermissions());
 
         return model;
     }
@@ -272,6 +281,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("discussionGroupId", getDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
+        attributes.put("contestPrivate", getContestPrivate());
+        attributes.put("usePermissions", getUsePermissions());
 
         return attributes;
     }
@@ -437,6 +448,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (resourcesUrl != null) {
             setResourcesUrl(resourcesUrl);
+        }
+
+        Boolean contestPrivate = (Boolean) attributes.get("contestPrivate");
+
+        if (contestPrivate != null) {
+            setContestPrivate(contestPrivate);
+        }
+
+        Boolean usePermissions = (Boolean) attributes.get("usePermissions");
+
+        if (usePermissions != null) {
+            setUsePermissions(usePermissions);
         }
     }
 
@@ -844,6 +867,50 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         _resourcesUrl = resourcesUrl;
     }
 
+    @JSON
+    @Override
+    public boolean getContestPrivate() {
+        return _contestPrivate;
+    }
+
+    @Override
+    public boolean isContestPrivate() {
+        return _contestPrivate;
+    }
+
+    @Override
+    public void setContestPrivate(boolean contestPrivate) {
+        _columnBitmask |= CONTESTPRIVATE_COLUMN_BITMASK;
+
+        if (!_setOriginalContestPrivate) {
+            _setOriginalContestPrivate = true;
+
+            _originalContestPrivate = _contestPrivate;
+        }
+
+        _contestPrivate = contestPrivate;
+    }
+
+    public boolean getOriginalContestPrivate() {
+        return _originalContestPrivate;
+    }
+
+    @JSON
+    @Override
+    public boolean getUsePermissions() {
+        return _usePermissions;
+    }
+
+    @Override
+    public boolean isUsePermissions() {
+        return _usePermissions;
+    }
+
+    @Override
+    public void setUsePermissions(boolean usePermissions) {
+        _usePermissions = usePermissions;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -901,6 +968,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setDiscussionGroupId(getDiscussionGroupId());
         contestImpl.setWeight(getWeight());
         contestImpl.setResourcesUrl(getResourcesUrl());
+        contestImpl.setContestPrivate(getContestPrivate());
+        contestImpl.setUsePermissions(getUsePermissions());
 
         contestImpl.resetOriginalValues();
 
@@ -979,6 +1048,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestModelImpl._setOriginalFlag = false;
 
         contestModelImpl._originalFlagText = contestModelImpl._flagText;
+
+        contestModelImpl._originalContestPrivate = contestModelImpl._contestPrivate;
+
+        contestModelImpl._setOriginalContestPrivate = false;
 
         contestModelImpl._columnBitmask = 0;
     }
@@ -1114,12 +1187,16 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             contestCacheModel.resourcesUrl = null;
         }
 
+        contestCacheModel.contestPrivate = getContestPrivate();
+
+        contestCacheModel.usePermissions = getUsePermissions();
+
         return contestCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(53);
+        StringBundler sb = new StringBundler(57);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1173,6 +1250,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getWeight());
         sb.append(", resourcesUrl=");
         sb.append(getResourcesUrl());
+        sb.append(", contestPrivate=");
+        sb.append(getContestPrivate());
+        sb.append(", usePermissions=");
+        sb.append(getUsePermissions());
         sb.append("}");
 
         return sb.toString();
@@ -1180,7 +1261,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(82);
+        StringBundler sb = new StringBundler(88);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1289,6 +1370,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>resourcesUrl</column-name><column-value><![CDATA[");
         sb.append(getResourcesUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>contestPrivate</column-name><column-value><![CDATA[");
+        sb.append(getContestPrivate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>usePermissions</column-name><column-value><![CDATA[");
+        sb.append(getUsePermissions());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

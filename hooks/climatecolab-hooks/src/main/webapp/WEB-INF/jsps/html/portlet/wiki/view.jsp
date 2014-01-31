@@ -17,7 +17,14 @@
 <%@ include file="/html/portlet/wiki/init.jsp" %>
 
 <%
+String[] rolesWithCommentsPermissions = {"administrator", "advisor", "judge", "fellow", "Fellow", "Judge", "Advisor", "Administrator"};
+		 
 enableComments = false;
+
+for (String roleName: rolesWithCommentsPermissions) {
+	enableComments |= renderRequest.isUserInRole(roleName);
+}
+
 enablePageRatings = false;
 boolean followRedirect = ParamUtil.getBoolean(request, "followRedirect", true);
 

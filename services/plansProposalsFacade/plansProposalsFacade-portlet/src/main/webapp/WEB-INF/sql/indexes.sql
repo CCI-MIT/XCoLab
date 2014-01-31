@@ -7,9 +7,17 @@ create index IX_33049EE6 on xcolab_ActivitySubscription (receiverId);
 
 create index IX_5192E6B6 on xcolab_Contest (PlanTypeId);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
+create index IX_9AB21749 on xcolab_Contest (contestActive, contestPrivate);
 create index IX_D29429DB on xcolab_Contest (contestActive, featured_);
+create index IX_348F875E on xcolab_Contest (contestActive, featured_, contestPrivate);
+create index IX_963C1320 on xcolab_Contest (contestActive, featured_, privateContest);
 create index IX_491DA3A6 on xcolab_Contest (contestActive, flag);
+create index IX_B9BA0B29 on xcolab_Contest (contestActive, flag, contestPrivate);
+create index IX_1B6696EB on xcolab_Contest (contestActive, flag, privateContest);
 create index IX_C09FE3B3 on xcolab_Contest (contestActive, flagText);
+create index IX_7D5C9136 on xcolab_Contest (contestActive, flagText, contestPrivate);
+create index IX_DF091CF8 on xcolab_Contest (contestActive, flagText, privateContest);
+create index IX_FC5EA30B on xcolab_Contest (contestActive, privateContest);
 
 create index IX_379DF74A on xcolab_ContestDebate (ContestPK);
 

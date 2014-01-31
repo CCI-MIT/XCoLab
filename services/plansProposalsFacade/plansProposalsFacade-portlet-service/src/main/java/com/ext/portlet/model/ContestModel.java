@@ -441,6 +441,48 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setResourcesUrl(String resourcesUrl);
 
+    /**
+     * Returns the contest private of this contest.
+     *
+     * @return the contest private of this contest
+     */
+    public boolean getContestPrivate();
+
+    /**
+     * Returns <code>true</code> if this contest is contest private.
+     *
+     * @return <code>true</code> if this contest is contest private; <code>false</code> otherwise
+     */
+    public boolean isContestPrivate();
+
+    /**
+     * Sets whether this contest is contest private.
+     *
+     * @param contestPrivate the contest private of this contest
+     */
+    public void setContestPrivate(boolean contestPrivate);
+
+    /**
+     * Returns the use permissions of this contest.
+     *
+     * @return the use permissions of this contest
+     */
+    public boolean getUsePermissions();
+
+    /**
+     * Returns <code>true</code> if this contest is use permissions.
+     *
+     * @return <code>true</code> if this contest is use permissions; <code>false</code> otherwise
+     */
+    public boolean isUsePermissions();
+
+    /**
+     * Sets whether this contest is use permissions.
+     *
+     * @param usePermissions the use permissions of this contest
+     */
+    public void setUsePermissions(boolean usePermissions);
+
     @Override
     public boolean isNew();
 

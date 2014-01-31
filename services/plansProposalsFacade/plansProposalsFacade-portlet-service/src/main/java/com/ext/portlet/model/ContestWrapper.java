@@ -64,6 +64,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("discussionGroupId", getDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
+        attributes.put("contestPrivate", getContestPrivate());
+        attributes.put("usePermissions", getUsePermissions());
 
         return attributes;
     }
@@ -229,6 +231,18 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (resourcesUrl != null) {
             setResourcesUrl(resourcesUrl);
+        }
+
+        Boolean contestPrivate = (Boolean) attributes.get("contestPrivate");
+
+        if (contestPrivate != null) {
+            setContestPrivate(contestPrivate);
+        }
+
+        Boolean usePermissions = (Boolean) attributes.get("usePermissions");
+
+        if (usePermissions != null) {
+            setUsePermissions(usePermissions);
         }
     }
 
@@ -803,6 +817,66 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setResourcesUrl(java.lang.String resourcesUrl) {
         _contest.setResourcesUrl(resourcesUrl);
+    }
+
+    /**
+    * Returns the contest private of this contest.
+    *
+    * @return the contest private of this contest
+    */
+    @Override
+    public boolean getContestPrivate() {
+        return _contest.getContestPrivate();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is contest private.
+    *
+    * @return <code>true</code> if this contest is contest private; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isContestPrivate() {
+        return _contest.isContestPrivate();
+    }
+
+    /**
+    * Sets whether this contest is contest private.
+    *
+    * @param contestPrivate the contest private of this contest
+    */
+    @Override
+    public void setContestPrivate(boolean contestPrivate) {
+        _contest.setContestPrivate(contestPrivate);
+    }
+
+    /**
+    * Returns the use permissions of this contest.
+    *
+    * @return the use permissions of this contest
+    */
+    @Override
+    public boolean getUsePermissions() {
+        return _contest.getUsePermissions();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest is use permissions.
+    *
+    * @return <code>true</code> if this contest is use permissions; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isUsePermissions() {
+        return _contest.isUsePermissions();
+    }
+
+    /**
+    * Sets whether this contest is use permissions.
+    *
+    * @param usePermissions the use permissions of this contest
+    */
+    @Override
+    public void setUsePermissions(boolean usePermissions) {
+        _contest.setUsePermissions(usePermissions);
     }
 
     @Override

@@ -40,6 +40,8 @@ public class ContestSoap implements Serializable {
     private long _discussionGroupId;
     private int _weight;
     private String _resourcesUrl;
+    private boolean _contestPrivate;
+    private boolean _usePermissions;
 
     public ContestSoap() {
     }
@@ -73,6 +75,8 @@ public class ContestSoap implements Serializable {
         soapModel.setDiscussionGroupId(model.getDiscussionGroupId());
         soapModel.setWeight(model.getWeight());
         soapModel.setResourcesUrl(model.getResourcesUrl());
+        soapModel.setContestPrivate(model.getContestPrivate());
+        soapModel.setUsePermissions(model.getUsePermissions());
 
         return soapModel;
     }
@@ -340,5 +344,29 @@ public class ContestSoap implements Serializable {
 
     public void setResourcesUrl(String resourcesUrl) {
         _resourcesUrl = resourcesUrl;
+    }
+
+    public boolean getContestPrivate() {
+        return _contestPrivate;
+    }
+
+    public boolean isContestPrivate() {
+        return _contestPrivate;
+    }
+
+    public void setContestPrivate(boolean contestPrivate) {
+        _contestPrivate = contestPrivate;
+    }
+
+    public boolean getUsePermissions() {
+        return _usePermissions;
+    }
+
+    public boolean isUsePermissions() {
+        return _usePermissions;
+    }
+
+    public void setUsePermissions(boolean usePermissions) {
+        _usePermissions = usePermissions;
     }
 }

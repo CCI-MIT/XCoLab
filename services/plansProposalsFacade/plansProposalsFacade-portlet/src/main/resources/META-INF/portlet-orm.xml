@@ -98,6 +98,8 @@
 			<basic name="discussionGroupId" />
 			<basic name="weight" />
 			<basic name="resourcesUrl" />
+			<basic name="contestPrivate" />
+			<basic name="usePermissions" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

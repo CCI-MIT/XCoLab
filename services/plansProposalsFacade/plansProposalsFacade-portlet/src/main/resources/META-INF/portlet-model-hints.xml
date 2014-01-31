@@ -83,6 +83,8 @@
 		<field name="resourcesUrl" type="String">
 			<hint name="max-length">1024</hint>
 		</field>
+		<field name="contestPrivate" type="boolean" />
+		<field name="usePermissions" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />

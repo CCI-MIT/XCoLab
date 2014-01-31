@@ -146,6 +146,8 @@
 		<property name="discussionGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="resourcesUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="contestPrivate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="usePermissions" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />

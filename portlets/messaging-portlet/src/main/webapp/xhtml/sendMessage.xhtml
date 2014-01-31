@@ -2,7 +2,6 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:f="http://java.sun.com/jsf/core" xmlns:liferay-faces="http://liferay.com/tld/faces" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:ice="http://www.icesoft.com/icefaces/component">
   <div class="messagingContainer">
     <br />
-  	<script type="text/javascript" src="/html/portlet/ext/js/jquery.validate.pack.js"></script>
     <div class="main_long sendMessage">
     <div id="ComposeMessage">
     	<ice:panelGroup>
@@ -20,12 +19,13 @@
                     <td class="b" width="60px">To:</td>
                     <td>
                         <input id="userSelectorInput" type="text" class="profile_input messageReceipients" /> 
-                        <!-- <input type="hidden" class="messageReceipientsInput" />-->
+                        <input type="hidden" class="messageReceipientsInput" />
                         <ice:inputText styleClass="hidden messageReceipientsInput" value="#{sendMessageBean.receipients}">
                         	<f:validator validatorId="messagesLimitValidator" />
                         </ice:inputText>
                         <!-- <input type="hidden" class="required profile_input"  />-->
-                        <div id="please_choose_from_list" style="display: none; color: red; font-weight: bold;">Please choose value from list</div>
+                        <div id="please_choose_from_list" style="display: none; color: red; ">Please choose value from list</div>
+                        <div id="unknownUsersContainer"  style="display: none; color: red; ">Unknown users: <ul></ul></div>
                     </td>
                 </tr>
                 <tr>
@@ -59,15 +59,18 @@
     <script type="text/javascript">
         var users = [];
         var usersMap = {};
+        var userNames = [];
         var preFill = null;
         
         <f:subview rendered="#{sendMessageBean.replyMessage != null and sendMessageBean.replyMessage.from.userId != null}">
-            preFill = [{username: '#{sendMessageBean.replyMessage.from.screenName}', value: #{sendMessageBean.replyMessage.from.userId}}];
+            //preFill = [{username: '#{sendMessageBean.replyMessage.from.screenName}', value: #{sendMessageBean.replyMessage.from.userId}}];
+            preFill = ['#{sendMessageBean.replyMessage.from.screenName}'];
         </f:subview>
         
         <ui:repeat var="user" value="#{sendMessageBean.usersList}">
             users.push({username: '#{user.screenName}', value: '#{user.userId}'});
             usersMap['#{user.screenName}'] = #{user.userId};
+            userNames.push('#{user.screenName}');
         </ui:repeat>
         jQuery(document).ready(function() {
                 initSendMessageForm(users, usersMap, preFill);

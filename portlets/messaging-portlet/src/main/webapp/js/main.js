@@ -44,10 +44,16 @@ function initSendMessageForm(users, usersMapParam, preFill) {
     jQuery('#userSelectorInput').blur(function() {
     	var thiz = this;
     	setTimeout(function() {
-    		//alert('robimy walidacje!');
     		var receipients = [];
-    		jQuery(".as-selections li").each(function() {
-    			receipients.push(usersMap[jQuery(this).text().substring(1)]);
+    		var unknownUsers = [];
+    		jQuery(jQuery("#userSelectorInput").val().split(",")).each(function(idx, str) {
+    			var screenName = jQuery.trim(str);
+    			if (screenName in usersMap) {
+    				receipients.push(usersMap[jQuery.trim(str)]);
+    			}
+    			else {
+    				unknownUsers.push(screenName);
+    			}
     		});
     		if (receipients.length > 1) {
     			// valid
@@ -55,21 +61,74 @@ function initSendMessageForm(users, usersMapParam, preFill) {
     		else {
     			jQuery("#please_choose_from_list").show();
     		}
+    		if (unknownUsers.length >= 1) {
+    			var html = [];
+    			jQuery(unknownUsers).each(function(idx, userName) {
+    				html.push("<li>");
+    				html.push(userName);
+    				html.push("</li>");
+    			});
+    			jQuery("#unknownUsersContainer ul").html(html.join(""));
+    			jQuery("#unknownUsersContainer").show();
+    		}
+    		else {
+    			jQuery("#unknownUsersContainer").hide();
+    		}
     		
-    		jQuery(thiz).val(""); 
-    		
-    		jQuery(".as-list .as-result-item").remove();
-    		//jQuery("#userSelectorInput").show();
     	}, 200);
     });
 
     try {
+    	/*
     	if (preFill != null) {
     		var input = jQuery("#userSelectorInput").autoSuggest(users, {selectedItemProp: "username", searchObjProps: "username", startText: 'Begin typing for a list', preFill: preFill});
     	}
     	else {
     		var input = jQuery("#userSelectorInput").autoSuggest(users, {selectedItemProp: "username", searchObjProps: "username", startText: 'Begin typing for a list'});
-    	}
+    	}*/
+
+    	                   function split( val ) {
+    	                     return val.split( /,\s*/ );
+    	                   }
+    	                   function extractLast( term ) {
+    	                     return split( term ).pop();
+    	                   }
+    	                
+    	                   $( "#userSelectorInput" )
+    	                     // don't navigate away from the field on tab when selecting an item
+    	                     .bind( "keydown", function( event ) {
+    	                       if ( event.keyCode === $.ui.keyCode.TAB &&
+    	                           $( this ).data( "ui-autocomplete" ).menu.active ) {
+    	                         event.preventDefault();
+    	                       }
+    	                     })
+    	                     .autocomplete({
+    	                       minLength: 0,
+    	                       source: function( request, response ) {
+    	                         // delegate back to autocomplete, but extract the last term
+    	                         response( $.ui.autocomplete.filter(
+    	                           userNames, extractLast( request.term ) ) );
+    	                       },
+    	                       focus: function() {
+    	                         // prevent value inserted on focus
+    	                         return false;
+    	                       },
+    	                       select: function( event, ui ) {
+    	                         var terms = split( this.value );
+    	                         // remove the current input
+    	                         terms.pop();
+    	                         // add the selected item
+    	                         terms.push( ui.item.value );
+    	                         // add placeholder to get the comma-and-space at the end
+    	                         terms.push( "" );
+    	                         this.value = terms.join( ", " );
+    	                         return false;
+    	                       }
+    	                     });
+    	                   
+    	                   if (preFill) {
+    	                	   jQuery("#userSelectorInput").val(preFill);
+    	                   }
     }
     catch (e) {
     	alert(e);
@@ -89,13 +148,23 @@ function initSendMessageForm(users, usersMapParam, preFill) {
 
 function updateReceipients() {
     var receipients = [];
-    
+    /*
     jQuery(".as-selections li").each(function() {
     	var thizText = jQuery(this).text().substring(1);
     	if (jQuery.trim(thizText).length > 0) 
     		receipients.push(usersMap[jQuery(this).text().substring(1)]);
-    });
+    });*/
+    console.log("updating", jQuery("#userSelectorInput").val());
+    console.log(jQuery("#userSelectorInput").val().split(","), jQuery("#userSelectorInput"));
+	jQuery(jQuery("#userSelectorInput").val().split(",")).each(function(idx, str) {
+		var userName = jQuery.trim(str);
+		if (userName.length > 0 && userName in usersMap) {
+			receipients.push(usersMap[userName]);
+		}
+	});
+    
     receipients.sort();
+    console.log(receipients);
     jQuery(".messageReceipientsInput").val(receipients);
 }
 
