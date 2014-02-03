@@ -80,7 +80,6 @@
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="email" />
 						</div>
-                       <span style="color:#900;"> We require a valid email address in order to count your vote. </span>
                     </td>
 				</tr>
 
