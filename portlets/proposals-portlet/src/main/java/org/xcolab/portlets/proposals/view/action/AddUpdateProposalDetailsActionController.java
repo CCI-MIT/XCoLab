@@ -208,7 +208,15 @@ public class AddUpdateProposalDetailsActionController {
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-        return Jsoup.clean(sectionData, w);
+    	Document doc = Jsoup.parse(sectionData);
+    	// Clean the document.
+    	doc = new Cleaner(w).clean(doc);
+
+    	// Adjust escape mode
+    	doc.outputSettings().escapeMode(EscapeMode.xhtml);
+
+    	// Get back the string of the body.
+    	return doc.body().html();
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
