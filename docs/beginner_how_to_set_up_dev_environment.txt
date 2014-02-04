@@ -88,3 +88,5 @@ inside <Context></Context> add definition of jdbc/LiferayPool resource, IE:
     unzip XCOLAB_SRC/other/simulation-client.zip 
 
 16. download document_library.zip and unpack it in XCOLAB_BUNDLES_DIR/data
+
+17. edit XCOLAB_BUNDLES_DIR/portal-setup-wizard.properties and verify the path to liferay.home is correct (/Users/pdeboer/Documents/liferay/liferay-portal-6.2.0-ce-ga1 on my system)
