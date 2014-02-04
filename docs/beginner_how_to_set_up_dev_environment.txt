@@ -1,7 +1,7 @@
 ### How to set up XCoLab development environment ###
 
 
-1. Download Liferay 6.1 bundled with Tomcat from http://www.liferay.com/downloads/liferay-portal/available-releases 
+1. Download Liferay 6.1 bundled with Tomcat (Community Edition) from http://www.liferay.com/downloads/liferay-portal/available-releases 
 
 2. Unzip downloaded bundle, let's call target folder XCOLAB_BUNDLES_DIR
 
@@ -27,14 +27,20 @@
   mvn compile package install
 
 7. install common taglibs/libraries
-  cd XCOLAB_SRC/taglibs/collabIceFacelets
+  cd XCOLAB_SRC/taglibs/colabIceFacelets
+  mvn compile package install
+  
+  cd XCOLAB_SRC/taglibs/colabJspTags
   mvn compile package install
 
 8. 
   cd XCOLAB_SRC/services/plansProposalsFacade/plansProposalsFacade-portlet
-  mvn compile package liferay:deploy
+  mvn compile package liferay:deploy 
 
-8. install theme, layout tmpl and hooks
+  if you get an mvn compilation error while invoking the command disable the executio of tests,    
+  i.e. mvn compile package liferay:deploy -DskipTests=true
+
+9. install theme, layout tmpl and hooks
   cd XCOLAB_SRC/themes/climatecolab-theme
   mvn compile package liferay:deploy
 
@@ -44,7 +50,7 @@
   cd XCOLAB_SRC/hooks/climatecolab-hooks
   mvn compile package liferay:deploy
 
-9. install all portlets
+10. install all portlets
   cd XCOLAB_SRC/portlets
 
   for each PORTLET go to PORTLET directory and execute
