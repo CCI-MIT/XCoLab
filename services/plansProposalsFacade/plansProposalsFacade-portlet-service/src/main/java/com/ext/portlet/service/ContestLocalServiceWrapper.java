@@ -553,6 +553,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public java.util.Map<java.lang.Long, java.lang.String> getModelIdsAndNames(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getModelIdsAndNames(contestPK);
+    }
+
+    @Override
     public java.lang.Long getDefaultModelId(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

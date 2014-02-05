@@ -24,7 +24,39 @@
 	</div>
 	<!-- /proposal-head -->	
 	<div id="content">
-		<modeling:simulationEdit  modelId="${modelId }" />
-	
+			<modeling:simulationEdit  modelId="${modelId }" />
 	</div>
+	<c:if test="${not empty availableModels }">
+	<div>
+			<div class="clear"></div>
+			<br />
+        
+            <div class="act-edit-box_left" style="height: 80px;">
+            
+                <p>Select varying levels of geographic disaggregation for the actions</p>
+                <div class="">
+                	<select class='selectbox1'>
+                	<c:forEach var="model" items="${availableModels }">
+                		<option value="${model.key }">${model.value }</option>
+                	</c:forEach>
+                	</select>
+                </div>
+            </div>
+	        <div class="act-edit-box_right" style="height: 80px;">
+    	        <p>You can also upload your own disaggregation mode</p>
+        	    <div class="butt_wrap">
+            	    <div class="button"><a href="/web/guest/resources/-/wiki/Main/Upload+model+help"><span>CONTRIBUTE</span> model</a></div>
+            	</div>
+        	</div>
+        <div class="clear"></div>
+	</div>
+	<script>
+		jQuery(".selectbox1").change(function() {
+			modeling.loadModel($(this).val());
+			jQuery(".act-edit_left").html("");
+			jQuery(".act-edit_right").html("");
+		});
+	</script>
+	</c:if>
+	
 </jsp:root>

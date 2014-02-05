@@ -1,5 +1,8 @@
 package org.xcolab.portlets.proposals.view;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -24,8 +27,14 @@ public class ContestModelController extends BaseProposalsController {
     public String showContestProposals(RenderRequest request, RenderResponse response, Model model) 
             throws PortalException, SystemException {
         
-
-        model.addAttribute("modelId", ContestLocalServiceUtil.getDefaultModelId(proposalsContext.getContest(request).getContestPK()));        
+    	Long modelId = ContestLocalServiceUtil.getDefaultModelId(proposalsContext.getContest(request).getContestPK());
+    	model.addAttribute("modelId", modelId);
+    	if (modelId != null) {
+        	Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+        	
+        	model.addAttribute("availableModels", modelIdsWithNames);
+    		
+    	}        
         return "contestModel";
         
     }

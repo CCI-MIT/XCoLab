@@ -510,6 +510,13 @@ public class ContestLocalServiceUtil {
         return getService().getModelIds(contestPK);
     }
 
+    public static java.util.Map<java.lang.Long, java.lang.String> getModelIdsAndNames(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getModelIdsAndNames(contestPK);
+    }
+
     public static java.lang.Long getDefaultModelId(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
