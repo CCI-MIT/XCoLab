@@ -159,7 +159,8 @@
 					<th nowrap="nowrap">Terms of use</th>
 					<td class="popupreg_terms-right" colspan="3">By registering
 						for this site, you agree to abide<br /> by the 
-						<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a>
+						<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a>. 
+                        <p>We require a valid email address in order to count your vote.</p>
 					</td>
 				</tr>
 				<tr>
