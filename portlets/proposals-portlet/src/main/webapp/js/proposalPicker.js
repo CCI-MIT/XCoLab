@@ -9,7 +9,6 @@ var pickMultipleProposals = false;
 function loadProposals(){
     spinner.spin(document.getElementById('proposalPickerTableContainer'));
     var URL = replaceURLPlaceholders(proposalPickerURL);
-    console.log(URL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#proposalPickerTable > tbody').empty();
         var even = true;
@@ -122,9 +121,14 @@ function addToProposalPickerTable(data, even){
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     var highlight = ($.inArray(data.id.toString(), inputField.val().split(','))>=0);
     var displayDate = (data.dateSubscribed != 0);
-    var link = '<a href="javascript:;" onclick="selectProposal(' + data.id + ',\'' + data.proposalName.replace(/"/g, '\\\'') + '\',\'' + data.contestName.replace(/"/g, '\\\'') + '\',$(this),' + data.contestId + ' );">choose</a>';
+    var link = '<a href="javascript:;" class="selectProposalLink">choose</a>';
     var dateCol = '<td>' + dateTimeFormatter.date(data.dateSubscribed) + '</td>';
-    $('#proposalPickerTable > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (highlight ? ' ui-datatable-highlight' : '') + '"><td>' + data.contestName + '</td><td' + (displayDate ? '' : ' colspan="2"') + '>' + data.proposalName + '</td>' + (displayDate ? dateCol : '') + '<td style="text-align: center;">' + (highlight ? '' : link) + '</td></tr>');
+    var tableRow = $('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (highlight ? ' ui-datatable-highlight' : '') + '"><td>' + data.contestName + '</td><td' + (displayDate ? '' : ' colspan="2"') + '>' + data.proposalName + '</td>' + (displayDate ? dateCol : '') + '<td style="text-align: center;">' + (highlight ? '' : link) + '</td></tr>');
+    
+    tableRow.find(".selectProposalLink").click(function() {
+    	selectProposal(data.id, data.proposalName,  data.contestName ,$(this),data.contestId);
+    });
+    $('#proposalPickerTable > tbody').append(tableRow);
 }
 
 
