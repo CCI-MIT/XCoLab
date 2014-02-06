@@ -84,7 +84,7 @@
                         </tbody>
                     </table>
 
-                    <h3>Comment</h3>
+                    <h3>Comment to send to author</h3>
                     <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
                     <c:choose>
                         <c:when test="${!judgeProposalBean.judgingStatus}">

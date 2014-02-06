@@ -40,7 +40,7 @@
                        commandName="judgeProposalBean">
                 <div class="addpropbox">
 
-                    <h3>Comment</h3>
+                    <h3>Comment to send to author</h3>
                     <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
 
                     <c:if test="${!judgeProposalBean.judgingStatus and judgeProposalBean.judgeAction.attributeValue ne 0}">

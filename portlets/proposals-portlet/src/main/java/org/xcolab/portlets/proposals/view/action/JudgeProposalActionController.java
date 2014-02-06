@@ -55,8 +55,8 @@ public class JudgeProposalActionController {
             try {
                 String messageSubject = "Your Climate CoLab proposal";
                 ProposalWrapper wrapper = new ProposalWrapper(proposalsContext.getProposal(request));
-                InternetAddress[] addressTo = new InternetAddress[] {
-                        new InternetAddress(wrapper.getAuthor().getDisplayEmailAddress()) };
+                InternetAddress[] addressTo = new InternetAddress[]{
+                        new InternetAddress(wrapper.getAuthor().getDisplayEmailAddress())};
 
                 InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
                 MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, message, false,
@@ -118,8 +118,7 @@ public class JudgeProposalActionController {
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         // save selection of judges
 
-        if (judgeProposalBean.getSelectedJudges() != null)
-            persistSelectedJudges(proposalId, contestPhaseId, judgeProposalBean.getSelectedJudges());
+        persistSelectedJudges(proposalId, contestPhaseId, judgeProposalBean.getSelectedJudges());
 
         // save fellow rating
         if (judgeProposalBean.getFellowRating() != null)
@@ -153,8 +152,11 @@ public class JudgeProposalActionController {
     private boolean persistSelectedJudges(long proposalId, long contestPhaseId, List<Long> selectedJudges) {
         ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
 
+
         String s = "";
-        for (Long l : selectedJudges) s += l + ";";
+        if (selectedJudges != null) {
+            for (Long l : selectedJudges) s += l + ";";
+        }
         judges.setStringValue(s.replaceAll(";$", ""));
 
         try {
