@@ -39,6 +39,18 @@
             <form:form id="fellowRatingForm" action="${saveJudgeRatingURL }" method="post"
                        commandName="judgeProposalBean">
                 <div class="addpropbox">
+                    <h3>Promotion</h3>
+                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
+
+                    <c:if test="${!judgeProposalBean.judgingStatus}">
+                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                            <a href="javascript:;" class="requestMembershipSubmitButton"
+                               onclick="jQuery(this).parents('form').submit();">Save</a>
+                        </div>
+                    </c:if>
+                </div>
+
+                <div class="addpropbox">
 
                     <h3>Comment to send to author</h3>
                     <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
@@ -57,7 +69,7 @@
                     </c:if>
                 </div>
 
-                <div class="addpropbox">
+                <div class="addpropbox" style="display:none;"> <!-- hide until someone changes his mind wants to see it again :) -->
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     <table class="judgingForm">
@@ -78,18 +90,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
-                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                        <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Save</a>
-                    </div>
-                    </c:if>
-                </div>
-
-                <div class="addpropbox">
-                    <h3>Promotion</h3>
-                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
-
                     <c:if test="${!judgeProposalBean.judgingStatus}">
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"

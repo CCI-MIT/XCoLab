@@ -84,8 +84,11 @@
                         </tbody>
                     </table>
 
+                    <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 3}">
                     <h3>Comment to send to author</h3>
                     <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
+                    </c:if>
+
                     <c:choose>
                         <c:when test="${!judgeProposalBean.judgingStatus}">
                             <div class="blue-button" style="display:block; float:right;">
@@ -95,6 +98,7 @@
                         </c:when>
                         <c:otherwise>(No more changes possible)</c:otherwise>
                     </c:choose>
+
                 </form:form>
             </div>
             <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 0 and judgeProposalBean.fellowAction.attributeValue ne 3 and !judgeProposalBean.judgingStatus}">
