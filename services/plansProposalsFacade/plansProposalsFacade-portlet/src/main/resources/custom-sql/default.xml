@@ -9,4 +9,4 @@
     <sqlllll file="custom-sql/plans.xml" >
      <sql file="custom-sql/debates.xml" />
     <sql file="custom-sql/plans_versioned.xml" />
-</customa-sql>
+</custom-sql>

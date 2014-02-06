@@ -481,6 +481,18 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         return ret;
     }
+    
+    public Map<Long, String> getModelIdsAndNames(long contestPK) throws SystemException, PortalException {
+        Contest contest = getContest(contestPK);
+        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
+
+        Map<Long, String> ret = new HashMap<>();
+        for (Simulation s : planTypeLocalService.getAvailableModels(planType)) {
+            ret.put(s.getId(), s.getName());
+        }
+        return ret;
+    }
+
 
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);

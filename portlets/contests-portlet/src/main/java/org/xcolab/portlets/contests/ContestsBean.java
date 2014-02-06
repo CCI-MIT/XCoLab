@@ -2,6 +2,7 @@ package org.xcolab.portlets.contests;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -19,12 +20,18 @@ public class ContestsBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+    private static final int NUM_CONTESTS = 2;
 	
 	public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<>();
-        
-        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "Open")) {
-            ret.add(new ContestWrapper(contest));
+
+        List<Contest> contests = ContestLocalServiceUtil.findByActiveFlagText(true, "");
+        Collections.shuffle(contests);
+
+        for (Contest contest: contests) {
+            if(ret.size() < NUM_CONTESTS)
+                ret.add(new ContestWrapper(contest));
+            else break;
         }
         return ret;
     }

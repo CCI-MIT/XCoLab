@@ -87,8 +87,6 @@ public class MainViewController {
 	public String register(PortletRequest request, PortletResponse response,
 			Model model) {
 		
-		System.out.println(this.getClass().getClassLoader());
-		System.out.println(PortalClassLoaderUtil.getClassLoader());
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -158,8 +156,6 @@ public class MainViewController {
 					"Invalid words in captcha field"));
 		}
 		
-		System.out.println(result.hasErrors());
-		System.out.println(result.getAllErrors());
 		model.addAttribute("redirect", HtmlUtil.escape(redirect));
 
 		return "view";
