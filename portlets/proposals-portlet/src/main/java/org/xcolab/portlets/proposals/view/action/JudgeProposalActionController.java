@@ -95,17 +95,19 @@ public class JudgeProposalActionController {
     public void sendJudgeRating(ActionRequest request, Model model,
                                 ActionResponse response, @RequestParam("judgeComment") String judgeComment)
             throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException {
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request));
 
         List<Long> recipientIds = new ArrayList<Long>();
-        String subject = "Judge comment from " + proposalsContext.getUser(request).getScreenName() + " for proposal [" + proposalId + "]";
+        String subject = "Judge comment from " + proposalsContext.getUser(request).getScreenName() + " for proposal [" + proposal.getProposalId() + "]";
 
         ContestWrapper cr = new ContestWrapper(proposalsContext.getContest(request));
         for (User fellow : cr.getContestFellows()) {
             recipientIds.add(fellow.getUserId());
         }
 
-        MessageUtil.sendMessage(subject, judgeComment, proposalsContext.getUser(request).getUserId(),
+
+        String message = "Proposal: "+proposal.getName()+" \n\n "+judgeComment;
+        MessageUtil.sendMessage(subject, message, proposalsContext.getUser(request).getUserId(),
                 proposalsContext.getUser(request).getUserId(), recipientIds, null);
 
     }
