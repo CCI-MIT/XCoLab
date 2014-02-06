@@ -35,14 +35,20 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         this.currentUser = currentUser;
     }
 
-    public boolean getIsJudgeAssignedAndIncomplete() throws SystemException, PortalException {
-        if (currentUser == null) return false;
+    /**
+     *
+     * @return 0=not responsible, 1=responsible but no action yet, 2=judging done
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public int getIsJudgeAssignedAndIncomplete() throws SystemException, PortalException {
+        if (currentUser == null) return 0;
         Proposal p = ProposalLocalServiceUtil.getProposal(this.getProposalId());
         for (long l : this.getSelectedJudges()) {
             if (currentUser.getUserId() == l)
-                return !MessageRecipientStatusLocalServiceUtil.didReceiveJudgeCommentForProposal(p, currentUser);
+                return MessageRecipientStatusLocalServiceUtil.didReceiveJudgeCommentForProposal(p, currentUser) ? 2 : 1;
         }
-        return false;
+        return 0;
     }
 
     /**

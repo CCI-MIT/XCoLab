@@ -17,11 +17,14 @@
 
     <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
         <c:choose>
-            <c:when test="${proposal.isJudgeAssignedAndIncomplete}">
+            <c:when test="${proposal.isJudgeAssignedAndIncomplete == 1}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
             </c:when>
-            <c:otherwise>
+            <c:when test="${proposal.isJudgeAssignedAndIncomplete == 2}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="additionalCSSClasses" scope="session" value=""/>
             </c:otherwise>
         </c:choose>
     </c:if>
