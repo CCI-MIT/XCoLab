@@ -5,12 +5,17 @@ import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.persistence.DiscussionMessageUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.persistence.GroupUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -33,6 +35,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -42,9 +45,9 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @RequestMapping(params = {"action=sendEmail"})
-    public void sendEmails(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException {
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
+    @RequestMapping(params = {"action=sendComment"})
+    public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException {
+        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request));
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
         //get judges decision
@@ -53,17 +56,30 @@ public class JudgeProposalActionController {
 
         if (message != null) {
             try {
-                String messageSubject = "Your Climate CoLab proposal";
-                ProposalWrapper wrapper = new ProposalWrapper(proposalsContext.getProposal(request));
-                InternetAddress[] addressTo = new InternetAddress[]{
-                        new InternetAddress(wrapper.getAuthor().getDisplayEmailAddress())};
+                //get sender fellow
+                User author = proposalsContext.getUser(request);
+                List<User> contestFellows = proposalsContext.getContestWrapped(request).getContestFellows();
+                if (!contestFellows.contains(author)) {
+                    contestFellows.get(0);
+                } //take first fellow of list to be the sender
 
-                InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
-                MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, message, false,
-                        new InternetAddress[]{addressFrom}, null, null);
+                //assemble recipients
+                List<Long> recipients = new LinkedList<>();
+                for (ProposalTeamMemberWrapper member : proposal.getMembers()) {
+                    recipients.add(member.getUserId() );
+                }
+
+                //send message
+                String title = "Judges comments for your proposal '" + proposal.getName() + "'";
+                MessageUtil.sendMessage(title, message, author.getUserId(),
+                        author.getUserId(), recipients, request);
+
+                DiscussionCategoryGroupLocalServiceUtil.addComment(
+                        DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId()),
+                        title, message, author);
 
                 //mark as finished
-                persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 1, null);
+                persistAttribute(proposal.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 1, null);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -106,7 +122,7 @@ public class JudgeProposalActionController {
         }
 
 
-        String message = "Proposal: "+proposal.getName()+" \n\n "+judgeComment;
+        String message = "Proposal: " + proposal.getName() + " \n\n " + judgeComment;
         MessageUtil.sendMessage(subject, message, proposalsContext.getUser(request).getUserId(),
                 proposalsContext.getUser(request).getUserId(), recipientIds, null);
 

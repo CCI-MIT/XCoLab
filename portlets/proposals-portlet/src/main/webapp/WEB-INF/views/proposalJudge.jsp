@@ -32,7 +32,7 @@
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="sendEmail"/>
+            <portlet:param name="action" value="sendComment"/>
         </portlet:actionURL>
 
         <div class="judging_left">
