@@ -202,14 +202,6 @@
             </c:when>
         </c:choose>
     </c:if>
-    <c:if test="${not isEditingProposal }">
-		<div class="blue-button">
-			<a href="javascript:;"
-				onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup()">
-				<span>Copy </span> this proposal
-			</a>
-		</div>
-	</c:if>
                 
     </div>
 

@@ -245,3 +245,20 @@ div.sponsorLogo img {
 #copyProposalPopupContent td .sectionContent {
 	display: none;
 }
+
+#copyProposalPopupContent td .hideContent {
+	display: none;
+}
+
+#copyProposalPopupContent .sectionPresent {
+	font-size: 0.8em;
+	color: #FF4444;
+}
+
+.addpropbox.empty .copyFromBaseProposalTriggerContainer {
+	display: block;
+}
+
+.addpropbox.notempty .copyFromBaseProposalTriggerContainer {
+	display: none;
+}

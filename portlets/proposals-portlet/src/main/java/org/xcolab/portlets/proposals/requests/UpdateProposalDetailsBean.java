@@ -22,9 +22,11 @@ public class UpdateProposalDetailsBean {
     private long imageId;
     private long baseProposalId;
     private long baseProposalContestId;
+    private long moveToContestPhaseId;
 
     // legacy
     private String description;
+	private boolean move;
 
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
         for (ProposalSectionWrapper section : proposal.getSections()) {
@@ -48,6 +50,11 @@ public class UpdateProposalDetailsBean {
         description = baseProposal.getDescription();
         baseProposalId = baseProposal.getProposalId();
         baseProposalContestId = baseProposal.getContestPK();
+    }
+    
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal, boolean move) throws PortalException, SystemException {
+    	this(proposal, baseProposal);
+    	this.move = move;
     }
 
     public UpdateProposalDetailsBean() {
@@ -115,6 +122,22 @@ public class UpdateProposalDetailsBean {
 
 	public void setBaseProposalContestId(long baseProposalContestId) {
 		this.baseProposalContestId = baseProposalContestId;
+	}
+
+	public boolean isMove() {
+		return move;
+	}
+
+	public void setMove(boolean move) {
+		this.move = move;
+	}
+
+	public long getMoveToContestPhaseId() {
+		return moveToContestPhaseId;
+	}
+
+	public void setMoveToContestPhaseId(long moveToContestPhaseId) {
+		this.moveToContestPhaseId = moveToContestPhaseId;
 	}
 
 

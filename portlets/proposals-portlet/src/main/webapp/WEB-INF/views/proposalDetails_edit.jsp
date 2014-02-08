@@ -36,12 +36,24 @@
 	</c:choose>
 
     <div class="headline addprop">
-    	<c:if test="${not empty baseProposal }">
-    		<p>
-    			You're about to create a proposal that will be based on 
-    			<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
-    		</p>
-    	</c:if>
+    	<c:choose>
+    		<c:when test="${move }">
+    			<p>
+    				You're about to move a proposal 
+    				<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />
+    				from contest
+    				<proposalsPortlet:contestLink contestId="${baseContest.contestPK}" text="${baseContest.contestShortName} " />
+    				to contest
+    				<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />.
+    			</p>
+	    	</c:when>
+	    	<c:otherwise>
+    			<p>
+    				You're about to create a proposal that will be based on 
+    				<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
+    			</p>
+	    	</c:otherwise>
+    	</c:choose>
     	<p>
         Please complete your proposal based on the template below. 
         If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.  
@@ -59,6 +71,8 @@
 	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
 		<form:hidden path="baseProposalId" />
 		<form:hidden path="baseProposalContestId" />
+		<form:hidden path="move" />
+		<form:hidden path="moveToContestPhaseId" />
 		
 		<div class="addpropbox q1">
             <label>

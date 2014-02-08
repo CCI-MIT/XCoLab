@@ -57,6 +57,10 @@ public class Proposal2PhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes494;
     private String _methodName495;
     private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
 
     public Proposal2PhaseLocalServiceClpInvoker() {
         _methodName0 = "addProposal2Phase";
@@ -161,27 +165,35 @@ public class Proposal2PhaseLocalServiceClpInvoker {
 
         _methodParameterTypes490 = new String[] { "long", "long" };
 
-        _methodName491 = "getByProposalIdContestPhaseId";
+        _methodName491 = "create";
 
-        _methodParameterTypes491 = new String[] { "long", "long" };
+        _methodParameterTypes491 = new String[] { "long", "long", "int", "int" };
 
-        _methodName492 = "getCurrentContestForProposal";
+        _methodName492 = "getByProposalIdContestPhaseId";
 
-        _methodParameterTypes492 = new String[] { "long" };
+        _methodParameterTypes492 = new String[] { "long", "long" };
 
-        _methodName493 = "getForVersion";
+        _methodName493 = "getByProposalId";
 
-        _methodParameterTypes493 = new String[] {
-                "com.ext.portlet.model.ProposalVersion"
-            };
+        _methodParameterTypes493 = new String[] { "long" };
 
-        _methodName494 = "getContestPhasesForProposal";
+        _methodName494 = "getCurrentContestForProposal";
 
         _methodParameterTypes494 = new String[] { "long" };
 
-        _methodName495 = "getActiveContestPhasesForProposal";
+        _methodName495 = "getForVersion";
 
-        _methodParameterTypes495 = new String[] { "long" };
+        _methodParameterTypes495 = new String[] {
+                "com.ext.portlet.model.ProposalVersion"
+            };
+
+        _methodName496 = "getContestPhasesForProposal";
+
+        _methodParameterTypes496 = new String[] { "long" };
+
+        _methodName497 = "getActiveContestPhasesForProposal";
+
+        _methodParameterTypes497 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -293,27 +305,40 @@ public class Proposal2PhaseLocalServiceClpInvoker {
 
         if (_methodName491.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
-            return Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
+            return Proposal2PhaseLocalServiceUtil.create(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Integer) arguments[2]).intValue(),
+                ((Integer) arguments[3]).intValue());
         }
 
         if (_methodName492.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
-            return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(((Long) arguments[0]).longValue());
+            return Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         if (_methodName493.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
-            return Proposal2PhaseLocalServiceUtil.getForVersion((com.ext.portlet.model.ProposalVersion) arguments[0]);
+            return Proposal2PhaseLocalServiceUtil.getByProposalId(((Long) arguments[0]).longValue());
         }
 
         if (_methodName494.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
-            return Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(((Long) arguments[0]).longValue());
+            return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(((Long) arguments[0]).longValue());
         }
 
         if (_methodName495.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
+            return Proposal2PhaseLocalServiceUtil.getForVersion((com.ext.portlet.model.ProposalVersion) arguments[0]);
+        }
+
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
+            return Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             return Proposal2PhaseLocalServiceUtil.getActiveContestPhasesForProposal(((Long) arguments[0]).longValue());
         }
 

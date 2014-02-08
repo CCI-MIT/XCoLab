@@ -27,10 +27,13 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -88,6 +91,22 @@ public class AddUpdateProposalDetailsActionController {
         ProposalWrapper proposal = null;
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
+            if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
+            	// make proposal invisible in all contest phases to which it belonged to
+            	for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+            		ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(), 
+            				ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+            		if (p2p.getVersionTo() < 0) {
+            			p2p.setVersionTo(proposal.getCurrentVersion()-1);
+            			Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+            		}
+            		
+            	}
+            	
+            	// associate proposal with selected contest phase
+            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(), 
+            			proposal.getCurrentVersion(), -1);
+            }
         }
         else {
             // create
@@ -182,6 +201,8 @@ public class AddUpdateProposalDetailsActionController {
                 }
             }
         }
+        
+
 
         int analyticsValue = 0;
         
@@ -201,10 +222,10 @@ public class AddUpdateProposalDetailsActionController {
         
         proposalsContext.invalidateContext(request);
         
-        if (createNew) {
-            request.setAttribute("ACTION_REDIRECTING", true);
-            response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
-        }
+        //if (createNew || updateProposalSectionsBean.isMove()) {
+        request.setAttribute("ACTION_REDIRECTING", true);
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/" + proposalsContext.getContest(request).getContestPK() + "/planId/" + proposal.getProposalId());
+        //}
     }
 
     private String removeHtml(String data) {

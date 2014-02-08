@@ -46,7 +46,7 @@
             		</div>
         		</c:if>
         		<c:if test="${showCopySectionContentButton }">
-        			<div class='blue-button alignright'>
+        			<div class='blue-button alignright copyFromBaseProposalTriggerContainer'>
         				<a href="javascript:;" class="copyFromBaseProposalTrigger" data-section-id="${section.sectionDefinitionId}">Copy from base proposal</a>
         			</div>
         </c:if>

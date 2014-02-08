@@ -256,6 +256,10 @@ public class ProposalsPermissions {
     public boolean getCanCopyProposal() throws SystemException {
     	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
     }
+    
+    public boolean getCanMoveProposal() throws SystemException {
+    	return getCanAdminAll();
+    }
 
 
 }

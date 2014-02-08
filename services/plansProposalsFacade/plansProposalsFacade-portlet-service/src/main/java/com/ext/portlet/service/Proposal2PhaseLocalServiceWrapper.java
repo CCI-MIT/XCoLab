@@ -283,12 +283,28 @@ public class Proposal2PhaseLocalServiceWrapper
     }
 
     @Override
+    public com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId, int versionFrom, int versionTo)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.create(proposalId, contestPhaseId,
+            versionFrom, versionTo);
+    }
+
+    @Override
     public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
         long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposal2PhaseLocalService.getByProposalIdContestPhaseId(proposalId,
             contestPhaseId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal2Phase> getByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposal2PhaseLocalService.getByProposalId(proposalId);
     }
 
     @Override
