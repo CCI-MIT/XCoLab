@@ -12,14 +12,14 @@ CKEDITOR.editorConfig = function( config )
      
     config.toolbar_Colab =
     [
-        { name: 'controls', items : [ 'Bold', 'Italic', 'Underline','NumberedList', 'BulletedList', 'Link', 'Image' ] }
+        { name: 'controls', items : [ 'ProposalLink', 'Bold', 'Italic', 'Underline','NumberedList', 'BulletedList', 'Link', 'Image'] }
     ];
     config.toolbar = 'Colab';
     config.skin = "colab";
     config.toolbarCanCollapse = false;
     config.contentsCss = '/climatecolab-theme/css/style.css';
     config.resize_enabled = 'true';
-    config.extraPlugins = 'resize';
+    config.extraPlugins = 'resize,proposalLink';
 };
 CKEDITOR.pasteFilterConfig = {
 };
