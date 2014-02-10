@@ -13,7 +13,7 @@
 	<portlet:param name="action" value="generateDump" />
 </portlet:resourceURL>
 
-<div class="alignright">
+<div class="alignright" style="display:none;">
 	<a href="${activitiesDumpURL }"><liferay-ui:icon image="download" />activities in CSV format</a>
 </div>
 <br />
