@@ -116,7 +116,7 @@
 					<div class="blue-button">
 						<a href="javascript:;"
 							onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true)">
-							<span>Copy </span> this proposal
+							<span>Move </span> this proposal
 						</a>
 					</div>
 				</div>
