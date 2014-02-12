@@ -16,6 +16,8 @@ public class ProposalServiceClp implements ProposalService {
     private String[] _methodParameterTypes3;
     private String _methodName4;
     private String[] _methodParameterTypes4;
+    private String _methodName5;
+    private String[] _methodParameterTypes5;
 
     public ProposalServiceClp(InvokableService invokableService) {
         _invokableService = invokableService;
@@ -35,6 +37,10 @@ public class ProposalServiceClp implements ProposalService {
         _methodName4 = "getProposalVersions";
 
         _methodParameterTypes4 = new String[] { "long", "int", "int" };
+
+        _methodName5 = "getProposalContestSections";
+
+        _methodParameterTypes5 = new String[] { "long", "int", "long" };
     }
 
     @Override
@@ -147,5 +153,38 @@ public class ProposalServiceClp implements ProposalService {
         }
 
         return (com.liferay.portal.kernel.json.JSONObject) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.json.JSONArray getProposalContestSections(
+        long proposalId, int version, long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
+                    new Object[] { proposalId, version, contestId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.json.JSONArray) ClpSerializer.translateOutput(returnObj);
     }
 }

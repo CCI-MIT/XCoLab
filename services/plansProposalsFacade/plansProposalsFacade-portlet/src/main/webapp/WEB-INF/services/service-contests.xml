@@ -55,7 +55,8 @@
             <finder-column name="contestActive" />
             <finder-column name="contestPrivate" />
         </finder>
-        <finder name="ContestActive" return-type="Collection">
+        
+	<finder name="ContestActive" return-type="Collection">
             <finder-column name="contestActive" />
         </finder>
         <finder name="ActiveFeatured" return-type="Collection">
@@ -183,6 +184,7 @@
     <exceptions>
 
         <exception>NoSuchContestPhase</exception>
+        <exception>NoSuchContestPhaseException</exception>
         <exception>NoSuchContest</exception>
     </exceptions>
 

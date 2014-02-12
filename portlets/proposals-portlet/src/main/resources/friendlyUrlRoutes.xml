@@ -72,6 +72,16 @@
         <generated-parameter name="contestId">{contestId}</generated-parameter>
     </route>
     
+	<!-- create proposal -->
+    <route>
+        <pattern>/contestId/{contestId}/createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}</pattern>
+        <generated-parameter name="pageToDisplay">createProposal</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="baseProposalId">{baseProposalId}</generated-parameter>
+        <generated-parameter name="baseProposalVersion">{baseProposalVersion}</generated-parameter>
+        <generated-parameter name="baseContestId">{baseContestId}</generated-parameter>
+    </route>
+    
     
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/version/{version}</pattern>
@@ -87,6 +97,14 @@
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="edit">true</generated-parameter>
+    </route>
+    
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/move</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+        <generated-parameter name="move">true</generated-parameter>
     </route>
     
     <route>

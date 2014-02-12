@@ -293,8 +293,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * from ContestPhaseImpl *

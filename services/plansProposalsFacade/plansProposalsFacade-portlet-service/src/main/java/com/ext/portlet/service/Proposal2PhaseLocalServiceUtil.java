@@ -268,12 +268,26 @@ public class Proposal2PhaseLocalServiceUtil {
         return getService().create(proposalId, contestPhaseId);
     }
 
+    public static com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId, int versionFrom, int versionTo)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .create(proposalId, contestPhaseId, versionFrom, versionTo);
+    }
+
     public static com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
         long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getByProposalIdContestPhaseId(proposalId, contestPhaseId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Proposal2Phase> getByProposalId(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByProposalId(proposalId);
     }
 
     public static com.ext.portlet.model.Contest getCurrentContestForProposal(

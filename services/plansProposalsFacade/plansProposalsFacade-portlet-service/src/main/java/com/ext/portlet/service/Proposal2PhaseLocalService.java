@@ -239,9 +239,19 @@ public interface Proposal2PhaseLocalService extends BaseLocalService,
     public com.ext.portlet.model.Proposal2Phase create(long proposalId,
         long contestPhaseId);
 
+    public com.ext.portlet.model.Proposal2Phase create(long proposalId,
+        long contestPhaseId, int versionFrom, int versionTo)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Proposal2Phase getByProposalIdContestPhaseId(
         long proposalId, long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal2Phase> getByProposalId(
+        long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

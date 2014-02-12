@@ -235,8 +235,7 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.Contest createNewContest(
         java.lang.Long userId, java.lang.String name)
@@ -246,6 +245,10 @@ public interface ContestLocalService extends BaseLocalService,
     public void updateContestGroupsAndDiscussions()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)

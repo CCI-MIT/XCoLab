@@ -25,6 +25,7 @@
 		<header-portlet-css>/css/proposals.css</header-portlet-css>
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>
         <header-portlet-javascript>/js/historyWidget.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/copyProposalWidget.js</header-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

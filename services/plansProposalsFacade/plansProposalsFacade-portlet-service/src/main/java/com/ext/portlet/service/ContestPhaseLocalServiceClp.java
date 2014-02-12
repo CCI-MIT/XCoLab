@@ -1066,8 +1066,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.ext.portlet.NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1076,10 +1075,6 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
                     new Object[] { ClpSerializer.translateInput(contest) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchContestPhaseException) {
-                throw (com.ext.portlet.NoSuchContestPhaseException) t;
-            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;

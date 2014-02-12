@@ -271,8 +271,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getContestByActiveFlag(contestActive);
     }
 
@@ -289,6 +288,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.updateContestGroupsAndDiscussions();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.findByActive(active);
     }
 
     @Override

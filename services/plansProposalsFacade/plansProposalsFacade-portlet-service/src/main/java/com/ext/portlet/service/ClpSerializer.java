@@ -1728,6 +1728,11 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchContestPhaseException();
         }
 
+        if (className.equals(
+                    "com.ext.portlet.NoSuchContestPhaseExceptionException")) {
+            return new com.ext.portlet.NoSuchContestPhaseExceptionException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchEmailListException")) {
             return new com.ext.portlet.NoSuchEmailListException();
         }
