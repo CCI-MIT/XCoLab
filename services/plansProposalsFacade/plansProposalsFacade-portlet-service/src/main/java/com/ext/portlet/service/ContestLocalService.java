@@ -235,7 +235,8 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.Contest createNewContest(
         java.lang.Long userId, java.lang.String name)

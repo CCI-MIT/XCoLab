@@ -119,13 +119,12 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes526;
     private String _methodName527;
     private String[] _methodParameterTypes527;
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
-<<<<<<< HEAD
+    private String _methodName528;
+    private String[] _methodParameterTypes528;
     private String _methodName530;
     private String[] _methodParameterTypes530;
-=======
->>>>>>> copyProposal
+    private String _methodName531;
+    private String[] _methodParameterTypes531;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -360,35 +359,27 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes525 = new String[] { "long", "long" };
 
-<<<<<<< HEAD
-        _methodName526 = "getModelIdsAndNames";
-=======
         _methodName526 = "getModelIds";
->>>>>>> copyProposal
 
         _methodParameterTypes526 = new String[] { "long" };
 
-        _methodName527 = "getDefaultModelId";
-<<<<<<< HEAD
+        _methodName527 = "getModelIdsAndNames";
 
         _methodParameterTypes527 = new String[] { "long" };
 
-        _methodName529 = "getNumberOfProposalsForJudge";
+        _methodName528 = "getDefaultModelId";
 
-=======
+        _methodParameterTypes528 = new String[] { "long" };
 
-        _methodParameterTypes527 = new String[] { "long" };
+        _methodName530 = "getNumberOfProposalsForJudge";
 
-        _methodName529 = "getNumberOfProposalsForJudge";
-
->>>>>>> copyProposal
-        _methodParameterTypes529 = new String[] {
+        _methodParameterTypes530 = new String[] {
                 "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
             };
 
-        _methodName530 = "getContestsByActivePrivate";
+        _methodName531 = "getContestsByActivePrivate";
 
-        _methodParameterTypes530 = new String[] { "boolean", "boolean" };
+        _methodParameterTypes531 = new String[] { "boolean", "boolean" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -693,26 +684,27 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName526.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
-<<<<<<< HEAD
-            return ContestLocalServiceUtil.getModelIdsAndNames(((Long) arguments[0]).longValue());
-=======
             return ContestLocalServiceUtil.getModelIds(((Long) arguments[0]).longValue());
->>>>>>> copyProposal
         }
 
         if (_methodName527.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
-            return ContestLocalServiceUtil.getDefaultModelId(((Long) arguments[0]).longValue());
+            return ContestLocalServiceUtil.getModelIdsAndNames(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
-            return ContestLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
-                (com.ext.portlet.model.Contest) arguments[1]);
+        if (_methodName528.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
+            return ContestLocalServiceUtil.getDefaultModelId(((Long) arguments[0]).longValue());
         }
 
         if (_methodName530.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
+            return ContestLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
+                (com.ext.portlet.model.Contest) arguments[1]);
+        }
+
+        if (_methodName531.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByActivePrivate(((Boolean) arguments[0]).booleanValue(),
                 ((Boolean) arguments[1]).booleanValue());
         }

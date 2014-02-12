@@ -158,7 +158,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-<<<<<<< HEAD
     * Returns all the contests where contestActive = &#63; and contestPrivate = &#63;.
     *
     * @param contestActive the contest active
@@ -315,14 +314,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-=======
-    * Returns all the contests where contestActive = &#63;.
-    *
-    * @param contestActive the contest active
-    * @return the matching contests
-    * @throws SystemException if a system exception occurred
-    */
->>>>>>> copyProposal
     public java.util.List<com.ext.portlet.model.Contest> findByContestActive(
         boolean contestActive)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -375,7 +366,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     public com.ext.portlet.model.Contest findByContestActive_First(
         boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-<<<<<<< HEAD
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -704,13 +694,10 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     public com.ext.portlet.model.Contest findByActiveFeaturedcontestPrivate_Last(
         boolean contestActive, boolean featured, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-=======
->>>>>>> copyProposal
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-<<<<<<< HEAD
     * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63;.
     *
     * @param contestActive the contest active
@@ -722,45 +709,14 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     */
     public com.ext.portlet.model.Contest fetchByActiveFeaturedcontestPrivate_Last(
         boolean contestActive, boolean featured, boolean contestPrivate,
-=======
-    * Returns the first contest in the ordered set where contestActive = &#63;.
-    *
-    * @param contestActive the contest active
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest fetchByContestActive_First(
-        boolean contestActive,
->>>>>>> copyProposal
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-<<<<<<< HEAD
     * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63;.
-=======
-    * Returns the last contest in the ordered set where contestActive = &#63;.
-    *
-    * @param contestActive the contest active
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching contest
-    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest findByContestActive_Last(
-        boolean contestActive,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the last contest in the ordered set where contestActive = &#63;.
->>>>>>> copyProposal
     *
     * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
-<<<<<<< HEAD
     * @param featured the featured
     * @param contestPrivate the contest private
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -777,23 +733,8 @@ public interface ContestPersistence extends BasePersistence<Contest> {
 
     /**
     * Removes all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; from the database.
-=======
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest fetchByContestActive_Last(
-        boolean contestActive,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63;.
->>>>>>> copyProposal
     *
-    * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
-<<<<<<< HEAD
     * @param featured the featured
     * @param contestPrivate the contest private
     * @throws SystemException if a system exception occurred
@@ -804,30 +745,6 @@ public interface ContestPersistence extends BasePersistence<Contest> {
 
     /**
     * Returns the number of contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63;.
-=======
-    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-    * @return the previous, current, and next contest
-    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
-    * @throws SystemException if a system exception occurred
-    */
-    public com.ext.portlet.model.Contest[] findByContestActive_PrevAndNext(
-        long ContestPK, boolean contestActive,
-        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-        throws com.ext.portlet.NoSuchContestException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Removes all the contests where contestActive = &#63; from the database.
-    *
-    * @param contestActive the contest active
-    * @throws SystemException if a system exception occurred
-    */
-    public void removeByContestActive(boolean contestActive)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * Returns the number of contests where contestActive = &#63;.
->>>>>>> copyProposal
     *
     * @param contestActive the contest active
     * @param featured the featured
@@ -835,12 +752,8 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-<<<<<<< HEAD
     public int countByActiveFeaturedcontestPrivate(boolean contestActive,
         boolean featured, boolean contestPrivate)
-=======
-    public int countByContestActive(boolean contestActive)
->>>>>>> copyProposal
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

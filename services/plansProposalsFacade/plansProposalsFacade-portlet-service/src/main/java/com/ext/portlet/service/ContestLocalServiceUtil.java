@@ -261,7 +261,8 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestByActiveFlag(contestActive);
     }
 
