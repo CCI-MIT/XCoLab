@@ -99,10 +99,15 @@ public class AddUpdateProposalDetailsActionController {
             	for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
             		ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(), 
             				ProposalContestPhaseAttributeKeys.VISIBLE, 0);
-            		if (p2p.getVersionTo() < 0) {
+
+            		if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
+            			Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
+            		}
+            		else if (p2p.getVersionTo() < 0) {
             			p2p.setVersionTo(proposal.getCurrentVersion()-1);
             			Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
             		}
+            		
             		
             	}
             	
