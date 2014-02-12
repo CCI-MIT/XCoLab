@@ -148,6 +148,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes69;
     private String _methodName70;
     private String[] _methodParameterTypes70;
+    private String _methodName71;
+    private String[] _methodParameterTypes71;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -480,6 +482,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodName70 = "getUserVotedProposalsCount";
 
         _methodParameterTypes70 = new String[] { "long" };
+
+        _methodName71 = "getModifiedAfter";
+
+        _methodParameterTypes71 = new String[] { "java.util.Date" };
     }
 
     @Override
@@ -2750,5 +2756,33 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return ((Integer) returnObj).intValue();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getModifiedAfter(
+        java.util.Date date)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName71,
+                    _methodParameterTypes71,
+                    new Object[] { ClpSerializer.translateInput(date) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
     }
 }

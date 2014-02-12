@@ -158,6 +158,8 @@ create index IX_C1242E47 on xcolab_PlansFilterPosition (userId, planTypeId);
 
 create index IX_95AABD4 on xcolab_PlansUserSettings (userId, planTypeId);
 
+create index IX_BBC99B8B on xcolab_Proposal (updatedDate);
+
 create index IX_DBA8038D on xcolab_Proposal2Phase (contestPhaseId);
 create index IX_D273A4B8 on xcolab_Proposal2Phase (proposalId);
 

@@ -1104,6 +1104,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public int getUserVotedProposalsCount(long userId) throws SystemException {
     	return proposalVotePersistence.countByUserId(userId);
     }
+    
+    public List<Proposal> getModifiedAfter(Date date) throws SystemException {
+    	return proposalPersistence.findByModifiedAfter(date);
+    }
 
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
