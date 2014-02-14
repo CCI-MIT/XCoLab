@@ -1,14 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.ext.portlet.service.persistence.ContestPhaseActionableDynamicQuery;
-import com.ext.portlet.service.persistence.ProposalVersionPK;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -99,18 +93,15 @@ public class ProposalWrapper {
     public void setAuthorId(long authorId) {
         proposal.setAuthorId(authorId);
     }
-
+    
+    
     public boolean getVisible() {
         return proposal.getVisible();
     }
 
     public boolean isVisibleInPhase() throws PortalException, SystemException {
-        ProposalContestPhaseAttribute visibleInPhase = getContestPhaseAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
-        return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0);
-    }
-    
-    public boolean isVisible() {
-        return proposal.isVisible();
+    	ProposalContestPhaseAttribute visibleInPhase = getContestPhaseAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+        return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0); 
     }
 
     public long getDiscussionId() {
@@ -227,6 +218,7 @@ public class ProposalWrapper {
     public String getFellowComment() throws SystemException, PortalException {
         return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, "");
     }
+    
 
     public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<Long>();

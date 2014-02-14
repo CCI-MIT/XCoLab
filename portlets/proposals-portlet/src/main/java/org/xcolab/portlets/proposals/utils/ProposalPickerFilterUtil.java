@@ -87,13 +87,14 @@ public enum ProposalPickerFilterUtil {
                 // FocusArea
                 FocusArea fa = PlanSectionDefinitionLocalServiceUtil.getFocusArea(PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(definitionId));
                 // List of terms in this area
-                List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getTerms(fa);
+                if (fa != null) {
+                	List<OntologyTerm> terms = FocusAreaLocalServiceUtil.getTerms(fa);
+                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
 
-                List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
-
-                for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
-                    Proposal p = i.next().getLeft();
-                    if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                    for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                        Proposal p = i.next().getLeft();
+                        if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) i.remove();
+                    }
                 }
             } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
         }

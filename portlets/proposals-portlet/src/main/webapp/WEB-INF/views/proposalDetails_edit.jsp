@@ -161,7 +161,7 @@
 		
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">
-				<div class="addpropbox q3">
+				<div class="addpropbox q3" data-section-id="${section.sectionDefinitionId }">
 					<proposalsPortlet:proposalSectionEdit section="${section }" />
 				</div>
 			</c:if>
