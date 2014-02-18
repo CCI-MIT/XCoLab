@@ -1,14 +1,15 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -25,11 +26,11 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.xcolab.portlets.proposals.utils.LinkUtils;
 
 public class ProposalSectionWrapper {
 
+    private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
     private PlanSectionDefinition definition;
     private Proposal proposal;
     private ProposalWrapper wrappedProposal;
@@ -77,9 +78,44 @@ public class ProposalSectionWrapper {
             }
         }
 
-        for (Element e : d.select("a")) {
-            ProposalWrapper wr = LinkUtils.getProposalLinks(e.attr("href"));
-            if (wr != null) e.text(wr.getName());
+        // Regex pattern originated from
+        // http://stackoverflow.com/questions/1806017/extracting-urls-from-a-text-document-using-java-regular-expressions
+        Pattern pattern = Pattern.compile(
+                "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
+                        "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
+                        "|mil|biz|info|mobi|name|aero|jobs|museum" +
+                        "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
+                        "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
+                        "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
+                        "(&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
+                        "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
+
+        // Scan all <p> tags
+        for (Element e : d.select("p")) {
+            String newText = "";
+            _log.debug("Scanning line: " + e.text());
+            // Separate the <p> tags by the space character and process potential URLs
+            String[] words = e.text().split(" ");
+            for (String word : words) {
+                final Matcher matcher = pattern.matcher(word);
+
+                // If a match is found create a new <a> tag
+                if (matcher.find()) {
+                    final String link = word.substring(matcher.start(), matcher.end());
+                    ProposalWrapper wr = LinkUtils.getProposalLinks(link);
+                    if (wr != null) {
+                        newText += "<a href=\""+link+"\">"+wr.getName()+"</a>" + " ";
+                    }
+                } else {
+                    newText += word + " ";
+                }
+            }
+
+            // Rebuild the whole value string of the <p> tag and exchange the old one
+            e.after("<p>" + newText + "<p>");
+            e.remove();
         }
 
         return d.select("body").html();
