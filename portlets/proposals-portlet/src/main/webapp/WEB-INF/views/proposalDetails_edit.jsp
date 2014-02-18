@@ -47,12 +47,12 @@
     				<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />.
     			</p>
 	    	</c:when>
-	    	<c:otherwise>
+	    	<c:when test="${not empty baseProposal}">
     			<p>
     				You're about to create a proposal that will be based on 
     				<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
     			</p>
-	    	</c:otherwise>
+	    	</c:when>
     	</c:choose>
     	<p>
         Please complete your proposal based on the template below. 
