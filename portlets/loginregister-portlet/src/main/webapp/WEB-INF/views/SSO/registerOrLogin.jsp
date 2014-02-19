@@ -9,6 +9,7 @@
 
     <h1 style="padding-left: 20px;">Welcome to the Climate CoLab!</h1>
     <br /><br />
+    <span>We successfully verified your Facebook or Google account. Please choose from the following options in order to finish your registration:</span>
     <br />
     <portlet:actionURL var="provideSSOCredentials">
         <portlet:param name="action" value="provideSSOCredentials" />
