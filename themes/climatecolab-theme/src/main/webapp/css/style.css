@@ -664,7 +664,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 /* proposal columns */
 .prop-left {float:left; width:616px; margin-right:38px; line-height:24px;}
 .prop-right {float:left; width:330px;}
-.prop-left h2 {font-size:27px; color:#66b035; margin:10px 0 16px;}
+.prop-left h2 {font-size:27px; color:#66b035; margin:10px 0 16px; text-align: justify;}
 .prop-left h3 {font-size:22px; margin-bottom:13px; color:#404040;}
 .prop-left p {color:#545454;}
 .prop-left p.intro {font-size:19px; line-height:27px;}
