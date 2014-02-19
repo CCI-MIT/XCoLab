@@ -252,6 +252,14 @@ public class ProposalsPermissions {
         }
         return false;
     }
+    
+    public boolean getCanCopyProposal() throws SystemException {
+    	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
+    }
+    
+    public boolean getCanMoveProposal() throws SystemException {
+    	return isOwner() || getCanAdminAll();
+    }
 
 
 }

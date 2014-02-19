@@ -36,10 +36,30 @@
 	</c:choose>
 
     <div class="headline addprop">
+    	<c:choose>
+    		<c:when test="${move }">
+    			<p>
+    				You're about to move a proposal 
+    				<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />
+    				from contest
+    				<proposalsPortlet:contestLink contestId="${baseContest.contestPK}" text="${baseContest.contestShortName} " />
+    				to contest
+    				<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />.
+    			</p>
+	    	</c:when>
+	    	<c:when test="${not empty baseProposal}">
+    			<p>
+    				You're about to create a proposal that will be based on 
+    				<collab:proposalLink proposalId="${baseProposal.proposalId}" contestId="${baseContest.contestPK}" text="${baseProposal.name}" escape="true" />.
+    			</p>
+	    	</c:when>
+    	</c:choose>
+    	<p>
         Please complete your proposal based on the template below. 
         If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.  
         To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/2012+contest+rules" target="_blank">Contest rules</a> 
         and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+        </p>
     </div> <!-- /headline -->
     
     
@@ -49,6 +69,10 @@
 	
 	
 	<form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
+		<form:hidden path="baseProposalId" />
+		<form:hidden path="baseProposalContestId" />
+		<form:hidden path="move" />
+		<form:hidden path="moveToContestPhaseId" />
 		
 		<div class="addpropbox q1">
             <label>
@@ -154,7 +178,7 @@
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">
 				<div class="addpropbox q3">
-					<proposalsPortlet:proposalSectionEdit section="${section }" />
+					<proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${not empty baseProposal }"/>
 				</div>
 			</c:if>
 		</c:forEach>	
@@ -306,5 +330,33 @@
 	});
 			
 </script>
+
+	<div id="copyProposalContainer" style="display: none;">
+    	<div class="popup-wrap p1" id="copyProposalPopup">
+			<div class="popup">
+				<h4>Choose section from base proposal, which content you want to copy</h4>
+				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+					<div id="copyProposalContests"><!--  --></div>
+					<center>
+						<div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var currentProposal = {
+				proposalId: ${proposal.proposalId},
+				version: ${proposal.version}
+		}
+		var baseProposal = {
+				proposalId: ${baseProposal.proposalId},
+				version: ${baseProposal.version}
+		}
+		var baseContest = {
+				contestPK: ${baseContest.contestPK}
+		}
+		
+	</script>
 
 </jsp:root>

@@ -20,6 +20,10 @@
     	<column name="fellowDiscussionId" type="long" />
     	<column name="advisorDiscussionId" type="long" />
     	<column name="groupId" type="long" />
+    	
+    	<finder return-type="Collection" name="ModifiedAfter">
+    		<finder-column name="updatedDate" comparator=">="/>
+    	</finder>
     </entity>
     
     <entity name="ProposalVersion" local-service="true">

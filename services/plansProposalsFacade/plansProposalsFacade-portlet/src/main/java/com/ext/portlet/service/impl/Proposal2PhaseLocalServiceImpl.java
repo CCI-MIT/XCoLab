@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;
@@ -13,6 +15,7 @@ import com.ext.portlet.service.base.Proposal2PhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.service.UserLocalServiceUtil;
 /**
  * The implementation of the proposal2 phase local service.
  *
@@ -39,8 +42,27 @@ public class Proposal2PhaseLocalServiceImpl
         return createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
     }
     
+    public Proposal2Phase create(long proposalId, long contestPhaseId, int versionFrom, int versionTo) throws SystemException {
+        Proposal2Phase p2p = createProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+        p2p.setVersionFrom(versionFrom);
+        p2p.setVersionTo(versionTo);
+        
+        p2p = addProposal2Phase(p2p);
+        /*
+        if (publishActivity) eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
+                contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
+ 		*/
+        return p2p;
+    }
+    
+    
+    
     public Proposal2Phase getByProposalIdContestPhaseId(long proposalId, long contestPhaseId) throws PortalException, SystemException {
         return getProposal2Phase(new Proposal2PhasePK(proposalId, contestPhaseId));
+    }
+    
+    public List<Proposal2Phase> getByProposalId(long proposalId) throws PortalException, SystemException {
+    	return proposal2PhasePersistence.findByProposalId(proposalId);
     }
     
     public Contest getCurrentContestForProposal(long proposalId) throws SystemException, PortalException {

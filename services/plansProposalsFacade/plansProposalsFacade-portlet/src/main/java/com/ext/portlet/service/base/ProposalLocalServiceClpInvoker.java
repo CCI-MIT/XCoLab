@@ -149,6 +149,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes541;
     private String _methodName542;
     private String[] _methodParameterTypes542;
+    private String _methodName543;
+    private String[] _methodParameterTypes543;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -483,6 +485,10 @@ public class ProposalLocalServiceClpInvoker {
         _methodName542 = "getUserVotedProposalsCount";
 
         _methodParameterTypes542 = new String[] { "long" };
+
+        _methodName543 = "getModifiedAfter";
+
+        _methodParameterTypes543 = new String[] { "java.util.Date" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -966,6 +972,11 @@ public class ProposalLocalServiceClpInvoker {
         if (_methodName542.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
             return ProposalLocalServiceUtil.getUserVotedProposalsCount(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName543.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
+            return ProposalLocalServiceUtil.getModifiedAfter((java.util.Date) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

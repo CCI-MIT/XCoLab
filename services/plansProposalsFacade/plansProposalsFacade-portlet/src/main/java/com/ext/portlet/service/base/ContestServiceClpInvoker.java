@@ -13,6 +13,8 @@ public class ContestServiceClpInvoker {
     private String[] _methodParameterTypes468;
     private String _methodName469;
     private String[] _methodParameterTypes469;
+    private String _methodName474;
+    private String[] _methodParameterTypes474;
 
     public ContestServiceClpInvoker() {
         _methodName468 = "getBeanIdentifier";
@@ -22,6 +24,10 @@ public class ContestServiceClpInvoker {
         _methodName469 = "setBeanIdentifier";
 
         _methodParameterTypes469 = new String[] { "java.lang.String" };
+
+        _methodName474 = "getContestsOpenForProposals";
+
+        _methodParameterTypes474 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -36,6 +42,11 @@ public class ContestServiceClpInvoker {
             ContestServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName474.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes474, parameterTypes)) {
+            return ContestServiceUtil.getContestsOpenForProposals();
         }
 
         throw new UnsupportedOperationException();

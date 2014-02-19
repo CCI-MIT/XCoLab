@@ -292,6 +292,13 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.findByActive(active);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException {

@@ -39,14 +39,14 @@ function countCharacters(input, editor) {
     if (editor) {
     	if (editor == null || editor.document == null) return 0;
         if (editor.document['$'].body.textContent) {
-            return editor.document['$'].body.textContent.length;
+            return jQuery.trim(editor.document['$'].body.textContent).length;
             
         }
         if (editor.document['$'].body.innerText) {
-            return editor.document['$'].body.innerText.length;
+            return jQuery.trim(editor.document['$'].body.innerText).length;
         }
     }
-    return input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length;
+    return jQuery.trim(input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
     
 }
 
@@ -71,6 +71,7 @@ function shouldAllowMoreCharacters(input) {
  * @returns
  */
 function updateCharacterCounter(input, editor) {
+	var parent = input.parents('.addpropbox');
     var elem = input.get(0);
     var max = input.attr('maxCharacters');
     if (elem && elem.limitCharacterCounter) {
@@ -84,6 +85,12 @@ function updateCharacterCounter(input, editor) {
             input.removeClass('invalid');
         }
         elem.limitCharacterCounter.text(count);
+        if (count > 0) {
+        	parent.removeClass('empty').addClass('notempty');
+        }
+        else {
+        	parent.removeClass('notempty').addClass('empty');
+        }
     }
 }
 

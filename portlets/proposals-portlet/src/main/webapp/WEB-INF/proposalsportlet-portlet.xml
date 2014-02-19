@@ -41,6 +41,7 @@
 						<list>
 							<value>action_forwardToPage</value>
                             <value>action</value>
+                            <value>move</value>
 						</list>
 					</property>
 					<property name="ignoreOnSuccess">

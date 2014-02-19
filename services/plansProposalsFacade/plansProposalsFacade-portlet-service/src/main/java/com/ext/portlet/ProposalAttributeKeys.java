@@ -13,6 +13,8 @@ public class ProposalAttributeKeys {
     public static final String PITCH = "PITCH";
     public static final String IMAGE_ID = "IMAGE_ID";
     public static final String VISIBLE = "VISIBLE";
+    public static final String BASE_PROPOSAL_ID = "BASE_PROPOSAL_ID";
+    public static final String BASE_PROPOSAL_CONTEST_ID = "BASE_PROPOSAL_CONTEST_ID";
 
     /**
      * modelling engine

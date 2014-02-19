@@ -247,6 +247,10 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     public java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException;

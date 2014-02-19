@@ -6,6 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 <div class="prop-right">
 	<div class="votebox-wrap">
@@ -152,6 +153,13 @@
                 </c:if>  
         	</div>
         </c:if>
+		<c:if test="${not empty proposal.baseProposal }">
+        	<div class="prop-avatar" style="font-size: 13px">
+        		<strong>Base proposal: </strong>
+            	This proposal was created as a copy of 
+            	<collab:proposalLink proposalId="${proposal.baseProposal.proposalId }" contestId="${proposal.baseProposal.contestPK }" text="${proposal.baseProposal.name }" />
+			</div>
+        </c:if>
         
         <c:if test="${proposal.proposalAttributeUtil.hasAttribute('SCENARIO_ID') }">
             <h5 class="toppad">Model Results Summary</h5>
@@ -171,6 +179,7 @@
                 </c:if>
             </div>
         </c:if>
+		
 
     <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
         <c:choose>
@@ -193,6 +202,7 @@
             </c:when>
         </c:choose>
     </c:if>
+                
     </div>
 
 </jsp:root>

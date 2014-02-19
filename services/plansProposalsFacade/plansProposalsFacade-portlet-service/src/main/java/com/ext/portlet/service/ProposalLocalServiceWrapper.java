@@ -1213,6 +1213,13 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.getUserVotedProposalsCount(userId);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getModifiedAfter(
+        java.util.Date date)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getModifiedAfter(date);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

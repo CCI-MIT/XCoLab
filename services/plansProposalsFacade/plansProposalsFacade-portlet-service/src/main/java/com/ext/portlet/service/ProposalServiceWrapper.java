@@ -61,6 +61,15 @@ public class ProposalServiceWrapper implements ProposalService,
         return _proposalService.getProposalVersions(proposalId, start, end);
     }
 
+    @Override
+    public com.liferay.portal.kernel.json.JSONArray getProposalContestSections(
+        long proposalId, int version, long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalService.getProposalContestSections(proposalId, version,
+            contestId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

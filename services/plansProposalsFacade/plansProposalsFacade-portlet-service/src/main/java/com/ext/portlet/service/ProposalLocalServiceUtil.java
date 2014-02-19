@@ -1163,6 +1163,12 @@ public class ProposalLocalServiceUtil {
         return getService().getUserVotedProposalsCount(userId);
     }
 
+    public static java.util.List<com.ext.portlet.model.Proposal> getModifiedAfter(
+        java.util.Date date)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getModifiedAfter(date);
+    }
+
     public static void clearService() {
         _service = null;
     }

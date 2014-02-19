@@ -106,7 +106,22 @@
             	</div>
         	</div>
         	<c:set var="addBlueClass" value='${not addBlueClass }' />
+        	
         </c:if>
+        
+        <c:if test="${proposalsPermissions.canMoveProposal}">
+        	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            	<strong>Move proposal</strong>
+            	<div>            		
+					<div class="blue-button">
+						<a href="javascript:;"
+							onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true)">
+							<span>Move </span> this proposal
+						</a>
+					</div>
+				</div>
+			</div>
+		</c:if>
         
         
         </div>
@@ -169,7 +184,26 @@
             	</script>
             </div>
         </div>
-    </div>
+    </div>	
+   	<div id="copyProposalContainer" style="display: none;">
+    	<div class="popup-wrap p1" id="copyProposalPopup">
+			<div class="popup">
+				<h4>Please choose contest to which you'd like to copy this proposal</h4>
+				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+					<div id="copyProposalContests"><!--  --></div>
+					<center>
+						<div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script>
+		var currentProposal = {
+				proposalId: ${proposal.proposalId},
+				version: ${proposal.version}
+		}
+	</script>
 
 
 </jsp:root>

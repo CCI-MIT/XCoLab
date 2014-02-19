@@ -77,4 +77,18 @@ public class ProposalServiceSoap {
             throw new RemoteException(e.getMessage());
         }
     }
+
+    public static java.lang.String getProposalContestSections(long proposalId,
+        int version, long contestId) throws RemoteException {
+        try {
+            com.liferay.portal.kernel.json.JSONArray returnValue = ProposalServiceUtil.getProposalContestSections(proposalId,
+                    version, contestId);
+
+            return returnValue.toString();
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
 }

@@ -74,7 +74,11 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.Proposal"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.Proposal"),
+            true);
+    public static long UPDATEDDATE_COLUMN_BITMASK = 1L;
+    public static long PROPOSALID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Proposal"));
     private static ClassLoader _classLoader = Proposal.class.getClassLoader();
@@ -84,6 +88,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     private long _proposalId;
     private Date _createDate;
     private Date _updatedDate;
+    private Date _originalUpdatedDate;
     private int _currentVersion;
     private long _authorId;
     private boolean _visible;
@@ -92,6 +97,7 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
     private long _fellowDiscussionId;
     private long _advisorDiscussionId;
     private long _groupId;
+    private long _columnBitmask;
     private Proposal _escapedModel;
 
     public ProposalModelImpl() {
@@ -293,7 +299,17 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
     @Override
     public void setUpdatedDate(Date updatedDate) {
+        _columnBitmask |= UPDATEDDATE_COLUMN_BITMASK;
+
+        if (_originalUpdatedDate == null) {
+            _originalUpdatedDate = _updatedDate;
+        }
+
         _updatedDate = updatedDate;
+    }
+
+    public Date getOriginalUpdatedDate() {
+        return _originalUpdatedDate;
     }
 
     @JSON
@@ -389,6 +405,10 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
         _groupId = groupId;
     }
 
+    public long getColumnBitmask() {
+        return _columnBitmask;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -474,6 +494,11 @@ public class ProposalModelImpl extends BaseModelImpl<Proposal>
 
     @Override
     public void resetOriginalValues() {
+        ProposalModelImpl proposalModelImpl = this;
+
+        proposalModelImpl._originalUpdatedDate = proposalModelImpl._updatedDate;
+
+        proposalModelImpl._columnBitmask = 0;
     }
 
     @Override

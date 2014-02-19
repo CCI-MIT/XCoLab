@@ -20,9 +20,13 @@ public class UpdateProposalDetailsBean {
 
     private String team;
     private long imageId;
+    private long baseProposalId;
+    private long baseProposalContestId;
+    private long moveToContestPhaseId;
 
     // legacy
     private String description;
+	private boolean move;
 
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
         for (ProposalSectionWrapper section : proposal.getSections()) {
@@ -33,6 +37,24 @@ public class UpdateProposalDetailsBean {
         team = proposal.getTeam();
         imageId = proposal.getImageId();
         description = proposal.getDescription();
+    }
+    
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) throws PortalException, SystemException {
+        for (ProposalSectionWrapper section : baseProposal.getSections()) {
+            sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
+        }
+        pitch = baseProposal.getPitch();
+        name = baseProposal.getName();
+        team = baseProposal.getTeam();
+        imageId = baseProposal.getImageId();
+        description = baseProposal.getDescription();
+        baseProposalId = baseProposal.getProposalId();
+        baseProposalContestId = baseProposal.getContestPK();
+    }
+    
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal, boolean move) throws PortalException, SystemException {
+    	this(proposal, baseProposal);
+    	this.move = move;
     }
 
     public UpdateProposalDetailsBean() {
@@ -85,6 +107,38 @@ public class UpdateProposalDetailsBean {
     public void setImageId(long imageId) {
         this.imageId = imageId;
     }
+
+	public long getBaseProposalId() {
+		return baseProposalId;
+	}
+
+	public void setBaseProposalId(long baseProposalId) {
+		this.baseProposalId = baseProposalId;
+	}
+
+	public long getBaseProposalContestId() {
+		return baseProposalContestId;
+	}
+
+	public void setBaseProposalContestId(long baseProposalContestId) {
+		this.baseProposalContestId = baseProposalContestId;
+	}
+
+	public boolean isMove() {
+		return move;
+	}
+
+	public void setMove(boolean move) {
+		this.move = move;
+	}
+
+	public long getMoveToContestPhaseId() {
+		return moveToContestPhaseId;
+	}
+
+	public void setMoveToContestPhaseId(long moveToContestPhaseId) {
+		this.moveToContestPhaseId = moveToContestPhaseId;
+	}
 
 
 }

@@ -1022,4 +1022,9 @@ public interface ProposalLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserVotedProposalsCount(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getModifiedAfter(
+        java.util.Date date)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

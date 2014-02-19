@@ -195,7 +195,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
     }
-
+    
+    public List<Contest> findByActive(boolean active) throws SystemException {
+        return contestPersistence.findByContestActive(active);
+    }
+    
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
         return contestPersistence.findByActiveFeatured(active, featured);
     }
@@ -262,7 +266,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         try {
             ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
             return true;
-        } catch (NoSuchContestPhaseException e) {
+        } catch (Exception e) {
             // ignore
         }
         return false;

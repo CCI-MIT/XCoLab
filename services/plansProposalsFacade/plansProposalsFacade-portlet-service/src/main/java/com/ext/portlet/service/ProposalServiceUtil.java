@@ -66,6 +66,14 @@ public class ProposalServiceUtil {
         return getService().getProposalVersions(proposalId, start, end);
     }
 
+    public static com.liferay.portal.kernel.json.JSONArray getProposalContestSections(
+        long proposalId, int version, long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getProposalContestSections(proposalId, version, contestId);
+    }
+
     public static void clearService() {
         _service = null;
     }

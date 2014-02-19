@@ -118,5 +118,25 @@
         </div>
         <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>
+	<div id="copyProposalContainer" style="display: none;">
+    	<div class="popup-wrap p1" id="copyProposalPopup">
+			<div class="popup">
+				<h4>Please choose contest to which you'd like to copy this proposal</h4>
+				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+					<div id="copyProposalContests"><!--  --></div>
+					<center>
+						<div class="blue-button"><a href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a></div>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		var currentProposal = {
+				proposalId: ${proposal.proposalId},
+				version: ${proposal.version}
+		}
+	</script>
 
 </jsp:root>

@@ -49,11 +49,17 @@
 					<c:forEach var="singleTab" items="${tabs }">
 						<li class="${currentTab == singleTab.tab ? 'c' : ''}">
 							<c:choose>
-								<c:when test="${singleTab.defaultTab }">
+								<c:when test="${singleTab.defaultTab and empty contestPhase }">
 									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" />
 								</c:when>
-								<c:otherwise>
+								<c:when test="${singleTab.defaultTab and not empty contestPhase }">
+									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/phaseId/${contestPhase.contestPhasePK }/planId/${proposal.proposalId}" />
+								</c:when>
+								<c:when test="${not singleTab.defaultTab and empty contestPhase }">
 									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}/tab/${singleTab.name}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/phaseId/${contestPhase.contestPhasePK }/planId/${proposal.proposalId}/tab/${singleTab.name}" />
 								</c:otherwise>
 							</c:choose>
 							<a href="${proposalURL }">

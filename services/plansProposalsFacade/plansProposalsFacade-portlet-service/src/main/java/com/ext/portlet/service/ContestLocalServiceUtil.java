@@ -279,6 +279,12 @@ public class ContestLocalServiceUtil {
         getService().updateContestGroupsAndDiscussions();
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> findByActive(
+        boolean active)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByActive(active);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> findByActiveFeatured(
         boolean active, boolean featured)
         throws com.liferay.portal.kernel.exception.SystemException {

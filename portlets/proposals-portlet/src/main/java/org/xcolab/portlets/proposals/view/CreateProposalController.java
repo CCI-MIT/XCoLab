@@ -4,8 +4,6 @@ package org.xcolab.portlets.proposals.view;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +13,12 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionController;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -33,7 +34,9 @@ public class CreateProposalController extends BaseProposalsController {
 
     @RequestMapping(params = "pageToDisplay=createProposal")
     public String showContestProposals(RenderRequest request, RenderResponse response, 
-            @RequestParam Long contestId, Model model) 
+            @RequestParam Long contestId, @RequestParam(required=false) Long baseProposalId, 
+            @RequestParam(required=false, defaultValue = "-1") int baseProposalVersion, 
+            @RequestParam(required=false) Long baseContestId, Model model) 
             throws PortalException, SystemException {
 
         if(!proposalsContext.getPermissions(request).getCanCreate()) throw new IllegalAccessError("creation not allowed");
@@ -46,11 +49,23 @@ public class CreateProposalController extends BaseProposalsController {
         proposal.setAuthorId(themeDisplay.getUserId());
         
         ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request), null);
+        if (baseProposalId != null && baseProposalId > 0) {
+        	Contest baseContest = ContestLocalServiceUtil.getContest(baseContestId);
+        	ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(baseProposalId), 
+        			baseProposalVersion, baseContest, ContestLocalServiceUtil.getActiveOrLastPhase(baseContest), null);
+        	
 
-        model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
+        	model.addAttribute("baseProposal", baseProposalWrapper);
+        	model.addAttribute("baseContest", new ContestWrapper(baseContest));
+        	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
+        }
+        else {
+        	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
+        }
         
         model.addAttribute("proposal", proposalWrapped);
 
+        model.addAttribute("isEditingProposal", true);
         setSeoTexts(request, "Create proposal in " + proposalsContext.getContest(request), null, null);
         
 
