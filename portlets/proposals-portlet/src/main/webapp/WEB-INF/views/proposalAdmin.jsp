@@ -188,6 +188,12 @@
    	<div id="copyProposalContainer" style="display: none;">
     	<div class="popup-wrap p1" id="copyProposalPopup">
 			<div class="popup">
+				<div class="closepopuplogin">
+            		<a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
+                		<img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X"/>
+            		</a>
+        		</div>
+			
 				<h4>Please choose contest to which you'd like to copy this proposal</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>

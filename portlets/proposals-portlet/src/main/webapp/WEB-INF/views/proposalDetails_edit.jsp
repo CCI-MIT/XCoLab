@@ -178,7 +178,7 @@
 		<c:forEach var="section" items="${proposal.sections }">
 			<c:if test="${not section.locked }">
 				<div class="addpropbox q3">
-					<proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${not empty baseProposal }"/>
+					<proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasNotMappedSections and not empty baseProposal }"/>
 				</div>
 			</c:if>
 		</c:forEach>	
@@ -334,6 +334,12 @@
 	<div id="copyProposalContainer" style="display: none;">
     	<div class="popup-wrap p1" id="copyProposalPopup">
 			<div class="popup">
+				<div class="closepopuplogin">
+            		<a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
+                		<img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X"/>
+            		</a>
+        		</div>
+			
 				<h4>Choose section from base proposal, which content you want to copy</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
