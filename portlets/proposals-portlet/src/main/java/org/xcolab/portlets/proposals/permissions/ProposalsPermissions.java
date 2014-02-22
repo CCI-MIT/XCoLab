@@ -258,7 +258,7 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanMoveProposal() throws SystemException {
-    	return isOwner() || getCanAdminAll();
+    	return (isOwner() && getIsCreationAllowedByPhase()) || getCanAdminAll();
     }
 
 
