@@ -1,14 +1,15 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -25,9 +26,11 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.xcolab.portlets.proposals.utils.LinkUtils;
 
 public class ProposalSectionWrapper {
 
+    private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
     private PlanSectionDefinition definition;
     private Proposal proposal;
     private ProposalWrapper wrappedProposal;
@@ -48,6 +51,7 @@ public class ProposalSectionWrapper {
         this.wrappedProposal = wrappedProposal;
     }
 
+
     public String getTitle() {
         return definition.getTitle();
     }
@@ -61,18 +65,59 @@ public class ProposalSectionWrapper {
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
         String content = getContent();
-        if(content == null) return null;
+        if (content == null) return null;
         Document d = Jsoup.parse(content.trim());
         for (Element e : d.select("a.utube")) {
             String curURL = e.attr("href");
-            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?")+1), Charset.defaultCharset());
-            for(NameValuePair nvp : params) {
-                if(nvp.getName().equals("v")) {
+            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?") + 1), Charset.defaultCharset());
+            for (NameValuePair nvp : params) {
+                if (nvp.getName().equals("v")) {
                     e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + nvp.getValue() + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
                     e.remove();
                 }
             }
         }
+
+        // Regex pattern originated from
+        // http://stackoverflow.com/questions/1806017/extracting-urls-from-a-text-document-using-java-regular-expressions
+        Pattern pattern = Pattern.compile(
+                "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
+                        "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
+                        "|mil|biz|info|mobi|name|aero|jobs|museum" +
+                        "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
+                        "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
+                        "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
+                        "(&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
+                        "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
+
+        // Scan all <p> tags
+        for (Element e : d.select("p")) {
+            String newText = "";
+            _log.debug("Scanning line: " + e.text());
+            // Separate the <p> tags by the space character and process potential URLs
+            String[] words = e.text().split(" ");
+            for (String word : words) {
+                final Matcher matcher = pattern.matcher(word);
+
+                // If a match is found create a new <a> tag
+                if (matcher.find()) {
+                    final String link = word.substring(matcher.start(), matcher.end());
+                    ProposalWrapper wr = LinkUtils.getProposalLinks(link);
+                    if (wr != null) {
+                        newText += "<a href=\""+link+"\">"+wr.getName()+"</a>" + " ";
+                    }
+                } else {
+                    newText += word + " ";
+                }
+            }
+
+            // Rebuild the whole value string of the <p> tag and exchange the old one
+            e.after("<p>" + newText + "<p>");
+            e.remove();
+        }
+
         return d.select("body").html();
     }
 
@@ -82,7 +127,6 @@ public class ProposalSectionWrapper {
         }
         return PlanSectionTypeKeys.valueOf(definition.getType());
     }
-
 
     public Long getSectionDefinitionId() {
         return definition.getId();
@@ -108,13 +152,42 @@ public class ProposalSectionWrapper {
         return OntologyTermLocalServiceUtil.getOntologyTerm(attr.getNumericValue());
     }
 
+    public ProposalWrapper getNumericValueAsProposal() throws SystemException, PortalException {
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null || attr.getNumericValue() <= 0) {
+            return null;
+        }
+        return new ProposalWrapper(ProposalLocalServiceUtil.getProposal(attr.getNumericValue()));
+    }
+
+    public ProposalWrapper[] getStringValueAsProposalArray() throws SystemException, PortalException {
+        ProposalAttribute attr = getSectionAttribute();
+        if (attr == null || attr.getStringValue() == null || attr.getStringValue().equals("")) {
+            return null;
+        }
+
+        String props[] = attr.getStringValue().split(",");
+        ProposalWrapper[] ret = new ProposalWrapper[props.length];
+        for (int i = 0; i < props.length; i++) {
+            try {
+                ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
     public long getNumericValue() throws SystemException, PortalException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
             return 0;
         }
         return attr.getNumericValue();
+    }
 
+    public String getStringValue() throws SystemException, PortalException {
+        return getSectionAttribute().getStringValue();
     }
 
     public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
@@ -130,15 +203,12 @@ public class ProposalSectionWrapper {
         try {
             if (version != null && version > 0) {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), version, "SECTION", definition.getId());
-            }
-            else {
+            } else {
                 return ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), "SECTION", definition.getId());
             }
-        }
-        catch (NoSuchProposalAttributeException e) {
+        } catch (NoSuchProposalAttributeException e) {
             return null;
-        }
-        catch (NoSuchProposalException e) {
+        } catch (NoSuchProposalException e) {
             return null;
         }
         */

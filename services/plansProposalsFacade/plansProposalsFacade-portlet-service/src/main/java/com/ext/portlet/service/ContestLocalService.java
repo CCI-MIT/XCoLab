@@ -1,5 +1,7 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -235,7 +237,7 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws com.ext.portlet.NoSuchContestException,
+        throws NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.Contest createNewContest(
@@ -285,12 +287,22 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
+<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException;
+=======
+        throws NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+>>>>>>> IntegratedProposals
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
+<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException;
+=======
+        throws NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException;
+>>>>>>> IntegratedProposals
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isActive(com.ext.portlet.model.Contest contest)
@@ -457,7 +469,14 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+<<<<<<< HEAD
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException;
+=======
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+>>>>>>> IntegratedProposals
 }

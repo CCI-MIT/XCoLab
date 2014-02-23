@@ -1,5 +1,6 @@
 package com.ext.portlet.service;
 
+import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.service.InvokableLocalService;
 
 /**
@@ -1066,7 +1067,12 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
+<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
+=======
+        throws NoSuchContestPhaseException,
+            com.liferay.portal.kernel.exception.SystemException {
+>>>>>>> IntegratedProposals
         Object returnObj = null;
 
         try {
@@ -1076,6 +1082,13 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
+<<<<<<< HEAD
+=======
+            if (t instanceof NoSuchContestPhaseException) {
+                throw (NoSuchContestPhaseException) t;
+            }
+
+>>>>>>> IntegratedProposals
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }

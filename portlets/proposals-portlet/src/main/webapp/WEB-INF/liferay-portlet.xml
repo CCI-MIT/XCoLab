@@ -26,6 +26,8 @@
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>
         <header-portlet-javascript>/js/historyWidget.js</header-portlet-javascript>
         <header-portlet-javascript>/js/copyProposalWidget.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/findAndReplaceDOMText.js</header-portlet-javascript>
+        <footer-portlet-javascript>/js/proposalPicker.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

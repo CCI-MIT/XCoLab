@@ -23,6 +23,7 @@
     <script type="text/javascript" src="$javascript_folder/jquery.blockUI.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.cookie.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/jquery.jgrowl.min.js?tt=$themeTimestamp"></script>
+    <script type="text/javascript" src="$javascript_folder/spin.min.js?tt=$themeTimestamp"></script>
 	$theme.include($top_head_include)
 	
     <link type="text/css" rel="stylesheet" href="$css_folder/jquery/jquery.css?tt=$themeTimestamp" media="all"/>

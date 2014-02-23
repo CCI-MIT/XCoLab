@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
@@ -12,15 +8,26 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portal.model.MembershipRequest;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ProposalWrapper {
     private final Proposal proposal;
@@ -49,7 +56,7 @@ public class ProposalWrapper {
     public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         this.proposal = proposal;
         this.version = version;
-        this.contest = contest;
+        this.contest = contest == null ? fetchContest() : contest;
         this.contestPhase = contestPhase;
         this.proposal2Phase = proposal2Phase;
 
@@ -291,6 +298,14 @@ public class ProposalWrapper {
         return sections;
     }
 
+    public Contest fetchContest() {
+        try {
+            return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<ProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
         if (members == null) {
             members = new ArrayList<ProposalTeamMemberWrapper>();
@@ -343,6 +358,9 @@ public class ProposalWrapper {
 
     }
 
+    public Contest getContest() {
+        return contest;
+    }
 
     private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
