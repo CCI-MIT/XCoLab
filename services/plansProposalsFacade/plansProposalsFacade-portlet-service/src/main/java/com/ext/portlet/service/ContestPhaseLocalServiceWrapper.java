@@ -1,6 +1,5 @@
 package com.ext.portlet.service;
 
-import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -353,12 +352,7 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
-=======
-        throws NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
->>>>>>> IntegratedProposals
         return _contestPhaseLocalService.getActivePhaseForContest(contest);
     }
 

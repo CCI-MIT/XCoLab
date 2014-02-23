@@ -121,15 +121,12 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes527;
     private String _methodName528;
     private String[] _methodParameterTypes528;
-<<<<<<< HEAD
     private String _methodName530;
     private String[] _methodParameterTypes530;
     private String _methodName531;
     private String[] _methodParameterTypes531;
-=======
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
->>>>>>> IntegratedProposals
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -382,15 +379,13 @@ public class ContestLocalServiceClpInvoker {
                 "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
             };
 
-<<<<<<< HEAD
         _methodName531 = "getContestsByActivePrivate";
 
         _methodParameterTypes531 = new String[] { "boolean", "boolean" };
-=======
-        _methodName529 = "getContestsMatchingOntologyTerms";
 
-        _methodParameterTypes529 = new String[] { "java.util.List" };
->>>>>>> IntegratedProposals
+        _methodName532 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes532 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -714,16 +709,15 @@ public class ContestLocalServiceClpInvoker {
                 (com.ext.portlet.model.Contest) arguments[1]);
         }
 
-<<<<<<< HEAD
         if (_methodName531.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByActivePrivate(((Boolean) arguments[0]).booleanValue(),
                 ((Boolean) arguments[1]).booleanValue());
-=======
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+        }
+
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingOntologyTerms((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0]);
->>>>>>> IntegratedProposals
         }
 
         throw new UnsupportedOperationException();

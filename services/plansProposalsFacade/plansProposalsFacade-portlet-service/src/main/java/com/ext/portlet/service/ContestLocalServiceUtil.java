@@ -1,7 +1,5 @@
 package com.ext.portlet.service;
 
-import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
@@ -263,7 +261,7 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws NoSuchContestException,
+        throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestByActiveFlag(contestActive);
     }
@@ -329,23 +327,13 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
-=======
-        throws NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
->>>>>>> IntegratedProposals
         return getService().getActivePhase(contest);
     }
 
     public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
-=======
-        throws NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
->>>>>>> IntegratedProposals
         return getService().getActiveOrLastPhase(contest);
     }
 
@@ -548,18 +536,17 @@ public class ContestLocalServiceUtil {
         return getService().getNumberOfProposalsForJudge(u, c);
     }
 
-<<<<<<< HEAD
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsByActivePrivate(active, privateContest);
-=======
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsMatchingOntologyTerms(ontologyTerms);
->>>>>>> IntegratedProposals
     }
 
     public static void clearService() {

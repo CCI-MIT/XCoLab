@@ -1,7 +1,5 @@
 package com.ext.portlet.service;
 
-import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.NoSuchContestPhaseException;
 import com.liferay.portal.service.InvokableLocalService;
 
 /**
@@ -122,13 +120,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes55;
     private String _methodName56;
     private String[] _methodParameterTypes56;
-<<<<<<< HEAD
     private String _methodName57;
     private String[] _methodParameterTypes57;
     private String _methodName58;
     private String[] _methodParameterTypes58;
-=======
->>>>>>> IntegratedProposals
+    private String _methodName59;
+    private String[] _methodParameterTypes59;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -383,15 +380,13 @@ public class ContestLocalServiceClp implements ContestLocalService {
                 "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
             };
 
-<<<<<<< HEAD
         _methodName58 = "getContestsByActivePrivate";
 
         _methodParameterTypes58 = new String[] { "boolean", "boolean" };
-=======
-        _methodName56 = "getContestsMatchingOntologyTerms";
 
-        _methodParameterTypes56 = new String[] { "java.util.List" };
->>>>>>> IntegratedProposals
+        _methodName59 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes59 = new String[] { "java.util.List" };
     }
 
     @Override
@@ -907,7 +902,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public com.ext.portlet.model.Contest getContestByActiveFlag(
         boolean contestActive)
-        throws NoSuchContestException,
+        throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -917,8 +912,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof NoSuchContestException) {
-                throw (NoSuchContestException) t;
+            if (t instanceof com.ext.portlet.NoSuchContestException) {
+                throw (com.ext.portlet.NoSuchContestException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
@@ -1202,12 +1197,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
-=======
-        throws NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
->>>>>>> IntegratedProposals
         Object returnObj = null;
 
         try {
@@ -1217,13 +1207,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-<<<<<<< HEAD
-=======
-            if (t instanceof NoSuchContestPhaseException) {
-                throw (NoSuchContestPhaseException) t;
-            }
-
->>>>>>> IntegratedProposals
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -1242,12 +1225,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-<<<<<<< HEAD
         throws com.liferay.portal.kernel.exception.SystemException {
-=======
-        throws NoSuchContestPhaseException,
-            com.liferay.portal.kernel.exception.SystemException {
->>>>>>> IntegratedProposals
         Object returnObj = null;
 
         try {
@@ -1257,13 +1235,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-<<<<<<< HEAD
-=======
-            if (t instanceof NoSuchContestPhaseException) {
-                throw (NoSuchContestPhaseException) t;
-            }
-
->>>>>>> IntegratedProposals
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
@@ -2124,7 +2095,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
     }
 
     @Override
-<<<<<<< HEAD
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -2137,7 +2107,22 @@ public class ContestLocalServiceClp implements ContestLocalService {
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-=======
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -2145,8 +2130,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName56,
-                    _methodParameterTypes56,
+            returnObj = _invokableLocalService.invokeMethod(_methodName59,
+                    _methodParameterTypes59,
                     new Object[] { ClpSerializer.translateInput(ontologyTerms) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2155,7 +2140,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
                 throw (com.liferay.portal.kernel.exception.PortalException) t;
             }
 
->>>>>>> IntegratedProposals
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
