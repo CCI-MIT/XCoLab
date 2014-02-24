@@ -9,8 +9,8 @@
 
     <h1 style="padding-left: 20px;">Welcome to the Climate CoLab!</h1>
     <br /><br />
-    <span>We successfully verified your Facebook or Google account. Please choose from the following options in order to finish your registration:</span>
-    <br />
+    <div style="padding-left: 20px;">We successfully verified your Facebook or Google account. Please choose from the following options in order to finish the process:</div>
+    <br /><br /><br />
     <portlet:actionURL var="provideSSOCredentials">
         <portlet:param name="action" value="provideSSOCredentials" />
         <portlet:param name="SSO" value="general" />
@@ -19,7 +19,7 @@
     <table>
         <tr>
             <td style="width:50%; padding: 0 20px;">
-                <h2>Sign in as existing CoLab member</h2>
+                <h2>Link your existing CoLab member account</h2>
                 <br />
                 <span>You can sign in to your account to link your social media and Climate CoLab account and use the social media login when returning to the site.</span>
                 <div style="height:15px;">&#160;</div>
@@ -37,7 +37,7 @@
             <td style="width:50%; padding: 0 20px;">
                 <h2>Register as new CoLab member</h2>
                 <br />
-                <span>You can register as new member of the Climate CoLab to be part of the community.</span>
+                <span>You can register as new member of the Climate CoLab with your social media account to be part of the community.</span>
                 <br /><br /><br /><br />
                 <h1 style="text-align: center;"><a href="/web/guest/loginregister">Register as new member</a></h1>
             </td>

@@ -59,8 +59,8 @@
 
 					<th class="second" rowspan="4">Photo</th>
 					<td rowspan="4"><c:choose>
-							<c:when test="${ imageId != null }">
-								<img src="/image/contest?img_id=${imageId }" id="userPortrait"
+							<c:when test="${ createUserBean.getImageId() != null }">
+								<img src="/image/contest?img_id=${createUserBean.getImageId() }" id="userPortrait"
 									width="150" height="150" />
 							</c:when>
 							<c:otherwise>

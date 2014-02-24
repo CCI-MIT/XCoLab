@@ -131,10 +131,17 @@ public class MainViewController {
         portletSession.removeAttribute(SSOKeys.SSO_LAST_NAME,PortletSession.APPLICATION_SCOPE);
         String eMail = (String) portletSession.getAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
         portletSession.removeAttribute(SSOKeys.SSO_EMAIL,PortletSession.APPLICATION_SCOPE);
+        String screenName = (String) portletSession.getAttribute(SSOKeys.SSO_SCREEN_NAME,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_SCREEN_NAME,PortletSession.APPLICATION_SCOPE);
+        String imageId = (String) portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID,PortletSession.APPLICATION_SCOPE);
+        portletSession.removeAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID,PortletSession.APPLICATION_SCOPE);
+
         if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )&& StringUtils.isNotBlank(eMail)){
             createUserBean.setFirstName(firstName);
             createUserBean.setLastName(lastName);
             createUserBean.setEmail(eMail);
+            createUserBean.setScreenName(screenName);
+            createUserBean.setImageId(imageId);
             createUserBean.setCaptchaNeeded(false);
         }
     }

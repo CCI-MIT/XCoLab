@@ -25,4 +25,6 @@ public class SSOKeys {
     public final static String SSO_OPENID_ID = "SSO_OPENID_ID";
     // other
     public final static String OPEN_ID_DISCO = "OPEN_ID_DISCO";
+    public final static String SSO_SCREEN_NAME = "SSO_SCREEN_NAME";
+    public final static String SSO_PROFILE_IMAGE_ID = "SSO_PROFILE_IMAGE_ID";
 }
