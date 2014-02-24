@@ -38,7 +38,38 @@
 					</c:forEach>
 				</select>
 			</c:when>
+
+
+            <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+                <c:set var="p" value="${section.numericValueAsProposal }" />
+                <c:choose>
+                    <c:when test="${empty p  }">
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
+                    </c:when>
+                    <c:otherwise>
+                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
+                        <span><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
+                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
+                    </c:otherwise>
+                </c:choose>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId});">Select Proposal</a></div>
+            </c:when>
+            <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+                <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
+                <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
+                <ul>
+                    <c:forEach var="p" items="${pl}">
+                        <li><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)</li>
+                    </c:forEach>
+                </ul>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Add Proposals</a></div>
+            </c:when>
+
+
 			<c:otherwise>
+                <c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE' }">
+                    <span class="proposalListTextReference">(Please copy&amp;paste links to referenced proposals right into the textfield)</span>
+                </c:if>
 				<form:textarea cssClass="rte"  cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
 				<c:if test="${section.characterLimit gt 0}">
 					<div class="inputLimitContainer">

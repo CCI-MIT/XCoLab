@@ -590,6 +590,14 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
             privateContest);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

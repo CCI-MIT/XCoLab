@@ -542,6 +542,13 @@ public class ContestLocalServiceUtil {
         return getService().getContestsByActivePrivate(active, privateContest);
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsMatchingOntologyTerms(ontologyTerms);
+    }
+
     public static void clearService() {
         _service = null;
     }

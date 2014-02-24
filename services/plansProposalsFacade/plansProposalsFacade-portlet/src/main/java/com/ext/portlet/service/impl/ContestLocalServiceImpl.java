@@ -41,8 +41,20 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.FocusAreaOntologyTerm;
+
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
+
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -92,6 +104,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
         List<Contest> contests = contestPersistence.findByContestActive(contestActive);
         if (contests.isEmpty()) {
@@ -534,5 +547,49 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     
     public List<Contest> getContestsByActivePrivate(boolean active, boolean privateContest) throws SystemException {
     	return contestPersistence.findByContestActivecontestPrivate(active, privateContest);	
+    }
+
+    public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
+        // remove terms that are root elements
+        for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
+            OntologyTerm o = i.next();
+            if (o.getParentId() == 0) i.remove();
+        }
+        Long[][] terms = new Long[ontologyTerms.size()][];
+        // get all child elements and add id's to array
+        int i = 0;
+        for (OntologyTerm ot : ontologyTerms){
+            List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(ot);
+            terms[i] = new Long[childTerms.size() + 1];
+            terms[i][0] = ot.getId();
+            int k = 1;
+            for (OntologyTerm child : childTerms){
+                terms[i][k] = child.getId();
+                k++;
+            }
+            i++;
+        }
+        // for each first dimension execute a query
+        ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
+            ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
+        List<Contest>[] contestsMatchingTerms = new List[terms.length];
+        for (int l=0; l<terms.length; l++){
+            DynamicQuery dq =  DynamicQueryFactoryUtil.forClass(FocusAreaOntologyTerm.class, portletClassLoader);
+            dq.add(PropertyFactoryUtil.forName("primaryKey.ontologyTermId").in(terms[l]));
+            dq.setProjection(ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("primaryKey.focusAreaId")));
+
+            DynamicQuery contestQuery =  DynamicQueryFactoryUtil.forClass(Contest.class, portletClassLoader);
+            contestQuery.add(PropertyFactoryUtil.forName("focusAreaId").in(dq));
+            contestsMatchingTerms[l] = ContestLocalServiceUtil.dynamicQuery(contestQuery);
+        }
+
+        List<Contest> listOfContests = new ArrayList<>(contestsMatchingTerms[0]);
+
+        // take only contests matching all requirements
+        for (int m=1; m<contestsMatchingTerms.length; m++){
+            listOfContests.retainAll(contestsMatchingTerms[m]);
+        }
+
+        return listOfContests;
     }
 }

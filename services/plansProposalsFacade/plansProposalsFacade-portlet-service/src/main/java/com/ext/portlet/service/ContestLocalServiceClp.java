@@ -124,6 +124,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes57;
     private String _methodName58;
     private String[] _methodParameterTypes58;
+    private String _methodName59;
+    private String[] _methodParameterTypes59;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -381,6 +383,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName58 = "getContestsByActivePrivate";
 
         _methodParameterTypes58 = new String[] { "boolean", "boolean" };
+
+        _methodName59 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes59 = new String[] { "java.util.List" };
     }
 
     @Override
@@ -2100,6 +2106,39 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     new Object[] { active, privateContest });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName59,
+                    _methodParameterTypes59,
+                    new Object[] { ClpSerializer.translateInput(ontologyTerms) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;

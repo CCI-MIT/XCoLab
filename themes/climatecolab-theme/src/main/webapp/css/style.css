@@ -663,7 +663,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .lastedited {float:left; height:19px; font-size: 13px;}
 
 /* proposal columns */
-.prop-left {float:left; width:616px; margin-right:38px; line-height:24px;}
+.prop-left {float:left; width:631px; margin-right:23px; line-height:24px;}
 .prop-right {float:left; width:330px;}
 .prop-left h2 {font-size:27px; color:#66b035; margin:10px 0 16px; text-align: justify;}
 .prop-left h3 {font-size:22px; margin-bottom:13px; color:#404040;}
@@ -760,7 +760,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .addpropbox.blue {background:#e7f1f5;}
 
 /* form fields */
-.addpropform label {float:left; width:122px; display:inline-block; font-size:16px; color:#6d6d6d;}
+.addpropform label {float:left; width:110px; display:inline-block; font-size:16px; color:#6d6d6d;}
 .addpropform label strong, .addpropform .blue span {color:#000;}
 .addpropform label img {position:relative; top:3px;}
 .addpropform input, .addpropform textarea {float:right; border:1px solid #838383; font-size:16px;}
@@ -897,4 +897,12 @@ ul li {
 }
 .delta-selector {
 	display: none;
+}
+
+.popup-tabcontainer{
+    border: 1px solid #8e8d8a;
+}
+
+#proposalPickerTable td{
+    padding: 10px;
 }

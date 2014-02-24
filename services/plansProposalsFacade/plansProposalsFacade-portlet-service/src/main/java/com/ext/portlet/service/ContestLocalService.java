@@ -460,4 +460,10 @@ public interface ContestLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
+        java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

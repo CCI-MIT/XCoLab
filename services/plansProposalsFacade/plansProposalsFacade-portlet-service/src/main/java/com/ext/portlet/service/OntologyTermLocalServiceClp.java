@@ -68,6 +68,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
     private String[] _methodParameterTypes29;
     private String _methodName30;
     private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
 
     public OntologyTermLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -214,22 +216,28 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName28 = "getSpace";
+        _methodName28 = "getAllDescendantTerms";
 
         _methodParameterTypes28 = new String[] {
                 "com.ext.portlet.model.OntologyTerm"
             };
 
-        _methodName29 = "tagClass";
+        _methodName29 = "getSpace";
 
         _methodParameterTypes29 = new String[] {
+                "com.ext.portlet.model.OntologyTerm"
+            };
+
+        _methodName30 = "tagClass";
+
+        _methodParameterTypes30 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class",
                 "java.lang.Long"
             };
 
-        _methodName30 = "findTagedIdsForClass";
+        _methodName31 = "findTagedIdsForClass";
 
-        _methodParameterTypes30 = new String[] {
+        _methodParameterTypes31 = new String[] {
                 "com.ext.portlet.model.OntologyTerm", "java.lang.Class"
             };
     }
@@ -1008,6 +1016,34 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getAllDescendantTerms(
+        com.ext.portlet.model.OntologyTerm ontologyTerm)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28,
+                    new Object[] { ClpSerializer.translateInput(ontologyTerm) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.OntologyTerm>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public com.ext.portlet.model.OntologySpace getSpace(
         com.ext.portlet.model.OntologyTerm ontologyTerm)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -1015,8 +1051,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName28,
-                    _methodParameterTypes28,
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29,
                     new Object[] { ClpSerializer.translateInput(ontologyTerm) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -1045,8 +1081,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         java.lang.Class clasz, java.lang.Long id)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName29,
-                _methodParameterTypes29,
+            _invokableLocalService.invokeMethod(_methodName30,
+                _methodParameterTypes30,
                 new Object[] {
                     ClpSerializer.translateInput(ontologyTerm),
                     
@@ -1077,8 +1113,8 @@ public class OntologyTermLocalServiceClp implements OntologyTermLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName30,
-                    _methodParameterTypes30,
+            returnObj = _invokableLocalService.invokeMethod(_methodName31,
+                    _methodParameterTypes31,
                     new Object[] {
                         ClpSerializer.translateInput(ontologyTerm),
                         
