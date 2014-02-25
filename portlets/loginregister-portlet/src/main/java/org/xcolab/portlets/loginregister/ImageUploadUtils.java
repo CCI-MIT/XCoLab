@@ -4,7 +4,10 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Image;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
@@ -14,13 +17,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Created by Mente on 20.02.14.
+ * Created by Klemens Mang on 20.02.14.
  */
 public class ImageUploadUtils {
+
+    private static final double PHOTOLINK_PROBABILITY = 1.0;
+
 
     public static long uploadImage(URL imageUrl) {
         try {
@@ -98,5 +108,59 @@ public class ImageUploadUtils {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(dimg, "jpg", bos);
         return bos.toByteArray();
+    }
+
+    public static boolean getPictureDifference(URL url1, URL url2) {
+        byte[] hash1 = getPictureHash(url1);
+        byte[] hash2 = getPictureHash(url2);
+
+        // return false when the new picture cannot be retrieved
+        if (hash1 != null && hash2 != null) {
+            return !Arrays.equals(hash1, hash2);
+
+        } else {
+            return false;
+        }
+    }
+
+    private static byte[] getPictureHash(URL url) {
+        InputStream is = null;
+        try {
+            is = url.openStream();
+            byte[] bytes = IOUtils.toByteArray(is);
+
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(bytes);
+            return md.digest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void updateProfilePicture(User user, String picURL) {
+        // Link picture if it is not yet set
+        if (user.getPortraitId() == 0) {
+            user.setPortraitId(linkProfilePicture(picURL));
+            try {
+                UserLocalServiceUtil.updateUser(user);
+            } catch (SystemException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static long linkProfilePicture(String picUrl) {
+        try {
+            URL url = new URL(picUrl);
+            return ImageUploadUtils.uploadImage(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return 0L;
     }
 }
