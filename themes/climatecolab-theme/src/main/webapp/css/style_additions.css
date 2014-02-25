@@ -1161,17 +1161,17 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     margin-bottom: 5px;
 }
 
-.portlet-topper {
+/*.portlet-topper {
        display: none;
-}
+}*/
 
-.dockbar-ready .portlet-topper {
-      display: none;
-}
-
-.portlet-blogs .entry-tags {
+/*.portlet-blogs .entry-tags {
 	clear: both;
-}
+}*/
+
+/*.dockbar-ready .portlet-topper {
+    display: none;
+}*/
 
 .header-back-to {
 	display: none;
