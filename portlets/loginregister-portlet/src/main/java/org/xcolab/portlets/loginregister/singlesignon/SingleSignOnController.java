@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.commons.utils.PasswordEncryptorUtil;
 import org.xcolab.commons.utils.PwdEncryptor;
 
 import javax.portlet.*;
@@ -36,7 +37,8 @@ public class SingleSignOnController {
             return;
         }
 
-        String encPassword = PwdEncryptor.encrypt(password);
+//        String encPassword = PwdEncryptor.encrypt(password);
+        String encPassword = PasswordEncryptorUtil.encrypt(password, u.getPassword());
 
         // passwords don't match
         if (!encPassword.equalsIgnoreCase(u.getPassword())) {
