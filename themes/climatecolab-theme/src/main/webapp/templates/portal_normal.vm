@@ -16,6 +16,9 @@
 	<!--
 	<script type="text/javascript" src="$javascript_folder/jquery-ui-1.7.2.custom.js?tt=$themeTimestamp"></script>
 	 -->
+
+    <script type="text/javascript" src="$javascript_folder/adminOverlayHide.js?tt=$themeTimestamp"></script>
+
     <script type="text/javascript" src="$javascript_folder/jquery.history.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/moment.min.js?tt=$themeTimestamp"></script>
     <script type="text/javascript" src="$javascript_folder/dateTimeFormatter.js?tt=$themeTimestamp"></script>
