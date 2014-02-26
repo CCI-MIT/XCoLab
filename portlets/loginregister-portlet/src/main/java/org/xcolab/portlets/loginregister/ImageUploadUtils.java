@@ -29,9 +29,6 @@ import java.util.Date;
  */
 public class ImageUploadUtils {
 
-    private static final double PHOTOLINK_PROBABILITY = 1.0;
-
-
     public static long uploadImage(URL imageUrl) {
         try {
             return uploadImage(imageUrl.openStream());

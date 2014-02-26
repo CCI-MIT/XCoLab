@@ -36,7 +36,7 @@ import java.util.Date;
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%ld/picture?type=large";
+    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%d/picture?type=large";
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws IOException, SystemException {

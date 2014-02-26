@@ -84,7 +84,8 @@ public class EXTServicePreAction extends Action {
 
         // -- SSO --
         try{
-            String facebookAuthRedirectURL = themeDisplay.getPortalURL() + "/web/guest/loginregister/-/login/SSO/facebook/";
+            String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
+            facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent().toString()));
             String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
             facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id", FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
             facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
