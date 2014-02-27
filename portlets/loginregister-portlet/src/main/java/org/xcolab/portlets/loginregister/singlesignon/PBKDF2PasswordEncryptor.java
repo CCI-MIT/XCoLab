@@ -20,10 +20,7 @@ import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.security.pwd.BasePasswordEncryptor;
-import com.liferay.portal.security.pwd.PasswordEncryptor;
 import com.liferay.portal.security.pwd.PasswordEncryptorUtil;
-import com.liferay.portal.util.*;
-import sun.net.www.content.text.plain;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -37,23 +34,12 @@ import java.util.regex.Pattern;
  * @author Tomas Polesovsky
  */
 public class PBKDF2PasswordEncryptor
-        extends BasePasswordEncryptor {
+        extends BasePasswordEncryptor implements PasswordEncryptor {
 
     public static final String PASSWORDS_ENCRYPTION_ALGORITHM =
             StringUtil.toUpperCase(
                     GetterUtil.getString(
                             com.liferay.portal.util.PropsUtil.get(PropsKeys.PASSWORDS_ENCRYPTION_ALGORITHM)));
-
-    /**
-     * Designated API method to encrypt passwords
-     *
-     * @param plainTextPassword
-     * @param encryptedPassword
-     * @return
-     */
-    public String encryptPassword(String plainTextPassword, String encryptedPassword) throws PwdEncryptorException {
-        return doEncrypt(PASSWORDS_ENCRYPTION_ALGORITHM, plainTextPassword, encryptedPassword);
-    }
 
     @Override
     public String[] getSupportedAlgorithmTypes() {
@@ -118,6 +104,11 @@ public class PBKDF2PasswordEncryptor
 
     private static Pattern _pattern = Pattern.compile(
             "^.*/?([0-9]+)?/([0-9]+)$");
+
+    @Override
+    public String encrypt(String plainPassword, String encrPassword) {
+        return doEncrypt(PASSWORDS_ENCRYPTION_ALGORITHM, plainPassword, encrPassword);
+    }
 
     private class PBKDF2EncryptionConfiguration {
 

@@ -3,11 +3,15 @@ package org.xcolab.portlets.loginregister.singlesignon;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.pwd.BasePasswordEncryptor;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PropsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,10 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "view", params = "SSO=general")
 public class SingleSignOnController {
+
+    private final static Log _log = LogFactoryUtil.getLog(SingleSignOnController.class);
+
+    private static final String SHA_ALGORITHM_PREFIX = "{SHA-1}";
 
     @RequestMapping(params = "action=provideSSOCredentials")
     public void linkUser(ActionRequest request, Model model, ActionResponse response,
@@ -36,10 +44,26 @@ public class SingleSignOnController {
             return;
         }
 
+        String encrAlgorithm = PropsUtil.get(PropsKeys.PASSWORDS_ENCRYPTION_ALGORITHM);
+        _log.info("Encryption algorithm: " + encrAlgorithm);
+
         // Statically instantiate the PBKDF2 pw encryptor. Please change this when Liferay decides to change the password encryption
         // scheme again...
-        PBKDF2PasswordEncryptor pbkdfEncryptor = new PBKDF2PasswordEncryptor();
-        String encPassword = pbkdfEncryptor.encryptPassword(password, u.getPassword());
+        String encrPassword = u.getPassword();
+
+        PasswordEncryptor encryptor;
+        // SHA hash
+        if (encrPassword.contains(SHA_ALGORITHM_PREFIX)) {
+            final int startIdx = encrPassword.indexOf(SHA_ALGORITHM_PREFIX);
+            encrPassword = encrPassword.substring(startIdx + SHA_ALGORITHM_PREFIX.length());
+
+            encryptor = new SSHAPasswordEncryptor();
+        } else {
+            encryptor = new PBKDF2PasswordEncryptor();
+        }
+
+        _log.error("encr. password: " + u.getPassword());
+        String encPassword = encryptor.encrypt(password, u.getPassword());
 
         // passwords don't match
         if (!encPassword.equalsIgnoreCase(u.getPassword())) {
