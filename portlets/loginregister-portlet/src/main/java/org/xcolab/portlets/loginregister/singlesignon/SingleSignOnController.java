@@ -5,14 +5,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.pwd.BasePasswordEncryptor;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.liferay.portal.kernel.util.Validator;
-import org.xcolab.commons.utils.PasswordEncryptorUtil;
-import org.xcolab.commons.utils.PwdEncryptor;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -37,8 +36,10 @@ public class SingleSignOnController {
             return;
         }
 
-//        String encPassword = PwdEncryptor.encrypt(password);
-        String encPassword = PasswordEncryptorUtil.encrypt(password, u.getPassword());
+        // Statically instantiate the PBKDF2 pw encryptor. Please change this when Liferay decides to change the password encryption
+        // scheme again...
+        PBKDF2PasswordEncryptor pbkdfEncryptor = new PBKDF2PasswordEncryptor();
+        String encPassword = pbkdfEncryptor.encryptPassword(password, u.getPassword());
 
         // passwords don't match
         if (!encPassword.equalsIgnoreCase(u.getPassword())) {

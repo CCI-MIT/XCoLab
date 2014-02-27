@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import org.json.*;
