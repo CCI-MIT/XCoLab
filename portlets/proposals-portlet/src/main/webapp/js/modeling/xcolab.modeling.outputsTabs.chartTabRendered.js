@@ -135,16 +135,16 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						plotSeries.push({showMarker: false, showLabel: false, 
 							renderer: jQuery.jqplot.OHLCRenderer, color: "rgb(125, 228, 247)"});
 					}
-						valuesCombined.push(val);
-						var dataLabel = singleSerie.name;
-						var dataUnit = singleSerie.variable.metaData.units[1];
-						var labelFormatString = singleSerie.labelFormatString;
+					valuesCombined.push(val);
+					var dataLabel = singleSerie.name;
+					var dataUnit = singleSerie.variable.metaData.units[1];
+					var labelFormatString = singleSerie.labelFormatString;
 
-						if (!(!labelFormatString || jQuery.trim(labelFormatString) == "")) {
-							dataLabel = labelFormatString.replace(/%label/g, dataLabel).replace(/%unit/g, dataUnit);
-						}
+					if (!(!labelFormatString || jQuery.trim(labelFormatString) == "")) {
+						dataLabel = labelFormatString.replace(/%label/g, dataLabel).replace(/%unit/g, dataUnit);
+					}
 
-						plotSeries.push({showMarker: false, label: dataLabel});
+					plotSeries.push({showMarker: false, label: dataLabel});
 					
 				}
 				
@@ -158,7 +158,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		
-		if (min != null && max != null) {
+		if (!isNaN(min) && !isNaN(max) && min != null && max != null) {
 			yaxis.min = min;
 			yaxis.max = max;
 
@@ -183,11 +183,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				yaxis.tickOptions = {formatString:"%d"};
 			}
 		}
-		
+		console.log("indexMin", indexMin, "indexMax", indexMax);
 		if (indexMin != null && indexMax != null) {
 			xaxis.min = indexMin;
 			xaxis.max = indexMax;
 		}
+		console.log(xaxis, yaxis, plotSeries, "values", valuesCombined);
 		
 		
 		var plotOptions = {
