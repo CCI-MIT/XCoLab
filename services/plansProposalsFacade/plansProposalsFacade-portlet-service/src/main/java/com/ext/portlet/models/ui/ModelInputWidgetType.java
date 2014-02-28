@@ -11,5 +11,5 @@ package com.ext.portlet.models.ui;
  * @date: May 24, 2010
  */
 public enum ModelInputWidgetType {
-    TEXT_FIELD, SLIDER
+    TEXT_FIELD, SLIDER, SELECT
 }

@@ -9,14 +9,14 @@
 		<requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portlet-css>/xmlhttp/css/simulation/simulation.css</header-portlet-css>
-		<header-portlet-javascript>/../html/js/jquery/jquery.jqplot.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/jquery/jqplot.ohlcRenderer.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/jquery/jqplot.barRenderer.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasTextRenderer.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/jquery/jqplot.canvasAxisLabelRenderer.min.js</header-portlet-javascript>
-		<header-portlet-javascript>/../html/js/editor/ckeditor/ckeditor.js</header-portlet-javascript>
-		<header-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</header-portlet-javascript>
-		<header-portlet-javascript>/xmlhttp/js/simulation/model-inputs-render.js</header-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/jquery/jquery.jqplot.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/jquery/jqplot.ohlcRenderer.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/jquery/jqplot.barRenderer.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/jquery/jqplot.canvasTextRenderer.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/jquery/jqplot.canvasAxisLabelRenderer.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/../html/js/editor/ckeditor/ckeditor.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/xmlhttp/js/navigation/navigationManager.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/xmlhttp/js/simulation/model-inputs-render.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>

@@ -35,15 +35,20 @@ public class ModelInputDisplayItemWrapper implements Serializable {
                 value = Double.valueOf(values.get(getId()).toString());
             }
             else {
-                String defVal = wrappedItem.getMetaData() != null && wrappedItem.getMetaData().getDefault() != null ? wrappedItem.getMetaData().getDefault()[0] : null;
-                if (defVal != null && defVal.trim().length() > 0) {
-                    value = Double.parseDouble(defVal);
-                }
-                else if (wrappedItem.getMetaData().getMin() != null && wrappedItem.getMetaData().getMin().length > 1) {
-                    value = Double.parseDouble(wrappedItem.getMetaData().getMin()[0]);
-                } else {
-                    value = 0.;
-                }
+            	try {
+            		String defVal = wrappedItem.getMetaData() != null && wrappedItem.getMetaData().getDefault() != null ? wrappedItem.getMetaData().getDefault()[0] : null;
+            		if (defVal != null && defVal.trim().length() > 0 && !defVal.equals("null")) {
+            			value = Double.parseDouble(defVal);
+            		}
+            		else if (wrappedItem.getMetaData().getMin() != null && wrappedItem.getMetaData().getMin().length > 1) {
+            			value = Double.parseDouble(wrappedItem.getMetaData().getMin()[0]);
+            		} else {
+            			value = 0.;
+            		}
+            	}
+            	catch (NumberFormatException e) {
+            		value = 0.;
+            	}
             }
         }
     }

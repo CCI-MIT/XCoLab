@@ -172,7 +172,8 @@ public class NavigationBean {
                             }
                         }
                         catch (NumberFormatException e) {
-                            _log.error("Invalid modelId " + parameters.get("modelId"));
+                            _log.error("Invalid modelId " + parameters.get("modelId"), e);
+                            e.printStackTrace();
                             currentPage = INDEX_PAGE;
                             selectedSimulation = null;
                         } catch (SystemException e) {
@@ -199,6 +200,12 @@ public class NavigationBean {
     
     public SimulationDetailsBean getSimulationDetailsBean() {
         return simulationDetailsBean;
+    }
+    
+    public String showSimulationDetails() {
+    	currentPage = DETAILS_PAGE;
+    	
+    	return null;
     }
 
 }
