@@ -157,7 +157,7 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     border: 0;
-    
+
 }
 .ui-widget-content a.ui-slider-handle-active, .ui-widget-content a.ui-slider-handle-active:hover {
     width: 11px;
@@ -194,8 +194,8 @@
 .chartContainer .jqplot-base-canvas {
     background-color: transparent;
 }
-    
-    
+
+
 .control_div {
     margin-top: 10px;
     margin-right: 20px;
@@ -210,7 +210,7 @@
     font: inherit;
     font-size: 16px;
     color: black;
-    
+
 }
 
 
@@ -250,22 +250,22 @@ fieldset { border: 0; padding: 0; margin: 0}
 
 .commentbox { height:178px; width:788px; border:2px solid #b7b6ae; margin-bottom:25px;}
 .commentbox.discussion {width: 700px}
-input.comm_butt[type="submit"], 
+input.comm_butt[type="submit"],
 input.comm_butt[type="submit"]:hover,
 input.comm_butt[type="submit"]:focus
  { background: url(/climatecolab-theme/images/comment_submit.gif); border:none; width:119px; height:30px; cursor:pointer;}
- 
+
  .commentsActions {
     margin-top: 15px;
     text-align: right;
  }
- 
+
  .the-comment {
     padding-bottom: 55px;
     position: relative;
  }
- 
- 
+
+
  .about-left ul li a:hover, .about-left ul li.c a {
     background: #F2F1E9;
 }
@@ -279,11 +279,11 @@ input.comm_butt[type="submit"]:focus
     font-size: 14px;
     padding: 5px;
     border: 0;
-    
+
 }
 
 #bread img {
-    margin: 0 5px;  
+    margin: 0 5px;
 }
 
 .wiki-body {
@@ -368,9 +368,9 @@ ul#blogArchives li {list-style: none; margin-bottom: 10px; background: none;}
 .helptop .closehelp { float:right; height:20px; width:20px; margin-top:-5px;}
 .helptext { font-size:14px; color:#444; padding:15px 20px 18px 20px; line-height:24px;}
     .wf-active .helptext { font-size:16px; }
-    
-    
-    
+
+
+
 /** COMMUNITY **/
 
 /* community - discussions */
@@ -577,7 +577,7 @@ margin: 0px 0 0 54px;
     border: 1px solid;
     border-color: #BFBFBF #DEDEDE #DEDEDE #BFBFBF;
 }
-	
+
 
 .wf-active .profile_about {
 font-size: 14px;
@@ -652,7 +652,7 @@ h1.spn {
 #searchFormContainerInline {
     text-align: center;
     margin: 10px 0;
-    
+
 }
 
 #searchFormContainerInline input {
@@ -747,7 +747,7 @@ font-weight: 400;
     color: #606060;
     margin-bottom: 20px;
 }
-    
+
 .popupreg_head h1 {
     color: #000;
     font-size: 36px;
@@ -767,7 +767,7 @@ color: #444444;
 }
 
 .popupreg_input_container {
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
 }
 
 
@@ -817,7 +817,7 @@ display: inline;
     list-style: none;
 }
 #userPopupContainer {
-    display: none;  
+    display: none;
 }
 
 #menu-right li.c {
@@ -831,7 +831,7 @@ display: inline;
 .popup-wrap.small {
 	width:432px;
 	margin-left:-216px;
-}  
+}
 
 .popup-wrap.proposal-picker {
     width: 832px;
@@ -896,7 +896,7 @@ display: inline;
 
 .historyTable .even td, #proposalPickerTable .ui-datatable-odd {
 	background-color: #f1f1e9;
-	
+
 }
 
 .historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
@@ -913,11 +913,11 @@ display: inline;
 	background: url(../images/filter-cancel.png) no-repeat;
 	width: 20px;
 	height: 20px;
-	position: absolute; 
-	top: 5px; 
+	position: absolute;
+	top: 5px;
 	right: 8px;
 	display: block;
-	
+
 }
 
 #archivedContestsMarkerContainer {
@@ -993,7 +993,7 @@ display: inline;
 	line-height: 21px;
 }
 
-.portlet-blogs .entry-author { 
+.portlet-blogs .entry-author {
 	background: none;
 	padding-left: 0;
 }
@@ -1120,15 +1120,15 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 	background: none;
 	padding-left: 0px;
     margin-left: 0px;
-	
+
 }
 
 .contestbar .phaseSeparatorContainer {
     width: 16px;
     display: inline-block;
-    padding-left: 7px; 
+    padding-left: 7px;
     padding-right: 7px;
-    
+
 }
 
 .contestbar .phaseSeparator {
@@ -1185,7 +1185,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 	list-style: none;
 }
 
-.hashlink { 
+.hashlink {
 	display: none;
 }
 
@@ -1312,7 +1312,6 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 
 .aui header.portlet-topper {
     background: transparent;
-    border-left: 2px solid black;
     padding-left: 5px;
 }
 
@@ -1357,15 +1356,14 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 }
 
 .aui .lfr-icon-menu ul.dropdown-menu li a {
-     /* border: 2px solid #727272; */
-     color: black;
-     margin: 10px;
-     border-radius: 6px;
-     padding: 2px;
-     font-weight: bold;
-     /* background-clip: border-box; */
-     /* background-color: blue; */
-     /* color: white; */
+    color: black;
+    margin: 0 10px 0 10px;
+    border-radius: 6px;
+    padding: 2px;
+    font-weight: bold;
+    height: 15px;
+    border-bottom: none;
+    font-size: 10pt;
  }
 
 ul.dropdown-menu {
@@ -1421,4 +1419,11 @@ div.portlet-column {
 
 .journal-article-container ul li {
     background: none;
+}
+
+.lfr-icon-actions span.lfr-icon-action {
+    margin-bottom: 30px;
+    height: 5px;
+    display: inline-block;
+    white-space: nowrap;
 }

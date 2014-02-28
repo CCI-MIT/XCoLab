@@ -7,7 +7,7 @@ $( document ).ready(function() {
 function hideAdminOverlay() {
     var childs = $('.portlet-topper-toolbar').children();
     if (childs.length == 0) {
-        $('.portlet-topper h1').hide();
+        $('header.portlet-topper').hide();
     }
 }
 
