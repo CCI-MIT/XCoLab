@@ -1,13 +1,13 @@
 
 $( document ).ready(function() {
     setIconHelpHandler();
-    hideAdminOverlay();
+    showAdminOverlay();
 });
 
-function hideAdminOverlay() {
+function showAdminOverlay() {
     var childs = $('.portlet-topper-toolbar').children();
-    if (childs.length == 0) {
-        $('header.portlet-topper').hide();
+    if (childs.length != 0) {
+        $('header.portlet-topper').show();
     }
 }
 

@@ -1315,6 +1315,10 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
     padding-left: 5px;
 }
 
+header.portlet-topper {
+    display: none;
+}
+
 .aui .portlet-topper .dropdown-menu {
     margin-top: 5px;
     margin-bottom: 5px;
