@@ -61,12 +61,11 @@ div.sponsorLogo table {
 }
 
 .heading-sponsor-logo {
-    max-width: 125px;
-    min-width: 100px;
+    width: 150px;
     max-height: 45px;
     min-height: 30px;
     float: right;
-    margin: 0 27px 0px 3px;
+    margin: 0 0 0px 3px;
     padding: 3px;
 }
 
