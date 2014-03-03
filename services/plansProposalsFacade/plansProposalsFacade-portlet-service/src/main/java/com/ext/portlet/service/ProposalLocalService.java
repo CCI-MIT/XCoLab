@@ -611,6 +611,10 @@ public interface ProposalLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * <p>Returns count of proposals associated with given contest phase</p>
     *

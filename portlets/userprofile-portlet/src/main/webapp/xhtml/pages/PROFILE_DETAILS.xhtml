@@ -181,10 +181,10 @@
 
 
 		<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
-			<h2>My activities</h2>
+			<h2 style="margin-top: 20px;">My activities</h2>
 		</f:subview>
 		<f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
-			<h2>#{currentUser.screenName} activities</h2>
+			<h2 style="margin-top: 20px;">#{currentUser.screenName} activities</h2>
 		</f:subview>
 		<ice:dataTable styleClass="colab" value="#{currentUser.activities}"
 			rowClasses="t,nt" var="activity">
@@ -203,6 +203,28 @@
 			<a href="/web/guest/activities/-/feeds?userId=#{currentUser.userId}">SEE
 				ALL</a>
 		</div>
+
+        <f:subview rendered="#{userprofileBean.viewingOwnProfile}">
+            <h2>My proposals</h2>
+        </f:subview>
+        <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
+            <h2>#{currentUser.screenName} proposals</h2>
+        </f:subview>
+        <ice:dataTable styleClass="colab" value="#{currentUser.proposals}"
+                       rowClasses="t,nt" var="proposal">
+            <ice:column>
+                <collab:planLink planId="#{proposal.planId}"
+                                 contestId="#{proposal.contestId}"
+                                 text="#{proposal.proposalName}" />
+            </ice:column>
+            <ice:column style="text-align: right;">
+                <ice:outputText value="#{proposal.proposalCreationDate}">
+                    <f:convertDateTime pattern="MM/dd/yy" locale="en_US"
+                                       timeZone="America/New_York" />
+                </ice:outputText>
+            </ice:column>
+
+        </ice:dataTable>
 
 	</div>
 	<!-- /main -->

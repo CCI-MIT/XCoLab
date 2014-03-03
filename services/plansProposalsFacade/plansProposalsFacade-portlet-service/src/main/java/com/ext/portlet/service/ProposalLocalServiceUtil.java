@@ -697,6 +697,11 @@ public class ProposalLocalServiceUtil {
         return getService().getProposalsInContest(contestId);
     }
 
+    public static java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserProposals(userId);
+    }
+
     /**
     * <p>Returns count of proposals associated with given contest phase</p>
     *

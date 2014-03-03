@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.service.ProposalLocalService;
+import com.ext.portlet.service.ProposalServiceUtil;
+import com.ext.portlet.service.persistence.*;
+import com.liferay.portal.kernel.dao.orm.*;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -36,16 +40,8 @@ import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
-import com.ext.portlet.service.persistence.Proposal2PhasePK;
-import com.ext.portlet.service.persistence.ProposalSupporterPK;
-import com.ext.portlet.service.persistence.ProposalVersionPK;
-import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -601,6 +597,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             }
             proposals.add(proposal);
         }
+        return proposals;
+    }
+
+    public List<Proposal> getUserProposals(long userId) throws SystemException {
+        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class )
+                .add(PropertyFactoryUtil.forName("authorId")
+                        .eq(userId))
+                .addOrder(OrderFactoryUtil.desc("createDate"));
+        List<Proposal> proposals = dynamicQuery(query);
+
         return proposals;
     }
     

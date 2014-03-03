@@ -717,6 +717,12 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         return _proposalLocalService.getProposalsInContest(contestId);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getUserProposals(userId);
+    }
+
     /**
     * <p>Returns count of proposals associated with given contest phase</p>
     *

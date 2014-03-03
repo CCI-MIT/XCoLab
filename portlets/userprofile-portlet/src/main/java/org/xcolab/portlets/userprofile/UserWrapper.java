@@ -1,11 +1,18 @@
 package org.xcolab.portlets.userprofile;
 
 import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -58,6 +65,7 @@ public class UserWrapper implements Serializable {
     private String email;
     private List<SupportedPlanBean> supportedPlans = new ArrayList<SupportedPlanBean>();
     private List<UserActivityBean> userActivities = new ArrayList<UserActivityBean>();
+    private List<ProposalBean> userProposals = new ArrayList<ProposalBean>();
     private int maxActivitiesCount = 50;
     private String screenName;
     private File newUserProfile;
@@ -124,6 +132,18 @@ public class UserWrapper implements Serializable {
             UserActivityBean a = new UserActivityBean(activity);
             if(a.getBody() !=null && !a.getBody().equals(""))
                 userActivities.add(a);
+        }
+
+        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class )
+                .add(PropertyFactoryUtil.forName("authorId")
+                        .eq(user.getUserId()))
+                .addOrder(OrderFactoryUtil.desc("createDate"));
+        List<Proposal> proposals = ProposalLocalServiceUtil.dynamicQuery(query);
+
+        userProposals = new ArrayList<>();
+
+        for (Proposal p : proposals) {
+            userProposals.add(new ProposalBean(p));
         }
 
         profileWasComplete = profileIsComplete();
@@ -212,6 +232,8 @@ public class UserWrapper implements Serializable {
     public List<UserActivityBean> getActivities() {
         return userActivities;
     }
+
+    public List<ProposalBean> getProposals() { return userProposals; }
 
     private String getName(String name, String defaultName) {
         if (name == null || name.trim().equals("")) {
