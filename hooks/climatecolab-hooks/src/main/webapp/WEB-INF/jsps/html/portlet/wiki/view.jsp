@@ -262,6 +262,7 @@ long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayT
 				viewPageDetailsURL.setParameter("redirect", currentURL);
 				%>
 
+                <!--
 				<liferay-ui:icon
 					image="history"
 					label="<%= true %>"
@@ -275,6 +276,7 @@ long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayT
 					label="<%= true %>"
 					url='<%= "javascript:" + renderResponse.getNamespace() + "printPage();" %>'
 				/>
+				-->
 			</div>
 		</c:if>
 
