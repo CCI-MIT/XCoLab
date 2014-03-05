@@ -77,9 +77,9 @@ public class SingleSignOnController {
         }
 
         // passwords don't match
-            response.setRenderParameter("status", "registerOrLogin");
-            response.setRenderParameter("SSO", "general");
-            request.setAttribute("credentialsError",true);
+        response.setRenderParameter("status", "registerOrLogin");
+        response.setRenderParameter("SSO", "general");
+        request.setAttribute("credentialsError",true);
     }
 
     @RequestMapping(params = "error=true")

@@ -65,6 +65,9 @@
                         			</a>
 								</td>
 								<td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
+                                    <c:if test="${authorId == message.author.userId}">
+                                        <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
+                                    </c:if>
 									<div id="message_${message.messageId}" class="content">
 										${message.body }
 									</div>
