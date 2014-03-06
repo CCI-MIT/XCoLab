@@ -125,6 +125,10 @@ public class ContestPhaseWrapper {
         return contestPhase.getContestPhasePK() <= 0;
     }
     
+    public boolean getIsNew() {
+        return isNew();
+    }
+    
     public Long getContestPhasePK() {
         return contestPhase.getContestPhasePK();
     }
