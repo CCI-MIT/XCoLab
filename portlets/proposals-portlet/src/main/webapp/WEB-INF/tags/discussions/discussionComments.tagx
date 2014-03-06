@@ -60,7 +60,7 @@
                                                         src="/climatecolab-theme/images/icon_mem-${role.lowerCase}.png"
                                                         width="16" height="16" />
                                             </div>
-                                            ${user.category.printName}"
+                                            ${role.printName}
                                         </div>
 
                                         <br /><br />

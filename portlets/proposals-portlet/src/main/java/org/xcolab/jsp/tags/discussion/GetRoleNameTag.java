@@ -1,15 +1,10 @@
 package org.xcolab.jsp.tags.discussion;
 
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.jsp.tags.discussion.wrappers.DiscussionCategoryGroupWrapper;
-import org.xcolab.jsp.tags.discussion.wrappers.NewMessageWrapper;
-import org.xcolab.portlets.members.MemberCategory;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -18,7 +13,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import java.util.List;
 
 /**
- * Created by Mente on 05.03.14.
+ * Created by Klemens Mang on 05.03.14.
  */
 public class GetRoleNameTag extends BodyTagSupport {
 
@@ -39,18 +34,19 @@ public class GetRoleNameTag extends BodyTagSupport {
             List<Role> roles = user.getRoles();
 
             // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-            MemberCategory currentRole = MemberCategory.MEMBER;
-            MemberCategory role = MemberCategory.MEMBER;
+            MemberRole currentRole = MemberRole.MEMBER;
+            MemberRole role = MemberRole.MEMBER;
 
             for (Role r: roles) {
                 final String roleString = r.getName();
-                currentRole = MemberCategory.valueOf(roleString.toUpperCase());
+
+                currentRole = MemberRole.getMember(roleString);
                 if (currentRole.ordinal() > role.ordinal()) {
                     role = currentRole;
                 }
             }
 
-            if (role == MemberCategory.MODERATOR) role = MemberCategory.STAFF;
+            if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
 
 
             // Set the role string

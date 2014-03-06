@@ -278,6 +278,7 @@ div.sponsorLogo img {
     float:left;
 }
 
-.role-indicator {
-
+.role-indicator div {
+    float: left;
+    margin-right: 15px;
 }
