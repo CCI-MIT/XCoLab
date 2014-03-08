@@ -1,7 +1,8 @@
+package org.xcolab.portlets.loginregister;
+
 /**
  * 
  */
-package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,9 +23,8 @@ public class BalloonCookie implements Serializable {
     /**
 	 * 
 	 */
-    private String email;
     private String uuid;
-    private String url;
+    private String extraDataLogged;
 
     public static final String COOKIE_NAME = "climatecolabBalloonCookie";
 
@@ -36,25 +36,9 @@ public class BalloonCookie implements Serializable {
 
     public BalloonCookie(BalloonCookie bc) {
         if (bc != null) {
-            setEmail(bc.email);
             setUuid(bc.uuid);
-            setUrl(bc.getUrl());
+            extraDataLogged = bc.extraDataLogged;
         }
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email
-     *            the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**
@@ -77,6 +61,7 @@ public class BalloonCookie implements Serializable {
     }
 
     public static BalloonCookie fromCookieArray(Cookie[] cookies) {
+    	if(cookies == null) return new BalloonCookie();
         for (Cookie c : cookies) {
             if (c.getName().equals(COOKIE_NAME)) {
                 BalloonCookie bc = new BalloonCookie();
@@ -85,11 +70,9 @@ public class BalloonCookie implements Serializable {
                     if (vals.length > 0) {
                         bc.uuid = vals[0];
                         if (vals.length > 1) {
-                            bc.email = vals[1];
+                            bc.extraDataLogged = vals[1];
                         }
-                        if (vals.length == 3) {
-                            bc.url = vals[2];
-                        }
+                        
                         return bc;
                     }
                 } catch (IOException e) {
@@ -117,19 +100,19 @@ public class BalloonCookie implements Serializable {
     @Override
     public String toString() {
         try {
-            return URLEncoder.encode((uuid == null ? "" : uuid) + "|" + (email == null ? "" : email) + "|"
-                    + (url == null ? "" : url), "UTF-8");
+            return URLEncoder.encode((uuid == null ? "" : uuid) + "|" + (extraDataLogged == null ? "" : extraDataLogged), "UTF-8");
         } catch (IOException e) {
             //
         }
         return "";
     }
 
-    public String getUrl() {
-        return url;
-    }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public Cookie getHttpCookie() {
+		Cookie cookie = new Cookie(COOKIE_NAME, toString());
+		cookie.setMaxAge(Integer.MAX_VALUE);
+		cookie.setPath("/");
+		
+		return cookie;
+	}
 }

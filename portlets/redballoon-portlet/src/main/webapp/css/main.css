@@ -117,3 +117,20 @@ div.share .addthis_toolbox {
 .redballoonPreferences {
 	width: 100%;
 }
+
+.balloonContainer input {
+	height: 42px;
+	width: 445px;
+	padding: 0 5px;
+}
+
+.balloonContainer input.linkContainer {
+	width: 645px;
+}
+.balloonContainer input, .balloonContainer textarea {
+	border: 1px solid #838383;
+	font-size: 16px;
+}
+.balloonContainer input:focus {
+	outline: 0;
+}

@@ -4,7 +4,10 @@
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.ext.portlet.model.ActivitySubscription" />
 	<import class="com.ext.portlet.model.AnalyticsUserEvent" />
+	<import class="com.ext.portlet.model.BalloonLink" />
 	<import class="com.ext.portlet.model.BalloonStatsEntry" />
+	<import class="com.ext.portlet.model.BalloonText" />
+	<import class="com.ext.portlet.model.BalloonUserTracking" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
@@ -104,6 +107,16 @@
 		<property name="value" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="created" type="org.hibernate.type.TimestampType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.BalloonLinkImpl" table="xcolab_BalloonLink">
+		<cache usage="read-write" />
+		<id name="uuid" column="uuid_" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="targetUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="visits" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="balloonUserUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.BalloonStatsEntryImpl" table="xcolab_BalloonStatsEntry">
 		<cache usage="read-write" />
 		<id name="id" column="id_" type="long">
@@ -115,6 +128,40 @@
 		<property name="cookie" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.BalloonTextImpl" table="xcolab_BalloonText">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="textBeforeForm" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="textAfterForm" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="textBeforeShareButtons" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="textAfterShareButtons" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.BalloonUserTrackingImpl" table="xcolab_BalloonUserTracking">
+		<cache usage="read-write" />
+		<id name="uuid" column="uuid_" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="email" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="parent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="registrationDate" type="org.hibernate.type.TimestampType" />
+		<property name="formFiledDate" type="org.hibernate.type.TimestampType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="balloonTextId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="referrer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="latitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+		<property name="longitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="balloonLinkUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="balloonLinkContext" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="userAgent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestImpl" table="xcolab_Contest">
 		<cache usage="read-write" />

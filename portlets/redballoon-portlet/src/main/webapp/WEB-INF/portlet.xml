@@ -7,21 +7,13 @@
 	<portlet>
 		<portlet-name>redballoon-portlet</portlet-name>
 		<display-name>redballoon-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
-		</init-param>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Red Balloon form (ICE)</title>
+			<title>MIT Red Balloon form</title>
 			<short-title>Red Balloon form</short-title>
 			<keywords>Red Balloon form</keywords>
 		</portlet-info>

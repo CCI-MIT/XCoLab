@@ -21,6 +21,14 @@ create table xcolab_AnalyticsUserEvent (
 	primary key (userId, idString)
 );
 
+create table xcolab_BalloonLink (
+	uuid_ VARCHAR(75) not null primary key,
+	targetUrl VARCHAR(75) null,
+	visits INTEGER,
+	balloonUserUuid VARCHAR(75) null,
+	createDate DATE null
+);
+
 create table xcolab_BalloonStatsEntry (
 	id_ LONG not null primary key,
 	firstContestId LONG,
@@ -29,6 +37,36 @@ create table xcolab_BalloonStatsEntry (
 	cookie VARCHAR(256) null,
 	ip VARCHAR(75) null,
 	extraData VARCHAR(256) null
+);
+
+create table xcolab_BalloonText (
+	id_ LONG not null primary key,
+	name VARCHAR(75) null,
+	textBeforeForm TEXT null,
+	textAfterForm TEXT null,
+	textBeforeShareButtons VARCHAR(75) null,
+	textAfterShareButtons VARCHAR(75) null
+);
+
+create table xcolab_BalloonUserTracking (
+	uuid_ VARCHAR(75) not null primary key,
+	email VARCHAR(200) null,
+	parent VARCHAR(75) null,
+	ip VARCHAR(75) null,
+	createDate DATE null,
+	registrationDate DATE null,
+	formFiledDate DATE null,
+	userId LONG,
+	balloonTextId LONG,
+	referrer VARCHAR(500) null,
+	latitude DOUBLE,
+	longitude DOUBLE,
+	city VARCHAR(75) null,
+	country VARCHAR(75) null,
+	extraData TEXT null,
+	balloonLinkUuid VARCHAR(75) null,
+	balloonLinkContext VARCHAR(75) null,
+	userAgent VARCHAR(500) null
 );
 
 create table xcolab_Contest (

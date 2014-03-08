@@ -183,12 +183,10 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				yaxis.tickOptions = {formatString:"%d"};
 			}
 		}
-		console.log("indexMin", indexMin, "indexMax", indexMax);
 		if (indexMin != null && indexMax != null) {
 			xaxis.min = indexMin;
 			xaxis.max = indexMax;
 		}
-		console.log(xaxis, yaxis, plotSeries, "values", valuesCombined);
 		
 		
 		var plotOptions = {

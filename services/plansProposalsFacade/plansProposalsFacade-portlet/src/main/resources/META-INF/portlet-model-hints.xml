@@ -23,6 +23,13 @@
 		<field name="value" type="int" />
 		<field name="created" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.BalloonLink">
+		<field name="uuid" type="String" />
+		<field name="targetUrl" type="String" />
+		<field name="visits" type="int" />
+		<field name="balloonUserUuid" type="String" />
+		<field name="createDate" type="Date" />
+	</model>
 	<model name="com.ext.portlet.model.BalloonStatsEntry">
 		<field name="id" type="long" />
 		<field name="firstContestId" type="long" />
@@ -34,6 +41,46 @@
 		<field name="ip" type="String" />
 		<field name="extraData" type="String">
 			<hint name="max-length">256</hint>
+		</field>
+	</model>
+	<model name="com.ext.portlet.model.BalloonText">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="textBeforeForm" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="textAfterForm" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="textBeforeShareButtons" type="String" />
+		<field name="textAfterShareButtons" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.BalloonUserTracking">
+		<field name="uuid" type="String" />
+		<field name="email" type="String">
+			<hint name="max-length">200</hint>
+		</field>
+		<field name="parent" type="String" />
+		<field name="ip" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="registrationDate" type="Date" />
+		<field name="formFiledDate" type="Date" />
+		<field name="userId" type="long" />
+		<field name="balloonTextId" type="long" />
+		<field name="referrer" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="latitude" type="double" />
+		<field name="longitude" type="double" />
+		<field name="city" type="String" />
+		<field name="country" type="String" />
+		<field name="extraData" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="balloonLinkUuid" type="String" />
+		<field name="balloonLinkContext" type="String" />
+		<field name="userAgent" type="String">
+			<hint name="max-length">500</hint>
 		</field>
 	</model>
 	<model name="com.ext.portlet.model.Contest">

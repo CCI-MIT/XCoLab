@@ -284,7 +284,7 @@ $theme.include($top_messages_include)
 $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
-
+<script src="$javascript_folder/balloon.js?tt=$themeTimestamp"></script>
 </body>
 
 </html>

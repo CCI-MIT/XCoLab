@@ -1,8 +1,15 @@
 package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
+import java.util.Date;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.PortletSession;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
@@ -23,18 +30,21 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
+import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.model.BalloonUserTracking;
+import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalClassInvoker;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
@@ -48,11 +58,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
@@ -69,6 +74,8 @@ public class MainViewController {
 
 	@Autowired
 	private MessageSource messageSource;
+	
+	private final static Log _log = LogFactoryUtil.getLog(MainViewController.class);
 
     @InitBinder("createUserBean")
 	public void initBinder(WebDataBinder binder) {
@@ -227,23 +234,15 @@ public class MainViewController {
 					}
 					
 					if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
-					    // add user id to expando table to track his registration
-					    ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(User.class.getName(),
-		                        CommunityConstants.EXPANDO);
-					    ExpandoColumn redBalloonColumn = null;
-					    try {
-					        redBalloonColumn = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.RED_BALLOON);
-					    }
-					    catch (Exception e) {
-					        // create column
-					    }
-					    if (redBalloonColumn == null) {
-                            redBalloonColumn = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), 
-                                    CommunityConstants.RED_BALLOON, ExpandoColumnConstants.STRING);
-					    }
-					    
-					    ExpandoValueLocalServiceUtil.addValue(User.class.getName(), CommunityConstants.EXPANDO, 
-					            CommunityConstants.RED_BALLOON, user.getUserId(), balloonCookie.getUuid());
+						try {
+							BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
+							but.setRegistrationDate(new Date());
+							but.setUserId(user.getUserId());
+							BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+						}
+						catch (NoSuchBalloonUserTrackingException e) {
+							_log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
+						}
 					}
 
                     // SSO

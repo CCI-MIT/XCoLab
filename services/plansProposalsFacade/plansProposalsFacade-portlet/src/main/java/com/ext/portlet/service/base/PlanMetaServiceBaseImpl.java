@@ -4,7 +4,10 @@ import com.ext.portlet.model.PlanMeta;
 import com.ext.portlet.service.PlanMetaService;
 import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
+import com.ext.portlet.service.persistence.BalloonLinkPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
+import com.ext.portlet.service.persistence.BalloonTextPersistence;
+import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
@@ -115,12 +118,30 @@ public abstract class PlanMetaServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
     protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
+    @BeanReference(type = com.ext.portlet.service.BalloonLinkLocalService.class)
+    protected com.ext.portlet.service.BalloonLinkLocalService balloonLinkLocalService;
+    @BeanReference(type = com.ext.portlet.service.BalloonLinkService.class)
+    protected com.ext.portlet.service.BalloonLinkService balloonLinkService;
+    @BeanReference(type = BalloonLinkPersistence.class)
+    protected BalloonLinkPersistence balloonLinkPersistence;
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryLocalService.class)
     protected com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService;
     @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryService.class)
     protected com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService;
     @BeanReference(type = BalloonStatsEntryPersistence.class)
     protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
+    @BeanReference(type = com.ext.portlet.service.BalloonTextLocalService.class)
+    protected com.ext.portlet.service.BalloonTextLocalService balloonTextLocalService;
+    @BeanReference(type = com.ext.portlet.service.BalloonTextService.class)
+    protected com.ext.portlet.service.BalloonTextService balloonTextService;
+    @BeanReference(type = BalloonTextPersistence.class)
+    protected BalloonTextPersistence balloonTextPersistence;
+    @BeanReference(type = com.ext.portlet.service.BalloonUserTrackingLocalService.class)
+    protected com.ext.portlet.service.BalloonUserTrackingLocalService balloonUserTrackingLocalService;
+    @BeanReference(type = com.ext.portlet.service.BalloonUserTrackingService.class)
+    protected com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService;
+    @BeanReference(type = BalloonUserTrackingPersistence.class)
+    protected BalloonUserTrackingPersistence balloonUserTrackingPersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
     protected com.ext.portlet.service.ContestLocalService contestLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestService.class)
@@ -694,6 +715,63 @@ public abstract class PlanMetaServiceBaseImpl extends BaseServiceImpl
     }
 
     /**
+     * Returns the balloon link local service.
+     *
+     * @return the balloon link local service
+     */
+    public com.ext.portlet.service.BalloonLinkLocalService getBalloonLinkLocalService() {
+        return balloonLinkLocalService;
+    }
+
+    /**
+     * Sets the balloon link local service.
+     *
+     * @param balloonLinkLocalService the balloon link local service
+     */
+    public void setBalloonLinkLocalService(
+        com.ext.portlet.service.BalloonLinkLocalService balloonLinkLocalService) {
+        this.balloonLinkLocalService = balloonLinkLocalService;
+    }
+
+    /**
+     * Returns the balloon link remote service.
+     *
+     * @return the balloon link remote service
+     */
+    public com.ext.portlet.service.BalloonLinkService getBalloonLinkService() {
+        return balloonLinkService;
+    }
+
+    /**
+     * Sets the balloon link remote service.
+     *
+     * @param balloonLinkService the balloon link remote service
+     */
+    public void setBalloonLinkService(
+        com.ext.portlet.service.BalloonLinkService balloonLinkService) {
+        this.balloonLinkService = balloonLinkService;
+    }
+
+    /**
+     * Returns the balloon link persistence.
+     *
+     * @return the balloon link persistence
+     */
+    public BalloonLinkPersistence getBalloonLinkPersistence() {
+        return balloonLinkPersistence;
+    }
+
+    /**
+     * Sets the balloon link persistence.
+     *
+     * @param balloonLinkPersistence the balloon link persistence
+     */
+    public void setBalloonLinkPersistence(
+        BalloonLinkPersistence balloonLinkPersistence) {
+        this.balloonLinkPersistence = balloonLinkPersistence;
+    }
+
+    /**
      * Returns the balloon stats entry local service.
      *
      * @return the balloon stats entry local service
@@ -748,6 +826,120 @@ public abstract class PlanMetaServiceBaseImpl extends BaseServiceImpl
     public void setBalloonStatsEntryPersistence(
         BalloonStatsEntryPersistence balloonStatsEntryPersistence) {
         this.balloonStatsEntryPersistence = balloonStatsEntryPersistence;
+    }
+
+    /**
+     * Returns the balloon text local service.
+     *
+     * @return the balloon text local service
+     */
+    public com.ext.portlet.service.BalloonTextLocalService getBalloonTextLocalService() {
+        return balloonTextLocalService;
+    }
+
+    /**
+     * Sets the balloon text local service.
+     *
+     * @param balloonTextLocalService the balloon text local service
+     */
+    public void setBalloonTextLocalService(
+        com.ext.portlet.service.BalloonTextLocalService balloonTextLocalService) {
+        this.balloonTextLocalService = balloonTextLocalService;
+    }
+
+    /**
+     * Returns the balloon text remote service.
+     *
+     * @return the balloon text remote service
+     */
+    public com.ext.portlet.service.BalloonTextService getBalloonTextService() {
+        return balloonTextService;
+    }
+
+    /**
+     * Sets the balloon text remote service.
+     *
+     * @param balloonTextService the balloon text remote service
+     */
+    public void setBalloonTextService(
+        com.ext.portlet.service.BalloonTextService balloonTextService) {
+        this.balloonTextService = balloonTextService;
+    }
+
+    /**
+     * Returns the balloon text persistence.
+     *
+     * @return the balloon text persistence
+     */
+    public BalloonTextPersistence getBalloonTextPersistence() {
+        return balloonTextPersistence;
+    }
+
+    /**
+     * Sets the balloon text persistence.
+     *
+     * @param balloonTextPersistence the balloon text persistence
+     */
+    public void setBalloonTextPersistence(
+        BalloonTextPersistence balloonTextPersistence) {
+        this.balloonTextPersistence = balloonTextPersistence;
+    }
+
+    /**
+     * Returns the balloon user tracking local service.
+     *
+     * @return the balloon user tracking local service
+     */
+    public com.ext.portlet.service.BalloonUserTrackingLocalService getBalloonUserTrackingLocalService() {
+        return balloonUserTrackingLocalService;
+    }
+
+    /**
+     * Sets the balloon user tracking local service.
+     *
+     * @param balloonUserTrackingLocalService the balloon user tracking local service
+     */
+    public void setBalloonUserTrackingLocalService(
+        com.ext.portlet.service.BalloonUserTrackingLocalService balloonUserTrackingLocalService) {
+        this.balloonUserTrackingLocalService = balloonUserTrackingLocalService;
+    }
+
+    /**
+     * Returns the balloon user tracking remote service.
+     *
+     * @return the balloon user tracking remote service
+     */
+    public com.ext.portlet.service.BalloonUserTrackingService getBalloonUserTrackingService() {
+        return balloonUserTrackingService;
+    }
+
+    /**
+     * Sets the balloon user tracking remote service.
+     *
+     * @param balloonUserTrackingService the balloon user tracking remote service
+     */
+    public void setBalloonUserTrackingService(
+        com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService) {
+        this.balloonUserTrackingService = balloonUserTrackingService;
+    }
+
+    /**
+     * Returns the balloon user tracking persistence.
+     *
+     * @return the balloon user tracking persistence
+     */
+    public BalloonUserTrackingPersistence getBalloonUserTrackingPersistence() {
+        return balloonUserTrackingPersistence;
+    }
+
+    /**
+     * Sets the balloon user tracking persistence.
+     *
+     * @param balloonUserTrackingPersistence the balloon user tracking persistence
+     */
+    public void setBalloonUserTrackingPersistence(
+        BalloonUserTrackingPersistence balloonUserTrackingPersistence) {
+        this.balloonUserTrackingPersistence = balloonUserTrackingPersistence;
     }
 
     /**
