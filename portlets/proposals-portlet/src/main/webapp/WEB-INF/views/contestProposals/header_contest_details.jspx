@@ -9,7 +9,26 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">		
 
 	<div class="contest-detail">
-		<div class="heading">${contest.contestName}</div>
+		<div class="heading">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="heading-title">
+                                ${contest.contestName}
+                            </div>
+                        </td>
+                        <c:if test="${contest.sponsorLogoId > 0}">
+                            <td>
+                                <div class="heading-sponsor-logo">
+                                    <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" />
+                                </div>
+                            </td>
+                        </c:if>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 		<div class="description">
 			<p>${contest.contestDescription }</p>
 			<c:if test="${contest.hasFocusArea }">
@@ -73,20 +92,6 @@
 							</c:forEach>
 						</td>
 					</c:if>
-					<td style="text-align: center;">
-						<c:if test="${contest.sponsorLogoId > 0}">
-							<div class="sponsorLogo">
-								<table>
-									<tr>
-										<td>
-											<img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" />
-										</td>
-										<td style="vertical-align: middle;">${contest.sponsorText}</td>
-									</tr>
-								</table>
-							</div>
-						</c:if>
-					</td>
 					<td align="right" nowrap="nowrap" style="vertical-align: bottom;">
 						<div>
 							<c:if test="${not empty contest.resourcesUrl}">
