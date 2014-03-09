@@ -53,10 +53,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             { "name", Types.VARCHAR },
             { "textBeforeForm", Types.CLOB },
             { "textAfterForm", Types.CLOB },
-            { "textBeforeShareButtons", Types.VARCHAR },
-            { "textAfterShareButtons", Types.VARCHAR }
+            { "textBeforeShareButtons", Types.CLOB },
+            { "textAfterShareButtons", Types.CLOB }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons VARCHAR(75) null,textAfterShareButtons VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonText";
     public static final String ORDER_BY_JPQL = " ORDER BY balloonText.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonText.id_ ASC";

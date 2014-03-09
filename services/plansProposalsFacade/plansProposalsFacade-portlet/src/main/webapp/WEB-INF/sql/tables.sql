@@ -44,8 +44,8 @@ create table xcolab_BalloonText (
 	name VARCHAR(75) null,
 	textBeforeForm TEXT null,
 	textAfterForm TEXT null,
-	textBeforeShareButtons VARCHAR(75) null,
-	textAfterShareButtons VARCHAR(75) null
+	textBeforeShareButtons TEXT null,
+	textAfterShareButtons TEXT null
 );
 
 create table xcolab_BalloonUserTracking (
