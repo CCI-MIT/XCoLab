@@ -1001,6 +1001,10 @@ display: inline;
 	font-size: 18px;
 }
 
+.contest-detail .heading {
+    padding-right: 27px;
+}
+
 body.colab { margin-top: 0;}
 
 .seeAllActivities {
