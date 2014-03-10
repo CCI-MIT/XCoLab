@@ -14,7 +14,7 @@ if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
 	DefaultIndividualSelectInputRenderer.prototype.containerHtmlEdit = "<table class='control_definition innerLayout '></table>";
 	
 	DefaultIndividualSelectInputRenderer.prototype.canRender = function(input) {
-		return input.displayItemType == 'INDIVIDUAL' && input.widgetType == 'SELECT'; 
+		return input.displayItemType == 'INDIVIDUAL' && input.widgetType == 'RADIO'; 
 	};
 
 	DefaultIndividualSelectInputRenderer.prototype.renderEdit = function(container, input, modelingWidget, idx, parent) {
@@ -22,11 +22,17 @@ if (typeof(XCoLab.modeling.serieRenderers) == 'undefined')
 		var containerRow = jQuery("<tr></tr>").appendTo(container);
 		containerRow.append("<td class='label'>" + input.metaData.labels[0] + "</td>");
 		
-		var userInput = jQuery("<select class='value valueBinding' data-id='" + input.metaData.id + "' />");
+		var userInput = jQuery("<div />");
+		
+		var bindingInput = jQuery("<input type='text' class='value control_input valueBinding hidden' value='" + 
+				val + "' data-id='" + input.metaData.id + "' />");
+		
 		for (var idx in input.metaData.categories) {
-			userInput.append("<option value='" + input.metaData.categories[idx] + "'>" + input.metaData.categories[idx] + "</option>");
+			var inputId = Math.floor(Math.abs(1000000 * Math.random())) + "_" + Math.floor(Math.abs(1000000 * Math.random())); 
+			userInput.append("<label for='" + inputId + "'>" + input.metaData.categories[idx] + "</label>" + "<input type='radio' name='" + input.metaData.id + "' value='" + input.metaData.categories[idx] + "' id='" + inputId + "'/>");
 		}
-		jQuery("<td class='field'></td>").append(userInput).appendTo(containerRow);
+		userInput.find("input").change(function() { bindingInput.val(jQuery(this).val()); });
+		jQuery("<td class='field'></td>").append(userInput).append(bindingInput).appendTo(containerRow);
 	};
 	
 	DefaultIndividualSelectInputRenderer.prototype.renderView = function(container, input, modelingWidget, idx, parent) {
