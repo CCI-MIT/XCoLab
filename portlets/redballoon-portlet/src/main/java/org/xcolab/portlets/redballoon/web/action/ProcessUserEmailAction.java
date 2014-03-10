@@ -1,5 +1,6 @@
 package org.xcolab.portlets.redballoon.web.action;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class ProcessUserEmailAction {
 	
 	@RequestMapping(params="action=sendEmail")
 	public void processUserEmail(ActionRequest request, ActionResponse response, Model model,
-			@Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws PortalException, SystemException {
+			@Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws PortalException, SystemException, IOException {
 		
 		if (userEmailBean != null) {
 			BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
@@ -50,6 +51,7 @@ public class ProcessUserEmailAction {
 				link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
 				
 				BalloonLinkLocalServiceUtil.addBalloonLink(link);
+				response.sendRedirect("/balloon/-/balloon/" + link.getUuid());
 			}
 			
 		}
