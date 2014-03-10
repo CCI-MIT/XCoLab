@@ -1,20 +1,12 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import javax.mail.internet.AddressException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.model.MembershipRequest;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,16 +14,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 
 @Controller
 @RequestMapping("view")
@@ -52,11 +48,17 @@ public class ProposalRequestMembershipActionController {
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result, @RequestParam("requestComment") String comment)
             throws PortalException, SystemException {
-        if (result.hasErrors()) {
+    	
+    	if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "requestMembership");
             return;
         }
+    	
+    	if (proposalsContext.getUser(request).getDefaultUser()) {
+    		return;
+    	}
+    	
         long userId = proposalsContext.getUser(request).getUserId();
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
