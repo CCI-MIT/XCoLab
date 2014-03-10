@@ -20,7 +20,7 @@ public class ContestsBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-    private static final int NUM_CONTESTS = 2;
+    private static final int NUM_CONTESTS = 4;
 	
 	public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<>();
