@@ -40,7 +40,7 @@ public class OpenIdController {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
 
-        GoogleAuthHelper helper = new GoogleAuthHelper();
+        GoogleAuthHelper helper = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL);
         String requestUrl = helper.buildLoginUrl();
         // Add the openid.realm parameter in order to get an OpenId 2.0 identifier
         requestUrl += "&openid.realm=" + themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL;
@@ -66,7 +66,7 @@ public class OpenIdController {
         String stateToken = request.getParameter("state");
         String authCode = request.getParameter("code");
         if (stateToken != null && stateToken.equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            JSONObject json = new GoogleAuthHelper().getUserInfoJson(authCode);
+            JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL).getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
             String firstName = json.getString("given_name");
@@ -83,6 +83,8 @@ public class OpenIdController {
                 session.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()));
 
                 actionResponse.sendRedirect(url);
+                ImageUploadUtils.updateProfilePicture(user, profilePicURL);
+
                 return;
             }
             catch (NoSuchUserException nsue) {
@@ -93,6 +95,9 @@ public class OpenIdController {
                     UserLocalServiceUtil.updateUser(user);
                     session.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()));
                     actionResponse.sendRedirect(url);
+
+                    ImageUploadUtils.updateProfilePicture(user, profilePicURL);
+                    user.getPortraitURL(themeDisplay);
                     return;
                 }catch (NoSuchUserException nsue2){
                     // forward to login or register
@@ -101,12 +106,13 @@ public class OpenIdController {
                         session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
                         // Screenname = email prefix until @ character
                         String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
+                        screenName = screenName.replaceAll("[^a-zA-Z0-9]","");
                         session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
                     }
                     if (Validator.isNotNull(firstName)) session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
                     if (Validator.isNotNull(lastName)) session.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
                     if (Validator.isNotNull(profilePicURL)) {
-                        long imageId = linkProfilePicture(profilePicURL);
+                        long imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
                         session.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
                     }
 
@@ -118,16 +124,7 @@ public class OpenIdController {
         }
     }
 
-    private long linkProfilePicture(String picUrl) {
-        try {
-            URL url = new URL(picUrl);
-            return ImageUploadUtils.uploadImage(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
-        return 0L;
-    }
 
     protected String getFirstValue(List<String> values) {
         if ((values == null) || (values.size() < 1)) {

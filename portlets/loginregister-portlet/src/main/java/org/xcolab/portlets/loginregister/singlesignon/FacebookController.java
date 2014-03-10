@@ -36,7 +36,7 @@ import java.util.Date;
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%ld/picture?type=large";
+    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%d/picture?type=large";
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws IOException, SystemException {
@@ -73,6 +73,7 @@ public class FacebookController {
         User user = null;
 
         long facebookId = jsonObject.getLong("id");
+        String fbProfilePictureURL = String.format(FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
 
         PortletSession portletSession = request.getPortletSession();
 
@@ -84,6 +85,8 @@ public class FacebookController {
             try {
                 user = UserLocalServiceUtil.getUserByFacebookId(
                         themeDisplay.getCompanyId(), facebookId);
+
+                ImageUploadUtils.updateProfilePicture(user, fbProfilePictureURL);
             }
             catch (NoSuchUserException e){
 
@@ -102,6 +105,7 @@ public class FacebookController {
                 user = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
                 updateUserWithFBId(user,facebookId);
+                ImageUploadUtils.updateProfilePicture(user, fbProfilePictureURL);
             }
             catch (NoSuchUserException e){
 
@@ -122,13 +126,13 @@ public class FacebookController {
             portletSession.setAttribute(SSOKeys.SSO_EMAIL, jsonObject.getString("email"),PortletSession.APPLICATION_SCOPE);
             // Screenname = email prefix until @ character
             String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
+            screenName = screenName.replaceAll("[^a-zA-Z0-9]","");
             portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
         }
 
         // Get the FB image url
         if (facebookId > 0) {
-            String fbProfilePictureURL = String.format(FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
-            long imageId = linkFbProfilePicture(fbProfilePictureURL);
+            long imageId = ImageUploadUtils.linkProfilePicture(fbProfilePictureURL);
             portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId), PortletSession.APPLICATION_SCOPE);
         }
 
@@ -146,19 +150,6 @@ public class FacebookController {
     public String registerOrLogin(PortletRequest request) {
         return "SSO/registerOrLogin";
     }
-
-    private long linkFbProfilePicture(String picURL) {
-        try {
-            URL url = new URL(picURL);
-            return ImageUploadUtils.uploadImage(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return 0L;
-    }
-
-
 
     private void updateUserWithFBId(User u, long fbId) throws SystemException, PortalException{
         u.setFacebookId(fbId);

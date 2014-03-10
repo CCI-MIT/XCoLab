@@ -53,6 +53,22 @@ div.sponsorLogo table {
 	width:100%;
 }
 
+.heading-sponsor-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+}
+
+.heading-sponsor-logo {
+    max-width: 200px;
+    max-height: 45px;
+    min-height: 30px;
+    float: right;
+    margin: 0 0 0 3px;
+    padding: 3px;
+}
+
 
 div.sponsorLogo img {
 	height:54px;	
@@ -65,17 +81,10 @@ div.sponsorLogo img {
 	max-width: 755px;
 }
 
-.withSponsor .contestTeamRole {
-	white-space: normal;
-	min-width: 355px;
-	max-width: 355px;
-}
-
 .contestTeamRole .contestTeamRoleName {
 	padding-top: 15px;
 	width:70px; 
 }
-
 
 .contestTeamRole .contestTeamMembers {
 	width: 100%;

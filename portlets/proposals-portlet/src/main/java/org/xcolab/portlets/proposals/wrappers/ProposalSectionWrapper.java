@@ -82,9 +82,9 @@ public class ProposalSectionWrapper {
         // http://stackoverflow.com/questions/1806017/extracting-urls-from-a-text-document-using-java-regular-expressions
         Pattern pattern = Pattern.compile(
                 "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
-                        "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
+                        "(((\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
                         "|mil|biz|info|mobi|name|aero|jobs|museum" +
-                        "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
+                        "|travel|[a-z]{2})))|localhost)(:[\\d]{1,5})?" +
                         "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
                         "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
                         "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
@@ -105,9 +105,15 @@ public class ProposalSectionWrapper {
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
                     ProposalWrapper wr = LinkUtils.getProposalLinks(link);
+
+                    String elementName;
                     if (wr != null) {
-                        newText += "<a href=\""+link+"\">"+wr.getName()+"</a>" + " ";
+                        elementName = wr.getName();
+                    } else {
+                        elementName = link;
                     }
+
+                    newText += "<a href=\""+link+"\">"+ elementName +"</a>" + " ";
                 } else {
                     newText += word + " ";
                 }

@@ -10,6 +10,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -111,9 +112,9 @@ public class ContestPhaseWrapper {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase that doesn't exist", ""));
             return;
         }
-        if (! ContestPhaseLocalServiceUtil.getPlans(contestPhase).isEmpty()) {
+        if (! ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK()).isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest phase has plans associated with it", ""));   
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove phase, there are plans associated with it", ""));   
             return;
         }
         ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
@@ -123,6 +124,10 @@ public class ContestPhaseWrapper {
     
     public boolean isNew() {
         return contestPhase.getContestPhasePK() <= 0;
+    }
+    
+    public boolean getIsNew() {
+        return isNew();
     }
     
     public Long getContestPhasePK() {
