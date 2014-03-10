@@ -40,6 +40,7 @@ public class BalloonController {
 					throws SystemException, PortalException, IOException {
 		
 		BalloonLink link = null;
+		BalloonUserTracking but = null;
 		if (linkuuid != null) {
 			link = BalloonLinkLocalServiceUtil.getBalloonLink(linkuuid);
 			
@@ -47,14 +48,17 @@ public class BalloonController {
 				model.addAttribute("balloonLink", link);
 				
 				// get user tracking information, if user is new, then owner of this link should be set as a parent
-				BalloonUtils.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkuuid, context);
+				but = BalloonUtils.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkuuid, context);
 				link.setVisits(link.getVisits() + 1);
 				
 				BalloonLinkLocalServiceUtil.updateBalloonLink(link);
 			}
 		}
 		
-		BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
+		if (but == null) {
+			// user wasn't following any link so we need to create new root of a reference tree
+			but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
+		}
 		if (but.getBalloonTextId() > 0) {
 			BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
 			model.addAttribute("balloonText", text);
