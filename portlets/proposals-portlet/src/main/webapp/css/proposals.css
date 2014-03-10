@@ -81,17 +81,10 @@ div.sponsorLogo img {
 	max-width: 755px;
 }
 
-.withSponsor .contestTeamRole {
-	white-space: normal;
-	min-width: 355px;
-	max-width: 355px;
-}
-
 .contestTeamRole .contestTeamRoleName {
 	padding-top: 15px;
 	width:70px; 
 }
-
 
 .contestTeamRole .contestTeamMembers {
 	width: 100%;
