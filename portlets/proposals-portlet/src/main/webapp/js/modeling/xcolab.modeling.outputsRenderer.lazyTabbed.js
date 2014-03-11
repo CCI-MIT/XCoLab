@@ -48,6 +48,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var modelingWidget = this.modelingWidget;
 		// group physical outputs series
 		var tabsToRender = []; 
+		var hasPhysicalOutputs = false;
 		var physicalOutputs = {chartType: 'PHYSICAL_IMPACTS', name: "Physical impacts", outputs: {}};
 		
 		jQuery.each(scenario.outputs, function(idx, output) {
@@ -61,12 +62,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					physicalOutputs.outputs[output.name] = [];
 				}
 				physicalOutputs.outputs[output.name].push(output);
+				hasPhysicalOutputs = true;
 			}
 			else {
 				tabsToRender.push({renderer: modelingWidget.getOutputRenderer(output), output: {outputs: output}});
 			}
 		});
-		tabsToRender.push({renderer: modelingWidget.getOutputRenderer(physicalOutputs), output: physicalOutputs});
+		if (hasPhysicalOutputs) {
+			tabsToRender.push({renderer: modelingWidget.getOutputRenderer(physicalOutputs), output: physicalOutputs});
+		}
 
 		var headerContainer = jQuery("<div class='actions" + (this.modelingWidget.inEditMode ? '-edit' : '') + "_chart-head-bg'></div>");
 		var contentsContainer = jQuery("<div class='actions" + (this.modelingWidget.inEditMode ? '-edit' : '') + "_chart'></div>");
