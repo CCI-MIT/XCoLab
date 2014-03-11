@@ -3,9 +3,6 @@ package org.xcolab.portlets.contests;
 
 import java.io.Serializable;
 
-import javax.faces.event.ActionEvent;
-
-import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -27,7 +24,6 @@ public class ContestWrapper implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Contest contest;
-    private String debatesIdsStr = null;
     
     public boolean flag;
     
@@ -37,10 +33,6 @@ public class ContestWrapper implements Serializable {
 
     public boolean getFlag() {
         return flag;
-    }
-
-    public void test(ActionEvent e) {
-        setFlag(!flag);
     }
 
     public ContestWrapper(Contest contest) throws SystemException, PortalException {
@@ -62,7 +54,8 @@ public class ContestWrapper implements Serializable {
     }
     
     public String getLogo() throws PortalException, SystemException {
-        return Helper.getThemeDisplay().getPathImage() + ContestLocalServiceUtil.getLogoPath(contest);
+        //return Helper.getThemeDisplay().getPathImage() + ContestLocalServiceUtil.getLogoPath(contest);
+    	return null;
     }
     
     public boolean isFeatured() {
@@ -133,3 +126,4 @@ public class ContestWrapper implements Serializable {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }
 }
+

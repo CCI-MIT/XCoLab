@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
@@ -17,64 +24,56 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class RandomProposalsBean {
+@Controller
+@RequestMapping("view")
+public class RandomProposalsController {
+    
+	private RandomProposalsPreferences _preferences;
 
-	private PreferencesBean preferencesBean;
-	private String baseImagePath;
+	 private static Object mutex = new Object();
+	 private static List<Proposal> availableProposals;
+	
+    public RandomProposalsController() {
+    }
 
-	private static Object mutex = new Object();
-	private static List<Proposal> availableProposals;
+    @RequestMapping
+    public String showRandomProposals(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
+    	
+    	_preferences = new RandomProposalsPreferences(request);
+    	
+    	ProposalsModel proposalsModel = new ProposalsModel(getProposals(request), _preferences
+    			, Helper.getThemeDisplay(request).getPathImage() + "/proposal?img_id=");
+    	
+    	model.addAttribute("proposalsModel", proposalsModel);
+              	
+    	return "showProposals";
+    }
+  
+    private List<ProposalWrapper> getProposals(PortletRequest request) throws PortalException,
+	SystemException {
 
-	public RandomProposalsBean() {
-		setBaseImagePath(Helper.getThemeDisplay().getPathImage()
-				+ "/proposal?img_id=");
-	}
-
-	public List<ProposalWrapper> getProposals() throws PortalException,
-			SystemException {
-
+    	reset();
+    	
 		List<ProposalWrapper> ret = new ArrayList<>();
-		List<Proposal> proposals = getAvailableProposals(preferencesBean);
+		List<Proposal> proposals = getAvailableProposals(_preferences);
+		
 		Collections.shuffle(proposals);
 		for (int i = 0; i < proposals.size()
-				&& i < preferencesBean.getFeedSize(); i++) {
+				&& i < _preferences.getFeedSize(); i++) {
 			ret.add(new ProposalWrapper(proposals.get(i)));
 		}
-
+		
 		return ret;
-	}
-
-	public PreferencesBean getPreferencesBean() {
-		return preferencesBean;
-	}
-
-	public void setPreferencesBean(PreferencesBean preferencesBean) {
-		this.preferencesBean = preferencesBean;
-	}
-
-	public String getBaseImagePath() {
-		return baseImagePath;
-	}
-
-	public void setBaseImagePath(String baseImagePath) {
-		this.baseImagePath = baseImagePath;
 	}
 
 	private static ContestPhaseRibbonType getRibbonType(Proposal p)
 			throws PortalException, SystemException {
 		ContestPhaseRibbonType contestPhaseRibbonType = null;
-		List<Long> phasesForProposal = Proposal2PhaseLocalServiceUtil
-				.getContestPhasesForProposal(p.getProposalId());
-		ContestPhase contestPhase = ContestPhaseLocalServiceUtil
-				.getContestPhase(phasesForProposal.get(phasesForProposal.size() - 1));
+		List<Long> phasesForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+		ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phasesForProposal.get(phasesForProposal.size() - 1));
 		try {
-			long typeId = ProposalContestPhaseAttributeLocalServiceUtil
-					.getProposalContestPhaseAttribute(p.getProposalId(),
-							contestPhase.getContestPhasePK(),
-							ProposalContestPhaseAttributeKeys.RIBBON)
-					.getNumericValue();
-			contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil
-					.getContestPhaseRibbonType(typeId);
+			long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),contestPhase.getContestPhasePK(),ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+			contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
 		} catch (NoSuchProposalContestPhaseAttributeException e) {
 			// ignore
 		}
@@ -83,15 +82,15 @@ public class RandomProposalsBean {
 	}
 
 	private static List<Proposal> getAvailableProposals(
-			PreferencesBean preferencesBean) throws PortalException,
+			RandomProposalsPreferences preferences) throws PortalException,
 			SystemException {
 		synchronized (mutex) {
 			if (availableProposals == null) {
 				availableProposals = new ArrayList<>();
-				Long[] selectedPhases = preferencesBean.getSelectedPhases();
+				Long[] selectedPhases = preferences.getSelectedPhases();
 				if (selectedPhases == null)
 					return null;
-				Long[] flagFilters = preferencesBean.getFlagFilters();
+				Long[] flagFilters = preferences.getFlagFilters();
 
 				if (flagFilters == null || flagFilters.length == 0) {
 					for (Long contestPhasePk : selectedPhases) {
@@ -118,7 +117,7 @@ public class RandomProposalsBean {
 			}
 			return new ArrayList<Proposal>(availableProposals);
 		}
-	}
+	}	
 
 	public static void reset() {
 		synchronized (mutex) {
@@ -126,5 +125,6 @@ public class RandomProposalsBean {
 		}
 
 	}
+    
 
 }

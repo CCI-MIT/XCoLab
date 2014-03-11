@@ -1,15 +1,14 @@
 package org.xcolab.portlets.randomproposals;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
@@ -22,7 +21,7 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-public class PreferencesBean {
+public class RandomProposalsPreferences {
     private Long[] selectedPhases;
     private Long[] flagFilters;
     private String flagFiltersStr;
@@ -49,8 +48,10 @@ public class PreferencesBean {
         this.feedSize = feedSize;
     }
 
-    public PreferencesBean() {
-        PortletPreferences prefs = Helper.getPortletPrefs();
+    public RandomProposalsPreferences() {}
+    
+    public RandomProposalsPreferences(PortletRequest request) {
+    	PortletPreferences prefs = request.getPreferences();
         selectedPhases = convertStringsToLongs(prefs.getValue(SELECTED_PHASES_PREFERENCE, "").split(","));
         flagFiltersStr = prefs.getValue(FLAG_FILTER_PREFERENCE, "");
         title = prefs.getValue(TITLE_PREFERENCE, "Interesting Proposals");
@@ -63,10 +64,9 @@ public class PreferencesBean {
         
     }
     
-    public String submit() throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
-        PortletPreferences prefs = Helper.getPortletPrefs();
-        FacesMessage fm = new FacesMessage();
-        
+    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+        PortletPreferences prefs = request.getPreferences();
+    	
         prefs.setValue(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), ","));
         prefs.setValue(FLAG_FILTER_PREFERENCE, flagFiltersStr);
         prefs.setValue(TITLE_PREFERENCE, title);
@@ -74,40 +74,34 @@ public class PreferencesBean {
 
         prefs.store();
         
-        fm.setSummary("Settings saved successfully");
-        
-        fm.setSeverity(FacesMessage.SEVERITY_INFO);
-
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(null, fm);
-        RandomProposalsBean.reset();
-        return "";
+        return null;
     }
     
-    public List<SelectItem> getContestPhases() throws SystemException, PortalException {
-        List<SelectItem> ret = new ArrayList<>();
-        
-        List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-        
-        Collections.sort(contests, new Comparator<Contest>() {
-
-            @Override
-            public int compare(Contest o1, Contest o2) {
-                return (int) (o1.getContestPK() - o2.getContestPK());
-            }
-            
-        });
-        
-        for (Contest c: contests) {
-            for (ContestPhase cp: ContestLocalServiceUtil.getPhases(c)) {
-                ret.add(new SelectItem(cp.getContestPhasePK(), 
-                        c.getContestPK() + " " + c.getContestShortName() + " - " + 
-                        cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)));
-            }
-        }
-        return ret;
+    
+    public Map<Long,String> getContestPhases() throws SystemException, PortalException{
+    	Map<Long, String> phases = new HashMap<>();
+    	
+    	 List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+    	 
+    	 Collections.sort(contests, new Comparator<Contest>() {    		 
+    		             @Override
+    		             public int compare(Contest o1, Contest o2) {
+    		                 return (int) (o1.getContestPK() - o2.getContestPK());
+    		             }
+    		             
+    		         });
+    	 
+    	 for (Contest c: contests) {
+           for (ContestPhase cp: ContestLocalServiceUtil.getPhases(c)) {
+        	   phases.put(cp.getContestPhasePK()
+        			   ,c.getContestPK() + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
+        	   
+           }
+       }
+    	 
+    	return phases;
     }
-
+    
     public Long[] getSelectedPhases() {
         return selectedPhases;
     }
