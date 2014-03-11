@@ -98,6 +98,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				var parseFunc = null;
 				if (singleSerie.variable.metaData.profiles[1] == 'java.lang.Integer') parseFunc = parseInt;
 				else parseFunc = parseFloat;
+				console.log(singleSerie.variable.metaData.profiles[1], parseFunc);
+
+				if (singleSerie.variable.metaData.units[1].toLowerCase().indexOf("percent") >= 0 || singleSerie.variable.metaData.units[1].toLowerCase().indexOf("%") >= 0) {
+					yaxis.tickOptions = {formatString: "%d %%"};
+					oldParseFunc = parseFunc;
+					parseFunc = function(num) {
+						return 100 * oldParseFunc(num);
+					}
+				}
 				
 				var localMin = parseFunc(singleSerie.variable.metaData.min[1]);
 				var localMax = parseFunc(singleSerie.variable.metaData.max[1]);
@@ -107,7 +116,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			
 				var val = [];
 				for (var i = 0; i < this.variable.values.length; i++) {
-					val.push([parseInt(this.variable.values[i][0]), parseFloat(this.variable.values[i][1])]);
+					val.push([parseInt(this.variable.values[i][0]), parseFunc(this.variable.values[i][1])]);
 				}
 				if ('associatedMetaDataId' in singleSerie) {
 					// value of this serie is describing a confidence interval of different serie, it shouldn't
