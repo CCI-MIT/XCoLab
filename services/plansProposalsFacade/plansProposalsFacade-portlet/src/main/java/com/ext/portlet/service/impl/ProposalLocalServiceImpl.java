@@ -10,6 +10,7 @@ import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.persistence.*;
 import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -601,13 +602,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     public List<Proposal> getUserProposals(long userId) throws SystemException {
-        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class )
+        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, PortalClassLoaderUtil.getClassLoader())
                 .add(PropertyFactoryUtil.forName("authorId")
                         .eq(userId))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
-        List<Proposal> proposals = dynamicQuery(query);
-
-        return proposals;
+        return ProposalLocalServiceUtil.dynamicQuery(query);
     }
     
     /**

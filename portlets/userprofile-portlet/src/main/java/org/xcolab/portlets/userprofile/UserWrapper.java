@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
@@ -134,12 +135,7 @@ public class UserWrapper implements Serializable {
                 userActivities.add(a);
         }
 
-        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class )
-                .add(PropertyFactoryUtil.forName("authorId")
-                        .eq(user.getUserId()))
-                .addOrder(OrderFactoryUtil.desc("createDate"));
-        List<Proposal> proposals = ProposalLocalServiceUtil.dynamicQuery(query);
-
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
         userProposals = new ArrayList<>();
 
         for (Proposal p : proposals) {
