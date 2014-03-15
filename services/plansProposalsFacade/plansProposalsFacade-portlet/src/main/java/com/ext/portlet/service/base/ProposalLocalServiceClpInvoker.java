@@ -151,6 +151,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes542;
     private String _methodName543;
     private String[] _methodParameterTypes543;
+    private String _methodName548;
+    private String[] _methodParameterTypes548;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -489,6 +491,13 @@ public class ProposalLocalServiceClpInvoker {
         _methodName543 = "getModifiedAfter";
 
         _methodParameterTypes543 = new String[] { "java.util.Date" };
+
+        _methodName548 = "getProposalLink";
+
+        _methodParameterTypes548 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.Proposal"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -977,6 +986,12 @@ public class ProposalLocalServiceClpInvoker {
         if (_methodName543.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
             return ProposalLocalServiceUtil.getModifiedAfter((java.util.Date) arguments[0]);
+        }
+
+        if (_methodName548.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes548, parameterTypes)) {
+            return ProposalLocalServiceUtil.getProposalLink((com.ext.portlet.model.Contest) arguments[0],
+                (com.ext.portlet.model.Proposal) arguments[1]);
         }
 
         throw new UnsupportedOperationException();

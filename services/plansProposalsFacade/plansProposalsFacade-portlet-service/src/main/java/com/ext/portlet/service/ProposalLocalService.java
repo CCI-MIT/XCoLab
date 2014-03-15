@@ -1027,4 +1027,16 @@ public interface ProposalLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.Proposal> getModifiedAfter(
         java.util.Date date)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the URL link address for the passed proposal and contest
+    *
+    * @param contest   The contest object in which the proposal was written
+    * @param proposal  The proposal object (must not be null)
+    * @return Proposal URL as String
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalLink(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal);
 }

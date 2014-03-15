@@ -598,6 +598,23 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
     }
 
+    @Override
+    public java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>> getContestSupportingUser(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getContestSupportingUser(contest);
+    }
+
+    @Override
+    public void transferSupportToVotes(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException {
+        _contestLocalService.transferSupportToVotes(contest);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

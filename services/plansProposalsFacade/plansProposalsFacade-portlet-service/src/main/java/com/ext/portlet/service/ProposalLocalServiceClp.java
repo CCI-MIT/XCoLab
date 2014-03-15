@@ -150,6 +150,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes70;
     private String _methodName71;
     private String[] _methodParameterTypes71;
+    private String _methodName72;
+    private String[] _methodParameterTypes72;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -486,6 +488,13 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodName71 = "getModifiedAfter";
 
         _methodParameterTypes71 = new String[] { "java.util.Date" };
+
+        _methodName72 = "getProposalLink";
+
+        _methodParameterTypes72 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.Proposal"
+            };
     }
 
     @Override
@@ -2784,5 +2793,33 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         }
 
         return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.String getProposalLink(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName72,
+                    _methodParameterTypes72,
+                    new Object[] {
+                        ClpSerializer.translateInput(contest),
+                        
+                    ClpSerializer.translateInput(proposal)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 }

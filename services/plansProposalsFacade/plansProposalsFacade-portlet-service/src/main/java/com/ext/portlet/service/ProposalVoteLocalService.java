@@ -243,4 +243,16 @@ public interface ProposalVoteLocalService extends BaseLocalService,
         long contestPhaseId, long userId)
         throws com.ext.portlet.NoSuchProposalVoteException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
+    *
+    * @param contestPhaseId contest phase id
+    * @param userId         user id
+    * @return true if user has voted for proposal in context of a contest phase
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasUserVoted(long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

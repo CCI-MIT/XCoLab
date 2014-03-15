@@ -137,9 +137,9 @@
                 <ice:inputFile actionListener="#{contestsAdmin.editedContest.uploadSponsorLogo}" styleClass="filepc" autoUpload="true" />
            
            </f:subview>
-           
-           
-           <ice:outputText />
+
+            <ice:outputText />
+            <ice:commandButton value="Transfer supports to votes" action="#{contestsAdmin.editedContest.transferSupports}" />
            
            <ice:commandButton value="Save" action="#{contestsAdmin.editedContest.save}" />
         </ice:panelGrid>

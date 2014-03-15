@@ -6,6 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.model.ProposalVote;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -24,15 +34,6 @@ import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
@@ -1259,4 +1260,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
+
+    /**
+     * Returns the URL link address for the passed proposal and contest
+     *
+     * @param contest   The contest object in which the proposal was written
+     * @param proposal  The proposal object (must not be null)
+     * @return          Proposal URL as String
+     */
+    public String getProposalLink(Contest contest, Proposal proposal) {
+        String link = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
+        return String.format(link, contest.getContestPK(), proposal.getProposalId());
+    }
 }

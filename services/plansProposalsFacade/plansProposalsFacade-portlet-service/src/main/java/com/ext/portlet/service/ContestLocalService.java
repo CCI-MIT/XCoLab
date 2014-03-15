@@ -466,4 +466,16 @@ public interface ContestLocalService extends BaseLocalService,
         java.util.List<com.ext.portlet.model.OntologyTerm> ontologyTerms)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>> getContestSupportingUser(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void transferSupportToVotes(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException;
 }

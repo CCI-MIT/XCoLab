@@ -549,6 +549,22 @@ public class ContestLocalServiceUtil {
         return getService().getContestsMatchingOntologyTerms(ontologyTerms);
     }
 
+    public static java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>> getContestSupportingUser(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestSupportingUser(contest);
+    }
+
+    public static void transferSupportToVotes(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException {
+        getService().transferSupportToVotes(contest);
+    }
+
     public static void clearService() {
         _service = null;
     }

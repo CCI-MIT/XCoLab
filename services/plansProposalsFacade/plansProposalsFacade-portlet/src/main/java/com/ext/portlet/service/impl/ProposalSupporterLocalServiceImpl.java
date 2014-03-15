@@ -1,6 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalSupporterLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
@@ -15,7 +16,10 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,4 +62,18 @@ public class ProposalSupporterLocalServiceImpl
             return null;
         }
     }
+/*
+    public List<User> getSupportingUsers(long proposalId) throws SystemException, com.liferay.portal.kernel.exception.PortalException {
+        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class,
+                (ClassLoader) PortletBeanLocatorUtil.locate(ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
+        query.add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));
+        List<ProposalSupporter> supporters = ProposalLocalServiceUtil.dynamicQuery(query);
+
+        List<User> users = new ArrayList<>();
+        for (ProposalSupporter supporter : supporters) {
+            users.add(UserLocalServiceUtil.getUser(supporter.getUserId()));
+        }
+
+        return users;
+    }*/
 }

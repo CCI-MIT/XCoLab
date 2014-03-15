@@ -48,6 +48,8 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
     private String[] _methodParameterTypes19;
     private String _methodName20;
     private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
 
     public ProposalVoteLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -158,6 +160,10 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         _methodName20 = "findByProposalIdContestPhaseIdUserId";
 
         _methodParameterTypes20 = new String[] { "long", "long" };
+
+        _methodName21 = "hasUserVoted";
+
+        _methodParameterTypes21 = new String[] { "long", "long" };
     }
 
     @Override
@@ -732,5 +738,32 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         }
 
         return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public boolean hasUserVoted(long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
+                    new Object[] { contestPhaseId, userId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 }

@@ -1221,6 +1221,20 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns the URL link address for the passed proposal and contest
+    *
+    * @param contest   The contest object in which the proposal was written
+    * @param proposal  The proposal object (must not be null)
+    * @return Proposal URL as String
+    */
+    @Override
+    public java.lang.String getProposalLink(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal) {
+        return _proposalLocalService.getProposalLink(contest, proposal);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalLocalService getWrappedProposalLocalService() {

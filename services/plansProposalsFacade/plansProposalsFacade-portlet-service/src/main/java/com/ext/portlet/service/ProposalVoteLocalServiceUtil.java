@@ -276,6 +276,19 @@ public class ProposalVoteLocalServiceUtil {
                    .findByProposalIdContestPhaseIdUserId(contestPhaseId, userId);
     }
 
+    /**
+    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
+    *
+    * @param contestPhaseId contest phase id
+    * @param userId         user id
+    * @return true if user has voted for proposal in context of a contest phase
+    * @throws SystemException
+    */
+    public static boolean hasUserVoted(long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasUserVoted(contestPhaseId, userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

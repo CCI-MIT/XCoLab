@@ -10,22 +10,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.mail.internet.AddressException;
 
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
+import com.liferay.util.mail.MailEngineException;
 import org.xcolab.portlets.plansadmin.Helper;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.counter.service.persistence.CounterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -277,5 +270,9 @@ public class ContestWrapper {
         }
         phases.add(new ContestPhaseWrapper(null, this));
         
+    }
+
+    public void transferSupports() throws SystemException, AddressException, MailEngineException, PortalException {
+        ContestLocalServiceUtil.transferSupportToVotes(contest);
     }
 }

@@ -127,6 +127,10 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes531;
     private String _methodName532;
     private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -386,6 +390,14 @@ public class ContestLocalServiceClpInvoker {
         _methodName532 = "getContestsMatchingOntologyTerms";
 
         _methodParameterTypes532 = new String[] { "java.util.List" };
+
+        _methodName533 = "getContestSupportingUser";
+
+        _methodParameterTypes533 = new String[] { "com.ext.portlet.model.Contest" };
+
+        _methodName534 = "transferSupportToVotes";
+
+        _methodParameterTypes534 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -718,6 +730,18 @@ public class ContestLocalServiceClpInvoker {
         if (_methodName532.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingOntologyTerms((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0]);
+        }
+
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestSupportingUser((com.ext.portlet.model.Contest) arguments[0]);
+        }
+
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+            ContestLocalServiceUtil.transferSupportToVotes((com.ext.portlet.model.Contest) arguments[0]);
+
+            return null;
         }
 
         throw new UnsupportedOperationException();

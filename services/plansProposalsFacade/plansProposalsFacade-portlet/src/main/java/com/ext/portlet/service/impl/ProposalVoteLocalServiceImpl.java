@@ -1,8 +1,10 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.base.ProposalVoteLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalVotePK;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the proposal vote local service.
@@ -33,6 +35,23 @@ public class ProposalVoteLocalServiceImpl
     public ProposalVote findByProposalIdContestPhaseIdUserId(long contestPhaseId, long userId) throws com.ext.portlet.NoSuchProposalVoteException,
     com.liferay.portal.kernel.exception.SystemException {
         return proposalVotePersistence.findByContestPhaseIdUserId(contestPhaseId, userId);
+    }
+
+    /**
+     * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
+     *
+     * @param contestPhaseId contest phase id
+     * @param userId         user id
+     * @return true if user has voted for proposal in context of a contest phase
+     * @throws SystemException
+     */
+    public boolean hasUserVoted(long contestPhaseId, long userId) throws SystemException {
+        try {
+            ProposalVote proposalVote = proposalVotePersistence.findByPrimaryKey(new ProposalVotePK(contestPhaseId, userId));
+            return proposalVote != null;
+        } catch (NoSuchProposalVoteException e) {
+            return false;
+        }
     }
 
 }

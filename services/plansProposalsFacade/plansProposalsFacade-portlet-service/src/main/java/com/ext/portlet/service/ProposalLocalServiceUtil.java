@@ -1169,6 +1169,19 @@ public class ProposalLocalServiceUtil {
         return getService().getModifiedAfter(date);
     }
 
+    /**
+    * Returns the URL link address for the passed proposal and contest
+    *
+    * @param contest   The contest object in which the proposal was written
+    * @param proposal  The proposal object (must not be null)
+    * @return Proposal URL as String
+    */
+    public static java.lang.String getProposalLink(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal) {
+        return getService().getProposalLink(contest, proposal);
+    }
+
     public static void clearService() {
         _service = null;
     }

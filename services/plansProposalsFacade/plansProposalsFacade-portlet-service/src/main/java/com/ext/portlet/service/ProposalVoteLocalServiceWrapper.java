@@ -291,6 +291,20 @@ public class ProposalVoteLocalServiceWrapper implements ProposalVoteLocalService
     }
 
     /**
+    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
+    *
+    * @param contestPhaseId contest phase id
+    * @param userId         user id
+    * @return true if user has voted for proposal in context of a contest phase
+    * @throws SystemException
+    */
+    @Override
+    public boolean hasUserVoted(long contestPhaseId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalVoteLocalService.hasUserVoted(contestPhaseId, userId);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalVoteLocalService getWrappedProposalVoteLocalService() {
