@@ -13,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
+import com.ext.portlet.NoSuchBalloonUserTrackingException;
+import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
+import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
@@ -24,11 +27,12 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
@@ -135,7 +139,25 @@ public class LoginController {
         SessionErrors.clear(request);
         SessionMessages.clear(request);
 
-
+        BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
+        if (StringUtils.isNotBlank(bc.getUuid())) {
+        	// cookie is present, get BalloonUserTracking if it exists and update association to the current user
+        	try {
+        		BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
+        		if (but.getUserId() != user.getUserId()) {
+        			but.setUserId(user.getUserId());
+        			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+        		}
+        	}
+        	catch (NoSuchBalloonUserTrackingException e) {
+        		// ignore
+        	} catch (SystemException e) {
+        		// ignore
+			} catch (PortalException e) {
+        		// ignore
+			}
+        }
+        
         response.sendRedirect(redirect);
     }
     
