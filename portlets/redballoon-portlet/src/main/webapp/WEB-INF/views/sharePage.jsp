@@ -11,6 +11,12 @@
 	<portlet:defineObjects/>
 ${balloonText.textBeforeShareButtons }
 
+<script>
+	if (window.location.toString() != '${shareLink}') {
+		window.location = '${shareLink}';
+	}
+</script>
+
 <div class="balloonContainer">
 			<input type="text" value="${shareLink}" class="linkContainer" />
 			<div class="blue-button">
