@@ -1,0 +1,110 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <div class="overlay-bg">
+        <div class="overlay-content">
+            <div id="composer-container">
+                <form class="compose-message-form">
+                    <div class="errors-container">
+
+                    </div>
+                    <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                        <tr>
+                            <td class="b" width="60px">To:</td>
+                            <td>
+                                <input id="recipient-input" type="text" class="profile_input messageReceipients"/>
+                                
+                                <!-- <input type="hidden" class="required profile_input"  />-->
+                                <div id="please_choose_from_list"
+                                     style="display: none; color: red; ">Please choose value from list
+                                </div>
+                                <div id="unknownUsersContainer" style="display: none; color: red; ">Unknown users:
+                                    <ul></ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="b">Subject:</td>
+                            <td>
+                                <input class="required profile_input subject" value="#{sendMessageBean.subject}"/>
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="b">BODY:</td>
+                            <td>
+                                <div id="composemessage">
+                                    <textarea rows="6" cols="30" class="profile_about required"
+                                              value="#{sendMessageBean.content}"/><br/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <div class="blue-button">
+                            <a href="javascript:;" onclick='sendMessage()'>Send</a>
+                        </div>
+                        <button value="SEND" onclick="send()" styleClass="sendMessageLink hidden"/>
+
+                        <div class="blue-button">
+                            <button value="Cancel" onclick="cancel()"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var users = [];
+        var usersMap = {};
+        var userNames = [];
+        var preFill = null;
+
+        $.(function() {
+            $('.messaging-overlay').hide();
+            $('.message-share-button').click(showOverlay);
+        })
+/*
+        <
+        f:subview
+        rendered = "#{sendMessageBean.replyMessage != null and sendMessageBean.replyMessage.from.userId != null}" >
+            //preFill = [{username: '#{sendMessageBean.replyMessage.from.screenName}', value: #{sendMessageBean.replyMessage.from.userId}}];
+                preFill = ['#{sendMessageBean.replyMessage.from.screenName}'];
+        </
+        f:subview >
+
+        < ui
+        :
+        repeat
+        var =
+        "user"
+        value = "#{sendMessageBean.usersList}" >
+                users.push({username: '#{user.screenName}', value: '#{user.userId}'});
+        usersMap['#{user.screenName}'] = #{user.userId};
+        userNames.push('#{user.screenName}');
+        </
+        ui:repeat >
+        jQuery(document).ready(function () {
+            initSendMessageForm(users, usersMap, preFill);
+        });
+*/
+        function showOverlay() {
+            $('.messaging-overlay').show();
+        }
+
+        function send() {
+
+        }
+
+        function cancel() {
+            $('.messaging-overlay').hide();
+        }
+    </script>
+</jsp:root>

@@ -81,7 +81,9 @@
 					</a>
 				</div>
 			</c:if>
-            
+            <div class="message-share-button">
+                <a href="javascript;"><img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
+            </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {
                     addthis.toolbox("#shareProposalToolbox");
@@ -204,5 +206,8 @@
     </c:if>
                 
     </div>
+    <div class="messaging-overlay">
+        <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
+    </div>^
 
 </jsp:root>
