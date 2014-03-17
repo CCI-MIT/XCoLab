@@ -29,9 +29,16 @@ public class ContestsBean implements Serializable {
         Collections.shuffle(contests);
 
         for (Contest contest: contests) {
-            if(ret.size() < NUM_CONTESTS)
+            if(ret.size() < NUM_CONTESTS) {
+                // Don't show private contests
+                if (contest.getContestPrivate()) {
+                    continue;
+                }
                 ret.add(new ContestWrapper(contest));
-            else break;
+            }
+            else {
+                break;
+            }
         }
         return ret;
     }
