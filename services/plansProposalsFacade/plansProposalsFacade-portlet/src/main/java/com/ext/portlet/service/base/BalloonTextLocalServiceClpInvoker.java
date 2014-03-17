@@ -45,6 +45,8 @@ public class BalloonTextLocalServiceClpInvoker {
     private String[] _methodParameterTypes502;
     private String _methodName503;
     private String[] _methodParameterTypes503;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
 
     public BalloonTextLocalServiceClpInvoker() {
         _methodName0 = "addBalloonText";
@@ -136,6 +138,10 @@ public class BalloonTextLocalServiceClpInvoker {
         _methodName503 = "setBeanIdentifier";
 
         _methodParameterTypes503 = new String[] { "java.lang.String" };
+
+        _methodName508 = "getBalloonTextsEnabled";
+
+        _methodParameterTypes508 = new String[] { "boolean" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +243,11 @@ public class BalloonTextLocalServiceClpInvoker {
             BalloonTextLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
+            return BalloonTextLocalServiceUtil.getBalloonTextsEnabled(((Boolean) arguments[0]).booleanValue());
         }
 
         throw new UnsupportedOperationException();

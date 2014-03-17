@@ -26,10 +26,11 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
     public String textAfterForm;
     public String textBeforeShareButtons;
     public String textAfterShareButtons;
+    public boolean enabled;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(id);
@@ -43,6 +44,8 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         sb.append(textBeforeShareButtons);
         sb.append(", textAfterShareButtons=");
         sb.append(textAfterShareButtons);
+        sb.append(", enabled=");
+        sb.append(enabled);
         sb.append("}");
 
         return sb.toString();
@@ -84,6 +87,8 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             balloonTextImpl.setTextAfterShareButtons(textAfterShareButtons);
         }
 
+        balloonTextImpl.setEnabled(enabled);
+
         balloonTextImpl.resetOriginalValues();
 
         return balloonTextImpl;
@@ -97,6 +102,7 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         textAfterForm = objectInput.readUTF();
         textBeforeShareButtons = objectInput.readUTF();
         textAfterShareButtons = objectInput.readUTF();
+        enabled = objectInput.readBoolean();
     }
 
     @Override
@@ -133,5 +139,7 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         } else {
             objectOutput.writeUTF(textAfterShareButtons);
         }
+
+        objectOutput.writeBoolean(enabled);
     }
 }

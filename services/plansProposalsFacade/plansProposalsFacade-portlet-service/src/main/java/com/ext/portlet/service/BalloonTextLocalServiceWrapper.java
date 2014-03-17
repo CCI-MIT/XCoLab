@@ -271,6 +271,13 @@ public class BalloonTextLocalServiceWrapper implements BalloonTextLocalService,
             arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.BalloonText> getBalloonTextsEnabled(
+        boolean enabled)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _balloonTextLocalService.getBalloonTextsEnabled(enabled);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

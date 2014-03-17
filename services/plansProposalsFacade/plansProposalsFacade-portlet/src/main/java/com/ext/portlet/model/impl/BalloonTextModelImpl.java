@@ -54,9 +54,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             { "textBeforeForm", Types.CLOB },
             { "textAfterForm", Types.CLOB },
             { "textBeforeShareButtons", Types.CLOB },
-            { "textAfterShareButtons", Types.CLOB }
+            { "textAfterShareButtons", Types.CLOB },
+            { "enabled", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,enabled BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonText";
     public static final String ORDER_BY_JPQL = " ORDER BY balloonText.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonText.id_ ASC";
@@ -69,7 +70,11 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.BalloonText"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.BalloonText"),
+            true);
+    public static long ENABLED_COLUMN_BITMASK = 1L;
+    public static long ID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.BalloonText"));
     private static ClassLoader _classLoader = BalloonText.class.getClassLoader();
@@ -82,6 +87,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
     private String _textAfterForm;
     private String _textBeforeShareButtons;
     private String _textAfterShareButtons;
+    private boolean _enabled;
+    private boolean _originalEnabled;
+    private boolean _setOriginalEnabled;
+    private long _columnBitmask;
     private BalloonText _escapedModel;
 
     public BalloonTextModelImpl() {
@@ -106,6 +115,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         model.setTextAfterForm(soapModel.getTextAfterForm());
         model.setTextBeforeShareButtons(soapModel.getTextBeforeShareButtons());
         model.setTextAfterShareButtons(soapModel.getTextAfterShareButtons());
+        model.setEnabled(soapModel.getEnabled());
 
         return model;
     }
@@ -170,6 +180,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         attributes.put("textAfterForm", getTextAfterForm());
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
+        attributes.put("enabled", getEnabled());
 
         return attributes;
     }
@@ -212,6 +223,12 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
         if (textAfterShareButtons != null) {
             setTextAfterShareButtons(textAfterShareButtons);
+        }
+
+        Boolean enabled = (Boolean) attributes.get("enabled");
+
+        if (enabled != null) {
+            setEnabled(enabled);
         }
     }
 
@@ -301,6 +318,38 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         _textAfterShareButtons = textAfterShareButtons;
     }
 
+    @JSON
+    @Override
+    public boolean getEnabled() {
+        return _enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return _enabled;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        _columnBitmask |= ENABLED_COLUMN_BITMASK;
+
+        if (!_setOriginalEnabled) {
+            _setOriginalEnabled = true;
+
+            _originalEnabled = _enabled;
+        }
+
+        _enabled = enabled;
+    }
+
+    public boolean getOriginalEnabled() {
+        return _originalEnabled;
+    }
+
+    public long getColumnBitmask() {
+        return _columnBitmask;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -334,6 +383,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         balloonTextImpl.setTextAfterForm(getTextAfterForm());
         balloonTextImpl.setTextBeforeShareButtons(getTextBeforeShareButtons());
         balloonTextImpl.setTextAfterShareButtons(getTextAfterShareButtons());
+        balloonTextImpl.setEnabled(getEnabled());
 
         balloonTextImpl.resetOriginalValues();
 
@@ -381,6 +431,13 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public void resetOriginalValues() {
+        BalloonTextModelImpl balloonTextModelImpl = this;
+
+        balloonTextModelImpl._originalEnabled = balloonTextModelImpl._enabled;
+
+        balloonTextModelImpl._setOriginalEnabled = false;
+
+        balloonTextModelImpl._columnBitmask = 0;
     }
 
     @Override
@@ -431,12 +488,14 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             balloonTextCacheModel.textAfterShareButtons = null;
         }
 
+        balloonTextCacheModel.enabled = getEnabled();
+
         return balloonTextCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(getId());
@@ -450,6 +509,8 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(getTextBeforeShareButtons());
         sb.append(", textAfterShareButtons=");
         sb.append(getTextAfterShareButtons());
+        sb.append(", enabled=");
+        sb.append(getEnabled());
         sb.append("}");
 
         return sb.toString();
@@ -457,7 +518,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.BalloonText");
@@ -486,6 +547,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(
             "<column><column-name>textAfterShareButtons</column-name><column-value><![CDATA[");
         sb.append(getTextAfterShareButtons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>enabled</column-name><column-value><![CDATA[");
+        sb.append(getEnabled());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

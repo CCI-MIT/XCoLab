@@ -43,6 +43,7 @@ public class BalloonTextWrapper implements BalloonText,
         attributes.put("textAfterForm", getTextAfterForm());
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
+        attributes.put("enabled", getEnabled());
 
         return attributes;
     }
@@ -85,6 +86,12 @@ public class BalloonTextWrapper implements BalloonText,
 
         if (textAfterShareButtons != null) {
             setTextAfterShareButtons(textAfterShareButtons);
+        }
+
+        Boolean enabled = (Boolean) attributes.get("enabled");
+
+        if (enabled != null) {
+            setEnabled(enabled);
         }
     }
 
@@ -227,6 +234,36 @@ public class BalloonTextWrapper implements BalloonText,
     @Override
     public void setTextAfterShareButtons(java.lang.String textAfterShareButtons) {
         _balloonText.setTextAfterShareButtons(textAfterShareButtons);
+    }
+
+    /**
+    * Returns the enabled of this balloon text.
+    *
+    * @return the enabled of this balloon text
+    */
+    @Override
+    public boolean getEnabled() {
+        return _balloonText.getEnabled();
+    }
+
+    /**
+    * Returns <code>true</code> if this balloon text is enabled.
+    *
+    * @return <code>true</code> if this balloon text is enabled; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isEnabled() {
+        return _balloonText.isEnabled();
+    }
+
+    /**
+    * Sets whether this balloon text is enabled.
+    *
+    * @param enabled the enabled of this balloon text
+    */
+    @Override
+    public void setEnabled(boolean enabled) {
+        _balloonText.setEnabled(enabled);
     }
 
     @Override

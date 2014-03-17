@@ -1,6 +1,10 @@
 package com.ext.portlet.service.impl;
 
+import java.util.List;
+
+import com.ext.portlet.model.BalloonText;
 import com.ext.portlet.service.base.BalloonTextLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the balloon text local service.
@@ -22,4 +26,8 @@ public class BalloonTextLocalServiceImpl extends BalloonTextLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonTextLocalServiceUtil} to access the balloon text local service.
      */
+	
+	public List<BalloonText> getBalloonTextsEnabled(boolean enabled) throws SystemException {
+		return balloonTextPersistence.findByEnabled(enabled);
+	}
 }

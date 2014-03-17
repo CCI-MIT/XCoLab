@@ -31,6 +31,7 @@ public class AddEditBalloonTextAction {
 		balloonText.setTextBeforeForm(addEditBalloonTextBean.getTextBeforeForm());
 		balloonText.setTextAfterShareButtons(addEditBalloonTextBean.getTextAfterShareButtons());
 		balloonText.setTextBeforeShareButtons(addEditBalloonTextBean.getTextBeforeShareButtons());
+		balloonText.setEnabled(addEditBalloonTextBean.isEnabled());
 		
 		if (addEditBalloonTextBean.getBalloonTextId() > 0) 
 			BalloonTextLocalServiceUtil.updateBalloonText(balloonText);

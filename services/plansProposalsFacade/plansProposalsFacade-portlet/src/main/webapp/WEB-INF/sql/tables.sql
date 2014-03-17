@@ -45,7 +45,8 @@ create table xcolab_BalloonText (
 	textBeforeForm TEXT null,
 	textAfterForm TEXT null,
 	textBeforeShareButtons TEXT null,
-	textAfterShareButtons TEXT null
+	textAfterShareButtons TEXT null,
+	enabled BOOLEAN
 );
 
 create table xcolab_BalloonUserTracking (

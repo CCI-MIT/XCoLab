@@ -19,6 +19,7 @@ public class BalloonTextSoap implements Serializable {
     private String _textAfterForm;
     private String _textBeforeShareButtons;
     private String _textAfterShareButtons;
+    private boolean _enabled;
 
     public BalloonTextSoap() {
     }
@@ -32,6 +33,7 @@ public class BalloonTextSoap implements Serializable {
         soapModel.setTextAfterForm(model.getTextAfterForm());
         soapModel.setTextBeforeShareButtons(model.getTextBeforeShareButtons());
         soapModel.setTextAfterShareButtons(model.getTextAfterShareButtons());
+        soapModel.setEnabled(model.getEnabled());
 
         return soapModel;
     }
@@ -126,5 +128,17 @@ public class BalloonTextSoap implements Serializable {
 
     public void setTextAfterShareButtons(String textAfterShareButtons) {
         _textAfterShareButtons = textAfterShareButtons;
+    }
+
+    public boolean getEnabled() {
+        return _enabled;
+    }
+
+    public boolean isEnabled() {
+        return _enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        _enabled = enabled;
     }
 }

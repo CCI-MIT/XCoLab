@@ -132,6 +132,27 @@ public interface BalloonTextModel extends BaseModel<BalloonText> {
      */
     public void setTextAfterShareButtons(String textAfterShareButtons);
 
+    /**
+     * Returns the enabled of this balloon text.
+     *
+     * @return the enabled of this balloon text
+     */
+    public boolean getEnabled();
+
+    /**
+     * Returns <code>true</code> if this balloon text is enabled.
+     *
+     * @return <code>true</code> if this balloon text is enabled; <code>false</code> otherwise
+     */
+    public boolean isEnabled();
+
+    /**
+     * Sets whether this balloon text is enabled.
+     *
+     * @param enabled the enabled of this balloon text
+     */
+    public void setEnabled(boolean enabled);
+
     @Override
     public boolean isNew();
 

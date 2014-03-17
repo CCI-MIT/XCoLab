@@ -90,6 +90,7 @@
 			<basic name="textAfterForm" />
 			<basic name="textBeforeShareButtons" />
 			<basic name="textAfterShareButtons" />
+			<basic name="enabled" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

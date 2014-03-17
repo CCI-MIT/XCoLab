@@ -259,6 +259,12 @@ public class BalloonTextLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.BalloonText> getBalloonTextsEnabled(
+        boolean enabled)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getBalloonTextsEnabled(enabled);
+    }
+
     public static void clearService() {
         _service = null;
     }

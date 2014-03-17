@@ -65,7 +65,7 @@ public class BalloonUtils {
 			}
 			
 			// pick randomly balloon text to be displayed
-			List<BalloonText> texts = BalloonTextLocalServiceUtil.getBalloonTexts(0, Integer.MAX_VALUE);
+			List<BalloonText> texts = BalloonTextLocalServiceUtil.getBalloonTextsEnabled(true);
 			if (! texts.isEmpty()) {
 				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId());
 			}

@@ -17,6 +17,7 @@
 		<tr>
 			<th>Id</th>
 			<th>Name</th>
+			<th>Enabled</th>
 			<th>Actions</th>
 		</tr>
 		<c:if test="${empty balloonTexts }">
@@ -28,17 +29,19 @@
 			<tr>
 				<td>${balloonText.id }</td>
 				<td>${balloonText.name }</td>
+				<td>${balloonText.enabled }</td>
 				<td>
+					
 					<portlet:renderURL var="editBalloonTextUrl">
 						<portlet:param name="balloonTextId" value="${balloonText.id }"/>
 					</portlet:renderURL>
-					<a href="${editBalloonTextUrl }" class="btn btn-info">Edit</a>
+					<a href="${editBalloonTextUrl }" class="btn btn-info pull-right">Edit</a>
 					
 					<portlet:actionURL var="deleteBalloonTextUrl">
 						<portlet:param name="balloonTextId" value="${balloonText.id }"/>
 						<portlet:param name="action" value="deleteBalloonText"/>
 					</portlet:actionURL>
-					<a href="${deleteBalloonTextUrl }" class="btn btn-warning" onclick="return confirm('Do you want to remove this text?')">Delete</a>
+					<a href="${deleteBalloonTextUrl }" class="btn btn-warning  pull-right" onclick="return confirm('Do you want to remove this text?')">Delete</a>
 				</td>
 			</tr>
 		</c:forEach>

@@ -30,6 +30,13 @@
 	<form:form action="${addEditBalloonTextUrl }" modelAttribute="addEditBalloonText">
 		<input type="hidden" name="action" value="addEditBalloonText" />
 		<input type="hidden" name="balloonTextId" value="${addEditBalloonText.balloonTextId }" />
+		<div class="control-group">
+    		<div class="controls">
+      			<label class="checkbox">
+        			<form:checkbox path="enabled" /> Enabled
+				</label>
+    		</div>
+		</div>
 	  <div class="form-group">
     	<label for="balloonTextName">Name</label>
     	<form:input class="form-control" id="balloonTextName" placeholder="Enter name" path="name" />
