@@ -18,7 +18,7 @@ ${balloonText.textBeforeShareButtons }
 </script>
 
 <div class="balloonContainer">
-			<input type="text" value="${shareLink}" class="linkContainer" />
+			<input type="text" value="${shareLink}" class="linkContainer balloonInput" />
 			<div class="blue-button">
 				<a href="javascript:;" id="copyButton"
 					data-clipboard-text="${shareLink}">Copy to clipboard</a>

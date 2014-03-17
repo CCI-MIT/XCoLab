@@ -118,7 +118,7 @@ div.share .addthis_toolbox {
 	width: 100%;
 }
 
-.balloonContainer input {
+.balloonContainer .balloonInput {
 	height: 42px;
 	width: 445px;
 	padding: 0 5px;
