@@ -43,6 +43,7 @@ public class BalloonTextWrapper implements BalloonText,
         attributes.put("textAfterForm", getTextAfterForm());
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
+        attributes.put("acceptTosText", getAcceptTosText());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -86,6 +87,12 @@ public class BalloonTextWrapper implements BalloonText,
 
         if (textAfterShareButtons != null) {
             setTextAfterShareButtons(textAfterShareButtons);
+        }
+
+        String acceptTosText = (String) attributes.get("acceptTosText");
+
+        if (acceptTosText != null) {
+            setAcceptTosText(acceptTosText);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -234,6 +241,26 @@ public class BalloonTextWrapper implements BalloonText,
     @Override
     public void setTextAfterShareButtons(java.lang.String textAfterShareButtons) {
         _balloonText.setTextAfterShareButtons(textAfterShareButtons);
+    }
+
+    /**
+    * Returns the accept tos text of this balloon text.
+    *
+    * @return the accept tos text of this balloon text
+    */
+    @Override
+    public java.lang.String getAcceptTosText() {
+        return _balloonText.getAcceptTosText();
+    }
+
+    /**
+    * Sets the accept tos text of this balloon text.
+    *
+    * @param acceptTosText the accept tos text of this balloon text
+    */
+    @Override
+    public void setAcceptTosText(java.lang.String acceptTosText) {
+        _balloonText.setAcceptTosText(acceptTosText);
     }
 
     /**

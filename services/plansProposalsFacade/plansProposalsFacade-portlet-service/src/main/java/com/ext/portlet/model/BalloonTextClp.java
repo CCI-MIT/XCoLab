@@ -26,6 +26,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
     private String _textAfterForm;
     private String _textBeforeShareButtons;
     private String _textAfterShareButtons;
+    private String _acceptTosText;
     private boolean _enabled;
     private BaseModel<?> _balloonTextRemoteModel;
 
@@ -72,6 +73,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         attributes.put("textAfterForm", getTextAfterForm());
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
+        attributes.put("acceptTosText", getAcceptTosText());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -115,6 +117,12 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
         if (textAfterShareButtons != null) {
             setTextAfterShareButtons(textAfterShareButtons);
+        }
+
+        String acceptTosText = (String) attributes.get("acceptTosText");
+
+        if (acceptTosText != null) {
+            setAcceptTosText(acceptTosText);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -260,6 +268,28 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
     }
 
     @Override
+    public String getAcceptTosText() {
+        return _acceptTosText;
+    }
+
+    @Override
+    public void setAcceptTosText(String acceptTosText) {
+        _acceptTosText = acceptTosText;
+
+        if (_balloonTextRemoteModel != null) {
+            try {
+                Class<?> clazz = _balloonTextRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setAcceptTosText", String.class);
+
+                method.invoke(_balloonTextRemoteModel, acceptTosText);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean getEnabled() {
         return _enabled;
     }
@@ -359,6 +389,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         clone.setTextAfterForm(getTextAfterForm());
         clone.setTextBeforeShareButtons(getTextBeforeShareButtons());
         clone.setTextAfterShareButtons(getTextAfterShareButtons());
+        clone.setAcceptTosText(getAcceptTosText());
         clone.setEnabled(getEnabled());
 
         return clone;
@@ -405,7 +436,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(getId());
@@ -419,6 +450,8 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         sb.append(getTextBeforeShareButtons());
         sb.append(", textAfterShareButtons=");
         sb.append(getTextAfterShareButtons());
+        sb.append(", acceptTosText=");
+        sb.append(getAcceptTosText());
         sb.append(", enabled=");
         sb.append(getEnabled());
         sb.append("}");
@@ -428,7 +461,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.BalloonText");
@@ -457,6 +490,10 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         sb.append(
             "<column><column-name>textAfterShareButtons</column-name><column-value><![CDATA[");
         sb.append(getTextAfterShareButtons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>acceptTosText</column-name><column-value><![CDATA[");
+        sb.append(getAcceptTosText());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>enabled</column-name><column-value><![CDATA[");

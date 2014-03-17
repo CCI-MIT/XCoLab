@@ -25,6 +25,7 @@
 		<column name="textAfterForm" type="String" />
 		<column name="textBeforeShareButtons" type="String" />
 		<column name="textAfterShareButtons" type="String" />
+		<column name="acceptTosText" type="String" />
 		<column name="enabled" type="boolean" />
 		
     	<finder return-type="Collection" name="Enabled">

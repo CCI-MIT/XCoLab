@@ -133,6 +133,21 @@ public interface BalloonTextModel extends BaseModel<BalloonText> {
     public void setTextAfterShareButtons(String textAfterShareButtons);
 
     /**
+     * Returns the accept tos text of this balloon text.
+     *
+     * @return the accept tos text of this balloon text
+     */
+    @AutoEscape
+    public String getAcceptTosText();
+
+    /**
+     * Sets the accept tos text of this balloon text.
+     *
+     * @param acceptTosText the accept tos text of this balloon text
+     */
+    public void setAcceptTosText(String acceptTosText);
+
+    /**
      * Returns the enabled of this balloon text.
      *
      * @return the enabled of this balloon text

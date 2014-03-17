@@ -26,11 +26,12 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
     public String textAfterForm;
     public String textBeforeShareButtons;
     public String textAfterShareButtons;
+    public String acceptTosText;
     public boolean enabled;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(id);
@@ -44,6 +45,8 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         sb.append(textBeforeShareButtons);
         sb.append(", textAfterShareButtons=");
         sb.append(textAfterShareButtons);
+        sb.append(", acceptTosText=");
+        sb.append(acceptTosText);
         sb.append(", enabled=");
         sb.append(enabled);
         sb.append("}");
@@ -87,6 +90,12 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             balloonTextImpl.setTextAfterShareButtons(textAfterShareButtons);
         }
 
+        if (acceptTosText == null) {
+            balloonTextImpl.setAcceptTosText(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setAcceptTosText(acceptTosText);
+        }
+
         balloonTextImpl.setEnabled(enabled);
 
         balloonTextImpl.resetOriginalValues();
@@ -102,6 +111,7 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         textAfterForm = objectInput.readUTF();
         textBeforeShareButtons = objectInput.readUTF();
         textAfterShareButtons = objectInput.readUTF();
+        acceptTosText = objectInput.readUTF();
         enabled = objectInput.readBoolean();
     }
 
@@ -138,6 +148,12 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(textAfterShareButtons);
+        }
+
+        if (acceptTosText == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(acceptTosText);
         }
 
         objectOutput.writeBoolean(enabled);

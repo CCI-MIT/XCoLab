@@ -22,6 +22,9 @@ import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
 import com.ext.portlet.service.BalloonTextLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
 @RequestMapping("view")
@@ -82,7 +85,14 @@ public class BalloonController {
 				model.addAttribute("userEmailBean", userEmailBean);
 			}
 			else {
-				model.addAttribute("userEmailBean", new UserEmailBean());
+				ThemeDisplay td = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+				User user = td.getUser();
+				UserEmailBean ueb = new UserEmailBean();
+				
+				if (!user.getDefaultUser()) {
+					ueb.setEmail(user.getEmailAddress());
+				}
+				model.addAttribute("userEmailBean", ueb);
 			}
 			return "view";
 		}

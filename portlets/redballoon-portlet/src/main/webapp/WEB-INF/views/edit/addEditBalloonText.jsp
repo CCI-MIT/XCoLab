@@ -41,6 +41,11 @@
     	<label for="balloonTextName">Name</label>
     	<form:input class="form-control" id="balloonTextName" placeholder="Enter name" path="name" />
   	  </div>
+  	  
+  	<div class="form-group">
+    	<label for="balloonAcceptTosText">Terms of service text</label>
+    	<form:textarea class="form-control" id="balloonAcceptTosText" path="acceptTosText" />
+  	</div>
   	<div class="form-group ckeditorContainer">
     	<label for="balloonTextTextBeforeForm">Text before form requesting email address</label>
     	<liferay-ui:input-editor editorImpl="editor.wysiwyg.portal-web.docroot.html.portlet.blogs.edit_entry.jsp" name="textBeforeForm" initMethod="initEditorBefore"/>

@@ -9,6 +9,7 @@ public class AddEditBalloonTextBean {
 	private String textAfterForm;
 	private String textBeforeShareButtons;
 	private String textAfterShareButtons;
+	private String acceptTosText;
 	private boolean enabled;
 	
 	public AddEditBalloonTextBean() {
@@ -22,6 +23,7 @@ public class AddEditBalloonTextBean {
 		textAfterForm = text.getTextAfterForm();
 		textBeforeShareButtons = text.getTextBeforeShareButtons();
 		textAfterShareButtons = text.getTextAfterShareButtons();
+		acceptTosText = text.getAcceptTosText();
 		enabled = text.getEnabled();
 	}
 	public String getName() {
@@ -78,6 +80,14 @@ public class AddEditBalloonTextBean {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getAcceptTosText() {
+		return acceptTosText;
+	}
+
+	public void setAcceptTosText(String acceptTosText) {
+		this.acceptTosText = acceptTosText;
 	}
 	
 	

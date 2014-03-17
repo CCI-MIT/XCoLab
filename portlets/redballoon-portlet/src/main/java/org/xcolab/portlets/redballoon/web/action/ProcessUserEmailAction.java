@@ -17,6 +17,7 @@ import org.xcolab.portlets.redballoon.BalloonCookie;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
 import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
 
+import com.ext.portlet.NoSuchBalloonLinkException;
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonUserTracking;
@@ -38,61 +39,42 @@ public class ProcessUserEmailAction {
 	public void processUserEmail(ActionRequest request, ActionResponse response, Model model,
 			@Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws PortalException, SystemException, IOException {
 		
-		if (userEmailBean != null) {
+		if (userEmailBean != null && !bindingResult.hasErrors()) {
 			BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
 			if (StringUtils.isNotBlank(but.getEmail())) {
 				// don't change the email address, just ignore the request
 			}
-			else {
-				// check if there is a user present with provided email address
-				User user = null;
-				try {
-					user = UserLocalServiceUtil.getUserByEmailAddress(10112l, userEmailBean.getEmail());
-					if (user.getUuid().equals(but.getUserId())) return;
-					
-					// check if there is already BalloonUserTracking for this user
-					try {
-						
-						BalloonUserTracking nbut = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(user.getUuid());
-						BalloonLink link = BalloonLinkLocalServiceUtil.getBalloonLinkForUser(nbut.getUuid());
-						
-						// update the cookie to reflect existing balloonusertracking
-						BalloonCookie cookie = BalloonCookie.fromCookieArray(request.getCookies());
-						cookie.setUuid(user.getUuid());
-						
-						response.addProperty(cookie.getHttpCookie());
-						BalloonUserTrackingLocalServiceUtil.deleteBalloonUserTracking(but);
-						
-						response.sendRedirect("/balloon/-/balloon/" + link.getUuid());
-						return;
-						
-					}
-					catch (NoSuchBalloonUserTrackingException e) {
-						// ignore
-					}
-					// there is no balloonusertracking for given user, update existing one with user uuid
-					but.setUuid(user.getUuid());
-					but.setUserId(user.getUserId());
-				}
-				catch (NoSuchUserException e) {
-					// ignore
-				}
-				but.setEmail(userEmailBean.getEmail());
-				but.setFormFiledDate(new Date());
+			
+			but.setEmail(userEmailBean.getEmail());
+			but.setFormFiledDate(new Date());
 				
-				BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
 				
-				// create link to be used by user
-				BalloonLink link = BalloonLinkLocalServiceUtil.createBalloonLink(UUID.randomUUID().toString());
-				link.setBalloonUserUuid(but.getUuid());
-				link.setCreateDate(new Date());
-				link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
+			// create link to be used by user
+			BalloonLink link = BalloonLinkLocalServiceUtil.createBalloonLink(UUID.randomUUID().toString());
+			link.setBalloonUserUuid(but.getUuid());
+			link.setCreateDate(new Date());
+			link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
 				
-				BalloonLinkLocalServiceUtil.addBalloonLink(link);
-				response.sendRedirect("/balloon/-/balloon/" + link.getUuid());
-			}
+			BalloonLinkLocalServiceUtil.addBalloonLink(link);
+			response.sendRedirect("/balloon/-/balloon/" + link.getUuid());
 			
 		}
+	}
+	
+	private BalloonLink getLinkForBalloonUserTracking(BalloonUserTracking but) throws SystemException {
+		BalloonLink link = BalloonLinkLocalServiceUtil.getBalloonLinkForUser(but.getUuid());
+		
+		if (link == null) {
+			link = BalloonLinkLocalServiceUtil.createBalloonLink(UUID.randomUUID().toString());
+			link.setBalloonUserUuid(but.getUuid());
+			link.setCreateDate(new Date());
+			link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
+			
+			BalloonLinkLocalServiceUtil.addBalloonLink(link);
+		}
+		
+		return link;
 	}
 
 }

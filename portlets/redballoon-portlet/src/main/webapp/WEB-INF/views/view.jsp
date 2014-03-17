@@ -13,6 +13,11 @@ ${balloonText.textBeforeForm }
 	<portlet:param name="action" value="sendEmail" />
 </portlet:actionURL>
 <form:form modelAttribute="userEmailBean" action="${sendEmailURL }" id="sendUserEmailForm">
+
+	<div>
+		<form:checkbox path="acceptTos" />${balloonText.acceptTosText }<br />
+		<form:errors path="acceptTos" class="alert alert-error"/>
+	</div>
 	
 	<form:input path="email" id="email" styleClass="text profileInput" required="true" placeholder="Please enter your e-Mail address" />
 	<div class="blue-button">

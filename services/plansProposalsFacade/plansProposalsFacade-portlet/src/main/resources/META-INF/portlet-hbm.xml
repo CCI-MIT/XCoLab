@@ -139,6 +139,7 @@
 		<property name="textAfterForm" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="textBeforeShareButtons" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="textAfterShareButtons" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="acceptTosText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="enabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.BalloonUserTrackingImpl" table="xcolab_BalloonUserTracking">
