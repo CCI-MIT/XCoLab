@@ -94,11 +94,12 @@ public class ProposalSectionWrapper {
 
         // Scan all <p> tags
         for (Element e : d.select("p")) {
-            String newText = "";
-            _log.debug("Scanning line: " + e.text());
             // Separate the <p> tags by the space character and process potential URLs
             String html = e.html();
-            String[] words = e.text().split(" ");
+
+            // Eliminates wierd &nbsp; ASCII val 160 characters
+            String text = e.text().replaceAll("[\\u00A0]+", " ");
+            String[] words = text.split("\\s+");
             for (int i = 0; i < words.length; i++) {
                 final String word = words[i];
                 final Matcher matcher = pattern.matcher(word);
@@ -118,13 +119,13 @@ public class ProposalSectionWrapper {
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
                         if (!html.contains("<"))
-                            html = StringUtils.replaceOnce(html, word, " <a href=\""+link+"\">"+ elementName +"</a> ");
+                            html = html.replaceFirst(word, " <a href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == 0) {
-                        html = StringUtils.replaceOnce(html, word + " ", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst(word + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == words.length - 1) {
-                        html = StringUtils.replaceOnce(html, " " + word, " <a href=\""+link+"\">"+ elementName +"</a>");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + word, " <a href=\""+link+"\">"+ elementName +"</a>");
                     } else {
-                        html = StringUtils.replaceOnce(html, " " + word + " ", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + word + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
                     }
                 }
             }
