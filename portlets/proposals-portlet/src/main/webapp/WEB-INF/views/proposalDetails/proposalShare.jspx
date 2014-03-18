@@ -9,9 +9,11 @@
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <portlet:resourceURL id="proposalSend-autocomplete" var="autocompleteURL">
+    <portlet:resourceURL id="proposalShare-autocomplete" var="autocompleteURL">
     </portlet:resourceURL>
-    <portlet:resourceURL id="proposalSend-send" var="sendURL">
+    <portlet:resourceURL id="proposalShare-send" var="sendURL">
+    </portlet:resourceURL>
+    <portlet:resourceURL id="proposalShare-validate" var="validateURL">
     </portlet:resourceURL>
 
 
@@ -27,6 +29,9 @@
                             <td class="b" width="60px">To:</td>
                             <td>
                                 <input id="recipient-input" type="text" class="profile_input messageReceipients"/>
+                                <div class="recipient-error">
+
+                                </div>
                                 
                                 <!-- <input type="hidden" class="required profile_input"  />-->
                                 <!--<div id="please_choose_from_list"
@@ -67,6 +72,10 @@
         </div>
     </div>
     <script type="text/javascript">
+        var autocompleteURL = '${autocompleteURL}';
+        var validationURL = '${validationURL}';
+        var sendURL  = '${sendURL}';
+        // Initialization
         $(function() {
             console.log('run');
             //$('.messaging-overlay').hide();
@@ -77,9 +86,7 @@
             });
         });
 
-        var autocompleteURL = '${autocompleteURL}';
-        var sendURL  = '${sendURL}';
-
+        // Public functions
         function showOverlay() {
             $('.overlay-bg').show();
         }
@@ -99,42 +106,79 @@
         function extractLast( term ) {
             return split( term ).pop();
         }
+        function validateRecipients() {
+            var input = $("#recipient-input").val();
+            var list = split(input);
+            $.postJSON(validationURL, list, function(data) {
+                var result = $.parseJSON(data);
+                // Show error text
+                var error = "";
+                if (result.length > 0) {
+                    error += "The following recipients could not be resolved:&lt;ul&gt;";
 
-        $( "#recipient-input" )
+                    $.each(result, function(k, v) {
+                        error += "&lt;li&gt;" + v + "&lt;/li&gt;";
+                    });
+
+                    error += "&lt;ul&gt;";
+                }
+
+                $('.recipient-error').html(error);
+            });
+        }
+
+        // jQuery autocomplete
+        $("#recipient-input")
             // don't navigate away from the field on tab when selecting an item
-                .bind( "keydown", function( event ) {
-                    if ( event.keyCode === $.ui.keyCode.TAB &amp;&amp; $( this ).data( "ui-autocomplete" ).menu.active ) {
+                .bind("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.TAB &amp;&amp; $(this).data("ui-autocomplete").menu.active) {
                         event.preventDefault();
                     }
                 })
                 .autocomplete({
-                    source: function( request, response ) {
+                    source: function (request, response) {
                         $.getJSON(autocompleteURL, {
-                            term: extractLast( request.term )
-                        }, response );
+                            term: extractLast(request.term)
+                        }, response);
                     },
-                    search: function() {
+                    search: function () {
                         // custom minLength
-                        var term = extractLast( this.value );
-                        if ( term.length &lt; 2 ) {
+                        var term = extractLast(this.value);
+                        if (term.length &lt; 2) {
                             return false;
                         }
                     },
-                    focus: function() {
+                    focus: function () {
                         // prevent value inserted on focus
                         return false;
                     },
-                    select: function( event, ui ) {
-                        var terms = split( this.value );
+                    select: function (event, ui) {
+                        var terms = split(this.value);
                         // remove the current input
                         terms.pop();
                         // add the selected item
-                        terms.push( ui.item.value );
+                        terms.push(ui.item.value);
                         // add placeholder to get the comma-and-space at the end
-                        terms.push( "" );
-                        this.value = terms.join( ", " );
+                        terms.push("");
+                        this.value = terms.join(", ");
                         return false;
                     }
                 });
+
+        $("#recipient-input").focusout(function(event) {
+            validateRecipients();
+        });
+
+        // helper
+        $.postJSON = function(url, data, callback) {
+            return jQuery.ajax({
+                'type': 'POST',
+                'url': url,
+                'contentType': 'application/json',
+                'data': $.toJSON(data),
+                'dataType': 'json',
+                'success': callback
+            });
+        };
     </script>
 </jsp:root>
