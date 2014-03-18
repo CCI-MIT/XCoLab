@@ -66,6 +66,16 @@
     	<liferay-ui:input-editor editorImpl="editor.wysiwyg.portal-web.docroot.html.portlet.blogs.edit_entry.jsp" initMethod="initEditorAfterShareButtons" name="textAfterShareButtons" />
     	<form:textarea class="form-control hidden" id="balloonTextTextAfterShareButtons" path="textAfterShareButtons" />
   	</div>
+  	
+  	<div class="form-group">
+    	<label for="balloonTextEmailSubjectTemplate">Subject for email that is sent to the user after registration</label>
+    	<form:textarea class="form-control" id="balloonTextEmailSubjectTemplate" path="emailSubjectTemplate" />
+  	</div>
+  	<div class="form-group ckeditorContainer">
+    	<label for="balloonTextTextBeforeForm">Email that is sent to the user after registration</label>
+    	<liferay-ui:input-editor editorImpl="editor.wysiwyg.portal-web.docroot.html.portlet.blogs.edit_entry.jsp" initMethod="initEditorEmail" name="emailTemplate" />
+    	<form:textarea class="form-control hidden" id="balloonTextEmailTemplate" path="emailTemplate" />
+  	</div>
   <button type="submit" class="btn btn-default">Submit</button>
   
   
@@ -85,6 +95,7 @@
     	function <portlet:namespace />initEditorAfter() { return initEditor("#balloonTextTextAfterForm"); }
     	function <portlet:namespace />initEditorAfterShareButtons() { return initEditor("#balloonTextTextAfterShareButtons"); }
     	function <portlet:namespace />initEditorBeforeShareButtons() { return initEditor("#balloonTextTextBeforeShareButtons"); }
+    	function <portlet:namespace />initEditorEmail() { return initEditor("#balloonTextEmailTemplate"); }
         
         
     </script>

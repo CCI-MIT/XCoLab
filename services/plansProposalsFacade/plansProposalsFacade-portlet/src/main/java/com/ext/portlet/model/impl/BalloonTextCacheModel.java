@@ -27,11 +27,13 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
     public String textBeforeShareButtons;
     public String textAfterShareButtons;
     public String acceptTosText;
+    public String emailTemplate;
+    public String emailSubjectTemplate;
     public boolean enabled;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(id);
@@ -47,6 +49,10 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         sb.append(textAfterShareButtons);
         sb.append(", acceptTosText=");
         sb.append(acceptTosText);
+        sb.append(", emailTemplate=");
+        sb.append(emailTemplate);
+        sb.append(", emailSubjectTemplate=");
+        sb.append(emailSubjectTemplate);
         sb.append(", enabled=");
         sb.append(enabled);
         sb.append("}");
@@ -96,6 +102,18 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             balloonTextImpl.setAcceptTosText(acceptTosText);
         }
 
+        if (emailTemplate == null) {
+            balloonTextImpl.setEmailTemplate(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setEmailTemplate(emailTemplate);
+        }
+
+        if (emailSubjectTemplate == null) {
+            balloonTextImpl.setEmailSubjectTemplate(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setEmailSubjectTemplate(emailSubjectTemplate);
+        }
+
         balloonTextImpl.setEnabled(enabled);
 
         balloonTextImpl.resetOriginalValues();
@@ -112,6 +130,8 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         textBeforeShareButtons = objectInput.readUTF();
         textAfterShareButtons = objectInput.readUTF();
         acceptTosText = objectInput.readUTF();
+        emailTemplate = objectInput.readUTF();
+        emailSubjectTemplate = objectInput.readUTF();
         enabled = objectInput.readBoolean();
     }
 
@@ -154,6 +174,18 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(acceptTosText);
+        }
+
+        if (emailTemplate == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(emailTemplate);
+        }
+
+        if (emailSubjectTemplate == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(emailSubjectTemplate);
         }
 
         objectOutput.writeBoolean(enabled);

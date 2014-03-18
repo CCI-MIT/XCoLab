@@ -26,6 +26,8 @@
 		<column name="textBeforeShareButtons" type="String" />
 		<column name="textAfterShareButtons" type="String" />
 		<column name="acceptTosText" type="String" />
+		<column name="emailTemplate" type="String" />
+		<column name="emailSubjectTemplate" type="String" />
 		<column name="enabled" type="boolean" />
 		
     	<finder return-type="Collection" name="Enabled">

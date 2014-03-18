@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.xcolab.portlets.redballoon.BalloonCookie;
 
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
+import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonText;
 import com.ext.portlet.model.BalloonUserTracking;
+import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
 import com.ext.portlet.service.BalloonTextLocalServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -26,6 +28,7 @@ import com.liferay.portal.util.PortalUtil;
 public class BalloonUtils {
 	
 	private static Random rand = new Random();
+	private final static String SHARE_LINK_PATTERN = "%s/balloon/-/balloon/link/%s";
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 
 			String parent, String linkuuid, String context) throws PortalException, SystemException {
@@ -73,6 +76,16 @@ public class BalloonUtils {
 			BalloonUserTrackingLocalServiceUtil.addBalloonUserTracking(but);
 		}
 		return but;
+	}
+	
+	public static String getBalloonUrlForLink(PortletRequest request, BalloonLink bl) {
+
+		// create URL that should be used when sharing
+		String requestUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
+		// find first occurrence of / to get address and port
+		String protocolHostPort = requestUrl.substring(0, requestUrl.indexOf("/", 10));
+		
+		return String.format(SHARE_LINK_PATTERN, protocolHostPort, bl.getUuid());
 	}
 
 }

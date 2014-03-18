@@ -20,6 +20,8 @@ public class BalloonTextSoap implements Serializable {
     private String _textBeforeShareButtons;
     private String _textAfterShareButtons;
     private String _acceptTosText;
+    private String _emailTemplate;
+    private String _emailSubjectTemplate;
     private boolean _enabled;
 
     public BalloonTextSoap() {
@@ -35,6 +37,8 @@ public class BalloonTextSoap implements Serializable {
         soapModel.setTextBeforeShareButtons(model.getTextBeforeShareButtons());
         soapModel.setTextAfterShareButtons(model.getTextAfterShareButtons());
         soapModel.setAcceptTosText(model.getAcceptTosText());
+        soapModel.setEmailTemplate(model.getEmailTemplate());
+        soapModel.setEmailSubjectTemplate(model.getEmailSubjectTemplate());
         soapModel.setEnabled(model.getEnabled());
 
         return soapModel;
@@ -138,6 +142,22 @@ public class BalloonTextSoap implements Serializable {
 
     public void setAcceptTosText(String acceptTosText) {
         _acceptTosText = acceptTosText;
+    }
+
+    public String getEmailTemplate() {
+        return _emailTemplate;
+    }
+
+    public void setEmailTemplate(String emailTemplate) {
+        _emailTemplate = emailTemplate;
+    }
+
+    public String getEmailSubjectTemplate() {
+        return _emailSubjectTemplate;
+    }
+
+    public void setEmailSubjectTemplate(String emailSubjectTemplate) {
+        _emailSubjectTemplate = emailSubjectTemplate;
     }
 
     public boolean getEnabled() {

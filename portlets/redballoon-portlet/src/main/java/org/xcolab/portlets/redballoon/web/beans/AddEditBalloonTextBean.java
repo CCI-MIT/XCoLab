@@ -10,6 +10,8 @@ public class AddEditBalloonTextBean {
 	private String textBeforeShareButtons;
 	private String textAfterShareButtons;
 	private String acceptTosText;
+	private String emailTemplate;
+	private String emailSubjectTemplate;
 	private boolean enabled;
 	
 	public AddEditBalloonTextBean() {
@@ -25,6 +27,8 @@ public class AddEditBalloonTextBean {
 		textAfterShareButtons = text.getTextAfterShareButtons();
 		acceptTosText = text.getAcceptTosText();
 		enabled = text.getEnabled();
+		emailTemplate = text.getEmailTemplate();
+		emailSubjectTemplate = text.getEmailSubjectTemplate();
 	}
 	public String getName() {
 		return name;
@@ -88,6 +92,22 @@ public class AddEditBalloonTextBean {
 
 	public void setAcceptTosText(String acceptTosText) {
 		this.acceptTosText = acceptTosText;
+	}
+
+	public String getEmailTemplate() {
+		return emailTemplate;
+	}
+
+	public void setEmailTemplate(String emailTemplate) {
+		this.emailTemplate = emailTemplate;
+	}
+
+	public String getEmailSubjectTemplate() {
+		return emailSubjectTemplate;
+	}
+
+	public void setEmailSubjectTemplate(String emailSubjectTemplate) {
+		this.emailSubjectTemplate = emailSubjectTemplate;
 	}
 	
 	

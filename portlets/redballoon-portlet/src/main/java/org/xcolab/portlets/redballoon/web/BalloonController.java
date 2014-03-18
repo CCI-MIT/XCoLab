@@ -30,7 +30,6 @@ import com.liferay.portal.util.PortalUtil;
 @RequestMapping("view")
 @Controller
 public class BalloonController {
-	private final static String SHARE_LINK_PATTERN = "%s/balloon/-/balloon/link/%s";
 
 	
 	@RequestMapping
@@ -70,12 +69,8 @@ public class BalloonController {
 		if (StringUtils.isNotBlank(but.getEmail())) {
 			BalloonLink bl = BalloonLinkLocalServiceUtil.getBalloonLinkForUser(but.getUuid());
 
-			// create URL that should be used when sharing
-			String requestUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
-			// find first occurrence of / to get address and port
-			String protocolHostPort = requestUrl.substring(0, requestUrl.indexOf("/", 10));
 			
-			model.addAttribute("shareLink", String.format(SHARE_LINK_PATTERN, protocolHostPort, bl.getUuid()));
+			model.addAttribute("shareLink", BalloonUtils.getBalloonUrlForLink(request,  bl));
 			
 			model.addAttribute("balloonLink", bl);
 			return "sharePage";

@@ -44,6 +44,8 @@ public class BalloonTextWrapper implements BalloonText,
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
         attributes.put("acceptTosText", getAcceptTosText());
+        attributes.put("emailTemplate", getEmailTemplate());
+        attributes.put("emailSubjectTemplate", getEmailSubjectTemplate());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -93,6 +95,19 @@ public class BalloonTextWrapper implements BalloonText,
 
         if (acceptTosText != null) {
             setAcceptTosText(acceptTosText);
+        }
+
+        String emailTemplate = (String) attributes.get("emailTemplate");
+
+        if (emailTemplate != null) {
+            setEmailTemplate(emailTemplate);
+        }
+
+        String emailSubjectTemplate = (String) attributes.get(
+                "emailSubjectTemplate");
+
+        if (emailSubjectTemplate != null) {
+            setEmailSubjectTemplate(emailSubjectTemplate);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -261,6 +276,46 @@ public class BalloonTextWrapper implements BalloonText,
     @Override
     public void setAcceptTosText(java.lang.String acceptTosText) {
         _balloonText.setAcceptTosText(acceptTosText);
+    }
+
+    /**
+    * Returns the email template of this balloon text.
+    *
+    * @return the email template of this balloon text
+    */
+    @Override
+    public java.lang.String getEmailTemplate() {
+        return _balloonText.getEmailTemplate();
+    }
+
+    /**
+    * Sets the email template of this balloon text.
+    *
+    * @param emailTemplate the email template of this balloon text
+    */
+    @Override
+    public void setEmailTemplate(java.lang.String emailTemplate) {
+        _balloonText.setEmailTemplate(emailTemplate);
+    }
+
+    /**
+    * Returns the email subject template of this balloon text.
+    *
+    * @return the email subject template of this balloon text
+    */
+    @Override
+    public java.lang.String getEmailSubjectTemplate() {
+        return _balloonText.getEmailSubjectTemplate();
+    }
+
+    /**
+    * Sets the email subject template of this balloon text.
+    *
+    * @param emailSubjectTemplate the email subject template of this balloon text
+    */
+    @Override
+    public void setEmailSubjectTemplate(java.lang.String emailSubjectTemplate) {
+        _balloonText.setEmailSubjectTemplate(emailSubjectTemplate);
     }
 
     /**

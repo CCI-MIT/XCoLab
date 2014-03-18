@@ -148,6 +148,36 @@ public interface BalloonTextModel extends BaseModel<BalloonText> {
     public void setAcceptTosText(String acceptTosText);
 
     /**
+     * Returns the email template of this balloon text.
+     *
+     * @return the email template of this balloon text
+     */
+    @AutoEscape
+    public String getEmailTemplate();
+
+    /**
+     * Sets the email template of this balloon text.
+     *
+     * @param emailTemplate the email template of this balloon text
+     */
+    public void setEmailTemplate(String emailTemplate);
+
+    /**
+     * Returns the email subject template of this balloon text.
+     *
+     * @return the email subject template of this balloon text
+     */
+    @AutoEscape
+    public String getEmailSubjectTemplate();
+
+    /**
+     * Sets the email subject template of this balloon text.
+     *
+     * @param emailSubjectTemplate the email subject template of this balloon text
+     */
+    public void setEmailSubjectTemplate(String emailSubjectTemplate);
+
+    /**
      * Returns the enabled of this balloon text.
      *
      * @return the enabled of this balloon text

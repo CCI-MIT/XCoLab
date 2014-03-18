@@ -91,6 +91,8 @@
 			<basic name="textBeforeShareButtons" />
 			<basic name="textAfterShareButtons" />
 			<basic name="acceptTosText" />
+			<basic name="emailTemplate" />
+			<basic name="emailSubjectTemplate" />
 			<basic name="enabled" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

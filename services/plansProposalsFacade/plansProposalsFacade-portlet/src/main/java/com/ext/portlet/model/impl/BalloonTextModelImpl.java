@@ -55,10 +55,12 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             { "textAfterForm", Types.CLOB },
             { "textBeforeShareButtons", Types.CLOB },
             { "textAfterShareButtons", Types.CLOB },
-            { "acceptTosText", Types.VARCHAR },
+            { "acceptTosText", Types.CLOB },
+            { "emailTemplate", Types.VARCHAR },
+            { "emailSubjectTemplate", Types.VARCHAR },
             { "enabled", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText VARCHAR(75) null,enabled BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText TEXT null,emailTemplate VARCHAR(75) null,emailSubjectTemplate VARCHAR(75) null,enabled BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonText";
     public static final String ORDER_BY_JPQL = " ORDER BY balloonText.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonText.id_ ASC";
@@ -89,6 +91,8 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
     private String _textBeforeShareButtons;
     private String _textAfterShareButtons;
     private String _acceptTosText;
+    private String _emailTemplate;
+    private String _emailSubjectTemplate;
     private boolean _enabled;
     private boolean _originalEnabled;
     private boolean _setOriginalEnabled;
@@ -118,6 +122,8 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         model.setTextBeforeShareButtons(soapModel.getTextBeforeShareButtons());
         model.setTextAfterShareButtons(soapModel.getTextAfterShareButtons());
         model.setAcceptTosText(soapModel.getAcceptTosText());
+        model.setEmailTemplate(soapModel.getEmailTemplate());
+        model.setEmailSubjectTemplate(soapModel.getEmailSubjectTemplate());
         model.setEnabled(soapModel.getEnabled());
 
         return model;
@@ -184,6 +190,8 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         attributes.put("textBeforeShareButtons", getTextBeforeShareButtons());
         attributes.put("textAfterShareButtons", getTextAfterShareButtons());
         attributes.put("acceptTosText", getAcceptTosText());
+        attributes.put("emailTemplate", getEmailTemplate());
+        attributes.put("emailSubjectTemplate", getEmailSubjectTemplate());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -233,6 +241,19 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
         if (acceptTosText != null) {
             setAcceptTosText(acceptTosText);
+        }
+
+        String emailTemplate = (String) attributes.get("emailTemplate");
+
+        if (emailTemplate != null) {
+            setEmailTemplate(emailTemplate);
+        }
+
+        String emailSubjectTemplate = (String) attributes.get(
+                "emailSubjectTemplate");
+
+        if (emailSubjectTemplate != null) {
+            setEmailSubjectTemplate(emailSubjectTemplate);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -345,6 +366,36 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @JSON
     @Override
+    public String getEmailTemplate() {
+        if (_emailTemplate == null) {
+            return StringPool.BLANK;
+        } else {
+            return _emailTemplate;
+        }
+    }
+
+    @Override
+    public void setEmailTemplate(String emailTemplate) {
+        _emailTemplate = emailTemplate;
+    }
+
+    @JSON
+    @Override
+    public String getEmailSubjectTemplate() {
+        if (_emailSubjectTemplate == null) {
+            return StringPool.BLANK;
+        } else {
+            return _emailSubjectTemplate;
+        }
+    }
+
+    @Override
+    public void setEmailSubjectTemplate(String emailSubjectTemplate) {
+        _emailSubjectTemplate = emailSubjectTemplate;
+    }
+
+    @JSON
+    @Override
     public boolean getEnabled() {
         return _enabled;
     }
@@ -409,6 +460,8 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         balloonTextImpl.setTextBeforeShareButtons(getTextBeforeShareButtons());
         balloonTextImpl.setTextAfterShareButtons(getTextAfterShareButtons());
         balloonTextImpl.setAcceptTosText(getAcceptTosText());
+        balloonTextImpl.setEmailTemplate(getEmailTemplate());
+        balloonTextImpl.setEmailSubjectTemplate(getEmailSubjectTemplate());
         balloonTextImpl.setEnabled(getEnabled());
 
         balloonTextImpl.resetOriginalValues();
@@ -522,6 +575,23 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             balloonTextCacheModel.acceptTosText = null;
         }
 
+        balloonTextCacheModel.emailTemplate = getEmailTemplate();
+
+        String emailTemplate = balloonTextCacheModel.emailTemplate;
+
+        if ((emailTemplate != null) && (emailTemplate.length() == 0)) {
+            balloonTextCacheModel.emailTemplate = null;
+        }
+
+        balloonTextCacheModel.emailSubjectTemplate = getEmailSubjectTemplate();
+
+        String emailSubjectTemplate = balloonTextCacheModel.emailSubjectTemplate;
+
+        if ((emailSubjectTemplate != null) &&
+                (emailSubjectTemplate.length() == 0)) {
+            balloonTextCacheModel.emailSubjectTemplate = null;
+        }
+
         balloonTextCacheModel.enabled = getEnabled();
 
         return balloonTextCacheModel;
@@ -529,7 +599,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(getId());
@@ -545,6 +615,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(getTextAfterShareButtons());
         sb.append(", acceptTosText=");
         sb.append(getAcceptTosText());
+        sb.append(", emailTemplate=");
+        sb.append(getEmailTemplate());
+        sb.append(", emailSubjectTemplate=");
+        sb.append(getEmailSubjectTemplate());
         sb.append(", enabled=");
         sb.append(getEnabled());
         sb.append("}");
@@ -554,7 +628,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(34);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.BalloonText");
@@ -587,6 +661,14 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(
             "<column><column-name>acceptTosText</column-name><column-value><![CDATA[");
         sb.append(getAcceptTosText());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailTemplate</column-name><column-value><![CDATA[");
+        sb.append(getEmailTemplate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailSubjectTemplate</column-name><column-value><![CDATA[");
+        sb.append(getEmailSubjectTemplate());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>enabled</column-name><column-value><![CDATA[");

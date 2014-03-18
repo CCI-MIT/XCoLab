@@ -826,6 +826,8 @@ public class BalloonTextPersistenceImpl extends BasePersistenceImpl<BalloonText>
         balloonTextImpl.setTextBeforeShareButtons(balloonText.getTextBeforeShareButtons());
         balloonTextImpl.setTextAfterShareButtons(balloonText.getTextAfterShareButtons());
         balloonTextImpl.setAcceptTosText(balloonText.getAcceptTosText());
+        balloonTextImpl.setEmailTemplate(balloonText.getEmailTemplate());
+        balloonTextImpl.setEmailSubjectTemplate(balloonText.getEmailSubjectTemplate());
         balloonTextImpl.setEnabled(balloonText.isEnabled());
 
         return balloonTextImpl;
