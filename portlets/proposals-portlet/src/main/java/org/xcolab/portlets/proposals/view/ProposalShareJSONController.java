@@ -1,10 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.messaging.MessageUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -25,6 +26,7 @@ import javax.mail.internet.AddressException;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +50,11 @@ public class ProposalShareJSONController {
         return json;
     }
 
-    private List<Long> parseRecipientNames(long companyId, JSONArray recipients) throws RecipientParseException {
+    private List<Long> parseRecipientNames(long companyId, List<String> recipients) throws RecipientParseException {
         List<Long> recipientIds = new ArrayList<Long>();
         List<String> unresolvedRecipients = new ArrayList<>();
-        for (int i = 0; i < recipients.length(); i++) {
-            String recipient = recipients.getString(i);
+        for (int i = 0; i < recipients.size(); i++) {
+            String recipient = recipients.get(i);
             try {
                 User user = UserLocalServiceUtil.getUserByScreenName(companyId, recipient);
                 recipientIds.add(user.getUserId());
@@ -69,6 +71,14 @@ public class ProposalShareJSONController {
     }
 
     private void sendResponseJSON (boolean success, String message, ResourceResponse response) throws IOException {
+        JSONObject json = JSONFactoryUtil.createJSONObject();
+        json.put(SUCCESS_JSON_KEY, success);
+        json.put(MESSAGE_JSON_KEY, message);
+
+        response.getPortletOutputStream().write(json.toString().getBytes());
+    }
+
+    private void sendResponseJSON (boolean success, JSONArray message, ResourceResponse response) throws IOException {
         JSONObject json = JSONFactoryUtil.createJSONObject();
         json.put(SUCCESS_JSON_KEY, success);
         json.put(MESSAGE_JSON_KEY, message);
@@ -106,28 +116,21 @@ public class ProposalShareJSONController {
     @ResourceMapping("proposalShare-validate")
     public void validateRecipients(ResourceRequest request, ResourceResponse response) throws PortalException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        String queryString = request.getParameter("recipients");
+
+        String[] screenNames = request.getParameterValues("screenNames[]");
 
         try {
-            DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
-            query.add(RestrictionsFactoryUtil.ilike("screenName", queryString + "%"));
-            List<User> recipients = UserLocalServiceUtil.dynamicQuery(query);
-
-            JSONArray result = JSONFactoryUtil.createJSONArray();
-            for (User user: recipients) {
-                final JSONObject userObject = JSONFactoryUtil.createJSONObject();
-                userObject.put("id", user.getUserId());
-                userObject.put("label", user.getScreenName());
-                userObject.put("value", user.getScreenName());
-                result.put(userObject);
+            List<Long> users = parseRecipientNames(themeDisplay.getCompanyId(), ListUtil.fromArray(screenNames));
+        } catch (RecipientParseException e) {
+            JSONArray array = JSONFactoryUtil.createJSONArray();
+            for (String screenName : e.getUnresolvedScreenNames()) {
+                array.put(screenName);
             }
-
-            response.getPortletOutputStream().write(result.toString().getBytes());
-        } catch (SystemException e) {
-            e.printStackTrace();
-
-            sendResponseJSON(false, "The request could not be processed.", response);
+            sendResponseJSON(false, array, response);
+            return;
         }
+
+        sendResponseJSON(true, "", response);
     }
 
     @ResourceMapping("proposalShare-send")
@@ -159,7 +162,9 @@ public class ProposalShareJSONController {
         // Validate the screenName input
         List<Long> recipientIds = null;
         try {
-            recipientIds = parseRecipientNames(themeDisplay.getCompanyId(), recipients);
+            Type type = new TypeToken<ArrayList<String>>() {}.getType();
+            List<String> recipientsList = new Gson().fromJson(recipients.toString(), type);
+            recipientIds = parseRecipientNames(themeDisplay.getCompanyId(), recipientsList);
         } catch (RecipientParseException e) {
             List<String> unresolvedRecipients = e.getUnresolvedScreenNames();
             StringBuilder builder = new StringBuilder();

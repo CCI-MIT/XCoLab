@@ -13,7 +13,7 @@
     </portlet:resourceURL>
     <portlet:resourceURL id="proposalShare-send" var="sendURL">
     </portlet:resourceURL>
-    <portlet:resourceURL id="proposalShare-validate" var="validateURL">
+    <portlet:resourceURL id="proposalShare-validate" var="validationURL">
     </portlet:resourceURL>
 
 
@@ -60,11 +60,11 @@
                     </table>
                     <div>
                         <div class="blue-button">
-                            <a href="javascript:;" onclick='send()'>Send</a>
+                            <button id="send-button" onclick='send()' disabled>Send</button>
                         </div>
 
                         <div class="blue-button">
-                            <button value="Cancel" onclick="cancel()"/>
+                            <button onclick="cancel()">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -109,21 +109,46 @@
         function validateRecipients() {
             var input = $("#recipient-input").val();
             var list = split(input);
-            $.postJSON(validationURL, list, function(data) {
-                var result = $.parseJSON(data);
-                // Show error text
-                var error = "";
-                if (result.length > 0) {
-                    error += "The following recipients could not be resolved:&lt;ul&gt;";
+            console.log("list: " + list);
 
-                    $.each(result, function(k, v) {
-                        error += "&lt;li&gt;" + v + "&lt;/li&gt;";
-                    });
+            $.each(list, function(k, v) {
+               console.log("item " + v);
+            });
+            var json = new Object();
+            json.params = list;
+            console.log("json: " + JSON.stringify(json));
 
-                    error += "&lt;ul&gt;";
+            $.ajax
+            ({
+                type: "POST",
+                //the url where you want to sent the userName and password to
+                url: validationURL,
+                dataType: 'json',
+                async: false,
+                //json object to sent to the authentication url
+                data: {screenNames : list},
+                success: function (data) {
+                    if (data.success) {
+                        $('#send-button').removeAttr('disabled');
+
+                    } else {
+                        var error = "";
+                        var list = data.message;
+                        if (list.length > 0) {
+                            error += "The following recipients could not be resolved:&lt;ul&gt;";
+
+                            $.each(list, function(k, v) {
+                                error += "&lt;li&gt;" + v + "&lt;/li&gt;";
+                            });
+
+                            error += "&lt;ul&gt;";
+                        }
+
+                        $('.recipient-error').html(error);
+                        console.log(error);
+                        $('#send-button').attr('disabled', 'disabled');
+                    }
                 }
-
-                $('.recipient-error').html(error);
             });
         }
 
@@ -168,17 +193,5 @@
         $("#recipient-input").focusout(function(event) {
             validateRecipients();
         });
-
-        // helper
-        $.postJSON = function(url, data, callback) {
-            return jQuery.ajax({
-                'type': 'POST',
-                'url': url,
-                'contentType': 'application/json',
-                'data': $.toJSON(data),
-                'dataType': 'json',
-                'success': callback
-            });
-        };
     </script>
 </jsp:root>
