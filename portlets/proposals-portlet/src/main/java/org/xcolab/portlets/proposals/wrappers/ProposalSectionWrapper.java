@@ -98,8 +98,8 @@ public class ProposalSectionWrapper {
             String html = e.html();
 
             // Eliminates wierd &nbsp; ASCII val 160 characters
-            String text = e.text().replaceAll("[\\u00A0]+", " ");
-            String[] words = text.split("\\s+");
+            String text = e.text().replaceAll("[\\u00A0]", " ");
+            String[] words = text.split("\\s");
             for (int i = 0; i < words.length; i++) {
                 final String word = words[i];
                 final Matcher matcher = pattern.matcher(word);
