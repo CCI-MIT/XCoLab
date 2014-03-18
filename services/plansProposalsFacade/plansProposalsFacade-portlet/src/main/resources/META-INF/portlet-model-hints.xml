@@ -61,10 +61,10 @@
 		<field name="acceptTosText" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
-		<field name="emailTemplate" type="String" >
+		<field name="emailTemplate" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
-		<field name="emailSubjectTemplate" type="String" >
+		<field name="emailSubjectTemplate" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
 		<field name="enabled" type="boolean" />

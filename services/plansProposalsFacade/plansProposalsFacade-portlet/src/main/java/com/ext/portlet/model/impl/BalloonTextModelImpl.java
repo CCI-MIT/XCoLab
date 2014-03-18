@@ -56,11 +56,11 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             { "textBeforeShareButtons", Types.CLOB },
             { "textAfterShareButtons", Types.CLOB },
             { "acceptTosText", Types.CLOB },
-            { "emailTemplate", Types.VARCHAR },
-            { "emailSubjectTemplate", Types.VARCHAR },
+            { "emailTemplate", Types.CLOB },
+            { "emailSubjectTemplate", Types.CLOB },
             { "enabled", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText TEXT null,emailTemplate VARCHAR(75) null,emailSubjectTemplate VARCHAR(75) null,enabled BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText TEXT null,emailTemplate TEXT null,emailSubjectTemplate TEXT null,enabled BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonText";
     public static final String ORDER_BY_JPQL = " ORDER BY balloonText.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonText.id_ ASC";

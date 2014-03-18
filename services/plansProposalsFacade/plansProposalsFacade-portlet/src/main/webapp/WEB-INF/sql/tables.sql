@@ -47,8 +47,8 @@ create table xcolab_BalloonText (
 	textBeforeShareButtons TEXT null,
 	textAfterShareButtons TEXT null,
 	acceptTosText TEXT null,
-	emailTemplate VARCHAR(75) null,
-	emailSubjectTemplate VARCHAR(75) null,
+	emailTemplate TEXT null,
+	emailSubjectTemplate TEXT null,
 	enabled BOOLEAN
 );
 
