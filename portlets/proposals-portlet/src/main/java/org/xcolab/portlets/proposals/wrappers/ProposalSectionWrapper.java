@@ -97,8 +97,10 @@ public class ProposalSectionWrapper {
             String newText = "";
             _log.debug("Scanning line: " + e.text());
             // Separate the <p> tags by the space character and process potential URLs
+            String html = e.html();
             String[] words = e.text().split(" ");
-            for (String word : words) {
+            for (int i = 0; i < words.length; i++) {
+                final String word = words[i];
                 final Matcher matcher = pattern.matcher(word);
 
                 // If a match is found create a new <a> tag
@@ -113,14 +115,22 @@ public class ProposalSectionWrapper {
                         elementName = link;
                     }
 
-                    newText += "<a href=\""+link+"\">"+ elementName +"</a>" + " ";
-                } else {
-                    newText += word + " ";
+                    // Replace exactly this word in the HTML code with leading and trailing spaces
+                    if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
+                        if (!html.contains("<"))
+                            html = StringUtils.replaceOnce(html, word, " <a href=\""+link+"\">"+ elementName +"</a> ");
+                    } else if (i == 0) {
+                        html = StringUtils.replaceOnce(html, word + " ", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                    } else if (i == words.length - 1) {
+                        html = StringUtils.replaceOnce(html, " " + word, " <a href=\""+link+"\">"+ elementName +"</a>");
+                    } else {
+                        html = StringUtils.replaceOnce(html, " " + word + " ", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                    }
                 }
             }
 
             // Rebuild the whole value string of the <p> tag and exchange the old one
-            e.after("<p>" + newText + "<p>");
+            e.after("<p>"+html+"</p>");
             e.remove();
         }
 
