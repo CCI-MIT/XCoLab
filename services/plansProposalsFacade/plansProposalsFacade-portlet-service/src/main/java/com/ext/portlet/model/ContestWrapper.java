@@ -57,6 +57,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
         attributes.put("sponsorLogoId", getSponsorLogoId());
         attributes.put("sponsorText", getSponsorText());
+        attributes.put("sponsorLink", getSponsorLink());
         attributes.put("flag", getFlag());
         attributes.put("flagText", getFlagText());
         attributes.put("flagTooltip", getFlagTooltip());
@@ -189,6 +190,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (sponsorText != null) {
             setSponsorText(sponsorText);
+        }
+
+        String sponsorLink = (String) attributes.get("sponsorLink");
+
+        if (sponsorLink != null) {
+            setSponsorLink(sponsorLink);
         }
 
         Integer flag = (Integer) attributes.get("flag");
@@ -677,6 +684,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setSponsorText(java.lang.String sponsorText) {
         _contest.setSponsorText(sponsorText);
+    }
+
+    /**
+    * Returns the sponsor link of this contest.
+    *
+    * @return the sponsor link of this contest
+    */
+    @Override
+    public java.lang.String getSponsorLink() {
+        return _contest.getSponsorLink();
+    }
+
+    /**
+    * Sets the sponsor link of this contest.
+    *
+    * @param sponsorLink the sponsor link of this contest
+    */
+    @Override
+    public void setSponsorLink(java.lang.String sponsorLink) {
+        _contest.setSponsorLink(sponsorLink);
     }
 
     /**

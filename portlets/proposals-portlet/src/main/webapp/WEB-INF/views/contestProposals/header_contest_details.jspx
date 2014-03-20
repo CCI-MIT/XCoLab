@@ -6,7 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">		
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
 	<div class="contest-detail">
 		<div class="heading">
@@ -21,7 +21,11 @@
                         <c:if test="${contest.sponsorLogoId > 0}">
                             <td>
                                 <div class="heading-sponsor-logo">
-                                    <a href="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a>
+                                    <c:choose>
+                                        <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
+                                        <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </td>
                         </c:if>

@@ -70,6 +70,7 @@
 		<field name="sponsorText" type="String">
 			<hint name="max-length">2048</hint>
 		</field>
+		<field name="sponsorLink" type="String" />
 		<field name="flag" type="int" />
 		<field name="flagText" type="String">
 			<hint name="max-length">1024</hint>

@@ -30,6 +30,7 @@
         
         <column name="sponsorLogoId" type="long" />
         <column name="sponsorText" type="String" />
+        <column name="sponsorLink" type="String" />
         
         <column name="flag" type="int" />
         <column name="flagText" type="String" />
