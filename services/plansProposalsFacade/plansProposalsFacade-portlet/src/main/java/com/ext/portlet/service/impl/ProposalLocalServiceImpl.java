@@ -620,6 +620,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         
         final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
         phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("contestPhaseId").eq(contestPhaseId));
         phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
         phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
         

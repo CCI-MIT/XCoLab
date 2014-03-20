@@ -6,6 +6,9 @@ import java.util.List;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ProposalContestPhaseAttributeType;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -63,8 +66,19 @@ public class ContestProposalsController extends BaseProposalsController {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
-            if (proposalWrapper.isVisibleInPhase()) {
+
+            // Try to get the visible attribute within the active contestPhase
+            long visibleInPhase = 1;
+            try {
+                visibleInPhase = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE).getNumericValue();
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
+                // No attribute found means we can safely continue...
+            }
+
+            if (visibleInPhase == 1 && proposalWrapper.isVisibleInPhase()) {
+
                 proposals.add(proposalWrapper);
+
             }
             
             // set phase attributes
