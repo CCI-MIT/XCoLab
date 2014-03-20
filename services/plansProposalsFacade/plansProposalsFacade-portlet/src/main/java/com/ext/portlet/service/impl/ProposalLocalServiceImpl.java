@@ -579,6 +579,35 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
         return proposals;
     }
+
+    /**
+     * <p>Returns a list of proposals associated with the given contest phase which are both generally visible and visible in the given contest phase</p>
+     *
+     * @param contestPhaseId id of a contest phase
+     * @return list of proposals from given contest phase
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<Proposal> getActiveProposalsInContestPhase(long contestPhaseId)
+            throws PortalException, SystemException {
+
+        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
+        phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
+        phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
+
+        final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
+        phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("contestPhaseId").eq(contestPhaseId));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
+
+        final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
+        proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
+                .add(PropertyFactoryUtil.forName("proposal.visible").eq(true))
+                .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
+
+        return dynamicQuery(proposalsInPhaseNotDeleted);
+    }
     
     /**
      * <p>Returns a list of proposals associated with given contest</p>
@@ -614,22 +643,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public long countProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
         
-        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
-        phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
-        phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
-        
-        final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
-        phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
-        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("contestPhaseId").eq(contestPhaseId));
-        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
-        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
-        
-        final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
-        proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
-            .add(PropertyFactoryUtil.forName("proposal.visible").eq(true))
-            .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
-        
-        return dynamicQueryCount(proposalsInPhaseNotDeleted);
+        List<Proposal> activeProposals = getActiveProposalsInContestPhase(contestPhaseId);
+        return activeProposals.size();
     }
 
     /**

@@ -56,7 +56,7 @@ public class ContestProposalsController extends BaseProposalsController {
         User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
 
-        for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
 
@@ -66,21 +66,8 @@ public class ContestProposalsController extends BaseProposalsController {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
+            proposals.add(proposalWrapper);
 
-            // Try to get the visible attribute within the active contestPhase
-            long visibleInPhase = 1;
-            try {
-                visibleInPhase = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE).getNumericValue();
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                // No attribute found means we can safely continue...
-            }
-
-            if (visibleInPhase == 1 && proposalWrapper.isVisibleInPhase()) {
-
-                proposals.add(proposalWrapper);
-
-            }
-            
             // set phase attributes
             List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
             for (ProposalContestPhaseAttribute attribute: phaseAttributes) {

@@ -683,6 +683,21 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Returns a list of proposals associated with the given contest phase which are both generally visible and visible in the given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return list of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal> getActiveProposalsInContestPhase(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getActiveProposalsInContestPhase(contestPhaseId);
+    }
+
+    /**
     * <p>Returns a list of proposals associated with given contest</p>
     *
     * @param contestId id of a contest phase
