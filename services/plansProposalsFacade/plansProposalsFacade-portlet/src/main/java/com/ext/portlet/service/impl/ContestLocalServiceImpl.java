@@ -25,6 +25,7 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
+import com.ext.portlet.service.ContestPhaseLocalService;
 import com.liferay.portal.model.User;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
@@ -403,8 +404,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
         long proposalsCommentsCount = 0;
-        for (Proposal proposal: proposalLocalService.getProposalsInContest(contest.getContestPK())) {
-            proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
+        try {
+            ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            for (Proposal proposal: proposalLocalService.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK())) {
+                proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
+            }
+        } catch (SystemException e) {
+            return 0;
         }
         return proposalsCommentsCount;
     }
