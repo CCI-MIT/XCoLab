@@ -8,6 +8,7 @@ function showAdminOverlay() {
     var childs = $('.portlet-topper-toolbar').children();
     if (childs.length != 0) {
         $('header.portlet-topper').show();
+        $('header.portlet-topper .portlet-topper-toolbar').show();
     }
 }
 
