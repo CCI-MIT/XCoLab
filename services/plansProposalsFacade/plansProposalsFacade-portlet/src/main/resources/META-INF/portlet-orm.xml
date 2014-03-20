@@ -91,6 +91,7 @@
 			<basic name="plansOpenByDefault" />
 			<basic name="sponsorLogoId" />
 			<basic name="sponsorText" />
+			<basic name="sponsorLink" />
 			<basic name="flag" />
 			<basic name="flagText" />
 			<basic name="flagTooltip" />

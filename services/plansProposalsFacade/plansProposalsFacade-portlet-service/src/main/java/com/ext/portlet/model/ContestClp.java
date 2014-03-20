@@ -40,6 +40,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _plansOpenByDefault;
     private long _sponsorLogoId;
     private String _sponsorText;
+    private String _sponsorLink;
     private int _flag;
     private String _flagText;
     private String _flagTooltip;
@@ -108,6 +109,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
         attributes.put("sponsorLogoId", getSponsorLogoId());
         attributes.put("sponsorText", getSponsorText());
+        attributes.put("sponsorLink", getSponsorLink());
         attributes.put("flag", getFlag());
         attributes.put("flagText", getFlagText());
         attributes.put("flagTooltip", getFlagTooltip());
@@ -240,6 +242,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (sponsorText != null) {
             setSponsorText(sponsorText);
+        }
+
+        String sponsorLink = (String) attributes.get("sponsorLink");
+
+        if (sponsorLink != null) {
+            setSponsorLink(sponsorLink);
         }
 
         Integer flag = (Integer) attributes.get("flag");
@@ -739,6 +747,28 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
+    public String getSponsorLink() {
+        return _sponsorLink;
+    }
+
+    @Override
+    public void setSponsorLink(String sponsorLink) {
+        _sponsorLink = sponsorLink;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSponsorLink", String.class);
+
+                method.invoke(_contestRemoteModel, sponsorLink);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public int getFlag() {
         return _flag;
     }
@@ -1035,6 +1065,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setPlansOpenByDefault(getPlansOpenByDefault());
         clone.setSponsorLogoId(getSponsorLogoId());
         clone.setSponsorText(getSponsorText());
+        clone.setSponsorLink(getSponsorLink());
         clone.setFlag(getFlag());
         clone.setFlagText(getFlagText());
         clone.setFlagTooltip(getFlagTooltip());
@@ -1101,7 +1132,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(57);
+        StringBundler sb = new StringBundler(59);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1141,6 +1172,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getSponsorLogoId());
         sb.append(", sponsorText=");
         sb.append(getSponsorText());
+        sb.append(", sponsorLink=");
+        sb.append(getSponsorLink());
         sb.append(", flag=");
         sb.append(getFlag());
         sb.append(", flagText=");
@@ -1166,7 +1199,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(88);
+        StringBundler sb = new StringBundler(91);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1247,6 +1280,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>sponsorText</column-name><column-value><![CDATA[");
         sb.append(getSponsorText());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sponsorLink</column-name><column-value><![CDATA[");
+        sb.append(getSponsorLink());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>flag</column-name><column-value><![CDATA[");

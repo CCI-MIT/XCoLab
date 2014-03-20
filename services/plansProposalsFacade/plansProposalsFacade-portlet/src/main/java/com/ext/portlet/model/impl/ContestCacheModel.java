@@ -40,6 +40,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean plansOpenByDefault;
     public long sponsorLogoId;
     public String sponsorText;
+    public String sponsorLink;
     public int flag;
     public String flagText;
     public String flagTooltip;
@@ -52,7 +53,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(57);
+        StringBundler sb = new StringBundler(59);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -92,6 +93,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(sponsorLogoId);
         sb.append(", sponsorText=");
         sb.append(sponsorText);
+        sb.append(", sponsorLink=");
+        sb.append(sponsorLink);
         sb.append(", flag=");
         sb.append(flag);
         sb.append(", flagText=");
@@ -186,6 +189,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setSponsorText(sponsorText);
         }
 
+        if (sponsorLink == null) {
+            contestImpl.setSponsorLink(StringPool.BLANK);
+        } else {
+            contestImpl.setSponsorLink(sponsorLink);
+        }
+
         contestImpl.setFlag(flag);
 
         if (flagText == null) {
@@ -239,6 +248,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         plansOpenByDefault = objectInput.readBoolean();
         sponsorLogoId = objectInput.readLong();
         sponsorText = objectInput.readUTF();
+        sponsorLink = objectInput.readUTF();
         flag = objectInput.readInt();
         flagText = objectInput.readUTF();
         flagTooltip = objectInput.readUTF();
@@ -307,6 +317,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(sponsorText);
+        }
+
+        if (sponsorLink == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(sponsorLink);
         }
 
         objectOutput.writeInt(flag);

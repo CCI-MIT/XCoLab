@@ -139,6 +139,7 @@
 		<property name="plansOpenByDefault" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="sponsorLogoId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sponsorText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sponsorLink" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="flag" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="flagText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="flagTooltip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
