@@ -263,6 +263,12 @@ public class BalloonUserTrackingLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByEmail(email);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -45,6 +45,8 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
     private String[] _methodParameterTypes502;
     private String _methodName503;
     private String[] _methodParameterTypes503;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
 
     public BalloonUserTrackingLocalServiceClpInvoker() {
         _methodName0 = "addBalloonUserTracking";
@@ -136,6 +138,10 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
         _methodName503 = "setBeanIdentifier";
 
         _methodParameterTypes503 = new String[] { "java.lang.String" };
+
+        _methodName508 = "findByEmail";
+
+        _methodParameterTypes508 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +243,11 @@ public class BalloonUserTrackingLocalServiceClpInvoker {
             BalloonUserTrackingLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
+            return BalloonUserTrackingLocalServiceUtil.findByEmail((java.lang.String) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

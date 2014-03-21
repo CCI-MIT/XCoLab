@@ -51,6 +51,16 @@ public class BalloonUtils {
 			but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(cookie.getUuid());
 		}
 		catch (NoSuchBalloonUserTrackingException e) {
+			if (! user.getDefaultUser()) {
+				List<BalloonUserTracking> buts = BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+				if (! buts.isEmpty()) {
+					but = buts.get(0);
+					but.setUserUuid(user.getUuid());
+					BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+					return but;
+				}
+			}
+			
 			
 			HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
 

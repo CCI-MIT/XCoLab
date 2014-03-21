@@ -2,6 +2,7 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
@@ -144,6 +145,13 @@ public class LoginController {
         	// cookie is present, get BalloonUserTracking if it exists and update association to the current user
         	try {
         		BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
+        		if (but == null) {
+        			List<BalloonUserTracking> buts = BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+        			if (! buts.isEmpty()) {
+        				but = buts.get(0);
+        			}
+        		}
+        		
         		if (but.getUserId() != user.getUserId()) {
         			but.setUserId(user.getUserId());
         			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);

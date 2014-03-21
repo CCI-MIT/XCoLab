@@ -54,6 +54,10 @@
         <column name="balloonLinkUuid" type="String" />
         <column name="balloonLinkContext" type="String" />
         <column name="userAgent" type="String" />
+        
+    	<finder return-type="Collection" name="Email">
+    		<finder-column name="email" />
+    	</finder>
 	</entity>
 	
 	<entity name="BalloonLink" local-service="true">

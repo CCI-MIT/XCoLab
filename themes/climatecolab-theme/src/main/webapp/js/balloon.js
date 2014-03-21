@@ -1,6 +1,6 @@
 // check if extra data has been stored already (cookie has special flag for that)
 // tracking is enabled only when there is a climatecolabBalloonCookie present and it doens't contain a flag saying that data has been already gathered
-
+/*
 var trackingEnabled = true;
 var extraDataStored = false;
 jQuery.each(jQuery.cookie(), function(key, val) { 
@@ -27,4 +27,4 @@ if (trackingEnabled && ! extraDataStored) {
 		});
 	}
 	
-}
+}*/

@@ -278,6 +278,13 @@ public class BalloonUserTrackingLocalServiceWrapper
             parameterTypes, arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _balloonUserTrackingLocalService.findByEmail(email);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

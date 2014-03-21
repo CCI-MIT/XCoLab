@@ -100,6 +100,165 @@ public class BalloonUserTrackingUtil {
     }
 
     /**
+    * Returns all the balloon user trackings where email = &#63;.
+    *
+    * @param email the email
+    * @return the matching balloon user trackings
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByEmail(email);
+    }
+
+    /**
+    * Returns a range of all the balloon user trackings where email = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.BalloonUserTrackingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param email the email
+    * @param start the lower bound of the range of balloon user trackings
+    * @param end the upper bound of the range of balloon user trackings (not inclusive)
+    * @return the range of matching balloon user trackings
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByEmail(email, start, end);
+    }
+
+    /**
+    * Returns an ordered range of all the balloon user trackings where email = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.BalloonUserTrackingModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param email the email
+    * @param start the lower bound of the range of balloon user trackings
+    * @param end the upper bound of the range of balloon user trackings (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching balloon user trackings
+    * @throws SystemException if a system exception occurred
+    */
+    public static java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByEmail(email, start, end, orderByComparator);
+    }
+
+    /**
+    * Returns the first balloon user tracking in the ordered set where email = &#63;.
+    *
+    * @param email the email
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching balloon user tracking
+    * @throws com.ext.portlet.NoSuchBalloonUserTrackingException if a matching balloon user tracking could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.BalloonUserTracking findByEmail_First(
+        java.lang.String email,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchBalloonUserTrackingException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByEmail_First(email, orderByComparator);
+    }
+
+    /**
+    * Returns the first balloon user tracking in the ordered set where email = &#63;.
+    *
+    * @param email the email
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching balloon user tracking, or <code>null</code> if a matching balloon user tracking could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.BalloonUserTracking fetchByEmail_First(
+        java.lang.String email,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByEmail_First(email, orderByComparator);
+    }
+
+    /**
+    * Returns the last balloon user tracking in the ordered set where email = &#63;.
+    *
+    * @param email the email
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching balloon user tracking
+    * @throws com.ext.portlet.NoSuchBalloonUserTrackingException if a matching balloon user tracking could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.BalloonUserTracking findByEmail_Last(
+        java.lang.String email,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchBalloonUserTrackingException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().findByEmail_Last(email, orderByComparator);
+    }
+
+    /**
+    * Returns the last balloon user tracking in the ordered set where email = &#63;.
+    *
+    * @param email the email
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching balloon user tracking, or <code>null</code> if a matching balloon user tracking could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.BalloonUserTracking fetchByEmail_Last(
+        java.lang.String email,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByEmail_Last(email, orderByComparator);
+    }
+
+    /**
+    * Returns the balloon user trackings before and after the current balloon user tracking in the ordered set where email = &#63;.
+    *
+    * @param uuid the primary key of the current balloon user tracking
+    * @param email the email
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next balloon user tracking
+    * @throws com.ext.portlet.NoSuchBalloonUserTrackingException if a balloon user tracking with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public static com.ext.portlet.model.BalloonUserTracking[] findByEmail_PrevAndNext(
+        java.lang.String uuid, java.lang.String email,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchBalloonUserTrackingException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence()
+                   .findByEmail_PrevAndNext(uuid, email, orderByComparator);
+    }
+
+    /**
+    * Removes all the balloon user trackings where email = &#63; from the database.
+    *
+    * @param email the email
+    * @throws SystemException if a system exception occurred
+    */
+    public static void removeByEmail(java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getPersistence().removeByEmail(email);
+    }
+
+    /**
+    * Returns the number of balloon user trackings where email = &#63;.
+    *
+    * @param email the email
+    * @return the number of matching balloon user trackings
+    * @throws SystemException if a system exception occurred
+    */
+    public static int countByEmail(java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().countByEmail(email);
+    }
+
+    /**
     * Caches the balloon user tracking in the entity cache if it is enabled.
     *
     * @param balloonUserTracking the balloon user tracking

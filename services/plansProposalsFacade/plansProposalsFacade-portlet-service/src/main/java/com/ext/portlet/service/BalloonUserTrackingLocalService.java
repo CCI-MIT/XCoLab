@@ -235,4 +235,8 @@ public interface BalloonUserTrackingLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    public java.util.List<com.ext.portlet.model.BalloonUserTracking> findByEmail(
+        java.lang.String email)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

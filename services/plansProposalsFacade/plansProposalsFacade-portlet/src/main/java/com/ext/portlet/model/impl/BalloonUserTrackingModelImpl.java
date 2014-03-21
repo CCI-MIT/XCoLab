@@ -80,7 +80,11 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
     public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.finder.cache.enabled.com.ext.portlet.model.BalloonUserTracking"),
             true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.ext.portlet.model.BalloonUserTracking"),
+            true);
+    public static long EMAIL_COLUMN_BITMASK = 1L;
+    public static long UUID_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.BalloonUserTracking"));
     private static ClassLoader _classLoader = BalloonUserTracking.class.getClassLoader();
@@ -89,6 +93,7 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
         };
     private String _uuid;
     private String _email;
+    private String _originalEmail;
     private String _parent;
     private String _ip;
     private Date _createDate;
@@ -106,6 +111,7 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
     private String _balloonLinkUuid;
     private String _balloonLinkContext;
     private String _userAgent;
+    private long _columnBitmask;
     private BalloonUserTracking _escapedModel;
 
     public BalloonUserTrackingModelImpl() {
@@ -362,7 +368,17 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
 
     @Override
     public void setEmail(String email) {
+        _columnBitmask |= EMAIL_COLUMN_BITMASK;
+
+        if (_originalEmail == null) {
+            _originalEmail = _email;
+        }
+
         _email = email;
+    }
+
+    public String getOriginalEmail() {
+        return GetterUtil.getString(_originalEmail);
     }
 
     @JSON
@@ -587,6 +603,10 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
         _userAgent = userAgent;
     }
 
+    public long getColumnBitmask() {
+        return _columnBitmask;
+    }
+
     @Override
     public BalloonUserTracking toEscapedModel() {
         if (_escapedModel == null) {
@@ -660,6 +680,11 @@ public class BalloonUserTrackingModelImpl extends BaseModelImpl<BalloonUserTrack
 
     @Override
     public void resetOriginalValues() {
+        BalloonUserTrackingModelImpl balloonUserTrackingModelImpl = this;
+
+        balloonUserTrackingModelImpl._originalEmail = balloonUserTrackingModelImpl._email;
+
+        balloonUserTrackingModelImpl._columnBitmask = 0;
     }
 
     @Override
