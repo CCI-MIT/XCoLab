@@ -5360,6 +5360,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setPlansOpenByDefault(contest.isPlansOpenByDefault());
         contestImpl.setSponsorLogoId(contest.getSponsorLogoId());
         contestImpl.setSponsorText(contest.getSponsorText());
+        contestImpl.setSponsorLink(contest.getSponsorLink());
         contestImpl.setFlag(contest.getFlag());
         contestImpl.setFlagText(contest.getFlagText());
         contestImpl.setFlagTooltip(contest.getFlagTooltip());

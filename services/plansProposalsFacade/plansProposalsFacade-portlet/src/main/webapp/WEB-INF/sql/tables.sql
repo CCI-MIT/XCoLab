@@ -51,6 +51,7 @@ create table xcolab_Contest (
 	plansOpenByDefault BOOLEAN,
 	sponsorLogoId LONG,
 	sponsorText VARCHAR(2048) null,
+	sponsorLink VARCHAR(75) null,
 	flag INTEGER,
 	flagText VARCHAR(1024) null,
 	flagTooltip VARCHAR(1024) null,

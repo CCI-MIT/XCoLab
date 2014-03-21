@@ -215,6 +215,18 @@ public class ContestWrapper {
         contest.setSponsorText(sponsorText);
     }
 
+    public String getSponsorLink() {
+        return contest.getSponsorLink();
+    }
+
+    public void setSponsorLink(String sponsorLink) {
+        contest.setSponsorLink(sponsorLink);
+    }
+
+    public boolean getSponsorLinkAvailable() {
+        return !contest.getSponsorLink().equals("");
+    }
+
     public int getFlag() {
         return contest.getFlag();
     }

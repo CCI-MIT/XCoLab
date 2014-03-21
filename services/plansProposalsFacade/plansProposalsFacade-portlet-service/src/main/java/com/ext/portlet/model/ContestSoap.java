@@ -33,6 +33,7 @@ public class ContestSoap implements Serializable {
     private boolean _plansOpenByDefault;
     private long _sponsorLogoId;
     private String _sponsorText;
+    private String _sponsorLink;
     private int _flag;
     private String _flagText;
     private String _flagTooltip;
@@ -68,6 +69,7 @@ public class ContestSoap implements Serializable {
         soapModel.setPlansOpenByDefault(model.getPlansOpenByDefault());
         soapModel.setSponsorLogoId(model.getSponsorLogoId());
         soapModel.setSponsorText(model.getSponsorText());
+        soapModel.setSponsorLink(model.getSponsorLink());
         soapModel.setFlag(model.getFlag());
         soapModel.setFlagText(model.getFlagText());
         soapModel.setFlagTooltip(model.getFlagTooltip());
@@ -288,6 +290,14 @@ public class ContestSoap implements Serializable {
 
     public void setSponsorText(String sponsorText) {
         _sponsorText = sponsorText;
+    }
+
+    public String getSponsorLink() {
+        return _sponsorLink;
+    }
+
+    public void setSponsorLink(String sponsorLink) {
+        _sponsorLink = sponsorLink;
     }
 
     public int getFlag() {
