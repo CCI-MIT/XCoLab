@@ -98,6 +98,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				var parseFunc = null;
 				if (singleSerie.variable.metaData.profiles[1] == 'java.lang.Integer') parseFunc = parseInt;
 				else parseFunc = parseFloat;
+				console.log(singleSerie.variable.metaData.profiles[1], parseFunc);
+
+				if (singleSerie.variable.metaData.units[1].toLowerCase().indexOf("percent") >= 0 || singleSerie.variable.metaData.units[1].toLowerCase().indexOf("%") >= 0) {
+					yaxis.tickOptions = {formatString: "%d %%"};
+					oldParseFunc = parseFunc;
+					parseFunc = function(num) {
+						return 100 * oldParseFunc(num);
+					}
+				}
 				
 				var localMin = parseFunc(singleSerie.variable.metaData.min[1]);
 				var localMax = parseFunc(singleSerie.variable.metaData.max[1]);
@@ -107,7 +116,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			
 				var val = [];
 				for (var i = 0; i < this.variable.values.length; i++) {
-					val.push([parseInt(this.variable.values[i][0]), parseFloat(this.variable.values[i][1])]);
+					val.push([parseInt(this.variable.values[i][0]), parseFunc(this.variable.values[i][1])]);
 				}
 				if ('associatedMetaDataId' in singleSerie) {
 					// value of this serie is describing a confidence interval of different serie, it shouldn't
@@ -135,16 +144,16 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						plotSeries.push({showMarker: false, showLabel: false, 
 							renderer: jQuery.jqplot.OHLCRenderer, color: "rgb(125, 228, 247)"});
 					}
-						valuesCombined.push(val);
-						var dataLabel = singleSerie.name;
-						var dataUnit = singleSerie.variable.metaData.units[1];
-						var labelFormatString = singleSerie.labelFormatString;
+					valuesCombined.push(val);
+					var dataLabel = singleSerie.name;
+					var dataUnit = singleSerie.variable.metaData.units[1];
+					var labelFormatString = singleSerie.labelFormatString;
 
-						if (!(!labelFormatString || jQuery.trim(labelFormatString) == "")) {
-							dataLabel = labelFormatString.replace(/%label/g, dataLabel).replace(/%unit/g, dataUnit);
-						}
+					if (!(!labelFormatString || jQuery.trim(labelFormatString) == "")) {
+						dataLabel = labelFormatString.replace(/%label/g, dataLabel).replace(/%unit/g, dataUnit);
+					}
 
-						plotSeries.push({showMarker: false, label: dataLabel});
+					plotSeries.push({showMarker: false, label: dataLabel});
 					
 				}
 				
@@ -158,7 +167,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		
-		if (min != null && max != null) {
+		if (!isNaN(min) && !isNaN(max) && min != null && max != null) {
 			yaxis.min = min;
 			yaxis.max = max;
 
@@ -183,7 +192,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				yaxis.tickOptions = {formatString:"%d"};
 			}
 		}
-		
 		if (indexMin != null && indexMax != null) {
 			xaxis.min = indexMin;
 			xaxis.max = indexMax;

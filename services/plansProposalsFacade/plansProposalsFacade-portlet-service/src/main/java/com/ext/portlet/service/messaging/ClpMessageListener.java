@@ -4,8 +4,14 @@ import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ActivitySubscriptionServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventServiceUtil;
+import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
+import com.ext.portlet.service.BalloonLinkServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryServiceUtil;
+import com.ext.portlet.service.BalloonTextLocalServiceUtil;
+import com.ext.portlet.service.BalloonTextServiceUtil;
+import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
@@ -176,9 +182,18 @@ public class ClpMessageListener extends BaseMessageListener {
             AnalyticsUserEventLocalServiceUtil.clearService();
 
             AnalyticsUserEventServiceUtil.clearService();
+            BalloonLinkLocalServiceUtil.clearService();
+
+            BalloonLinkServiceUtil.clearService();
             BalloonStatsEntryLocalServiceUtil.clearService();
 
             BalloonStatsEntryServiceUtil.clearService();
+            BalloonTextLocalServiceUtil.clearService();
+
+            BalloonTextServiceUtil.clearService();
+            BalloonUserTrackingLocalServiceUtil.clearService();
+
+            BalloonUserTrackingServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();

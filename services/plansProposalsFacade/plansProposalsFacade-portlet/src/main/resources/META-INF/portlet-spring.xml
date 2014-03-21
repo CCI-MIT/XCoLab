@@ -21,9 +21,18 @@
 	<bean id="com.ext.portlet.service.AnalyticsUserEventLocalService" class="com.ext.portlet.service.impl.AnalyticsUserEventLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.AnalyticsUserEventService" class="com.ext.portlet.service.impl.AnalyticsUserEventServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.AnalyticsUserEventPersistence" class="com.ext.portlet.service.persistence.AnalyticsUserEventPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.BalloonLinkLocalService" class="com.ext.portlet.service.impl.BalloonLinkLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.BalloonLinkService" class="com.ext.portlet.service.impl.BalloonLinkServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.BalloonLinkPersistence" class="com.ext.portlet.service.persistence.BalloonLinkPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.BalloonStatsEntryLocalService" class="com.ext.portlet.service.impl.BalloonStatsEntryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.BalloonStatsEntryService" class="com.ext.portlet.service.impl.BalloonStatsEntryServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.BalloonStatsEntryPersistence" class="com.ext.portlet.service.persistence.BalloonStatsEntryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.BalloonTextLocalService" class="com.ext.portlet.service.impl.BalloonTextLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.BalloonTextService" class="com.ext.portlet.service.impl.BalloonTextServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.BalloonTextPersistence" class="com.ext.portlet.service.persistence.BalloonTextPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.BalloonUserTrackingLocalService" class="com.ext.portlet.service.impl.BalloonUserTrackingLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.BalloonUserTrackingService" class="com.ext.portlet.service.impl.BalloonUserTrackingServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.BalloonUserTrackingPersistence" class="com.ext.portlet.service.persistence.BalloonUserTrackingPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestLocalService" class="com.ext.portlet.service.impl.ContestLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestService" class="com.ext.portlet.service.impl.ContestServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestPersistence" class="com.ext.portlet.service.persistence.ContestPersistenceImpl" parent="basePersistence" />

@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class PlanPropertyFilterServiceClpInvoker {
-    private String _methodName468;
-    private String[] _methodParameterTypes468;
-    private String _methodName469;
-    private String[] _methodParameterTypes469;
+    private String _methodName486;
+    private String[] _methodParameterTypes486;
+    private String _methodName487;
+    private String[] _methodParameterTypes487;
 
     public PlanPropertyFilterServiceClpInvoker() {
-        _methodName468 = "getBeanIdentifier";
+        _methodName486 = "getBeanIdentifier";
 
-        _methodParameterTypes468 = new String[] {  };
+        _methodParameterTypes486 = new String[] {  };
 
-        _methodName469 = "setBeanIdentifier";
+        _methodName487 = "setBeanIdentifier";
 
-        _methodParameterTypes469 = new String[] { "java.lang.String" };
+        _methodParameterTypes487 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName468.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes468, parameterTypes)) {
+        if (_methodName486.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes486, parameterTypes)) {
             return PlanPropertyFilterServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName469.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes469, parameterTypes)) {
+        if (_methodName487.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes487, parameterTypes)) {
             PlanPropertyFilterServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
