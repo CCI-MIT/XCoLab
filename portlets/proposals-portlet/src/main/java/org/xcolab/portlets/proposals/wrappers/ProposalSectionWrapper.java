@@ -65,7 +65,11 @@ public class ProposalSectionWrapper {
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
         String content = getContent();
-        if (content == null) return null;
+        if (content == null) {
+            //default text if available
+            return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
+
+        }
         Document d = Jsoup.parse(content.trim());
         for (Element e : d.select("a.utube")) {
             String curURL = e.attr("href");
