@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 @Controller
 @RequestMapping("view")
 public class ContestsController {
+    private static final int NUM_CONTESTS = 4;
     
     public ContestsController() {
     }
@@ -28,7 +29,13 @@ public class ContestsController {
     	
         List<ContestWrapper> ret = new ArrayList<>();
         
-        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "Open")) {
+        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "")) {
+            if(ret.size() >= NUM_CONTESTS) {
+            	break;
+            }
+            if (contest.getContestPrivate()) {
+            	continue;
+            }
             ret.add(new ContestWrapper(contest));
         }
         
