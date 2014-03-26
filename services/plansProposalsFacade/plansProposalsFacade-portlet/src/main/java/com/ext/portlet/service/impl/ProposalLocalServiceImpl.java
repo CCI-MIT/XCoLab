@@ -1161,7 +1161,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
-        String groupName = "Proposal_" + proposalId;
+        String groupName = "Proposal_" + proposalId + "_" + new Date().getTime();
 
         Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),
