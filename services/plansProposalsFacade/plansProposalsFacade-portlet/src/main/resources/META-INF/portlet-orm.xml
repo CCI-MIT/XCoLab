@@ -48,6 +48,22 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.BalloonLinkModelImpl">
+		<attributes>
+			<id name="uuid">
+				<column name="UUID_" />
+			</id>
+			<basic name="targetUrl" />
+			<basic name="visits" />
+			<basic name="balloonUserUuid" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.BalloonStatsEntryModelImpl">
 		<attributes>
 			<id name="id">
@@ -62,6 +78,59 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.BalloonTextModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="name" />
+			<basic name="textBeforeForm" />
+			<basic name="textAfterForm" />
+			<basic name="textBeforeShareButtons" />
+			<basic name="textAfterShareButtons" />
+			<basic name="acceptTosText" />
+			<basic name="emailTemplate" />
+			<basic name="emailSubjectTemplate" />
+			<basic name="enabled" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.BalloonUserTrackingModelImpl">
+		<attributes>
+			<id name="uuid">
+				<column name="UUID_" />
+			</id>
+			<basic name="email" />
+			<basic name="parent" />
+			<basic name="ip" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="registrationDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="formFiledDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="userId" />
+			<basic name="balloonTextId" />
+			<basic name="referrer" />
+			<basic name="latitude" />
+			<basic name="longitude" />
+			<basic name="city" />
+			<basic name="country" />
+			<basic name="extraData" />
+			<basic name="balloonLinkUuid" />
+			<basic name="balloonLinkContext" />
+			<basic name="userAgent" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
@@ -1193,8 +1262,20 @@
 		<table name="xcolab_AnalyticsUserEvent" />
 		<attributes />
 	</entity>
+	<entity class="com.ext.portlet.model.impl.BalloonLinkImpl" name="BalloonLink">
+		<table name="xcolab_BalloonLink" />
+		<attributes />
+	</entity>
 	<entity class="com.ext.portlet.model.impl.BalloonStatsEntryImpl" name="BalloonStatsEntry">
 		<table name="xcolab_BalloonStatsEntry" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.BalloonTextImpl" name="BalloonText">
+		<table name="xcolab_BalloonText" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.BalloonUserTrackingImpl" name="BalloonUserTracking">
+		<table name="xcolab_BalloonUserTracking" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestImpl" name="Contest">

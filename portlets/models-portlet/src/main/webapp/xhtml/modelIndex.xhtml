@@ -99,6 +99,7 @@
                 </ice:form>
             </ice:panelGroup>
             <ice:panelGroup styleClass="categoryContents">
+            	<ice:form>
                 <ice:dataTable var="simulation" value="#{modelcategory.visibleSimulations}"
                                headerClass="categoryContentsTableHeader"
                                styleClass="categoryContentsTable"
@@ -108,6 +109,8 @@
                              <ice:outputText value="Name"/>
 
                         </f:facet>
+        	<h1>#{navigation.currentPage}</h1>
+                        <ice:commandLink action="#{navigation.showSimulationDetails}">#{simulation.id} - #{simulation.name}</ice:commandLink>
                         <a href="javascript:;"
                            onclick="Collab.nav.navigate('models', {modelId: #{simulation.id}});">#{simulation.id} - #{simulation.name}</a>
                     </ice:column>
@@ -126,6 +129,7 @@
                         </ice:outputText>
                     </ice:column>
                 </ice:dataTable>
+                </ice:form>
             </ice:panelGroup>
         </ice:panelGroup>
     </ice:panelSeries>

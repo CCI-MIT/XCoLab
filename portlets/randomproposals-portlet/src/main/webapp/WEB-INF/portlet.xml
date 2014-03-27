@@ -8,15 +8,11 @@
 >
 	<portlet>
 		<portlet-name>randomproposals-portlet</portlet-name>
-		<display-name>randomproposals-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+		<display-name>randomproposals-portlet</display-name>		
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
+    		<name>check-auth-token</name>
+    		<value>false</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>

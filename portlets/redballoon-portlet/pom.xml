@@ -11,12 +11,12 @@
 	<artifactId>redballoon-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>redballoon-portlet Portlet</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>2.0-SNAPSHOT</version>
 
 	<properties>
-		<icefaces.version>3.2.0</icefaces.version>
+		<spring.version>3.2.0.RELEASE</spring.version>
 	</properties>
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -56,9 +56,7 @@
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>util-java</artifactId>
 			<version>${liferay.version}</version>
-			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
@@ -66,7 +64,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-
 			<groupId>javax.portlet</groupId>
 			<artifactId>portlet-api</artifactId>
 			<version>2.0</version>
@@ -83,91 +80,41 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-ace</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces-compat</artifactId>
-			<version>${icefaces.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.liferay.faces</groupId>
-			<artifactId>liferay-faces-bridge-impl</artifactId>
-			<version>3.2.4-ga5-SNAPSHOT</version>
-		</dependency>
-
-		<!-- <dependency> <groupId>org.icefaces</groupId> <artifactId>icefaces-xcolab</artifactId> 
-			<version>1.8.2</version> </dependency> <dependency> <groupId>org.icefaces</groupId> 
-			<artifactId>icefaces-comps</artifactId> <version>1.8.2</version> </dependency> 
-			<dependency> <groupId>org.icefaces</groupId> <artifactId>icefaces-facelets</artifactId> 
-			<version>1.8.2</version> </dependency> -->
-		<dependency>
-			<groupId>org.icefaces</groupId>
-			<artifactId>icefaces</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-
+		
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-
+		<!-- 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.4</version>
+		</dependency>
+		 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-
+            
+		
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.xcolab.taglibs</groupId>
-			<artifactId>sharedColabIceFacelets</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-xcolab</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-comps</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.icefaces</groupId>
-					<artifactId>icefaces-facelets</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.xcolab.services</groupId>
 			<artifactId>plansProposalsFacade-portlet-service</artifactId>
@@ -181,13 +128,51 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-			<scope>provided</scope>
+  			<groupId>org.xcolab.taglibs</groupId>
+  			<artifactId>colabJspTags</artifactId>
+  			<version>1.0-SNAPSHOT</version>
+  		</dependency>
+        
+		<dependency>
+			<groupId>com.liferay.portal</groupId>
+			<artifactId>util-taglib</artifactId>
+			<version>${liferay.version}</version>
+			<!-- <scope>provided</scope>-->
 		</dependency>
-	</dependencies>
-
+		
+        <dependency>
+			<groupId>com.ocpsoft</groupId>
+			<artifactId>ocpsoft-pretty-time</artifactId>
+			<version>1.0.7</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+			<!--<scope>provided</scope>-->
+		</dependency>
+            
+            
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
+	</dependency>
+            
+            
+	</dependencies>	
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>

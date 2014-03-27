@@ -1435,3 +1435,6 @@ div.portlet-column {
     display: inline-block;
     white-space: nowrap;
 }
+.js .controls-hidden .lfr-meta-actions {
+	display: block;
+}
