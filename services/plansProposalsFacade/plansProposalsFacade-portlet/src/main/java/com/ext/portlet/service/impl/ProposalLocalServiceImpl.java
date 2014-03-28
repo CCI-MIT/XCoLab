@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalService;
+import com.ext.portlet.service.ProposalServiceUtil;
+import com.ext.portlet.service.persistence.*;
+import com.liferay.portal.kernel.dao.orm.*;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -36,16 +44,8 @@ import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
-import com.ext.portlet.service.persistence.Proposal2PhasePK;
-import com.ext.portlet.service.persistence.ProposalSupporterPK;
-import com.ext.portlet.service.persistence.ProposalVersionPK;
-import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -630,6 +630,34 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             }
             proposals.add(proposal);
         }
+        return proposals;
+    }
+
+    /**
+     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+     * @param userId    The userId of the user
+     * @return          A list of proposals the user has contributed to
+     * @throws SystemException
+     */
+    public List<Proposal> getUserProposals(long userId) throws SystemException, PortalException {
+        // Get all groups the user is in
+        List<Long> groupIds = new ArrayList<>();
+        User user = userLocalService.getUser(userId);
+        List<Group> groups = user.getGroups();
+
+        for (Group group : groups) {
+            groupIds.add(group.getGroupId());
+        }
+
+        Criterion criterion = RestrictionsFactoryUtil.eq("authorId", userId);
+        criterion = RestrictionsFactoryUtil.or(criterion, RestrictionsFactoryUtil.in("groupId", groupIds));
+
+        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, PortalClassLoaderUtil.getClassLoader())
+                .add(criterion)
+                .add(PropertyFactoryUtil.forName("visible").eq(true))
+                .addOrder(OrderFactoryUtil.desc("createDate"));
+        List<Proposal> proposals =  proposalLocalService.dynamicQuery(query);
+
         return proposals;
     }
     

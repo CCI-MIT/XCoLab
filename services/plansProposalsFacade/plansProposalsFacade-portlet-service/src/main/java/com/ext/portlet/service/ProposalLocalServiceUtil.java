@@ -713,6 +713,20 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+    *
+    * @param userId    The userId of the user
+    * @return A list of proposals the user has contributed to
+    * @throws SystemException
+    */
+    public static java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getUserProposals(userId);
+    }
+
+    /**
     * <p>Returns count of proposals associated with given contest phase</p>
     *
     * @param contestPhaseId id of a contest phase
