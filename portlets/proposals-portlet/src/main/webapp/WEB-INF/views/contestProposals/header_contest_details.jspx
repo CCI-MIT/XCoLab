@@ -22,7 +22,7 @@
                             <td>
                                 <div class="heading-sponsor-logo">
                                     <c:choose>
-                                        <c:when test="${contest.sponsorLinkAvailable}"><a href="${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
+                                        <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
                                         <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></c:otherwise>
                                     </c:choose>
 
