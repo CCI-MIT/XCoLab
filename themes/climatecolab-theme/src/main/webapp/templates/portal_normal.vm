@@ -68,8 +68,8 @@
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <!-- Tooltip -->
-    <link rel="stylesheet" type="text/css" href="http://iamceege.github.io/tooltipster/css/tooltipster.css" />
-    <script type="text/javascript" src="http://iamceege.github.io/tooltipster/js/jquery.tooltipster.js"></script>
+    <link rel="stylesheet" type="text/css" href="$css_folder/tooltipster.css" />
+    <script type="text/javascript" src="$javascript_folder/jquery.tooltipster.js"></script>
     
 </head>
 
