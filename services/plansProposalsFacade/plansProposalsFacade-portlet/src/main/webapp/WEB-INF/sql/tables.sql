@@ -77,7 +77,7 @@ create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	ContestName VARCHAR(2048) null,
 	ContestShortName VARCHAR(1024) null,
-	ContestDescription VARCHAR(2048) null,
+	ContestDescription VARCHAR(3072) null,
 	ContestModelDescription VARCHAR(2048) null,
 	ContestPositionsDescription VARCHAR(2048) null,
 	defaultPlanDescription TEXT null,

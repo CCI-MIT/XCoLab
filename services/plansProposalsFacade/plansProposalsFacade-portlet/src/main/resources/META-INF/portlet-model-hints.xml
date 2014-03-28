@@ -106,7 +106,7 @@
 			<hint name="max-length">1024</hint>
 		</field>
 		<field name="ContestDescription" type="String">
-			<hint name="max-length">2048</hint>
+			<hint name="max-length">3072</hint>
 		</field>
 		<field name="ContestModelDescription" type="String">
 			<hint name="max-length">2048</hint>
