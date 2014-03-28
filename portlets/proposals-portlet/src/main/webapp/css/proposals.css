@@ -286,3 +286,8 @@ div.sponsorLogo img {
 .commentor-header {
     float:left;
 }
+
+.role-indicator div {
+    float: left;
+    margin-right: 15px;
+}
