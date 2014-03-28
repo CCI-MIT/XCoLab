@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.persistence.*;
@@ -601,12 +604,32 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposals;
     }
 
-    public List<Proposal> getUserProposals(long userId) throws SystemException {
+    /**
+     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+     * @param userId    The userId of the user
+     * @return          A list of proposals the user has contributed to
+     * @throws SystemException
+     */
+    public List<Proposal> getUserProposals(long userId) throws SystemException, PortalException {
+        // Get all groups the user is in
+        List<Long> groupIds = new ArrayList<>();
+        User user = userLocalService.getUser(userId);
+        List<Group> groups = user.getGroups();
+
+        for (Group group : groups) {
+            groupIds.add(group.getGroupId());
+        }
+
+        Criterion criterion = RestrictionsFactoryUtil.eq("authorId", userId);
+        criterion = RestrictionsFactoryUtil.or(criterion, RestrictionsFactoryUtil.in("groupId", groupIds));
+
         final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, PortalClassLoaderUtil.getClassLoader())
-                .add(PropertyFactoryUtil.forName("authorId")
-                        .eq(userId))
+                .add(criterion)
+                .add(PropertyFactoryUtil.forName("visible").eq(true))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
-        return ProposalLocalServiceUtil.dynamicQuery(query);
+        List<Proposal> proposals =  proposalLocalService.dynamicQuery(query);
+
+        return proposals;
     }
     
     /**

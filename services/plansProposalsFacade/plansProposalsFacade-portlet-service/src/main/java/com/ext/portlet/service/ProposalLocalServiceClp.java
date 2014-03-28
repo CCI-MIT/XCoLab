@@ -1837,7 +1837,9 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
     @Override
     public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
-        long userId) throws com.liferay.portal.kernel.exception.SystemException {
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -1845,6 +1847,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     _methodParameterTypes40, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;

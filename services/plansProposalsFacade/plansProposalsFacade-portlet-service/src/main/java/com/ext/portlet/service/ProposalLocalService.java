@@ -611,9 +611,18 @@ public interface ProposalLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    /**
+    * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+    *
+    * @param userId    The userId of the user
+    * @return A list of proposals the user has contributed to
+    * @throws SystemException
+    */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
-        long userId) throws com.liferay.portal.kernel.exception.SystemException;
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns count of proposals associated with given contest phase</p>

@@ -205,10 +205,10 @@
 		</div>
 
         <f:subview rendered="#{userprofileBean.viewingOwnProfile}">
-            <h2>My proposals</h2>
+            <h2 style="margin-top: 20px;">My proposals</h2>
         </f:subview>
         <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
-            <h2>#{currentUser.screenName} proposals</h2>
+            <h2 style="margin-top: 20px;">#{currentUser.screenName} proposals</h2>
         </f:subview>
         <ice:dataTable styleClass="colab" value="#{currentUser.proposals}"
                        rowClasses="t,nt" var="proposal">
