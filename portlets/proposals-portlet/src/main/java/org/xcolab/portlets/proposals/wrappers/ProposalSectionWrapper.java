@@ -123,13 +123,13 @@ public class ProposalSectionWrapper {
                     // Replace exactly this word in the HTML code with leading and trailing spaces
                     if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
                         if (!html.contains("<"))
-                            html = html.replaceFirst(word, " <a href=\""+link+"\">"+ elementName +"</a> ");
+                            html = html.replaceFirst(Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == 0) {
-                        html = html.replaceFirst(word + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
                     } else if (i == words.length - 1) {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + word, " <a href=\""+link+"\">"+ elementName +"</a>");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a>");
                     } else {
-                        html = html.replaceFirst("(\\s|&nbsp;)" + word + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
                     }
                 }
             }
