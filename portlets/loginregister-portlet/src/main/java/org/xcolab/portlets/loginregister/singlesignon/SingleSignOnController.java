@@ -49,7 +49,7 @@ public class SingleSignOnController {
 
         try {
             AuthenticationServiceUtil.logUserIn(request, response, u.getScreenName(), password);
-            u = (User)request.getAttribute(WebKeys.USER);
+            u = themeDisplay.getUser();
             if (u != null) {
                 String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
                 String openId = (String) portletSession.getAttribute("SSO_OPENID_ID",PortletSession.APPLICATION_SCOPE);
