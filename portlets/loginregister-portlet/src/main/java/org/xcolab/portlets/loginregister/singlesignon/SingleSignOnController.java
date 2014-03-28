@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -22,6 +23,11 @@ import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.liferay.portal.security.auth.Authenticator;
+
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=general")
@@ -48,9 +54,15 @@ public class SingleSignOnController {
         PortletSession portletSession = request.getPortletSession();
 
         try {
-            AuthenticationServiceUtil.logUserIn(request, response, u.getScreenName(), password);
-            u = themeDisplay.getUser();
-            if (u != null) {
+            Map<String, Object> resultsMap = new HashMap<String, Object>();
+            // Use local authentication API to check credentials
+            int success = UserLocalServiceUtil.authenticateByScreenName(themeDisplay.getCompanyId(), login, password, null, request.getParameterMap(), resultsMap);
+            if (success == Authenticator.SUCCESS) {
+                // Do the actual login
+                AuthenticationServiceUtil.logUserIn(request, response, login, password);
+
+                // Do the linkage of OpenID or Facebook ID
+                u = UserLocalServiceUtil.getUser(MapUtil.getLong(resultsMap, "userId"));
                 String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
                 String openId = (String) portletSession.getAttribute("SSO_OPENID_ID",PortletSession.APPLICATION_SCOPE);
 
@@ -72,6 +84,7 @@ public class SingleSignOnController {
 
                 return;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
