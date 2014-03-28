@@ -171,7 +171,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 
 		String userIdString = String.valueOf(userId);
 
-		session.setAttribute("j_username", userIdString);
+		session.setAttribute(SESSION_USER_ID_STRING, userIdString);
 
 		if (PORTAL_JAAS_PLAIN_PASSWORD) {
 			session.setAttribute("j_password", password);

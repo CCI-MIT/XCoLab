@@ -6,6 +6,8 @@ import javax.portlet.PortletResponse;
 
 public interface AuthenticationService {
 
+    public static String SESSION_USER_ID_STRING = "j_username";
+
     public void logUserIn(PortletRequest portletRequest, PortletResponse portletResponse,
     		String username, String password) throws Exception;
     public void sendPassword(PortletRequest request, String emailFromName, String emailFromAddress, 
