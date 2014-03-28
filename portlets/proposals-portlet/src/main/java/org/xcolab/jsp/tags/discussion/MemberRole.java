@@ -7,7 +7,7 @@ public enum MemberRole {
     ADVISOR("Advisor"),
     EXPERT("Experts"),
     JUDGES("Judges"),
-    STAFF("Staff", "Moderator"),
+    STAFF("Staff", "Moderator", "Administrator"),
     MODERATOR("Staff");
     
     
