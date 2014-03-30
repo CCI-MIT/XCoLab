@@ -27,12 +27,9 @@
 	margin-left: 4px;
 }
 
-
-
-
-
-
-
+.tooltipster-underline {
+    border-bottom: dashed #30a3fb 2px;
+}
 
 /* This is the base styling required to make all Tooltipsters work */
 .tooltipster-base {
