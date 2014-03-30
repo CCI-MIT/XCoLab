@@ -70,7 +70,11 @@
     <!-- Tooltip -->
     <link rel="stylesheet" type="text/css" href="$css_folder/tooltipster.css" />
     <script type="text/javascript" src="$javascript_folder/jquery.tooltipster.js"></script>
-    
+
+    <!-- WS service -->
+    <script src="/plansProposalsFacade-portlet/js/service.js" language="JavaScript"> </script>
+    <script src="/plansProposalsFacade-portlet/js/ext_service.js" language="JavaScript"> </script>
+
 </head>
 
 
@@ -115,6 +119,27 @@
    <li class="#if ($pageName== 'community' || $parentPageName == 'community')) c #end" ><a href="/web/guest/members">Community</a></li>
    <li class="#if ($pageName == 'search') c #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
   </ul>
+     <script>
+         $.ready(function() {
+             Liferay.Service('/plansProposalsFacade-portlet.contest/get-number-of-unread-messages',
+                     {
+                         userId: 0
+                     },
+                     function(message) {
+                         var exception = message.exception;
+
+                         if (!exception) {
+                             // Process Success
+                             console.log('success');
+                         }
+                         else {
+                             // Process Exception
+                             console.log('exception: ' + exception);
+                         }
+                     });
+         });
+
+     </script>
 
 #if ($themeDisplay.signedIn)
   #set($messageService = $serviceLocator.findService("plansProposalsFacade-portlet","com.ext.portlet.service.MessageRecipientStatusLocalService"))

@@ -7,12 +7,16 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
+import com.ext.portlet.NoSuchMessageRecipientStatusException;
 import com.ext.portlet.service.base.ContestServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
 
 /**
  * The implementation of the contest remote service.
@@ -61,5 +65,26 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
     		}
     	}
     	return contests;
+    }
+
+    @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
+    public int getNumberOfUnreadMessages(long userId) throws PortalException, SystemException {
+        int unreadMessages = 0;
+        if (userId == 0) {
+            userId = PrincipalThreadLocal.getUserId();
+        }
+        if (userId != 0) {
+            try {
+                unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(userId);
+            } catch (NoSuchMessageRecipientStatusException e) {
+                e.printStackTrace();
+            } catch (SystemException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return unreadMessages;
+
     }
 }
