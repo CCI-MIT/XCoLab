@@ -52,10 +52,10 @@ public class ContestServiceWrapper implements ContestService,
     }
 
     @Override
-    public int getNumberOfUnreadMessages(long userId)
+    public int getNumberOfUnreadMessages()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _contestService.getNumberOfUnreadMessages(userId);
+        return _contestService.getNumberOfUnreadMessages();
     }
 
     /**

@@ -68,15 +68,12 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
     }
 
     @JSONWebService
-    @AccessControlled(guestAccessEnabled=true)
-    public int getNumberOfUnreadMessages(long userId) throws PortalException, SystemException {
+     @AccessControlled(guestAccessEnabled=true)
+     public int getNumberOfUnreadMessages() throws PortalException, SystemException {
         int unreadMessages = 0;
-        if (userId == 0) {
-            userId = PrincipalThreadLocal.getUserId();
-        }
-        if (userId != 0) {
+        if (getUserId() != 0) {
             try {
-                unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(userId);
+                unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(getUserId());
             } catch (NoSuchMessageRecipientStatusException e) {
                 e.printStackTrace();
             } catch (SystemException e) {

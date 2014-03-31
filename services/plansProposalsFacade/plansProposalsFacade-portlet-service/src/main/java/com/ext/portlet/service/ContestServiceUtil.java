@@ -57,10 +57,10 @@ public class ContestServiceUtil {
         return getService().getContestsOpenForProposals();
     }
 
-    public static int getNumberOfUnreadMessages(long userId)
+    public static int getNumberOfUnreadMessages()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getNumberOfUnreadMessages(userId);
+        return getService().getNumberOfUnreadMessages();
     }
 
     public static void clearService() {

@@ -33,7 +33,7 @@ public class ContestServiceClpInvoker {
 
         _methodName493 = "getNumberOfUnreadMessages";
 
-        _methodParameterTypes493 = new String[] { "long" };
+        _methodParameterTypes493 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -57,7 +57,7 @@ public class ContestServiceClpInvoker {
 
         if (_methodName493.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
-            return ContestServiceUtil.getNumberOfUnreadMessages(((Long) arguments[0]).longValue());
+            return ContestServiceUtil.getNumberOfUnreadMessages();
         }
 
         throw new UnsupportedOperationException();

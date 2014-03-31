@@ -38,3 +38,10 @@ Liferay.Service.registerClass(
 		getProposalVersions: true
 	}
 );
+
+Liferay.Service.registerClass(
+    Liferay.Service.xcolab, "Contest",
+    {
+        getNumberOfUnreadMessages: true
+    }
+);

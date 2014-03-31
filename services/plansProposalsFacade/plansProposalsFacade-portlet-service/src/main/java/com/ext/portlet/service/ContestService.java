@@ -58,7 +58,7 @@ public interface ContestService extends BaseService, InvokableService {
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public int getNumberOfUnreadMessages(long userId)
+    public int getNumberOfUnreadMessages()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

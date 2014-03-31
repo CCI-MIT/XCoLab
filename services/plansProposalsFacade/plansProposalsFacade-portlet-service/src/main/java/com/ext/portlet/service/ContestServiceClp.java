@@ -34,7 +34,7 @@ public class ContestServiceClp implements ContestService {
 
         _methodName4 = "getNumberOfUnreadMessages";
 
-        _methodParameterTypes4 = new String[] { "long" };
+        _methodParameterTypes4 = new String[] {  };
     }
 
     @Override
@@ -115,14 +115,14 @@ public class ContestServiceClp implements ContestService {
     }
 
     @Override
-    public int getNumberOfUnreadMessages(long userId)
+    public int getNumberOfUnreadMessages()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableService.invokeMethod(_methodName4,
-                    _methodParameterTypes4, new Object[] { userId });
+                    _methodParameterTypes4, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
