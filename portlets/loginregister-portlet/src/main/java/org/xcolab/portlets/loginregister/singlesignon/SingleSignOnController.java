@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.*;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +67,7 @@ public class SingleSignOnController {
                 u = UserLocalServiceUtil.getUser(MapUtil.getLong(resultsMap, "userId"));
                 String fbIdString = (String) portletSession.getAttribute("FACEBOOK_USER_ID",PortletSession.APPLICATION_SCOPE);
                 String openId = (String) portletSession.getAttribute("SSO_OPENID_ID",PortletSession.APPLICATION_SCOPE);
+                String profileImageId = (String)portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, PortletSession.APPLICATION_SCOPE);
 
                 if (Validator.isNotNull(fbIdString)){
                     // update FB credentials
@@ -77,6 +80,11 @@ public class SingleSignOnController {
                     UserLocalServiceUtil.updateUser(u);
                     portletSession.setAttribute("OPEN_ID_LOGIN",new Long(u.getUserId()), PortletSession.APPLICATION_SCOPE);
                     response.sendRedirect(themeDisplay.getURLHome());
+                }
+                if (Validator.isNotNull(profileImageId)) {
+                    long id = GetterUtil.getLong(profileImageId);
+                    u.setPortraitId(id);
+                    UserLocalServiceUtil.updateUser(u);
                 }
                 response.setRenderParameter("error", "true");
                 response.setRenderParameter("SSO", "general");
