@@ -51,4 +51,12 @@ public class ValidScreenNameValidator implements
 		return name != null && name.matches("^[a-zA-Z0-9]+$");
 	}
 
+    public String normalizeScreenName(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        return name.replaceAll("[^a-zA-Z0-9]", "");
+    }
+
 }

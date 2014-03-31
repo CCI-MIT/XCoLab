@@ -1,10 +1,13 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
+import com.google.api.client.http.HttpRequest;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.facebook.FacebookConnectUtil;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -25,9 +28,13 @@ import javax.portlet.*;
 import javax.validation.Valid;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -36,7 +43,7 @@ import java.util.Date;
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%d/picture?type=large";
+    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING = "http://graph.facebook.com/%d/?fields=picture&type=large";
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws IOException, SystemException {
@@ -86,7 +93,10 @@ public class FacebookController {
                 user = UserLocalServiceUtil.getUserByFacebookId(
                         themeDisplay.getCompanyId(), facebookId);
 
-                ImageUploadUtils.updateProfilePicture(user, fbProfilePictureURL);
+                String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+                if (realPictureURLString != null) {
+                    ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
+                }
             }
             catch (NoSuchUserException e){
 
@@ -105,7 +115,12 @@ public class FacebookController {
                 user = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
                 updateUserWithFBId(user,facebookId);
-                ImageUploadUtils.updateProfilePicture(user, fbProfilePictureURL);
+
+                String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+                if (realPictureURLString != null) {
+                    ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
+                }
+
             }
             catch (NoSuchUserException e){
 
@@ -132,8 +147,11 @@ public class FacebookController {
 
         // Get the FB image url
         if (facebookId > 0) {
-            long imageId = ImageUploadUtils.linkProfilePicture(fbProfilePictureURL);
-            portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId), PortletSession.APPLICATION_SCOPE);
+            String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+            if (realPictureURLString != null) {
+                long imageId = ImageUploadUtils.linkProfilePicture(getFacebookPictureURLString(fbProfilePictureURL));
+                portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId), PortletSession.APPLICATION_SCOPE);
+            }
         }
 
         if (user != null) {
@@ -154,5 +172,30 @@ public class FacebookController {
     private void updateUserWithFBId(User u, long fbId) throws SystemException, PortalException{
         u.setFacebookId(fbId);
         UserLocalServiceUtil.updateUser(u);
+    }
+
+    /**
+     * Get the real image URL
+     * @return
+     */
+    private String getFacebookPictureURLString(String fbProfilePictureURL) {
+        try {
+            // Get real facebook image URL
+            InputStream is = new URL(fbProfilePictureURL).openStream();
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(is, writer, "UTF-8");
+            String json = writer.toString();
+
+            JSONObject fbJson = JSONFactoryUtil.createJSONObject(json);
+            return fbJson.getJSONObject("picture").getJSONObject("data").getString("url");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
