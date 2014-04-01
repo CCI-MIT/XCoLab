@@ -116,10 +116,16 @@ public class ContestsIndexController extends BaseProposalsController {
         	for (FocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
+
+            List<ContestWrapper> otherContests = new ArrayList<ContestWrapper>();
+            for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
+            	otherContests.add(new ContestWrapper(contest));
+            }
         	
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
         	model.addAttribute("ontologySpaces", ontologySpaces.values());
+        	model.addAttribute("otherContests", otherContests);
         	
         }
         
