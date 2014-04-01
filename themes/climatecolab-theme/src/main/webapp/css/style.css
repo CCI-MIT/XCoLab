@@ -1039,6 +1039,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 .txt {background-color:#e8e8e8; padding:10px; border-top:1px solid #939393;}
 
+.section a {display: block; text-decoration: none; color: #000; cursor: pointer;}
 .section {position:relative;}
 .section.active .txt {background-color:#3192b1; color:#ffffff; border-top:1px solid #ffffff;}
 
