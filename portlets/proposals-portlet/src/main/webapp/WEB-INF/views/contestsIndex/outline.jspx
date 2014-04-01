@@ -48,10 +48,20 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
     
     <div class="contest-outline-right">
         
-        <div class="contest-count"><span class="count">3</span> contests</div>
-        <div class="show-active">Display: <a href="#">Show active</a></div>
-        <div class="clearfix"><!--  --></div>
-      
+        <div class="contest-count"><span class="count"><!--  --></span> contests</div>
+        <div class="show-active">Display: 
+        	<c:choose>
+				<c:when test="${showActiveContests }">
+					<span id="otherContestsCount"><span class='count'><!--  --></span> prior contests in current selection </span>
+					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" id='showOtherContestsLink' >Show prior contests</a>
+				</c:when>
+				<c:otherwise>
+					<span id="otherContestsCount"><span class='count'><!--  --></span> active contests in current selection </span>
+					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" id='showOtherContestsLink'>Show active contests</a>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<div class="clearfix"><!--  --></div>
         <div class="section-list">
         	<!--  -->
         </div>
@@ -69,6 +79,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 	<script>
 	    var ontologyTerms = {};
 		var contests = {};
+		var otherContests = {};
 		var focusAreas = {};
 		var ontologySpaces = {};
 		
@@ -77,7 +88,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}">
-			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], space: ontologySpaces[${term.ontologySpaceId}]};
+			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}]};
 		</c:forEach>
 		
 		for (var termId in ontologyTerms) {
@@ -94,10 +105,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var focusArea = null;
 		var contest = null;
 		
-		function addContestToTermAndParents(contest, term) {
+		function addContestToTermAndParents(contest, term, isOther) {
 			if (term == null) return;
-			term.contests.push(contest);
-			addContestToTermAndParents(contest, term.parent);
+			if (isOther) {
+				term.otherContests.push(contest);
+			}
+			else {
+				term.contests.push(contest);
+			}
+			addContestToTermAndParents(contest, term.parent, isOther);
 		}
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
@@ -109,6 +125,18 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			for (var idx in focusArea.terms) {
 				addContestToTermAndParents(contest, ontologyTerms[focusArea.terms[idx]]);
+			}
+			
+		</c:forEach>
+
+		<c:forEach var="contest" items="${otherContests}">
+			otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
+					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
+			otherContests[${contest.contestPK}] = otherContest;
+			focusArea = focusAreas[${contest.focusAreaId}];
+			
+			for (var idx in focusArea.terms) {
+				addContestToTermAndParents(contest, ontologyTerms[focusArea.terms[idx]], true);
 			}
 			
 		</c:forEach>
@@ -129,7 +157,19 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			container.show();
 			var currentTerm = ontologyTerms[termId];
 			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
+			// update toggle type link 
+			var showOtherContestsLink = jQuery("#showOtherContestsLink");
+			console.log("showOtherContestsLink", showOtherContestsLink);
+			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
 			container.find(".contest-count .count").text(currentTerm.contests.length);
+			
+			if (currentTerm.otherContests.length > 0) {
+				jQuery("#otherContestsCount .count").text(currentTerm.otherContests.length);
+				jQuery("#otherContestsCount").show();
+			}
+			else {
+				jQuery("#otherContestsCount").hide();
+			}
 			
 			var termAndParents = [];
 			var term = currentTerm;
@@ -192,9 +232,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					}
 					for (var i =0; i < currentTerm.contests.length; i++) {
 						var contest = currentTerm.contests[i];
-						contestsListHtml.push("<div class='ctest'><a href='#");
-						contestsListHtml.push(contest.contestLink);
-						contestsListHtml.push("'>");
+						contestsListHtml.push("<div class='ctest'><a href='#'>");
 						contestsListHtml.push(contest.name);
 						contestsListHtml.push("<span class='count'>");
 						contestsListHtml.push(contest.proposalsCount);
@@ -214,9 +252,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 							contestsListHtml.push(term.name);
 							contestsListHtml.push("</p>");
 						}
-						contestsListHtml.push("<p class='viewContestDetails'>");
+						contestsListHtml.push("<div class='viewContestDetails'>");
 						contestsListHtml.push(contest.contestLink);
-						contestsListHtml.push("</p></div></div>");
+						contestsListHtml.push("</div></div></div>");
 					}
 					container.find(".contest-list").html(contestsListHtml.join(''));
 					container.find(".contest-list").slideDown();
@@ -263,7 +301,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 		});
 
-		jQuery(".contest-outline-right").on('click', '.ctest a', function(event) {
+		jQuery(".contest-outline-right").on('click', '.ctest > a', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
 			
