@@ -13,7 +13,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>
+                        <td style="vertical-align: middle;">
                             <div class="heading-title">
                                 ${contest.contestName}
                             </div>
