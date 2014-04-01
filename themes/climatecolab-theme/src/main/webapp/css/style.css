@@ -226,7 +226,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .headline.formmargin {margin-right:10px;}
 
 .headline h1 {float:left; display:inline; width:auto; margin-right:30px;}
-.headline .view {float:left;  height:34px; background:url(../images/view-bg.png) no-repeat 3px 3px; margin-right:16px;}
+.headline .view {float:left;  height:34px; background:url(../images/view-bg-old.png) no-repeat 3px 3px; margin-right:16px;}
 .headline .show {float:left; display:inline; height:26px; padding-top:8px; font:12px "Lucida Grande", Arial, sans-serif; vertical-align:middle;}
 .headline .divider {float:left; height:30px; width:5px; margin-right:5px; border-right:1px dotted #333;}
 
@@ -1053,6 +1053,10 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 	display: none;
 }
 
+/** just to hide outline as it's in beta stage **/
+.headline .outline {
+	display: none;
+}
 
 
 /* --------------------------------------------------------------------------------------------------------------- */

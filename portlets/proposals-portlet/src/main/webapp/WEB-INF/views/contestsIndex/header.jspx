@@ -62,6 +62,8 @@
 				</div>
 			</div>
 		</div>
+		<div class="show"><a href="/web/guest/resources/-/wiki/Main/What%2C+Where%2C+Who+taxonomy--Quick+view">Outline View</a></div>
+  		<div class="divider"><!--  --></div> 
 		<div class="show">
 			<c:choose>
 				<c:when test="${showActiveContests }">
