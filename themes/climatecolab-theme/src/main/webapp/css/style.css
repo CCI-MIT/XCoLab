@@ -598,7 +598,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contest-detail .description {padding:18px 16px 20px 18px;}
 .contest-detail .description p {padding-right:22px; line-height:24px;}
 
-.contest-detail .what, .contest-detail .where, .contest-detail .who {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:25px;}
+.contest-detail .what, .contest-detail .where, .contest-detail .who {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:10px;}
 .contest-detail .what {background:url(../images/icon-list-what.png) no-repeat; padding-left:30px;}
 .contest-detail .where {background:url(../images/icon-list-where.png) no-repeat; padding-left:33px;}
 .contest-detail .who {background:url(../images/icon-list-who.png) no-repeat; padding-left:25px;}
@@ -1043,7 +1043,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 .detail {font-size:12px; margin:0 0 15px 29px; padding:5px 0; color:#858585; line-height:19px; border-bottom:1px solid #e8e8e8; display: none;}
 .detail p {margin:0 0 10px 0;}
-.what, .where, .who, .how {float:left; width:56px; font-weight:900;}
+.what, .where, .who, .how {float:left; font-weight:900;}
 .what {color:#ef7b22;}
 .where {color:#66af45;}
 .who {color:#539bd4;}

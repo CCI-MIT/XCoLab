@@ -36,26 +36,31 @@
 		<div class="description">
 			<p>${contest.contestDescription }</p>
 			<c:if test="${contest.hasFocusArea }">
-				<table style="width: auto;">
+				<table style="width: 100%;">
 					<tr>
 						<c:if test="${not empty contest.what}">
-							<td class="what"><strong>What:</strong></td>
-							<td class="ontologyItem">
-								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
-							</td>
+							<td>
+                                <div class="what"><strong>What:</strong></div>
+                                <div class="ontologyItem">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
+                                </div>
+                            </td>
 						</c:if>
-						
+
 						<c:if test="${not empty contest.where}">
-							<td class="where"><strong>Where:</strong></td>
-							<td class="ontologyItem">
-								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+							<td>
+                                <div class="where"><strong>Where:</strong></div>
+                                <div class="ontologyItem">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+                                </div>
 							</td>
 						</c:if>
-						
+
 						<c:if test="${not empty contest.who}">
-							<td class="who"><strong>Who:</strong></td>
-							<td class="ontologyItem">
-								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" />
+							<td>
+                                <div class="who"><strong>Who:</strong></div>
+							<div class="ontologyItem">
+								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
 							</td>
 						</c:if>
 					</tr>
