@@ -49,7 +49,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
     <div class="contest-outline-right">
         
         <div class="contest-count"><span class="count">3</span> contests</div>
-        <div class="show-active">Display: <a href="http://colab.3rwd.com/contests/outline-view.html#0">Show active</a></div>
+        <div class="show-active">Display: <a href="#">Show active</a></div>
         <div class="clearfix"><!--  --></div>
       
         <div class="section-list">
@@ -65,7 +65,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
  		
     </div> <!-- / contest-outline-right -->
 	</div>
-	
+
 	<script>
 	    var ontologyTerms = {};
 		var contests = {};
@@ -96,15 +96,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		
 		function addContestToTermAndParents(contest, term) {
 			if (term == null) return;
-			if (term.id == 403) {
-				console.log('adding contest', contest.id, term.id, term.contests.length);
-			}
 			term.contests.push(contest);
 			addContestToTermAndParents(contest, term.parent);
 		}
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
-			contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, proposalsCount: ${contest.proposalsCount}};
+			contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
+					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
 			contests[${contest.contestPK}] = contest;
 			contestsCount++;
 			focusArea = focusAreas[${contest.focusAreaId}];
@@ -120,9 +118,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		// update ontology term contest counts
 		
 		for (var termId in ontologyTerms) {
-			if (termId == 403) {
-				console.log('ontologyTerms[termId].contests.length', ontologyTerms[termId].contests.length);
-			}
 			
 			jQuery("> a > .count", "#ontologyTerm_" + termId).text(ontologyTerms[termId].contests.length);
 		}
@@ -146,54 +141,108 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			termAndParents.reverse();
 			
 			var sectionsHtml = [];
+			// mark all sections as eligible for removal
+			jQuery(".section-list .section").addClass("sectionForRemoval");
+
+			container.find('.section-list .active').removeClass('active');
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
 			for (var i = 0; i < termAndParents.length; i++) {
 				var term = termAndParents[i];
 				var styleClass='section slevel' + (i+1) + ' s' + (i+1) + (term == currentTerm ? ' active' : '');
+				// check if term isn't already visible
+				var sectionElement = jQuery("#sectionDetails_" + term.id);
+				if (sectionElement.length > 0) {
+					// remove "for removal" mark
+					sectionElement.removeClass("sectionForRemoval");
+					continue;
+				}
+				else {
+					console.log("section not found", term.id, term);
+				}
 				sectionsHtml.push('<div class="');
 				sectionsHtml.push(styleClass);
+				sectionsHtml.push('" id="sectionDetails_');
+				sectionsHtml.push(term.id);
 				sectionsHtml.push('"><div class="spacr"><div class="txt">');
 				sectionsHtml.push(term.name);
 				sectionsHtml.push('</div></div></div>');
 			}
+			// all sections that are marked for removal append to separate container and slide it up
+			var forRemovalContainer = jQuery("<div></div>");
+			forRemovalContainer.appendTo(container.find('.section-list')).append(jQuery(".sectionForRemoval"));
 			
-			container.find('.section-list').html(sectionsHtml.join(''));
+			// append to show container to section-list and set it's html to all new sections
+			var toShowContainer = jQuery("<div style='display: none;'></div>");
+			toShowContainer.appendTo(container.find('.section-list')).html(sectionsHtml.join(""));
 			
-			var contestsListHtml = [];
-			for (var i =0; i < currentTerm.contests.length; i++) {
-				var contest = currentTerm.contests[i];
-				contestsListHtml.push("<div class='ctest'><a href='#");
-				contestsListHtml.push(contest.contestLink);
-				contestsListHtml.push("'>");
-				contestsListHtml.push(contest.name);
-				contestsListHtml.push("<span class='count'>");
-				contestsListHtml.push(contest.proposalsCount);
-				contestsListHtml.push("</span></a>");
-				contestsListHtml.push("<div class='detail'><p>");
-				contestsListHtml.push(contest.description);
-				contestsListHtml.push("</p>");
+			container.find(".contest-list").slideUp();
+			forRemovalContainer.slideUp({complete: function() {
 				
-				var focusArea = focusAreas[contest.focusAreaId];
-				for (var j = 0; j < focusArea.terms.length; j++) {
-					var term = ontologyTerms[focusArea.terms[j]];
-					contestsListHtml.push("<p><span class='");
-					contestsListHtml.push(term.space.name.toLowerCase());
-					contestsListHtml.push("'>");
-					contestsListHtml.push(term.space.name);
-					contestsListHtml.push("</span>");
-					contestsListHtml.push(term.name);
-					contestsListHtml.push("</p>");
-				}
-				contestsListHtml.push("</div></div>");
-			}
-			container.find(".contest-list").html(contestsListHtml.join(''));
+				// after sliding is complete remove unnecessary sections and show new sections
+				forRemovalContainer.remove();
+				toShowContainer.slideDown({complete: function() {
+					// move new sections to section-list as a main container and remove "toShowContainer" 
+					toShowContainer.find(".section").appendTo(container.find('.section-list'));
+					toShowContainer.remove();
+					container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+					
+					var contestsListHtml = [];
+					if (currentTerm.contests.length == 0) {
+						contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
+					}
+					for (var i =0; i < currentTerm.contests.length; i++) {
+						var contest = currentTerm.contests[i];
+						contestsListHtml.push("<div class='ctest'><a href='#");
+						contestsListHtml.push(contest.contestLink);
+						contestsListHtml.push("'>");
+						contestsListHtml.push(contest.name);
+						contestsListHtml.push("<span class='count'>");
+						contestsListHtml.push(contest.proposalsCount);
+						contestsListHtml.push("</span></a>");
+						contestsListHtml.push("<div class='detail'><p>");
+						contestsListHtml.push(contest.description);
+						contestsListHtml.push("</p>");
+						
+						var focusArea = focusAreas[contest.focusAreaId];
+						for (var j = 0; j < focusArea.terms.length; j++) {
+							var term = ontologyTerms[focusArea.terms[j]];
+							contestsListHtml.push("<p><span class='");
+							contestsListHtml.push(term.space.name.toLowerCase());
+							contestsListHtml.push("'>");
+							contestsListHtml.push(term.space.name);
+							contestsListHtml.push("</span>");
+							contestsListHtml.push(term.name);
+							contestsListHtml.push("</p>");
+						}
+						contestsListHtml.push("<p class='viewContestDetails'>");
+						contestsListHtml.push(contest.contestLink);
+						contestsListHtml.push("</p></div></div>");
+					}
+					container.find(".contest-list").html(contestsListHtml.join(''));
+					container.find(".contest-list").slideDown();
+				}});
+				
+			}});
+			
+
+			
+			
 		}
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
 			var container = self.parent();
-			console.log(self, self.find("> ul"));
 			container.addClass('currentlyClicked');
-			jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active')
+			jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active');
+			jQuery('.contest-outline-left a.open').each(function() {
+				var parent = jQuery(this).parent();
+				if (!parent.hasClass('currentlyClicked') && parent.find(".currentlyClicked").length == 0) {
+					// this is different branch than the one currently clicked, close it
+					parent.find(".open").removeClass("open");
+					parent.find("> ul").slideUp();
+				}
+			});
 			container.removeClass('currentlyClicked').toggleClass('active');
 			self.toggleClass('open');
 			
@@ -213,6 +262,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		jQuery(".contest-outline-right").on('click', '.ctest a', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
+			
+			self.parent().addClass('currentlyClicked');
+			var otherContests = jQuery(".contest-outline-right").find(".ctest").not(".currentlyClicked");
+			otherContests.find("a").removeClass("active");
+			otherContests.find(".detail").slideUp();
+			self.parent().removeClass('currentlyClicked');
+			
 			self.toggleClass('active');
 			if (self.hasClass('active')) {
 				self.parent().find('> .detail').slideDown();
@@ -248,11 +304,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				termContainer = jQuery("#ontologyTerm_" + term.id);
 				termContainer.find('> ul').slideDown();
 				termContainer.find('> a').addClass('open');
-				console.log(termContainer);
 				jQuery("#ontologyterm_" + term.id).slideDown();
 				term = term.parent;
 			}
+			var spaceContainer = termContainer.parent().parent();
+			spaceContainer.find("> ul").slideDown();
 			termContainer.parent().slideDown();
+			spaceContainer.find("a.section-head").addClass("open");
 			
 		}
 		

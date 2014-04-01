@@ -62,33 +62,37 @@
 				</div>
 			</div>
 		</div>
-		<div class="show">
-			<c:choose>
-				<c:when test="${showActiveContests }">
-					<a href="/web/guest/plans/-/plans/contestsType/prior" >Show prior contests</a>
-				</c:when>
-				<c:otherwise>
-					<a href="/web/guest/plans/" >Show active contests</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-  		<div class="divider"><!--  --></div> 
+		<c:if test="${viewType != 'OUTLINE' }">
+			<div class="show">
+				<c:choose>
+					<c:when test="${showActiveContests }">
+						<a href="/web/guest/plans/-/plans/contestsType/prior" >Show prior contests</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/web/guest/plans/" >Show active contests</a>
+					</c:otherwise>
+				</c:choose>
+			</div>
+  			<div class="divider"><!--  --></div> 
+		</c:if>
   		<div class="show">
   			<a href="/web/guest/plans/-/plans/contestId/1300102">Suggest a new contest</a>
   		</div> 
- 		<div class="filter" style="position: relative;">
- 			<portlet:renderURL var="filterURL" />
- 			<form action="${filterURL }" id="filterContestsForm" method="get">
- 				<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
- 				<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
- 				<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
- 				<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
- 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
-    			<c:if test="${not empty sortFilterPage.filter }">
-        			<a href="javascript:;" id="contestsFilterClear">&#160;</a>
-        		</c:if>
-            </form>
-        </div>
+		<c:if test="${viewType != 'OUTLINE' }">
+ 			<div class="filter" style="position: relative;">
+ 				<portlet:renderURL var="filterURL" />
+	 			<form action="${filterURL }" id="filterContestsForm" method="get">
+ 					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+ 					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+ 					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+ 					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+	 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
+    				<c:if test="${not empty sortFilterPage.filter }">
+        				<a href="javascript:;" id="contestsFilterClear">&#160;</a>
+        			</c:if>
+	            </form>
+    	    </div>
+    	</c:if>
 
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />
