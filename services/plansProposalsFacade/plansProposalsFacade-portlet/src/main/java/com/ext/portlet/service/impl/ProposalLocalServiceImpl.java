@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -658,7 +659,38 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 .addOrder(OrderFactoryUtil.desc("createDate"));
         List<Proposal> proposals =  proposalLocalService.dynamicQuery(query);
 
-        return proposals;
+        // Filter out "deleted" proposals
+        List<Proposal> returnList = new ArrayList<>();
+        for (Proposal proposal : proposals) {
+            List<Proposal2Phase> p2Phases = proposal2PhaseLocalService.getByProposalId(proposal.getProposalId());
+
+            // Count number of invisible attributes
+            int invisibleCount = 0;
+            int overallCount = 0;
+            for (Proposal2Phase phase : p2Phases) {
+                // Try to get
+                try {
+                    final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
+                            phase.getProposalId(), phase.getContestPhaseId(), ProposalContestPhaseAttributeKeys.VISIBLE);
+
+                    if (visibleAttribute.getNumericValue() == 0) {
+                        invisibleCount++;
+                    }
+                    overallCount++;
+
+                } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    // We ignore the exception here since it does not have an impact
+                }
+
+            }
+
+            // Either we don't have an invisible entry in the attributes table or there is at least one visible
+            if ((overallCount == 0) || (overallCount != invisibleCount)) {
+                returnList.add(proposal);
+            }
+        }
+
+        return returnList;
     }
     
     /**
