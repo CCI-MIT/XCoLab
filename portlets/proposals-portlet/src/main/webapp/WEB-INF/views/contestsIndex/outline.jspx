@@ -52,10 +52,10 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="show-active">Display: 
         	<c:choose>
 				<c:when test="${showActiveContests }">
-					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >Show prior contests</a>
+					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >Show active contests</a>
 				</c:when>
 				<c:otherwise>
-					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>Show active contests</a>
+					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>Show prior contests</a>
 				</c:otherwise>
 			</c:choose>
 		</div>
