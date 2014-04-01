@@ -157,16 +157,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					sectionElement.removeClass("sectionForRemoval");
 					continue;
 				}
-				else {
-					console.log("section not found", term.id, term);
-				}
 				sectionsHtml.push('<div class="');
 				sectionsHtml.push(styleClass);
 				sectionsHtml.push('" id="sectionDetails_');
 				sectionsHtml.push(term.id);
-				sectionsHtml.push('"><div class="spacr"><div class="txt">');
+				sectionsHtml.push('"><div class="spacr"><a href="#" class="txt" data-term-id="');
+				sectionsHtml.push(term.id);
+				sectionsHtml.push('">');
 				sectionsHtml.push(term.name);
-				sectionsHtml.push('</div></div></div>');
+				sectionsHtml.push('</a></div></div>');
 			}
 			// all sections that are marked for removal append to separate container and slide it up
 			var forRemovalContainer = jQuery("<div></div>");
@@ -229,6 +228,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			
 		}
+		jQuery(".contest-outline-right .section-list").on('click', 'a', function(event) {
+			event.preventDefault();
+			console.log("Clicked on section term: " + jQuery(this).attr('data-term-id'), jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')));
+			jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')).find('> a').click();
+		});
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
