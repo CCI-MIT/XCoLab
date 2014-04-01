@@ -36,7 +36,7 @@
 		<div class="description">
 			<p>${contest.contestDescription }</p>
 			<c:if test="${contest.hasFocusArea }">
-				<table style="width: 100%;">
+				<table style="width: 100%; table-layout: fixed;">
 					<tr>
 						<c:if test="${not empty contest.what}">
 							<td>
