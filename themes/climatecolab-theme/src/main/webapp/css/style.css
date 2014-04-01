@@ -1056,6 +1056,13 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 	display: none;
 }
 
+.otherContestsCount.plural .plural, .otherContestsCount.singular .singular {
+	display: inline;
+}
+
+.otherContestsCount.singular .plural, .otherContestsCount.plural .singular {
+	display: none;
+}
 
 
 /* --------------------------------------------------------------------------------------------------------------- */

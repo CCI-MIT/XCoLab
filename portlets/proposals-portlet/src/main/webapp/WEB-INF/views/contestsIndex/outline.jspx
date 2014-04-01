@@ -52,12 +52,10 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="show-active">Display: 
         	<c:choose>
 				<c:when test="${showActiveContests }">
-					<span id="otherContestsCount"><span class='count'><!--  --></span> prior contests in current selection </span>
-					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" id='showOtherContestsLink' >Show prior contests</a>
+					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >Show prior contests</a>
 				</c:when>
 				<c:otherwise>
-					<span id="otherContestsCount"><span class='count'><!--  --></span> active contests in current selection </span>
-					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" id='showOtherContestsLink'>Show active contests</a>
+					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>Show active contests</a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -71,6 +69,24 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="contest-list">
        		<!--  -->
         </div> <!-- / contest-list -->
+		<c:choose>
+			<c:when test="${showActiveContests }">
+				<span class="otherContestsCount">If you enable 
+				<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+				
+				<span class='count'><!--  --></span> more 
+				<span class='plural'>contests</span>
+				<span class='singular'>contest</span> will show up</span>
+			</c:when>
+			<c:otherwise>
+				<span class="otherContestsCount">If you enable 
+				<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
+				
+				<span class='count'><!--  --></span> more 
+				<span class='plural'>contests</span>
+				<span class='singular'>contest</span> will show up</span>
+			</c:otherwise>
+		</c:choose>
     
  		
     </div> <!-- / contest-outline-right -->
@@ -158,17 +174,18 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			var currentTerm = ontologyTerms[termId];
 			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
 			// update toggle type link 
-			var showOtherContestsLink = jQuery("#showOtherContestsLink");
-			console.log("showOtherContestsLink", showOtherContestsLink);
+			var showOtherContestsLink = jQuery(".showOtherContestsLink");
 			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
 			container.find(".contest-count .count").text(currentTerm.contests.length);
 			
 			if (currentTerm.otherContests.length > 0) {
-				jQuery("#otherContestsCount .count").text(currentTerm.otherContests.length);
-				jQuery("#otherContestsCount").show();
+				jQuery(".otherContestsCount .count").text(currentTerm.otherContests.length);
+				jQuery(".otherContestsCount").show();
+				jQuery(".otherContestsCount").addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural")
+					.removeClass(currentTerm.otherContests.length == 1 ? "plural" : "singular");
 			}
 			else {
-				jQuery("#otherContestsCount").hide();
+				jQuery(".otherContestsCount").hide();
 			}
 			
 			var termAndParents = [];
