@@ -8,13 +8,11 @@
 	<jsp:directive.include file="./init.jspx" />
 	<div id="content">
 		<jsp:directive.include file="./contestsIndex/header.jspx" />
+		<h1>Mam outline!</h1>
 
 		<c:choose>
 			<c:when test="${viewType == 'GRID' }">
 				<jsp:directive.include file="./contestsIndex/grid.jspx" />		
-			</c:when>
-			<c:when test="${viewType == 'OUTLINE' }">
-				<jsp:directive.include file="./contestsIndex/outline.jspx" />		
 			</c:when>
 			<c:otherwise>
 				<jsp:directive.include file="./contestsIndex/list.jspx" />

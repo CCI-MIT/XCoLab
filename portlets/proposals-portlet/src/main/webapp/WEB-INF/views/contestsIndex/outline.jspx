@@ -1,0 +1,261 @@
+<jsp:root 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	
+  	<div class="contestsContainer">
+	
+    <div class="contest-outline-left">
+        <div class="expand">
+        	<a href="#" class="showall" style="display: inline;">Expand All</a>
+        	<a href="#" class="hideall" style="display: none;">Collapse All</a>
+        </div>
+        <div class="contest-count">Contests <span class="count">35</span></div>
+        
+        <ul class="level0 accordion">
+        <c:forEach var="ontologySpace" items="${ontologySpaces }" varStatus="status">
+        	<li class="contest-section${status.index+1 }">
+        		<a href="#${ontologySpace.id }" class="section-head trigger">
+        			<span class="active-icon"><!--  --></span>
+        			<h2>${ontologySpace.name } <span>${ontologySpace.description}</span></h2>
+        			<span class="section-icon"><!--  --></span>
+        		</a>
+				<proposalsPortlet:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" />
+        	</li>
+        </c:forEach> 
+                         
+        </ul>
+    
+    </div> <!-- / contest-outline-left -->
+
+
+
+
+    <div class="cintro">
+        <h2>How to use the outline</h2>
+        <p>The Climate CoLab breaks down the large, complex problem of climate change into a series of more manageable sub-problems; each contest addresses a particular sub-problem.</p>
+        <p>All contests can thus be specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
+        <p><strong>Select an item on the left side of the page to see which contests are defined by the selected part of the outline.</strong></p>
+    </div>
+    
+    
+    
+    <div class="contest-outline-right">
+        
+        <div class="contest-count"><span class="count">3</span> contests</div>
+        <div class="show-active">Display: <a href="http://colab.3rwd.com/contests/outline-view.html#0">Show active</a></div>
+        <div class="clearfix"><!--  --></div>
+      
+        <div class="section-list">
+        	<!--  -->
+        </div>
+        
+        
+        <div class="prop-head">Proposals</div>
+        <div class="contest-list">
+       		<!--  -->
+        </div> <!-- / contest-list -->
+    
+ 		
+    </div> <!-- / contest-outline-right -->
+	</div>
+	
+	<script>
+	    var ontologyTerms = {};
+		var contests = {};
+		var focusAreas = {};
+		var ontologySpaces = {};
+		
+		<c:forEach var="ontologySpace" items="${ontologySpaces}">
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}"};
+		</c:forEach>
+		
+		<c:forEach var="term" items="${ontologyTerms}">
+			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], space: ontologySpaces[${term.ontologySpaceId}]};
+		</c:forEach>
+		
+		for (var termId in ontologyTerms) {
+			if (ontologyTerms[termId].parentId > 0) {
+				ontologyTerms[termId].parent = ontologyTerms[ontologyTerms[termId].parentId ];
+			}
+			else {
+				ontologyTerms[termId].parent = null;
+			}
+		}
+		<c:forEach var="focusArea" items="${focusAreas}">
+			focusAreas[${focusArea.id}] = {id: ${focusArea.id}, terms: ${focusArea.termsIdsStr}};
+		</c:forEach>
+		var focusArea = null;
+		var contest = null;
+		
+		function addContestToTermAndParents(contest, term) {
+			if (term == null) return;
+			if (term.id == 403) {
+				console.log('adding contest', contest.id, term.id, term.contests.length);
+			}
+			term.contests.push(contest);
+			addContestToTermAndParents(contest, term.parent);
+		}
+		var contestsCount = 0;
+		<c:forEach var="contest" items="${contests}">
+			contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, proposalsCount: ${contest.proposalsCount}};
+			contests[${contest.contestPK}] = contest;
+			contestsCount++;
+			focusArea = focusAreas[${contest.focusAreaId}];
+			
+			for (var idx in focusArea.terms) {
+				addContestToTermAndParents(contest, ontologyTerms[focusArea.terms[idx]]);
+			}
+			
+		</c:forEach>
+		</script>
+		<script>
+		<![CDATA[
+		// update ontology term contest counts
+		
+		for (var termId in ontologyTerms) {
+			if (termId == 403) {
+				console.log('ontologyTerms[termId].contests.length', ontologyTerms[termId].contests.length);
+			}
+			
+			jQuery("> a > .count", "#ontologyTerm_" + termId).text(ontologyTerms[termId].contests.length);
+		}
+		jQuery(".contest-count .count").text(contestsCount);
+		function showTermContests(termId) {
+			var container = jQuery(".contest-outline-right");
+			
+			jQuery(".cintro").hide();
+			container.show();
+			var currentTerm = ontologyTerms[termId];
+			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
+			container.find(".contest-count .count").text(currentTerm.contests.length);
+			
+			var termAndParents = [];
+			var term = currentTerm;
+			while (term != null) {
+				termAndParents.push(term);
+				term = term.parent;
+			}
+			
+			termAndParents.reverse();
+			
+			var sectionsHtml = [];
+			for (var i = 0; i < termAndParents.length; i++) {
+				var term = termAndParents[i];
+				var styleClass='section slevel' + (i+1) + ' s' + (i+1) + (term == currentTerm ? ' active' : '');
+				sectionsHtml.push('<div class="');
+				sectionsHtml.push(styleClass);
+				sectionsHtml.push('"><div class="spacr"><div class="txt">');
+				sectionsHtml.push(term.name);
+				sectionsHtml.push('</div></div></div>');
+			}
+			
+			container.find('.section-list').html(sectionsHtml.join(''));
+			
+			var contestsListHtml = [];
+			for (var i =0; i < currentTerm.contests.length; i++) {
+				var contest = currentTerm.contests[i];
+				contestsListHtml.push("<div class='ctest'><a href='#");
+				contestsListHtml.push(contest.contestLink);
+				contestsListHtml.push("'>");
+				contestsListHtml.push(contest.name);
+				contestsListHtml.push("<span class='count'>");
+				contestsListHtml.push(contest.proposalsCount);
+				contestsListHtml.push("</span></a>");
+				contestsListHtml.push("<div class='detail'><p>");
+				contestsListHtml.push(contest.description);
+				contestsListHtml.push("</p>");
+				
+				var focusArea = focusAreas[contest.focusAreaId];
+				for (var j = 0; j < focusArea.terms.length; j++) {
+					var term = ontologyTerms[focusArea.terms[j]];
+					contestsListHtml.push("<p><span class='");
+					contestsListHtml.push(term.space.name.toLowerCase());
+					contestsListHtml.push("'>");
+					contestsListHtml.push(term.space.name);
+					contestsListHtml.push("</span>");
+					contestsListHtml.push(term.name);
+					contestsListHtml.push("</p>");
+				}
+				contestsListHtml.push("</div></div>");
+			}
+			container.find(".contest-list").html(contestsListHtml.join(''));
+		}
+		jQuery(".contest-outline-left").on('click', 'a', function(event) {
+			event.preventDefault();
+			var self = jQuery(this);
+			var container = self.parent();
+			console.log(self, self.find("> ul"));
+			container.addClass('currentlyClicked');
+			jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active')
+			container.removeClass('currentlyClicked').toggleClass('active');
+			self.toggleClass('open');
+			
+			
+			if (self.hasClass('open')) {
+				container.find("> ul").slideDown();
+			}
+			else {
+				container.find("> ul").slideUp();
+			}
+			var attr = self.attr('data-term-id');
+			if (typeof attr !== 'undefined' && attr !== false) { 
+				showTermContests(attr);
+			}
+		});
+
+		jQuery(".contest-outline-right").on('click', '.ctest a', function(event) {
+			event.preventDefault();
+			var self = jQuery(this);
+			self.toggleClass('active');
+			if (self.hasClass('active')) {
+				self.parent().find('> .detail').slideDown();
+			}
+			else {
+				self.parent().find('.detail').slideUp();
+			}
+		});
+		
+		jQuery(".expand a").click(function() {
+			jQuery(".expand a").toggle();
+			if (jQuery(this).hasClass('showall')) {
+				jQuery(".contest-outline-left a").addClass('open');
+				jQuery(".contest-outline-left .level0 ul").slideDown();
+			}
+			else {
+				jQuery(".contest-outline-left a").removeClass('open');
+				jQuery(".contest-outline-left .level0 ul").slideUp();
+			}
+		});
+		
+		// initialize the screen with term provided in hash (if present) 
+		var termIdHashRegex = /#term=(\d*)_.*/;
+		
+		var match = termIdHashRegex.exec(window.location.hash);
+		if (match != null) {
+			var termId = match[1];
+			showTermContests(termId);
+			var term = ontologyTerms[termId];
+			jQuery("#ontologyTerm_" + termId).addClass('active');
+			var termContainer = null;
+			while (term != null) {
+				termContainer = jQuery("#ontologyTerm_" + term.id);
+				termContainer.find('> ul').slideDown();
+				termContainer.find('> a').addClass('open');
+				console.log(termContainer);
+				jQuery("#ontologyterm_" + term.id).slideDown();
+				term = term.parent;
+			}
+			termContainer.parent().slideDown();
+			
+		}
+		
+		]]>
+	</script>
+</jsp:root>
