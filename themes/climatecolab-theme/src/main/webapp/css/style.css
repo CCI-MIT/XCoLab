@@ -1067,6 +1067,10 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 /** just to hide outline as it's in beta stage **/
 .headline .outline {
+	display: inline;
+}
+
+.otherContestsCount.singular .plural, .otherContestsCount.plural .singular {
 	display: none;
 }
 
