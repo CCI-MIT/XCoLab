@@ -94,21 +94,6 @@ public class ProcessUserEmailAction {
 		}
 	}
 	
-	private BalloonLink getLinkForBalloonUserTracking(BalloonUserTracking but) throws SystemException {
-		BalloonLink link = BalloonLinkLocalServiceUtil.getBalloonLinkForUser(but.getUuid());
-		
-		if (link == null) {
-			link = BalloonLinkLocalServiceUtil.createBalloonLink(UUID.randomUUID().toString());
-			link.setBalloonUserUuid(but.getUuid());
-			link.setCreateDate(new Date());
-			link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
-			
-			BalloonLinkLocalServiceUtil.addBalloonLink(link);
-		}
-		
-		return link;
-	}
-	
 
 	private void sendNotificationEmail(PortletRequest request, BalloonUserTracking but, BalloonLink link) throws AddressException,
 			MailEngineException, PortalException, SystemException {

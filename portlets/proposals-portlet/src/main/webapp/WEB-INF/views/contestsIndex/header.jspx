@@ -7,9 +7,18 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<div class="headline formmargin">
 		<h1>Contests</h1>
-		<portlet:renderURL var="changeViewTypeURL">
-			<portlet:param name="viewType"
-				value="${viewType == 'GRID' ? 'LIST' : 'GRID' }" />
+		<portlet:renderURL var="changeToListViewTypeURL">
+			<portlet:param name="viewType" value="LIST" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+		</portlet:renderURL>
+		<portlet:renderURL var="changeToGridViewTypeURL">
+			<portlet:param name="viewType" value="GRID" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+		</portlet:renderURL>
+		<portlet:renderURL var="changeToOutlineViewTypeURL">
+			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
 		</portlet:renderURL>
@@ -23,7 +32,19 @@
 								Grid view
 							</c:when>
 						<c:otherwise>
-							<a href="${changeViewTypeURL }">Grid view</a>
+							<a href="${changeToGridViewTypeURL }">Grid view</a>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+			<div class="outline">
+				<div>
+					<c:choose>
+						<c:when test="${viewType == 'OUTLINE' }">
+								Outline view
+							</c:when>
+						<c:otherwise>
+							<a href="${changeToOutlineViewTypeURL }">Outline view</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -35,16 +56,12 @@
 								List view
 							</c:when>
 						<c:otherwise>
-							<a href="${changeViewTypeURL }">List view</a>
+							<a href="${changeToListViewTypeURL }">List view</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</div>
 		</div>
-		<div class="show">
-			<a href="/web/guest/resources/-/wiki/Main/What%2C+Where%2C+Who+taxonomy--Quick+view" >Outline View</a>
-		</div>
-		<div class="divider"><!--  --></div>
 		<div class="show">
 			<c:choose>
 				<c:when test="${showActiveContests }">
