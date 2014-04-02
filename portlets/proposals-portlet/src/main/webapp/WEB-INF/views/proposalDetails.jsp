@@ -93,7 +93,9 @@
                     </div>
                 </div>
             </div>
-            <script>if (getVersion()>-1) { triggerHistoryVisibility(); }</script>
+            <c:if test="${not proposal.isLatestVersion }">
+                <script>triggerHistoryVisibility();</script>
+            </c:if>
             <c:if test="${not empty proposal.pitch }">
                 <h2>Pitch</h2>
 

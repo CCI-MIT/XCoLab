@@ -46,8 +46,10 @@ function triggerHistoryVisibility(){
     if ($('#versions').hasClass('hidden')) {
         if (getVersion() != -1) {
             loadHistoryForVersion(getVersion());
+        } else {
+            loadHistory(-1);
         }
-        loadHistory(-1);
+
         $('#versionContainerTrigger').text("Hide history");
 
     }
