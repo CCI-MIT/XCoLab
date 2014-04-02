@@ -75,7 +75,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         int counter = 0;
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
             if (p2p != null
-                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())
+                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
                     ) {
                 continue;
             }
@@ -95,7 +95,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         oldDate = new Date();
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
             if (p2p != null
-                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || proposalVersion.getVersion() > p2p.getVersionTo())
+                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
                     ) {
                 continue;
             }
