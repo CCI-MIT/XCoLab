@@ -38,7 +38,7 @@
         		<c:otherwise>
         			<table class="comments" id="commentsTable" >
 						<c:forEach var="message" items="${discussion.comments }" varStatus="status">
-                            <discussions:getRoleName userId="${message.author.userId}">
+                            <discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
                                 <tr class="${message.expertReview ? 'expertReview' : ''} ${status.index mod 2 == 0 ? 'odd' : 'even'}">
                                     <td class="commentor ${message.expertReview ? 'expertReview' : ''}">
                                         <a id="_message_${message.messageId}"></a>
@@ -76,9 +76,14 @@
                                         </a>
                                     </td>
                                     <td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
-                                        <c:if test="${authorId == message.author.userId}">
-                                            <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
-                                        </c:if>
+                                        <c:choose>
+                                            <c:when test="${authorId == message.author.userId}">
+                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
+                                            </c:when>
+                                            <c:when test="${isContributing}">
+                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-contributor-overlay.png"></img></div>
+                                            </c:when>
+                                        </c:choose>
                                         <div id="message_${message.messageId}" class="content">
                                             ${message.body }
                                         </div>

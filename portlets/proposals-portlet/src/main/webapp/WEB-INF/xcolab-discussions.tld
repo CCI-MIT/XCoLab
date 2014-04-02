@@ -34,6 +34,12 @@
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Long</type>
         </attribute>
+        <attribute>
+            <name>proposalId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
     </tag>
 	<!-- 
 	<tag-file>

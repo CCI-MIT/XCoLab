@@ -1,5 +1,6 @@
 package org.xcolab.jsp.tags.discussion;
 
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
@@ -19,6 +20,9 @@ public class GetRoleNameTag extends BodyTagSupport {
 
     private long userId;
 
+    private long proposalId;
+
+
     public long getUserId() {
         return userId;
     }
@@ -26,6 +30,16 @@ public class GetRoleNameTag extends BodyTagSupport {
     public void setUserId(long userId) {
         this.userId = userId;
     }
+
+    public long getProposalId() {
+        return proposalId;
+    }
+
+    public void setProposalId(long proposalId) {
+        this.proposalId = proposalId;
+    }
+
+
 
     @Override
     public int doStartTag() throws JspException {
@@ -57,6 +71,20 @@ public class GetRoleNameTag extends BodyTagSupport {
                 throw new JspException("Can't find portlet request");
             }
             pageContext.setAttribute("role", role);
+
+
+            // Is the user contributing to the proposal?
+            boolean isContributing = false;
+            List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
+            for (User contributor : contributors) {
+                if (contributor.getUserId() == userId) {
+                    isContributing = true;
+                    break;
+                }
+            }
+
+            pageContext.setAttribute("isContributing", isContributing);
+
         } catch (PortalException e) {
             e.printStackTrace();
         } catch (SystemException e) {
