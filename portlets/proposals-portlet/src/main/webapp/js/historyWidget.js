@@ -1,7 +1,22 @@
 var itemsPerPage = 10;
 var defaultPhaseId = -1;
-function loadHistory(page){
-    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + defaultPhaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
+
+function loadHistory(page) {
+    // Load the page with items of the current contest phase
+    if (page == -1 && getPhaseId() != defaultPhaseId) {
+        $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-version-first-index/contestPhaseId/' + getPhaseId() + '/proposalId/' + proposalId, { get_param: 'value' }, function(data) {
+            var page = 0;
+            page = Math.floor(data.index / itemsPerPage);
+            load(page, defaultPhaseId);
+        });
+    } else if (page == -1) {
+        load(page + 1, defaultPhaseId);
+    } else {
+        load(page, defaultPhaseId);
+    }
+}
+function load(page, phaseId){
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
         $('#versions > div > div > table > tbody').empty();
         var even = true;
         $.each(data.versions, function(index, attr) {
@@ -29,7 +44,7 @@ function addPagination(prev,next,currentPage,totalPages){
 
 function triggerHistoryVisibility(){
     if ($('#versions').hasClass('hidden')) {
-        loadHistory(0);
+        loadHistory(-1);
         $('#versionContainerTrigger').text("Hide history");
 
     }

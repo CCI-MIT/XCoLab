@@ -19,6 +19,8 @@ public class ProposalServiceClpInvoker {
     private String[] _methodParameterTypes493;
     private String _methodName494;
     private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
 
     public ProposalServiceClpInvoker() {
         _methodName486 = "getBeanIdentifier";
@@ -29,17 +31,21 @@ public class ProposalServiceClpInvoker {
 
         _methodParameterTypes487 = new String[] { "java.lang.String" };
 
-        _methodName492 = "getProposalVersions";
+        _methodName492 = "getProposalVersionFirstIndex";
 
-        _methodParameterTypes492 = new String[] { "long", "long", "int", "int" };
+        _methodParameterTypes492 = new String[] { "long", "long" };
 
         _methodName493 = "getProposalVersions";
 
-        _methodParameterTypes493 = new String[] { "long", "int", "int" };
+        _methodParameterTypes493 = new String[] { "long", "long", "int", "int" };
 
-        _methodName494 = "getProposalContestSections";
+        _methodName494 = "getProposalVersions";
 
-        _methodParameterTypes494 = new String[] { "long", "int", "long" };
+        _methodParameterTypes494 = new String[] { "long", "int", "int" };
+
+        _methodName495 = "getProposalContestSections";
+
+        _methodParameterTypes495 = new String[] { "long", "int", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -58,21 +64,27 @@ public class ProposalServiceClpInvoker {
 
         if (_methodName492.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
+            return ProposalServiceUtil.getProposalVersionFirstIndex(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Integer) arguments[2]).intValue(),
                 ((Integer) arguments[3]).intValue());
         }
 
-        if (_methodName493.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName494.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return ProposalServiceUtil.getProposalContestSections(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Long) arguments[2]).longValue());

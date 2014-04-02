@@ -18,6 +18,8 @@ public class ProposalServiceClp implements ProposalService {
     private String[] _methodParameterTypes4;
     private String _methodName5;
     private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
 
     public ProposalServiceClp(InvokableService invokableService) {
         _invokableService = invokableService;
@@ -30,17 +32,21 @@ public class ProposalServiceClp implements ProposalService {
 
         _methodParameterTypes1 = new String[] { "java.lang.String" };
 
-        _methodName3 = "getProposalVersions";
+        _methodName3 = "getProposalVersionFirstIndex";
 
-        _methodParameterTypes3 = new String[] { "long", "long", "int", "int" };
+        _methodParameterTypes3 = new String[] { "long", "long" };
 
         _methodName4 = "getProposalVersions";
 
-        _methodParameterTypes4 = new String[] { "long", "int", "int" };
+        _methodParameterTypes4 = new String[] { "long", "long", "int", "int" };
 
-        _methodName5 = "getProposalContestSections";
+        _methodName5 = "getProposalVersions";
 
-        _methodParameterTypes5 = new String[] { "long", "int", "long" };
+        _methodParameterTypes5 = new String[] { "long", "int", "int" };
+
+        _methodName6 = "getProposalContestSections";
+
+        _methodParameterTypes6 = new String[] { "long", "int", "long" };
     }
 
     @Override
@@ -90,8 +96,8 @@ public class ProposalServiceClp implements ProposalService {
     }
 
     @Override
-    public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestPhaseId, long proposalId, int start, int end)
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersionFirstIndex(
+        long contestPhaseId, long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -99,6 +105,39 @@ public class ProposalServiceClp implements ProposalService {
         try {
             returnObj = _invokableService.invokeMethod(_methodName3,
                     _methodParameterTypes3,
+                    new Object[] { contestPhaseId, proposalId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.liferay.portal.kernel.json.JSONObject) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
+        long contestPhaseId, long proposalId, int start, int end)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableService.invokeMethod(_methodName4,
+                    _methodParameterTypes4,
                     new Object[] { contestPhaseId, proposalId, start, end });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -130,8 +169,8 @@ public class ProposalServiceClp implements ProposalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableService.invokeMethod(_methodName4,
-                    _methodParameterTypes4,
+            returnObj = _invokableService.invokeMethod(_methodName5,
+                    _methodParameterTypes5,
                     new Object[] { proposalId, start, end });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -163,8 +202,8 @@ public class ProposalServiceClp implements ProposalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableService.invokeMethod(_methodName5,
-                    _methodParameterTypes5,
+            returnObj = _invokableService.invokeMethod(_methodName6,
+                    _methodParameterTypes6,
                     new Object[] { proposalId, version, contestId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

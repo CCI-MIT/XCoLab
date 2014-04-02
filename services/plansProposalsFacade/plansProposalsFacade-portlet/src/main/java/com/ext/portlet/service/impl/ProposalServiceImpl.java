@@ -55,6 +55,40 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
     private final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
+    /**
+     * This method returns the index of the latest version of a proposal within a given contestPhaseId
+     * @param contestPhaseId    The ID of the contest phase
+     * @param proposalId        The ID of the proposal
+     * @return                  The index of the latest version in a list of all versions of the proposal
+     * @throws PortalException
+     * @throws SystemException
+     */
+    @JSONWebService
+    @AccessControlled(guestAccessEnabled=true)
+    public JSONObject getProposalVersionFirstIndex(long contestPhaseId, long proposalId) throws PortalException, SystemException {
+        Proposal2Phase p2p = null;
+        if (contestPhaseId > 0) p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+
+        int index = 0;
+        Date oldDate = new Date();
+        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+            if (p2p == null || p2p.getVersionTo() == -1
+                    || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
+                    ) {
+                break;
+            }
+
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+                index++;
+                oldDate = proposalVersion.getCreateDate();
+            }
+        }
+
+        JSONObject result = JSONFactoryUtil.createJSONObject();
+        result.put("index", index);
+        return result;
+    }
+
     /* TODO IMPROVE CODE QUALITY */
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
