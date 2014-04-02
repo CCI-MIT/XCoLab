@@ -1,116 +1,146 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<div class="contest-detail">
-		<div class="heading">
+    <div class="contest-detail">
+        <div class="heading">
             <table>
                 <tbody>
-                    <tr>
-                        <td style="vertical-align: middle;">
-                            <div class="heading-title">
-                                ${contest.contestName}
+                <tr>
+                    <td style="vertical-align: middle;">
+                        <div class="heading-title">
+                            ${contest.contestName}
+                        </div>
+                    </td>
+                    <c:if test="${contest.sponsorLogoId > 0}">
+                        <td>
+                            <div class="heading-sponsor-logo">
+                                <c:choose>
+                                    <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
+                                    <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></c:otherwise>
+                                </c:choose>
+
                             </div>
                         </td>
-                        <c:if test="${contest.sponsorLogoId > 0}">
-                            <td>
-                                <div class="heading-sponsor-logo">
-                                    <c:choose>
-                                        <c:when test="${contest.sponsorLinkAvailable}"><a href="//${contest.sponsorLink}"><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></a></c:when>
-                                        <c:otherwise><img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}" alt="Sponsor Logo" /></c:otherwise>
-                                    </c:choose>
-
-                                </div>
-                            </td>
-                        </c:if>
-                    </tr>
+                    </c:if>
+                </tr>
                 </tbody>
             </table>
         </div>
-		<div class="description">
-			<p>${contest.contestDescription }</p>
-			<c:if test="${contest.hasFocusArea }">
-				<table style="width: 100%; table-layout: fixed;">
-					<tr>
-						<c:if test="${not empty contest.what}">
-							<td>
-                                <div class="what"><strong>What:</strong></div>
-                                <div class="ontologyItem">
-                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
-                                </div>
+        <div class="description">
+            <p>${contest.contestDescription }</p>
+            <c:if test="${contest.hasFocusArea }">
+                <table style="width: 100%; table-layout: fixed;">
+                    <tr>
+                        <c:if test="${not empty contest.what}">
+                            <td>
+                                <table style="width: auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="what"><strong>What:</strong></div>
+                                        </td>
+                                        <td>
+                                            <div class="ontologyItem">
+                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </td>
-						</c:if>
+                        </c:if>
 
-						<c:if test="${not empty contest.where}">
-							<td>
-                                <div class="where"><strong>Where:</strong></div>
-                                <div class="ontologyItem">
-                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+                        <c:if test="${not empty contest.where}">
+                            <td>
+                                <table style="width: auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td><div class="where"><strong>Where:</strong></div>
+                                        </td>
+                                        <td>
+                                            <div class="ontologyItem">
+                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </c:if>
+
+                        <c:if test="${not empty contest.who}">
+                            <td>
+                                <table style="width: auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="who"><strong>Who:</strong></div>
+                                        </td>
+                                        <td>
+                                            <div class="ontologyItem">
+                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </c:if>
+                    </tr>
+                </table>
+            </c:if>
+        </div>
+
+        <div class="moreinfo ${contest.sponsorLogoId > 0 ? 'withSponsor' : 'noSponsor'}">
+            <table>
+                <tr>
+                    <c:if test="${not empty contest.contestTeamMembersByRole }">
+                        <td nowrap="nowrap">
+                            <c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
+                                <div class="contestTeamRole">
+                                    <table>
+                                        <tr>
+                                            <td class="contestTeamRoleName">
+                                                <c:choose>
+                                                    <c:when test="${fn:length(teamRole.users) eq 1}">
+                                                        <div style="width: 65px; display: inline-block;">${teamRole.roleName}</div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div style="width: 65px; display: inline-block;">${teamRole.roleName}s</div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td class="contestTeamMembers">
+                                                <c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
+                                                    <div class="contestTeamMember">
+                                                        <proposalsPortlet:userPortrait screenName="${teamRoleUser.screenName }"	portraitId="${teamRoleUser.portraitId}" width="30"	height="30" />
+                                                        <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}" text="${teamRoleUser.fullName}" />
+                                                    </div>
+                                                </c:forEach>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-							</td>
-						</c:if>
-
-						<c:if test="${not empty contest.who}">
-							<td>
-                                <div class="who"><strong>Who:</strong></div>
-							<div class="ontologyItem">
-								<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
-							</td>
-						</c:if>
-					</tr>
-				</table>
-			</c:if>
-		</div>
-
-		<div class="moreinfo ${contest.sponsorLogoId > 0 ? 'withSponsor' : 'noSponsor'}">
-			<table>
-				<tr>
-					<c:if test="${not empty contest.contestTeamMembersByRole }">
-						<td nowrap="nowrap">
-							<c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
-								<div class="contestTeamRole">
-									<table>
-									    <tr>
-									    	<td class="contestTeamRoleName">
-									    		<c:choose>
-									    			<c:when test="${fn:length(teamRole.users) eq 1}">
-														<div style="width: 65px; display: inline-block;">${teamRole.roleName}</div>
-									    			</c:when>
-									    			<c:otherwise>
-														<div style="width: 65px; display: inline-block;">${teamRole.roleName}s</div>
-									    			</c:otherwise>
-									    		</c:choose>
-											</td>
-											<td class="contestTeamMembers">
-												<c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
-													<div class="contestTeamMember">
-														<proposalsPortlet:userPortrait screenName="${teamRoleUser.screenName }"	portraitId="${teamRoleUser.portraitId}" width="30"	height="30" />
-														<proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}" text="${teamRoleUser.fullName}" />
-													</div>
-												</c:forEach>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</c:forEach>
-						</td>
-					</c:if>
-					<td align="right" nowrap="nowrap" style="vertical-align: bottom;">
-						<div>
-							<c:if test="${not empty contest.resourcesUrl}">
-								<a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
-							</c:if>
-                                <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
+                            </c:forEach>
+                        </td>
+                    </c:if>
+                    <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                        <div>
+                            <c:if test="${not empty contest.resourcesUrl}">
+                                <a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
+                            </c:if>
+                            <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </jsp:root>
