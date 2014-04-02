@@ -16,7 +16,7 @@ function loadHistory(page) {
     }
 }
 function load(page, phaseId){
-    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage - 1), { get_param: 'value' }, function(data) {
         $('#versions > div > div > table > tbody').empty();
         var even = true;
         $.each(data.versions, function(index, attr) {
@@ -44,6 +44,9 @@ function addPagination(prev,next,currentPage,totalPages){
 
 function triggerHistoryVisibility(){
     if ($('#versions').hasClass('hidden')) {
+        if (getVersion() != -1) {
+            loadHistoryForVersion(getVersion());
+        }
         loadHistory(-1);
         $('#versionContainerTrigger').text("Hide history");
 
@@ -80,4 +83,12 @@ function getVersion(){
         if(url[i] == 'version') return url[i+1];
     }
     return -1;
+}
+
+function loadHistoryForVersion(version) {
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-version-index/version/' + version + '/proposalId/' + proposalId, { get_param: 'value' }, function(data) {
+        var page = 0;
+        page = Math.floor(data.index / itemsPerPage);
+        load(page, defaultPhaseId);
+    });
 }
