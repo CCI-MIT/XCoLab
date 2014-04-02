@@ -78,6 +78,12 @@ function getPhaseId(){
 }
 
 function getVersion(){
+    // Try to get it when an old version was selected
+    var version = $( "#versionId" ).html();
+    if (version != 0) {
+        return version;
+    }
+
     var url = window.document.URL.toString().split("/");
     for (var i = 0; i < url.length; i++) {
         if(url[i] == 'version') return url[i+1];

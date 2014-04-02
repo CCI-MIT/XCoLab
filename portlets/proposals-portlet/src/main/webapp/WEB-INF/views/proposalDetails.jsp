@@ -64,12 +64,14 @@
                         <div class="edit-prop-butts" style="line-height: normal;">
                             <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
                                 history</a>
+                            <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                         </div>
                         <c:if test="${not proposal.isLatestVersion }">
                             <div class="lastedited">
                                 Currently viewing version from
                                 <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format(
                                 		"MM/DD/YYYY hh:mm A"));
+                                    var version = ${proposal.selectedVersion};
                                 </script>
                                 by
                                 <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
