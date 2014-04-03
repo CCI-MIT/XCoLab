@@ -73,7 +73,9 @@
 						</div></td>
 
 					<th class="second" rowspan="4">Photo</th>
-					<td rowspan="4"><c:choose>
+					<td rowspan="4">
+                        <div style="float: right">
+                            <c:choose>
 							<c:when test="${ createUserBean.getImageId() != null }">
 								<img src="/image/contest?img_id=${createUserBean.getImageId() }" id="userPortrait"
 									width="150" height="150" />
@@ -83,8 +85,11 @@
 									width="150" height="150" />
 							</c:otherwise>
 						</c:choose>
+                        <div class="clearfix"></div>
+						<div id="uploadImageContainer"><!--  --></div>
+    </div>
+    </td>
 
-						<div id="uploadImageContainer"><!--  --></div></td>
 
 				</tr>
 				<tr>

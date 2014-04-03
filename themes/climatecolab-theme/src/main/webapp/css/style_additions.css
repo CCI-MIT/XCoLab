@@ -594,12 +594,21 @@ cursor: pointer;
 
 
 #uploadImageContainer {
-	width: 100%;
+	width: 136px;
 	height: 30px;
 	background: url(../images/profile_upload-button.gif) no-repeat 15px 0px;
 	margin-top: 20px;
 	cursor: pointer;
 }
+
+.clearfix {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
 #portraitUploadInput {
 	width: 140px;
 	height: 30px;
@@ -761,7 +770,7 @@ font-weight: 400;
 .sso-register {
     float: right;
     width: 50%;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .popupreg_txt.req {
