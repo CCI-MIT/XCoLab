@@ -176,8 +176,8 @@
    <div class="loginbox">
 
     <div class="loginwith">
-     <a href="$facebookAuthURL" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
-     <a href="/web/guest/loginregister/-/login/SSO/google" class="sketchy-icon google-sketchy"><span>Google</span></a>
+        <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
+        <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy"><span>Google</span></a>
     </div>
     <div class="loginwith-del"></div><div class="loginwith-or">OR</div><div class="loginwith-del"></div>
     <div class="clearfix"></div>

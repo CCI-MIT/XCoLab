@@ -748,9 +748,20 @@ font-weight: 400;
     margin-bottom: 20px;
 }
 
+.popupreg_head {
+    float:left;
+    width: 50%;
+}
+
 .popupreg_head h1 {
     color: #000;
     font-size: 36px;
+}
+
+.sso-register {
+    float: right;
+    width: 50%;
+    margin-bottom: 15px;
 }
 
 .popupreg_txt.req {
@@ -863,7 +874,7 @@ display: inline;
 
 
 .popup .login_popup_box {
-    width: 374px;
+    /* width: 374px;*/
     padding: 17px 0 10px 13px;
     /*background: url(../images/search-bg.png);*/
     font-size: 14px;
@@ -1437,4 +1448,19 @@ div.portlet-column {
 }
 .js .controls-hidden .lfr-meta-actions {
 	display: block;
+}
+
+.login-box-table {
+    float: left;
+
+}
+
+table.login-box-table td {
+    padding: 0 3px 0 0;
+    vertical-align: middle;
+}
+
+table.login-box-table th {
+    padding: 0 3px 10px 0;
+    vertical-align: middle;
 }

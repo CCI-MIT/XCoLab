@@ -364,6 +364,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .youtube {background:url(../images/icon-youtube.png) no-repeat;}
 
 .sketchy-icon {height: 32px; display: block; float: left; padding: 8px 0 0 41px; color: #d4d4d4 !important;}
+.sketchy-icon-black {height: 32px; display: block; float: left; padding: 8px 0 0 41px; color: #000000 !important;}
 .sketchy-icon span:hover { border-bottom:1px dashed #fff; }
 .facebook-sketchy {background:url(../images/facebook_sketchy.png) no-repeat; background-size: 32px; }
 .google-sketchy {background:url(../images/google_sketchy.png) no-repeat; background-size: 32px; }

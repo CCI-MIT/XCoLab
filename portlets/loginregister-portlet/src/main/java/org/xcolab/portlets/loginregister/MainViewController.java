@@ -67,7 +67,15 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 @RequestMapping("view")
 public class MainViewController {
 
-	private long DEFAULT_COMPANY_ID = 10112L;
+    public static final String SSO_TARGET_KEY = "SSO_TARGET_KEY";
+
+    public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
+
+    public static final String SSO_TARGET_LOGIN = "SSO_TARGET_LOGIN";
+
+    public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
+
+    private static long DEFAULT_COMPANY_ID = 10112L;
 
 	@Autowired
 	private Validator validator;
@@ -128,7 +136,7 @@ public class MainViewController {
 		return "view";
 	}
 
-    private void getSSOUserInfo(PortletSession portletSession, CreateUserBean createUserBean){
+    public static void getSSOUserInfo(PortletSession portletSession, CreateUserBean createUserBean){
         // append SSO attributes from session
         String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID ,PortletSession.APPLICATION_SCOPE);
         String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
@@ -180,7 +188,6 @@ public class MainViewController {
 			ActionResponse response, @Valid CreateUserBean newAccountBean,
 			BindingResult result,
 			@RequestParam(required = false) String redirect) {
-        HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
         PortletSession portletSession = request.getPortletSession();
         String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
@@ -203,112 +210,7 @@ public class MainViewController {
 				response.setRenderParameter("recaptchaError", "true");
 			} else {
 				try {
-					ServiceContext serviceContext = ServiceContextFactory
-							.getInstance(User.class.getName(), request);
-					ThemeDisplay themeDisplay = (ThemeDisplay) request
-							.getAttribute(WebKeys.THEME_DISPLAY);
-					
-					BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
-
-					User user = UserServiceUtil.addUserWithWorkflow(
-							DEFAULT_COMPANY_ID, false,
-							newAccountBean.getPassword(),
-							newAccountBean.getRetypePassword(), false,
-							newAccountBean.getScreenName(),
-							newAccountBean.getEmail(), 0L, "",
-							themeDisplay.getLocale(),
-							newAccountBean.getFirstName(), "",
-							newAccountBean.getLastName(), 0, 0, true, 1, 1,
-							1970, "", new long[] {}, new long[] {},
-							new long[] {}, new long[] {}, true, serviceContext);
-
-					if (newAccountBean.getShortBio() != null
-							&& newAccountBean.getShortBio().length() > 0) {
-						ExpandoValueLocalServiceUtil.addValue(
-								User.class.getName(),
-								CommunityConstants.EXPANDO,
-								CommunityConstants.BIO, user.getUserId(),
-								newAccountBean.getShortBio());
-					}
-
-					if (newAccountBean.getCountry() != null
-							&& newAccountBean.getCountry().length() > 0) {
-						ExpandoValueLocalServiceUtil.addValue(
-								User.class.getName(),
-								CommunityConstants.EXPANDO,
-								CommunityConstants.COUNTRY, user.getUserId(),
-								newAccountBean.getCountry());
-					}
-					
-					if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
-						try {
-							BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
-							but.setRegistrationDate(new Date());
-							but.setUserId(user.getUserId());
-							BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
-						}
-						catch (NoSuchBalloonUserTrackingException e) {
-							_log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
-						}
-					}
-
-                    // SSO
-                    if (StringUtils.isNotBlank(fbIdString)){
-                        try{
-                            long fbId = Long.parseLong(fbIdString);
-                            user.setFacebookId(fbId);
-                            UserLocalServiceUtil.updateUser(user);
-                            portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
-                            redirect = null;
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                    if (StringUtils.isNotBlank(openId)){
-                        try{
-                            user.setOpenId(openId);
-                            UserLocalServiceUtil.updateUser(user);
-                            portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
-                            redirect = null;
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-
-					if (newAccountBean.getImageId() != null
-							&& newAccountBean.getImageId().length() > 0) {
-						Image img = ImageLocalServiceUtil.getImage(Long
-								.parseLong(newAccountBean.getImageId()));
-						byte[] bytes = img.getTextObj();
-						// we need to set permission checker for liferay
-						PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-								.create(user, true);
-
-						PermissionThreadLocal
-								.setPermissionChecker(permissionChecker);
-
-						UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-						user.setPortraitId(0L);
-						UserLocalServiceUtil.updateUser(user);
-						UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-						user = UserLocalServiceUtil.getUser(user.getUserId());
-					}
-
-		    		AuthenticationServiceUtil.logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
-					
-					httpReq.getSession().setAttribute("collab_user_has_registered", true);
-					
-
-		            SocialActivityLocalServiceUtil.addActivity(user.getUserId(), themeDisplay.getScopeGroupId(), User.class.getName(),
-		                    user.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
-
-					request.getPortletSession().setAttribute("collab_user_has_registered", true);
-					PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
-					if (redirect != null) {
-						response.sendRedirect(redirect);
-					} else {
-						response.sendRedirect(themeDisplay.getURLHome());
-					}
+					completeRegistration(request, response, newAccountBean, redirect);
 
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
@@ -329,5 +231,127 @@ public class MainViewController {
 	    
 	    CaptchaUtil.serveImage(request, response);
 	}
+
+    /**
+     * Completes the user registration with the parameters set in the CreateUserBean
+     * @param request           The ActionRequest object
+     * @param response          The ActionResponse object
+     * @param newAccountBean    The new user bean object
+     * @param redirect          Redirect URL for this request (may be null)
+     * @throws Exception
+     */
+    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect) throws Exception {
+        HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+        PortletSession portletSession = request.getPortletSession();
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+
+        ServiceContext serviceContext = ServiceContextFactory
+                .getInstance(User.class.getName(), request);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request
+                .getAttribute(WebKeys.THEME_DISPLAY);
+
+        BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
+
+        User user = UserServiceUtil.addUserWithWorkflow(
+                DEFAULT_COMPANY_ID, false,
+                newAccountBean.getPassword(),
+                newAccountBean.getRetypePassword(), false,
+                newAccountBean.getScreenName(),
+                newAccountBean.getEmail(), 0L, "",
+                themeDisplay.getLocale(),
+                newAccountBean.getFirstName(), "",
+                newAccountBean.getLastName(), 0, 0, true, 1, 1,
+                1970, "", new long[] {}, new long[] {},
+                new long[] {}, new long[] {}, true, serviceContext);
+
+        if (newAccountBean.getShortBio() != null
+                && newAccountBean.getShortBio().length() > 0) {
+            ExpandoValueLocalServiceUtil.addValue(
+                    User.class.getName(),
+                    CommunityConstants.EXPANDO,
+                    CommunityConstants.BIO, user.getUserId(),
+                    newAccountBean.getShortBio());
+        }
+
+        if (newAccountBean.getCountry() != null
+                && newAccountBean.getCountry().length() > 0) {
+            ExpandoValueLocalServiceUtil.addValue(
+                    User.class.getName(),
+                    CommunityConstants.EXPANDO,
+                    CommunityConstants.COUNTRY, user.getUserId(),
+                    newAccountBean.getCountry());
+        }
+
+        if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
+            try {
+                BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
+                but.setRegistrationDate(new Date());
+                but.setUserId(user.getUserId());
+                BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+            }
+            catch (NoSuchBalloonUserTrackingException e) {
+                _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
+            }
+        }
+
+        // SSO
+        if (StringUtils.isNotBlank(fbIdString)){
+            try{
+                long fbId = Long.parseLong(fbIdString);
+                user.setFacebookId(fbId);
+                UserLocalServiceUtil.updateUser(user);
+                portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
+                redirect = null;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if (StringUtils.isNotBlank(openId)){
+            try{
+                user.setOpenId(openId);
+                UserLocalServiceUtil.updateUser(user);
+                portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
+                redirect = null;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        if (newAccountBean.getImageId() != null
+                && newAccountBean.getImageId().length() > 0) {
+            Image img = ImageLocalServiceUtil.getImage(Long
+                    .parseLong(newAccountBean.getImageId()));
+            byte[] bytes = img.getTextObj();
+            // we need to set permission checker for liferay
+            PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
+                    .create(user, true);
+
+            PermissionThreadLocal
+                    .setPermissionChecker(permissionChecker);
+
+            UserServiceUtil.updatePortrait(user.getUserId(), bytes);
+            user.setPortraitId(0L);
+            UserLocalServiceUtil.updateUser(user);
+            UserServiceUtil.updatePortrait(user.getUserId(), bytes);
+            user = UserLocalServiceUtil.getUser(user.getUserId());
+        }
+
+        AuthenticationServiceUtil.logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
+
+        httpReq.getSession().setAttribute("collab_user_has_registered", true);
+
+
+        SocialActivityLocalServiceUtil.addActivity(user.getUserId(), themeDisplay.getScopeGroupId(), User.class.getName(),
+                user.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+
+        request.getPortletSession().setAttribute("collab_user_has_registered", true);
+        PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
+        if (redirect != null) {
+            response.sendRedirect(redirect);
+        } else {
+            response.sendRedirect(themeDisplay.getURLHome());
+        }
+    }
 
 }
