@@ -399,8 +399,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
-        /*return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);*/
-        return getProposalsCommentsCount(contest);
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
+        /*return getProposalsCommentsCount(contest);*/
     }
 
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
