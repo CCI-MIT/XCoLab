@@ -34,7 +34,7 @@
         					${contest.votesCount}
         				</c:when>
         				<c:otherwise>
-        					${contest.commentsCount}
+        					${contest.totalCommentsCount}
         				</c:otherwise>
         			</c:choose>
         		</td>

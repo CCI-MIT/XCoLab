@@ -136,7 +136,7 @@
                             <c:if test="${not empty contest.resourcesUrl}">
                                 <a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
                             </c:if>
-                            <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a>
+                            <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion<c:if test="${contest.commentsCount > 0}"> (${contest.commentsCount})</c:if></a>
                         </div>
                     </td>
                 </tr>
