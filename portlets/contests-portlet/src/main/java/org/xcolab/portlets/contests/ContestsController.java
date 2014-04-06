@@ -1,6 +1,7 @@
 package org.xcolab.portlets.contests;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
@@ -28,8 +29,9 @@ public class ContestsController {
     public String showContests(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
     	
         List<ContestWrapper> ret = new ArrayList<>();
-        
-        for (Contest contest: ContestLocalServiceUtil.findByActiveFlagText(true, "")) {
+        List<Contest> contests = ContestLocalServiceUtil.findByActiveFlagText(true, "");
+        Collections.shuffle(contests);
+        for (Contest contest: contests) {
             if(ret.size() >= NUM_CONTESTS) {
             	break;
             }
