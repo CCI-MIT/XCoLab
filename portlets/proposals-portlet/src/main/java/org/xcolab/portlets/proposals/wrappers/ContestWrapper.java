@@ -291,6 +291,11 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
 
+    public long getTotalCommentsCount() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getCommentsCount(contest);
+    }
+
+
     public long getVotesCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }

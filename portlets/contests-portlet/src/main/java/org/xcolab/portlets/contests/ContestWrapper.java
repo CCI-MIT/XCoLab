@@ -86,9 +86,12 @@ public class ContestWrapper implements Serializable {
         return ContestLocalServiceUtil.getProposalsCount(contest);
     }
     
+    public long getTotalCommentsCount() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+    }
+    
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
-        
     }
     
     public long getPrimaryKey() {

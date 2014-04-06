@@ -36,9 +36,9 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.commentsCount}</strong>
+                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
                             <c:choose>
-                                <c:when test="${contest.commentsCount == 1}"> comment</c:when>
+                                <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
                                 <c:otherwise> comments</c:otherwise>
                             </c:choose>
 
