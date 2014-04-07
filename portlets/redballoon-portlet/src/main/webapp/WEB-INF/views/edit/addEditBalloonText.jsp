@@ -73,7 +73,7 @@
   	</div>
   	<div class="form-group ckeditorContainer">
     	<label for="balloonTextTextBeforeForm">Email that is sent to the user after registration</label>
-       <strong>URLPLACEHOLDER</strong> will be replaced with the users link.<br/>
+       <p><strong>URLPLACEHOLDER</strong> will be replaced with the users link.<br/></p>
     	<liferay-ui:input-editor editorImpl="editor.wysiwyg.portal-web.docroot.html.portlet.blogs.edit_entry.jsp" initMethod="initEditorEmail" name="emailTemplate" />
     	<form:textarea class="form-control hidden" id="balloonTextEmailTemplate" path="emailTemplate" />
   	</div>
