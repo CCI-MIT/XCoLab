@@ -69,24 +69,26 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="contest-list">
        		<!--  -->
         </div> <!-- / contest-list -->
-		<c:choose>
-			<c:when test="${showActiveContests }">
-				<span class="otherContestsCount">If you enable 
-				<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+        <div class="otherContestsInfoContainer">
+			<c:choose>
+				<c:when test="${showActiveContests }">
+					<span class="otherContestsCount">If you enable 
+					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
 				
-				<span class='count'><!--  --></span> more 
-				<span class='plural'>contests</span>
-				<span class='singular'>contest</span> will show up</span>
-			</c:when>
-			<c:otherwise>
-				<span class="otherContestsCount">If you enable 
-				<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
+					<span class='count'><!--  --></span> more 
+					<span class='plural'>contests</span>
+					<span class='singular'>contest</span> will show up</span>
+				</c:when>
+				<c:otherwise>
+					<span class="otherContestsCount">If you enable 
+					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
 				
-				<span class='count'><!--  --></span> more 
-				<span class='plural'>contests</span>
-				<span class='singular'>contest</span> will show up</span>
-			</c:otherwise>
-		</c:choose>
+					<span class='count'><!--  --></span> more 
+					<span class='plural'>contests</span>
+					<span class='singular'>contest</span> will show up</span>
+				</c:otherwise>
+			</c:choose>
+		</div>
     
  		
     </div> <!-- / contest-outline-right -->
@@ -258,7 +260,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					}
 					for (var i =0; i < currentTerm.contests.length; i++) {
 						var contest = currentTerm.contests[i];
-						contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a href='");
+						contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
 						contestsListHtml.push(contest.contestUrl);
 						contestsListHtml.push("'>");
 						contestsListHtml.push(contest.name);
@@ -280,16 +282,23 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 							contestsListHtml.push(term.name);
 							contestsListHtml.push("</p>");
 						}
-						contestsListHtml.push("<div class='viewContestDetails'>");
-						contestsListHtml.push(contest.contestLink);
-						contestsListHtml.push("</div></div></div>");
+						contestsListHtml.push("</div></div>");
 					}
+					
+					contestsListHtml.push("<div class='otherContestsInfo'>");
+					contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+					contestsListHtml.push("</div>");
+					
+					jQuery(".otherContestsInfoContainer").hide();
 					container.find(".contest-list").html(contestsListHtml.join(''));
+					
 					container.find(".contest-list").slideDown();
 				}});
 				
 			}});
 			
+			jQuery(".showall").show();
+			jQuery(".hideall").hide();
 
 			
 			
@@ -322,10 +331,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			if (self.hasClass('open')) {
 				container.find("> ul").slideDown();
-				// if child ul has one child - open it up too
-				if (container.find("> ul > li").length == 1) {
-					container.find("> ul > li > a").addClass('open');
-					container.find("> ul > li > ul").slideDown();
+				// if this is a space, open also it's root term
+				
+				if (container.parent().hasClass('level0')) {
+					if (container.find("> ul > li").length == 1) {
+						container.find("> ul > li > a").addClass('open');
+						container.find("> ul > li > ul").slideDown();
+						showTermContests(container.find("> ul > li > a").attr('data-term-id'));
+					}
 				}
 			}
 			else {
