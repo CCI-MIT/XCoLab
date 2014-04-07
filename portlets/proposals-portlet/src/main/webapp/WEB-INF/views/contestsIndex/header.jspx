@@ -62,23 +62,33 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${viewType != 'OUTLINE' }">
 			<div class="show">
-				<c:choose>
-					<c:when test="${showActiveContests }">
-						<a href="/web/guest/plans/-/plans/contestsType/prior" >Show prior contests</a>
-					</c:when>
-					<c:otherwise>
-						<a href="/web/guest/plans/" >Show active contests</a>
-					</c:otherwise>
-				</c:choose>
+				<div class="show-active">
+					<c:choose>
+						<c:when test="${showActiveContests }">
+							<a href="#" >active contests</a>
+						</c:when>
+						<c:when test="${not showActiveContests and not showAllContests }">
+							<a href="#" >prior contests</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" >all contests</a>
+						</c:otherwise>
+					</c:choose>
+					<div id="priorActiveAllWidget">
+						<ul>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="/web/guest/plans/" >active contests</a></li>
+							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >prior contests</a></li>
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >all contests</a></li>
+						</ul>
+						
+					</div>
+				</div>
 			</div>
   			<div class="divider"><!--  --></div> 
-		</c:if>
   		<div class="show">
   			<a href="/web/guest/plans/-/plans/contestId/1300102">Suggest a new contest</a>
   		</div> 
-		<c:if test="${viewType != 'OUTLINE' }">
  			<div class="filter" style="position: relative;">
  				<portlet:renderURL var="filterURL" />
 	 			<form action="${filterURL }" id="filterContestsForm" method="get">
@@ -92,7 +102,6 @@
         			</c:if>
 	            </form>
     	    </div>
-    	</c:if>
 
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />

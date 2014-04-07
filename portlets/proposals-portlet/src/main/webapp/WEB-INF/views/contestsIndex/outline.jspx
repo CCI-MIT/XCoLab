@@ -49,6 +49,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
     <div class="contest-outline-right">
         
         <div class="contest-count"><span class="count"><!--  --></span> contests</div>
+        <!-- 
         <div class="show-active">Display: 
         	<c:choose>
 				<c:when test="${showActiveContests }">
@@ -59,6 +60,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				</c:otherwise>
 			</c:choose>
 		</div>
+		 -->
 		<div class="clearfix"><!--  --></div>
         <div class="section-list">
         	<!--  -->
@@ -70,24 +72,26 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
        		<!--  -->
         </div> <!-- / contest-list -->
         <div class="otherContestsInfoContainer">
-			<c:choose>
-				<c:when test="${showActiveContests }">
-					<span class="otherContestsCount">If you enable 
-					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+        	<c:if test="${not showAllContests }">
+				<c:choose>
+					<c:when test="${showActiveContests }">
+						<span class="otherContestsCount">If you enable 
+						<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+					
+						<span class='count'><!--  --></span> more 
+						<span class='plural'>contests</span>
+						<span class='singular'>contest</span> will show up</span>
+					</c:when>
+					<c:otherwise>
+						<span class="otherContestsCount">If you enable 
+						<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
 				
-					<span class='count'><!--  --></span> more 
-					<span class='plural'>contests</span>
-					<span class='singular'>contest</span> will show up</span>
-				</c:when>
-				<c:otherwise>
-					<span class="otherContestsCount">If you enable 
-					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
-				
-					<span class='count'><!--  --></span> more 
-					<span class='plural'>contests</span>
-					<span class='singular'>contest</span> will show up</span>
-				</c:otherwise>
-			</c:choose>
+						<span class='count'><!--  --></span> more 
+						<span class='plural'>contests</span>
+						<span class='singular'>contest</span> will show up</span>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
 		</div>
     
  		

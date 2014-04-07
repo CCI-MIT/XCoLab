@@ -25,5 +25,14 @@
 	<script>
 		// set contest view type, see https://issues.liferay.com/browse/LPS-25733 
 		setContestsViewTypeCookie('${viewType}');
+		
+		jQuery(".show-active").hover(
+				function() {
+					jQuery("#priorActiveAllWidget").slideDown();
+				},
+				function() {
+					jQuery("#priorActiveAllWidget").slideUp();
+				}
+		);
 	</script>
 </jsp:root>
