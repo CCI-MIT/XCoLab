@@ -51,6 +51,7 @@ public class ContestsIndexController extends BaseProposalsController {
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model, 
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
+            @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
         if (viewType == null) {
@@ -76,6 +77,13 @@ public class ContestsIndexController extends BaseProposalsController {
         for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false)) {
         	contests.add(new ContestWrapper(contest));
         }
+        if (showAllContests) {
+        	// add remaining  contests to the list
+            for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
+            	contests.add(new ContestWrapper(contest));
+            }
+        	
+        }
 
         model.addAttribute("contests", contests);
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
@@ -83,6 +91,7 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
+        model.addAttribute("showAllContests", showAllContests);
 
         setSeoTexts(request, showActiveContests ? "Active contests" : "Prior contests", null, null);
         
