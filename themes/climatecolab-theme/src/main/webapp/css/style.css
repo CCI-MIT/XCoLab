@@ -1047,10 +1047,11 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 
 
-.contest-list a {background:url(../images/contest-arrow-dwn.png); background-repeat:no-repeat; background-position:0 11px; width:390px; padding:5px 0 5px 28px; display:inline-block;}
+.contest-list a.trigger {background:url(../images/contest-arrow-dwn.png); background-repeat:no-repeat; background-position:0 11px; width:30px; display:inline-block; height: 20px;}
+.contest-list a.contestName {width:360px; padding:5px 0 5px 28px; display:inline-block;}
 .contest-list .viewContestDetails a {background: none; padding: 0;}
 .contest-list .viewContestDetails { }
-.contest-list a.active {background-image:url(../images/contest-arrow-up.png);}
+.contest-list a.trigger.active {background-image:url(../images/contest-arrow-up.png);}
 .contest-list a .count {float:right; background:url(../images/contest-icon-prop.png) no-repeat; width:24px; padding-left:24px; text-align:center; vertical-align:middle; font-size:12px; font-weight:700; color:#858585;}
 
 .detail {font-size:12px; margin:0 0 15px 29px; padding:5px 0; color:#858585; line-height:19px; border-bottom:1px solid #e8e8e8; display: none;}
@@ -1065,8 +1066,14 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 	display: none;
 }
 
+<<<<<<< HEAD
 /** just to hide outline as it's in beta stage **/
 .headline .outline {
+	display: inline;
+}
+.contest-outline-left ul.level1 a .count.zero {color:#ccc;}
+
+.otherContestsCount.plural .plural, .otherContestsCount.singular .singular {
 	display: inline;
 }
 
