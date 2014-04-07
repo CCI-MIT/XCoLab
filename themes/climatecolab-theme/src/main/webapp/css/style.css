@@ -1048,7 +1048,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 
 .contest-list a.trigger {background:url(../images/contest-arrow-dwn.png); background-repeat:no-repeat; background-position:0 11px; width:30px; display:inline-block; height: 20px;}
-.contest-list a.contestName {width:360px; padding:5px 0 5px 28px; display:inline-block;}
+.contest-list a.contestName {width:360px; padding:5px 0 5px 28px; }
 .contest-list .viewContestDetails a {background: none; padding: 0;}
 .contest-list .viewContestDetails { }
 .contest-list a.trigger.active {background-image:url(../images/contest-arrow-up.png);}
