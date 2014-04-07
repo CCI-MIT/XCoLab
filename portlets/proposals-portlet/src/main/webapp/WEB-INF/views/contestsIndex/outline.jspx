@@ -302,6 +302,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
+			if (self.hasClass('showall') || self.hasClass('hideall')) {
+				return;
+			}
 			var container = self.parent();
 			container.addClass('currentlyClicked');
 			jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active');
@@ -354,14 +357,17 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		});
 		
 		jQuery(".expand a").click(function() {
+			console.log("clicked", this);
 			jQuery(".expand a").toggle();
 			if (jQuery(this).hasClass('showall')) {
 				jQuery(".contest-outline-left a").addClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideDown();
+				console.log("sliding down");
 			}
 			else {
 				jQuery(".contest-outline-left a").removeClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideUp();
+				console.log("sliding up");
 			}
 		});
 		
