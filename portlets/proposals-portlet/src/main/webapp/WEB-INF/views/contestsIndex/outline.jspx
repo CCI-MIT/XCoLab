@@ -134,7 +134,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
 			contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId}, 
-					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />'};
+					proposalsCount: ${contest.proposalsCount}, contestLink: '<proposalsPortlet:contestLink contestId="${contest.contestPK }" text="visit" />', 
+					contestUrl: '/web/guest/plans/-/plans/contestId/${contest.contestPK}'};
 			contests[${contest.contestPK}] = contest;
 			contestsCount++;
 			focusArea = focusAreas[${contest.focusAreaId}];
@@ -163,7 +164,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		
 		for (var termId in ontologyTerms) {
 			
-			jQuery("> a > .count", "#ontologyTerm_" + termId).text(ontologyTerms[termId].contests.length);
+			jQuery("> a > .count", "#ontologyTerm_" + termId).each(function() {
+				var self = jQuery(this);
+				if (ontologyTerms[termId].contests.length > 0) 
+					self.removeClass("zero");
+				else 
+					self.addClass("zero");
+				
+				self.text(ontologyTerms[termId].contests.length);
+			});
 		}
 		jQuery(".contest-count .count").text(contestsCount);
 		function showTermContests(termId) {
@@ -249,7 +258,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					}
 					for (var i =0; i < currentTerm.contests.length; i++) {
 						var contest = currentTerm.contests[i];
-						contestsListHtml.push("<div class='ctest'><a href='#'>");
+						contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a href='");
+						contestsListHtml.push(contest.contestUrl);
+						contestsListHtml.push("'>");
 						contestsListHtml.push(contest.name);
 						contestsListHtml.push("<span class='count'>");
 						contestsListHtml.push(contest.proposalsCount);
@@ -308,6 +319,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			if (self.hasClass('open')) {
 				container.find("> ul").slideDown();
+				// if child ul has one child - open it up too
+				if (container.find("> ul > li").length == 1) {
+					container.find("> ul > li > a").addClass('open');
+					container.find("> ul > li > ul").slideDown();
+				}
 			}
 			else {
 				container.find("> ul").slideUp();
@@ -318,7 +334,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 		});
 
-		jQuery(".contest-outline-right").on('click', '.ctest > a', function(event) {
+		jQuery(".contest-outline-right").on('click', '.ctest > a.trigger', function(event) {
 			event.preventDefault();
 			var self = jQuery(this);
 			

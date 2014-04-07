@@ -1,6 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -90,7 +93,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTerms(0, Integer.MAX_VALUE);
         	
         	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
-        	Map<Long, OntologySpaceWrapper> ontologySpaces = new TreeMap<>();
+        	Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
         	Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
         	
         	for (FocusArea area: focusAreasRaw) {
@@ -121,10 +124,19 @@ public class ContestsIndexController extends BaseProposalsController {
             for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
             	otherContests.add(new ContestWrapper(contest));
             }
-        	
+        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {
+
+				@Override
+				public int compare(OntologySpaceWrapper o1,
+						OntologySpaceWrapper o2) {
+					return o1.getName().compareTo(o2.getName());
+				}
+        		
+        	});
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
-        	model.addAttribute("ontologySpaces", ontologySpaces.values());
+        	model.addAttribute("ontologySpaces", sortedSpaces);
         	model.addAttribute("otherContests", otherContests);
         	
         }
