@@ -21,7 +21,7 @@ ${balloonText.textBeforeForm }
 	
 	<form:input path="email" id="email" cssClass="text profileInput balloonInput" required="true" placeholder="Please enter your e-Mail address" />
 	<div class="blue-button">
-		<a href="#" onclick="javascript:jQuery('#sendUserEmailForm').submit();">request personal URL</a>
+		<a href="#" onclick="javascript:jQuery('#sendUserEmailForm').submit();">Request your unique link</a>
 	</div><br />
 	<form:errors path="email" class="alert alert-error"/>
 </form:form>
