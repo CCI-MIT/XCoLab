@@ -972,10 +972,10 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .contest-section2 .section-head {color:#66af45;}
 .contest-section3 .section-head {color:#539bd4;}
 .contest-section4 .section-head {color:#e46970;}
-.section-head h2 {font-size:25px; display:inline-block;}
+.section-head h2 {font-size:25px; display:inline-block; width: 380px;}
 .section-head h2 span {font-size:13px; font-weight:200; color:#828282; vertical-align:middle;}
 
-.section-head .active-icon {display:inline-block; width:19px; height:19px; margin-right:14px;}
+.section-head .active-icon {display:inline-block; width:19px; height:19px; margin-right:14px; float: left; margin-top: 5px; }
 .contest-section1 .active-icon {background-image:url(../images/contest-icon-cplus-orange.png);}
 .contest-section1 .open .active-icon {background-image:url(../images/contest-icon-cminus-orange.png);}
 .contest-section2 .active-icon {background-image:url(../images/contest-icon-cplus-green.png);}
