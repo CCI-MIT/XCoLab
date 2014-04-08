@@ -137,7 +137,7 @@
                                 <a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
                             </c:if>
                             <div class="button-wrapper">
-                                <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion<c:if test="${contest.commentsCount > 0}"> <div class="discussion-button-badge">${contest.commentsCount}</div></c:if></a>
+                                <a class="detailbutton"	href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/page/discussion">Discussion</a><c:if test="${contest.commentsCount > 0}"> <div class="discussion-button-badge">${contest.commentsCount}</div></c:if>
                             </div>
                         </div>
                     </td>
