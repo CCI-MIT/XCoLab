@@ -19,8 +19,10 @@ public class OntologyTermWrapper {
 	}
 
 	public void setParent(OntologyTermWrapper parent) {
-		this.parent = parent;
-		parent.children.add(this);
+		if (parent != null) {
+			this.parent = parent;
+			parent.children.add(this);
+		}
 	}
 
 	public List<OntologyTermWrapper> getChildren() {
