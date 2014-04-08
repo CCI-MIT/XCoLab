@@ -119,6 +119,16 @@ public class ContestWrapper {
         return contest.getCreated();
     }
 
+    public long getCreatedTime() {
+    	if (contest.getCreated() != null) {
+    		return contest.getCreated().getTime();
+    	}
+    	else if (contest.getUpdated() != null) {
+    		return contest.getUpdated().getTime();
+    	}
+    	return 0;
+    }
+
     public void setCreated(Date created) {
         contest.setCreated(created);
     }
