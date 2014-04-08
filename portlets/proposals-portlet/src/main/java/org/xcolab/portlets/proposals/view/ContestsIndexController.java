@@ -90,7 +90,7 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
 
-        setSeoTexts(request, showActiveContests ? "Active contests" : "Prior contests", null, null);
+        setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
         	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
