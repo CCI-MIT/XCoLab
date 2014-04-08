@@ -292,7 +292,7 @@ public class ContestWrapper {
     }
 
     public long getTotalCommentsCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getCommentsCount(contest);
+        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
     }
 
 

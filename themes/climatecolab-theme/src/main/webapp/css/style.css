@@ -609,7 +609,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .contest-detail .contestTeamRole { padding: 5px 0px; }
 
 .contest-detail .buttons {float:right; width:270px; text-align:right; position: absolute; right: 15px; bottom: 20px;}
-.contest-detail .buttons a, a.detailbutton {width:115px; height:27px; display:inline-block; padding-top:8px; margin-left:3px; background:#fcfbf9; border:1px solid #6a96a7; font-size:16px; font-weight:700; text-align:center; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px;}
+.contest-detail .buttons a, a.detailbutton {padding-left: 5px; padding-right: 5px; width:115px; height:27px; display:inline-block; padding-top:8px; margin-left:3px; background:#fcfbf9; border:1px solid #6a96a7; font-size:16px; font-weight:700; text-align:center; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px;}
 
 
 /* the table with rows of contests  */
@@ -660,6 +660,10 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .prop-tabs li a:hover {height:24px; padding:12px 11px 1px; background:#0f558a; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li.c a {height:25px; padding:12px 11px 0; color:#30a3fb; background:#fff; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li a div {display:inline; text-align:center; font:12px Arial, Helvetica, sans-serif; color:#fff; background:#0f558a; padding:0 5px; margin-left:5px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px;}
+
+.discussion-button-badge {position: absolute; right: 2px; top: -5px; display:inline; text-align:center; font:12px Arial, Helvetica, sans-serif; color:#fff; background:#0f558a; padding:0 5px; margin-left:5px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px;}
+.button-wrapper {position:relative;}
+.button-wrapper .detailbutton {overflow: auto;}
 
 /* edit proposal block */
 .edit-prop-wrap {border-bottom:1px dashed #666; padding:31px 0 13px;}
