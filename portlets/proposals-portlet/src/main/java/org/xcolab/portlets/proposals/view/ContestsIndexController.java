@@ -74,15 +74,12 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<ContestWrapper>();
-        for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false)) {
-        	contests.add(new ContestWrapper(contest));
-        }
-        if (showAllContests) {
-        	// add remaining  contests to the list
-            for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
-            	contests.add(new ContestWrapper(contest));
-            }
-        	
+        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE) :
+        	ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false);
+        
+        for (Contest contest: contestsToWrap) {
+        	if (! contest.isContestPrivate())
+        		contests.add(new ContestWrapper(contest));
         }
 
         model.addAttribute("contests", contests);
