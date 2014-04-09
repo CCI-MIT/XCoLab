@@ -875,8 +875,8 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
-    public void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

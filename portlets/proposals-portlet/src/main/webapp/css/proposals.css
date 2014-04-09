@@ -291,3 +291,7 @@ div.sponsorLogo img {
     float: left;
     margin-right: 15px;
 }
+
+.ui-autocomplete {
+    z-index: 100;
+}

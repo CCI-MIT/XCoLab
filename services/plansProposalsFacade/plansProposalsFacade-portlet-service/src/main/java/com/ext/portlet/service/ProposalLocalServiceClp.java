@@ -2415,20 +2415,22 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
         try {
-            _invokableLocalService.invokeMethod(_methodName59,
-                _methodParameterTypes59,
-                new Object[] {
-                    proposalId,
-                    
-                userId,
-                    
-                ClpSerializer.translateInput(comment)
-                });
+            returnObj = _invokableLocalService.invokeMethod(_methodName59,
+                    _methodParameterTypes59,
+                    new Object[] {
+                        proposalId,
+                        
+                    userId,
+                        
+                    ClpSerializer.translateInput(comment)
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2447,6 +2449,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.liferay.portal.model.MembershipRequest) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override

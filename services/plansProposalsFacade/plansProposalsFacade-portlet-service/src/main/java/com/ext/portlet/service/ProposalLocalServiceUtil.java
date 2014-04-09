@@ -987,11 +987,11 @@ public class ProposalLocalServiceUtil {
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
-    public static void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public static com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().addMembershipRequest(proposalId, userId, comment);
+        return getService().addMembershipRequest(proposalId, userId, comment);
     }
 
     /**

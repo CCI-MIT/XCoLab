@@ -889,11 +889,9 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName549.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes549, parameterTypes)) {
-            ProposalLocalServiceUtil.addMembershipRequest(((Long) arguments[0]).longValue(),
+            return ProposalLocalServiceUtil.addMembershipRequest(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);
-
-            return null;
         }
 
         if (_methodName550.equals(name) &&

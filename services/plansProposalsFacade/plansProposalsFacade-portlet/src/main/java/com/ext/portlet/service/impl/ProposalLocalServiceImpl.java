@@ -986,10 +986,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
-    public void addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+    public MembershipRequest addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
-        MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
     }
 
 
