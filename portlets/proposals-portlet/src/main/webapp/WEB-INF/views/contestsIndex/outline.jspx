@@ -165,7 +165,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			focusArea = focusAreas[${contest.focusAreaId}];
 			
 			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(contest, ontologyTerms[focusArea.terms[idx]], true);
+				addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
 			}
 			
 		</c:forEach>
@@ -189,24 +189,26 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		jQuery(".contest-count .count").text(contestsCount);
 		function showTermContests(termId) {
 			var container = jQuery(".contest-outline-right");
+			var currentTerm = ontologyTerms[termId];
 			
 			jQuery(".cintro").hide();
 			container.show();
-			var currentTerm = ontologyTerms[termId];
-			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
-			// update toggle type link 
-			var showOtherContestsLink = jQuery(".showOtherContestsLink");
-			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
 			container.find(".contest-count .count").text(currentTerm.contests.length);
 			
+			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
+			// update toggle type link 
+			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
+			var showOtherContestsLink = otherContestsInfoContainer.find(".showOtherContestsLink");
+			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
+			
 			if (currentTerm.otherContests.length > 0) {
-				jQuery(".otherContestsCount .count").text(currentTerm.otherContests.length);
-				jQuery(".otherContestsCount").show();
-				jQuery(".otherContestsCount").addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural")
+				console.log('updating count!', currentTerm.otherContests.length);
+				otherContestsInfoContainer.find(".count").text(currentTerm.otherContests.length);
+				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural")
 					.removeClass(currentTerm.otherContests.length == 1 ? "plural" : "singular");
 			}
 			else {
-				jQuery(".otherContestsCount").hide();
+				otherContestsInfoContainer.find(".otherContestsCount").hide();
 			}
 			
 			var termAndParents = [];
@@ -278,6 +280,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						}
 						duplicateContests[contest.name] ++;
 					}
+					contestsListHtml.push("<div class='otherContestsInfo'>");
+					contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+					contestsListHtml.push("</div>");
 					for (var i =0; i < currentTerm.contests.length; i++) {
 						var contest = currentTerm.contests[i];
 						contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
@@ -309,9 +314,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						contestsListHtml.push("</div></div>");
 					}
 					
-					contestsListHtml.push("<div class='otherContestsInfo'>");
-					contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
-					contestsListHtml.push("</div>");
 					
 					jQuery(".otherContestsInfoContainer").hide();
 					container.find(".contest-list").html(contestsListHtml.join(''));

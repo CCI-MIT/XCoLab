@@ -11,16 +11,19 @@
 			<portlet:param name="viewType" value="LIST" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeToGridViewTypeURL">
 			<portlet:param name="viewType" value="GRID" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeToOutlineViewTypeURL">
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 			
 		<div class="view ${fn:toLowerCase(viewType)}view">
