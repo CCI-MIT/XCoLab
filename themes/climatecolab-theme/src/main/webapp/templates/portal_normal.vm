@@ -270,6 +270,7 @@ $theme.include($top_messages_include)
 
     #parse ("$full_templates_path/sign_in_popup.vm")
     #parse ("$full_templates_path/jsadditions.vm")
+    #parse ("$full_templates_path/post_registration_popup.vm")
     
 #if ($request.getSession().getAttribute('xcolab_global_messages'))
 	<script type="text/javascript">

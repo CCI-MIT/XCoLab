@@ -224,7 +224,7 @@ public class FacebookController {
 
                 userBean.setScreenName(screenName);
 
-                MainViewController.completeRegistration(request, response, userBean, redirectUrl);
+                MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
             } else {
                 response.setRenderParameter("status", "registerOrLogin");
                 response.setRenderParameter("SSO", "general");

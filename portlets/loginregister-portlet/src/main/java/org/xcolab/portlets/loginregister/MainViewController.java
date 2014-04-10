@@ -2,6 +2,10 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -14,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
+import com.liferay.portal.NoSuchUserException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -210,7 +215,7 @@ public class MainViewController {
 				response.setRenderParameter("recaptchaError", "true");
 			} else {
 				try {
-					completeRegistration(request, response, newAccountBean, redirect);
+					completeRegistration(request, response, newAccountBean, redirect, false);
 
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
@@ -225,6 +230,56 @@ public class MainViewController {
         SessionErrors.clear(request);
         SessionMessages.clear(request);
 	}
+
+    @RequestMapping(params = "action=postRegistration")
+    public void updateRegistrationParameters(ActionRequest request, Model model,
+                             ActionResponse response) throws IOException, SystemException, PortalException {
+
+        Map<String, String> responseMap = new HashMap<>();
+        String screenName = request.getParameter("screenName");
+        String bio = request.getParameter("bio");
+        String redirect = request.getParameter("redirect");
+        User loggedInUser = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
+
+        if (!loggedInUser.getScreenName().equals(screenName)) {
+            try {
+                UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
+                responseMap.put("user_error", "true");
+            } catch (NoSuchUserException e) {
+                if (screenName.matches("[a-zA-Z0-9]+$")) {
+                    loggedInUser.setScreenName(screenName);
+                } else {
+                    responseMap.put("user_error", "true");
+                }
+            }
+        }
+
+
+        if ((bio != null && bio.length() > 0 && bio.length() <= 2000)) {
+            ExpandoValueLocalServiceUtil.addValue(
+                    User.class.getName(),
+                    CommunityConstants.EXPANDO,
+                    CommunityConstants.BIO, loggedInUser.getUserId(),
+                    bio);
+        } else {
+            if (bio.length() > 2000) {
+                responseMap.put("bio_error", "true");
+            }
+        }
+
+        UserLocalServiceUtil.updateUser(loggedInUser);
+
+        if (responseMap.size() > 0) {
+            for (String key : responseMap.keySet()) {
+                redirect += (redirect.contains("?") ? "&" : "?") + key + "=" + responseMap.get(key);
+            }
+
+            response.sendRedirect(redirect);
+        } else {
+            redirect = redirect.replaceAll("postRegistration=true", "");
+            response.sendRedirect(redirect);
+        }
+    }
 	
 	@ResourceMapping
 	public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
@@ -240,7 +295,7 @@ public class MainViewController {
      * @param redirect          Redirect URL for this request (may be null)
      * @throws Exception
      */
-    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect) throws Exception {
+    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect, boolean postRegistration) throws Exception {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
         PortletSession portletSession = request.getPortletSession();
         String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
@@ -302,7 +357,6 @@ public class MainViewController {
                 user.setFacebookId(fbId);
                 UserLocalServiceUtil.updateUser(user);
                 portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
-                redirect = null;
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -312,7 +366,6 @@ public class MainViewController {
                 user.setOpenId(openId);
                 UserLocalServiceUtil.updateUser(user);
                 portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
-                redirect = null;
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -348,10 +401,15 @@ public class MainViewController {
         request.getPortletSession().setAttribute("collab_user_has_registered", true);
         PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
         if (redirect != null) {
+            // Add request variable for after-registration popover
+            if (redirect.contains("?")) {
+                redirect += "&postRegistration=true";
+            } else {
+                redirect += "?postRegistration=true";
+            }
             response.sendRedirect(redirect);
         } else {
-            response.sendRedirect(themeDisplay.getURLHome());
+            response.sendRedirect(themeDisplay.getURLHome() + "?postRegistration=true");
         }
     }
-
 }
