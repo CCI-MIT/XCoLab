@@ -1473,3 +1473,8 @@ table.login-box-table th {
     padding: 0 3px 10px 0;
     vertical-align: middle;
 }
+
+.role-indicator div {
+    float: left;
+    margin-right: 15px;
+}

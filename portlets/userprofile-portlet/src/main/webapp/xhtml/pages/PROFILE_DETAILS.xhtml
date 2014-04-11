@@ -106,7 +106,20 @@
 					<tr>
 						<td class="memname">#{currentUser.realName}</td>
 					</tr>
+                    <tr>
+                        <td>
+                            <div class="role-indicator" style="margin-top: 5px;">
+                                <div style="width: 16px">
+                                    <img
+                                            src="/climatecolab-theme/images/icon_mem-${currentUser.role.lowerCase}.png"
+                                            width="16" height="16" />
+                                </div>
+                                ${currentUser.role.printName}
+                            </div>
+                        </td>
+                    </tr>
 				</table>
+
 				<div class="memdiv" style="background-color:#707070;"></div>
 				<table border="0" cellpadding="0" cellspacing="0"
 					class="colab members otherInfo" style="width:300px;">
