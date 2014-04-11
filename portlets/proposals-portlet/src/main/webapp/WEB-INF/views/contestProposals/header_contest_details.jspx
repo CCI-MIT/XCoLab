@@ -6,7 +6,8 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:addthis="http://www.addthis.com/help/api-spec">
 
     <div class="contest-detail">
         <div class="heading">
@@ -33,69 +34,82 @@
                 </tbody>
             </table>
         </div>
-        <div class="description">
-            <p>${contest.contestDescription }</p>
-            <c:if test="${contest.hasFocusArea }">
-                <table style="width: 100%; table-layout: fixed;">
-                    <tr>
-                        <c:if test="${not empty contest.what}">
-                            <td>
-                                <table style="width: auto;">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="what"><strong>What:</strong></div>
-                                        </td>
-                                        <td>
-                                            <div class="ontologyItem">
-                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </c:if>
+        <div class="fixed-position-container">
+            <div class="fixed-position-inner-relative">
+                <div class="description">
+                    <p>${contest.contestDescription }</p>
+                    <c:if test="${contest.hasFocusArea }">
+                        <table style="width: 100%; table-layout: fixed;">
+                            <tr>
+                                <c:if test="${not empty contest.what}">
+                                    <td>
+                                        <table style="width: auto;">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="what"><strong>What:</strong></div>
+                                                </td>
+                                                <td>
+                                                    <div class="ontologyItem">
+                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </c:if>
 
-                        <c:if test="${not empty contest.where}">
-                            <td>
-                                <table style="width: auto;">
-                                    <tbody>
-                                    <tr>
-                                        <td><div class="where"><strong>Where:</strong></div>
-                                        </td>
-                                        <td>
-                                            <div class="ontologyItem">
-                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
-                                            </div>
-                                        </td>
+                                <c:if test="${not empty contest.where}">
+                                    <td>
+                                        <table style="width: auto;">
+                                            <tbody>
+                                            <tr>
+                                                <td><div class="where"><strong>Where:</strong></div>
+                                                </td>
+                                                <td>
+                                                    <div class="ontologyItem">
+                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}" />
+                                                    </div>
+                                                </td>
 
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </c:if>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </c:if>
 
-                        <c:if test="${not empty contest.who}">
-                            <td>
-                                <table style="width: auto;">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="who"><strong>Who:</strong></div>
-                                        </td>
-                                        <td>
-                                            <div class="ontologyItem">
-                                                <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </c:if>
-                    </tr>
-                </table>
-            </c:if>
+                                <c:if test="${not empty contest.who}">
+                                    <td>
+                                        <table style="width: auto;">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="who"><strong>Who:</strong></div>
+                                                </td>
+                                                <td>
+                                                    <div class="ontologyItem">
+                                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}" /></div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </c:if>
+                            </tr>
+                        </table>
+                    </c:if>
+                </div>
+            </div>
+            <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
+                <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
+                    <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <div class="clearfix">&#160;</div>
+                    <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <div class="clearfix">&#160;</div>
+                    <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                </div>
+            </div>
         </div>
 
         <div class="moreinfo ${contest.sponsorLogoId > 0 ? 'withSponsor' : 'noSponsor'}">
