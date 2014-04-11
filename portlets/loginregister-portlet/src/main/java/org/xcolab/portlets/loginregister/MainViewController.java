@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -271,12 +272,13 @@ public class MainViewController {
 
         if (responseMap.size() > 0) {
             for (String key : responseMap.keySet()) {
-                redirect += (redirect.contains("?") ? "&" : "?") + key + "=" + responseMap.get(key);
+                redirect = HttpUtil.addParameter(redirect, key, responseMap.get(key));
             }
 
             response.sendRedirect(redirect);
         } else {
-            redirect = redirect.replaceAll("postRegistration=true", "");
+
+            redirect = HttpUtil.removeParameter(redirect, "postRegistration");
             response.sendRedirect(redirect);
         }
     }
