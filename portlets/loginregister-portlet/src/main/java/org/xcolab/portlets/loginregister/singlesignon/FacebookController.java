@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
+import sun.applet.Main;
 
 import javax.portlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -46,9 +47,9 @@ public class FacebookController {
         HttpSession session = httpReq.getSession();
 
         // Set property and do redirect
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
+        //session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
 
-        initiateFbRequest(request, response);
+        initiateFbRequest(request, response, MainViewController.SSO_TARGET_LOGIN);
     }
 
     @RequestMapping(params = "action=initiateRegistration")
@@ -58,12 +59,12 @@ public class FacebookController {
         HttpSession session = httpReq.getSession();
 
         // Set property and do redirect
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
+        // session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
 
-        initiateFbRequest(request, response);
+        initiateFbRequest(request, response, MainViewController.SSO_TARGET_REGISTRATION);
     }
 
-    private void initiateFbRequest(ActionRequest request, ActionResponse response) throws SystemException, IOException {
+    private void initiateFbRequest(ActionRequest request, ActionResponse response, String target) throws SystemException, IOException {
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
@@ -72,11 +73,12 @@ public class FacebookController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
-        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent().toString()));
+        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.addParameter(HttpUtil.encodeURL(themeDisplay.getURLCurrent().toString()), "target", target));
         String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id", FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
         facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "scope", "email");
+
 
         response.sendRedirect(facebookAuthURL);
     }
@@ -91,6 +93,7 @@ public class FacebookController {
         String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
 
 
+        String target = ParamUtil.getString(request, "target");
         String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
         String token=null;
@@ -196,11 +199,11 @@ public class FacebookController {
         }
 
         if (user != null) {
-            response.sendRedirect(themeDisplay.getPortalURL());
+            response.sendRedirect(redirectUrl);
         }
         else {
             // Finish registration
-            if (portletSession.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+            if (target.equals(MainViewController.SSO_TARGET_REGISTRATION)) {
                 // append SSO attributes
                 CreateUserBean userBean = new CreateUserBean();
                 String password = RandomStringUtils.random(12, true, true);
