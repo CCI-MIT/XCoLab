@@ -200,7 +200,7 @@ public class FacebookController {
         }
         else {
             // Finish registration
-            if (portletSession.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+            if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
                 // append SSO attributes
                 CreateUserBean userBean = new CreateUserBean();
                 String password = RandomStringUtils.random(12, true, true);
