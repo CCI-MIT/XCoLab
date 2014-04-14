@@ -170,12 +170,8 @@
 			<ice:outputText value="#{currentUser.filteredAbout}" escape="false" />
 		</p>
 
-        <f:subview rendered="#{userprofileBean.viewingOwnProfile}">
-            <h2 style="margin-top: 20px;">My proposals</h2>
-        </f:subview>
-        <f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
-            <h2 style="margin-top: 20px;">#{currentUser.screenName} proposals</h2>
-        </f:subview>
+        <h2 style="margin-top: 20px;">Proposals</h2>
+
         <f:subview rendered="#{fn:length(currentUser.proposals) == 0}">
             #{currentUser.firstName} has not yet contributed to any Climate CoLab proposals.
         </f:subview>
@@ -217,12 +213,8 @@
 
 		</ice:dataTable>
 
-		<f:subview rendered="#{userprofileBean.viewingOwnProfile}">
-			<h2 style="margin-top: 20px;">My activities</h2>
-		</f:subview>
-		<f:subview rendered="#{not userprofileBean.viewingOwnProfile}">
-			<h2 style="margin-top: 20px;">#{currentUser.screenName} activities</h2>
-		</f:subview>
+        <h2 style="margin-top: 20px;">Activities</h2>
+
 		<ice:dataTable styleClass="colab" value="#{currentUser.activities}"
 			rowClasses="t,nt" var="activity">
 			<ice:column>
