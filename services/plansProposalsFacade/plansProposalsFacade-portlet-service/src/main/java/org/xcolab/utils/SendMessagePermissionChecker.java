@@ -30,6 +30,12 @@ public class SendMessagePermissionChecker {
         blacklistMap.put(MemberRole.MEMBER, memberBlacklist);
     }
 
+    /**
+     * Returns whether the user is allowed to send a message to the passed user
+     * @param user  The recipient user object
+     * @return
+     * @throws SystemException
+     */
     public boolean canSendToUser(User user) throws SystemException {
         MemberRole destinationRole = getHighestUserRole(user);
 
@@ -44,6 +50,11 @@ public class SendMessagePermissionChecker {
         return false;
     }
 
+    /**
+     * Get all MemberRole objects that are blacklisted for the user
+     * @return  A list consisting of <i>MemberRole</i> objects
+     * @throws SystemException
+     */
     public List<MemberRole> getBlacklistedMemberRoles() throws SystemException {
 
         // Count the number of blacklist entries for each of the users roles
@@ -51,11 +62,13 @@ public class SendMessagePermissionChecker {
         for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.getMember(role.getName());
             List<MemberRole> blacklist = blacklistMap.get(currentRole);
-            for (MemberRole mr : blacklist) {
-                if (blacklistCountMap.get(mr) == null) {
-                    blacklistCountMap.put(mr, 1);
-                } else {
-                    blacklistCountMap.put(mr, blacklistCountMap.get(mr) + 1);
+            if (blacklist != null) {
+                for (MemberRole mr : blacklist) {
+                    if (blacklistCountMap.get(mr) == null) {
+                        blacklistCountMap.put(mr, 1);
+                    } else {
+                        blacklistCountMap.put(mr, blacklistCountMap.get(mr) + 1);
+                    }
                 }
             }
         }

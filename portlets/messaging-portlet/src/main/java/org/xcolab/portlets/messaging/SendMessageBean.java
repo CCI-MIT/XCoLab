@@ -12,6 +12,16 @@ import java.util.Random;
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
 
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.messaging.utils.MessageLimitManager;
 
 import com.ext.portlet.messaging.MessageUtil;
@@ -20,6 +30,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.utils.SendMessagePermissionChecker;
 
 public class SendMessageBean implements Serializable {
     /**
@@ -32,10 +43,37 @@ public class SendMessageBean implements Serializable {
     private String content;
     private MessagingBean messagingBean;
     private MessageBean replyMessage;
+    private SendMessagePermissionChecker permissionChecker;
     
     
     public SendMessageBean() throws SystemException {
         users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+
+        permissionChecker = new SendMessagePermissionChecker(Helper.getLiferayUser());
+        List<MemberRole> blacklist = permissionChecker.getBlacklistedMemberRoles();
+        List<Long> blacklistedUsers = new ArrayList<>();
+
+        // Get all the userIds which are not accessible for the current user
+        for (MemberRole mr : blacklist) {
+            for (String name : mr.getRoleNames()) {
+                try {
+                    Role role = RoleLocalServiceUtil.getRole(GetterUtil.getLong(Helper.getLiferayCompanyId()), name);
+                    List<User> users = UserLocalServiceUtil.getRoleUsers(role.getRoleId());
+                    for (User user : users) {
+                        blacklistedUsers.add(user.getUserId());
+                    }
+                } catch (PortalException | SystemException e) {
+                    // Ignore the role if it cannot get resolved
+                }
+            }
+        }
+
+        DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(User.class, PortalClassLoaderUtil.getClassLoader());
+        if (blacklistedUsers.size() > 0) {
+            userQuery.add(RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", blacklistedUsers)));
+        }
+        users = UserLocalServiceUtil.dynamicQuery(userQuery);
+
         Collections.sort(new ArrayList(users), new Comparator<User>() {
 
             @Override
@@ -69,7 +107,9 @@ public class SendMessageBean implements Serializable {
         
             for (String recipientId: receipients.split(",")) {
                 if (! recipientId.trim().equals("")) {
-                    recipientIds.add(Long.parseLong(recipientId));
+                    if (permissionChecker.canSendToUser(UserLocalServiceUtil.getUserById(Long.parseLong(recipientId)))) {
+                        recipientIds.add(Long.parseLong(recipientId));
+                    }
                 }
             }
             MessageUtil.sendMessage(subject, content, userId, 
