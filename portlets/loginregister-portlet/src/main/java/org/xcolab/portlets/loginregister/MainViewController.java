@@ -243,7 +243,6 @@ public class MainViewController {
 
         String screenName = request.getParameter("screenName");
         String bio = request.getParameter("bio");
-        String redirect = request.getParameter("redirect");
         User loggedInUser = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
@@ -251,7 +250,7 @@ public class MainViewController {
                 UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
                 json.getJSONObject("screenName").put("success", false);
             } catch (NoSuchUserException e) {
-                if (screenName.matches("[a-zA-Z0-9]+$")) {
+                if (screenName.matches("[a-zA-Z0-9]+$") && screenName.length() > 0) {
                     loggedInUser.setScreenName(screenName);
                     json.getJSONObject("screenName").put("success", true);
                 } else {
