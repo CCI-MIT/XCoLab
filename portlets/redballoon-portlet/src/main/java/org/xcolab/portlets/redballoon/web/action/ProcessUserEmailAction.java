@@ -108,7 +108,7 @@ public class ProcessUserEmailAction {
 		BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
 		
 		String messageSubject = text.getEmailSubjectTemplate();
-		String messageBody = text.getEmailTemplate().replaceAll("URLPLACEHOLDER", BalloonUtils.getBalloonUrlForLink(request,  link));
+		String messageBody = text.getEmailTemplate().replaceAll("URL_PLACEHOLDER", BalloonUtils.getBalloonUrlForLink(request,  link));
 
 		InternetAddress addressFrom = new InternetAddress(FROM_ADDRESS);
 

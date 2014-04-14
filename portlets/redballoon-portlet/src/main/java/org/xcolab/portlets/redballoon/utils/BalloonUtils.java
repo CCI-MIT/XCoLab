@@ -15,11 +15,14 @@ import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonText;
 import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
 import com.ext.portlet.service.BalloonTextLocalServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -29,6 +32,7 @@ public class BalloonUtils {
 	
 	private static Random rand = new Random();
 	private final static String SHARE_LINK_PATTERN = "%s/balloon/-/balloon/link/%s";
+	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 
 			String parent, String linkuuid, String context) throws PortalException, SystemException {
@@ -72,6 +76,20 @@ public class BalloonUtils {
 			but.setBalloonLinkUuid(linkuuid);
 			but.setReferrer(httpServletRequest.getHeader("referer"));
 			but.setUserAgent(httpServletRequest.getHeader("User-Agent"));
+			// populate GeoLocation data
+			try {
+				Location location = IpTranslationServiceUtil.getLocationForIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
+				if (location != null) {
+					but.setCity(location.getCity());
+					but.setCountry(location.getCountry());
+					but.setLatitude(location.getLatitude());
+					but.setLongitude(location.getLongitude());
+				}
+			}
+			catch (Throwable t) {
+				_log.error("Error when processing user location", t);
+			}
+			 
 			
 			if (! user.getDefaultUser()) {
 				but.setUserId(user.getUserId());
