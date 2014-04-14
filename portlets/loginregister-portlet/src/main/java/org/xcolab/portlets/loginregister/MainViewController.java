@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -232,11 +234,13 @@ public class MainViewController {
         SessionMessages.clear(request);
 	}
 
-    @RequestMapping(params = "action=postRegistration")
-    public void updateRegistrationParameters(ActionRequest request, Model model,
-                             ActionResponse response) throws IOException, SystemException, PortalException {
+    @ResourceMapping(value = "postRegistration")
+    public void updateRegistrationParameters(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
 
-        Map<String, String> responseMap = new HashMap<>();
+        JSONObject json = JSONFactoryUtil.createJSONObject();
+        json.put("screenName", JSONFactoryUtil.createJSONObject());
+        json.put("bio", JSONFactoryUtil.createJSONObject());
+
         String screenName = request.getParameter("screenName");
         String bio = request.getParameter("bio");
         String redirect = request.getParameter("redirect");
@@ -245,17 +249,19 @@ public class MainViewController {
         if (!loggedInUser.getScreenName().equals(screenName)) {
             try {
                 UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
-                responseMap.put("user_error", "true");
+                json.getJSONObject("screenName").put("success", false);
             } catch (NoSuchUserException e) {
                 if (screenName.matches("[a-zA-Z0-9]+$")) {
                     loggedInUser.setScreenName(screenName);
+                    json.getJSONObject("screenName").put("success", true);
                 } else {
-                    responseMap.put("user_error", "true");
+                    json.getJSONObject("screenName").put("success", false);
                 }
             }
         }
 
 
+        json.getJSONObject("bio").put("success", true);
         if ((bio != null && bio.length() > 0 && bio.length() <= 2000)) {
             ExpandoValueLocalServiceUtil.addValue(
                     User.class.getName(),
@@ -264,23 +270,13 @@ public class MainViewController {
                     bio);
         } else {
             if (bio.length() > 2000) {
-                responseMap.put("bio_error", "true");
+                json.getJSONObject("bio").put("success", false);
             }
         }
 
         UserLocalServiceUtil.updateUser(loggedInUser);
 
-        if (responseMap.size() > 0) {
-            for (String key : responseMap.keySet()) {
-                redirect = HttpUtil.addParameter(redirect, key, responseMap.get(key));
-            }
-
-            response.sendRedirect(redirect);
-        } else {
-
-            redirect = HttpUtil.removeParameter(redirect, "postRegistration");
-            response.sendRedirect(redirect);
-        }
+        response.getWriter().write(json.toString());
     }
 	
 	@ResourceMapping

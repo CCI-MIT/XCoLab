@@ -5,6 +5,7 @@
 #set ($bio_error = $request.getParameter("bio_error"))
 
 #if ($request.getParameter('postRegistration'))
+<script type="text/javascript" src="$javascript_folder/postRegistration.js?tt=$themeTimestamp"></script>
 <div id="popup_postRegistration" class="popup-wrap small">
     <div class="popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_postRegistration').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
@@ -21,56 +22,29 @@
 
                 <label style="margin: 0 10px 5px 0;">Username:</label>
                 <input name="screenName" type="text" id="reg_username" value="$screenName" onkeypress="return submitenter(this,event)" style="padding: 5px; float:right; margin-right:2px;"/>
-                #if ($user_error)
+                <div id="screenName_error" style="display: none;">
                     <div class="clearfix"></div>
-                    <div class="error-message">The specified user name is already taken.</div>
-                #end
+                    <div class="error-message">The specified user name is either not valid or already taken.</div>
+                </div>
+
                 <div class="clearfix"></div>
                 <label>Bio:</label>
                 <br/>
                 <textarea name="bio" type="text" id="reg_bio" onkeypress="return submitenter(this,event)" rows="6" cols="40" style="padding: 5px; float:right;"></textarea>
-                #if ($bio_error)
+                <div id="bio_error" style="display: none;">
                     <div class="clearfix"></div>
                     <div class="error-message">Your bio text is too long.</div>
-                #end
+                </div>
                 <input name="redirect" type="hidden" id="redirect" value="" />
                 <div class="btns">
                     <div class="blue-button">
-                        <a href="javascript:;" class="login-submit" onclick="submit()" id="deferLoginPopupSubmit">Finish</a>
+                        <a href="javascript:;" class="login-submit" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        console.log("ready");
-        $('#postRegister_form #redirect').val(document.URL);
-        $('#postRegister_form #reg_username').bind('keyup click blur focus change paste', validateInput);
-        $('#postRegister_form #reg_bio').bind('keyup click blur focus change paste', validateInput);
-
-    });
-
-    function validateInput() {
-        var screenName = $('#postRegister_form #reg_username').val();
-        var bio = $('#postRegister_form #reg_bio').val();
-        var valid = screenName.match("^[a-zA-Z0-9]+$") != null && (bio == "" || bio.length < 2000);
-
-        if (!valid) {
-            $("#postRegister_form #error").show();
-        } else {
-            $("#postRegister_form #error").hide();
-        }
-
-        return valid;
-    }
-
-    function submit() {
-        if (validateInput() == true) {
-            jQuery("#deferLoginPopupSubmit").parents('form').submit();
-        }
-    }
-</script>
-<!-- /popup login -->
 #end
+
+<!-- /popup login -->
