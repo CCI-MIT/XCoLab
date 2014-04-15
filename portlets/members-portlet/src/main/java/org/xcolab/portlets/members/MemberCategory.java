@@ -8,7 +8,8 @@ public enum MemberCategory {
     EXPERT("Experts"),
     JUDGES("Judges"),
     STAFF("Staff", "Moderator"),
-    MODERATOR("Staff");
+    MODERATOR("Staff"),
+    CATALYST("Catalyst");
     
     
     private final String[] roleNames;

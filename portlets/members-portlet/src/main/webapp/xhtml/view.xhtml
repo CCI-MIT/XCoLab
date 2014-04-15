@@ -274,6 +274,15 @@
 									<f:attribute name="category" value="STAFF" />
 								</ice:commandLink>
 							</li>
+                            <li class="#{membersBean.categoryFilter == 'CATALYST' ? 'c' : ''}">
+                                <img src="/climatecolab-theme/images/icon_mem-catalyst.png"
+                                     width="16" height="16" />&#160; <ice:commandLink
+                                    actionListener="#{membersBean.updateCategoryFilter}"
+                                    value="Catalyst"
+                                    onclick="Collab.nav.navigateAddParams('members', {filter: 'CATALYST'}); document.location.reload(true); return false;">
+                                <f:attribute name="category" value="CATALYST" />
+                            </ice:commandLink>
+                            </li>
 							<li
 								class="#{membersBean.categoryFilter == null or membersBean.categoryFilter == 'ALL' ? 'c' : ''}">
 								<ice:commandLink
