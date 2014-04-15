@@ -187,7 +187,6 @@
     </div>
 
    	<div id="copyProposalContainer" style="display: none;">
-        <div>blub</div>
     	<div class="popup-wrap p1" id="copyProposalPopup">
 			<div class="popup">
 				<div class="closepopuplogin">
