@@ -3,13 +3,13 @@ package org.xcolab.portlets.members;
 public enum MemberCategory {
 	ALL("All"),
     MEMBER("User"),
+    CATALYST("Catalyst"),
     FELLOW("Fellow"),
     ADVISOR("Advisor"),
     EXPERT("Experts"),
     JUDGES("Judges"),
     STAFF("Staff", "Moderator"),
-    MODERATOR("Staff"),
-    CATALYST("Catalyst");
+    MODERATOR("Staff");
     
     
     private final String[] roleNames;
