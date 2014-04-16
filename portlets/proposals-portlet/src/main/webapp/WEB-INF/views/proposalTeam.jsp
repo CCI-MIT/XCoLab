@@ -16,6 +16,7 @@
         <liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
         <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" />
 
+        <liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." />
         <div class="headline prophead" style="position: relative;">
             <h2>
                 <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}

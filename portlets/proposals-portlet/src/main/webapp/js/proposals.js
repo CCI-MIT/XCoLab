@@ -272,12 +272,11 @@ function hideRequestForm(animate) {
 
 /* Membership invite logic */
 function inviteMember() {
-    console.log("invitemember");
     $('#invite-comment').slideDown('slow');
     $('#invite-recipient').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
     $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideRequestForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideInviteForm(true);">Cancel</a></div>');
     $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
 }
 
@@ -286,7 +285,7 @@ function hideInviteForm(animate) {
     $('#invite-comment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
         $('#requestButtons').empty();
-        $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a></div>');
+        $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
     });
     $('#invite-recipient').slideUp('slow');
 
@@ -353,6 +352,9 @@ $(function() {
                 response( data );
             });
         }
+    });
+    $( "#invite-recipient" ).bind("autocompleteselect", "select", function(event) {
+
     });
 
     $("#invite-recipient").focusout(function(event) {

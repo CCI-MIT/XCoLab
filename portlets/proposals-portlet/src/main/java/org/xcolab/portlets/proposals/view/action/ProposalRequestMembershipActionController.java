@@ -15,6 +15,8 @@ import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
 import javax.validation.Valid;
 
+import com.ext.portlet.service.ProposalLocalService;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -68,12 +70,12 @@ public class ProposalRequestMembershipActionController {
     // Membership invite from group user
     private static final String PROPOSAL_URL = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
     private static final String MSG_MEMBERSHIP_INVITE_SUBJECT = "%s invites you to join the proposal %s";
-    private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: \n%s\n\n" +
+    private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: \n\n%s\n\n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.\n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>decline</strong> the invitation. ";
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT = "Response to your membership invite";
-    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED = "Your invite has been accepted <br />Comments: ";
-    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED = "Your invite has been rejected <br />Comments: ";
+    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED = "Your invitation of %s to join the proposal %s has been accepted.";
+    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED = "Your invitation of %s to join the proposal %s has been rejected.";
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -113,8 +115,6 @@ public class ProposalRequestMembershipActionController {
             }
         }
 
-
-
         SessionMessages.add(request, "membershipRequestSent");
         
     }
@@ -133,79 +133,69 @@ public class ProposalRequestMembershipActionController {
 
         String[] inputParts = input.split(" ");
 
-        if (inputParts.length > 0) {
-            String screenName = inputParts[0];
-            User recipient = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+		try {
+			if (inputParts.length > 0) {
+				String screenName = inputParts[0];
+				User recipient = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
 
-            if (recipient != null) {
-                long userId = proposalsContext.getUser(request).getUserId();
-                long proposalId = proposalsContext.getProposal(request).getProposalId();
-                String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-                MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,userId,requestMembershipBean.getInviteComment());
+				if (recipient != null) {
+					long userId = proposalsContext.getUser(request).getUserId();
+					long proposalId = proposalsContext.getProposal(request).getProposalId();
+					long contestId = proposalsContext.getContest(request).getContestPK();
+					long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
+					String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
+					MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,recipient.getUserId(),requestMembershipBean.getInviteComment());
 
+					String acceptURL = String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d/invitationResponse/%s/requestId/%d", contestId, contestPhaseId, proposalId, "accept", memberRequest.getPrimaryKey());
+					String declineURL = String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d/invitationResponse/%s/requestId/%d", contestId, contestPhaseId, proposalId, "decline", memberRequest.getPrimaryKey());
 
-                try {
-                    PortletURL acceptURL = PortletURLFactoryUtil.create(request,
-                            (String)request.getAttribute(WebKeys.PORTLET_ID), themeDisplay.getPlid(), PortletRequest.ACTION_PHASE);
-                    acceptURL.setWindowState(WindowState.NORMAL);
-                    acceptURL.setParameter("action_forwardToPage", "proposalDetails_TEAM");
-                    acceptURL.setParameter("action", "invitationResponse");
-                    acceptURL.setParameter("requestId", "" + memberRequest.getPrimaryKey());
-                    acceptURL.setParameter("proposalId", "" + proposalId);
-                    acceptURL.setParameter("do", "accept");
+					String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
+					String subject = String.format(MSG_MEMBERSHIP_INVITE_SUBJECT,
+							proposalsContext.getUser(request).getFullName(), proposalName);
+					String content = String.format(MSG_MEMBERSHIP_INVITE_CONTENT,
+							proposalsContext.getUser(request).getFullName(),
+							proposalLink, requestMembershipBean.getInviteComment(), acceptURL, declineURL);
+					sendMessage(proposalsContext.getUser(request).getUserId(),recipient.getUserId(),subject,content);
 
-                    PortletURL declineURL = PortletURLFactoryUtil.create(request,
-                            (String)request.getAttribute(WebKeys.PORTLET_ID), themeDisplay.getPlid(), PortletRequest.ACTION_PHASE);
-                    declineURL.setWindowState(WindowState.NORMAL);
-                    declineURL.setParameter("action_forwardToPage", "proposalDetails_TEAM");
-                    declineURL.setParameter("action", "invitationResponse");
-                    declineURL.setParameter("requestId", "" + memberRequest.getPrimaryKey());
-                    declineURL.setParameter("proposalId", "" + proposalId);
-                    declineURL.setParameter("do", "decline");
+					SessionMessages.add(request, "memberInviteSent");
+				}
+			} else {
+				SessionErrors.add(request, "memberInviteRecipientError");
+			}
 
-                    String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
-                    String subject = String.format(MSG_MEMBERSHIP_INVITE_SUBJECT,
-                            proposalsContext.getUser(request).getFullName(), proposalName);
-                    String content = String.format(MSG_MEMBERSHIP_INVITE_CONTENT,
-                            proposalsContext.getUser(request).getFullName(),
-                            proposalLink, requestMembershipBean.getInviteComment(), acceptURL, declineURL);
-                    sendMessage(proposalsContext.getUser(request).getUserId(),recipient.getUserId(),subject,content);
-                } catch (WindowStateException e) {
-                    e.printStackTrace();
-                }
+		} catch (NoSuchUserException e) {
+			SessionErrors.add(request, "memberInviteRecipientError");
+		}
 
 
-
-            } else {
-
-            }
-        } else {
-
-        }
-
-        SessionMessages.add(request, "memberInviteSent");
     }
 
     @RequestMapping(params = {"action=invitationResponse"})
     public void respondToInvitation(ActionRequest request, Model model,
-                                    ActionResponse response, BindingResult result) throws SystemException, PortalException {
+                                    ActionResponse response) throws SystemException, PortalException {
         long requestId = GetterUtil.getLong(request.getParameter("requestId"));
-        long proposalId = GetterUtil.getLong(request.getParameter("proposalId"));
+        long proposalId = GetterUtil.getLong(request.getParameter("planId"));
         String action = request.getParameter("do");
 
         MembershipRequest membershipRequest = null;
         for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposalId)){
-            if (mr.getPrimaryKey() == requestId) membershipRequest = mr;
+            if (mr.getPrimaryKey() == requestId) {
+				membershipRequest = mr;
+				break;
+			}
         }
 
+		String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
+		String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
         if (membershipRequest == null) return;
+		User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
         if (action.equalsIgnoreCase("ACCEPT")){
-            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "", membershipRequest.getUserId());
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_SUBJECT,MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED);
+            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", proposalsContext.getUser(request).getUserId());
+            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, invitee.getFullName(), proposalLink));
         } else if (action.equalsIgnoreCase("DECLINE")){
-            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, "", membershipRequest.getUserId());
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_SUBJECT,MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED);
+            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, "The invitation was rejected.", proposalsContext.getUser(request).getUserId());
+            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, invitee.getFullName(), proposalLink));
         }
     }
 
@@ -214,7 +204,7 @@ public class ProposalRequestMembershipActionController {
             throws PortalException, SystemException {
         String input = (String)request.getParameter("term");
 
-        List<User> recipients = getRecipientSuggestions(input, proposalsContext.getUser(request).getUserId());
+        List<User> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId());
         JSONArray responseJson = JSONFactoryUtil.createJSONArray();
         for (User user : recipients) {
             responseJson.put(String.format("%s (%s %s)", user.getScreenName(), user.getFirstName(), user.getLastName()));
@@ -267,13 +257,18 @@ public class ProposalRequestMembershipActionController {
         }
     }
 
-    private List<User> getRecipientSuggestions(String input, long userId) throws PortalException, SystemException {
+    private List<User> getRecipientSuggestions(String input, long proposalId) throws PortalException, SystemException {
         String[] inputParts = input.split(" ");
         if (inputParts.length == 0) {
             return new ArrayList<>();
         }
 
-        Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.eq("userId", userId));
+		List<Long> contributerIds = new ArrayList<>();
+		for (User contributor : ProposalLocalServiceUtil.getMembers(proposalId)) {
+			contributerIds.add(contributor.getUserId());
+		}
+
+        Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", contributerIds));
         // For the sake of performance we only search the first word for either screenname, firstname or last name match
         // Search by screen name
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
