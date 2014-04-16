@@ -668,6 +668,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             int invisibleCount = 0;
             int overallCount = 0;
             for (Proposal2Phase phase : p2Phases) {
+				overallCount++;
+
                 // Try to get
                 try {
                     final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
@@ -676,7 +678,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                     if (visibleAttribute.getNumericValue() == 0) {
                         invisibleCount++;
                     }
-                    overallCount++;
 
                 } catch (NoSuchProposalContestPhaseAttributeException e) {
                     // We ignore the exception here since it does not have an impact
