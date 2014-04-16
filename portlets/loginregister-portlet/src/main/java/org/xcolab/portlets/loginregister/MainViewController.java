@@ -397,16 +397,15 @@ public class MainViewController {
 
         request.getPortletSession().setAttribute("collab_user_has_registered", true);
         PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
-        if (redirect != null) {
-            // Add request variable for after-registration popover
-            if (redirect.contains("?")) {
-                redirect += "&postRegistration=true";
-            } else {
-                redirect += "?postRegistration=true";
-            }
-            response.sendRedirect(redirect);
-        } else {
-            response.sendRedirect(themeDisplay.getURLHome() + "?postRegistration=true");
+        if (redirect == null) {
+            redirect = themeDisplay.getURLHome();
         }
+
+        if (postRegistration) {
+            // Add request variable for after-registration popover
+            redirect = HttpUtil.addParameter(redirect, "postRegistration", "true");
+        }
+
+        response.sendRedirect(redirect);
     }
 }
