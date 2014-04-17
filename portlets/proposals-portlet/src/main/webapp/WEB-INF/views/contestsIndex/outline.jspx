@@ -39,9 +39,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 
     <div class="cintro">
         <h2>How to use the outline</h2>
+        <p>Each contest is specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
+        <p>Click any part of the outline to see the contests included in that item.</p>
+        <!-- 
         <p>The Climate CoLab breaks down the large, complex problem of climate change into a series of more manageable sub-problems; each contest addresses a particular sub-problem.</p>
         <p>All contests can thus be specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
         <p><strong>Select an item on the left side of the page to see which contests are defined by the selected part of the outline.</strong></p>
+        -->
     </div>
     
     
@@ -127,8 +131,10 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var focusArea = null;
 		var contest = null;
 		
-		function addContestToTermAndParents(contest, term, isOther) {
+		function addContestToTermAndParents(level, contest, term, isOther) {
 			if (term == null) return;
+			// don't add contests to the space root if they have been associated with one of its children 
+			if (term.parent == null &amp;&amp; level &gt; 0) return;
 			if (isOther) {
 				for (var i = 0 ; i &lt; term.otherContests.length; i++) {
 					if (term.otherContests[i].id == contest.id) return;
@@ -141,7 +147,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 				term.contests.push(contest);
 			}
-			addContestToTermAndParents(contest, term.parent, isOther);
+			addContestToTermAndParents(level+1, contest, term.parent, isOther);
 		}
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
@@ -153,7 +159,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			focusArea = focusAreas[${contest.focusAreaId}];
 			
 			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(contest, ontologyTerms[focusArea.terms[idx]]);
+				addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
 			}
 			
 		</c:forEach>
@@ -165,7 +171,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			focusArea = focusAreas[${contest.focusAreaId}];
 			
 			for (var idx in focusArea.terms) {
-				addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
+				addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
 			}
 			
 		</c:forEach>
@@ -200,9 +206,20 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
 			var showOtherContestsLink = otherContestsInfoContainer.find(".showOtherContestsLink");
 			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
+			// update links in show active dropdown
+			jQuery(".show-active li a").each(function(idx, elem) {
+				var elem = jQuery(elem);
+				var href = elem.attr('href');
+				var hashPos = href.indexOf("#");
+				
+				if (hashPos >= 0) {
+					href = href.substring(0, hashPos);
+				}
+				elem.attr('href', href + window.location.hash);
+				
+			});
 			
 			if (currentTerm.otherContests.length > 0) {
-				console.log('updating count!', currentTerm.otherContests.length);
 				otherContestsInfoContainer.find(".count").text(currentTerm.otherContests.length);
 				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural")
 					.removeClass(currentTerm.otherContests.length == 1 ? "plural" : "singular");
@@ -255,73 +272,74 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			var toShowContainer = jQuery("<div style='display: none;'></div>");
 			toShowContainer.appendTo(container.find('.section-list')).html(sectionsHtml.join(""));
 			
-			container.find(".contest-list").slideUp();
+			container.find(".contest-list").hide();
 			forRemovalContainer.slideUp({complete: function() {
 				
 				// after sliding is complete remove unnecessary sections and show new sections
 				forRemovalContainer.remove();
 				toShowContainer.slideDown({complete: function() {
 					// move new sections to section-list as a main container and remove "toShowContainer" 
-					toShowContainer.find(".section").appendTo(container.find('.section-list'));
-					toShowContainer.remove();
-					container.find("#sectionDetails_" + currentTerm.id).addClass('active');
 					
-					var contestsListHtml = [];
-					if (currentTerm.contests.length == 0) {
-						contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
-					}
-					var duplicateContests = {};
-					for (var i =0; i < currentTerm.contests.length; i++) {
-						// check for duplicates
-						var contest = currentTerm.contests[i];
-						if (!(contest.name in duplicateContests)) {
-							duplicateContests[contest.name] = 0;
-							
-						}
-						duplicateContests[contest.name] ++;
-					}
-					contestsListHtml.push("<div class='otherContestsInfo'>");
-					contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
-					contestsListHtml.push("</div>");
-					for (var i =0; i < currentTerm.contests.length; i++) {
-						var contest = currentTerm.contests[i];
-						contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
-						contestsListHtml.push(contest.contestUrl);
-						contestsListHtml.push("'>");
-						contestsListHtml.push(contest.name);
-						if (duplicateContests[contest.name] > 1 && contest.created > 0) {
-							contestsListHtml.push(" ");
-							contestsListHtml.push(new Date(contest.created).getFullYear());
-						}
-						contestsListHtml.push("<span class='count'>");
-						contestsListHtml.push(contest.proposalsCount);
-						contestsListHtml.push("</span></a>");
-						contestsListHtml.push("<div class='detail'><p>");
-						contestsListHtml.push(contest.description);
-						contestsListHtml.push("</p>");
-						
-						var focusArea = focusAreas[contest.focusAreaId];
-						for (var j = 0; j < focusArea.terms.length; j++) {
-							var term = ontologyTerms[focusArea.terms[j]];
-							contestsListHtml.push("<p><span class='");
-							contestsListHtml.push(term.space.name.toLowerCase());
-							contestsListHtml.push("'>");
-							contestsListHtml.push(term.space.name);
-							contestsListHtml.push("</span>");
-							contestsListHtml.push(term.name);
-							contestsListHtml.push("</p>");
-						}
-						contestsListHtml.push("</div></div>");
-					}
-					
-					
-					jQuery(".otherContestsInfoContainer").hide();
-					container.find(".contest-list").html(contestsListHtml.join(''));
-					
-					container.find(".contest-list").slideDown();
 				}});
 				
 			}});
+			toShowContainer.find(".section").appendTo(container.find('.section-list'));
+			toShowContainer.remove();
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
+			var contestsListHtml = [];
+			if (currentTerm.contests.length == 0) {
+				contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
+			}
+			var duplicateContests = {};
+			for (var i =0; i < currentTerm.contests.length; i++) {
+				// check for duplicates
+				var contest = currentTerm.contests[i];
+				if (!(contest.name in duplicateContests)) {
+					duplicateContests[contest.name] = 0;
+					
+				}
+				duplicateContests[contest.name] ++;
+			}
+			contestsListHtml.push("<div class='otherContestsInfo'>");
+			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+			contestsListHtml.push("</div>");
+			for (var i =0; i < currentTerm.contests.length; i++) {
+				var contest = currentTerm.contests[i];
+				contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
+				contestsListHtml.push(contest.contestUrl);
+				contestsListHtml.push("'>");
+				contestsListHtml.push(contest.name);
+				if (duplicateContests[contest.name] > 1 && contest.created > 0) {
+					contestsListHtml.push(" ");
+					contestsListHtml.push(new Date(contest.created).getFullYear());
+				}
+				contestsListHtml.push("<span class='count'>");
+				contestsListHtml.push(contest.proposalsCount);
+				contestsListHtml.push("</span></a>");
+				contestsListHtml.push("<div class='detail'><p>");
+				contestsListHtml.push(contest.description);
+				contestsListHtml.push("</p>");
+				
+				var focusArea = focusAreas[contest.focusAreaId];
+				for (var j = 0; j < focusArea.terms.length; j++) {
+					var term = ontologyTerms[focusArea.terms[j]];
+					contestsListHtml.push("<p><span class='");
+					contestsListHtml.push(term.space.name.toLowerCase());
+					contestsListHtml.push("'>");
+					contestsListHtml.push(term.space.name);
+					contestsListHtml.push(" </span> <span> ");
+					contestsListHtml.push(term.name);
+					contestsListHtml.push(" </span></p>");
+				}
+				contestsListHtml.push("</div></div>");
+			}
+			
+			
+			jQuery(".otherContestsInfoContainer").hide();
+			container.find(".contest-list").html(contestsListHtml.join(''));
+			
+			container.find(".contest-list").slideDown();
 			
 			jQuery(".showall").show();
 			jQuery(".hideall").hide();
@@ -331,7 +349,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		}
 		jQuery(".contest-outline-right .section-list").on('click', 'a', function(event) {
 			event.preventDefault();
-			console.log("Clicked on section term: " + jQuery(this).attr('data-term-id'), jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')));
 			jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')).find('> a').click();
 		});
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
@@ -396,17 +413,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		});
 		
 		jQuery(".expand a").click(function() {
-			console.log("clicked", this);
 			jQuery(".expand a").toggle();
 			if (jQuery(this).hasClass('showall')) {
 				jQuery(".contest-outline-left a").addClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideDown();
-				console.log("sliding down");
 			}
 			else {
 				jQuery(".contest-outline-left a").removeClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideUp();
-				console.log("sliding up");
 			}
 		});
 		
