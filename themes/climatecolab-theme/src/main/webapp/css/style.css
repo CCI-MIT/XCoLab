@@ -1072,6 +1072,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .headline .outline {
 	display: inline;
 }
+
 .contest-outline-left ul.level1 a .count.zero {color:#ccc;}
 
 .otherContestsCount.plural .plural, .otherContestsCount.singular .singular {
@@ -1108,6 +1109,11 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 	list-style: none;
 	background: none;
 	padding: 5px;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+	background: #D6EDFF;
 }
 
 #priorActiveAllWidget ul li.active,
