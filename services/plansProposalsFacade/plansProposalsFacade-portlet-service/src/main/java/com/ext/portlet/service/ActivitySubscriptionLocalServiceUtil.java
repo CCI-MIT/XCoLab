@@ -391,10 +391,11 @@ public class ActivitySubscriptionLocalServiceUtil {
         getService().delete(activitySubscription);
     }
 
-    public static void sendEmailNotifications()
+    public static void sendEmailNotifications(
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().sendEmailNotifications();
+        getService().sendEmailNotifications(serviceContext);
     }
 
     public static java.util.List<com.liferay.portal.model.User> getSubscribedUsers(

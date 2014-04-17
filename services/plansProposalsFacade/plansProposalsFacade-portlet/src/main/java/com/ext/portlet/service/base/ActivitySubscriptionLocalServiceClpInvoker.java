@@ -288,7 +288,9 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
 
         _methodName525 = "sendEmailNotifications";
 
-        _methodParameterTypes525 = new String[] {  };
+        _methodParameterTypes525 = new String[] {
+                "com.liferay.portal.service.ServiceContext"
+            };
 
         _methodName526 = "getSubscribedUsers";
 
@@ -546,7 +548,7 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
 
         if (_methodName525.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
-            ActivitySubscriptionLocalServiceUtil.sendEmailNotifications();
+            ActivitySubscriptionLocalServiceUtil.sendEmailNotifications((com.liferay.portal.service.ServiceContext) arguments[0]);
 
             return null;
         }
