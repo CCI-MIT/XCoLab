@@ -31,9 +31,10 @@ public class SchedulerDispatchController {
 		String clientIp = PortalUtil.getHttpServletRequest(request).getRemoteAddr();
 
 		if (!clientIp.equals(LOCAL_IP_ADDRESS)) {
+			_log.warn(String.format("Denied request from address %s!", clientIp));
 			throw new RuntimeException("Originating host invalid!");
 		}
-		// TODO: IP check
+
 		ServiceContext serviceContext = new ServiceContext();
 		serviceContext.setRequest(PortalUtil.getHttpServletRequest(request));
 
