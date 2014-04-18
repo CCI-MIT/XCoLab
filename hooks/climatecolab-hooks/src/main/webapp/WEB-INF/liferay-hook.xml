@@ -88,5 +88,12 @@
 		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
 		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
+
+    <struts-action>
+        <struts-action-path>/portal/schedulerSendEmailNotifications</struts-action-path>
+        <struts-action-impl>
+            org.xcolab.hooks.climatecolab.utils.SchedulerDispatchStrutsAction
+        </struts-action-impl>
+    </struts-action>
 	
 </hook>

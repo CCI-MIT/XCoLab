@@ -18,13 +18,15 @@ public class SendEmailNotifications implements MessageListener {
 
 	private static final Long COMPANY_ID = 10112L;
 
+	private static final String EXECUTE_SCHEDULER_PATH = "/c/portal/schedulerSendEmailNotifications";
+
     @Override
     public void receive(Message message) throws MessageListenerException {
 		try {
 			Company company = CompanyLocalServiceUtil.getCompany(COMPANY_ID);
 			String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), PortalUtil.getPortalPort(false), false);
 
-			URL url = new URL(baseUrl + "/web/guest/plans/-/plans/sendProposalActivityNotifications");
+			URL url = new URL(baseUrl + EXECUTE_SCHEDULER_PATH);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 			con.setRequestMethod("GET");
