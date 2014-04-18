@@ -1,0 +1,368 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+
+	<!--  Proposals Picker  -->
+	<portlet:resourceURL var="proposalPickerURL" id="proposalPicker">
+		<portlet:param name="type" value="@@REPLACE-TYPE@@" />
+		<portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+		<portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+		<portlet:param name="start" value="@@REPLACE-START@@" />
+		<portlet:param name="end" value="@@REPLACE-END@@" />
+		<portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+		<portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+		<portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
+		<portlet:param name="contestPK" value="@@REPLACE-CONTESTPK@@" />
+	</portlet:resourceURL>
+	<portlet:resourceURL var="proposalPickerContestsURL"
+		id="proposalPickerContests">
+		<portlet:param name="type" value="@@REPLACE-TYPE@@" />
+		<portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+		<portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+		<portlet:param name="start" value="@@REPLACE-START@@" />
+		<portlet:param name="end" value="@@REPLACE-END@@" />
+		<portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+		<portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+		<portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
+	</portlet:resourceURL>
+
+	<portlet:resourceURL var="proposalPickerCounterURL"
+		id="proposalPickerCounter">
+		<portlet:param name="type" value="@@REPLACE-TYPE@@" />
+		<portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
+		<portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
+		<portlet:param name="start" value="@@REPLACE-START@@" />
+		<portlet:param name="end" value="@@REPLACE-END@@" />
+		<portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+		<portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
+		<portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
+	</portlet:resourceURL>
+
+	<script>
+		var proposalPickerURL = '${proposalPickerURL}';
+		var proposalPickerContestsURL = '${proposalPickerContestsURL}';
+		var proposalPickerCounterURL = '${proposalPickerCounterURL}';
+		var filterKey = 'ACCEPTALL';
+		var proposalType;
+	</script>
+	<div>
+		<div id="popup_proposalPicker" class="popup-wrap proposal-picker"
+			style="display: none;">
+			<div class="popup">
+				<div class="closepopuplogin">
+					<a href="javascript:;"
+						onclick="jQuery('#popup_proposalPicker').hide()"> <img
+						src="/climatecolab-theme/images/help_close.png" width="20"
+						height="20" alt="X" />
+					</a>
+				</div>
+				<h4>Choose your proposal</h4>
+				<div class="prop-tabs">
+					<ul>
+						<li class="c"><a href="javascript:;"
+							onclick="proposalPickerTabSelected($(this),'contests');"> Search
+								by contest<!-- 
+								<div id="numberOfProposals">&#160;</div>
+								 -->
+						</a></li>
+						<li class=""><a href="javascript:;"
+							onclick="proposalPickerTabSelected($(this),'all');"> Search
+								by proposal
+								<div id="numberOfProposals">&#160;</div>
+						</a></li>
+						<li class=""><a href="javascript:;"
+							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
+								My subscriptions / supporting
+								<div id="numberOfSubscriptionsSupporting">&#160;</div>
+						</a></li>
+					</ul>
+				</div>
+
+				<div class="popup-tabcontainer" style="min-height: 200px;"
+					id="proposalPickerTableContainer">
+					<div colspan="4" id="proposalPickerSearchContainer">
+						<input id="prop-search" name="searchField" type="text"
+							placeholder="Filter" maxcharacters="80" validatelength="true"
+							class="rteInitialized"
+							style="height: 22px; width: 175px; padding: 0 5px;" />
+						<div class="blue-button">
+							<a href="#">Search</a>
+						</div>
+					</div>
+					
+					<div id="proposalPicker_viewArea">
+					<div id="proposalPickerTableContests">
+						<div class="blueheaderbar tooltips">
+							<div class="contest" style="">
+								<a href="#">Contest</a>
+								<div class="tooltip">
+									click to sort by contest title
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+							<div class="proposal">
+								<a href="#"> <!--  -->
+								</a>
+
+								<div class="tooltip">
+									click to sort by<br />number of proposals
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+							<div class="comment">
+								<a href="#"> <!--  --></a>
+								<div class="tooltip">
+									click to sort by number of comments
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+
+							<div class="what">
+								<a href="#"> What</a>
+								<div class="tooltip">
+									click to sort by actions
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+							<div class="where">
+								<a href="#"> Where</a>
+								<div class="tooltip">
+									click to sort by<br />geographical area
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+							<div class="who">
+								<a href="#"> Who</a>
+								<div class="tooltip">
+									click to sort by who<br />this issue affects
+									<div class="tt-arrow">
+										<!--  -->
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<table id="proposalPicker_contestsContainer"
+							class='table contestlist'>
+							<!--  -->
+						</table>
+					</div>
+
+					<div id="proposalsPicker_proposalsContainer">
+						<div class="breadcrumb">
+							<span><a href="#" id="breadContestsList">Contests</a></span>
+							&amp;raquo; <span id="breadContestName">
+								<!--  -->
+							</span>
+						</div>
+						<div class="blueheaderbar tooltips">
+							<div class="proposalname">
+								<div style="display: inline-block">
+
+									<a href="#">Proposal name</a>
+									<div class="tooltip">
+										click to sort by name
+										<div class="tt-arrow">
+											<!-- -->
+										</div>
+									</div>
+								</div>
+								/&#160;
+
+								<div style="display: inline-block">
+									<a href="#">Author(s)</a>
+
+									<div class="tooltip">
+										click to sort by author
+										<div class="tt-arrow">
+											<!-- -->
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="thumbs">
+								<a href="#">
+									<!--  -->
+								</a>
+								<div class="tooltip">
+									click to sort by<br />number of supporters
+									<div class="tt-arrow">
+										<!-- -->
+									</div>
+								</div>
+							</div>
+
+							<div class="propcomm">
+								<a href="#"> <!--  -->
+								</a>
+								<div class="tooltip">
+									click to sort by<br />number of comments
+									<div class="tt-arrow">
+										<!-- -->
+									</div>
+								</div>
+							</div>
+							<div class="modified">
+								<a href="#">Contests</a>
+								<div class="tooltip">
+									click to sort by date
+									<div class="tt-arrow">
+										<!-- -->
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div id="proposalPicker_proposalsContainer">
+							<!--  -->
+						</div>
+						<!-- 
+					<table id="proposalPickerTable">
+						<thead>
+							<tr class="blueheaderbar tooltips" style="border-top: none;">
+								<td style="width: 35%;"><a href="javascript:;"
+									onclick="sortByColumn($(this), 'contest');">Contest</a>
+									<div class="tooltip"
+										style="display: none; top: -41px; left: -41px;">
+										click to sort by contest name
+										<div class="tt-arrow"></div>
+									</div></td>
+								<td style="width: 35%;"><a href="javascript:;"
+									onclick="sortByColumn($(this), 'proposal');">Proposal</a>
+									<div class="tooltip"
+										style="display: none; top: -41px; left: -41px;">
+										click to sort by proposal name
+										<div class="tt-arrow"></div>
+									</div></td>
+								<td style="width: 15%;"><a href="javascript:;"
+									onclick="sortByColumn($(this), 'date');">Subscribed</a>
+									<div class="tooltip"
+										style="display: none; top: -41px; left: -41px;">
+										click to sort by date subscribed
+										<div class="tt-arrow"></div>
+									</div></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+					 -->
+
+						<table id="proposalPickerTable">
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+					<div class="clearfix clear"><!--  --></div>
+					</div>
+
+				</div>
+				<div id="warning"></div>
+			</div>
+		</div>
+		<!--  /Proposals Picker  -->
+	</div>
+
+	<script id="proposalPickerProposalEntryTemplate"
+		type="text/x-handlebars-template">
+		
+		<div class="propbox {{#if proposal.featured }} 'featured' {{/if}}">
+			{{#if proposal.ribbon }}
+			<div class="ribbonPlaceholder">
+                <span class="fieldWithTooltip">
+                    <br />
+                    <img src="/climatecolab-theme/images/icon-prize{{ proposal.ribbon }}.png" />
+                </span>
+                <div class="tooltip">
+                    {{proposal.ribbonText}}
+                </div>
+            </div>
+			{{/if}}
+            <div class="row1">
+                <div class="title-author">
+                    <h4>
+						<a href="#">{{data.proposalName}}</a>
+                        /&#160;
+						{{#if data.team}}
+							{{data.team}}
+						{{ else }}
+							{{data.authorName}}
+						{{/if}}
+                    </h4>
+                    <div class="clear" ><!--  --></div>
+                </div>
+				<div class="thumbbox">
+                	{{data.supportersCount}}
+           		</div>
+                <div class="commbox">
+                    {{data.commentsCount}}
+                </div>
+                <div class="modbox">
+					<ul>
+					{{#each data.contests}}
+						<li>{{this.name}}</li>
+					{{/each}}
+					</ul>
+                </div>
+
+
+            </div>
+            <div class="row2">{{ data.pitch }}</div>
+        </div> <!-- /proposal -->
+  
+	</script>
+
+	<script id="proposalPickerContestEntryTemplate"
+		type="text/x-handlebars-template">
+		<tr data-contestPK="{{contest.contestPK}}">
+			<td class="column contestName">
+				<div class="contestFlag">
+					{{#if contest.flagText}}
+						<span class="{{#if contest.flagTooltip}} fieldWithTooltip {{/if}}">{{contest.flagText}}:&#160;</span>
+                    		<c:if test="${not empty contest.flagTooltip}">
+                        		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
+                        	</c:if>
+                	{{/if}}
+                		<a href="#">{{contest.contestShortName}}</a>
+                			{{contest.contestName}}
+            		</div>
+            	</td>
+            	<td class="column contestProposalsCount g">
+        			{{contest.proposalsCount}}
+        		</td>
+        		<td class="column contestCommentsCount">
+					{{contest.totalCommentsCount}}
+        		</td>
+        		<td class="column contest what g">
+					{{contest.what}}
+        		</td>
+        		<td class="column contest where">
+					{{contest.where}}
+        		</td>
+        		<td class="column contest who g">
+					{{contest.who}}
+                </td>
+            </tr>
+  
+	</script>
+</jsp:root>

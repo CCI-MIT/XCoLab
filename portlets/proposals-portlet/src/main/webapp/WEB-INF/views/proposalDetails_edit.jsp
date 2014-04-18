@@ -268,89 +268,7 @@
 
 <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
-<!--  Proposals Picker  -->
-<portlet:resourceURL var="proposalPickerURL" id="proposalPicker">
-    <portlet:param name="type" value="@@REPLACE-TYPE@@" />
-    <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
-    <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
-    <portlet:param name="start" value="@@REPLACE-START@@" />
-    <portlet:param name="end" value="@@REPLACE-END@@" />
-    <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
-    <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
-    <portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
-</portlet:resourceURL>
-
-<portlet:resourceURL var="proposalPickerCounterURL" id="proposalPickerCounter">
-    <portlet:param name="type" value="@@REPLACE-TYPE@@" />
-    <portlet:param name="filterKey" value="@@REPLACE-FILTERKEY@@" />
-    <portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
-    <portlet:param name="start" value="@@REPLACE-START@@" />
-    <portlet:param name="end" value="@@REPLACE-END@@" />
-    <portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
-    <portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
-    <portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
-</portlet:resourceURL>
-
-<script>
-    var proposalPickerURL = '${proposalPickerURL}';
-    var proposalPickerCounterURL = '${proposalPickerCounterURL}';
-    var filterKey = 'ACCEPTALL';
-    var proposalType;
-</script>
-<div>
-    <div id="popup_proposalPicker" class="popup-wrap proposal-picker" style="display:none;">
-        <div class="popup">
-            <div class="closepopuplogin">
-                <a href="javascript:;" onclick="jQuery('#popup_proposalPicker').hide()">
-                    <img src="/climatecolab-theme/images/help_close.png" width="20" height="20"
-                         alt="X"/>
-                </a>
-            </div>
-            <h4>Choose your proposal</h4>
-            <div class="prop-tabs">
-                <ul>
-                    <li class="c">
-                        <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'subscriptions');"> My subscriptions <div id="numberOfSubscriptions">&#160;</div></a>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'supporting');"> Supporting <div id="numberOfSupporting">&#160;</div></a></li>
-                    <li class="">
-                        <a href="javascript:;" onclick="proposalPickerTabSelected($(this),'all');"> All proposals <div id="numberOfProposals">&#160;</div></a>
-                    </li>
-                    <li style="float: right; margin:0;">
-                        <input id="prop-search" name="searchField" type="text" placeholder="Filter" maxcharacters="80" validatelength="true" class="rteInitialized" style="display: block; height: 22px; width: 175px; padding: 0 5px;" />
-                    </li>
-                </ul>
-            </div>
-
-            <div class="popup-tabcontainer" style="min-height: 200px;" id="proposalPickerTableContainer">
-                <table id ="proposalPickerTable">
-                    <thead>
-                    <tr class="blueheaderbar tooltips" style="border-top: none;">
-                        <td style="width: 35%;">
-                            <a href="javascript:;" onclick="sortByColumn($(this), 'contest');">Contest</a>
-                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by contest name <div class="tt-arrow"></div></div>
-                        </td>
-                        <td style="width: 35%;">
-                            <a href="javascript:;" onclick="sortByColumn($(this), 'proposal');">Proposal</a>
-                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by proposal name <div class="tt-arrow"></div></div>
-                        </td>
-                        <td style="width: 15%;">
-                            <a href="javascript:;" onclick="sortByColumn($(this), 'date');">Subscribed</a>
-                            <div class="tooltip" style="display: none; top: -41px; left: -41px;"> click to sort by date subscribed <div class="tt-arrow"></div></div>
-                        </td>
-                        <td></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-            <div id="warning"></div>
-        </div>
-    </div>
-    <!--  /Proposals Picker  -->
+	<jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
 
     <script type="text/javascript">
         jQuery("#fileUploadInput").change(function() {
@@ -421,7 +339,6 @@
             enableDirtyCheck();
         });
     </script>
-</div>
 <div id="copyProposalContainer" style="display: none;">
     <div class="popup-wrap p1" id="copyProposalPopup">
         <div class="popup">
@@ -442,18 +359,24 @@
     </div>
     <script>
         var currentProposal = {
-            proposalId: ${proposal.proposalId},
-            version: ${proposal.version}
-        }
-        var baseProposal = {
-            proposalId: ${baseProposal.proposalId},
-            version: ${baseProposal.version}
-        }
-        var baseContest = {
-            contestPK: ${baseContest.contestPK}
-        }
+            	proposalId: ${proposal.proposalId},
+            	version: ${proposal.version}
+        	}
+        <c:if test="${not empty baseProposal}">
+        	var baseProposal = {
+            	proposalId: ${baseProposal.proposalId},
+            	version: ${baseProposal.version}
+        	}
+        </c:if>
+        <c:if test="${not empty baseContest}">
+        	var baseContest = {
+            	contestPK: ${baseContest.contestPK}
+        	}
+        </c:if>
 
     </script>
+    
 </div>
+
 
 </jsp:root>

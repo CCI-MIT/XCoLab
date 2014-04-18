@@ -286,3 +286,37 @@ div.sponsorLogo img {
 .commentor-header {
     float:left;
 }
+
+#proposalPickerSearchContainer {
+	text-align: center;
+}
+
+#proposalPickerSearchContainer .blue-button {
+	display: inline-block;
+}
+
+#proposalPicker_proposalsContainer h4 {
+	font-size: 15px;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+#proposalPicker_proposalsContainer .propbox ul {
+	margin-left: 0;
+	padding-left: 0;
+	list-style: none;
+}
+#proposalPicker_proposalsContainer .propbox li {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+	background: none;
+}
+
+
+#proposalPicker_proposalsContainer .propbox .row1 {
+	overflow: hidden;
+}
+
+#proposalPicker_proposalsContainer .propbox .row2 {
+	width: 650px;
+}
