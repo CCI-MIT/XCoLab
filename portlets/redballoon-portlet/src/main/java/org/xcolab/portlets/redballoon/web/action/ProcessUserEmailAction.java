@@ -34,8 +34,8 @@ import com.liferay.util.mail.MailEngineException;
 @RequestMapping("view")
 @Controller
 public class ProcessUserEmailAction {
-	
-	private final static String BALLOON_LINK_PATTERN = "/balloon";
+
+    private final static String BALLOON_LINK_PATTERN = "/balloon";
 
 	private final static String FROM_ADDRESS = "no-reply@climatecolab.org";	
 
@@ -44,8 +44,9 @@ public class ProcessUserEmailAction {
 
 	private final static String USER_EMAIL = AddEditBalloonTextAction.class.getName()
 			+ "USER_EMAIL";
-	
-	@RequestMapping(params="action=sendEmail")
+    public static final String URLPLACEHOLDER = "URLPLACEHOLDER";
+
+    @RequestMapping(params="action=sendEmail")
 	public void processUserEmail(ActionRequest request, ActionResponse response, Model model,
 			@Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws PortalException, SystemException, IOException, AddressException, MailEngineException {
 		
@@ -87,7 +88,7 @@ public class ProcessUserEmailAction {
 		BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
 		
 		String messageSubject = text.getEmailSubjectTemplate();
-		String messageBody = text.getEmailTemplate().replaceAll("URL_PLACEHOLDER", BalloonUtils.getBalloonUrlForLink(request,  link));
+		String messageBody = text.getEmailTemplate().replaceAll(URLPLACEHOLDER, BalloonUtils.getBalloonUrlForLink(request,  link));
 
 		InternetAddress addressFrom = new InternetAddress(FROM_ADDRESS);
 
