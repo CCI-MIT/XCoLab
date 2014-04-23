@@ -28,14 +28,14 @@ ${balloonText.textBeforeShareButtons }
 				class="addthis_toolbox addthis_default_style addthis_32x32_style"
 				id="shareLink">
 				<a class="addthis_button_facebook" id="addThisButton1"
-					addthis:title="Join the ClimateColab"
+					addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
 					addthis:url="${shareLink}/facebook"><!--  --></a> 
 				<a class="addthis_button_twitter" id="addThisButton2"
-					addthis:title="Join the ClimateColab" 
+					addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
 					addthis:url="${shareLink}/twitter"><!--  --></a>
 					
 				<a class="addthis_button_email" id="addThisButton2"
-					addthis:title="Join the ClimateColab"
+					addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
 					addthis:url="${shareLink}/email"><!--  --></a>
 			</div>
 			<div class="clear"><!--  --></div>
