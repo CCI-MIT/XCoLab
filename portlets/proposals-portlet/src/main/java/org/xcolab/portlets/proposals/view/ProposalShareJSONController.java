@@ -220,7 +220,7 @@ public class ProposalShareJSONController {
 					recipientIds.add(1011659L); //patrick
 					MessageUtil.sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + body, userId,
 							userId, recipientIds, null);
-
+					sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, please contact the administrators.", response);
 					return;
 				}
 			}

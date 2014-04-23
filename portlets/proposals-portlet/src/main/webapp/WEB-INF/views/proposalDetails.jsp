@@ -135,7 +135,11 @@
 			</div>
 		</div>
 	</div>
-	
+    <div id="messaging-overlay" class="popup-wrap small" style="display: none;">
+        <div class="popup">
+            <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
+        </div>
+    </div>
 	<script>
 		var currentProposal = {
 				proposalId: ${proposal.proposalId},
