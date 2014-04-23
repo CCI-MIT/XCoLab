@@ -311,7 +311,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 return;
             }
             try {
-                InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org");
+                InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
 
                 String subject = getMailSubject(entry);
                 String messageTemplate = getMailBody(entry) + MESSAGE_FOOTER_TEMPLATE;
@@ -337,7 +337,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 for (User recipient : recipients) {
 
                     if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()) {
-                        InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
+                        InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
                         String message = messageTemplate
                                 .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));
 
@@ -351,9 +351,6 @@ public class ActivitySubscriptionLocalServiceImpl
 
                 }
             } catch (MailEngineException e) {
-                _log.error("Can't send email message");
-                _log.debug("Can't send email message", e);
-            } catch (AddressException e) {
                 _log.error("Can't send email message");
                 _log.debug("Can't send email message", e);
             }
