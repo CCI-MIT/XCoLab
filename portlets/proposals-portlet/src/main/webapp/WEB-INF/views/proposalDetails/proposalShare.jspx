@@ -34,7 +34,7 @@
                 <tr>
                     <td>&#160;</td>
                     <td>
-                        <div class="recipient-error">
+                        <div id="recipient-error" class="recipient-error">
                         </div>
                     </td>
                 </tr>
@@ -72,14 +72,6 @@
         var autocompleteURL = '${autocompleteURL}';
         var validationURL = '${validationURL}';
         var sendURL  = '${sendURL}';
-        // Initialization
-        $(function() {
-            //$('.messaging-overlay').hide();
-            $('.message-share-button a').click(function(event) {
-                event.preventDefault();
-                showOverlay();
-            });
-        });
 
         // Public functions
         function showOverlay() {
@@ -87,7 +79,7 @@
         }
 
         function send() {
-            if ($('.recipient-error').html().length == 0) {
+            if ($('#recipient-error').html().length == 0) {
                 $.ajax({
                     type: "POST",
                     //the url where you want to sent the userName and password to
@@ -132,7 +124,7 @@
                 data: {screenNames : list},
                 success: function (data) {
                     if (data.success) {
-                        $('.recipient-error').html("");
+                        $('#recipient-error').html("");
                     } else {
                         var error = "";
                         var list = data.message;
@@ -146,8 +138,7 @@
                             error += "&lt;ul&gt;";
                         }
 
-                        $('.recipient-error').html(error);
-                        $('#send-button').attr('disabled', 'disabled');
+                        $('#recipient-error').html(error);
                     }
                 }
             });
