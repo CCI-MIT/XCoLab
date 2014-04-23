@@ -271,3 +271,10 @@ table.mainTabs .inputTabStyle td.RtTop,
 .input_def_inner_label {
 	color: #777777;
 }
+
+.modelInput_radio {
+	float: left;
+	margin-right: 20px;
+	margin-left: 20px;
+	margin-top: 5px;
+}

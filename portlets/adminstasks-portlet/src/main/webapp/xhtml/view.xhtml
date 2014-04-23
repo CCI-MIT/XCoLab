@@ -75,6 +75,14 @@
                         </ice:column>
                     </ice:dataTable>
                 </ice:panelTab>
+                <ice:panelTab label="Geo Location">
+                	<ul>
+                        <li><ice:commandButton action="#{adminTask.translateIp}" value="Translate sample ip (check console)"/></li>
+                        <li><ice:commandButton action="#{adminTask.reloadIpLocationData}" value="reload ip geolocation data" /></li>
+                        <li><ice:commandButton action="#{adminTask.populateLocationDataIntoBalloon}" value="populate balloon" /></li>
+                	</ul>
+
+                </ice:panelTab>
 
             </ice:panelTabSet>
         </ice:form>

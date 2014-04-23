@@ -1,9 +1,12 @@
 package com.ext.portlet.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalContestPhaseAttributeType;
 import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -39,16 +42,15 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
     public List<ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(long proposalId, long contestPhaseId) throws SystemException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
-
-    /**
-     * <p>Returns a proposal phase attribute by attributeName associated with given proposal in context of a phase and additionalId</p>
-     * @param proposalId id of a proposal
-     * @param contestPhaseId id of a phase
-     * @param attributeName name of attribute
-     * @param additionalId additional id to find attribute
-     * @return proposal phase attribute
-     * @throws SystemException in case of LR error
-     */
+        /**
+         * <p>Returns a proposal phase attribute by attributeName associated with given proposal in context of a phase and additionalId</p>
+         * @param proposalId id of a proposal
+         * @param contestPhaseId id of a phase
+         * @param attributeName name of attribute
+         * @param additionalId additional id to find attribute
+         * @return proposal phase attribute
+         * @throws SystemException in case of LR error
+         */
     public ProposalContestPhaseAttribute getProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName,long additionalId) throws SystemException, NoSuchProposalContestPhaseAttributeException {
         return proposalContestPhaseAttributePersistence.findByProposalIdContestPhaseIdNameAdditionalId(proposalId, contestPhaseId,attributeName, additionalId);
     }

@@ -379,7 +379,6 @@ public class AuthenticationServiceImpl implements AuthenticationService, Invokab
 			}
 
 			if (authResult != Authenticator.SUCCESS) {
-				System.out.println("auth exception będzie");
 				throw new AuthException();
 			}
 		}

@@ -436,6 +436,13 @@ public class ContestLocalServiceUtil {
         return getService().getDiscussionCategoryGroup(contest);
     }
 
+    public static long getTotalCommentsCount(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getTotalCommentsCount(contest);
+    }
+
     public static long getCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {

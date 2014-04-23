@@ -65,7 +65,11 @@ public class ProposalSectionWrapper {
 
     public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
         String content = getContent();
-        if (content == null) return null;
+        if (content == null) {
+            //default text if available
+            return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
+
+        }
         Document d = Jsoup.parse(content.trim());
         for (Element e : d.select("a.utube")) {
             String curURL = e.attr("href");
@@ -94,11 +98,14 @@ public class ProposalSectionWrapper {
 
         // Scan all <p> tags
         for (Element e : d.select("p")) {
-            String newText = "";
-            _log.debug("Scanning line: " + e.text());
             // Separate the <p> tags by the space character and process potential URLs
-            String[] words = e.text().split(" ");
-            for (String word : words) {
+            String html = e.html();
+
+            // Eliminates wierd &nbsp; ASCII val 160 characters
+            String text = e.text().replaceAll("[\\u00A0]", " ");
+            String[] words = text.split("\\s");
+            for (int i = 0; i < words.length; i++) {
+                final String word = words[i];
                 final Matcher matcher = pattern.matcher(word);
 
                 // If a match is found create a new <a> tag
@@ -113,14 +120,22 @@ public class ProposalSectionWrapper {
                         elementName = link;
                     }
 
-                    newText += "<a href=\""+link+"\">"+ elementName +"</a>" + " ";
-                } else {
-                    newText += word + " ";
+                    // Replace exactly this word in the HTML code with leading and trailing spaces
+                    if (words.length == 1) { // In this case there are no leading and trailing spaces in the html code
+                        if (!html.contains("<"))
+                            html = html.replaceFirst(Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a> ");
+                    } else if (i == 0) {
+                        html = html.replaceFirst(Pattern.quote(word) + "(\\s|&nbsp;)", "<a href=\""+link+"\">"+ elementName +"</a> ");
+                    } else if (i == words.length - 1) {
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word), " <a href=\""+link+"\">"+ elementName +"</a>");
+                    } else {
+                        html = html.replaceFirst("(\\s|&nbsp;)" + Pattern.quote(word) + "(\\s|&nbsp;)", " <a href=\""+link+"\">"+ elementName +"</a> ");
+                    }
                 }
             }
 
             // Rebuild the whole value string of the <p> tag and exchange the old one
-            e.after("<p>" + newText + "<p>");
+            e.after("<p>"+html+"</p>");
             e.remove();
         }
 

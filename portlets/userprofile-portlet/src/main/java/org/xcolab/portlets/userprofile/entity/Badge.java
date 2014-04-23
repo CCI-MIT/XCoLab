@@ -1,6 +1,15 @@
 package org.xcolab.portlets.userprofile.entity;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +43,19 @@ public class Badge implements Serializable {
             this.badgeTitle = ribbonText;
         } else{
             this.badgeTitle = "Winner";
+        }
+
+        // Associate the year
+        try {
+            Contest contest = ContestLocalServiceUtil.getContest(contestId);
+            ContestPhase lastPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            Date referenceDate = lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(referenceDate);
+
+            year = cal.get(Calendar.YEAR);
+        } catch (PortalException | SystemException e) {
+            e.printStackTrace();
         }
     }
 

@@ -3,12 +3,11 @@ package org.xcolab.portlets.userprofile;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Message;
-import com.ext.portlet.model.MessagingIgnoredRecipients;
-import com.ext.portlet.model.MessagingUserPreferences;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -18,6 +17,7 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.utils.SendMessagePermissionChecker;
 
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
@@ -52,6 +52,7 @@ public class UserProfileBean implements Serializable {
     private String messagingPortletId;
     private boolean messageSent;
     private BadgeBean badges;
+    private SendMessagePermissionChecker messagePermissionChecker;
 
     private boolean displayEMailErrorMessage = false;
     
@@ -112,6 +113,10 @@ public class UserProfileBean implements Serializable {
         }
         if (currentUser != null) {
         	badges = new BadgeBean(currentUser.getUserId());
+        }
+
+        if (wrappedUser != null && Helper.isUserLoggedIn()) {
+            messagePermissionChecker = new SendMessagePermissionChecker(Helper.getLiferayUser());
         }
     }
 
@@ -277,6 +282,14 @@ public class UserProfileBean implements Serializable {
     
     public long getTimestamp() {
     	return new Date().getTime();
+    }
+
+    public boolean getCanSendMessage() throws SystemException {
+        if (messagePermissionChecker != null) {
+            return messagePermissionChecker.canSendToUser(wrappedUser);
+        }
+
+        return false;
     }
 
 }

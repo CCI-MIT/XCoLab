@@ -70,6 +70,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "plansOpenByDefault", Types.BOOLEAN },
             { "sponsorLogoId", Types.BIGINT },
             { "sponsorText", Types.VARCHAR },
+            { "sponsorLink", Types.VARCHAR },
             { "flag", Types.INTEGER },
             { "flagText", Types.VARCHAR },
             { "flagTooltip", Types.VARCHAR },
@@ -80,7 +81,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "contestPrivate", Types.BOOLEAN },
             { "usePermissions", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(2048) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,focusAreaId LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(2048) null,ContestShortName VARCHAR(1024) null,ContestDescription VARCHAR(3072) null,ContestModelDescription VARCHAR(2048) null,ContestPositionsDescription VARCHAR(2048) null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,focusAreaId LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(2048) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(1024) null,flagTooltip VARCHAR(1024) null,groupId LONG,discussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -135,6 +136,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _plansOpenByDefault;
     private long _sponsorLogoId;
     private String _sponsorText;
+    private String _sponsorLink;
     private int _flag;
     private int _originalFlag;
     private boolean _setOriginalFlag;
@@ -187,6 +189,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setPlansOpenByDefault(soapModel.getPlansOpenByDefault());
         model.setSponsorLogoId(soapModel.getSponsorLogoId());
         model.setSponsorText(soapModel.getSponsorText());
+        model.setSponsorLink(soapModel.getSponsorLink());
         model.setFlag(soapModel.getFlag());
         model.setFlagText(soapModel.getFlagText());
         model.setFlagTooltip(soapModel.getFlagTooltip());
@@ -274,6 +277,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("plansOpenByDefault", getPlansOpenByDefault());
         attributes.put("sponsorLogoId", getSponsorLogoId());
         attributes.put("sponsorText", getSponsorText());
+        attributes.put("sponsorLink", getSponsorLink());
         attributes.put("flag", getFlag());
         attributes.put("flagText", getFlagText());
         attributes.put("flagTooltip", getFlagTooltip());
@@ -406,6 +410,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (sponsorText != null) {
             setSponsorText(sponsorText);
+        }
+
+        String sponsorLink = (String) attributes.get("sponsorLink");
+
+        if (sponsorLink != null) {
+            setSponsorLink(sponsorLink);
         }
 
         Integer flag = (Integer) attributes.get("flag");
@@ -756,6 +766,21 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @JSON
     @Override
+    public String getSponsorLink() {
+        if (_sponsorLink == null) {
+            return StringPool.BLANK;
+        } else {
+            return _sponsorLink;
+        }
+    }
+
+    @Override
+    public void setSponsorLink(String sponsorLink) {
+        _sponsorLink = sponsorLink;
+    }
+
+    @JSON
+    @Override
     public int getFlag() {
         return _flag;
     }
@@ -961,6 +986,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setPlansOpenByDefault(getPlansOpenByDefault());
         contestImpl.setSponsorLogoId(getSponsorLogoId());
         contestImpl.setSponsorText(getSponsorText());
+        contestImpl.setSponsorLink(getSponsorLink());
         contestImpl.setFlag(getFlag());
         contestImpl.setFlagText(getFlagText());
         contestImpl.setFlagTooltip(getFlagTooltip());
@@ -1155,6 +1181,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             contestCacheModel.sponsorText = null;
         }
 
+        contestCacheModel.sponsorLink = getSponsorLink();
+
+        String sponsorLink = contestCacheModel.sponsorLink;
+
+        if ((sponsorLink != null) && (sponsorLink.length() == 0)) {
+            contestCacheModel.sponsorLink = null;
+        }
+
         contestCacheModel.flag = getFlag();
 
         contestCacheModel.flagText = getFlagText();
@@ -1196,7 +1230,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(57);
+        StringBundler sb = new StringBundler(59);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1236,6 +1270,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getSponsorLogoId());
         sb.append(", sponsorText=");
         sb.append(getSponsorText());
+        sb.append(", sponsorLink=");
+        sb.append(getSponsorLink());
         sb.append(", flag=");
         sb.append(getFlag());
         sb.append(", flagText=");
@@ -1261,7 +1297,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(88);
+        StringBundler sb = new StringBundler(91);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1342,6 +1378,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>sponsorText</column-name><column-value><![CDATA[");
         sb.append(getSponsorText());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sponsorLink</column-name><column-value><![CDATA[");
+        sb.append(getSponsorLink());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>flag</column-name><column-value><![CDATA[");

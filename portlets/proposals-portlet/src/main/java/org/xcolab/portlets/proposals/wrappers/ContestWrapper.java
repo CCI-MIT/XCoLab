@@ -215,6 +215,18 @@ public class ContestWrapper {
         contest.setSponsorText(sponsorText);
     }
 
+    public String getSponsorLink() {
+        return contest.getSponsorLink();
+    }
+
+    public void setSponsorLink(String sponsorLink) {
+        contest.setSponsorLink(sponsorLink);
+    }
+
+    public boolean getSponsorLinkAvailable() {
+        return !contest.getSponsorLink().equals("");
+    }
+
     public int getFlag() {
         return contest.getFlag();
     }
@@ -278,6 +290,11 @@ public class ContestWrapper {
     public long getCommentsCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
+
+    public long getTotalCommentsCount() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+    }
+
 
     public long getVotesCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getVotesCount(contest);

@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -75,6 +76,14 @@ public class ContestPhaseWrapper {
 
     public Date getPhaseReferenceDate() {
         return contestPhase.getPhaseEndDate() == null ? contestPhase.getPhaseStartDate() : contestPhase.getPhaseEndDate();
+    }
+
+    public String getPhaseReferenceYear() {
+        Date referenceDate = getPhaseReferenceDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(referenceDate);
+
+        return ""+cal.get(Calendar.YEAR);
     }
 
     public Date getCreated() {

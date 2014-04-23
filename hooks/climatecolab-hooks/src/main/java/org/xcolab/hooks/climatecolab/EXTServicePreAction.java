@@ -82,21 +82,6 @@ public class EXTServicePreAction extends Action {
             }
         }
 
-        // -- SSO --
-        try{
-            String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
-            facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect", HttpUtil.encodeURL(themeDisplay.getURLCurrent().toString()));
-            String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
-            facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id", FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
-            facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
-            facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "scope", "email");
-            vmVariables.put("facebookAuthURL", facebookAuthURL);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        // -- /SSO --
-
-
         vmVariables.put("themeTimestamp", themeTimestamp);
 
 

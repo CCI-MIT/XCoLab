@@ -44,6 +44,41 @@ public class ProposalServiceWrapper implements ProposalService,
         return _proposalService.invokeMethod(name, parameterTypes, arguments);
     }
 
+    /**
+    * This method returns the index of the latest version of a proposal within a given contestPhaseId
+    *
+    * @param contestPhaseId    The ID of the contest phase
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersionFirstIndex(
+        long contestPhaseId, long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalService.getProposalVersionFirstIndex(contestPhaseId,
+            proposalId);
+    }
+
+    /**
+    * This method returns the index of the passed version of a proposal
+    *
+    * @param version           The proposal version
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersionIndex(
+        long version, long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalService.getProposalVersionIndex(version, proposalId);
+    }
+
     @Override
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
         long contestPhaseId, long proposalId, int start, int end)

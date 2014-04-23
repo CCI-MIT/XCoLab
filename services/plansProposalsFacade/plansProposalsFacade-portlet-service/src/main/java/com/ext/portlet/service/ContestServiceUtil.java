@@ -51,10 +51,23 @@ public class ContestServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    /**
+    * Returns a list of open contest for regular users and returns all contests for staff users
+    *
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     public static java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsOpenForProposals();
+    }
+
+    public static int getNumberOfUnreadMessages()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getNumberOfUnreadMessages();
     }
 
     public static void clearService() {

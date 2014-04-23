@@ -24,6 +24,8 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         model.addAttribute("discussionId",  proposalsContext.getProposal(request).getDiscussionId() );
+        model.addAttribute("authorId", proposalsContext.getProposal(request).getAuthorId());
+        model.addAttribute("proposalId", proposalsContext.getProposal(request).getProposalId());
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.COMMENTS);
         

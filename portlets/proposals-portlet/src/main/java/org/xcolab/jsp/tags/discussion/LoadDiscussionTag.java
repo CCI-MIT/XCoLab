@@ -1,7 +1,5 @@
 package org.xcolab.jsp.tags.discussion;
 
-import java.util.Enumeration;
-
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

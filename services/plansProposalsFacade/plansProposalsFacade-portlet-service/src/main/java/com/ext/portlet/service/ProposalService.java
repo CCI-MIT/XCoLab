@@ -52,6 +52,36 @@ public interface ProposalService extends BaseService, InvokableService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    /**
+    * This method returns the index of the latest version of a proposal within a given contestPhaseId
+    *
+    * @param contestPhaseId    The ID of the contest phase
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersionFirstIndex(
+        long contestPhaseId, long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * This method returns the index of the passed version of a proposal
+    *
+    * @param version           The proposal version
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.liferay.portal.kernel.json.JSONObject getProposalVersionIndex(
+        long version, long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
         long contestPhaseId, long proposalId, int start, int end)

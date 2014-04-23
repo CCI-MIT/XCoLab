@@ -66,7 +66,14 @@
     
     <!-- Pinterest META -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
-    
+
+    <!-- Tooltip -->
+    <link rel="stylesheet" type="text/css" href="$css_folder/tooltipster.css" />
+    <script type="text/javascript" src="$javascript_folder/jquery.tooltipster.js"></script>
+
+    <!-- Polling service -->
+    <script type="text/javascript" src="$javascript_folder/messageNotification.js"></script>
+
 </head>
 
 
@@ -169,8 +176,8 @@
    <div class="loginbox">
 
     <div class="loginwith">
-     <a href="$facebookAuthURL" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
-     <a href="/web/guest/loginregister/-/login/SSO/google" class="sketchy-icon google-sketchy"><span>Google</span></a>
+        <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
+        <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy"><span>Google</span></a>
     </div>
     <div class="loginwith-del"></div><div class="loginwith-or">OR</div><div class="loginwith-del"></div>
     <div class="clearfix"></div>
@@ -263,6 +270,7 @@ $theme.include($top_messages_include)
 
     #parse ("$full_templates_path/sign_in_popup.vm")
     #parse ("$full_templates_path/jsadditions.vm")
+    #parse ("$full_templates_path/post_registration_popup.vm")
     
 #if ($request.getSession().getAttribute('xcolab_global_messages'))
 	<script type="text/javascript">
@@ -287,7 +295,7 @@ $theme.include($top_messages_include)
 $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
-
+<script src="$javascript_folder/balloon.js?tt=$themeTimestamp"></script>
 </body>
 
 </html>

@@ -33,7 +33,7 @@
 	margin-right: 5px;
 }
 
-td.ontologyItem {
+td .ontologyItem {
 	padding-right:30px;
 	padding-top:2px;
 }
@@ -55,15 +55,15 @@ div.sponsorLogo table {
 
 .heading-sponsor-logo img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 60px;
     height: auto;
     width: auto;
 }
 
 .heading-sponsor-logo {
     max-width: 200px;
-    max-height: 45px;
     min-height: 30px;
+    max-height: 60px;
     float: right;
     margin: 0 0 0 3px;
     padding: 3px;
@@ -292,4 +292,19 @@ div.sponsorLogo img {
 
 #share-proposal-container table.colab td input {
     width: 90%;
+}
+
+.thread-creator-overlay {
+    background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
+    float: left;
+    line-height: 0;
+    font-size: 0;
+    color: transparent;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+}
+
+.commentor-header {
+    float:left;
 }

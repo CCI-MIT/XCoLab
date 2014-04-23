@@ -262,19 +262,21 @@ long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayT
 				viewPageDetailsURL.setParameter("redirect", currentURL);
 				%>
 
-				<liferay-ui:icon
-					image="history"
-					label="<%= true %>"
-					message="details"
-					method="get"
-					url="<%= viewPageDetailsURL.toString() %>"
-				/>
+                <c:if test="<%= WikiPagePermission.contains(permissionChecker, wikiPage, ActionKeys.UPDATE) %>">
+                    <liferay-ui:icon
+                        image="history"
+                        label="<%= true %>"
+                        message="details"
+                        method="get"
+                        url="<%= viewPageDetailsURL.toString() %>"
+                    />
 
-				<liferay-ui:icon
-					image="print"
-					label="<%= true %>"
-					url='<%= "javascript:" + renderResponse.getNamespace() + "printPage();" %>'
-				/>
+                    <liferay-ui:icon
+                        image="print"
+                        label="<%= true %>"
+                        url='<%= "javascript:" + renderResponse.getNamespace() + "printPage();" %>'
+                    />
+                </c:if>
 			</div>
 		</c:if>
 

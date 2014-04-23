@@ -13,6 +13,9 @@
 			<c:when test="${viewType == 'GRID' }">
 				<jsp:directive.include file="./contestsIndex/grid.jspx" />		
 			</c:when>
+			<c:when test="${viewType == 'OUTLINE' }">
+				<jsp:directive.include file="./contestsIndex/outline.jspx" />		
+			</c:when>
 			<c:otherwise>
 				<jsp:directive.include file="./contestsIndex/list.jspx" />
 			</c:otherwise>

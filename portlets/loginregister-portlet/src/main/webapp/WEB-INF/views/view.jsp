@@ -17,26 +17,41 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
+    <portlet:actionURL name="initiateOpenIdRegistration" var="SSOGoogleURL">
+        <portlet:param name="SSO" value="google" />
+        <portlet:param name="action" value="initiateOpenIdRegistration" />
+    </portlet:actionURL>
+    <portlet:actionURL name="initiateRegistration" var="SSOFbURL">
+        <portlet:param name="SSO" value="facebook" />
+        <portlet:param name="action" value="initiateRegistration" />
+    </portlet:actionURL>
 
 	<div class="popupreg_form">
 
 
+            <div class="popupreg_head">
+                <h1>Join the CoLab</h1>
+            </div>
 
-		<div class="popupreg_head">
-			<h1>Join the CoLab</h1>
-		</div>
+            <div class="sso-register">
+                <div style="float: right">
+                    <h1>Or sign in with:</h1><br/>
+                    <a href="${SSOFbURL}" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
+                    <a href="${SSOGoogleURL }" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
+                </div>
+            </div>
 
-        
-		<div class="is-required">
-			<img src="/climatecolab-theme/images/reg-star.png" width="8"
-				height="7" align="texttop" /> is a required field.
-		</div>
+
+        <div class="is-required">
+            <img src="/climatecolab-theme/images/reg-star.png" width="8"
+                 height="7" align="texttop" /> is a required field.
+        </div>
 
 		<c:if test="${ error != null and isRegistering }">
 			<div class="error-message">${error}</div>
 		</c:if>
 
-		<form action="/loginregister-portlet/fileUploadServlet" method="post"
+		<form style="margin-top: 20px;" action="/loginregister-portlet/fileUploadServlet" method="post"
 			enctype="multipart/form-data" target="_fileUploadFrame"
 			id="fileUploadForm">
 			<input type="file" name="file" id="portraitUploadInput" />
@@ -58,7 +73,9 @@
 						</div></td>
 
 					<th class="second" rowspan="4">Photo</th>
-					<td rowspan="4"><c:choose>
+					<td rowspan="4">
+                        <div style="float: right">
+                            <c:choose>
 							<c:when test="${ createUserBean.getImageId() != null }">
 								<img src="/image/contest?img_id=${createUserBean.getImageId() }" id="userPortrait"
 									width="150" height="150" />
@@ -68,8 +85,13 @@
 									width="150" height="150" />
 							</c:otherwise>
 						</c:choose>
+                        <div class="clearfix">
+                            <!--  -->
+                        </div>
+						<div id="uploadImageContainer"><!--  --></div>
+    </div>
+    </td>
 
-						<div id="uploadImageContainer"><!--  --></div></td>
 
 				</tr>
 				<tr>

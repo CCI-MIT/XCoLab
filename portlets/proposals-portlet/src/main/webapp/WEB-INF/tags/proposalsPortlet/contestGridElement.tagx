@@ -18,14 +18,31 @@
             </h3>
             ${contest.contestName }
             <div class="count">
-                <div class="prop"><strong>${contest.proposalsCount}</strong> proposals</div>
+                <div class="prop"><strong>${contest.proposalsCount}</strong>
+                    <c:choose>
+                        <c:when test="${contest.proposalsCount == 1}"> proposal</c:when>
+                        <c:otherwise> proposals</c:otherwise>
+                    </c:choose>
+                </div>
 
                 <c:choose>
                     <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
-                        <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong> votes</div>
+                        <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.votesCount == 1}"> vote</c:when>
+                                <c:otherwise> votes</c:otherwise>
+                            </c:choose>
+
+                        </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.commentsCount}</strong> comments</div>
+                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
+                                <c:otherwise> comments</c:otherwise>
+                            </c:choose>
+
+                        </div>
                     </c:otherwise>
                 </c:choose>
 

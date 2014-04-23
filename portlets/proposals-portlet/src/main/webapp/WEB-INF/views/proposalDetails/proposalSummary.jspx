@@ -99,7 +99,7 @@
                             <a href="#" style="${(proposal.ribbonText.length() gt 8 and proposal.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonText.length() gt 13 ? 'Winner' : proposal.ribbonText}</a>
                         </span>
                 <div class="badge-text" style="${proposal.ribbonText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(proposal.ribbonText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${proposal.ribbonText.length() gt 13 ? proposal.ribbonText : ''}</div>
-                <span class="badge-year">2013</span>
+                <span class="badge-year">${contest.activePhase.phaseReferenceYear}</span>
             </div>
         </c:if>
 

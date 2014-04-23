@@ -19,6 +19,7 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalService;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
@@ -169,8 +170,28 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             // ignore
         }
         List<ContestPhase> phases = contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
+        // Either there is no contest phase or there is a phase which enddate is open
         if (phases.isEmpty()) {
-        	throw new SystemException("Can't find active contest phase for contest" + contest.getContestPK());
+
+            // Check whether the contestPhase with the latest start date is open (no endDate)
+            ContestPhase latestOpenPhase = null;
+            long latestStartTime = 0;
+            for (ContestPhase phase : contestLocalService.getPhases(contest)) {
+                if (phase.getPhaseStartDate().getTime() > latestStartTime) {
+                    if (phase.getPhaseEndDate() != null) {
+                        latestOpenPhase = null;
+                    } else {
+                        latestOpenPhase = phase;
+                    }
+                }
+            }
+
+            if (latestOpenPhase == null) {
+                throw new SystemException("Can't find active contest phase for contest " + contest.getContestPK());
+            }
+
+            return latestOpenPhase;
+
         }
         return phases.get(0);
     }

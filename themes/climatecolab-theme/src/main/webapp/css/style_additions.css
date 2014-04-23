@@ -594,12 +594,21 @@ cursor: pointer;
 
 
 #uploadImageContainer {
-	width: 100%;
+	width: 136px;
 	height: 30px;
 	background: url(../images/profile_upload-button.gif) no-repeat 15px 0px;
 	margin-top: 20px;
 	cursor: pointer;
 }
+
+.clearfix {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
 #portraitUploadInput {
 	width: 140px;
 	height: 30px;
@@ -748,9 +757,20 @@ font-weight: 400;
     margin-bottom: 20px;
 }
 
+.popupreg_head {
+    float:left;
+    width: 50%;
+}
+
 .popupreg_head h1 {
     color: #000;
     font-size: 36px;
+}
+
+.sso-register {
+    float: right;
+    width: 50%;
+    margin-bottom: 20px;
 }
 
 .popupreg_txt.req {
@@ -863,7 +883,7 @@ display: inline;
 
 
 .popup .login_popup_box {
-    width: 374px;
+    /* width: 374px;*/
     padding: 17px 0 10px 13px;
     /*background: url(../images/search-bg.png);*/
     font-size: 14px;
@@ -1434,4 +1454,53 @@ div.portlet-column {
     height: 5px;
     display: inline-block;
     white-space: nowrap;
+}
+.js .controls-hidden .lfr-meta-actions {
+	display: block;
+}
+
+.login-box-table {
+    float: left;
+
+}
+
+table.login-box-table td {
+    padding: 0 3px 0 0;
+    vertical-align: middle;
+}
+
+table.login-box-table th {
+    padding: 0 3px 10px 0;
+    vertical-align: middle;
+}
+
+.role-indicator div {
+    float: left;
+    margin-right: 15px;
+}
+
+.clearfix.lfr-pagination {
+	visibility: visible;
+}
+
+.lfr-pagination .pager {
+	padding-top: 0;
+	text-align: inherit;
+}
+.lfr-pagination .pager li {
+	background: none;
+	float: left;
+}
+
+.lfr-pagination .pager li a {
+	cursor: pointer;
+}
+
+.lfr-pagination .pager li.disabled a {
+	color: #ccc;
+	cursor: default;
+}
+
+.lfr-pagination .lfr-pagination-config {
+	display: none;
 }

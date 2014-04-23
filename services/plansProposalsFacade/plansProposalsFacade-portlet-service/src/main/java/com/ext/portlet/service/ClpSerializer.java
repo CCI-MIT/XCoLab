@@ -2,7 +2,10 @@ package com.ext.portlet.service;
 
 import com.ext.portlet.model.ActivitySubscriptionClp;
 import com.ext.portlet.model.AnalyticsUserEventClp;
+import com.ext.portlet.model.BalloonLinkClp;
 import com.ext.portlet.model.BalloonStatsEntryClp;
+import com.ext.portlet.model.BalloonTextClp;
+import com.ext.portlet.model.BalloonUserTrackingClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
 import com.ext.portlet.model.ContestPhaseClp;
@@ -170,8 +173,20 @@ public class ClpSerializer {
             return translateInputAnalyticsUserEvent(oldModel);
         }
 
+        if (oldModelClassName.equals(BalloonLinkClp.class.getName())) {
+            return translateInputBalloonLink(oldModel);
+        }
+
         if (oldModelClassName.equals(BalloonStatsEntryClp.class.getName())) {
             return translateInputBalloonStatsEntry(oldModel);
+        }
+
+        if (oldModelClassName.equals(BalloonTextClp.class.getName())) {
+            return translateInputBalloonText(oldModel);
+        }
+
+        if (oldModelClassName.equals(BalloonUserTrackingClp.class.getName())) {
+            return translateInputBalloonUserTracking(oldModel);
         }
 
         if (oldModelClassName.equals(ContestClp.class.getName())) {
@@ -505,10 +520,41 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputBalloonLink(BaseModel<?> oldModel) {
+        BalloonLinkClp oldClpModel = (BalloonLinkClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getBalloonLinkRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputBalloonStatsEntry(BaseModel<?> oldModel) {
         BalloonStatsEntryClp oldClpModel = (BalloonStatsEntryClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getBalloonStatsEntryRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputBalloonText(BaseModel<?> oldModel) {
+        BalloonTextClp oldClpModel = (BalloonTextClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getBalloonTextRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputBalloonUserTracking(
+        BaseModel<?> oldModel) {
+        BalloonUserTrackingClp oldClpModel = (BalloonUserTrackingClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getBalloonUserTrackingRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1281,8 +1327,23 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.BalloonLinkImpl")) {
+            return translateOutputBalloonLink(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.BalloonStatsEntryImpl")) {
             return translateOutputBalloonStatsEntry(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.BalloonTextImpl")) {
+            return translateOutputBalloonText(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.BalloonUserTrackingImpl")) {
+            return translateOutputBalloonUserTracking(oldModel);
         }
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.ContestImpl")) {
@@ -1862,8 +1923,21 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchAnalyticsUserEventException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchBalloonLinkException")) {
+            return new com.ext.portlet.NoSuchBalloonLinkException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchBalloonStatsEntryException")) {
             return new com.ext.portlet.NoSuchBalloonStatsEntryException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchBalloonTextException")) {
+            return new com.ext.portlet.NoSuchBalloonTextException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchBalloonUserTrackingException")) {
+            return new com.ext.portlet.NoSuchBalloonUserTrackingException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchContestException")) {
@@ -2205,12 +2279,43 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateOutputBalloonLink(BaseModel<?> oldModel) {
+        BalloonLinkClp newModel = new BalloonLinkClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setBalloonLinkRemoteModel(oldModel);
+
+        return newModel;
+    }
+
     public static Object translateOutputBalloonStatsEntry(BaseModel<?> oldModel) {
         BalloonStatsEntryClp newModel = new BalloonStatsEntryClp();
 
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setBalloonStatsEntryRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputBalloonText(BaseModel<?> oldModel) {
+        BalloonTextClp newModel = new BalloonTextClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setBalloonTextRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputBalloonUserTracking(
+        BaseModel<?> oldModel) {
+        BalloonUserTrackingClp newModel = new BalloonUserTrackingClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setBalloonUserTrackingRemoteModel(oldModel);
 
         return newModel;
     }

@@ -14,6 +14,8 @@ public class ContestServiceClp implements ContestService {
     private String[] _methodParameterTypes1;
     private String _methodName3;
     private String[] _methodParameterTypes3;
+    private String _methodName4;
+    private String[] _methodParameterTypes4;
 
     public ContestServiceClp(InvokableService invokableService) {
         _invokableService = invokableService;
@@ -29,6 +31,10 @@ public class ContestServiceClp implements ContestService {
         _methodName3 = "getContestsOpenForProposals";
 
         _methodParameterTypes3 = new String[] {  };
+
+        _methodName4 = "getNumberOfUnreadMessages";
+
+        _methodParameterTypes4 = new String[] {  };
     }
 
     @Override
@@ -106,5 +112,36 @@ public class ContestServiceClp implements ContestService {
         }
 
         return (java.util.List<com.ext.portlet.model.Contest>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public int getNumberOfUnreadMessages()
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableService.invokeMethod(_methodName4,
+                    _methodParameterTypes4, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
     }
 }

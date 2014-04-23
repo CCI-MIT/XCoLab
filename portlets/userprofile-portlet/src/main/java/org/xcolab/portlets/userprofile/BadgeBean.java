@@ -7,6 +7,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.*;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.userprofile.entity.Badge;
@@ -45,7 +46,7 @@ public class BadgeBean implements Serializable{
         List<Proposal> proposals;
 
         // Iterate over all plans
-        for(Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE)) {
+        for(Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
             if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(),userID)) continue;
             ContestPhaseRibbonType ribbon = getRibbonType(p);
             int planRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
@@ -74,14 +75,25 @@ public class BadgeBean implements Serializable{
     private ContestPhaseRibbonType getRibbonType(Proposal p) throws PortalException, SystemException {
         ContestPhaseRibbonType contestPhaseRibbonType = null;
         List<Long> phasesForProposal =  Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phasesForProposal.get(phasesForProposal.size() - 1));
-        try {
-            long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
-                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
-            contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
-        }
-        catch (NoSuchProposalContestPhaseAttributeException e) {
-            // ignore
+
+        long contestPhaseType = 0;
+        for (Long phaseId : phasesForProposal) {
+            try {
+                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
+                        phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+
+                ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
+
+                // Only consider the latest ribbon per proposal
+                if (contestPhase.getContestPhaseType() > contestPhaseType) {
+                    contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+                    contestPhaseType = contestPhase.getContestPhaseType();
+                }
+
+            }
+            catch (NoSuchProposalContestPhaseAttributeException e) {
+                // ignore
+            }
         }
 
         return contestPhaseRibbonType;

@@ -114,6 +114,8 @@ public class AddUpdateProposalDetailsActionController {
             	// associate proposal with selected contest phase
             	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(), 
             			proposal.getCurrentVersion(), -1);
+                ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
+                        ProposalContestPhaseAttributeKeys.VISIBLE, 1);
             }
         }
         else {
