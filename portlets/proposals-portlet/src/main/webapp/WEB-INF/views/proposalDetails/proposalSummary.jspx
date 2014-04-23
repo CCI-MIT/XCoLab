@@ -81,6 +81,7 @@
 					</a>
 				</div>
 			</c:if>
+            <div class="clearfix">&#160;</div>
             <div class="message-share-button">
                 <a href="#" onclick="showOverlay()"><img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
             </div>
@@ -206,8 +207,9 @@
     </c:if>
                 
     </div>
-    <div class="messaging-overlay">
+<div id="messaging-overlay" class="popup-wrap small" style="display: none;">
+<div class="popup">
         <jsp:directive.include file="./proposalShare.jspx" />
     </div>
-
+</div>
 </jsp:root>

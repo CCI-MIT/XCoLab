@@ -17,22 +17,20 @@
     </portlet:resourceURL>
 
 
-    <div class="overlay-bg">
-        <div class="overlay-content">
-            <div id="composer-container">
+
+            <div id="share-proposal-container">
+                <h4>Share this proposal</h4>
                 <form class="compose-message-form">
                     <div class="errors-container">
-
+                        &#160;
                     </div>
-                    <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                    <table border="0" cellpadding="0" cellspacing="0" class="colab" style="margin-top:0px;">
                         <tr>
                             <td class="b" width="60px">To:</td>
                             <td>
                                 <input id="recipient-input" type="text" class="profile_input messageReceipients"/>
-                                <div class="recipient-error">
 
-                                </div>
-                                
+
                                 <!-- <input type="hidden" class="required profile_input"  />-->
                                 <!--<div id="please_choose_from_list"
                                      style="display: none; color: red; ">Please choose value from list
@@ -43,44 +41,50 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>&#160;</td>
+                            <td>
+                                <div class="recipient-error">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="b">Subject:</td>
                             <td>
-                                <input class="required profile_input subject" value="I want to share a proposal with you!"/>
+                                <input id="subject" class="required profile_input subject" value="I want to share a proposal with you!"/>
                                 <br/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="b">BODY:</td>
+                            <td class="b">Message:</td>
                             <td>
                                 <div id="composemessage">
-                                    <textarea rows="6" cols="30" class="profile_about required">Check out this proposal in the ${contest.contestName} contest ${proposal.proposalURL}</textarea>
+                                    <textarea id="body" rows="6" class="profile_about required" style="width: 90%; fon">Check out this proposal in the "${contest.contestName}" contest.</textarea>
                                 </div>
                             </td>
                         </tr>
                     </table>
                     <div>
                         <div class="blue-button">
-                            <button id="send-button" onclick='send()' disabled>Send</button>
+                            <a href="javascript:;" id="send-button" class="login-submit" onclick="send()">Send</a>
                         </div>
 
                         <div class="blue-button">
-                            <button onclick="cancel()">Cancel</button>
+                            <a href="javascript:;" class="login-submit" onclick="$('#messaging-overlay').hide()">Cancel</a>
                         </div>
+                    </div>
+                    <div id="send-error" class="recipient-error">
+
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
     <script type="text/javascript">
         var autocompleteURL = '${autocompleteURL}';
         var validationURL = '${validationURL}';
         var sendURL  = '${sendURL}';
         // Initialization
         $(function() {
-            console.log('run');
             //$('.messaging-overlay').hide();
             $('.message-share-button a').click(function(event) {
-                console.log("click");
                 event.preventDefault();
                 showOverlay();
             });
@@ -88,15 +92,31 @@
 
         // Public functions
         function showOverlay() {
-            $('.overlay-bg').show();
+            $('#messaging-overlay').show();
         }
 
         function send() {
-
-        }
-
-        function cancel() {
-            $('.messaging-overlay').hide();
+            if ($('.recipient-error').html().length == 0) {
+                $.ajax({
+                    type: "POST",
+                    //the url where you want to sent the userName and password to
+                    url: sendURL,
+                    dataType: 'json',
+                    async: false,
+                    //json object to sent to the authentication url
+                    data: {recipients : split($("#recipient-input").val()),
+                        subject: $("#subject").val(),
+                        body : $("#body").val()},
+                    success: function (data) {
+                        if (data.success == false) {
+                            $('#send-error').html(data.message);
+                        } else {
+                            $('#send-error').html("");
+                            $('#messaging-overlay').hide();
+                        }
+                    }
+                });
+            }
         }
 
         // Helper functions
@@ -109,14 +129,6 @@
         function validateRecipients() {
             var input = $("#recipient-input").val();
             var list = split(input);
-            console.log("list: " + list);
-
-            $.each(list, function(k, v) {
-               console.log("item " + v);
-            });
-            var json = new Object();
-            json.params = list;
-            console.log("json: " + JSON.stringify(json));
 
             $.ajax
             ({
@@ -129,8 +141,7 @@
                 data: {screenNames : list},
                 success: function (data) {
                     if (data.success) {
-                        $('#send-button').removeAttr('disabled');
-
+                        $('.recipient-error').html("");
                     } else {
                         var error = "";
                         var list = data.message;
@@ -145,7 +156,6 @@
                         }
 
                         $('.recipient-error').html(error);
-                        console.log(error);
                         $('#send-button').attr('disabled', 'disabled');
                     }
                 }

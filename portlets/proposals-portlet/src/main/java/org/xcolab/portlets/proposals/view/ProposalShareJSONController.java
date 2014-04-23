@@ -1,10 +1,17 @@
 package org.xcolab.portlets.proposals.view;
 
+import com.ext.PropertiesUtils;
+import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Message;
+import com.ext.portlet.model.MessageRecipientStatus;
+import com.ext.portlet.service.MessageLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -17,18 +24,30 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.utils.MessageLimitManager;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Klemens Mang on 16.03.14.
@@ -36,6 +55,16 @@ import java.util.List;
 @Controller
 @RequestMapping("view")
 public class ProposalShareJSONController {
+
+	private static final long companyId = 10112L;
+	private static final String MESSAGES_LIMIT_COLUMN = "messages_limit";
+
+	private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+
+	private static Map<Long, Long> mutexes = new HashMap<>();
+
+	@Autowired
+	private ProposalsContext proposalsContext;
 
     private static final String RECIPIENT_LIST_JSON_KEY = "recipients";
     private static final String RECIPIENT_JSON_KEY = "recipient";
@@ -55,6 +84,9 @@ public class ProposalShareJSONController {
         List<String> unresolvedRecipients = new ArrayList<>();
         for (int i = 0; i < recipients.size(); i++) {
             String recipient = recipients.get(i);
+			if (recipient.equals("")) {
+				continue;
+			}
             try {
                 User user = UserLocalServiceUtil.getUserByScreenName(companyId, recipient);
                 recipientIds.add(user.getUserId());
@@ -140,31 +172,28 @@ public class ProposalShareJSONController {
         JSONObject json = parseJSONString(request);
 
         // Parse parameters
-        JSONArray recipients = json.getJSONArray(RECIPIENT_LIST_JSON_KEY);
-        String subject = json.getString(SUBJECT_JSON_KEY);
-        String body = json.getString(BODY_JSON_KEY);
+		String[] recipients = request.getParameterValues("recipients[]");
+		String subject = request.getParameter("subject");
+		String body = request.getParameter("body");
 
+		// Add link to proposal
+		ContestPhase phase = proposalsContext.getContestPhase(request);
+		String proposalUrl = themeDisplay.getPortalURL();
+		if (phase == null || phase.getContestPhasePK() <= 0) {
+			proposalUrl += String.format("/web/guest/plans/-/plans/contestId/%d/planId/%d", proposalsContext.getContest(request).getContestPK(), proposalsContext.getProposal(request).getProposalId());
+		} else {
+			proposalUrl += String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d", proposalsContext.getContest(request).getContestPK(), phase.getContestPhasePK(), proposalsContext.getProposal(request).getProposalId());
+		}
 
+		body += String.format("\n\n<a href='%s'>Link to proposal</a>", proposalUrl);
+
+		// Send the message
         Long userId = themeDisplay.getUserId();
-        //Long mutex = MessageLimitManager.getMutex(userId);
-        //synchronized (mutex) {
-//            if (!MessageLimitManager.canSendMessages(recipientIds.size())) {
-//                System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+userId);
-//
-//                recipientIds.clear();
-//                recipientIds.add(1011659L); //patrick
-//                MessageUtil.sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, userId,
-//                        Helper.getLiferayUser().getUserId(), recipientIds, null);
-//
-//                return;
-//            }
-
         // Validate the screenName input
         List<Long> recipientIds = null;
         try {
-            Type type = new TypeToken<ArrayList<String>>() {}.getType();
-            List<String> recipientsList = new Gson().fromJson(recipients.toString(), type);
-            recipientIds = parseRecipientNames(themeDisplay.getCompanyId(), recipientsList);
+            List<String> recipientsList = Arrays.asList(recipients);
+			recipientIds = parseRecipientNames(themeDisplay.getCompanyId(), recipientsList);
         } catch (RecipientParseException e) {
             List<String> unresolvedRecipients = e.getUnresolvedScreenNames();
             StringBuilder builder = new StringBuilder();
@@ -181,10 +210,25 @@ public class ProposalShareJSONController {
 
         // Send the message
         try {
+			Long mutex = MessageLimitManager.getMutex(userId);
+			User user = UserLocalServiceUtil.getUserById(userId);
+			synchronized (mutex) {
+				if (!MessageLimitManager.canSendMessages(recipientIds.size(), user)) {
+					System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. " + userId);
+
+					recipientIds.clear();
+					recipientIds.add(1011659L); //patrick
+					MessageUtil.sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + body, userId,
+							userId, recipientIds, null);
+
+					return;
+				}
+			}
             MessageUtil.sendMessage(subject, body, userId,
                     userId, recipientIds, null);
         } catch (com.liferay.portal.kernel.exception.SystemException | AddressException | MailEngineException e) {
-            sendResponseJSON(false, "The proposal could not be shared.", response);
+            sendResponseJSON(false, "We were unable to share this proposal. Please try again later.", response);
+			return;
         }
 
         sendResponseJSON(true, "You successfully shared the proposal", response);
