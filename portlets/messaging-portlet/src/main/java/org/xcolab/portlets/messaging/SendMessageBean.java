@@ -14,15 +14,12 @@ import javax.mail.internet.AddressException;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.portlets.messaging.utils.MessageLimitManager;
 
 import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,6 +27,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.SendMessagePermissionChecker;
 
 public class SendMessageBean implements Serializable {
@@ -94,13 +92,17 @@ public class SendMessageBean implements Serializable {
         Long userId = Helper.getLiferayUser().getUserId();
         Long mutex = MessageLimitManager.getMutex(userId);
         synchronized (mutex) {
-            if (!MessageLimitManager.canSendMessages(recipientIds.size())) {
+			// Send a validation problem mail to patrick if the daily limit is reached for a user
+            if (!MessageLimitManager.canSendMessages(recipientIds.size(), Helper.getLiferayUser())) {
                 System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+userId);
 
-                recipientIds.clear();
-                recipientIds.add(1011659L); //patrick
-                MessageUtil.sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, userId,
-                        Helper.getLiferayUser().getUserId(), recipientIds, null);
+				// Only send the email once in 24h!
+				if (MessageLimitManager.shouldSendValidationErrorMessage(Helper.getLiferayUser())) {
+					recipientIds.clear();
+					recipientIds.add(1011659L); //patrick
+					MessageUtil.sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, userId,
+							Helper.getLiferayUser().getUserId(), recipientIds, null);
+				}
 
                 return;
             }

@@ -214,12 +214,16 @@ public class ProposalShareJSONController {
 			User user = UserLocalServiceUtil.getUserById(userId);
 			synchronized (mutex) {
 				if (!MessageLimitManager.canSendMessages(recipientIds.size(), user)) {
-					System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. " + userId);
+//					System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. " + userId);
+//
+//					// Only send the email once in 24h!
+//					if (MessageLimitManager.shouldSendValidationErrorMessage(user)) {
+//						recipientIds.clear();
+//						recipientIds.add(1011659L); //patrick
+//						MessageUtil.sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + body, userId,
+//								userId, recipientIds, null);
+//					}
 
-					recipientIds.clear();
-					recipientIds.add(1011659L); //patrick
-					MessageUtil.sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + body, userId,
-							userId, recipientIds, null);
 					sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, please contact the administrators.", response);
 					return;
 				}

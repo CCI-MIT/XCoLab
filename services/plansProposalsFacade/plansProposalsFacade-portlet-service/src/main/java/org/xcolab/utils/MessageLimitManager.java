@@ -20,6 +20,7 @@ import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,12 @@ public class MessageLimitManager {
 
     private static Map<Long, Long> mutexes = new HashMap<>();
 
-	private static final int MESSAGES_DAILY_LIMIT = 5;
+	private static final int MESSAGES_DAILY_LIMIT = 10;
+
+	/**
+	 * Keeps track of the last validation error mail that has been send to a specific user
+	 */
+	private static Map<User, Date> lastValidationDateMap = new HashMap<>();
 
     /**
      * Method responsible for checking if user is allowed to send given number
@@ -118,5 +124,27 @@ public class MessageLimitManager {
         }
         return mutex;
     }
+
+	public static boolean shouldSendValidationErrorMessage(User user) {
+		if (user == null) {
+			return false;
+		}
+		Date lastEmailSendDate = lastValidationDateMap.get(user);
+
+		Date now = new Date();
+		if (lastEmailSendDate != null) {
+			// Send mail if the last email send was over 24h ago
+			if ((now.getTime() - lastEmailSendDate.getTime()) > 24 * 3600 * 1000) {
+				lastValidationDateMap.put(user, now);
+				return true;
+			}
+			else {
+				return false;
+			}
+		} else {
+			lastValidationDateMap.put(user, now);
+			return true;
+		}
+	}
 
 }

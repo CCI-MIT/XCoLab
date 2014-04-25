@@ -95,6 +95,7 @@
                             $('#send-error').html(data.message);
                         } else {
                             $('#send-error').html("");
+                            $("#recipient-input").val("");
                             $('#messaging-overlay').hide();
                         }
                     }
