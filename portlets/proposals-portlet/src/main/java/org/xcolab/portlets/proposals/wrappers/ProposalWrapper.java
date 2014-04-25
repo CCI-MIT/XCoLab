@@ -282,6 +282,10 @@ public class ProposalWrapper {
         return proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
 
+    public String getProposalURL() {
+        return String.format("/web/guest/plans/-/plans/contestId/%s/planId/%s", contest.getContestPK(), proposal.getProposalId());
+    }
+
 
     public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
         if (sections == null) {

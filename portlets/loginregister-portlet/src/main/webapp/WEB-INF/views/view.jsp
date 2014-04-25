@@ -85,7 +85,9 @@
 									width="150" height="150" />
 							</c:otherwise>
 						</c:choose>
-                        <div class="clearfix"></div>
+                        <div class="clearfix">
+                            <!--  -->
+                        </div>
 						<div id="uploadImageContainer"><!--  --></div>
     </div>
     </td>

@@ -7,7 +7,6 @@ import org.xcolab.enums.MemberRole;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,11 @@ import java.util.Map;
  * Created by Mente on 11/04/14.
  */
 public class SendMessagePermissionChecker {
-    private Map<MemberRole, List<MemberRole>> blacklistMap;
+    /**
+     * This map holds all the roles that are not accessible from a given <i>MemberRole</i> object. Entries in this map
+     * under a <i>MemberRole</i> key indicate that the value-list contains the roles a user cannot send a message to
+     */
+    private Map<MemberRole, List<MemberRole>> blacklistedRolesMap;
     private User originator;
 
     public SendMessagePermissionChecker(User origin) {
@@ -26,8 +29,8 @@ public class SendMessagePermissionChecker {
         memberBlacklist.add(MemberRole.ADVISOR);
         memberBlacklist.add(MemberRole.JUDGES);
 
-        blacklistMap = new EnumMap<>(MemberRole.class);
-        blacklistMap.put(MemberRole.MEMBER, memberBlacklist);
+        blacklistedRolesMap = new EnumMap<>(MemberRole.class);
+        blacklistedRolesMap.put(MemberRole.MEMBER, memberBlacklist);
     }
 
     /**
@@ -41,7 +44,7 @@ public class SendMessagePermissionChecker {
 
         for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.getMember(role.getName());
-            List<MemberRole> blacklist = blacklistMap.get(currentRole);
+            List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist == null || !blacklist.contains(destinationRole)) {
                 return true;
             }
@@ -61,7 +64,7 @@ public class SendMessagePermissionChecker {
         Map<MemberRole, Integer> blacklistCountMap = new EnumMap<>(MemberRole.class);
         for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.getMember(role.getName());
-            List<MemberRole> blacklist = blacklistMap.get(currentRole);
+            List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist != null) {
                 for (MemberRole mr : blacklist) {
                     if (blacklistCountMap.get(mr) == null) {

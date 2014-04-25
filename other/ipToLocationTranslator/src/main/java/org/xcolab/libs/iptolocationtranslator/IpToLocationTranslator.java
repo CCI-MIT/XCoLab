@@ -19,7 +19,8 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class IpToLocationTranslator {
 	
-	
+	private static Map<Integer, Location> locations;
+	private static ArrayList<IpBlock> blocks;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -32,7 +33,7 @@ public class IpToLocationTranslator {
 				CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER, 2);
 		
 		String[] line = null;
-		ArrayList<IpBlock> blocks = new ArrayList<IpBlock>();
+		blocks = new ArrayList<IpBlock>();
 		while ((line = csvBlocksReader.readNext()) != null) {
 			//System.out.println(Arrays.toString(line));
 			blocks.add(new IpBlock(Long.parseLong(line[0]), Long.parseLong(line[1]), Integer.parseInt(line[2])));
@@ -43,7 +44,7 @@ public class IpToLocationTranslator {
 		CSVReader csvLocationsReader = new CSVReader(bufferedLocationsReader, 
 				CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER, 2);
 		
-		Map<Integer, Location> locations = new HashMap<Integer, Location>();
+		locations = new HashMap<Integer, Location>();
 		while ((line = csvLocationsReader.readNext()) != null) {
 			//System.out.println(Arrays.toString(line));
 			//blocks.add(new IpBlock(Long.parseLong(line[0]), Long.parseLong(line[1]), Integer.parseInt(line[2])));
@@ -55,13 +56,26 @@ public class IpToLocationTranslator {
 		
 		Collections.sort(blocks);
 		
+		//89.67.113.30");
 		
-		long ipToLookFor = convertStringIpToLong("18.4.70.53");//89.67.113.30");
+		String[] ips= {"146.6.35.32", "202.46.54.125", "64.251.133.45", "87.68.234.235", "79.113.139.186", 
+				"186.77.136.232", "147.86.175.49", "24.12.55.177", "50.177.153.137", "50.108.159.87", 
+				"130.160.156.76", "66.249.65.155", "86.180.254.57", "131.253.24.85", "36.250.86.52", 
+				"146.185.232.225"};
 		
+		for (String ip: ips) {
+			System.out.println(ip + " - " + getLocationForIp(ip));
+		}
+	
+	
+	}
+	
+	
+		
+	private static Location getLocationForIp(String ip) {
+		long ipToLookFor = convertStringIpToLong(ip);
 		int val = Collections.binarySearch(blocks, new IpBlock(ipToLookFor, ipToLookFor, 0));
 		
-		
-		System.out.println("Looking for ip: " + ipToLookFor);
 		IpBlock matchingBlock = null;
 		if (val >= 0) {
 			matchingBlock = blocks.get(val);
@@ -89,24 +103,13 @@ public class IpToLocationTranslator {
 				}
 			}
 		}
-		System.out.println("matching block: " + String.valueOf(matchingBlock) + "\tcandidate: " + val + "\tsize: " + blocks.size());
+		
 		Location location = null;
 		if (matchingBlock != null) {
 			location = locations.get(matchingBlock.locId);
 		}
 		
-		if (location != null) {
-			System.out.println(location);
-		}
-		else {
-			System.out.println("not found");
-		}
-		
-		
-		
-		
-		
-		
+		return location;
 	}
 	
 	private static long convertStringIpToLong(String ipAddress) {

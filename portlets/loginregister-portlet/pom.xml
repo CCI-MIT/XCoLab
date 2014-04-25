@@ -230,6 +230,11 @@
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
 
     </dependencies>
 	<repositories>

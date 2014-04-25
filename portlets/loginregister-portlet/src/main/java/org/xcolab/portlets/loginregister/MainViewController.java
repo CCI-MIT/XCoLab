@@ -243,7 +243,6 @@ public class MainViewController {
 
         String screenName = request.getParameter("screenName");
         String bio = request.getParameter("bio");
-        String redirect = request.getParameter("redirect");
         User loggedInUser = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
@@ -251,7 +250,7 @@ public class MainViewController {
                 UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
                 json.getJSONObject("screenName").put("success", false);
             } catch (NoSuchUserException e) {
-                if (screenName.matches("[a-zA-Z0-9]+$")) {
+                if (screenName.matches("[a-zA-Z0-9]+$") && screenName.length() > 0) {
                     loggedInUser.setScreenName(screenName);
                     json.getJSONObject("screenName").put("success", true);
                 } else {
@@ -398,16 +397,15 @@ public class MainViewController {
 
         request.getPortletSession().setAttribute("collab_user_has_registered", true);
         PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
-        if (redirect != null) {
-            // Add request variable for after-registration popover
-            if (redirect.contains("?")) {
-                redirect += "&postRegistration=true";
-            } else {
-                redirect += "?postRegistration=true";
-            }
-            response.sendRedirect(redirect);
-        } else {
-            response.sendRedirect(themeDisplay.getURLHome() + "?postRegistration=true");
+        if (redirect == null) {
+            redirect = themeDisplay.getURLHome();
         }
+
+        if (postRegistration) {
+            // Add request variable for after-registration popover
+            redirect = HttpUtil.addParameter(redirect, "postRegistration", "true");
+        }
+
+        response.sendRedirect(redirect);
     }
 }
