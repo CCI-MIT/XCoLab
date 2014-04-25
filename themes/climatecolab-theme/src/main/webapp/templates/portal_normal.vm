@@ -288,7 +288,7 @@ $theme.include($top_messages_include)
 			pageTracker._trackEvent('$event.category', '$event.action', '$event.label', $event.value);
 		#end
 	</script>
-	// remove attribute as events should be reported only once
+	<!-- remove attribute as events should be reported only once -->
 	$request.getSession().removeAttribute('xcolab_analytics_events');
 #end
 

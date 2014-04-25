@@ -153,9 +153,11 @@ public class UserProfileBean implements Serializable {
     }
     
     public void updateUser(ActionEvent e) throws Exception {
-        currentUser.persistChanges();
-        editing = !editing;
-        pageType = PageType.PROFILE_DETAILS;
+		if (currentUser.getAbout().length() <= 2000) {
+			currentUser.persistChanges();
+			editing = !editing;
+			pageType = PageType.PROFILE_DETAILS;
+		}
     }
     
     public void setMessageText(String message) {
