@@ -46,5 +46,9 @@ public class OntologySpaceWrapper {
 		return rootTerms;
 	}
 	
+	public int getOrder() {
+		return wrapped.getOrder();
+	}
+	
 
 }

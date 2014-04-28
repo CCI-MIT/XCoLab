@@ -269,7 +269,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar a {font-weight:normal;}
 
 /* list page */
-.blueheaderbar .contest {float:left; width:377px; height:37px; padding-left:9px;}
+.blueheaderbar .contest {float:left; width:357px; height:37px; padding-left:9px;}
 .blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .proposal {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
@@ -280,12 +280,14 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .what {float:left; width:168px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .what {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
 .blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .where {float:left;  width:160px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .where {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
 .blueheaderbar .where a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .who {float:left; width:155px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .who {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
 .blueheaderbar .who a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
+.blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
+.blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
@@ -603,7 +605,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .fixed-position-inner-relative {overflow: auto;}
 .fixed-position-inner-fixed {position: absolute;}
 
-.contest-detail .what, .contest-detail .where, .contest-detail .who {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:10px;}
+.contest-detail .what, .contest-detail .where, .contest-detail .who, .contest-detail .how {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:10px; background: none;width: auto;}
 .contest-detail .what {background:url(../images/icon-list-what.png) no-repeat; padding-left:30px;}
 .contest-detail .where {background:url(../images/icon-list-where.png) no-repeat; padding-left:33px;}
 .contest-detail .who {background:url(../images/icon-list-who.png) no-repeat; padding-left:25px;}
@@ -1063,11 +1065,10 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .where {color:#66af45;}
 .who {color:#539bd4;}
 .how {color:#e46970;}
-
+.detail .how, .detail .what, .detail .where, .detail .who {width: auto; background: none; display: inline-block; margin-right: 5px; padding: 0;}
 .contest-outline-left li ul {
 	display: none;
 }
-
 /** just to hide outline as it's in beta stage **/
 .headline .outline {
 	display: inline;

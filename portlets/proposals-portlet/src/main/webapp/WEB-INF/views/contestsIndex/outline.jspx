@@ -114,7 +114,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var ontologySpaces = {};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
-			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}"};
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}};
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}">
@@ -336,8 +336,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				contestsListHtml.push("</p>");
 				
 				var focusArea = focusAreas[contest.focusAreaId];
+				var terms =[];
 				for (var j = 0; j < focusArea.terms.length; j++) {
-					var term = ontologyTerms[focusArea.terms[j]];
+					terms.push(ontologyTerms[focusArea.terms[j]]);
+				}
+				terms.sort(function(t1, t2) {
+					return t1.space.order - t2.space.order;
+				});
+				for (var j = 0; j < terms.length; j++) {
+					var term = terms[j];
 					contestsListHtml.push("<p><span class='");
 					contestsListHtml.push(term.space.name.toLowerCase());
 					contestsListHtml.push("'>");

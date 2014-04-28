@@ -93,6 +93,17 @@
             <div class="tooltip">click to sort by who<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
         </div>
+        <div class="how">
+        	<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'HOW' ? not sortFilterPage.sortAscending : true }" />
+        	<portlet:renderURL var="sortURLHow">
+        		<portlet:param name="sortColumn" value="HOW" />
+				<portlet:param name="showActiveContests" value="${showActiveContests }" />
+        		<portlet:param name="sortAscending" value="${sortAscending}" />
+			</portlet:renderURL>
+        	<a href="${sortURLHow }"> How</a>
+            <div class="tooltip">click to sort by how<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
+            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="HOW" />
+        </div>
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <div class="proposal">
                 <a href="#" style="background: none; margin-top: 9px;">Judge</a>

@@ -1,11 +1,15 @@
+
+ALTER TABLE  `xcolab_OntologySpace` ADD  `order_` INT NOT NULL DEFAULT  '0';
+
 UPDATE Counter set currentId = currentId + 10000 where name LIKE '%Ontology%';
 UPDATE Counter set currentId = currentId + 10000 where name LIKE '%FocusArea%';
 
 delete from xcolab_OntologySpace where name LIKE 'How';
 insert into xcolab_OntologySpace VALUES (105, 'How', 'Mechanisms by which actions will be put into effect.', 4);
-update xcolab_OntologySpace set order_ = 1 where id_ = 103;
-update xcolab_OntologySpace set order_ = 2 where id_ = 104;
-update xcolab_OntologySpace set order_ = 3 where id_ = 102;
+
+update xcolab_OntologySpace set order_ = 1, name = 'Actions to address climate change.' where id_ = 103;
+update xcolab_OntologySpace set order_ = 2, name = 'Geographic scope of actions.' where id_ = 104;
+update xcolab_OntologySpace set order_ = 3, name = 'Organizations/individuals who will take action.' where id_ = 102;
 
 delete from xcolab_OntologyTerm where ontologySpaceId = 105;
 insert into xcolab_OntologyTerm VALUES 
@@ -61,3 +65,5 @@ insert into xcolab_FocusAreaOntologyTerm (focusAreaId, ontologyTermId, order_) V
 (1300202, 1300601, 5),
 (1300203, 1300603, 5),
 (1300301, 1300601, 5);
+
+delete from xcolab_FocusAreaOntologyTerm where focusAreaId not in (SELECT id_ from xcolab_FocusArea);
