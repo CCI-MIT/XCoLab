@@ -207,4 +207,23 @@
     </c:if>
                 
     </div>
+    <script type="text/javascript">
+        // Addthis: Alert a message when the user shares somewhere
+        function shareEventHandler(evt) {
+            if (evt.type == 'addthis.menu.share') {
+                var service = evt.data.service;
+
+                try {
+                    pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
+                    console.log("track share proposal, service " + service);
+                }
+                catch (error) {
+                    console.log("error: " + error);
+                }
+            }
+        }
+
+        // Listen for the share event
+        addthis.addEventListener('addthis.menu.share', shareEventHandler);
+    </script>
 </jsp:root>

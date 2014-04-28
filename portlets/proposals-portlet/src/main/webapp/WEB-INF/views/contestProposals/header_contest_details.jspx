@@ -159,4 +159,18 @@
             </table>
         </div>
     </div>
+    <script type="text/javascript">
+        // Addthis: Alert a message when the user shares somewhere
+        function shareEventHandler(evt) {
+            if (evt.type == 'addthis.menu.share') {
+                var service = evt.data.service;
+
+                pageTracker._trackEvent('User', 'ShareContestViaSocialMedia', service, 1);
+                console.log("track share contest, service " + service);
+            }
+        }
+
+        // Listen for the share event
+        addthis.addEventListener('addthis.menu.share', shareEventHandler);
+    </script>
 </jsp:root>
