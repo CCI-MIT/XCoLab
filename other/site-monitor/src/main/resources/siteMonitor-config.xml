@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMonitorConfig>
+	<checkers>
+		<checker>
+			<name>errorNotificationChecker</name>
+			<class>org.xcolab.utils.sitemonitor.checkers.RegexMatchingChecker</class>
+			<configuration>alert\-error</configuration>
+			<message>Error notification found on a page</message>
+		</checker>
+		<checker>
+			<name>noErrorNotificationChecker</name>
+			<class>org.xcolab.utils.sitemonitor.checkers.InverseCheckResultChecker</class>
+			<configuration>errorNotificationChecker</configuration>
+			<message>Error notification found on a page</message>
+		</checker>
+		<checker>
+			<name>unavailablePortletChecker</name>
+			<class>org.xcolab.utils.sitemonitor.checkers.RegexMatchingChecker</class>
+			<configuration>.*is\s*temporarily\s*unavailable.*</configuration>
+			<message>Unavailable portlet found</message>
+		</checker>
+		<checker>
+			<name>noUnavailablePortletsChecker</name>
+			<class>org.xcolab.utils.sitemonitor.checkers.InverseCheckResultChecker</class>
+			<configuration>unavailablePortletChecker</configuration>
+			<message>Unavailable portlet found on a page</message>
+		</checker>
+	</checkers>
+	
+	<checkerMappings>
+		<checkerMapping checker="noUnavailablePortletsChecker">
+			<url>**</url>
+		</checkerMapping>
+		<checkerMapping checker="noErrorNotificationChecker">
+			<url>**</url>
+		</checkerMapping>
+	</checkerMappings>
+	
+	<crawlerConfig>
+		<crawlConfig>
+			<!-- traverse proposals portlet -->
+			<url>http://localhost:9082</url>
+			<recursionLevel>5</recursionLevel>
+			<linkPatterns>
+				<linkPattern>/web/guest/plans/**</linkPattern>
+			</linkPatterns>
+		</crawlConfig>
+	
+	</crawlerConfig>
+	
+	<emailNotification>
+		<to>janusz.parfieniuk@gmail.com</to>
+		<to>exter@o2.pl</to>
+		<from>exter@o2.pl</from>
+		<smtphost>poczta.o2.pl</smtphost>
+		<smtpport>465</smtpport>
+		<smtpusetsl>true</smtpusetsl>
+		<smtpuser>exter@o2.pl</smtpuser>
+		<smtppassword>sdihajno</smtppassword>
+		<subject>Site Monitor has detected errors in climatecolab.org</subject>
+	</emailNotification>
+
+</siteMonitorConfig>
