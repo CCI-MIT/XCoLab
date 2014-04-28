@@ -156,7 +156,7 @@
 				<tr>
 					<th>Short Bio</th>
 					<td colspan="3"><form:textarea
-							cssClass="ckeditor shortBioContent" path="shortBio" />
+							cssClass="ckeditor_placeholder shortBioContent" path="shortBio" />
                         <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
                             <span class="limit_characterCount"><!--  --></span>/&#160;
                             <span class="limit_charactersMax">2000</span> characters
@@ -275,17 +275,17 @@
             }
 
             function initializeCkeditor() {
-                jQuery('.ckeditor').val(data);
+                jQuery('ckeditor_placeholder').val(data);
                 for (var key in CKEDITOR.instances) {
                     CKEDITOR.instances[key].destroy(true);
                 }
 
-
                 var config = { extraPlugins: 'onchange'};
 
-                $('.ckeditor').each(function (idx, val) {
+                $('.ckeditor_placeholder').each(function (idx, val) {
                     var textId = $(this).attr('id');
-                    CKEDITOR.replace(textId, config);
+                    var editor = CKEDITOR.replace(textId, config);
+                    editor.setData($(this).val());
                 });
 
                 // Editor change callback
