@@ -79,20 +79,24 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         	<c:if test="${not showAllContests }">
 				<c:choose>
 					<c:when test="${showActiveContests }">
-						<span class="otherContestsCount">If you enable 
-						<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+						<span class="otherContestsCount">If you select
+							<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
 					
-						<span class='count'><!--  --></span> more 
-						<span class='plural'>contests</span>
-						<span class='singular'>contest</span> will show up</span>
+							<span class='count'><!--  --></span>
+							completed 
+							<span class='plural'>contests</span>
+							<span class='singular'>contest</span>
+							will be displayed 
+						</span>
 					</c:when>
 					<c:otherwise>
-						<span class="otherContestsCount">If you enable 
-						<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
-				
-						<span class='count'><!--  --></span> more 
-						<span class='plural'>contests</span>
-						<span class='singular'>contest</span> will show up</span>
+						<span class="otherContestsCount">If you select
+							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
+							<span class='count'><!--  --></span> currently open 
+							<span class='plural'>contests</span>
+							<span class='singular'>contest</span>
+							will be displayed
+						</span>
 					</c:otherwise>
 				</c:choose>
 			</c:if>
@@ -314,9 +318,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 				duplicateContests[contest.name] ++;
 			}
-			contestsListHtml.push("<div class='otherContestsInfo'>");
-			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
-			contestsListHtml.push("</div>");
 			for (var i =0; i < currentTerm.contests.length; i++) {
 				var contest = currentTerm.contests[i];
 				contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
@@ -347,6 +348,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 				contestsListHtml.push("</div></div>");
 			}
+			contestsListHtml.push("<div class='otherContestsInfo'>");
+			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+			contestsListHtml.push("</div>");
 			
 			
 			jQuery(".otherContestsInfoContainer").hide();
