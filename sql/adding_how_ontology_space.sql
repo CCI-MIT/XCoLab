@@ -7,9 +7,9 @@ UPDATE Counter set currentId = currentId + 10000 where name LIKE '%FocusArea%';
 delete from xcolab_OntologySpace where name LIKE 'How';
 insert into xcolab_OntologySpace VALUES (105, 'How', 'Mechanisms by which actions will be put into effect.', 4);
 
-update xcolab_OntologySpace set order_ = 1, name = 'Actions to address climate change.' where id_ = 103;
-update xcolab_OntologySpace set order_ = 2, name = 'Geographic scope of actions.' where id_ = 104;
-update xcolab_OntologySpace set order_ = 3, name = 'Organizations/individuals who will take action.' where id_ = 102;
+update xcolab_OntologySpace set order_ = 1, name = 'What', description ='Actions to address climate change.' where id_ = 103;
+update xcolab_OntologySpace set order_ = 2, name = 'Where', description = 'Geographic scope of actions.' where id_ = 104;
+update xcolab_OntologySpace set order_ = 3, name = 'Who', description = 'Organizations/individuals who will take action.' where id_ = 102;
 
 delete from xcolab_OntologyTerm where ontologySpaceId = 105;
 insert into xcolab_OntologyTerm VALUES 
