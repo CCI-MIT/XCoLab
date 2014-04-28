@@ -1,4 +1,4 @@
-package org.xcolab.hooks.climatecolab.utils;
+package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;

@@ -7,10 +7,13 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.utils.GlobalMessagesUtil;
@@ -35,12 +38,12 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
 @Controller
-@RequestMapping(value="view", params="isForgotpass=true")
+@RequestMapping(value="view")
 public class ForgotPasswordController {
 
     private long DEFAULT_COMPANY_ID = 10112L;
     
-    @ActionMapping
+    @ActionMapping(params={"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
@@ -139,5 +142,16 @@ public class ForgotPasswordController {
         
         response.sendRedirect(redirect);
     }
+
+	@RequestMapping(params="isError=true")
+	public String register(PortletRequest request, PortletResponse response,
+						   Model model) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		model.addAttribute("message", "Your password reset ticket has expired. Please try to reset your password again.");
+		model.addAttribute("redirect_url", themeDisplay.getPortalURL());
+
+		return "password_reset_error";
+	}
 
 }

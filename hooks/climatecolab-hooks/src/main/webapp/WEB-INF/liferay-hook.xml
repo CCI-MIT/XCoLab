@@ -89,10 +89,19 @@
 		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
 
+    <!-- Structs action for handling the SendActivitySubscriptionNotifications to subscribers -->
     <struts-action>
         <struts-action-path>/portal/schedulerSendEmailNotifications</struts-action-path>
         <struts-action-impl>
-            org.xcolab.hooks.climatecolab.utils.SchedulerDispatchStrutsAction
+            org.xcolab.hooks.climatecolab.strutsaction.SchedulerDispatchStrutsAction
+        </struts-action-impl>
+    </struts-action>
+
+    <!-- Override password forget action -->
+    <struts-action>
+        <struts-action-path>/portal/update_password</struts-action-path>
+        <struts-action-impl>
+            org.xcolab.hooks.climatecolab.strutsaction.UpdatePasswordStrutsAction
         </struts-action-impl>
     </struts-action>
 	

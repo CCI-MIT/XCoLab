@@ -106,9 +106,9 @@ public class MainViewController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping
-	public String register(PortletRequest request, PortletResponse response,
-			Model model) {
+		@RequestMapping
+		public String register(PortletRequest request, PortletResponse response,
+				Model model) {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
