@@ -21,6 +21,13 @@ public class SendMessagePermissionChecker {
     private Map<MemberRole, List<MemberRole>> blacklistedRolesMap;
     private User originator;
 
+	/**
+	 * IMPORTANT
+	 * This flag indicates whether the permission checker is active or not.
+	 * Set this flag to true when the feature should be enabled
+	 */
+	private static final boolean ACTIVATED = false;
+
     public SendMessagePermissionChecker(User origin) {
         this.originator = origin;
 
@@ -40,6 +47,9 @@ public class SendMessagePermissionChecker {
      * @throws SystemException
      */
     public boolean canSendToUser(User user) throws SystemException {
+		if (!ACTIVATED) {
+			return true;
+		}
         MemberRole destinationRole = getHighestUserRole(user);
 
         for (Role role : originator.getRoles()) {
@@ -59,6 +69,10 @@ public class SendMessagePermissionChecker {
      * @throws SystemException
      */
     public List<MemberRole> getBlacklistedMemberRoles() throws SystemException {
+
+		if (!ACTIVATED) {
+			return new ArrayList<>();
+		}
 
         // Count the number of blacklist entries for each of the users roles
         Map<MemberRole, Integer> blacklistCountMap = new EnumMap<>(MemberRole.class);
