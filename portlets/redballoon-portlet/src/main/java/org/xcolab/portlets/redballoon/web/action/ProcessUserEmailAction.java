@@ -34,8 +34,8 @@ import com.liferay.util.mail.MailEngineException;
 @RequestMapping("view")
 @Controller
 public class ProcessUserEmailAction {
-
-    private final static String BALLOON_LINK_PATTERN = "/balloon";
+	
+	private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize";
 
 	private final static String FROM_ADDRESS = "no-reply@climatecolab.org";	
 
@@ -69,7 +69,7 @@ public class ProcessUserEmailAction {
 				
 			BalloonLinkLocalServiceUtil.addBalloonLink(link);
 			sendNotificationEmail(request, but, link);
-			response.sendRedirect("/balloon/-/balloon/" + link.getUuid());
+			response.sendRedirect("/socialnetworkprize/-/link/" + link.getUuid());
 			
 		}
 	}
