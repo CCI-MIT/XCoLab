@@ -50,6 +50,13 @@ import java.rmi.RemoteException;
 public class ContestServiceSoap {
     private static Log _log = LogFactoryUtil.getLog(ContestServiceSoap.class);
 
+    /**
+    * Returns a list of open contest for regular users and returns all contests for staff users
+    *
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     public static com.ext.portlet.model.ContestSoap[] getContestsOpenForProposals()
         throws RemoteException {
         try {

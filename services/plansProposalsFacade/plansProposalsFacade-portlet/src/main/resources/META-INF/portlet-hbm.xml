@@ -549,6 +549,7 @@
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
 	</class>
 	<class name="com.ext.portlet.model.impl.OntologyTermImpl" table="xcolab_OntologyTerm">
 		<cache usage="read-write" />

@@ -656,6 +656,9 @@
 			</id>
 			<basic name="name" />
 			<basic name="description" />
+			<basic name="order">
+				<column name="ORDER_" />
+			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

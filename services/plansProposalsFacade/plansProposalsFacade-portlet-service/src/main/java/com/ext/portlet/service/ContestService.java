@@ -52,6 +52,13 @@ public interface ContestService extends BaseService, InvokableService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    /**
+    * Returns a list of open contest for regular users and returns all contests for staff users
+    *
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
         throws com.liferay.portal.kernel.exception.PortalException,

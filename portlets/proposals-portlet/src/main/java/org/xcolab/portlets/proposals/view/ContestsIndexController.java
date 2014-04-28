@@ -130,7 +130,7 @@ public class ContestsIndexController extends BaseProposalsController {
             for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
             	otherContests.add(new ContestWrapper(contest));
             }
-        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	/*List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
         	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {
 
 				@Override
@@ -139,10 +139,10 @@ public class ContestsIndexController extends BaseProposalsController {
 					return o1.getName().compareTo(o2.getName());
 				}
         		
-        	});
+        	});*/
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
-        	model.addAttribute("ontologySpaces", sortedSpaces);
+        	model.addAttribute("ontologySpaces", ontologySpaces.values());
         	model.addAttribute("otherContests", otherContests);
         	
         }

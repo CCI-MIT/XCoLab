@@ -388,7 +388,8 @@ create table xcolab_ModelPosition (
 create table xcolab_OntologySpace (
 	id_ LONG not null primary key,
 	name VARCHAR(256) null,
-	description TEXT null
+	description TEXT null,
+	order_ INTEGER
 );
 
 create table xcolab_OntologyTerm (
