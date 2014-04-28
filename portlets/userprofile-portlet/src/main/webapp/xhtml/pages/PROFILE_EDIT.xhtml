@@ -175,17 +175,14 @@
                                 CKEDITOR.instances[key].destroy(true);
                             }
 
-
-                            var config = { extraPlugins: 'onchange'};
-
                             $('.ckeditor-placeholder').each(function (idx, val) {
                                 var textId = $(this).attr('id');
-                                CKEDITOR.replace(textId, config);
+                                CKEDITOR.replace(textId);
                             });
 
                             // Editor change callback
                             for (var key in CKEDITOR.instances) {
-                                CKEDITOR.instances[key].on('change', function(ev) {
+                                CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
                                     var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
                                     validateCharlength( $('[id="'+key+'"]'), len);
                                 });
@@ -222,11 +219,11 @@
 
                         $(document).ready(function() {
                             // Editor change callback
-                            for (var key in CKEDITOR.instances) {
-                                // Set initial text length
-                                var len = jQuery.trim(strip(CKEDITOR.instances[key].getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
-                                validateCharlength( $('[id="'+key+'"]'), len);
-                            }
+                            $('.ckeditor-placeholder').each(function() {
+                                // Set initial length
+                                var len = jQuery.trim(strip($(this).val()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                                validateCharlength( $(this), len);
+                            });
                         });
 
 

@@ -17,6 +17,7 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.util.mail.MailEngineException;
+import org.jsoup.Jsoup;
 import org.xcolab.utils.SendMessagePermissionChecker;
 
 import javax.faces.event.ActionEvent;
@@ -153,7 +154,7 @@ public class UserProfileBean implements Serializable {
     }
     
     public void updateUser(ActionEvent e) throws Exception {
-		if (currentUser.getAbout().length() <= 2000) {
+		if (Jsoup.parse(currentUser.getAbout()).text().length() <= 2000) {
 			currentUser.persistChanges();
 			editing = !editing;
 			pageType = PageType.PROFILE_DETAILS;

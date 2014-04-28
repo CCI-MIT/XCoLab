@@ -290,7 +290,7 @@
 
                 // Editor change callback
                 for (var key in CKEDITOR.instances) {
-                    CKEDITOR.instances[key].on('change', function(ev) {
+                    CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
                         var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
                         validateCharlength( $('[id="'+key+'"]'), len);
                     });
