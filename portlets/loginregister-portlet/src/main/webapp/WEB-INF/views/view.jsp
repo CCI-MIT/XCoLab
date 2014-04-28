@@ -157,9 +157,14 @@
 					<th>Short Bio</th>
 					<td colspan="3"><form:textarea
 							cssClass="ckeditor shortBioContent" path="shortBio" />
+                        <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
+                            <span class="limit_characterCount"><!--  --></span>/&#160;
+                            <span class="limit_charactersMax">2000</span> characters
+                        </div>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="shortBio" />
-						</div></td>
+						</div>
+                    </td>
 				</tr>
 
                 <c:if test="${ createUserBean.captchaNeeded }">
@@ -252,9 +257,68 @@
 			jQuery(function() {
 				updateUploadBtnOffset();
 				$(window).resize(updateUploadBtnOffset);
-				
+				initializeCkeditor();
+
+                for (var key in CKEDITOR.instances) {
+                    // Set initial text length
+                    var len = jQuery.trim(strip(CKEDITOR.instances[key].getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                    validateCharlength( $('[id="'+key+'"]'), len);
+                }
 			});
-			
+
+            var data = $('.ckeditor-placeholder').val();
+            function updateTextarea() {
+                for (var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+                data = jQuery('.ckeditor-placeholder').val();
+            }
+
+            function initializeCkeditor() {
+                jQuery('.ckeditor').val(data);
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].destroy(true);
+                }
+
+
+                var config = { extraPlugins: 'onchange'};
+
+                $('.ckeditor').each(function (idx, val) {
+                    var textId = $(this).attr('id');
+                    CKEDITOR.replace(textId, config);
+                });
+
+                // Editor change callback
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].on('change', function(ev) {
+                        var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                        validateCharlength( $('[id="'+key+'"]'), len);
+                    });
+                }
+            }
+
+            function strip(html)
+            {
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = html;
+                return tmp.textContent || tmp.innerText || "";
+            }
+
+            function validateCharlength(elem, len) {
+                var charCountContainer = elem.parent().find('.inputLimitContainer');
+
+                var elem = charCountContainer.children('.limit_characterCount');
+                var max = parseInt(charCountContainer.children('.limit_charactersMax').text());
+                if (elem) {
+                    if (len > max) {
+                        charCountContainer.addClass('overflow');
+                    }
+                    else {
+                        charCountContainer.removeClass('overflow');
+                    }
+                    elem.text(""+len);
+                }
+            }
 			
 		</script>
 

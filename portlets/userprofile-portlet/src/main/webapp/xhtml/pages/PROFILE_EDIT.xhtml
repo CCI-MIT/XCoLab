@@ -159,7 +159,7 @@
 
                 <div class="profile_about-head">About me</div>
                 <ice:panelGroup styleClass="userProfileAbout" >
-                    <ice:inputTextarea rows="6" cols="30" name="bioText" styleClass="profile_about ckeditor-placeholder" value="#{currentUser.about}" onblur="return false;" />
+                    <ice:inputTextarea rows="6" cols="30" styleClass="profile_about ckeditor-placeholder" value="#{currentUser.about}" onblur="return false;" />
                     <script>
                         var data = $('.ckeditor-placeholder').val();
                         function updateTextarea() {
@@ -177,24 +177,30 @@
 
 
                             var config = { extraPlugins: 'onchange'};
-                            var textId = $('.ckeditor-placeholder').attr('id');
-                            CKEDITOR.replace(textId, config);
+
+                            $('.ckeditor-placeholder').each(function (idx, val) {
+                                var textId = $(this).attr('id');
+                                CKEDITOR.replace(textId, config);
+                            });
 
                             // Editor change callback
                             for (var key in CKEDITOR.instances) {
                                 CKEDITOR.instances[key].on('change', function(ev) {
-                                    var len = jQuery.trim(ev.editor.getData().replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
-                                    validateCharlength('.ckeditor-placeholder', len);
+                                    var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                                    validateCharlength( $('[id="'+key+'"]'), len);
                                 });
-
-                                // Set initial text length
-                                var len = jQuery.trim(CKEDITOR.instances[key].getData().replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
-                                validateCharlength('.ckeditor-placeholder', len);
                             }
                         }
 
+                        function strip(html)
+                        {
+                            var tmp = document.createElement("DIV");
+                            tmp.innerHTML = html;
+                            return tmp.textContent || tmp.innerText || "";
+                        }
+
                         function validateCharlength(elem, len) {
-                            var charCountContainer = $(elem).parent().find('.inputLimitContainer');
+                            var charCountContainer = elem.parent().find('.inputLimitContainer');
 
                             var elem = charCountContainer.children('.limit_characterCount');
                             var max = parseInt(charCountContainer.children('.limit_charactersMax').text());
@@ -213,6 +219,15 @@
                         ice.onAfterUpdate(initializeCkeditor );
 
                         initializeCkeditor();
+
+                        $(document).ready(function() {
+                            // Editor change callback
+                            for (var key in CKEDITOR.instances) {
+                                // Set initial text length
+                                var len = jQuery.trim(strip(CKEDITOR.instances[key].getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                                validateCharlength( $('[id="'+key+'"]'), len);
+                            }
+                        });
 
 
                     </script>

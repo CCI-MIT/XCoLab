@@ -899,6 +899,12 @@ display: inline;
 	width: 224px;
 }
 
+.inputLimitContainer {
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: right;
+}
+
 .inputLimitContainer.overflow {
 	color: #b00;
 	font-weight: bold;

@@ -118,13 +118,6 @@ div.sponsorLogo img {
     position: relative;
 }
 
-
-.inputLimitContainer {
-	margin-top: 5px;
-	font-size: 12px;
-	text-align: right;
-}
-
 #uploadWidget {
     background: url(../img/image_upload-button.png) no-repeat;
     width: 219px;
