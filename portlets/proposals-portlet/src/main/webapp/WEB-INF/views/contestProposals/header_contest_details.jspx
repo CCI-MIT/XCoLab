@@ -166,7 +166,6 @@
                 var service = evt.data.service;
 
                 pageTracker._trackEvent('User', 'ShareContestViaSocialMedia', service, 1);
-                console.log("track share contest, service " + service);
             }
         }
 

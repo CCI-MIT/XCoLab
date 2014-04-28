@@ -215,10 +215,8 @@
 
                 try {
                     pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
-                    console.log("track share proposal, service " + service);
                 }
                 catch (error) {
-                    console.log("error: " + error);
                 }
             }
         }
