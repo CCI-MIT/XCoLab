@@ -126,6 +126,7 @@ public class ProposalShareJSONController {
         try {
             DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
             query.add(RestrictionsFactoryUtil.ilike("screenName", queryString + "%"));
+			query.setLimit(0, 10);
             List<User> recipients = UserLocalServiceUtil.dynamicQuery(query);
 
             JSONArray result = JSONFactoryUtil.createJSONArray();

@@ -136,7 +136,7 @@
 		</div>
 	</div>
     <div id="messaging-overlay" class="popup-wrap small" style="display: none;">
-        <div class="popup">
+        <div class="popup" style="overflow: hidden;">
             <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
         </div>
     </div>
