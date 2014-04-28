@@ -19,6 +19,8 @@ public class ModelGlobalPreferenceSoap implements Serializable {
     private int _weight;
     private long _expertEvaluationPageId;
     private long _modelCategoryId;
+    private boolean _usesCustomInputs;
+    private String _customInputsDefinition;
 
     public ModelGlobalPreferenceSoap() {
     }
@@ -33,6 +35,8 @@ public class ModelGlobalPreferenceSoap implements Serializable {
         soapModel.setWeight(model.getWeight());
         soapModel.setExpertEvaluationPageId(model.getExpertEvaluationPageId());
         soapModel.setModelCategoryId(model.getModelCategoryId());
+        soapModel.setUsesCustomInputs(model.getUsesCustomInputs());
+        soapModel.setCustomInputsDefinition(model.getCustomInputsDefinition());
 
         return soapModel;
     }
@@ -134,5 +138,25 @@ public class ModelGlobalPreferenceSoap implements Serializable {
 
     public void setModelCategoryId(long modelCategoryId) {
         _modelCategoryId = modelCategoryId;
+    }
+
+    public boolean getUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    public boolean isUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    public void setUsesCustomInputs(boolean usesCustomInputs) {
+        _usesCustomInputs = usesCustomInputs;
+    }
+
+    public String getCustomInputsDefinition() {
+        return _customInputsDefinition;
+    }
+
+    public void setCustomInputsDefinition(String customInputsDefinition) {
+        _customInputsDefinition = customInputsDefinition;
     }
 }

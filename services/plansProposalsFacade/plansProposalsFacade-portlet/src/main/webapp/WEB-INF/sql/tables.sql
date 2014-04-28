@@ -328,7 +328,9 @@ create table xcolab_ModelGlobalPreference (
 	visible BOOLEAN,
 	weight INTEGER,
 	expertEvaluationPageId LONG,
-	modelCategoryId LONG
+	modelCategoryId LONG,
+	usesCustomInputs BOOLEAN,
+	customInputsDefinition TEXT null
 );
 
 create table xcolab_ModelInputGroup (

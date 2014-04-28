@@ -477,6 +477,8 @@
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="expertEvaluationPageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modelCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="usesCustomInputs" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="customInputsDefinition" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ModelInputGroupImpl" table="xcolab_ModelInputGroup">
 		<cache usage="read-write" />

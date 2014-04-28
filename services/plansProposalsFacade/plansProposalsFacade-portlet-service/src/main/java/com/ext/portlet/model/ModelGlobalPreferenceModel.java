@@ -1,5 +1,6 @@
 package com.ext.portlet.model;
 
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
@@ -132,6 +133,42 @@ public interface ModelGlobalPreferenceModel extends BaseModel<ModelGlobalPrefere
      * @param modelCategoryId the model category ID of this model global preference
      */
     public void setModelCategoryId(long modelCategoryId);
+
+    /**
+     * Returns the uses custom inputs of this model global preference.
+     *
+     * @return the uses custom inputs of this model global preference
+     */
+    public boolean getUsesCustomInputs();
+
+    /**
+     * Returns <code>true</code> if this model global preference is uses custom inputs.
+     *
+     * @return <code>true</code> if this model global preference is uses custom inputs; <code>false</code> otherwise
+     */
+    public boolean isUsesCustomInputs();
+
+    /**
+     * Sets whether this model global preference is uses custom inputs.
+     *
+     * @param usesCustomInputs the uses custom inputs of this model global preference
+     */
+    public void setUsesCustomInputs(boolean usesCustomInputs);
+
+    /**
+     * Returns the custom inputs definition of this model global preference.
+     *
+     * @return the custom inputs definition of this model global preference
+     */
+    @AutoEscape
+    public String getCustomInputsDefinition();
+
+    /**
+     * Sets the custom inputs definition of this model global preference.
+     *
+     * @param customInputsDefinition the custom inputs definition of this model global preference
+     */
+    public void setCustomInputsDefinition(String customInputsDefinition);
 
     @Override
     public boolean isNew();

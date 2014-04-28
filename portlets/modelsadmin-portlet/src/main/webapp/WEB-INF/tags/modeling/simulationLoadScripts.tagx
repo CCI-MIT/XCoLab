@@ -27,6 +27,7 @@
 		
 		
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputsRenderer.tabbed.js"><!-- --></script>
+	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputsRenderer.customInputs.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsRenderer.lazyTabbed.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsTabs.chartTabRendered.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsTabs.physicalImpactsTabRenderer.js"><!-- --></script>

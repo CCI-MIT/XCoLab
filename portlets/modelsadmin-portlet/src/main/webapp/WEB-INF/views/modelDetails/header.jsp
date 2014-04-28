@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"><!-- --></script>
 	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
 	<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css"></link>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
 	<div class="breadcrumb">
 		<portlet:renderURL var="modelsIndexUrl" />
 		<span><a href="${modelsIndexUrl }">Models index</a></span>
@@ -34,7 +35,7 @@
 			<portlet:param name="modelId" value="${model.id }"/>
 			<portlet:param name="tab" value="outputWidgets"/>
 		</portlet:renderURL>
-		<li class="${tab == 'inputWidgets' ? 'active' : ''}"><a href='${outputWidgetsUrl }'>Output widgets</a></li>
+		<li class="${tab == 'outputWidgets' ? 'active' : ''}"><a href='${outputWidgetsUrl }'>Output widgets</a></li>
 	</ul>
 
 </jsp:root>

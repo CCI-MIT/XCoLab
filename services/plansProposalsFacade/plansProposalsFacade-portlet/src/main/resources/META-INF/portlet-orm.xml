@@ -566,6 +566,8 @@
 			<basic name="weight" />
 			<basic name="expertEvaluationPageId" />
 			<basic name="modelCategoryId" />
+			<basic name="usesCustomInputs" />
+			<basic name="customInputsDefinition" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

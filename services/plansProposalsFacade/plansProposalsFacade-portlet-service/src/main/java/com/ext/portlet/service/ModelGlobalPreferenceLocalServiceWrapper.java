@@ -285,6 +285,13 @@ public class ModelGlobalPreferenceLocalServiceWrapper
     }
 
     @Override
+    public com.ext.portlet.model.ModelGlobalPreference getByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _modelGlobalPreferenceLocalService.getByModelId(modelId);
+    }
+
+    @Override
     public void setVisible(edu.mit.cci.roma.client.Simulation s, boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException {
         _modelGlobalPreferenceLocalService.setVisible(s, visible);
