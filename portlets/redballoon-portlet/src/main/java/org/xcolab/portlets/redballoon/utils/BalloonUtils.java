@@ -31,7 +31,7 @@ import com.liferay.portal.util.PortalUtil;
 public class BalloonUtils {
 	
 	private static Random rand = new Random();
-	private final static String SHARE_LINK_PATTERN = "%s/balloon/-/balloon/link/%s";
+	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize/-/link/%s";
 	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 
