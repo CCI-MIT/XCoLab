@@ -84,4 +84,10 @@
 			</c:otherwise>
 		</c:choose>
     </div>
+    <script type="text/javascript">
+        jQuery(".addpropform .helpTrigger").each(function() {
+            var trigger = jQuery(this);
+            trigger.parent().parent().find(".addprophelp").slideDown(0);
+        });
+    </script>
 </jsp:root>
