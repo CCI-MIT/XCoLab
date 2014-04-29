@@ -72,6 +72,7 @@
                 </c:if>
 				<form:textarea cssClass="rte"  cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
 				<c:if test="${section.characterLimit gt 0}">
+                    <div class="clearfix"><!-- --></div>
 					<div class="inputLimitContainer">
             			<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
             		</div>

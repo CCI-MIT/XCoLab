@@ -94,6 +94,7 @@
                 <form:errors path="name" cssClass="alert alert-error" />
                 <div class="clearfix"><!--  --></div>
 
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
             </div>
         </div>
@@ -110,6 +111,7 @@
                 <form:input path="team" id="proposalTeam" />
                 <form:errors path="team" />
 
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
             </div>
         </div>
@@ -150,6 +152,7 @@
             <div class="addpropInputContainer">
                 <form:textarea path="pitch" id="proposalPitchInput" cssClass="proposalPitchInput" />
                 <form:errors path="pitch" />
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer">
                     <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
                 </div>
