@@ -373,7 +373,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .loginwith-or{width: 23px; float: left;}
 
 /* <Conference Countdown Flipclock>*/
-#conference-countdown{ position: absolute; top: 331px; left: 539px; width: 420px; }
+#conference-countdown{ position: absolute; top: 330px; left: 539px; width: 420px; }
 
 .countdown-day{ z-index: 1; position:relative; font-size: 26px; display: block; margin: 11px 0 0 15px; }
 
