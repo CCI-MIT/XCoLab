@@ -53,7 +53,6 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		String action = request.getParameter("do");
 
 		MembershipRequest membershipRequest = MembershipRequestLocalServiceUtil.getMembershipRequest(membershipId);
-		User sender = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
 		List<Long> recipients = new ArrayList<Long>();
 		List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
@@ -68,11 +67,11 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		if (membershipRequest != null) {
 			User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
 			if (action.equalsIgnoreCase("ACCEPT")){
-				ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", sender.getUserId());
-				sendMessage(sender.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, invitee.getFullName(), proposalLink));
+				ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", invitee.getUserId());
+				sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, invitee.getFullName(), proposalLink));
 			} else if (action.equalsIgnoreCase("DECLINE")){
-				ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), membershipId, "The invitation was rejected.", sender.getUserId());
-				sendMessage(sender.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, invitee.getFullName(), proposalLink));
+				ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), membershipId, "The invitation was rejected.", invitee.getUserId());
+				sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, invitee.getFullName(), proposalLink));
 			}
 		}
 
