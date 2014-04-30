@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.MembershipRequestLocalService;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -76,6 +77,7 @@ public class ProposalRequestMembershipActionController {
             "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.\n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>decline</strong> the invitation. ";
 
+	private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/c/portal/proposal_invite_response";
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -140,12 +142,17 @@ public class ProposalRequestMembershipActionController {
 				if (recipient != null) {
 					long proposalId = proposalsContext.getProposal(request).getProposalId();
 					long contestId = proposalsContext.getContest(request).getContestPK();
-					long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
 					String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-					MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,recipient.getUserId(),requestMembershipBean.getInviteComment());
+					String comment = requestMembershipBean.getInviteComment();
 
-					String baseUrl = themeDisplay.getPortalURL() + "/c/portal/proposal_invite_response";
+					// A comment has to be specified
+					if (Validator.isNull(comment)) {
+						comment = "No message specified";
+					}
+					MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,recipient.getUserId(),comment);
+
+					String baseUrl = themeDisplay.getPortalURL() + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
 					baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contestId);
 					baseUrl = HttpUtil.addParameter(baseUrl, "requestId", memberRequest.getMembershipRequestId());
 					baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposalId);
@@ -157,7 +164,7 @@ public class ProposalRequestMembershipActionController {
 							proposalsContext.getUser(request).getFullName(), proposalName);
 					String content = String.format(MSG_MEMBERSHIP_INVITE_CONTENT,
 							proposalsContext.getUser(request).getFullName(),
-							proposalLink, requestMembershipBean.getInviteComment(), acceptURL, declineURL);
+							proposalLink, comment, acceptURL, declineURL);
 					sendMessage(proposalsContext.getUser(request).getUserId(),recipient.getUserId(),subject,content);
 
 					SessionMessages.add(request, "memberInviteSent");
