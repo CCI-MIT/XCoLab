@@ -30,60 +30,64 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
 	@Override
 	public String populateModel(PortletRequest request,
-			PortletResponse response, SortFilterPage sortFilterPage,
-			FeedsPreferences feedsPreferences, Model model) throws SystemException, PortalException {
-		
-		HttpServletRequest originalRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
-		
-		List<SocialActivityWrapper >activities = new ArrayList<SocialActivityWrapper>();
-        int lastDaysBetween = -1;
-        Date now = new Date();
-        int count = 200;
-        int i = 0;
-        Map<String, String[]> parameters = request.getParameterMap();
-        long filterUserId = 0L; 
-        User filterUser = null;
-        final int pageSize = 200;
-        String userIdStr = null;
-        if (parameters.containsKey("userId")) {
-        	userIdStr = parameters.get("userId")[0];
-        }
-        else if (originalRequest.getParameter("userId") != null){
-        	userIdStr = originalRequest.getParameter("userId");
-        }
-        if (userIdStr != null) {
-            try {
-                filterUserId = Long.parseLong(userIdStr);
-                filterUser = UserLocalServiceUtil.getUser(filterUserId);
-                model.addAttribute("filterUserId", filterUserId);
-                model.addAttribute("filterUser", filterUser);
-            }
-            catch (Throwable t) {
-                // ignore
-            }
-        }
-        
-        for (SocialActivity activity : filterUserId == 0 ? 
-        		ActivityUtil.retrieveWindowedActivities(sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize) : 
-        	ActivityUtil.retrieveWindowedActivities(filterUserId, sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize)) {
-            if (SocialActivityWrapper.isEmpty(activity, request)) {
-                continue;
-            }
-            if (!feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId())) {
-            	continue;
-            }
+								PortletResponse response, SortFilterPage sortFilterPage,
+								FeedsPreferences feedsPreferences, Model model) throws SystemException, PortalException {
 
-            int curDaysBetween = DateUtil.getDaysBetween(new Date(activity.getCreateDate()), now, TimeZone.getDefault());
-            activities.add(new SocialActivityWrapper(activity, curDaysBetween, lastDaysBetween < curDaysBetween, i % 2 == 1, request));
-            lastDaysBetween = curDaysBetween;
-            i++;
-        }
-        
-        model.addAttribute("activities", activities);
-        model.addAttribute("maxPage", (int) Math.ceil((double)ActivityUtil.getAllActivitiesCount()/ pageSize));
-        
-        return "activities";
-		
+		HttpServletRequest originalRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+
+		List<SocialActivityWrapper >activities = new ArrayList<SocialActivityWrapper>();
+		int lastDaysBetween = -1;
+		Date now = new Date();
+		int count = 200;
+		int i = 0;
+		Map<String, String[]> parameters = request.getParameterMap();
+		long filterUserId = 0L;
+		User filterUser = null;
+		final int pageSize = 200;
+		String userIdStr = null;
+		if (parameters.containsKey("userId")) {
+			userIdStr = parameters.get("userId")[0];
+		}
+		else if (originalRequest.getParameter("userId") != null){
+			userIdStr = originalRequest.getParameter("userId");
+		}
+		if (userIdStr != null) {
+			try {
+				filterUserId = Long.parseLong(userIdStr);
+				filterUser = UserLocalServiceUtil.getUser(filterUserId);
+				model.addAttribute("filterUserId", filterUserId);
+				model.addAttribute("filterUser", filterUser);
+			}
+			catch (Throwable t) {
+				// ignore
+			}
+		}
+
+		for (SocialActivity activity : filterUserId == 0 ?
+				ActivityUtil.retrieveWindowedActivities(sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize) :
+				ActivityUtil.retrieveWindowedActivities(filterUserId, sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize)) {
+			if (SocialActivityWrapper.isEmpty(activity, request)) {
+				continue;
+			}
+			if (!feedsPreferences.getRemoveAdmin() && Helper.isUserAnAdmin(request, activity.getUserId())) {
+				continue;
+			}
+
+			if (i >= feedsPreferences.getFeedSize()) {
+				break;
+			}
+
+			int curDaysBetween = DateUtil.getDaysBetween(new Date(activity.getCreateDate()), now, TimeZone.getDefault());
+			activities.add(new SocialActivityWrapper(activity, curDaysBetween, lastDaysBetween < curDaysBetween, i % 2 == 1, request));
+			lastDaysBetween = curDaysBetween;
+			i++;
+		}
+
+		model.addAttribute("activities", activities);
+		model.addAttribute("maxPage", (int) Math.ceil((double)ActivityUtil.getAllActivitiesCount()/ pageSize));
+
+		return "activities";
+
 	}
 
 }

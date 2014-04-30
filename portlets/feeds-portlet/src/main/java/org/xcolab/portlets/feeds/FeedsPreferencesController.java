@@ -15,6 +15,7 @@ import javax.portlet.ValidatorException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
 @Controller
 @RequestMapping("edit")
@@ -40,9 +41,11 @@ public class FeedsPreferencesController {
     }
 	
 
-    @RequestMapping(params = "action=savePreferences")
+    @RequestMapping(params = {"action=savePreferences"})
     public void savePreferences(ActionRequest request, ActionRequest response, Model model, FeedsPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {
     	preferences.store(request);
-    }
+		// ,
+		System.out.println("test");
+	}
 
 }

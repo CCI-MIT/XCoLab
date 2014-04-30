@@ -11,7 +11,7 @@
 <h1>Edit</h1>
 <portlet:actionURL var="updatePreferencesURL" />
 <form:form action="${updatePreferencesURL }" commandName="feedsPreferences">
-	<input type="hidden" name="action" value="save" />
+	<input type="hidden" name="action" value="savePreferences" />
 	<table>
 		<tr>
 			<td>feed type:</td>
