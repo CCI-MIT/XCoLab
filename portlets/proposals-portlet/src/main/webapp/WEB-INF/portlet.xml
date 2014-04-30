@@ -7,7 +7,7 @@
 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>check-auth-token</name>
-            <value>false</value>
+            <value>true</value>
         </init-param>
 <!-- 		<expiration-cache>1</expiration-cache>-->
 		<supports>

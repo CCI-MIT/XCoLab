@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.service.MembershipRequestLocalService;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -73,9 +75,6 @@ public class ProposalRequestMembershipActionController {
     private static final String MSG_MEMBERSHIP_INVITE_CONTENT = "User %s invites you to contribute to the proposal %s with the following message: \n\n%s\n\n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>accept</strong> the invitation.\n" +
             "Click <a href='%s' target='_blank'>here</a> to <strong>decline</strong> the invitation. ";
-    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT = "Response to your membership invite";
-    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED = "Your invitation of %s to join the proposal %s has been accepted.";
-    private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED = "Your invitation of %s to join the proposal %s has been rejected.";
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -139,7 +138,6 @@ public class ProposalRequestMembershipActionController {
 				User recipient = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
 
 				if (recipient != null) {
-					long userId = proposalsContext.getUser(request).getUserId();
 					long proposalId = proposalsContext.getProposal(request).getProposalId();
 					long contestId = proposalsContext.getContest(request).getContestPK();
 					long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -147,8 +145,12 @@ public class ProposalRequestMembershipActionController {
 					String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
 					MembershipRequest memberRequest = ProposalLocalServiceUtil.addMembershipRequest(proposalId,recipient.getUserId(),requestMembershipBean.getInviteComment());
 
-					String acceptURL = String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d/invitationResponse/%s/requestId/%d", contestId, contestPhaseId, proposalId, "accept", memberRequest.getPrimaryKey());
-					String declineURL = String.format("/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d/invitationResponse/%s/requestId/%d", contestId, contestPhaseId, proposalId, "decline", memberRequest.getPrimaryKey());
+					String baseUrl = themeDisplay.getPortalURL() + "/c/portal/proposal_invite_response";
+					baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contestId);
+					baseUrl = HttpUtil.addParameter(baseUrl, "requestId", memberRequest.getMembershipRequestId());
+					baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposalId);
+					String acceptURL = HttpUtil.addParameter(baseUrl, "do", "accept");
+					String declineURL = HttpUtil.addParameter(baseUrl, "do", "decline");
 
 					String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
 					String subject = String.format(MSG_MEMBERSHIP_INVITE_SUBJECT,
@@ -169,34 +171,6 @@ public class ProposalRequestMembershipActionController {
 		}
 
 
-    }
-
-    @RequestMapping(params = {"action=invitationResponse"})
-    public void respondToInvitation(ActionRequest request, Model model,
-                                    ActionResponse response) throws SystemException, PortalException {
-        long requestId = GetterUtil.getLong(request.getParameter("requestId"));
-        long proposalId = GetterUtil.getLong(request.getParameter("planId"));
-        String action = request.getParameter("do");
-
-        MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposalId)){
-            if (mr.getPrimaryKey() == requestId) {
-				membershipRequest = mr;
-				break;
-			}
-        }
-
-		String proposalName = ProposalLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-		String proposalLink = String.format("<a href='%s'>%s</a>", String.format(PROPOSAL_URL, proposalsContext.getContest(request).getContestPK(), proposalId), proposalName);
-        if (membershipRequest == null) return;
-		User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
-        if (action.equalsIgnoreCase("ACCEPT")){
-            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", proposalsContext.getUser(request).getUserId());
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, invitee.getFullName(), proposalLink));
-        } else if (action.equalsIgnoreCase("DECLINE")){
-            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, "The invitation was rejected.", proposalsContext.getUser(request).getUserId());
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, invitee.getFullName(), proposalLink));
-        }
     }
 
     @ResourceMapping("inviteMembers-validateRecipient")
@@ -263,28 +237,34 @@ public class ProposalRequestMembershipActionController {
             return new ArrayList<>();
         }
 
-		List<Long> contributerIds = new ArrayList<>();
+		List<Long> contributorIds = new ArrayList<>();
 		for (User contributor : ProposalLocalServiceUtil.getMembers(proposalId)) {
-			contributerIds.add(contributor.getUserId());
+			contributorIds.add(contributor.getUserId());
 		}
 
-        Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", contributerIds));
+		List<User> recipients = new ArrayList<>();
+
+        Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", contributorIds));
         // For the sake of performance we only search the first word for either screenname, firstname or last name match
         // Search by screen name
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
         query.add(RestrictionsFactoryUtil.ilike("screenName", String.format("%s%%", inputParts[0])));
         query.add(criterion);
         query.setLimit(0, 5);
-        List<User> recipients = UserLocalServiceUtil.dynamicQuery(query);
+        List<User> result = UserLocalServiceUtil.dynamicQuery(query);
+
+		if (result.size() > 0) {
+			recipients.addAll(result);
+		}
 
         // Search by last name
         DynamicQuery lnQuery = DynamicQueryFactoryUtil.forClass(User.class);
-        query.add(RestrictionsFactoryUtil.ilike("lastName", String.format("%s%%", inputParts[0])));
-        query.add(criterion);
-        query.setLimit(0, 5);
-        List<User> fnRecipients = UserLocalServiceUtil.dynamicQuery(query);
+		lnQuery.add(RestrictionsFactoryUtil.ilike("lastName", String.format("%s%%", inputParts[0])));
+		lnQuery.add(criterion);
+		lnQuery.setLimit(0, 5);
+        List<User> lnRecipients = UserLocalServiceUtil.dynamicQuery(lnQuery);
 
-        for (User user : fnRecipients) {
+        for (User user : lnRecipients) {
             if (!recipients.contains(user)) {
                 recipients.add(user);
             }

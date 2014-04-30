@@ -104,5 +104,13 @@
             org.xcolab.hooks.climatecolab.strutsaction.UpdatePasswordStrutsAction
         </struts-action-impl>
     </struts-action>
+
+    <!-- Respond to proposal contribution invitation -->
+    <struts-action>
+        <struts-action-path>/portal/proposal_invite_response</struts-action-path>
+        <struts-action-impl>
+            org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction
+        </struts-action-impl>
+    </struts-action>
 	
 </hook>
