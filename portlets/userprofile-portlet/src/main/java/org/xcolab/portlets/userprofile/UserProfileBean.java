@@ -17,6 +17,8 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.util.mail.MailEngineException;
+import org.jsoup.Jsoup;
+import org.xcolab.utils.SendMessagePermissionChecker;
 
 import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
@@ -51,6 +53,7 @@ public class UserProfileBean implements Serializable {
     private String messagingPortletId;
     private boolean messageSent;
     private BadgeBean badges;
+    private SendMessagePermissionChecker messagePermissionChecker;
 
     private boolean displayEMailErrorMessage = false;
     
@@ -112,6 +115,10 @@ public class UserProfileBean implements Serializable {
         if (currentUser != null) {
         	badges = new BadgeBean(currentUser.getUserId());
         }
+
+        if (wrappedUser != null && Helper.isUserLoggedIn()) {
+            messagePermissionChecker = new SendMessagePermissionChecker(Helper.getLiferayUser());
+        }
     }
 
     public boolean isDisplayEMailErrorMessage() {
@@ -147,9 +154,11 @@ public class UserProfileBean implements Serializable {
     }
     
     public void updateUser(ActionEvent e) throws Exception {
-        currentUser.persistChanges();
-        editing = !editing;
-        pageType = PageType.PROFILE_DETAILS;
+		if (Jsoup.parse(currentUser.getAbout()).text().length() <= 2000) {
+			currentUser.persistChanges();
+			editing = !editing;
+			pageType = PageType.PROFILE_DETAILS;
+		}
     }
     
     public void setMessageText(String message) {
@@ -276,6 +285,14 @@ public class UserProfileBean implements Serializable {
     
     public long getTimestamp() {
     	return new Date().getTime();
+    }
+
+    public boolean getCanSendMessage() throws SystemException {
+        if (messagePermissionChecker != null) {
+            return messagePermissionChecker.canSendToUser(wrappedUser);
+        }
+
+        return false;
     }
 
 }

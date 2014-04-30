@@ -7,12 +7,14 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.messaging.utils.MessageLimitManager;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.portlets.messaging.Helper;
+import org.xcolab.utils.MessageLimitManager;
+
 /**
  * Validates if user is allowed to send more messages.
  * 
@@ -31,7 +33,7 @@ public class MessagesLimitValidator implements Validator {
                 if (StringUtils.isNotBlank(recipientId)) count ++;
             }
             
-            if (! MessageLimitManager.canSendMessages(count)) { 
+            if (! MessageLimitManager.canSendMessages(count, Helper.getLiferayUser())) {
                 FacesMessage message = new FacesMessage("Messages limit has been exceeded, if you want to send more messages, please contact the administrators");
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(message);

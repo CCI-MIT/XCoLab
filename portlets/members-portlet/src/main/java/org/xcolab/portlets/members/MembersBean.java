@@ -125,6 +125,10 @@ public class MembersBean extends DataSource implements Serializable {
                 subQuery.addExactTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase());
                 subQuery.addExactTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase());
                 query.add(subQuery, BooleanClauseOccurImpl.MUST);
+            } else if (categoryFilter.equals(MemberCategory.CATALYST)) {
+                BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+                subQuery.addExactTerm("memberCategory", MemberCategory.CATALYST.name().toLowerCase());
+                query.add(subQuery, BooleanClauseOccurImpl.MUST);
             }
             else if (categoryFilter.equals(MemberCategory.MEMBER)) {
                 BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
@@ -136,6 +140,7 @@ public class MembersBean extends DataSource implements Serializable {
                 subQueryExclude.addExactTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase());
                 subQueryExclude.addExactTerm("memberCategory", MemberCategory.EXPERT.name().toLowerCase());
                 subQueryExclude.addExactTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase());
+                subQueryExclude.addExactTerm("memberCategory", MemberCategory.CATALYST.name().toLowerCase());
 
                 query.add(subQuery, BooleanClauseOccurImpl.MUST);
 

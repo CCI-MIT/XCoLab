@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;

@@ -118,13 +118,6 @@ div.sponsorLogo img {
     position: relative;
 }
 
-
-.inputLimitContainer {
-	margin-top: 5px;
-	font-size: 12px;
-	text-align: right;
-}
-
 #uploadWidget {
     background: url(../img/image_upload-button.png) no-repeat;
     width: 219px;
@@ -272,6 +265,28 @@ div.sponsorLogo img {
 	display: none;
 }
 
+.ui-autocomplete.ui-menu {
+    z-index: 100;
+}
+
+.recipient-error {
+    color: red;
+    font-weight: bold;
+}
+
+.message-share-button {
+    margin-top: 15px;
+}
+
+#share-proposal-container table.colab td.b {
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+#share-proposal-container table.colab td input {
+    width: 90%;
+}
+
 .thread-creator-overlay {
     background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
     float: left;
@@ -285,13 +300,4 @@ div.sponsorLogo img {
 
 .commentor-header {
     float:left;
-}
-
-.role-indicator div {
-    float: left;
-    margin-right: 15px;
-}
-
-.ui-autocomplete {
-    z-index: 100;
 }

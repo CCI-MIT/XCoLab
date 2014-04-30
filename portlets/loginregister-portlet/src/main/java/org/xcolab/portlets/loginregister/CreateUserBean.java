@@ -7,11 +7,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.loginregister.validation.UniqueScreenNameAndEmail;
 import org.xcolab.utils.validation.CompareStrings;
+import org.xcolab.utils.validation.ValidBioLength;
 import org.xcolab.utils.validation.ValidScreenName;
 
 @CompareStrings(propertyNames = { "password", "retypePassword" })
 @UniqueScreenNameAndEmail(emailProperty = "email", screenNameProperty = "screenName")
 @ValidScreenName(screenNameProperty = "screenName")
+@ValidBioLength(bioProperty = "shortBio")
 public class CreateUserBean implements Serializable{
 
 	/**
@@ -40,7 +42,6 @@ public class CreateUserBean implements Serializable{
 	@Length(min = 8, max = 24)
 	private String retypePassword;
 
-	@Length(min = 0, max = 2000)
 	private String shortBio;
 
 	@Length(min = 0, max = 300)

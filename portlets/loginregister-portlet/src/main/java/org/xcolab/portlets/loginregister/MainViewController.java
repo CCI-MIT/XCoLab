@@ -2,6 +2,10 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -14,6 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
+import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -98,9 +106,9 @@ public class MainViewController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping
-	public String register(PortletRequest request, PortletResponse response,
-			Model model) {
+		@RequestMapping
+		public String register(PortletRequest request, PortletResponse response,
+				Model model) {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
@@ -210,7 +218,7 @@ public class MainViewController {
 				response.setRenderParameter("recaptchaError", "true");
 			} else {
 				try {
-					completeRegistration(request, response, newAccountBean, redirect);
+					completeRegistration(request, response, newAccountBean, redirect, false);
 
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
@@ -225,6 +233,50 @@ public class MainViewController {
         SessionErrors.clear(request);
         SessionMessages.clear(request);
 	}
+
+    @ResourceMapping(value = "postRegistration")
+    public void updateRegistrationParameters(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
+
+        JSONObject json = JSONFactoryUtil.createJSONObject();
+        json.put("screenName", JSONFactoryUtil.createJSONObject());
+        json.put("bio", JSONFactoryUtil.createJSONObject());
+
+        String screenName = request.getParameter("screenName");
+        String bio = request.getParameter("bio");
+        User loggedInUser = ((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
+
+        if (!loggedInUser.getScreenName().equals(screenName)) {
+            try {
+                UserLocalServiceUtil.getUserByScreenName(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getCompanyId(), screenName);
+                json.getJSONObject("screenName").put("success", false);
+            } catch (NoSuchUserException e) {
+                if (screenName.matches("[a-zA-Z0-9]+$") && screenName.length() > 0) {
+                    loggedInUser.setScreenName(screenName);
+                    json.getJSONObject("screenName").put("success", true);
+                } else {
+                    json.getJSONObject("screenName").put("success", false);
+                }
+            }
+        }
+
+
+        json.getJSONObject("bio").put("success", true);
+        if ((bio != null && bio.length() > 0 && bio.length() <= 2000)) {
+            ExpandoValueLocalServiceUtil.addValue(
+                    User.class.getName(),
+                    CommunityConstants.EXPANDO,
+                    CommunityConstants.BIO, loggedInUser.getUserId(),
+                    bio);
+        } else {
+            if (bio.length() > 2000) {
+                json.getJSONObject("bio").put("success", false);
+            }
+        }
+
+        UserLocalServiceUtil.updateUser(loggedInUser);
+
+        response.getWriter().write(json.toString());
+    }
 	
 	@ResourceMapping
 	public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
@@ -240,7 +292,7 @@ public class MainViewController {
      * @param redirect          Redirect URL for this request (may be null)
      * @throws Exception
      */
-    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect) throws Exception {
+    public static void completeRegistration(ActionRequest request, ActionResponse response, CreateUserBean newAccountBean, String redirect, boolean postRegistration) throws Exception {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
         PortletSession portletSession = request.getPortletSession();
         String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
@@ -302,7 +354,6 @@ public class MainViewController {
                 user.setFacebookId(fbId);
                 UserLocalServiceUtil.updateUser(user);
                 portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID,PortletSession.APPLICATION_SCOPE);
-                redirect = null;
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -312,7 +363,6 @@ public class MainViewController {
                 user.setOpenId(openId);
                 UserLocalServiceUtil.updateUser(user);
                 portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID,PortletSession.APPLICATION_SCOPE);
-                redirect = null;
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -347,11 +397,15 @@ public class MainViewController {
 
         request.getPortletSession().setAttribute("collab_user_has_registered", true);
         PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
-        if (redirect != null) {
-            response.sendRedirect(redirect);
-        } else {
-            response.sendRedirect(themeDisplay.getURLHome());
+        if (redirect == null) {
+            redirect = themeDisplay.getURLHome();
         }
-    }
 
+        if (postRegistration) {
+            // Add request variable for after-registration popover
+            redirect = HttpUtil.addParameter(redirect, "postRegistration", "true");
+        }
+
+        response.sendRedirect(redirect);
+    }
 }

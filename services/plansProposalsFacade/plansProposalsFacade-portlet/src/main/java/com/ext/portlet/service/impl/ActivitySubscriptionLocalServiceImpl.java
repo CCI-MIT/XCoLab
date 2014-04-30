@@ -33,9 +33,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -254,7 +257,7 @@ public class ActivitySubscriptionLocalServiceImpl
     }
 
 
-    public void sendEmailNotifications() throws SystemException, PortalException {
+    public void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
         synchronized (lastEmailNotification) {
             DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
             Criterion criterionCreateDate = RestrictionsFactoryUtil.gt(PROPERTY_CREATE_DATE, lastEmailNotification.getTime());
@@ -267,7 +270,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
             List<SocialActivity> res = h.process(activityObjects);
             for (SocialActivity activity : res) {
-                sendNotifications(activity);
+                sendNotifications(activity, serviceContext);
             }
             lastEmailNotification = new Date();
         }
@@ -294,7 +297,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private final String USER_ID_PLACEHOLDER = "USER_ID";
 
-    private void sendNotifications(SocialActivity activity) throws SystemException, PortalException {
+    private void sendNotifications(SocialActivity activity, ServiceContext serviceContext) throws SystemException, PortalException {
         try {
             DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
             Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", activity.getClassNameId());
@@ -303,12 +306,12 @@ public class ActivitySubscriptionLocalServiceImpl
             ThemeDisplay td = new ThemeDisplay();
             td.setCompany(CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID));
 
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, td);
+            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, activity, serviceContext);
             if (entry == null) {
                 return;
             }
             try {
-                InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org");
+                InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
 
                 String subject = getMailSubject(entry);
                 String messageTemplate = getMailBody(entry) + MESSAGE_FOOTER_TEMPLATE;
@@ -334,7 +337,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 for (User recipient : recipients) {
 
                     if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()) {
-                        InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
+                        InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
                         String message = messageTemplate
                                 .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));
 
@@ -348,9 +351,6 @@ public class ActivitySubscriptionLocalServiceImpl
 
                 }
             } catch (MailEngineException e) {
-                _log.error("Can't send email message");
-                _log.debug("Can't send email message", e);
-            } catch (AddressException e) {
                 _log.error("Can't send email message");
                 _log.debug("Can't send email message", e);
             }

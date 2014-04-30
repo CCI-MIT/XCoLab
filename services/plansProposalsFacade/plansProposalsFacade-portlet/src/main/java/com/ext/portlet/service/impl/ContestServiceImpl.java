@@ -14,9 +14,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
-import com.liferay.portal.security.auth.PrincipalThreadLocal;
 
 /**
  * The implementation of the contest remote service.
@@ -40,31 +40,47 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestServiceUtil} to access the contest remote service.
      */
 
+    /**
+     * Returns a list of open contest for regular users and returns all contests for staff users
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public List<Contest> getContestsOpenForProposals() throws PortalException, SystemException {
-    	List<Contest> contests = new ArrayList<>();
-    	for (Contest activeContest: contestLocalService.findByActive(true)) {
-    		ContestPhase cp = contestLocalService.getActiveOrLastPhase(activeContest);
+        User user = getUser();
+        List<Role> roles = user.getRoles();
+
+        boolean admin = false;
+        for (Role role : roles) {
+            if (role.getName().equals("Administrator")) {
+                admin = true;
+                break;
+            }
+        }
+
+    	List<Contest> returnList = new ArrayList<>();
+    	for (Contest contest: contestLocalService.findByActive(true)) {
+    		ContestPhase cp = contestLocalService.getActiveOrLastPhase(contest);
     		if (contestPhaseLocalService.getPhaseActive(cp)) {
                 String statusStr = ContestPhaseLocalServiceUtil.getContestStatusStr(cp);
                 ContestStatus status = null;
                 if (statusStr != null) {
                     status = ContestStatus.valueOf(statusStr);
                 }
-                if (status != null && status.isCanCreate()) {
-                	/*
-                	JSONObject obj = JSONFactoryUtil.createJSONObject();
-                	obj.put("contestPK", activeContest.getContestPK());
-                	obj.put("shortName", activeContest.getContestShortName());
-                	obj.put("name", activeContest.getContestName());
-                	obj.put("description", activeContest.getContestDescription());
-                	*/
-                	contests.add(activeContest);
+                if (admin == true || (status != null && status.isCanCreate())) {
+                    returnList.add(contest);
                 }
     		}
     	}
-    	return contests;
+
+        // Add non active contests
+        if (admin) {
+            returnList.addAll(contestLocalService.findByActive(false));
+        }
+
+    	return returnList;
     }
 
     @JSONWebService

@@ -196,11 +196,11 @@ public class FacebookController {
         }
 
         if (user != null) {
-            response.sendRedirect(themeDisplay.getPortalURL());
+            response.sendRedirect(redirectUrl);
         }
         else {
             // Finish registration
-            if (portletSession.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+            if (session.getAttribute(MainViewController.SSO_TARGET_KEY).equals(MainViewController.SSO_TARGET_REGISTRATION)) {
                 // append SSO attributes
                 CreateUserBean userBean = new CreateUserBean();
                 String password = RandomStringUtils.random(12, true, true);
@@ -224,7 +224,7 @@ public class FacebookController {
 
                 userBean.setScreenName(screenName);
 
-                MainViewController.completeRegistration(request, response, userBean, redirectUrl);
+                MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
             } else {
                 response.setRenderParameter("status", "registerOrLogin");
                 response.setRenderParameter("SSO", "general");

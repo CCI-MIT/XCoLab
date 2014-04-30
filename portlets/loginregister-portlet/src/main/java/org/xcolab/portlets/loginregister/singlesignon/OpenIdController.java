@@ -82,11 +82,13 @@ public class OpenIdController {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
 
+        String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        session.removeAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
 
         // Check whether the state token matches => CSRF protection
         String stateToken = request.getParameter("state");
         String authCode = request.getParameter("code");
-        if (stateToken != null && stateToken.equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
+        if (authCode != null && stateToken != null && stateToken.equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
             JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL).getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
@@ -95,9 +97,6 @@ public class OpenIdController {
             String emailAddress = json.getString("email");
             String profilePicURL = json.getString("picture");
             User user = null;
-
-            String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
-            session.removeAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
             try {
                 user = UserLocalServiceUtil.getUserByOpenId(
                         themeDisplay.getCompanyId(), openId);
@@ -165,10 +164,12 @@ public class OpenIdController {
 
                         userBean.setScreenName(screenName);
 
-                        MainViewController.completeRegistration(actionRequest, actionResponse, userBean, redirectUrl);
+                        MainViewController.completeRegistration(actionRequest, actionResponse, userBean, redirectUrl, true);
                     }
                 }
             }
+        } else {
+            actionResponse.sendRedirect(redirectUrl);
         }
     }
 

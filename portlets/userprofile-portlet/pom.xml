@@ -154,9 +154,14 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>

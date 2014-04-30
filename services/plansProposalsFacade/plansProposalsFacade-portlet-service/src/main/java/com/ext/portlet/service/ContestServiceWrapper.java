@@ -44,6 +44,13 @@ public class ContestServiceWrapper implements ContestService,
         return _contestService.invokeMethod(name, parameterTypes, arguments);
     }
 
+    /**
+    * Returns a list of open contest for regular users and returns all contests for staff users
+    *
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
         throws com.liferay.portal.kernel.exception.PortalException,

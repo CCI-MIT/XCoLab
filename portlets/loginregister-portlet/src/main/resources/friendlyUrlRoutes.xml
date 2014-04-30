@@ -60,4 +60,20 @@
         <generated-parameter name="SSO">general</generated-parameter>
         <generated-parameter name="status">registerOrLogin</generated-parameter>
     </route>
+    <route>
+        <pattern>/register/finalize</pattern>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">postRegistration</implicit-parameter>
+        <implicit-parameter name="p_p_cacheability">cacheLevelPage</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/forgotPassword/error</pattern>
+        <implicit-parameter name="isForgotpass">true</implicit-parameter>
+        <implicit-parameter name ="isError">true</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+    </route>
 </routes>

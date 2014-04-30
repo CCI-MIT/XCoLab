@@ -81,7 +81,10 @@
 					</a>
 				</div>
 			</c:if>
-            
+            <div class="clearfix">&#160;</div>
+            <div class="message-share-button">
+                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
+            </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {
                     addthis.toolbox("#shareProposalToolbox");
@@ -204,5 +207,21 @@
     </c:if>
                 
     </div>
+    <script type="text/javascript">
+        // Addthis: Alert a message when the user shares somewhere
+        function shareEventHandler(evt) {
+            if (evt.type == 'addthis.menu.share') {
+                var service = evt.data.service;
 
+                try {
+                    pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
+                }
+                catch (error) {
+                }
+            }
+        }
+
+        // Listen for the share event
+        addthis.addEventListener('addthis.menu.share', shareEventHandler);
+    </script>
 </jsp:root>

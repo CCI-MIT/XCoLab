@@ -65,7 +65,7 @@
         <p>
             Please complete your proposal based on the template below.
             If you have input on the template, please send it in a&#160;<a href="/web/guest/feedback" target="_blank">feedback message</a>.
-            To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/2012+contest+rules" target="_blank">Contest rules</a>
+            To save your proposal, you must agree to the&#160;<a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">Contest rules</a>
             and&#160;<a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
         </p>
     </div> <!-- /headline -->
@@ -94,6 +94,7 @@
                 <form:errors path="name" cssClass="alert alert-error" />
                 <div class="clearfix"><!--  --></div>
 
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
             </div>
         </div>
@@ -110,6 +111,7 @@
                 <form:input path="team" id="proposalTeam" />
                 <form:errors path="team" />
 
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
             </div>
         </div>
@@ -150,6 +152,7 @@
             <div class="addpropInputContainer">
                 <form:textarea path="pitch" id="proposalPitchInput" cssClass="proposalPitchInput" />
                 <form:errors path="pitch" />
+                <div class="clearfix"><!-- --></div>
                 <div class="inputLimitContainer">
                     <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
                 </div>
@@ -244,7 +247,7 @@
                     <br />
                     <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                 </p>
-                <div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
+                <div class="blue-button"><a href="#" id="saveChangesButton">PUBLISH changes</a></div>
                 <div class="gray-button">
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">

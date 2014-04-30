@@ -1,11 +1,4 @@
-package org.xcolab.portlets.messaging.utils;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.climatecollaboratorium.utils.Helper;
-import org.xcolab.utils.PropertiesUtils;
+package org.xcolab.utils;
 
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.Message;
@@ -26,6 +19,11 @@ import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class responsible for handling verification if user is allowed to send
  * messages or maybe daily limit has been reached.
@@ -40,6 +38,13 @@ public class MessageLimitManager {
 
     private static Map<Long, Long> mutexes = new HashMap<>();
 
+	private static final int MESSAGES_DAILY_LIMIT = 10;
+
+	/**
+	 * Keeps track of the last validation error mail that has been send to a specific user
+	 */
+	private static Map<User, Date> lastValidationDateMap = new HashMap<>();
+
     /**
      * Method responsible for checking if user is allowed to send given number
      * of messages.
@@ -47,14 +52,12 @@ public class MessageLimitManager {
      * @param messagesToSend
      *            number of messages that user wants to send
      * @return
-     * @throws PortalException
+     * @throws com.liferay.portal.kernel.exception.PortalException
      *             in case of LR error
-     * @throws SystemException
+     * @throws com.liferay.portal.kernel.exception.SystemException
      *             in case of LR error
      */
-    public static boolean canSendMessages(int messagesToSend) throws PortalException, SystemException {
-
-        User user = Helper.getLiferayUser();
+    public static boolean canSendMessages(int messagesToSend, User user) throws PortalException, SystemException {
         // synchronize on senderId
         Long mutex = getMutex(user.getUserId());
 
@@ -81,7 +84,7 @@ public class MessageLimitManager {
             if (messagesLimit < 0) {
                 // limit not defined in expando table, fetch it from properties
                 // file
-                messagesLimit = Integer.parseInt(PropertiesUtils.get("messages.dailyLimitPerUser"));
+                messagesLimit = MESSAGES_DAILY_LIMIT;
             }
 
             // count messages that user has already sent today
@@ -121,5 +124,27 @@ public class MessageLimitManager {
         }
         return mutex;
     }
+
+	public static boolean shouldSendValidationErrorMessage(User user) {
+		if (user == null) {
+			return false;
+		}
+		Date lastEmailSendDate = lastValidationDateMap.get(user);
+
+		Date now = new Date();
+		if (lastEmailSendDate != null) {
+			// Send mail if the last email send was over 24h ago
+			if ((now.getTime() - lastEmailSendDate.getTime()) > 24 * 3600 * 1000) {
+				lastValidationDateMap.put(user, now);
+				return true;
+			}
+			else {
+				return false;
+			}
+		} else {
+			lastValidationDateMap.put(user, now);
+			return true;
+		}
+	}
 
 }

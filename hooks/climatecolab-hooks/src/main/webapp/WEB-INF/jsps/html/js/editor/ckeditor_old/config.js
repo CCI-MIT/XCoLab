@@ -19,7 +19,8 @@ CKEDITOR.editorConfig = function( config )
     config.toolbarCanCollapse = false;
     config.contentsCss = '/climatecolab-theme/css/style.css?test=2';
     config.resize_enabled = 'true';
-    config.extraPlugins = 'resize,proposalLink';
+    config.extraPlugins = 'resize,proposalLink,scayt,menubutton,dialog,onchange';
+    config.scayt_autoStartup = true;
 };
 CKEDITOR.pasteFilterConfig = {
 };
