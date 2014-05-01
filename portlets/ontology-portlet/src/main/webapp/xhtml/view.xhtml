@@ -164,7 +164,7 @@
                         <f:facet name="header">
                             Action
                         </f:facet>
-                        <ice:commandButton actionListener="#{ontologyAdmin.deleteTerm}" value="Delete">
+                        <ice:commandButton actionListener="#{ontologyAdmin.deleteSpace}" value="Delete" onclick="if (! confirm('Are you sure you want to delete #{space.name}?')) return false;">
                             <f:attribute name="spaceId" value="#{space.id}" />
                         </ice:commandButton>
                     
