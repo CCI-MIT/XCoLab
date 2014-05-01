@@ -13,6 +13,12 @@
 <form:form action="${updatePreferencesURL }" commandName="feedsPreferences">
 	<input type="hidden" name="action" value="savePreferences" />
 	<table>
+        <tr>
+            <td>Portlet title:</td>
+            <td>
+                <form:input path="portletTitle" />
+            </td>
+        </tr>
 		<tr>
 			<td>feed type:</td>
 			<td>

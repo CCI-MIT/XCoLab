@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 @Controller
 @RequestMapping("view")
 public class ContestsController {
-    private static final int NUM_CONTESTS = 4;
+    private static final int NUM_CONTESTS = 5;
     
     public ContestsController() {
     }

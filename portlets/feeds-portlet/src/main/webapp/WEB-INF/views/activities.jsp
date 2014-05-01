@@ -16,10 +16,8 @@
 <div class="alignright" style="display:none;">
 	<a href="${activitiesDumpURL }"><liferay-ui:icon image="download" />activities in CSV format</a>
 </div>
-<br />
-<br />
 <div class="clearfix"><!--  --></div>
-
+<h2>${portletTitle}</h2>
 <c:choose>
 	<c:when test="${empty activities  }">
 		Nothing found.
@@ -94,8 +92,9 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-
-
+<div class="alignright" style="margin-top:10px;">
+    <a href="/web/guest/activities">View all activities</a>
+</div>
 <c:if test="${not empty filterUserId}">      
 	<script type="text/javascript">
 		var filterSettings = {

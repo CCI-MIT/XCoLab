@@ -44,8 +44,6 @@ public class FeedsPreferencesController {
     @RequestMapping(params = {"action=savePreferences"})
     public void savePreferences(ActionRequest request, ActionRequest response, Model model, FeedsPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {
     	preferences.store(request);
-		// ,
-		System.out.println("test");
 	}
 
 }
