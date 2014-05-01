@@ -11,9 +11,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		console.log("creating custom inputs renderer");
 		
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
-			if (event.model.usesCustomInputs) {
-				that.render(modelingWidget.container, event.scenario);
-			}
+			/*if (event.model.usesCustomInputs) {
+			  // do nothing
+			}*/
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
@@ -59,6 +59,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					screenHtml.push(option.name);
 					screenHtml.push("' value='");
 					screenHtml.push(option.value);
+					screenHtml.push("' id='");
+					screenHtml.push("option_" + screen.name + "_" + option.name + "_" + option.value);
 					screenHtml.push("'><td class='inputContainer'>");
 					
 					if (option.type == 'blueArrow') {
@@ -112,6 +114,35 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					else {
 						self.screensStack.push(screenName);
 					}
+					// show hide options
+					$(screen.options).each(function(key, option) {
+						// check if option is to be displayed
+						var hideOption = true;
+						if (! ("dontShowIf" in option)) {
+							// option should be shown as there are no additional conditions for hiding it
+							hideOption = false;
+						}
+						else {
+							for (var key in option.dontShowIf) {
+								if (! (key in self.values)) {
+									// constrained variable doesn't exist in values set - show the option
+									hideOption = false;
+								}
+								else if (self.values[key] != option.dontShowIf[key]) {
+									// constraint on input value exists but value if different - show the option
+									hideOption = false;
+								}
+							}
+						}
+						var optionElem = jQuery("#option_" + screen.name + "_" + option.name + "_" + option.value);
+						if (hideOption) {
+							optionElem.hide();
+						}
+						else {
+							optionElem.show();
+						}
+					});
+					
 				}
 			}
 			if (self.screensStack.length > 1) {
@@ -232,7 +263,43 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			inputValsKey.sort();
 			
 			var transitionKey = inputValsKey.join(',');
-			alert('running the model for values: ' + transitionKey);
+			// find mapping 
+			var resultToReturn = false;
+			for (var i = 0; i < self.definition.results.length; i++) {
+				var result = self.definition.results[i];
+				var resultFound = true;
+				for (var key in self.values) {
+					if (!(key in result.values)) {
+						resultFound = false;
+						break;
+					} 
+					if (result.values[key] != self.values[key]) {
+						resultFound = false;
+						break;
+					}
+				}
+				if (resultFound) {
+					resultToReturn = result;
+					break;
+					
+				}
+			}
+			if (resultToReturn) {
+				// remove all valueBinding inputs
+				console.log("removing value bindings");
+				
+				self.container.find(".valueBinding").remove();
+				console.log(resultToReturn.outputs);
+				for (var key in resultToReturn.outputs) {
+					container.append("<input type='hidden' data-id='" + key + "' value='" + resultToReturn.outputs[key] + "' class='valueBinding' />");
+				}
+				self.modelingWidget.runTheModel();
+			}
+			else {
+				console.log("not found for values: ", self.values);
+			}
+			
+			
 			
 		});
 		

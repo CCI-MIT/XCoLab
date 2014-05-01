@@ -108,7 +108,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
     
     private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
-
+    	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         jsonObject.put("scenarioId", scenario.getId());
@@ -131,6 +131,8 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             inputValuesArray.put(ModelUIFactory.convertToJson(item));
         }
         jsonObject.put("inputValues", inputValuesArray);
+        jsonObject.put("usesCustomInputs", modelPreference.isUsesCustomInputs());
+        jsonObject.put("customInputsDefinition", modelPreference.getCustomInputsDefinition());
         return jsonObject;
         
     }
