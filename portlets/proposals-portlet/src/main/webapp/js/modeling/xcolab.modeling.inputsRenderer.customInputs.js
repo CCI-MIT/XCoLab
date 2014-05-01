@@ -18,6 +18,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
 			if (event.model.usesCustomInputs) {
+				that.model = event.model;
 				that.render(modelingWidget.container, event.model);
 			}
 		});
@@ -291,7 +292,22 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				self.container.find(".valueBinding").remove();
 				console.log(resultToReturn.outputs);
 				for (var key in resultToReturn.outputs) {
-					container.append("<input type='hidden' data-id='" + key + "' value='" + resultToReturn.outputs[key] + "' class='valueBinding' />");
+					// find input for given name
+					var found = false;
+					for (var i = 0; i < self.model.inputs.length; i++) {
+						var input = self.model.inputs[i];
+						if (input.metaData.internalName == key) {
+							container.append("<input type='hidden' data-id='" + input.metaData.id + "' value='" + resultToReturn.outputs[key] + "' class='valueBinding' />");
+							found = true; 
+							break;
+						}
+					}
+					if (!found) {
+						console.error("Can't find model input for name: " + key);
+					}
+					
+					
+					
 				}
 				self.modelingWidget.runTheModel();
 			}
