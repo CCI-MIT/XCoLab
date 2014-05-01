@@ -20,6 +20,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			if (event.model.usesCustomInputs) {
 				that.model = event.model;
 				that.render(modelingWidget.container, event.model);
+				that.modelingWidget.container.find('.runmodel').hide();
 			}
 		});
 	}
@@ -125,11 +126,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						}
 						else {
 							for (var key in option.dontShowIf) {
-								if (! (key in self.values)) {
+								if (! (key in self.values) || self.values[key] != option.dontShowIf[key]) {
 									// constrained variable doesn't exist in values set - show the option
-									hideOption = false;
-								}
-								else if (self.values[key] != option.dontShowIf[key]) {
 									// constraint on input value exists but value if different - show the option
 									hideOption = false;
 								}
@@ -167,7 +165,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						if (screen.options[k].name in self.values) {
 							console.log('deleting', self.options, screen.options[k].name);
 							delete self.values[screen.options[k].name];
-							self.container.find('input[name="' + screen.options[k].name + '"]').removeAttr('checked');
+							self.container.find('input[name="' + screen.options[k].name + '"]').removeAttr('checked').removeClass('selected');
 							self.container.find(".wizardRunTheModel").hide();
 						}
 					}
@@ -210,6 +208,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var currentScreen = self.screensStack[self.screensStack.length-1];
 			
 			var input = $(event.currentTarget);
+			input.siblings().removeClass('selected');
+			input.addClass('selected');
 			console.log('option selector clicked', input.val(), input.attr('value'));
 			//if (input.is(':checked')) {
 				// add input to selected values input set

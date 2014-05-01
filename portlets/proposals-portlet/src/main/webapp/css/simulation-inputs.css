@@ -288,8 +288,12 @@ table.mainTabs .inputTabStyle td.RtTop,
 	padding-top: 15px;
 }
 
-.wizardScreen .optionDef:hover {
-	background: #f5f5f5;
+.wizardScreen .optionDef.selected td {
+	background: #eeffee;
+}
+
+.wizardScreen .optionDef:hover td {
+	
 }
 .wizardScreen .optionDef i.glyphicon {
 	color: green;
@@ -312,3 +316,14 @@ table.mainTabs .inputTabStyle td.RtTop,
 	margin-top: 10px;
 }
 
+.wizardScreen .table {
+	font-size: 11px;
+}
+
+.wizardScreen .table td h6 {
+	margin-top: 0;
+}
+
+.wizardScreen .table tr td {
+	background: #ffffff;
+}

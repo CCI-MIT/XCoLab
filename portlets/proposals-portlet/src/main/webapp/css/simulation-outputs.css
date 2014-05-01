@@ -275,7 +275,7 @@ ul.ui-tabs-nav li.ui-state-active a{
     padding-left: 12px;
 }
 
-.jqplot-table-legend-swatch {border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -khtml-border-radius:3px;}
+.jqplot-table-legend-swatch {border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -khtml-border-radius:3px; padding: 5px;}
 
 table.jqplot-table-legend, table.jqplot-cursor-legend { position: static; width: auto; border: 0; background: transparent; font: 12px Verdana, Geneva, sans-serif; }
 
