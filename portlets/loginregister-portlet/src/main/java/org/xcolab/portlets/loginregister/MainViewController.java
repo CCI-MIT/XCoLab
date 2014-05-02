@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
+import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 
 import com.ext.portlet.NoSuchBalloonUserTrackingException;
@@ -140,6 +143,15 @@ public class MainViewController {
             CreateUserBean userBean = new CreateUserBean();
             getSSOUserInfo(request.getPortletSession(),userBean);
             model.addAttribute("createUserBean", userBean);
+
+			// Get country location
+			if (com.liferay.portal.kernel.util.Validator.isNull(userBean.getCountry())) {
+				try {
+					userBean.setCountry(getCountryFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
+				} catch (UserLocationNotResolveableException e) {
+					_log.warn(e);
+				}
+			}
 		}
 		return "view";
 	}
@@ -158,6 +170,8 @@ public class MainViewController {
         portletSession.removeAttribute(SSOKeys.SSO_SCREEN_NAME,PortletSession.APPLICATION_SCOPE);
         String imageId = (String) portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID,PortletSession.APPLICATION_SCOPE);
         portletSession.removeAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID,PortletSession.APPLICATION_SCOPE);
+		String country = (String) portletSession.getAttribute(SSOKeys.SSO_COUNTRY,PortletSession.APPLICATION_SCOPE);
+		portletSession.removeAttribute(SSOKeys.SSO_COUNTRY,PortletSession.APPLICATION_SCOPE);
 
         if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId) )&& StringUtils.isNotBlank(eMail)){
             createUserBean.setFirstName(firstName);
@@ -167,6 +181,10 @@ public class MainViewController {
             createUserBean.setImageId(imageId);
             createUserBean.setCaptchaNeeded(false);
         }
+
+		if (com.liferay.portal.kernel.util.Validator.isNotNull(country)) {
+			createUserBean.setCountry(country);
+		}
     }
 	
 
@@ -218,7 +236,7 @@ public class MainViewController {
 				response.setRenderParameter("recaptchaError", "true");
 			} else {
 				try {
-					completeRegistration(request, response, newAccountBean, redirect, false);
+					completeRegistration(request, response, newAccountBean, null, false);
 
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
@@ -319,20 +337,12 @@ public class MainViewController {
 
         if (newAccountBean.getShortBio() != null
                 && newAccountBean.getShortBio().length() > 0) {
-            ExpandoValueLocalServiceUtil.addValue(
-                    User.class.getName(),
-                    CommunityConstants.EXPANDO,
-                    CommunityConstants.BIO, user.getUserId(),
-                    newAccountBean.getShortBio());
+			setExpandoValue(user, CommunityConstants.BIO, newAccountBean.getShortBio());
         }
 
         if (newAccountBean.getCountry() != null
                 && newAccountBean.getCountry().length() > 0) {
-            ExpandoValueLocalServiceUtil.addValue(
-                    User.class.getName(),
-                    CommunityConstants.EXPANDO,
-                    CommunityConstants.COUNTRY, user.getUserId(),
-                    newAccountBean.getCountry());
+			setExpandoValue(user, CommunityConstants.COUNTRY, newAccountBean.getCountry());
         }
 
         if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
@@ -346,6 +356,13 @@ public class MainViewController {
                 _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
             }
         }
+
+		// City
+		String city = (String) portletSession.getAttribute(SSOKeys.SSO_CITY,PortletSession.APPLICATION_SCOPE);
+		if (com.liferay.portal.kernel.util.Validator.isNotNull(city)) {
+			setExpandoValue(user, CommunityConstants.CITY, city);
+			portletSession.removeAttribute(SSOKeys.SSO_CITY);
+		}
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)){
@@ -408,4 +425,25 @@ public class MainViewController {
 
         response.sendRedirect(redirect);
     }
+
+	private static void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
+		ExpandoValueLocalServiceUtil.addValue(
+				user.getCompanyId(),
+				User.class.getName(),
+				CommunityConstants.EXPANDO,
+				valueName,
+				user.getUserId(),
+				data);
+	}
+
+	private String getCountryFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
+		try {
+			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
+			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
+				return location.getCountryName();
+			}
+		} finally {
+			throw new UserLocationNotResolveableException("Could not retrieve country from IP address");
+		}
+	}
 }
