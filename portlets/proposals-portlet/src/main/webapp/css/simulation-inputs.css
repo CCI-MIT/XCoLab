@@ -279,10 +279,6 @@ table.mainTabs .inputTabStyle td.RtTop,
 	margin-top: 5px;
 }
 
-.wizardScreen {
-	display: none;
-}
-
 .wizardScreen .inputContainer {
 	width: 20px;
 	padding-top: 15px;
@@ -326,4 +322,104 @@ table.mainTabs .inputTabStyle td.RtTop,
 
 .wizardScreen .table tr td {
 	background: #ffffff;
+}
+
+/*
+This is the visible area of you carousel.
+Set a width here to define how much items are visible.
+The width can be either fixed in px or flexible in %.
+Position must be relative!
+*/
+.wizardScreensContainer {
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+    width: 480px;
+}
+
+/*
+This is the container of the carousel items.
+You must ensure that the position is relative or absolute and
+that the width is big enough to contain all items.
+*/
+.wizardScreensContainer .wizardScreensCarouselContainer {
+    width: 20000em;
+    position: relative;
+
+    /* Optional, required in this case since it's a <ul> element */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+These are the item elements. jCarousel works best, if the items
+have a fixed width and height (but it's not required).
+*/
+.wizardScreensContainer .wizardScreen {
+    /* Required only for block elements like <li>'s */
+    float: left;
+    width: 480px;
+}
+
+.wizardScreen .wizardTooltipPlaceholder {
+	display: inline-block;
+}
+
+
+.wizardScreen .wizardTooltipPlaceholder:after {
+	margin-left: 3px;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	content: "\e085";
+}
+
+.ui-tooltip, .arrow:after {
+    background: black;
+    border: 2px solid black;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 7px black;
+    max-width: 300px;
+  }
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    tranform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -20px;
+    top: auto;
+  }
+  
+.wizardControls {
+  	text-align: right;
 }

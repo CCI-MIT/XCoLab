@@ -10,19 +10,18 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var that = this;
 		console.log("creating custom inputs renderer");
 		
-		jQuery(modelingWidget).on('scenarioFetched', function(event) {
-			/*if (event.model.usesCustomInputs) {
-			  // do nothing
-			}*/
+		jQuery(modelingWidget).on('scenarioRendered', function(event) {
+			console.log("updating wizard outputs", that);
+			that.updateSelectedOptionsInfo();
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
 			if (event.model.usesCustomInputs) {
 				that.model = event.model;
 				that.render(modelingWidget.container, event.model);
-				that.modelingWidget.container.find('.runmodel').hide();
 			}
 		});
+		
 	}
 	
 	CustomInputsRenderer.prototype = new XCoLab.modeling.BaseXCoLabModelingRenderer();
@@ -43,10 +42,16 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			self.definition = definition;
 			self.container.empty();
 			self.screensStack = [];
+			var screensContainer = $("<div class='wizardScreensContainer'><div class='wizardScreensCarouselContainer'></div></div>");
 			$(definition.screens).each(function(key, screen) {
 				var screenHtml = [];
 				
 				screenHtml.push("<div class='wizardScreen' id='screen_" + screen.name + "'>");
+				screenHtml.push("<div class='wizardControls'>" +
+						"<button class='btn wizardNavigateBack'>Back</button> " +
+						"<button class='btn btn-primary wizardNavigateNext'>Next</button> " + 
+						"<button class='btn btn-primary btn-success wizardRunTheModel'>Run the model</button>" +
+						"</div>");
 				screenHtml.push("<h3>");
 				screenHtml.push(screen.title);
 				screenHtml.push("</h3>");
@@ -93,29 +98,50 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				});
 				screenHtml.push("</table>");
 				screenHtml.push(screen.inputsFooter);
+				screenHtml.push("<div class='wizardControls'>" +
+						"<button class='btn wizardNavigateBack'>Back</button> " +
+						"<button class='btn btn-primary wizardNavigateNext'>Next</button> " + 
+						"<button class='btn btn-primary btn-success wizardRunTheModel'>Run the model</button>" +
+						"</div>");
 				screenHtml.push("</div>");
-				self.container.append(screenHtml.join(''));
+				screensContainer.find('.wizardScreensCarouselContainer').append(screenHtml.join(''));
 			});
-			
+
+			self.container.append(screensContainer);
+			self.screensCarousel = screensContainer.jcarousel();
 			self.showScreen(self.definition.defaultScreen);
-			self.container.append("<div class='row'><div class='col-md-4'><button class='btn wizardNavigateBack'>Back</button></div>" + 
-					"<div class='col-md-4'><button class='btn btn-primary wizardRunTheModel'>Run the model</button></div></div>");
+			
+			// initialize tooltips
+			self.container.find(".wizardTooltipPlaceholder").each(function (key, elem, o3) {
+				var elem = $(elem);
+				for (var i = 0; i < self.definition.tooltips.length; i++) {
+					var tooltipDef = self.definition.tooltips[i];
+					if (tooltipDef.id == elem.data('tooltip-id')) {
+						elem.attr('data-toggle', 'tooltip');
+						elem.attr('data-placement', 'right');
+						elem.attr('title', tooltipDef.text);
+						elem.tooltip({html: true});
+					}
+				}
+				
+			});
 			
 		}
 		this.showScreen = function(screenName, dontPushBack) {
 			for (var i in self.definition.screens) {
 				var screen = self.definition.screens[i];
 				if (screen.name == screenName) {
-					// hide visible screens
-					self.container.find('.wizardScreen').hide();
-					console.log('showing screen: ', screenName);
-					$('#screen_' + screenName).show();
+					var screenElem = $('#screen_' + screenName);
+					self.container.find(".wizardScreensContainer").jcarousel('scroll', screenElem);
 					if (dontPushBack) {
 						// 
 					}
 					else {
 						self.screensStack.push(screenName);
 					}
+					
+					screenElem.find(".selected").removeClass('selected');
+					
 					// show hide options
 					$(screen.options).each(function(key, option) {
 						// check if option is to be displayed
@@ -126,7 +152,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						}
 						else {
 							for (var key in option.dontShowIf) {
-								if (! (key in self.values) || self.values[key] != option.dontShowIf[key]) {
+								if (! (key in self.values) || self.values[key].value != option.dontShowIf[key]) {
 									// constrained variable doesn't exist in values set - show the option
 									// constraint on input value exists but value if different - show the option
 									hideOption = false;
@@ -142,18 +168,17 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						}
 					});
 					
+					this.screensCarousel.get(0).scrollIntoView();
+					
+					
 				}
 			}
-			if (self.screensStack.length > 1) {
-				self.container.find(".wizardNavigateBack").show();
-			} else {
-				self.container.find(".wizardNavigateBack").hide();
-			}
+			this.updateCurrentScreenButtons();
+			this.updateSelectedOptionsInfo();
 		}
 		
 		this.navigateBack = function() {
 			// remove all options defined in current screen
-			console.log('navigate back', self.screensStack, self.screensStack.length);
 			if (self.screensStack.length <= 1) return;
 			
 			var currentScreen = self.screensStack.pop();
@@ -163,7 +188,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				if (screen.name == currentScreen || screen.name == previousScreen) {
 					for (var k in screen.options) {
 						if (screen.options[k].name in self.values) {
-							console.log('deleting', self.options, screen.options[k].name);
 							delete self.values[screen.options[k].name];
 							self.container.find('input[name="' + screen.options[k].name + '"]').removeAttr('checked').removeClass('selected');
 							self.container.find(".wizardRunTheModel").hide();
@@ -176,6 +200,42 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			
 			
 		}
+		this.findCurrentScreenTransition = function() {
+			var currentScreen = self.screensStack[self.screensStack.length-1];
+			var inputValsKey = [];
+			for (var key in self.values) {
+				inputValsKey.push(key + "=" + self.values[key].value);
+			}
+			console.log(inputValsKey, currentScreen);
+			inputValsKey.sort();
+			
+			var transitionKey = inputValsKey.join(',');
+			// check if a transition should be made
+			for (var i in self.definition.transitions) {
+				var transition = self.definition.transitions[i];
+				if (transition.fromScreen == currentScreen) {
+					var transitionMatched = true;
+					for (var k in transition.conditions) {
+						var condition = transition.conditions[k];
+						if (transitionKey.indexOf(condition) < 0) {
+							transitionMatched = false;
+							break;
+						}
+					}
+					if (transitionMatched) {
+						console.log('should execute transition', transition);
+						return transition;
+					}
+				}
+			}
+			console.log("no transition can be found", currentScreen, self.values);
+		}
+		this.navigateNext = function() {
+			var transition = this.findCurrentScreenTransition();
+			if (transition) {
+				this.processTransition(transition);
+			}
+		}
 		
 		this.processTransition = function(transition) {
 			console.log('processing transition', transition);
@@ -187,6 +247,105 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				self.container.find('.wizardRunTheModel').show();
 			}
 		}
+		
+		this.updateCurrentScreenButtons = function() {
+			var currentScreen = self.screensStack[self.screensStack.length-1];
+			var transition = this.findCurrentScreenTransition();
+			var screenElem = $("#screen_" + currentScreen);
+			
+
+			if (self.screensStack.length > 1) {
+				screenElem.find(".wizardNavigateBack").show();
+			} else {
+				screenElem.find(".wizardNavigateBack").hide();
+			}
+			
+			var showRun = false, showNext = false;
+			if (transition) {
+				if (transition.showRunButton && screenElem.find('.selected').length > 0) {
+					screenElem.find('.wizardRunTheModel').show();
+					showRun = true;
+				}
+			}
+			if (!showRun) {
+				screenElem.find('.wizardRunTheModel').hide();
+				if (screenElem.find('.selected').length > 0) {
+					screenElem.find(".wizardNavigateNext").show();
+					showNext = true;
+				}
+			}
+			if (!showNext) {
+				screenElem.find(".wizardNavigateNext").hide();
+			}
+			console.log("showing current screen buttons", showNext, showRun);
+		}
+		
+		this.updateWizardOutputsValues = function() {
+			var resultToReturn = false;
+			for (var i = 0; i < self.definition.results.length; i++) {
+				var result = self.definition.results[i];
+				var resultFound = true;
+				for (var key in self.values) {
+					if (!(key in result.values)) {
+						resultFound = false;
+						break;
+					} 
+					if (result.values[key] != self.values[key].value) {
+						resultFound = false;
+						break;
+					}
+				}
+				if (resultFound) {
+					resultToReturn = result;
+					break;
+					
+				}
+			}
+			var outputs = self.definition.defaultOutputs;
+			if (resultToReturn) {
+				outputs = resultToReturn.outputs;
+				
+			}
+			// remove all valueBinding inputs to update it with new ones
+				
+			self.container.find(".valueBinding").remove();
+			for (var key in outputs) {
+				// find model input for given name
+				var found = false;
+				for (var i = 0; i < self.model.inputs.length; i++) {
+					var input = self.model.inputs[i];
+					if (input.metaData.internalName == key) {
+						container.append("<input type='hidden' data-id='" + input.metaData.id + "' value='" + resultToReturn.outputs[key] + "' class='valueBinding' />");
+						found = true; 
+						break;
+					}
+				}
+				if (!found) {
+					console.error("Can't find model input for name: " + key);
+				}
+			}
+			
+			
+		}
+		
+		this.updateSelectedOptionsInfo = function() {
+			var selectedOptionsHtml = [];
+			selectedOptionsHtml.push("<ul class='wizardSelectedOptionsInfo'>");
+			
+			for (var key in self.values) {
+				console.log("Update selected options info....: ", self.values, key);
+				selectedOptionsHtml.push("<li><strong>");
+				selectedOptionsHtml.push(self.values[key].screen);
+				selectedOptionsHtml.push("</strong>: ");
+				selectedOptionsHtml.push(self.values[key].name);
+				selectedOptionsHtml.push("</li>");
+			}
+			
+			selectedOptionsHtml.push("</ul>");
+			
+			$(".act-edit_right .wizardSelectedOptionsInfo").remove();
+			$(".act-edit_right").append(selectedOptionsHtml.join(''));
+		};
 
 		this.container.on('click', '.option-description-short', function(event) {
 			
@@ -204,50 +363,25 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		this.container.on('click', '.optionDef', function(event, val1, val2, val3) {
-			console.log('click on option def', event);
+			self.updateWizardOutputsValues();
 			var currentScreen = self.screensStack[self.screensStack.length-1];
+			console.log('click on option def', event);
 			
 			var input = $(event.currentTarget);
 			input.siblings().removeClass('selected');
 			input.addClass('selected');
-			console.log('option selector clicked', input.val(), input.attr('value'));
-			//if (input.is(':checked')) {
-				// add input to selected values input set
-				self.values[input.attr('name')] = input.attr('value');
-			/*}
-			else {
-				// remove input from selected values input set
-				delete self.values[input.attr('name')];
-				return;
-			}*/
-			var inputValsKey = [];
-			for (var key in self.values) {
-				inputValsKey.push(key + "=" + self.values[key]);
-			}
-			console.log(inputValsKey, currentScreen);
-			inputValsKey.sort();
-			
-			var transitionKey = inputValsKey.join(',');
-			// check if a transition should be made
-			console.log(transitionKey);
-			for (var i in self.definition.transitions) {
-				var transition = self.definition.transitions[i];
-				if (transition.fromScreen == currentScreen) {
-					var transitionMatched = true;
-					for (var k in transition.conditions) {
-						var condition = transition.conditions[k];
-						if (transitionKey.indexOf(condition) < 0) {
-							transitionMatched = false;
-							break;
-						}
-					}
-					if (transitionMatched) {
-						console.log('should execute transition', transition);
-						self.processTransition(transition);
-						return;
-					}
-				}
-			}
+			self.values[input.attr('name')] = {
+					value: input.attr('value'), 
+					screen: input.parents(".wizardScreen").find("h3").text(), 
+					name: input.find("h6").text()
+			};
+			self.updateCurrentScreenButtons();
+			self.updateSelectedOptionsInfo();
+		});
+		
+
+		this.container.on('click', '.wizardNavigateNext', function() {
+			self.navigateNext();
 			
 		});
 		
@@ -257,69 +391,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		this.container.on('click', '.wizardRunTheModel', function() {
-			var inputValsKey = [];
-			for (var key in self.values) {
-				inputValsKey.push(key + "=" + self.values[key]);
-			}
-			inputValsKey.sort();
-			
-			var transitionKey = inputValsKey.join(',');
-			// find mapping 
-			var resultToReturn = false;
-			for (var i = 0; i < self.definition.results.length; i++) {
-				var result = self.definition.results[i];
-				var resultFound = true;
-				for (var key in self.values) {
-					if (!(key in result.values)) {
-						resultFound = false;
-						break;
-					} 
-					if (result.values[key] != self.values[key]) {
-						resultFound = false;
-						break;
-					}
-				}
-				if (resultFound) {
-					resultToReturn = result;
-					break;
-					
-				}
-			}
-			if (resultToReturn) {
-				// remove all valueBinding inputs
-				console.log("removing value bindings");
-				
-				self.container.find(".valueBinding").remove();
-				console.log(resultToReturn.outputs);
-				for (var key in resultToReturn.outputs) {
-					// find input for given name
-					var found = false;
-					for (var i = 0; i < self.model.inputs.length; i++) {
-						var input = self.model.inputs[i];
-						if (input.metaData.internalName == key) {
-							container.append("<input type='hidden' data-id='" + input.metaData.id + "' value='" + resultToReturn.outputs[key] + "' class='valueBinding' />");
-							found = true; 
-							break;
-						}
-					}
-					if (!found) {
-						console.error("Can't find model input for name: " + key);
-					}
-					
-					
-					
-				}
-				self.modelingWidget.runTheModel();
-			}
-			else {
-				console.log("not found for values: ", self.values);
-			}
-			
-			
-			
+			self.updateWizardOutputsValues();
+			self.modelingWidget.runTheModel();
 		});
 		
 		this.renderDefinition(eval("(" + model.customInputsDefinition + ")"));
+
+		self.updateWizardOutputsValues();
+		self.updateSelectedOptionsInfo();
 	};
 	
 	CustomInputsRenderer.prototype.renderView = function(container, model) {

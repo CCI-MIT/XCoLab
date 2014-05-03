@@ -282,3 +282,26 @@ table.jqplot-table-legend, table.jqplot-cursor-legend { position: static; width:
 td.jqplot-table-legend {vertical-align: top; }
 
 td.jqplot-table-legend > div {border: 0;}
+
+.rounded_button.blugrid.outputTabTrigger a {
+	padding-bottom: 20px;
+}
+
+.actions-edit_chart-head-bg {
+	width: 489px;
+}
+
+.jqplot-yaxis-tick {
+	left: 10px;
+}
+.jqplot-yaxis-label {
+	left: -10px !important;
+}
+
+.jqplot-axis.jqplot-xaxis {
+		top: 270px;
+}
+
+.acthead-r.edit {
+	height: 60px;
+} 
