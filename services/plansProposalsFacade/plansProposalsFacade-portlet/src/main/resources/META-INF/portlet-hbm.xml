@@ -23,6 +23,7 @@
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
 	<import class="com.ext.portlet.model.LandingPage" />
+	<import class="com.ext.portlet.model.LoginLog" />
 	<import class="com.ext.portlet.model.Message" />
 	<import class="com.ext.portlet.model.MessageRecipientStatus" />
 	<import class="com.ext.portlet.model.MessagingIgnoredRecipients" />
@@ -353,6 +354,18 @@
 		<property name="baseUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="targetUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="updated" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.LoginLogImpl" table="xcolab_LoginLog">
+		<cache usage="read-write" />
+		<id name="pk" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="ipAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="entryUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.MessageImpl" table="xcolab_Message">
 		<cache usage="read-write" />

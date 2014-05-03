@@ -23,6 +23,7 @@ import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
+import com.ext.portlet.service.persistence.LoginLogPersistence;
 import com.ext.portlet.service.persistence.MessagePersistence;
 import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
@@ -232,6 +233,12 @@ public abstract class PlanModelRunServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.LandingPageService landingPageService;
     @BeanReference(type = LandingPagePersistence.class)
     protected LandingPagePersistence landingPagePersistence;
+    @BeanReference(type = com.ext.portlet.service.LoginLogLocalService.class)
+    protected com.ext.portlet.service.LoginLogLocalService loginLogLocalService;
+    @BeanReference(type = com.ext.portlet.service.LoginLogService.class)
+    protected com.ext.portlet.service.LoginLogService loginLogService;
+    @BeanReference(type = LoginLogPersistence.class)
+    protected LoginLogPersistence loginLogPersistence;
     @BeanReference(type = com.ext.portlet.service.MessageLocalService.class)
     protected com.ext.portlet.service.MessageLocalService messageLocalService;
     @BeanReference(type = com.ext.portlet.service.MessageService.class)
@@ -1794,6 +1801,62 @@ public abstract class PlanModelRunServiceBaseImpl extends BaseServiceImpl
     public void setLandingPagePersistence(
         LandingPagePersistence landingPagePersistence) {
         this.landingPagePersistence = landingPagePersistence;
+    }
+
+    /**
+     * Returns the login log local service.
+     *
+     * @return the login log local service
+     */
+    public com.ext.portlet.service.LoginLogLocalService getLoginLogLocalService() {
+        return loginLogLocalService;
+    }
+
+    /**
+     * Sets the login log local service.
+     *
+     * @param loginLogLocalService the login log local service
+     */
+    public void setLoginLogLocalService(
+        com.ext.portlet.service.LoginLogLocalService loginLogLocalService) {
+        this.loginLogLocalService = loginLogLocalService;
+    }
+
+    /**
+     * Returns the login log remote service.
+     *
+     * @return the login log remote service
+     */
+    public com.ext.portlet.service.LoginLogService getLoginLogService() {
+        return loginLogService;
+    }
+
+    /**
+     * Sets the login log remote service.
+     *
+     * @param loginLogService the login log remote service
+     */
+    public void setLoginLogService(
+        com.ext.portlet.service.LoginLogService loginLogService) {
+        this.loginLogService = loginLogService;
+    }
+
+    /**
+     * Returns the login log persistence.
+     *
+     * @return the login log persistence
+     */
+    public LoginLogPersistence getLoginLogPersistence() {
+        return loginLogPersistence;
+    }
+
+    /**
+     * Sets the login log persistence.
+     *
+     * @param loginLogPersistence the login log persistence
+     */
+    public void setLoginLogPersistence(LoginLogPersistence loginLogPersistence) {
+        this.loginLogPersistence = loginLogPersistence;
     }
 
     /**

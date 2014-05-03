@@ -1,6 +1,7 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
@@ -131,6 +132,7 @@ public class OpenIdController {
 
                 actionResponse.sendRedirect(redirectUrl);
                 ImageUploadUtils.updateProfilePicture(user, profilePicURL);
+				LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
             }
             catch (NoSuchUserException nsue) {
                 // try to get user by email
@@ -147,6 +149,7 @@ public class OpenIdController {
                     UserLocalServiceUtil.updateUser(user);
                     session.setAttribute(SSOKeys.OPEN_ID_LOGIN, new Long(user.getUserId()));
                     actionResponse.sendRedirect(redirectUrl);
+					LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
 
                     ImageUploadUtils.updateProfilePicture(user, profilePicURL);
                     user.getPortraitURL(themeDisplay);

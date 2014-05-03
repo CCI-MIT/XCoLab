@@ -1,6 +1,8 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.service.LoginLogLocalService;
+import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.NoSuchUserException;
@@ -154,6 +156,7 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
                 }
 
+				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
 				response.sendRedirect(redirectUrl);
 				return;
             }
@@ -181,6 +184,8 @@ public class FacebookController {
                 }
 
 				updateUserAccountInformation(httpReq, user, jsonObject);
+
+				LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
 				response.sendRedirect(redirectUrl);
 				return;
             }

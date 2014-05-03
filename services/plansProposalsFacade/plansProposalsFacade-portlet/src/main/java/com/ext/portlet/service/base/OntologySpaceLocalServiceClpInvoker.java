@@ -41,16 +41,16 @@ public class OntologySpaceLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName502;
-    private String[] _methodParameterTypes502;
-    private String _methodName503;
-    private String[] _methodParameterTypes503;
     private String _methodName508;
     private String[] _methodParameterTypes508;
     private String _methodName509;
     private String[] _methodParameterTypes509;
-    private String _methodName510;
-    private String[] _methodParameterTypes510;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
+    private String _methodName515;
+    private String[] _methodParameterTypes515;
+    private String _methodName516;
+    private String[] _methodParameterTypes516;
 
     public OntologySpaceLocalServiceClpInvoker() {
         _methodName0 = "addOntologySpace";
@@ -135,29 +135,29 @@ public class OntologySpaceLocalServiceClpInvoker {
                 "com.ext.portlet.model.OntologySpace"
             };
 
-        _methodName502 = "getBeanIdentifier";
+        _methodName508 = "getBeanIdentifier";
 
-        _methodParameterTypes502 = new String[] {  };
+        _methodParameterTypes508 = new String[] {  };
 
-        _methodName503 = "setBeanIdentifier";
+        _methodName509 = "setBeanIdentifier";
 
-        _methodParameterTypes503 = new String[] { "java.lang.String" };
+        _methodParameterTypes509 = new String[] { "java.lang.String" };
 
-        _methodName508 = "createSpace";
+        _methodName514 = "createSpace";
 
-        _methodParameterTypes508 = new String[] {
+        _methodParameterTypes514 = new String[] {
                 "java.lang.String", "java.lang.String"
             };
 
-        _methodName509 = "store";
+        _methodName515 = "store";
 
-        _methodParameterTypes509 = new String[] {
+        _methodParameterTypes515 = new String[] {
                 "com.ext.portlet.model.OntologySpace"
             };
 
-        _methodName510 = "getTopTerm";
+        _methodName516 = "getTopTerm";
 
-        _methodParameterTypes510 = new String[] {
+        _methodParameterTypes516 = new String[] {
                 "com.ext.portlet.model.OntologySpace"
             };
     }
@@ -251,33 +251,33 @@ public class OntologySpaceLocalServiceClpInvoker {
             return OntologySpaceLocalServiceUtil.updateOntologySpace((com.ext.portlet.model.OntologySpace) arguments[0]);
         }
 
-        if (_methodName502.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return OntologySpaceLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName503.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             OntologySpaceLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName508.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             return OntologySpaceLocalServiceUtil.createSpace((java.lang.String) arguments[0],
                 (java.lang.String) arguments[1]);
         }
 
-        if (_methodName509.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             OntologySpaceLocalServiceUtil.store((com.ext.portlet.model.OntologySpace) arguments[0]);
 
             return null;
         }
 
-        if (_methodName510.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
             return OntologySpaceLocalServiceUtil.getTopTerm((com.ext.portlet.model.OntologySpace) arguments[0]);
         }
 

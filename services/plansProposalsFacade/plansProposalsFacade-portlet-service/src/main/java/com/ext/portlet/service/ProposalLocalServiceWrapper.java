@@ -1019,7 +1019,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-    * <p>Sends a request to join proposal teamp</p>
+    * <p>Sends a request to join proposal team</p>
     *
     * @param proposalId proposal id
     * @param userId     user id

@@ -41,28 +41,28 @@ public class MessageRecipientStatusLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName502;
-    private String[] _methodParameterTypes502;
-    private String _methodName503;
-    private String[] _methodParameterTypes503;
     private String _methodName508;
     private String[] _methodParameterTypes508;
     private String _methodName509;
     private String[] _methodParameterTypes509;
-    private String _methodName510;
-    private String[] _methodParameterTypes510;
-    private String _methodName511;
-    private String[] _methodParameterTypes511;
-    private String _methodName512;
-    private String[] _methodParameterTypes512;
-    private String _methodName513;
-    private String[] _methodParameterTypes513;
     private String _methodName514;
     private String[] _methodParameterTypes514;
     private String _methodName515;
     private String[] _methodParameterTypes515;
     private String _methodName516;
     private String[] _methodParameterTypes516;
+    private String _methodName517;
+    private String[] _methodParameterTypes517;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
+    private String _methodName520;
+    private String[] _methodParameterTypes520;
+    private String _methodName521;
+    private String[] _methodParameterTypes521;
+    private String _methodName522;
+    private String[] _methodParameterTypes522;
 
     public MessageRecipientStatusLocalServiceClpInvoker() {
         _methodName0 = "addMessageRecipientStatus";
@@ -147,49 +147,49 @@ public class MessageRecipientStatusLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessageRecipientStatus"
             };
 
-        _methodName502 = "getBeanIdentifier";
+        _methodName508 = "getBeanIdentifier";
 
-        _methodParameterTypes502 = new String[] {  };
+        _methodParameterTypes508 = new String[] {  };
 
-        _methodName503 = "setBeanIdentifier";
+        _methodName509 = "setBeanIdentifier";
 
-        _methodParameterTypes503 = new String[] { "java.lang.String" };
+        _methodParameterTypes509 = new String[] { "java.lang.String" };
 
-        _methodName508 = "countByMessageId";
+        _methodName514 = "countByMessageId";
 
-        _methodParameterTypes508 = new String[] { "long" };
+        _methodParameterTypes514 = new String[] { "long" };
 
-        _methodName509 = "findByMessageId";
+        _methodName515 = "findByMessageId";
 
-        _methodParameterTypes509 = new String[] { "long", "int", "int" };
+        _methodParameterTypes515 = new String[] { "long", "int", "int" };
 
-        _methodName510 = "countArchivedMessagesForUser";
+        _methodName516 = "countArchivedMessagesForUser";
 
-        _methodParameterTypes510 = new String[] { "long" };
+        _methodParameterTypes516 = new String[] { "long" };
 
-        _methodName511 = "findArchivedMessagesForUser";
+        _methodName517 = "findArchivedMessagesForUser";
 
-        _methodParameterTypes511 = new String[] { "long", "int", "int" };
+        _methodParameterTypes517 = new String[] { "long", "int", "int" };
 
-        _methodName512 = "countInboxMessagesForUser";
+        _methodName518 = "countInboxMessagesForUser";
 
-        _methodParameterTypes512 = new String[] { "long" };
+        _methodParameterTypes518 = new String[] { "long" };
 
-        _methodName513 = "findInboxMessagesForUser";
+        _methodName519 = "findInboxMessagesForUser";
 
-        _methodParameterTypes513 = new String[] { "long", "int", "int" };
+        _methodParameterTypes519 = new String[] { "long", "int", "int" };
 
-        _methodName514 = "findByMessageRecipient";
+        _methodName520 = "findByMessageRecipient";
 
-        _methodParameterTypes514 = new String[] { "long", "long" };
+        _methodParameterTypes520 = new String[] { "long", "long" };
 
-        _methodName515 = "countUnreadMessages";
+        _methodName521 = "countUnreadMessages";
 
-        _methodParameterTypes515 = new String[] { "long" };
+        _methodParameterTypes521 = new String[] { "long" };
 
-        _methodName516 = "didReceiveJudgeCommentForProposal";
+        _methodName522 = "didReceiveJudgeCommentForProposal";
 
-        _methodParameterTypes516 = new String[] {
+        _methodParameterTypes522 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.liferay.portal.model.User"
             };
@@ -284,67 +284,67 @@ public class MessageRecipientStatusLocalServiceClpInvoker {
             return MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus((com.ext.portlet.model.MessageRecipientStatus) arguments[0]);
         }
 
-        if (_methodName502.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName503.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             MessageRecipientStatusLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName508.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.countByMessageId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName509.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.findByMessageId(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName510.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.countArchivedMessagesForUser(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName511.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
+        if (_methodName517.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.findArchivedMessagesForUser(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.countInboxMessagesForUser(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.findInboxMessagesForUser(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName520.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.findByMessageRecipient(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName521.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.countUnreadMessages(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName516.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+        if (_methodName522.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
             return MessageRecipientStatusLocalServiceUtil.didReceiveJudgeCommentForProposal((com.ext.portlet.model.Proposal) arguments[0],
                 (com.liferay.portal.model.User) arguments[1]);
         }

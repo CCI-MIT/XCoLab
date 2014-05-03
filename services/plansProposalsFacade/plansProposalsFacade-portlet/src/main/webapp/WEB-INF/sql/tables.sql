@@ -231,6 +231,16 @@ create table xcolab_LandingPage (
 	updated DATE null
 );
 
+create table xcolab_LoginLog (
+	pk LONG not null primary key,
+	userId LONG,
+	createDate DATE null,
+	ipAddress VARCHAR(75) null,
+	city VARCHAR(75) null,
+	country VARCHAR(75) null,
+	entryUrl VARCHAR(75) null
+);
+
 create table xcolab_Message (
 	messageId LONG not null primary key,
 	fromId LONG,

@@ -289,6 +289,15 @@
 		</field>
 		<field name="updated" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.LoginLog">
+		<field name="pk" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="ipAddress" type="String" />
+		<field name="city" type="String" />
+		<field name="country" type="String" />
+		<field name="entryUrl" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.Message">
 		<field name="messageId" type="long" />
 		<field name="fromId" type="long" />

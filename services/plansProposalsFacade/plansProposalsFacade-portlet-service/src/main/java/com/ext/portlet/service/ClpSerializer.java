@@ -21,6 +21,7 @@ import com.ext.portlet.model.EmailListClp;
 import com.ext.portlet.model.FocusAreaClp;
 import com.ext.portlet.model.FocusAreaOntologyTermClp;
 import com.ext.portlet.model.LandingPageClp;
+import com.ext.portlet.model.LoginLogClp;
 import com.ext.portlet.model.MessageClp;
 import com.ext.portlet.model.MessageRecipientStatusClp;
 import com.ext.portlet.model.MessagingIgnoredRecipientsClp;
@@ -247,6 +248,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(LandingPageClp.class.getName())) {
             return translateInputLandingPage(oldModel);
+        }
+
+        if (oldModelClassName.equals(LoginLogClp.class.getName())) {
+            return translateInputLoginLog(oldModel);
         }
 
         if (oldModelClassName.equals(MessageClp.class.getName())) {
@@ -709,6 +714,16 @@ public class ClpSerializer {
         LandingPageClp oldClpModel = (LandingPageClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getLandingPageRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputLoginLog(BaseModel<?> oldModel) {
+        LoginLogClp oldClpModel = (LoginLogClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getLoginLogRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1418,6 +1433,10 @@ public class ClpSerializer {
             return translateOutputLandingPage(oldModel);
         }
 
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.LoginLogImpl")) {
+            return translateOutputLoginLog(oldModel);
+        }
+
         if (oldModelClassName.equals("com.ext.portlet.model.impl.MessageImpl")) {
             return translateOutputMessage(oldModel);
         }
@@ -2006,6 +2025,10 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchLandingPageException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchLoginLogException")) {
+            return new com.ext.portlet.NoSuchLoginLogException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchMessageException")) {
             return new com.ext.portlet.NoSuchMessageException();
         }
@@ -2472,6 +2495,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setLandingPageRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputLoginLog(BaseModel<?> oldModel) {
+        LoginLogClp newModel = new LoginLogClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setLoginLogRemoteModel(oldModel);
 
         return newModel;
     }

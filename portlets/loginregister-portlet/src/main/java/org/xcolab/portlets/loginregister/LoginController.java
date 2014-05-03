@@ -9,6 +9,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +86,8 @@ public class LoginController {
             if (user == null) {
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
             }
+
+			LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
 
         } catch (Exception e) {
             if (e instanceof AuthException) {

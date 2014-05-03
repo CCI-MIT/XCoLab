@@ -407,6 +407,23 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.LoginLogModelImpl">
+		<attributes>
+			<id name="pk" />
+			<basic name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="ipAddress" />
+			<basic name="city" />
+			<basic name="country" />
+			<basic name="entryUrl" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.MessageModelImpl">
 		<attributes>
 			<id name="messageId" />
@@ -1336,6 +1353,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.LandingPageImpl" name="LandingPage">
 		<table name="xcolab_LandingPage" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.LoginLogImpl" name="LoginLog">
+		<table name="xcolab_LoginLog" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.MessageImpl" name="Message">

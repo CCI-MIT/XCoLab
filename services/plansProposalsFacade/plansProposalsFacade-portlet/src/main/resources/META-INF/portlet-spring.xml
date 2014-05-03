@@ -78,6 +78,9 @@
 	<bean id="com.ext.portlet.service.LandingPageLocalService" class="com.ext.portlet.service.impl.LandingPageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.LandingPageService" class="com.ext.portlet.service.impl.LandingPageServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.LandingPagePersistence" class="com.ext.portlet.service.persistence.LandingPagePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.LoginLogLocalService" class="com.ext.portlet.service.impl.LoginLogLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.LoginLogService" class="com.ext.portlet.service.impl.LoginLogServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.LoginLogPersistence" class="com.ext.portlet.service.persistence.LoginLogPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessageLocalService" class="com.ext.portlet.service.impl.MessageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessageService" class="com.ext.portlet.service.impl.MessageServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MessagePersistence" class="com.ext.portlet.service.persistence.MessagePersistenceImpl" parent="basePersistence" />
