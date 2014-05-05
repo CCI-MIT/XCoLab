@@ -78,7 +78,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 			}
 
 			int curDaysBetween = DateUtil.getDaysBetween(new Date(activity.getCreateDate()), now, TimeZone.getDefault());
-			activities.add(new SocialActivityWrapper(activity, curDaysBetween, lastDaysBetween < curDaysBetween, i % 2 == 1, request));
+			activities.add(new SocialActivityWrapper(activity, curDaysBetween, lastDaysBetween < curDaysBetween, i % 2 == 1, request, feedsPreferences.getFeedMaxLength()));
 			lastDaysBetween = curDaysBetween;
 			i++;
 		}

@@ -445,13 +445,14 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .activitybox.blu {background:#f3f8fa;}
 .activitybox.bottom {border-bottom:none;}
 .activitybox .status {float:left; width:50px; height:50px;}
-.activitybox .text {float:left; width:353px; line-height:20px;}
+.activitybox .text {float:left; width:85%; line-height:20px;}
 .activitybox h3 {font-size:14px; color:#545454;}
 
-.activitybox .comment {background:url(../images/icon-activity-comment.png) no-repeat left 16px;}
-.activitybox .edit {background:url(../images/icon-activity-edit.png) no-repeat left 16px;}
+.activitybox .comment {background:url(../images/icon-activity-comment.png) no-repeat left 12px;}
+.activitybox .edit {background:url(../images/icon-activity-edit.png) no-repeat left 12px;}
 .activitybox .new {background:url(../images/icon-activity-new_proposal.png) no-repeat left 12px;}
 .activitybox .up {background:url(../images/icon-activity-thumbs_up.png) no-repeat left 11px;}
+.activitybox .user {background:url(../images/icon-activity-new_user.png) no-repeat left 10px;}
 
 /* ------------------------------------------------------------------------------------------------- */
 

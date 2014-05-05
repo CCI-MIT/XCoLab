@@ -48,6 +48,12 @@
 				<form:select path="feedStyle" items="${feedDisplayStyles }" />
 			</td>
 		</tr>
+        <tr>
+            <td>feed max length:</td>
+            <td>
+                <form:input path="feedMaxLength" />
+            </td>
+        </tr>
 		<tr>
 			<td>remove admin:</td>
 			<td>

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
-import org.xcolab.portlets.feeds.Helper;
+import org.jsoup.Jsoup;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -36,7 +36,7 @@ public class SocialActivityWrapper implements Serializable {
     private PortletRequest request;
 
 
-    public SocialActivityWrapper(SocialActivity activity, int daysBetween, boolean indicateNewDate, boolean odd, PortletRequest request) {
+    public SocialActivityWrapper(SocialActivity activity, int daysBetween, boolean indicateNewDate, boolean odd, PortletRequest request, int maxLength) {
         this.activity = activity;
         this.request = request;
         try {
@@ -53,7 +53,7 @@ public class SocialActivityWrapper implements Serializable {
         long createDay = activity.getCreateDate() / milisecondsInDay;
         long daysNow = new Date().getTime() / milisecondsInDay;
         daysAgo = daysNow - createDay;
-        body = getBodyFromFeedEntry(activityFeedEntry);
+        body = getBodyFromFeedEntry(activityFeedEntry, maxLength);
         if (body != null) {
             body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getUserId());
         }
@@ -61,8 +61,17 @@ public class SocialActivityWrapper implements Serializable {
         this.odd = odd;
     }
     
-    private static String getBodyFromFeedEntry(SocialActivityFeedEntry entry) {
-        return entry != null ? (entry.getBody().trim().equals("") ? entry.getTitle() : entry.getBody()) : null; 
+    private static String getBodyFromFeedEntry(SocialActivityFeedEntry entry, int maxLength) {
+        String body =  entry != null ? (entry.getBody().trim().equals("") ? entry.getTitle() : entry.getBody()) : null;
+		String plainText = Jsoup.parse(body).text();
+
+		if (maxLength > 0 && plainText.length() > maxLength) {
+			String dots = "...";
+			String overflowString = plainText.substring(maxLength - dots.length());
+			body = body.replaceAll(overflowString, dots);
+		}
+
+		return body;
     }
     public String getBody() {
         return body;
@@ -89,7 +98,7 @@ public class SocialActivityWrapper implements Serializable {
     }
     
     public static Boolean isEmpty(SocialActivityFeedEntry entry) {
-        String body = getBodyFromFeedEntry(entry);
+        String body = getBodyFromFeedEntry(entry, 0);
         return body == null || body.trim().length() == 0;
     }
 
@@ -124,40 +133,57 @@ public class SocialActivityWrapper implements Serializable {
     public ActivityType getType() {
         return ActivityType.getType(activity.getClassName(), activity.getType());
     }
-    
+
+
     public static enum ActivityType {
-        SUPPORT("up", "com.ext.portlet.plans.model.PlanItem7", 
-                "com.ext.portlet.plans.model.PlanItem8", 
-                "com.ext.portlet.plans.model.PlanItem9",
-                "com.ext.portlet.plans.model.PlanItem10", 
-                "com.ext.portlet.plans.model.PlanItem11", 
-                "com.ext.portlet.plans.model.PlanItem14", 
-                "com.ext.portlet.plans.model.PlanItem15" 
-                ),
-        EDIT("edit", "com.ext.portlet.plans.model.PlanItem0", 
-                "com.ext.portlet.plans.model.PlanItem2", 
-                "com.ext.portlet.plans.model.PlanItem3", 
-                "com.ext.portlet.plans.model.PlanItem4", 
-                "com.ext.portlet.plans.model.PlanItem5", 
-                "com.ext.portlet.plans.model.PlanItem6",  
-                "com.ext.portlet.plans.model.PlanItem12", 
-                "com.ext.portlet.plans.model.PlanItem13", 
-                "com.ext.portlet.plans.model.PlanItem16", 
-                "com.ext.portlet.plans.model.PlanItem17", 
-                "com.ext.portlet.plans.model.PlanItem18"),
-        NEW("new", "com.ext.portlet.plans.model.PlanItem1"),
-        COMMENT("comment", "com.ext.portlet.discussions.model.DiscussionCategoryGroup0", 
-                "com.ext.portlet.discussions.model.DiscussionCategoryGroup1", 
-                "com.ext.portlet.discussions.model.DiscussionCategoryGroup2",
-                "com.ext.portlet.discussions.model.DiscussionCategoryGroup3",
-                "com.ext.portlet.discussions.model.DiscussionCategoryGroup4",
-                "com.ext.portlet.discussions.model.DiscussionCategoryGroup5");
-        
+		SUPPORT("up", "com.ext.portlet.model.Proposal2",
+				"com.ext.portlet.model.Proposal3",
+				"com.ext.portlet.model.Proposal4",
+				"com.ext.portlet.model.Proposal7",
+				"com.ext.portlet.model.Proposal8",
+				"com.ext.portlet.model.Proposal14",
+				"com.ext.portlet.model.Proposal15",
+				"com.ext.portlet.plans.model.PlanItem7",
+				"com.ext.portlet.plans.model.PlanItem8",
+				"com.ext.portlet.plans.model.PlanItem9",
+				"com.ext.portlet.plans.model.PlanItem10",
+				"com.ext.portlet.plans.model.PlanItem11",
+				"com.ext.portlet.plans.model.PlanItem14",
+				"com.ext.portlet.plans.model.PlanItem15"
+		),
+		EDIT("edit", "com.ext.portlet.model.Proposal1",
+				"com.ext.portlet.model.Proposal5",
+				"com.ext.portlet.model.Proposal6",
+				"com.ext.portlet.plans.model.PlanItem0",
+				"com.ext.portlet.plans.model.PlanItem2",
+				"com.ext.portlet.plans.model.PlanItem3",
+				"com.ext.portlet.plans.model.PlanItem4",
+				"com.ext.portlet.plans.model.PlanItem5",
+				"com.ext.portlet.plans.model.PlanItem6",
+				"com.ext.portlet.plans.model.PlanItem12",
+				"com.ext.portlet.plans.model.PlanItem13",
+				"com.ext.portlet.plans.model.PlanItem16",
+				"com.ext.portlet.plans.model.PlanItem17",
+				"com.ext.portlet.plans.model.PlanItem18"),
+		NEW("new", "com.ext.portlet.model.Proposal0",
+				"com.ext.portlet.plans.model.PlanItem1"),
+		COMMENT("comment", "com.ext.portlet.discussions.model.DiscussionCategoryGroup0",
+				"com.ext.portlet.discussions.model.DiscussionCategoryGroup1",
+				"com.ext.portlet.discussions.model.DiscussionCategoryGroup2",
+				"com.ext.portlet.discussions.model.DiscussionCategoryGroup3",
+				"com.ext.portlet.discussions.model.DiscussionCategoryGroup4",
+				"com.ext.portlet.discussions.model.DiscussionCategoryGroup5"),
+		USER("user", "com.liferay.portal.model.User1",
+				"com.liferay.portal.model.User2",
+				"com.liferay.portal.model.User3",
+				"com.liferay.portal.model.User4",
+				"com.liferay.portal.model.User5");
+
         private final String[] classes;
         private final String displayName;
         private final static Map<String, ActivityType> activityMap = new HashMap<String, SocialActivityWrapper.ActivityType>();
         private final static ActivityType defaultType = COMMENT;
-        
+
         static {
             for (ActivityType t: ActivityType.values()) {
                 for (String clasz: t.classes) {
@@ -165,20 +191,20 @@ public class SocialActivityWrapper implements Serializable {
                 }
             }
         }
-        
+
         public static ActivityType getType(String clasz, int type) {
             ActivityType t = activityMap.get(clasz + type);
             return t == null ? defaultType : t;
         }
-        
+
         ActivityType(String displayName, String...classes) {
             this.displayName = displayName;
             this.classes = classes;
         }
-        
+
         public String getDisplayName() {
             return displayName;
         }
-        
+
     }
 }
