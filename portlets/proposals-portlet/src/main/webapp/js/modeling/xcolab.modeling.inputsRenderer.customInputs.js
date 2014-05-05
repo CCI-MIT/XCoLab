@@ -141,7 +141,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						self.screensStack.push(screenName);
 					}
 					
-					screenElem.find(".selected").removeClass('selected');
+					/*screenElem.find(".selected").removeClass('selected');*/
 					
 					// show hide options
 					$(screen.options).each(function(key, option) {
@@ -186,11 +186,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var previousScreen = self.screensStack[self.screensStack.length-1];
 			for (var i in self.definition.screens) {
 				var screen = self.definition.screens[i];
-				if (screen.name == currentScreen || screen.name == previousScreen) {
+				if (screen.name == currentScreen /*|| screen.name == previousScreen*/) {
 					for (var k in screen.options) {
 						if (screen.options[k].name in self.values) {
 							delete self.values[screen.options[k].name];
 							self.container.find('input[name="' + screen.options[k].name + '"]').removeAttr('checked').removeClass('selected');
+							$("#option_" + screen.name + "_" + screen.options[k].name + "_" + screen.options[k].value).removeClass('selected');
 							self.container.find(".wizardRunTheModel").hide();
 						}
 					}
