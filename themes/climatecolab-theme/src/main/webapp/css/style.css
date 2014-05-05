@@ -436,7 +436,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 
 /* homepage activity boxes ------------- */
-.activitybox {border-bottom:1px solid #c5c5c5; padding:14px 0 18px 17px; font-size:14px; color:#545454;}
+.activitybox {border-bottom:1px solid #c5c5c5; font-size:14px; color:#545454;}
 .activitybox:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
 .activitybox {display:inline-block;}
 * html .activitybox {height:1%;}
