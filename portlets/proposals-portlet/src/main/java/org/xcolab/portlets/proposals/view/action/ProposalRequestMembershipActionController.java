@@ -65,7 +65,7 @@ public class ProposalRequestMembershipActionController {
     // Membership request from non-group user
     private static final String MSG_MEMBERSHIP_REQUEST_SUBJECT = "%s wants to join your proposal %s";
     private static final String MSG_MEMBERSHIP_REQUEST_CONTENT = "User %s has requested to join your proposal %s. Click <a href='%s'>here</a> to respond to it.";
-    private static final String PROPOSAL_URL_ADMIN = "/web/guest/plans/-/plans/contestId/%d/planId/%d/tab/ADMIN";
+    private static final String PROPOSAL_URL_ADMIN = "%s/web/guest/plans/-/plans/contestId/%d/planId/%d/tab/ADMIN";
     private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT = "Response to your membership request";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
@@ -85,7 +85,8 @@ public class ProposalRequestMembershipActionController {
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result, @RequestParam("requestComment") String comment)
             throws PortalException, SystemException {
-    	
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
     	if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "requestMembership");
@@ -107,7 +108,8 @@ public class ProposalRequestMembershipActionController {
                         proposalsContext.getUser(request).getFullName(),
                         proposalName);
                 String proposalUrl = String.format(PROPOSAL_URL_ADMIN,
-                        proposalsContext.getContest(request).getContestPK(),
+                        themeDisplay.getPortalURL(),
+						proposalsContext.getContest(request).getContestPK(),
                         proposalId);
                 String content = String.format(MSG_MEMBERSHIP_REQUEST_CONTENT,
                         proposalsContext.getUser(request).getFullName(),
