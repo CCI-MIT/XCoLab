@@ -20,6 +20,8 @@ public class FeedsPreferences implements Serializable {
     private String feedStyle;
 	private Boolean seeMoreLinkShown;
 
+	private int feedMaxLength;
+
 	private final static String PORTLET_TITLE = "PORTLET_TITLE";
     private final static String FEED_SIZE_PREF = "FEED_SIZE";
     private final static String FEED_TITLE_PREF = "FEED_TITLE";
@@ -27,6 +29,7 @@ public class FeedsPreferences implements Serializable {
     private final static String FEED_REMOVE_ADMIN = "FEED_REMOVE_ADMIN";
     private final static String FEED_DISPLAY_STYLE = "FEED_DISPLAY_STYLE";
 	private final static String FEED_SEE_MORE_LINK_SHOWN = "FEED_SEE_MORE_LINK_SHOWN";
+	private final static String FEED_MAX_LENGTH = "FEED_MAX_LENGTH";
 
 
     private final static String LONG = "LONG";
@@ -38,6 +41,7 @@ public class FeedsPreferences implements Serializable {
     private final static Boolean defaultRemoveAdmin = false;
 	private final static String defaultPortletTitle = "";
 	private final static Boolean defaultSeeMoreShown = false;
+	private final static Integer defaultFeedMaxLength = 0;
         
     public FeedsPreferences() {
     	
@@ -80,6 +84,7 @@ public class FeedsPreferences implements Serializable {
 
         removeAdmin = Boolean.parseBoolean(prefs.getValue(FEED_REMOVE_ADMIN,String.valueOf(defaultRemoveAdmin)));
 		seeMoreLinkShown = Boolean.parseBoolean(prefs.getValue(FEED_SEE_MORE_LINK_SHOWN,String.valueOf(defaultSeeMoreShown)));
+		feedMaxLength = Integer.parseInt(prefs.getValue(FEED_MAX_LENGTH, String.valueOf(defaultFeedMaxLength)));
     }
 
     
@@ -93,6 +98,7 @@ public class FeedsPreferences implements Serializable {
         prefs.setValue(FEED_DISPLAY_STYLE,feedStyle);
 		prefs.setValue(PORTLET_TITLE, String.valueOf(portletTitle));
 		prefs.setValue(FEED_SEE_MORE_LINK_SHOWN, String.valueOf(seeMoreLinkShown));
+		prefs.setValue(FEED_MAX_LENGTH, String.valueOf(feedMaxLength));
 
         prefs.store();
         
@@ -159,5 +165,13 @@ public class FeedsPreferences implements Serializable {
 
 	public void setSeeMoreLinkShown(Boolean seeMoreLinkShown) {
 		this.seeMoreLinkShown = seeMoreLinkShown;
+	}
+
+	public int getFeedMaxLength() {
+		return feedMaxLength;
+	}
+
+	public void setFeedMaxLength(int feedMaxLength) {
+		this.feedMaxLength = feedMaxLength;
 	}
 }
