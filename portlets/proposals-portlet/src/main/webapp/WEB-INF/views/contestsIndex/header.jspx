@@ -82,7 +82,7 @@
 						<ul>
 							<li class="${showActiveContests ?  'active' : ''}"><a href="/web/guest/plans/" >Active contests</a></li>
 							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior contests</a></li>
-							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >all contests</a></li>
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All contests</a></li>
 						</ul>
 						
 					</div>

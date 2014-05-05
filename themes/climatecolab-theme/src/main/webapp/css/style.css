@@ -931,10 +931,11 @@ ul li {
 /* OUTLINE VIEW - added 1-24-2014 */
 
 .contest-outline-left {float:left; width:490px; /* 51% */ min-height:600px; border-right:1px solid #e3e0d9; padding-bottom:150px; -webkit-box-shadow: inset -14px 0 10px -10px #ccc; -moz-box-shadow: inset -14px 0 10px -10px #ccc; box-shadow: inset -14px 0 10px -10px #ccc;}
-.contest-outline-right {width:470px; padding-bottom:150px; /*position:fixed; left:50%;*/ float: right; margin-left: 20px; display: none;}
+.contest-outline-right {width:470px; padding-bottom:150px; /*position:fixed; left:50%;*/ float: right; margin-left: 20px;/* display: none;*/}
 .contest-outline-left, .contest-outline-right div {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 .contest-outline-right div.ctest {
 	width: 425px;
+	padding-bottom: 5px;
 }
 /* left side */
 .expand {float:left; font:12px "Lucida Grande", Arial, sans-serif; padding:15px 0 0 0;}
@@ -1013,14 +1014,14 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .cintro h2 {margin-bottom:24px; color:#231f20;}
 .cintro strong {color:#545454;}
 
-.contest-outline-right .contest-count {display:inline; font:28px "proxima-nova", Arial, Helvetica, sans-serif; color:#858585; padding-left:30px;}
-.contest-outline-right .contest-count span {font-size:28px;}
+.contest-outline-right .contest-count {font:18px "proxima-nova", Arial, Helvetica, sans-serif; color:#858585; padding: 0px 0 0px 0;}
+.contest-outline-right .contest-count span {font-size:18px;}
 .show-active {float:right; text-align:right; position:relative; font:12px "Lucida Grande", Arial, sans-serif; padding:0px 16px 0px 0;}
 .show-active a:after {
 	content:""; position:absolute; top:6px; right:0; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:4px solid #3192b1;
 	}
 
-.section-list {margin-bottom:10px;}
+.section-list {margin-bottom:25px;  margin-top: 47px;}
 
 .slevel1 {background-image:url(../images/contest-1x1-white.gif); background-repeat:repeat-x; background-position:top; background-color:#e0dacb; margin-left:0;}
 .slevel2 {background-image:url(../images/contest-1x1-white.gif); background-repeat:repeat-x; background-position:top; background-color:#d1cbbf; margin-left:9px;}
@@ -1031,7 +1032,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 
 .contest-list {font-size:14px; margin-left:30px; overflow-y: auto; overflow-x:hidden;}
-.prop-head {text-align:right; font:10px "Lucida Grande", Arial, sans-serif; color:#858585; padding:10px 0;}
+.prop-head {text-align:right; font:10px "Lucida Grande", Arial, sans-serif; color:#858585; padding:0px 0px 10px 0;}
 
 .spacr {background-color:#ffffff; padding-left:4px;}
 .slevel1 .spacr {margin-left:30px;}

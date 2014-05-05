@@ -16,12 +16,12 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         	<a href="#" class="showall" style="display: inline;">Expand All</a>
         	<a href="#" class="hideall" style="display: none;">Collapse All</a>
         </div>
-        <div class="contest-count">Contests <span class="count">35</span></div>
+        <div class="contest-count">Contests <span class="count">0</span></div>
         
         <ul class="level0 accordion">
         <c:forEach var="ontologySpace" items="${ontologySpaces }" varStatus="status">
-        	<li class="contest-section${status.index+1 }">
-        		<a href="#${ontologySpace.id }" class="section-head trigger">
+        	<li class="contest-section${status.index+1 }" data-space-id="${ontologySpace.id }">
+        		<a href="#${ontologySpace.id }" class="section-head trigger" data-space-id="${ontologySpace.id }" id='space_trigger_${ontologySpace.id }' >
         			<span class="active-icon"><!--  --></span>
         			<h2>${ontologySpace.name } <span>${ontologySpace.description}</span></h2>
         			<span class="section-icon"><!--  --></span>
@@ -36,23 +36,19 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 
 
 
-
+<!-- 
     <div class="cintro">
         <h2>How to use the outline</h2>
         <p>Each contest is specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
         <p>Click any part of the outline to see the contests included in that item.</p>
-        <!-- 
-        <p>The Climate CoLab breaks down the large, complex problem of climate change into a series of more manageable sub-problems; each contest addresses a particular sub-problem.</p>
-        <p>All contests can thus be specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
-        <p><strong>Select an item on the left side of the page to see which contests are defined by the selected part of the outline.</strong></p>
-        -->
+        
+        
     </div>
-    
+    --> 
     
     
     <div class="contest-outline-right">
         
-        <div class="contest-count"><span class="count"><!--  --></span> contests</div>
         <!-- 
         <div class="show-active">Display: 
         	<c:choose>
@@ -64,13 +60,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				</c:otherwise>
 			</c:choose>
 		</div>
-		 -->
+		
+        <div class="contest-count"><span class="count"></span> contests</div>
+         -->
 		<div class="clearfix"><!--  --></div>
         <div class="section-list">
         	<!--  -->
         </div>
         
-        
+        <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span> contests</div></div>
         <div class="prop-head">Proposals</div>
         <div class="contest-list">
        		<!--  -->
@@ -114,7 +112,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var ontologySpaces = {};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
-			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}};
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: []};
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}">
@@ -136,7 +134,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var contest = null;
 		
 		function addContestToTermAndParents(level, contest, term, isOther) {
-			if (term == null) return;
+			
+			if (term == null || typeof(term) != 'object') return;
 			// don't add contests to the space root if they have been associated with one of its children 
 			if (term.parent == null &amp;&amp; level &gt; 0) return;
 			if (isOther) {
@@ -152,6 +151,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				term.contests.push(contest);
 			}
 			addContestToTermAndParents(level+1, contest, term.parent, isOther);
+			
 		}
 		var contestsCount = 0;
 		<c:forEach var="contest" items="${contests}">
@@ -164,7 +164,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			for (var idx in focusArea.terms) {
 				addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
+				ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
 			}
+			
 			
 		</c:forEach>
 
@@ -209,6 +211,97 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			});
 		}
 		jQuery(".contest-count .count").text(contestsCount);
+		
+		function renderContests(contests) {
+			var container = jQuery(".contest-outline-right");
+			container.find(".contest-count .count").text(contests.length);
+			var contestsListHtml = [];
+			if (contests.length == 0) {
+				contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
+			}
+			
+			var duplicateContests = {};
+			for (var i =0; i < contests.length; i++) {
+				// check for duplicates
+				var contest = contests[i];
+				if (!(contest.name in duplicateContests)) {
+					duplicateContests[contest.name] = 0;
+					
+				}
+				duplicateContests[contest.name] ++;
+			}
+			for (var i =0; i < contests.length; i++) {
+				var contest = contests[i];
+				contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
+				contestsListHtml.push(contest.contestUrl);
+				contestsListHtml.push("'>");
+				contestsListHtml.push(contest.name);
+				if (duplicateContests[contest.name] > 1 && contest.created > 0) {
+					contestsListHtml.push(" ");
+					contestsListHtml.push(new Date(contest.created).getFullYear());
+				}
+				contestsListHtml.push("<span class='count'>");
+				contestsListHtml.push(contest.proposalsCount);
+				contestsListHtml.push("</span></a>");
+				contestsListHtml.push("<div class='detail'><p>");
+				contestsListHtml.push(contest.description);
+				contestsListHtml.push("</p>");
+				
+				var focusArea = focusAreas[contest.focusAreaId];
+				var terms =[];
+				for (var j = 0; j < focusArea.terms.length; j++) {
+					terms.push(ontologyTerms[focusArea.terms[j]]);
+				}
+				terms.sort(function(t1, t2) {
+					return t1.space.order - t2.space.order;
+				});
+				for (var j = 0; j < terms.length; j++) {
+					var term = terms[j];
+					contestsListHtml.push("<p><span class='");
+					contestsListHtml.push(term.space.name.toLowerCase());
+					contestsListHtml.push("'>");
+					contestsListHtml.push(term.space.name);
+					contestsListHtml.push(" </span> <span> ");
+					contestsListHtml.push(term.name);
+					contestsListHtml.push(" </span></p>");
+				}
+				contestsListHtml.push("</div></div>");
+			}
+			/*
+			contestsListHtml.push("<div class='otherContestsInfo'>");
+			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+			contestsListHtml.push("</div>");
+			*/
+			
+			jQuery(".otherContestsInfoContainer").hide();
+			container.find(".contest-list").html(contestsListHtml.join(''));
+			
+			container.find(".contest-list").slideDown();
+			
+			jQuery(".showall").show();
+			jQuery(".hideall").hide();
+		}
+		
+		function showSpaceContests(spaceId) {
+			var container = jQuery(".contest-outline-right");
+			var currentSpace = ontologySpaces[spaceId];
+			window.location.hash = "space=" + spaceId + "_" + escape(currentSpace.name);
+			
+			// all sections that are marked for removal append to separate container and slide it up
+			var forRemovalContainer = jQuery("<div></div>");
+			forRemovalContainer.appendTo(container.find('.section-list')).append();
+			container.find('.section-list').find('.section').appendTo(forRemovalContainer);
+			
+			forRemovalContainer.slideUp({complete: function() {
+				
+				// after sliding is complete remove unnecessary sections
+				forRemovalContainer.remove();				
+			}});
+			
+			renderContests(currentSpace.contests);
+			
+			
+		}
 		function showTermContests(termId) {
 			var container = jQuery(".contest-outline-right");
 			var currentTerm = ontologyTerms[termId];
@@ -308,6 +401,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			if (currentTerm.contests.length == 0) {
 				contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
 			}
+			
 			var duplicateContests = {};
 			for (var i =0; i < currentTerm.contests.length; i++) {
 				// check for duplicates
@@ -355,9 +449,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 				contestsListHtml.push("</div></div>");
 			}
+			/*
 			contestsListHtml.push("<div class='otherContestsInfo'>");
 			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
 			contestsListHtml.push("</div>");
+			*/
 			
 			
 			jQuery(".otherContestsInfoContainer").hide();
@@ -401,12 +497,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				// if this is a space, open also it's root term
 				
 				if (container.parent().hasClass('level0')) {
-					if (container.find("> ul > li").length == 1) {
+					showSpaceContests(container.attr('data-space-id'));
+				}
+				//	if (container.find("> ul > li").length == 1) {
 						container.find("> ul > li > a").addClass('open');
 						container.find("> ul > li > ul").slideDown();
-						showTermContests(container.find("> ul > li > a").attr('data-term-id'));
-					}
-				}
+				//		showTermContests(container.find("> ul > li > a").attr('data-term-id'));
+				//	}
+				//}
+
 			}
 			else {
 				container.find("> ul").slideUp();
@@ -437,22 +536,20 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		});
 		
 		jQuery(".expand a").click(function() {
-			console.log("clicked", this);
 			jQuery(".expand a").toggle();
 			if (jQuery(this).hasClass('showall')) {
 				jQuery(".contest-outline-left a").addClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideDown();
-				console.log("sliding down");
 			}
 			else {
 				jQuery(".contest-outline-left a").removeClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideUp();
-				console.log("sliding up");
 			}
 		});
 		
 		// initialize the screen with term provided in hash (if present) 
 		var termIdHashRegex = /#term=(\d*)_.*/;
+		var spaceIdHashRegex = /#space=(\d*)_.*/;
 		
 		var match = termIdHashRegex.exec(window.location.hash);
 		if (match != null) {
@@ -472,7 +569,17 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			spaceContainer.find("> ul").slideDown();
 			termContainer.parent().slideDown();
 			spaceContainer.find("a.section-head").addClass("open");
-			
+		}
+		
+		var spaceMatch = spaceIdHashRegex.exec(window.location.hash);
+		if (spaceMatch != null) {
+			var spaceId = spaceMatch[1];
+			jQuery("#space_trigger_" + spaceId).click();
+		}
+		if (spaceMatch == null && match == null) {
+			// show first space
+			jQuery(".level0 .section-head.trigger").eq(0).click();
+		
 		}
 		
 		]]>
