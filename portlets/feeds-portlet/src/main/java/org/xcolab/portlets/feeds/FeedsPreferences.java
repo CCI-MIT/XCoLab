@@ -18,6 +18,7 @@ public class FeedsPreferences implements Serializable {
     private String feedTitle;
     private Boolean removeAdmin;
     private String feedStyle;
+	private Boolean seeMoreLinkShown;
 
 	private final static String PORTLET_TITLE = "PORTLET_TITLE";
     private final static String FEED_SIZE_PREF = "FEED_SIZE";
@@ -25,6 +26,7 @@ public class FeedsPreferences implements Serializable {
     private final static String FEED_TYPE_PREF = "FEED_TYPE";
     private final static String FEED_REMOVE_ADMIN = "FEED_REMOVE_ADMIN";
     private final static String FEED_DISPLAY_STYLE = "FEED_DISPLAY_STYLE";
+	private final static String FEED_SEE_MORE_LINK_SHOWN = "FEED_SEE_MORE_LINK_SHOWN";
 
 
     private final static String LONG = "LONG";
@@ -35,6 +37,7 @@ public class FeedsPreferences implements Serializable {
     private final static String defaultStyle = LONG;
     private final static Boolean defaultRemoveAdmin = false;
 	private final static String defaultPortletTitle = "";
+	private final static Boolean defaultSeeMoreShown = false;
         
     public FeedsPreferences() {
     	
@@ -76,6 +79,7 @@ public class FeedsPreferences implements Serializable {
 		}
 
         removeAdmin = Boolean.parseBoolean(prefs.getValue(FEED_REMOVE_ADMIN,String.valueOf(defaultRemoveAdmin)));
+		seeMoreLinkShown = Boolean.parseBoolean(prefs.getValue(FEED_SEE_MORE_LINK_SHOWN,String.valueOf(defaultSeeMoreShown)));
     }
 
     
@@ -88,6 +92,7 @@ public class FeedsPreferences implements Serializable {
         prefs.setValue(FEED_REMOVE_ADMIN,String.valueOf(removeAdmin));
         prefs.setValue(FEED_DISPLAY_STYLE,feedStyle);
 		prefs.setValue(PORTLET_TITLE, String.valueOf(portletTitle));
+		prefs.setValue(FEED_SEE_MORE_LINK_SHOWN, String.valueOf(seeMoreLinkShown));
 
         prefs.store();
         
@@ -146,5 +151,13 @@ public class FeedsPreferences implements Serializable {
 
 	public void setPortletTitle(String portletTitle) {
 		this.portletTitle = portletTitle;
+	}
+
+	public Boolean getSeeMoreLinkShown() {
+		return seeMoreLinkShown;
+	}
+
+	public void setSeeMoreLinkShown(Boolean seeMoreLinkShown) {
+		this.seeMoreLinkShown = seeMoreLinkShown;
 	}
 }

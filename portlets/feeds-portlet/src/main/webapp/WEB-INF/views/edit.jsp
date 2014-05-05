@@ -54,6 +54,12 @@
 				<form:checkbox path="removeAdmin"  />
 			</td>
 		</tr>
+        <tr>
+            <td>show see more link:</td>
+            <td>
+                <form:checkbox path="seeMoreLinkShown"  />
+            </td>
+        </tr>
 	</table>
 	<input type="submit" value="Save" />
 </form:form>

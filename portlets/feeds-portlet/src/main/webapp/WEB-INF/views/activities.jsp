@@ -92,10 +92,13 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-<div class="alignright" style="margin-top:10px;">
-    <a href="/web/guest/activities">View all activities</a>
-</div>
-<c:if test="${not empty filterUserId}">      
+
+<c:if test="${seeMoreLinkShown}">
+    <div class="alignright" style="margin-top:10px;">
+        <a href="/web/guest/activities">View all activities</a>
+    </div>
+</c:if>
+<c:if test="${not empty filterUserId}">
 	<script type="text/javascript">
 		var filterSettings = {
 			filterUserId: ${filterUserId},

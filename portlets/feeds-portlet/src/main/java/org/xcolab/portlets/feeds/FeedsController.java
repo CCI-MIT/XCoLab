@@ -29,6 +29,7 @@ public class FeedsController {
     	model.addAttribute("feedType", preferences.getFeedType());
     	model.addAttribute("feedStyle", preferences.getFeedStyle());
 		model.addAttribute("portletTitle", preferences.getPortletTitle());
+		model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
     	return preferences.getFeedType().getViewAndpopulateModel(request, response, sortFilterPage, preferences, model);
     	
     }
