@@ -263,6 +263,14 @@
                         Send me an email copy of activities that I'm subscribed to.
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <ice:selectBooleanCheckbox disabled="#{not userprofileBean.sendEmailOnActivity}" styleClass="profile_cbx" value="#{userprofileBean.sendDailyEmailOnActivity}" partialSubmit="true"/>
+                    </td>
+                    <td class="profile_settings">
+                        Only send me a daily summary of all activities I'm subscribed to
+                    </td>
+                </tr>
             </table>
             <div class="clearfix"></div>
 
