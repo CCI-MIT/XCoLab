@@ -17,6 +17,7 @@ import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -93,9 +94,10 @@ public class ActivityUtil {
     }
     
     public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next, boolean showAdmin) throws SystemException, PortalException {
+		long millisBefore = System.currentTimeMillis();
     	List<SocialActivity> activities = null;
     	if (showAdmin) { 
-    		activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+    		activities = SocialActivityLocalServiceUtil.getSocialActivities(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     	}
     	else {
 
@@ -108,19 +110,28 @@ public class ActivityUtil {
     		DynamicQuery dq = DynamicQueryFactoryUtil.forClass(SocialActivity.class, PortalClassLoaderUtil.getClassLoader());
     		dq.add(RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", administratorsIds)));
     		dq.addOrder(OrderFactoryUtil.desc("createDate"));
-    		activities = SocialActivityLocalServiceUtil.dynamicQuery(dq, pagestart, next);
+    		activities = SocialActivityLocalServiceUtil.dynamicQuery(dq, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
     	}
 
-        return groupActivities(activities);
+        _log.warn(String.format("getActivities took %d ms", System.currentTimeMillis() - millisBefore));
+
+        List<SocialActivity> ret=  groupActivities(activities, pagestart, next);
+		_log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
+		return ret;
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException {
-        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, pagestart, next);
+		long millisBefore = System.currentTimeMillis();
 
-        return groupActivities(activities);
-    }
+		List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+        _log.warn(String.format("getActivities took %d ms", System.currentTimeMillis() - millisBefore));
+        List<SocialActivity> ret =  groupActivities(activities, pagestart, next);
+		_log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
+		return ret;
 
-    public static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
+	}
+
+    public static List<SocialActivity> groupActivities(List<SocialActivity> activities, int start, int end) {
         //find all activities of same type
         Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
         for (SocialActivity a : activities) {
@@ -158,7 +169,8 @@ public class ActivityUtil {
         Collections.reverse(ret);
         //horrible code end
 
-        return ret;
+        return ret.subList((start >= ret.size()) ? ret.size() - 1 : start,
+                (end >= ret.size()) ? ret.size() - 1 : end);
     }
 
     private static String getSocialActivityKey(SocialActivity sa) {
