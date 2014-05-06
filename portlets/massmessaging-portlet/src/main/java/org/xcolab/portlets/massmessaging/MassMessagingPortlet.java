@@ -16,6 +16,7 @@ import javax.portlet.*;
 import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.massmessaging.action.EditMessagingMessageAction;
 
@@ -155,6 +156,8 @@ public class MassMessagingPortlet extends MVCPortlet {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
         Long companyId = themeDisplay.getCompanyId();
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
 
         if (isNullOrEmpty(name) || isNullOrEmpty(replyTo) || isNullOrEmpty(subject) || isNullOrEmpty(body)) {
@@ -373,7 +376,7 @@ public class MassMessagingPortlet extends MVCPortlet {
                 User user = UserLocalServiceUtil.getUser(rec.getUserId());
                 messageBodyText +=
                     "<br /><br /><a href='" +
-                    NotificationUnregisterUtils.getUnregisterLink(user) +
+                    NotificationUnregisterUtils.getUnregisterLink(user, serviceContext) +
                     "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
             }
             if (StringUtils.isNotBlank(sendAs)) {

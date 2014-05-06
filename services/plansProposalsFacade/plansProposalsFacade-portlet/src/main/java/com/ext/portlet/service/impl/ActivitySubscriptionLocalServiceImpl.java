@@ -316,7 +316,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final String USER_PROFILE_LINK_TEMPLATE = "http://DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+    private final String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
 
     private final String USER_ID_PLACEHOLDER = "USER_ID";
 
@@ -364,7 +364,7 @@ public class ActivitySubscriptionLocalServiceImpl
 			String subject = "CoLab Activities Daily digest";
 			String body = userDigestBodyMap.get(recipient);
 			body += "</ul>";
-			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getUnregisterLink(recipient), serviceContext);
+			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getUnregisterLink(recipient, serviceContext), serviceContext);
 		}
 	}
 
@@ -394,12 +394,10 @@ public class ActivitySubscriptionLocalServiceImpl
 			subscriptionsPerUser.put(user.getUserId(), subscription);
 		}
 		for (User recipient : recipients) {
-
 			if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
 					!MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
 
-				sendEmailMessage(recipient, subject, messageTemplate, NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())), serviceContext);
-
+				sendEmailMessage(recipient, subject, messageTemplate, NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext), serviceContext);
 			}
 
 		}
