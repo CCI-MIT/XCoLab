@@ -27,6 +27,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
     private boolean _emailOnSend;
     private boolean _emailOnReceipt;
     private boolean _emailOnActivity;
+    private boolean _emailActivityDailyDigest;
     private BaseModel<?> _messagingUserPreferencesRemoteModel;
 
     public MessagingUserPreferencesClp() {
@@ -71,6 +72,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         attributes.put("emailOnSend", getEmailOnSend());
         attributes.put("emailOnReceipt", getEmailOnReceipt());
         attributes.put("emailOnActivity", getEmailOnActivity());
+        attributes.put("emailActivityDailyDigest", getEmailActivityDailyDigest());
 
         return attributes;
     }
@@ -106,6 +108,13 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
 
         if (emailOnActivity != null) {
             setEmailOnActivity(emailOnActivity);
+        }
+
+        Boolean emailActivityDailyDigest = (Boolean) attributes.get(
+                "emailActivityDailyDigest");
+
+        if (emailActivityDailyDigest != null) {
+            setEmailActivityDailyDigest(emailActivityDailyDigest);
         }
     }
 
@@ -250,6 +259,35 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         }
     }
 
+    @Override
+    public boolean getEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    @Override
+    public boolean isEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    @Override
+    public void setEmailActivityDailyDigest(boolean emailActivityDailyDigest) {
+        _emailActivityDailyDigest = emailActivityDailyDigest;
+
+        if (_messagingUserPreferencesRemoteModel != null) {
+            try {
+                Class<?> clazz = _messagingUserPreferencesRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setEmailActivityDailyDigest",
+                        boolean.class);
+
+                method.invoke(_messagingUserPreferencesRemoteModel,
+                    emailActivityDailyDigest);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getMessagingUserPreferencesRemoteModel() {
         return _messagingUserPreferencesRemoteModel;
     }
@@ -324,6 +362,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         clone.setEmailOnSend(getEmailOnSend());
         clone.setEmailOnReceipt(getEmailOnReceipt());
         clone.setEmailOnActivity(getEmailOnActivity());
+        clone.setEmailActivityDailyDigest(getEmailActivityDailyDigest());
 
         return clone;
     }
@@ -369,7 +408,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{messagingPreferencesId=");
         sb.append(getMessagingPreferencesId());
@@ -381,6 +420,8 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         sb.append(getEmailOnReceipt());
         sb.append(", emailOnActivity=");
         sb.append(getEmailOnActivity());
+        sb.append(", emailActivityDailyDigest=");
+        sb.append(getEmailActivityDailyDigest());
         sb.append("}");
 
         return sb.toString();
@@ -388,7 +429,7 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.MessagingUserPreferences");
@@ -413,6 +454,10 @@ public class MessagingUserPreferencesClp extends BaseModelImpl<MessagingUserPref
         sb.append(
             "<column><column-name>emailOnActivity</column-name><column-value><![CDATA[");
         sb.append(getEmailOnActivity());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailActivityDailyDigest</column-name><column-value><![CDATA[");
+        sb.append(getEmailActivityDailyDigest());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

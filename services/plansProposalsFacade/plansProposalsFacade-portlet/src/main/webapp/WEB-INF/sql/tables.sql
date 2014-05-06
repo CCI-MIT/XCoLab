@@ -316,7 +316,8 @@ create table xcolab_MessagingUserPreferences (
 	userId LONG,
 	emailOnSend BOOLEAN,
 	emailOnReceipt BOOLEAN,
-	emailOnActivity BOOLEAN
+	emailOnActivity BOOLEAN,
+	emailActivityDailyDigest BOOLEAN
 );
 
 create table xcolab_ModelCategory (

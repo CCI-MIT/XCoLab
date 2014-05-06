@@ -618,6 +618,7 @@ public class MessagingUserPreferencesPersistenceImpl extends BasePersistenceImpl
         messagingUserPreferencesImpl.setEmailOnSend(messagingUserPreferences.isEmailOnSend());
         messagingUserPreferencesImpl.setEmailOnReceipt(messagingUserPreferences.isEmailOnReceipt());
         messagingUserPreferencesImpl.setEmailOnActivity(messagingUserPreferences.isEmailOnActivity());
+        messagingUserPreferencesImpl.setEmailActivityDailyDigest(messagingUserPreferences.isEmailActivityDailyDigest());
 
         return messagingUserPreferencesImpl;
     }

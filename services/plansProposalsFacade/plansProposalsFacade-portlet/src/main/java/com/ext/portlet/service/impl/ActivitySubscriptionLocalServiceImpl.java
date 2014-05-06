@@ -77,6 +77,10 @@ public class ActivitySubscriptionLocalServiceImpl
     private final static Log _log = LogFactoryUtil.getLog(ActivitySubscriptionLocalServiceImpl.class);
     private final static long DEFAULT_COMPANY_ID = 10112L;
 
+	// 1 am
+	private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
+	private Date lastDailyEmailNotification = new Date();
+
 
     public List<ActivitySubscription> getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
             throws PortalException, SystemException {
@@ -270,7 +274,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
             List<SocialActivity> res = h.process(activityObjects);
             for (SocialActivity activity : res) {
-                sendNotifications(activity, serviceContext);
+                sendInstantNotifications(activity, serviceContext);
             }
             lastEmailNotification = new Date();
         }
@@ -297,7 +301,83 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private final String USER_ID_PLACEHOLDER = "USER_ID";
 
-    private void sendNotifications(SocialActivity activity, ServiceContext serviceContext) throws SystemException, PortalException {
+
+	private void sendDailyDigestNotifications(List<SocialActivity> activities, ServiceContext serviceContext) throws SystemException, PortalException {
+		try {
+			Map<User, String> userDigestBodyMap = new HashMap<>();
+
+			InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
+			ThemeDisplay td = new ThemeDisplay();
+			td.setCompany(CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID));
+
+			for (SocialActivity activity : activities) {
+				DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
+				Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", activity.getClassNameId());
+				Criterion criterionClassPK = RestrictionsFactoryUtil.eq("classPK", activity.getClassPK());
+				query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
+
+				SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, activity, serviceContext);
+				if (entry == null) {
+					return;
+				}
+				try {
+					String messageTemplate = getMailBody(entry);
+
+					messageTemplate = messageTemplate.replaceAll("\"/web/guest", "\"http://climatecolab.org/web/guest")
+							.replaceAll("'/web/guest", "'http://climatecolab.org/web/guest").replaceAll("\n", "\n<br />");
+
+
+					for (Object subscriptionObj : ActivitySubscriptionLocalServiceUtil.dynamicQuery(query)) {
+						ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+
+						User recipient = UserLocalServiceUtil.getUser(subscription.getReceiverId());
+						if (subscription.getReceiverId() == activity.getUserId()) {
+							continue;
+						}
+
+						if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
+								MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
+
+							String userDigestBody = userDigestBodyMap.get(recipient);
+							if (userDigestBody == null) {
+								userDigestBody = "";
+								userDigestBodyMap.put(recipient, userDigestBody);
+							}
+							userDigestBody += "<li>" + messageTemplate
+									.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient)) + "</li>";
+						}
+					}
+					for (User recipient : userDigestBodyMap.keySet()) {
+
+						InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
+						String subject = getMailSubject(entry);
+
+						messageTemplate += USER_PROFILE_LINK_PLACEHOLDER;
+						String message = messageTemplate
+								.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));
+
+						// add link to unsubscribe
+						message +=
+								"<br /><br /><a href='" +
+										NotificationUnregisterUtils.getUnregisterLink(recipient) +
+										"'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
+						MailEngine.send(fromEmail, toEmail, subject, message, true);
+
+
+					}
+				} catch (MailEngineException e) {
+					_log.error("Can't send email message");
+					_log.debug("Can't send email message", e);
+				}
+			}
+		} catch (Throwable e) {
+			_log.error("Can't send email motifications to users");
+			_log.debug("Can't send email message", e);
+		}
+	}
+
+
+    private void sendInstantNotifications(SocialActivity activity, ServiceContext serviceContext) throws SystemException, PortalException {
         try {
             DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
             Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", activity.getClassNameId());
@@ -336,7 +416,10 @@ public class ActivitySubscriptionLocalServiceImpl
                 }
                 for (User recipient : recipients) {
 
-                    if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()) {
+                    if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity()
+							//&&
+							//!MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()
+							) {
                         InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
                         String message = messageTemplate
                                 .replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient));

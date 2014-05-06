@@ -1840,6 +1840,10 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchLandingPageExceptionException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchLoginLogExceptionException")) {
+            return new com.ext.portlet.NoSuchLoginLogExceptionException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchMessageException")) {
             return new com.ext.portlet.NoSuchMessageException();
         }

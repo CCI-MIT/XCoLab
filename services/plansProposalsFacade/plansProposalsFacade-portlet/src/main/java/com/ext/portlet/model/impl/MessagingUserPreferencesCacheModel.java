@@ -24,10 +24,11 @@ public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingU
     public boolean emailOnSend;
     public boolean emailOnReceipt;
     public boolean emailOnActivity;
+    public boolean emailActivityDailyDigest;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{messagingPreferencesId=");
         sb.append(messagingPreferencesId);
@@ -39,6 +40,8 @@ public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingU
         sb.append(emailOnReceipt);
         sb.append(", emailOnActivity=");
         sb.append(emailOnActivity);
+        sb.append(", emailActivityDailyDigest=");
+        sb.append(emailActivityDailyDigest);
         sb.append("}");
 
         return sb.toString();
@@ -53,6 +56,7 @@ public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingU
         messagingUserPreferencesImpl.setEmailOnSend(emailOnSend);
         messagingUserPreferencesImpl.setEmailOnReceipt(emailOnReceipt);
         messagingUserPreferencesImpl.setEmailOnActivity(emailOnActivity);
+        messagingUserPreferencesImpl.setEmailActivityDailyDigest(emailActivityDailyDigest);
 
         messagingUserPreferencesImpl.resetOriginalValues();
 
@@ -66,6 +70,7 @@ public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingU
         emailOnSend = objectInput.readBoolean();
         emailOnReceipt = objectInput.readBoolean();
         emailOnActivity = objectInput.readBoolean();
+        emailActivityDailyDigest = objectInput.readBoolean();
     }
 
     @Override
@@ -76,5 +81,6 @@ public class MessagingUserPreferencesCacheModel implements CacheModel<MessagingU
         objectOutput.writeBoolean(emailOnSend);
         objectOutput.writeBoolean(emailOnReceipt);
         objectOutput.writeBoolean(emailOnActivity);
+        objectOutput.writeBoolean(emailActivityDailyDigest);
     }
 }
