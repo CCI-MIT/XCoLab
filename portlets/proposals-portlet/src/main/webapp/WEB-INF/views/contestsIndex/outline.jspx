@@ -112,7 +112,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var ontologySpaces = {};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
-			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: []};
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], isSpace: true};
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}">
@@ -137,7 +137,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			if (term == null || typeof(term) != 'object') return;
 			// don't add contests to the space root if they have been associated with one of its children 
-			if (term.parent == null &amp;&amp; level &gt; 0) return;
+			/*if (term.parent == null &amp;&amp; level &gt; 0) return;*/
 			if (isOther) {
 				for (var i = 0 ; i &lt; term.otherContests.length; i++) {
 					if (term.otherContests[i].id == contest.id) return;
@@ -214,7 +214,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		jQuery(".contest-count .count").text(contestsCount);
 		
 		function renderContests(contests) {
-			contests.sort(function(a, b) { a.id - b.id });
+			contests.sort(function(a, b) { - (a.id - b.id) });
 			var container = jQuery(".contest-outline-right");
 			container.find(".contest-count .count").text(contests.length);
 			var contestsListHtml = [];
@@ -284,22 +284,79 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			jQuery(".hideall").hide();
 		}
 		
-		function showSpaceContests(spaceId) {
+		function renderBreadcrumbSections(termsToDisplay) {
+			var currentTerm = termsToDisplay[0];
+			var sectionsHtml = [];
 			var container = jQuery(".contest-outline-right");
+			// mark all sections as eligible for removal
+			jQuery(".section-list .section").addClass("sectionForRemoval");
+
+			container.find('.section-list .active').removeClass('active');
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
+			for (var i = 0; i < termsToDisplay.length; i++) {
+				var term = termsToDisplay[i];
+				var styleClass='section slevel' + (i+1) + ' s' + (i+1) + (term == currentTerm ? ' active' : '');
+				// check if term isn't already visible
+				var sectionElement = jQuery("#sectionDetails_" + term.id);
+				if (sectionElement.length > 0) {
+					// remove "for removal" mark
+					sectionElement.removeClass("sectionForRemoval");
+					continue;
+				}
+				sectionsHtml.push('<div class="');
+				sectionsHtml.push(styleClass);
+				sectionsHtml.push('" id="sectionDetails_');
+				sectionsHtml.push(term.id);
+				sectionsHtml.push('"><div class="spacr"><a href="#" class="txt" data-term-id="');
+				sectionsHtml.push(term.id);
+				sectionsHtml.push('"');
+				if (term.isSpace) {
+					sectionsHtml.push(" data-is-space='true' ");
+				}
+				sectionsHtml.push('>');
+				sectionsHtml.push(term.name);
+				sectionsHtml.push('</a></div></div>');
+			}
+			// all sections that are marked for removal append to separate container and slide it up
+			var forRemovalContainer = jQuery("<div class='forRemoval'><!-- --></div>");
+			forRemovalContainer.appendTo(container.find('.section-list')).append(jQuery(".sectionForRemoval"));
+			
+			// append to show container to section-list and set it's html to all new sections
+			var toShowContainer = jQuery("<div style='display: none;' class='toShowContainer'></div>");
+			toShowContainer.appendTo(container.find('.section-list')).html(sectionsHtml.join(""));
+			
+			container.find(".contest-list").hide();
+			if (forRemovalContainer.children().length > 0) {
+				forRemovalContainer.slideUp({complete: function() {
+				
+					// after sliding is complete remove unnecessary sections and show new sections
+					forRemovalContainer.remove();
+					toShowContainer.slideDown({complete: function() {
+						// move new sections to section-list as a main container and remove "toShowContainer" 
+					
+					}});
+				}});
+			}
+			else {
+				forRemovalContainer.remove();
+				toShowContainer.slideDown();
+			}
+			if (toShowContainer.children().length > 0) {
+				toShowContainer.find(".section").appendTo(container.find('.section-list'));
+				toShowContainer.remove();
+			}
+			console.log("Current term", currentTerm.id, container.find("#sectionDetails_" + currentTerm.id));
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
+
+		}
+		
+		function showSpaceContests(spaceId) {
 			var currentSpace = ontologySpaces[spaceId];
 			window.location.hash = "space=" + spaceId + "_" + escape(currentSpace.name);
 			
-			// all sections that are marked for removal append to separate container and slide it up
-			var forRemovalContainer = jQuery("<div></div>");
-			forRemovalContainer.appendTo(container.find('.section-list')).append();
-			container.find('.section-list').find('.section').appendTo(forRemovalContainer);
-			
-			forRemovalContainer.slideUp({complete: function() {
-				
-				// after sliding is complete remove unnecessary sections
-				forRemovalContainer.remove();				
-			}});
-			
+			renderBreadcrumbSections([currentSpace]);
 			renderContests(currentSpace.contests);
 			
 			
@@ -346,65 +403,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				termAndParents.push(term);
 				term = term.parent;
 			}
+			termAndParents.push(currentTerm.space);
 			
 			termAndParents.reverse();
+			renderBreadcrumbSections(termAndParents);
 			
-			var sectionsHtml = [];
-			// mark all sections as eligible for removal
-			jQuery(".section-list .section").addClass("sectionForRemoval");
-
-			container.find('.section-list .active').removeClass('active');
-			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
-			
-			for (var i = 0; i < termAndParents.length; i++) {
-				var term = termAndParents[i];
-				var styleClass='section slevel' + (i+1) + ' s' + (i+1) + (term == currentTerm ? ' active' : '');
-				// check if term isn't already visible
-				var sectionElement = jQuery("#sectionDetails_" + term.id);
-				if (sectionElement.length > 0) {
-					// remove "for removal" mark
-					sectionElement.removeClass("sectionForRemoval");
-					continue;
-				}
-				sectionsHtml.push('<div class="');
-				sectionsHtml.push(styleClass);
-				sectionsHtml.push('" id="sectionDetails_');
-				sectionsHtml.push(term.id);
-				sectionsHtml.push('"><div class="spacr"><a href="#" class="txt" data-term-id="');
-				sectionsHtml.push(term.id);
-				sectionsHtml.push('">');
-				sectionsHtml.push(term.name);
-				sectionsHtml.push('</a></div></div>');
-			}
-			// all sections that are marked for removal append to separate container and slide it up
-			var forRemovalContainer = jQuery("<div></div>");
-			forRemovalContainer.appendTo(container.find('.section-list')).append(jQuery(".sectionForRemoval"));
-			
-			// append to show container to section-list and set it's html to all new sections
-			var toShowContainer = jQuery("<div style='display: none;'></div>");
-			toShowContainer.appendTo(container.find('.section-list')).html(sectionsHtml.join(""));
-			
-			container.find(".contest-list").hide();
-			forRemovalContainer.slideUp({complete: function() {
-				
-				// after sliding is complete remove unnecessary sections and show new sections
-				forRemovalContainer.remove();
-				toShowContainer.slideDown({complete: function() {
-					// move new sections to section-list as a main container and remove "toShowContainer" 
-					
-				}});
-				
-			}});
-			toShowContainer.find(".section").appendTo(container.find('.section-list'));
-			toShowContainer.remove();
-			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
 			renderContests(currentTerm.contests);
 			
 		}
-		jQuery(".contest-outline-right .section-list").on('click', 'a', function(event) {
-			event.preventDefault();
-			jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')).find('> a').click();
-		});
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
 			event.preventDefault();
 			var that = this;
@@ -434,11 +440,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				if (container.parent().hasClass('level0')) {
 					showSpaceContests(container.attr('data-space-id'));
 				}
-				//	if (container.find("> ul > li").length == 1) {
+				if (container.find("> ul > li").length == 1) {
 						container.find("> ul > li > a").not(".open").addClass('open');
 						container.find("> ul > li > ul").slideDown();
 				//		showTermContests(container.find("> ul > li > a").attr('data-term-id'));
-				//	}
+				}
 				//}
 
 			}
@@ -482,6 +488,16 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			else {
 				jQuery(".contest-outline-left a").removeClass('open');
 				jQuery(".contest-outline-left .level0 ul").slideUp();
+			}
+		});
+
+		jQuery(".contest-outline-right .section-list").on('click', 'a', function(event) {
+			event.preventDefault();
+			if (jQuery(this).attr('data-is-space')) {
+				jQuery("#space_trigger_" + jQuery(this).attr('data-term-id')).click();
+			}
+			else {
+				jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')).find('> a').click();
 			}
 		});
 		

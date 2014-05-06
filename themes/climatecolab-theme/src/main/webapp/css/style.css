@@ -999,7 +999,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .level1 li.active > a { color:#ffffff; background-color: #3192b1}
 .level1 li a.open {background-image:url(../images/contest-icon-minus-orange.png);}
 .level1 li.active a.open {background-image:url(../images/contest-icon-minus.png);}
-.level1 li.active a.open .count {color:#ffffff;}
+.level1 li.active a.open.active .count {color:#ffffff;}
 
 .level1 li.no-child a, .level1 li.no-child a.open {background-image:none;}
 
