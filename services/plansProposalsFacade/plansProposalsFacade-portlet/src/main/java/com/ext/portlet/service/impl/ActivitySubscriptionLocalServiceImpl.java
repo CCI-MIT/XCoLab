@@ -364,7 +364,7 @@ public class ActivitySubscriptionLocalServiceImpl
 			String subject = "CoLab Activities Daily digest";
 			String body = userDigestBodyMap.get(recipient);
 			body += "</ul>";
-			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getUnregisterLink(recipient, serviceContext), serviceContext);
+			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext), serviceContext);
 		}
 	}
 

@@ -376,7 +376,7 @@ public class MassMessagingPortlet extends MVCPortlet {
                 User user = UserLocalServiceUtil.getUser(rec.getUserId());
                 messageBodyText +=
                     "<br /><br /><a href='" +
-                    NotificationUnregisterUtils.getUnregisterLink(user, serviceContext) +
+                    NotificationUnregisterUtils.getMassmessagingUnregisterLink(user, serviceContext) +
                     "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
             }
             if (StringUtils.isNotBlank(sendAs)) {
