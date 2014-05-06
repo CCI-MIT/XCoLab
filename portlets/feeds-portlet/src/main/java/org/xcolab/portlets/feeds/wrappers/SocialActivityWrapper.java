@@ -18,6 +18,9 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class SocialActivityWrapper implements Serializable {
     /**
@@ -62,13 +65,36 @@ public class SocialActivityWrapper implements Serializable {
     }
     
     private static String getBodyFromFeedEntry(SocialActivityFeedEntry entry, int maxLength) {
-        String body =  entry != null ? (entry.getBody().trim().equals("") ? entry.getTitle() : entry.getBody()) : null;
-		String plainText = Jsoup.parse(body).text();
+        if (entry == null) {
+            return "";
+        }
+        String body =  (entry.getBody().trim().equals("") ? entry.getTitle() : entry.getBody());
+		Document html = Jsoup.parse(body);
+        String plainText = html.text();
 
 		if (maxLength > 0 && plainText.length() > maxLength) {
 			String dots = "...";
-			String overflowString = plainText.substring(maxLength - dots.length());
-			body = body.replaceAll(overflowString, dots);
+
+            // Determine length of all link texts
+            int linkTextLength = 0;
+            Elements linkElements = html.select("a");
+            for (Element linkElement : linkElements) {
+                linkTextLength += linkElement.text().length();
+            }
+
+            // Calculate max space left for link texts
+            int charactersForEachLink = (int)Math.floor(1.0 * (maxLength - (plainText.length() - linkTextLength)) / (1.0 * linkElements.size()));
+            for (int i = 0; i < linkElements.size(); i++) {
+                String text = linkElements.get(i).text();
+
+                // Trim text if necessary
+                if (text.length() > charactersForEachLink) {
+                    text = text.substring(0, charactersForEachLink - dots.length());
+                    linkElements.get(i).text(text + dots);
+                }
+            }
+
+			body = html.select("body").html();
 		}
 
 		return body;
@@ -173,7 +199,7 @@ public class SocialActivityWrapper implements Serializable {
 				"com.ext.portlet.discussions.model.DiscussionCategoryGroup3",
 				"com.ext.portlet.discussions.model.DiscussionCategoryGroup4",
 				"com.ext.portlet.discussions.model.DiscussionCategoryGroup5"),
-		USER("user", "com.liferay.portal.model.User1",
+        USER("new_user", "com.liferay.portal.model.User1",
 				"com.liferay.portal.model.User2",
 				"com.liferay.portal.model.User3",
 				"com.liferay.portal.model.User4",
