@@ -448,6 +448,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .activitybox .text {float:left; width:85%; line-height:20px;}
 .activitybox h3 {font-size:14px; color:#545454;}
 
+.activitybox .status {margin-left: 5px;}
 .activitybox .comment {background:url(../images/icon-activity-comment.png) no-repeat left 12px;}
 .activitybox .edit {background:url(../images/icon-activity-edit.png) no-repeat left 12px;}
 .activitybox .new {background:url(../images/icon-activity-new_proposal.png) no-repeat left 12px;}

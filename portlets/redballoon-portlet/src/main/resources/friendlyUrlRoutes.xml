@@ -8,4 +8,7 @@
     <route>
         <pattern>/link/{linkuuid}</pattern>
     </route>
+    <route>
+        <pattern>/{linkuuid}</pattern>
+    </route>
 </routes>
