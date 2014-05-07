@@ -420,7 +420,7 @@ public class ActivitySubscriptionLocalServiceImpl
 			body +=  MESSAGE_FOOTER_TEMPLATE;
 
 			body  = body.replaceAll("\"/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest")
-					.replaceAll("'/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest").replaceAll("\n", "\n<br />");
+					.replaceAll("\"/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest").replaceAll("\n", "\n<br />");
 			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, serviceContext));
 
 			// add link to unsubscribe
