@@ -7,6 +7,9 @@ import java.util.List;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.MessagingUserPreferences;
+import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +34,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 @RequestMapping("view")
 public class NotificationUnregisterController {
 
-	private long DEFAULT_COMPANY_ID = 10112L;
 	private final static Log _log = LogFactoryUtil.getLog(NotificationUnregisterController.class);
 	
 	@RequestMapping
@@ -39,6 +41,7 @@ public class NotificationUnregisterController {
 	    
 	    Long userId = ParamUtil.getLong(request, "userId", 0);
 	    Long subscriptionId = ParamUtil.getLong(request, "subscriptionId", 0);
+        Integer typeId = ParamUtil.getInteger(request, "typeId", 0);
 	    String token = ParamUtil.getString(request, "token", "");
 	    
 	    
@@ -49,7 +52,8 @@ public class NotificationUnregisterController {
 	    if (userId > 0) {
 	        try {
 	            user = UserLocalServiceUtil.getUser(userId);
-	            error = ! NotificationUnregisterUtils.isTokenValid(token, user);
+	            error = ! NotificationUnregisterUtils.isTokenValid(token, user) ||
+                        (typeId != NotificationUnregisterUtils.ACTIVITY_TYPE && typeId != NotificationUnregisterUtils.MASSMESSAGING_TYPE);
 	        }
 	        catch (Exception e) {
 	            _log.error("Error when unsubscribing", e);
@@ -76,40 +80,66 @@ public class NotificationUnregisterController {
 	    if (subscription != null) {
 	        ActivitySubscriptionLocalServiceUtil.delete(subscription);
 	    }
+
 	    if (user != null) {
-	        MessagingIgnoredRecipients ignoredRecipients = null;
-	        try {
-	            ignoredRecipients = MessagingIgnoredRecipientsLocalServiceUtil.findByUserId(userId);
-	        }
-	        catch (Exception e) {
-	            // 
-	        }
-	        if (ignoredRecipients == null) {
-	            // save
-	            Long ignoredRecipientId = CounterLocalServiceUtil.increment(MessagingIgnoredRecipients.class.getName());
-	            MessagingIgnoredRecipients ignoredRecipient = MessagingIgnoredRecipientsLocalServiceUtil
-	                    .createMessagingIgnoredRecipients(ignoredRecipientId);
-
-                ignoredRecipient.setUserId(user.getUserId());
-                ignoredRecipient.setName(user.getScreenName());
-                ignoredRecipient.setEmail(user.getEmailAddress());
-                
-	            ignoredRecipient.setCreateDate(new Date());
-
-	            MessagingIgnoredRecipientsLocalServiceUtil.addMessagingIgnoredRecipients(ignoredRecipient);
-	        }
-	        
+            getUnregisterUserHandler(typeId).unregister(user);
 	    }
-	    
-	    
-	    
-	    
+
         model.addAttribute("unregisteringSubscription", unregisteringSubscription);
 	    
-	    
-	    
-	    
 	    return "view";
-	}	
+	}
 
+    private NotificationUnregisterHandler getUnregisterUserHandler(int type) {
+        if (type == NotificationUnregisterUtils.ACTIVITY_TYPE) {
+            return new ActivityNotificationUnregisterHandler();
+        } else if (type == NotificationUnregisterUtils.MASSMESSAGING_TYPE) {
+            return new MassmessagingNotificationUnregisterHandler();
+        } else {
+            return null;
+        }
+    }
+}
+
+interface NotificationUnregisterHandler {
+    public void unregister(User user) throws SystemException;
+}
+
+class MassmessagingNotificationUnregisterHandler implements NotificationUnregisterHandler {
+
+    @Override
+    public void unregister(User user) throws SystemException {
+        MessagingIgnoredRecipients ignoredRecipients = null;
+        try {
+            ignoredRecipients = MessagingIgnoredRecipientsLocalServiceUtil.findByUserId(user.getUserId());
+        }
+        catch (Exception e) {
+            //
+        }
+        if (ignoredRecipients == null) {
+            // save
+            Long ignoredRecipientId = CounterLocalServiceUtil.increment(MessagingIgnoredRecipients.class.getName());
+            MessagingIgnoredRecipients ignoredRecipient = MessagingIgnoredRecipientsLocalServiceUtil
+                    .createMessagingIgnoredRecipients(ignoredRecipientId);
+
+            ignoredRecipient.setUserId(user.getUserId());
+            ignoredRecipient.setName(user.getScreenName());
+            ignoredRecipient.setEmail(user.getEmailAddress());
+
+            ignoredRecipient.setCreateDate(new Date());
+
+            MessagingIgnoredRecipientsLocalServiceUtil.addMessagingIgnoredRecipients(ignoredRecipient);
+        }
+    }
+}
+
+class ActivityNotificationUnregisterHandler implements NotificationUnregisterHandler {
+
+    @Override
+    public void unregister(User user) throws SystemException {
+        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
+        prefs.setEmailActivityDailyDigest(false);
+        prefs.setEmailOnActivity(false);
+        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+    }
 }

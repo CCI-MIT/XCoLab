@@ -316,7 +316,7 @@ public class ActivitySubscriptionLocalServiceImpl
 
     private final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final String USER_PROFILE_LINK_TEMPLATE = "http://DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+    private final String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
 
     private final String USER_ID_PLACEHOLDER = "USER_ID";
 
@@ -352,8 +352,7 @@ public class ActivitySubscriptionLocalServiceImpl
 					if (userDigestBody == null) {
 						userDigestBody = "<ul>";
 					}
-					userDigestBody += "<li>" + messageTemplate
-							.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, serviceContext)) + "</li>";
+					userDigestBody += "<li>" + messageTemplate + "</li>";
 					userDigestBodyMap.put(recipient, userDigestBody);
 				}
 			}
@@ -364,7 +363,7 @@ public class ActivitySubscriptionLocalServiceImpl
 			String subject = "CoLab Activities Daily digest";
 			String body = userDigestBodyMap.get(recipient);
 			body += "</ul>";
-			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getUnregisterLink(recipient), serviceContext);
+			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext), serviceContext);
 		}
 	}
 
@@ -394,12 +393,10 @@ public class ActivitySubscriptionLocalServiceImpl
 			subscriptionsPerUser.put(user.getUserId(), subscription);
 		}
 		for (User recipient : recipients) {
-
 			if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
 					!MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
 
-				sendEmailMessage(recipient, subject, messageTemplate, NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())), serviceContext);
-
+				sendEmailMessage(recipient, subject, messageTemplate, NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext), serviceContext);
 			}
 
 		}
@@ -421,8 +418,9 @@ public class ActivitySubscriptionLocalServiceImpl
 
 			body +=  MESSAGE_FOOTER_TEMPLATE;
 
+            // Add the proper domain to all links
 			body  = body.replaceAll("\"/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest")
-					.replaceAll("'/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest").replaceAll("\n", "\n<br />");
+					.replaceAll("\'/web/guest", "\'" + serviceContext.getPortalURL() + "/web/guest").replaceAll("\n", "\n<br />");
 			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, serviceContext));
 
 			// add link to unsubscribe

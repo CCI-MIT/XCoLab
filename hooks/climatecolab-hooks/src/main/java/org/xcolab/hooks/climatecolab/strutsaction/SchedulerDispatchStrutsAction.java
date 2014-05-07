@@ -8,7 +8,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +37,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 
 		ServiceContext serviceContext = new ServiceContext();
 		serviceContext.setRequest(request);
+        serviceContext.setPortalURL(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
 
 		try {
 			ActivitySubscriptionLocalServiceUtil.sendEmailNotifications(serviceContext);
