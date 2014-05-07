@@ -100,61 +100,24 @@
 					<div id="proposalPickerTableContests">
 						<div class="blueheaderbar tooltips">
 							<div class="contest" style="">
-								<a href="#">Contest</a>
-								<div class="tooltip">
-									click to sort by contest title
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'>Contest</span>
+								
 							</div>
 							<div class="proposal">
-								<a href="#"> <!--  -->
-								</a>
-
-								<div class="tooltip">
-									click to sort by<br />number of proposals
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'><!--  --></span>
 							</div>
 							<div class="comment">
-								<a href="#"> <!--  --></a>
-								<div class="tooltip">
-									click to sort by number of comments
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'> <!--  --></span>
 							</div>
 
 							<div class="what">
-								<a href="#"> What</a>
-								<div class="tooltip">
-									click to sort by actions
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'> What</span>
 							</div>
 							<div class="where">
-								<a href="#"> Where</a>
-								<div class="tooltip">
-									click to sort by<br />geographical area
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'> Where</span>
 							</div>
 							<div class="who">
-								<a href="#"> Who</a>
-								<div class="tooltip">
-									click to sort by who<br />this issue affects
-									<div class="tt-arrow">
-										<!--  -->
-									</div>
-								</div>
+								<span class='text'> Who</span>
 							</div>
 						</div>
 
@@ -175,58 +138,27 @@
 							<div class="proposalname">
 								<div style="display: inline-block">
 
-									<a href="#">Proposal name</a>
-									<div class="tooltip">
-										click to sort by name
-										<div class="tt-arrow">
-											<!-- -->
-										</div>
-									</div>
+									<span class='text'>Proposal name</span>
 								</div>
 								/&#160;
 
 								<div style="display: inline-block">
-									<a href="#">Author(s)</a>
-
-									<div class="tooltip">
-										click to sort by author
-										<div class="tt-arrow">
-											<!-- -->
-										</div>
-									</div>
+									<span class='text'>Author(s)</span>
 								</div>
 							</div>
 
 							<div class="thumbs">
-								<a href="#">
+								<span class='text'>
 									<!--  -->
-								</a>
-								<div class="tooltip">
-									click to sort by<br />number of supporters
-									<div class="tt-arrow">
-										<!-- -->
-									</div>
-								</div>
+								</span>
 							</div>
 
 							<div class="propcomm">
-								<a href="#"> <!--  -->
-								</a>
-								<div class="tooltip">
-									click to sort by<br />number of comments
-									<div class="tt-arrow">
-										<!-- -->
-									</div>
-								</div>
+								<span class='text'> <!--  -->
+								</span>
 							</div>
 							<div class="modified">
-								<a href="#">Contests</a>
-								<div class="tooltip">
-									click to sort by date
-									<div class="tt-arrow">
-										<!-- -->
-									</div>
-								</div>
+								<span class='text'>Contests</span>
 							</div>
 
 						</div>
@@ -320,7 +252,10 @@
                 <div class="modbox">
 					<ul>
 					{{#each data.contests}}
-						<li>{{this.name}}</li>
+						<li>
+							<img alt="{{this.name}}" class='fieldWithTooltip tooltipAbove' height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
+							<div class="tooltip">Contest: {{this.name}}<div class="tt-arrow"><!--  --></div></div>
+						</li>
 					{{/each}}
 					</ul>
                 </div>

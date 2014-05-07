@@ -288,7 +288,8 @@ div.sponsorLogo img {
 }
 
 #proposalPickerSearchContainer {
-	text-align: center;
+	text-align: left;
+	padding: 10px;
 }
 
 #proposalPickerSearchContainer .blue-button {
@@ -312,11 +313,19 @@ div.sponsorLogo img {
 	background: none;
 }
 
-
+/*
 #proposalPicker_proposalsContainer .propbox .row1 {
 	overflow: hidden;
 }
+*/
 
 #proposalPicker_proposalsContainer .propbox .row2 {
 	width: 650px;
+}
+
+#popup_proposalPicker {
+	top: 30px;
+}
+#popup_proposalPicker .popup {
+	padding: 15px;
 }
