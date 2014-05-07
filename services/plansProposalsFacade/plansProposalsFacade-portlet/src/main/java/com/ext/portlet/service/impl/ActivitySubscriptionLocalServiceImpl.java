@@ -353,7 +353,7 @@ public class ActivitySubscriptionLocalServiceImpl
 						userDigestBody = "<ul>";
 					}
 					userDigestBody += "<li>" + messageTemplate
-							.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, serviceContext)) + "</li>";
+							.replaceAll("\'/web/guest", "\'" + serviceContext.getPortalURL() + "/web/guest") + "</li>";
 					userDigestBodyMap.put(recipient, userDigestBody);
 				}
 			}
