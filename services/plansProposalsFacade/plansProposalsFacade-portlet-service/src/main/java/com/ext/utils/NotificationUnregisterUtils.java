@@ -76,7 +76,7 @@ public class NotificationUnregisterUtils {
     }
     
     public static String getToken(ActivitySubscription subscription) {
-        return getToken(subscription.getCreateDate().toString() + subscription.getPk());
+        return getToken(subscription.getCreateDate().getTime() + "" + subscription.getPk());
     }
     
     public static String getToken(User user) {
