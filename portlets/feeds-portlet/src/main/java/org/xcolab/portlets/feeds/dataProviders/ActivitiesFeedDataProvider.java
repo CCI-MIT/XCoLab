@@ -83,7 +83,14 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 		}
 
 		model.addAttribute("activities", activities);
-		model.addAttribute("maxPage", (int) Math.ceil((double)ActivityUtil.getAllActivitiesCount()/ pageSize));
+
+
+        if (filterUserId == 0) {
+            model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1)) >= ActivityUtil.getAllActivitiesCount()));
+        } else {
+            model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil.getActivitiesCount(filterUserId))));
+        }
+
 
 		return "activities";
 
