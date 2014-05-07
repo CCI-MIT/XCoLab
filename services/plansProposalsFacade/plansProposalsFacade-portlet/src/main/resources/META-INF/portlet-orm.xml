@@ -548,6 +548,7 @@
 			<basic name="emailOnSend" />
 			<basic name="emailOnReceipt" />
 			<basic name="emailOnActivity" />
+			<basic name="emailActivityDailyDigest" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

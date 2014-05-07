@@ -398,6 +398,7 @@
 		<field name="emailOnSend" type="boolean" />
 		<field name="emailOnReceipt" type="boolean" />
 		<field name="emailOnActivity" type="boolean" />
+		<field name="emailActivityDailyDigest" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.ModelCategory">
 		<field name="modelCategoryPK" type="long" />

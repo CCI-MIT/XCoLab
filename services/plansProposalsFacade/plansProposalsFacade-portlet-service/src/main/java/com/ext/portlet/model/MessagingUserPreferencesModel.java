@@ -149,6 +149,27 @@ public interface MessagingUserPreferencesModel extends BaseModel<MessagingUserPr
      */
     public void setEmailOnActivity(boolean emailOnActivity);
 
+    /**
+     * Returns the email activity daily digest of this messaging user preferences.
+     *
+     * @return the email activity daily digest of this messaging user preferences
+     */
+    public boolean getEmailActivityDailyDigest();
+
+    /**
+     * Returns <code>true</code> if this messaging user preferences is email activity daily digest.
+     *
+     * @return <code>true</code> if this messaging user preferences is email activity daily digest; <code>false</code> otherwise
+     */
+    public boolean isEmailActivityDailyDigest();
+
+    /**
+     * Sets whether this messaging user preferences is email activity daily digest.
+     *
+     * @param emailActivityDailyDigest the email activity daily digest of this messaging user preferences
+     */
+    public void setEmailActivityDailyDigest(boolean emailActivityDailyDigest);
+
     @Override
     public boolean isNew();
 

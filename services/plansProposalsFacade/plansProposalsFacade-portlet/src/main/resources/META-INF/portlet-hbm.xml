@@ -462,6 +462,7 @@
 		<property name="emailOnSend" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="emailOnReceipt" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="emailOnActivity" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="emailActivityDailyDigest" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ModelCategoryImpl" table="xcolab_ModelCategory">
 		<cache usage="read-write" />

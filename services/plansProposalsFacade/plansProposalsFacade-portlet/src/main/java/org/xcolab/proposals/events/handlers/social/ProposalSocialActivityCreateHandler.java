@@ -1,5 +1,8 @@
 package org.xcolab.proposals.events.handlers.social;
 
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.model.User;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 
 import com.ext.portlet.ProposalActivityKeys;
@@ -19,6 +22,10 @@ public class ProposalSocialActivityCreateHandler extends BaseProposalSocialActiv
             socialActivityService.addActivity(event.getUser().getUserId(), getDefaultGroup().getGroupId(),
                     Proposal.class.getName(), event.getProposal().getProposalId(), ProposalActivityKeys.PROPOSAL_CREATE.ordinal(), 
                     null, 0);
+
+            // Reindex the user to update the activity count
+            Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
+            indexer.reindex(event.getUser().getUserId());
         }
         catch (PortalException e) {
             _log.error("Can't add social activity", e);

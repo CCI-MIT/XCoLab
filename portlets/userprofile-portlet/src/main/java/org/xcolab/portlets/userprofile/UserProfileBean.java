@@ -241,6 +241,17 @@ public class UserProfileBean implements Serializable {
         prefs.setEmailOnActivity(send);
         MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
     }
+
+	public void setSendDailyEmailOnActivity(boolean send) throws SystemException {
+		MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(Helper.getLiferayUser().getUserId());
+		prefs.setEmailActivityDailyDigest(send);
+		MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+	}
+
+	public boolean getSendDailyEmailOnActivity() throws SystemException {
+		MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(Helper.getLiferayUser().getUserId());
+		return prefs.getEmailActivityDailyDigest();
+	}
     
     public void showPage(ActionEvent e) {
         try {
