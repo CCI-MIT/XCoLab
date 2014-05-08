@@ -216,29 +216,36 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		function renderContests(contests) {
 			contests.sort(function(a, b) { - (a.id - b.id) });
 			var container = jQuery(".contest-outline-right");
-			container.find(".contest-count .count").text(contests.length);
 			var contestsListHtml = [];
 			if (contests.length == 0) {
 				contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
 			}
 			
-			var duplicateContests = {};
+			var duplicateContestNames = {};
 			for (var i =0; i < contests.length; i++) {
 				// check for duplicates
 				var contest = contests[i];
-				if (!(contest.name in duplicateContests)) {
-					duplicateContests[contest.name] = 0;
+				if (!(contest.name in duplicateContestNames)) {
+					duplicateContestNames[contest.name] = 0;
 					
 				}
-				duplicateContests[contest.name] ++;
+				duplicateContestNames[contest.name] ++;
 			}
+			var uniqueCount = 0;
+			var duplicateContests = {};
 			for (var i =0; i < contests.length; i++) {
 				var contest = contests[i];
+				if (contest.id in duplicateContests) continue; 
+				else {
+					duplicateContests[contest.id] = true;
+				}
+				uniqueCount++;
+				
 				contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
 				contestsListHtml.push(contest.contestUrl);
 				contestsListHtml.push("'>");
 				contestsListHtml.push(contest.name);
-				if (duplicateContests[contest.name] > 1 && contest.created > 0) {
+				if (duplicateContestNames[contest.name] > 1 && contest.created > 0) {
 					contestsListHtml.push(" ");
 					contestsListHtml.push(new Date(contest.created).getFullYear());
 				}
@@ -269,6 +276,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 				contestsListHtml.push("</div></div>");
 			}
+			//alert('unique count' + uniqueCount);
+			container.find(".contest-count .count").text(uniqueCount);
 			/*
 			contestsListHtml.push("<div class='otherContestsInfo'>");
 			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
@@ -356,6 +365,19 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			var currentSpace = ontologySpaces[spaceId];
 			window.location.hash = "space=" + spaceId + "_" + escape(currentSpace.name);
 			
+			// update links in show active dropdown
+			jQuery(".show-active li a").each(function(idx, elem) {
+				var elem = jQuery(elem);
+				var href = elem.attr('href');
+				var hashPos = href.indexOf("#");
+				
+				if (hashPos >= 0) {
+					href = href.substring(0, hashPos);
+				}
+				elem.attr('href', href + window.location.hash);
+				
+			});
+			
 			renderBreadcrumbSections([currentSpace]);
 			renderContests(currentSpace.contests);
 			
@@ -432,8 +454,12 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				}
 			});
 			container.removeClass('currentlyClicked').toggleClass('active');
-			self.addClass('open');
-			if (self.hasClass('open')) {
+			if (!container.hasClass('active')) {
+				container.find("> ul").slideUp();
+				self.removeClass('open');
+			}
+			else {
+				self.addClass('open');
 				container.find("> ul").slideDown();
 				
 				// if this is a space, open also it's root term
