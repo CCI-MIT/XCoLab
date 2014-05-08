@@ -12,6 +12,10 @@
         <service-type>com.liferay.portal.service.MembershipRequestLocalService</service-type>
         <service-impl>org.xcolab.hooks.climatecolab.service.CustomMembershipRequestLocalServiceImpl</service-impl>
     </service>
+	<service>
+        <service-type>com.liferay.portlet.social.service.SocialActivityLocalService</service-type>
+        <service-impl>org.xcolab.hooks.climatecolab.service.CustomSocialActivityLocalServiceImpl</service-impl>
+    </service>
 
 	<servlet-filter>
 		<servlet-filter-name>MassMessaging</servlet-filter-name>

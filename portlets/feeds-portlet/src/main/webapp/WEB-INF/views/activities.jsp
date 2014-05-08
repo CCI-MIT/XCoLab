@@ -73,7 +73,7 @@
 					
 					</c:otherwise> 
 				</c:choose>
-				<c:if test="${not empty activities }">
+				<c:if test="${ not isLastPage }">
 					<a href="${nextURL }">older &amp;raquo;</a>
 				</c:if>
 			</div>

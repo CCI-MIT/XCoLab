@@ -38,12 +38,11 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 		List<SocialActivityWrapper >activities = new ArrayList<SocialActivityWrapper>();
 		int lastDaysBetween = -1;
 		Date now = new Date();
-		int count = 200;
 		int i = 0;
 		Map<String, String[]> parameters = request.getParameterMap();
 		long filterUserId = 0L;
 		User filterUser = null;
-		final int pageSize = 200;
+		final int pageSize = feedsPreferences.getFeedSize();
 		String userIdStr = null;
 		if (parameters.containsKey("userId")) {
 			userIdStr = parameters.get("userId")[0];
@@ -84,7 +83,14 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 		}
 
 		model.addAttribute("activities", activities);
-		model.addAttribute("maxPage", (int) Math.ceil((double)ActivityUtil.getAllActivitiesCount()/ pageSize));
+
+
+        if (filterUserId == 0) {
+            model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1)) >= ActivityUtil.getAllActivitiesCount()));
+        } else {
+            model.addAttribute("isLastPage", ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil.getActivitiesCount(filterUserId))));
+        }
+
 
 		return "activities";
 
