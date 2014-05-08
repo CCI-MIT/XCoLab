@@ -1,7 +1,7 @@
 var proposalsPerPage = 5;
 var proposalPickerPage = 0;
 var sortOrder = 'ASC';
-var sortColumn = 'Contest';
+var sortColumn = 'Supporters';
 var currentSectionId;
 var pickMultipleProposals = false;
 var contestPK = 0;
@@ -25,17 +25,16 @@ function loadProposals(){
         highlighter();
         if (data.proposals.length > 0) addPaginationToProposalPickerTable(proposalPickerPage > 0,data.totalCount > ((proposalPickerPage+1) * proposalsPerPage),Math.ceil(data.totalCount / proposalsPerPage));
         spinner.stop();
+        initTooltips();
     });
 }
 
 /* Load Proposals for a given tab (determined by var) */
 function loadContests(){
-	console.log('loading contests');
     spinner.spin(document.getElementById('proposalPickerTableContainer'));
     var URL = replaceURLPlaceholders(proposalPickerContestsURL);
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
-    	console.log('data received', URL);
         contests = data.contests;
         $('#proposalPickerTable > tbody').empty();
         var even = true;
@@ -46,12 +45,10 @@ function loadContests(){
             //addToProposalPickerTable(attr,even);
             //even = ! even;
         });
-        console.log('highlighting');
         highlighter();
         
         if (data.contests.length > 0) addPaginationToContestsPickerTable(proposalPickerPage > 0,data.totalCount > ((proposalPickerPage+1) * proposalsPerPage),Math.ceil(data.totalCount / proposalsPerPage));
         
-        console.log('ok, should remove spinner');
         spinner.stop();
     });
 }
@@ -84,7 +81,6 @@ function replaceURLPlaceholders(rawUrl){
 
 /* Proposal picker tab selected (click) */
 function proposalPickerTabSelected(element, type){
-	console.log('proposal picker tab selected', type);
     proposalType = type;
     element.parent().parent().children().removeClass('c');
     element.parent().addClass('c'); proposalPickerPage = 0;
@@ -130,9 +126,11 @@ function pickProposalList(sectionId){
 
 /* click "select" in the picker */
 function selectProposal(proposalId, proposalName, contestName, linkClicked, contestId){
+	if (linkClicked.hasClass('selected')) return;
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     linkClicked.parent().parent().addClass('ui-datatable-highlight');
-    linkClicked.remove();
+    //linkClicked.remove();
+    linkClicked.addClass('selected');
     if(pickMultipleProposals) {
         if($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
             inputField.val(inputField.val() + proposalId + ',');
@@ -178,11 +176,12 @@ function addToProposalPickerTable(data, even){
     var dateCol = '<td>' + dateTimeFormatter.date(data.dateSubscribed) + '</td>';
     
     
-    var tableRow = $('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (highlight ? ' ui-datatable-highlight' : '') + '"><td>' + data.contestName + '</td><td' + (displayDate ? '' : ' colspan="2"') + '>' + data.proposalName + '</td>' + (displayDate ? dateCol : '') + '<td style="text-align: center;">' + (highlight ? '' : link) + '</td></tr>');
+    //var tableRow = $('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (highlight ? ' ui-datatable-highlight' : '') + '"><td>' + data.contestName + '</td><td' + (displayDate ? '' : ' colspan="2"') + '>' + data.proposalName + '</td>' + (displayDate ? dateCol : '') + '<td style="text-align: center;">' + (highlight ? '' : link) + '</td></tr>');
+    var tableRow = jQuery(proposalPickerProposalEntryTemplate({data: data}));
+    if (highlight) tableRow.addClass('selected');
+    $("#proposalPicker_proposalsContainer").append(tableRow);
     
-    $("#proposalPicker_proposalsContainer").append(jQuery(proposalPickerProposalEntryTemplate({data: data})));
-    
-    tableRow.find(".selectProposalLink").click(function() {
+    tableRow.click(function() {
     	var event = jQuery.Event("proposalPicker_proposalSelected", {
     		contestId: data.contestId,
     		proposalId: data.id, 
@@ -321,7 +320,6 @@ $("#proposalPicker_contestsContainer").on("click", " tr", function(event) {
 	$("#proposalsPicker_proposalsContainer").show();
 	
 	loadProposals();
-	console.log("clicked contest", $(this).attr('data-contestPK'));
 	
 });
 

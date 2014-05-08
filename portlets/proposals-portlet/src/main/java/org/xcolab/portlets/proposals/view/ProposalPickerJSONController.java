@@ -116,9 +116,22 @@ public class ProposalPickerJSONController {
 
         //sortList(sortOrder,sortColumn,contests);
         if (end >= contests.size() && contests.size() > 0) end = contests.size();
+        Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
+
+			@Override
+			public int compare(Pair<Contest, Date> o1, Pair<Contest, Date> o2) {
+				try {
+					return (int) - (ContestLocalServiceUtil.getProposalsCount(o1.getLeft()) - ContestLocalServiceUtil.getProposalsCount(o2.getLeft()));
+				} catch (PortalException | SystemException e) {
+				}
+				return 0;
+			}
+		});
         if (contests.size()>(end-start)) contests = contests.subList(start,end);
 
         //response.getPortletOutputStream().write(getJSONObjectMapping(contests,totalCount).getBytes());
+        
+        
 
         response.getPortletOutputStream().write(getJSONObjectMappingContests(contests,totalCount).getBytes());
     }
@@ -178,6 +191,7 @@ public class ProposalPickerJSONController {
             JSONObject contest = JSONFactoryUtil.createJSONObject();
             contest.put("name", wrappedProposal.getContest().getContestShortName());
             contest.put("id", wrappedProposal.getContest().getContestPK());
+            contest.put("contestLogoId", wrappedProposal.getContest().getContestLogoId());
             proposalContests.put(contest);
             
             o.put("contests", proposalContests);
@@ -252,6 +266,19 @@ public class ProposalPickerJSONController {
                 @Override
                 public int compare(Pair<Proposal,Date> o1, Pair<Proposal,Date> o2) {
                     return o1.getRight().compareTo(o2.getRight());
+                }
+            });
+        }
+        else if(sortColumn.equalsIgnoreCase("Supporters")){
+            Collections.sort(proposals,new Comparator<Pair<Proposal,Date>>() {
+                @Override
+                public int compare(Pair<Proposal,Date> o1, Pair<Proposal,Date> o2) {
+                	try {
+						return - (ProposalLocalServiceUtil.getSupportersCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil.getSupportersCount(o2.getLeft().getProposalId()));
+					} catch (PortalException e) {
+					} catch (SystemException e) {
+					}
+					return 0;
                 }
             });
         }
