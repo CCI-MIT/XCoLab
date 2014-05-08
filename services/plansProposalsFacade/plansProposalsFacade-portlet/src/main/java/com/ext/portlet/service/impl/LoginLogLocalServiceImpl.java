@@ -5,6 +5,8 @@ import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.LoginLog;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.base.LoginLogLocalServiceBaseImpl;
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -45,29 +47,18 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
 		newLog.setIpAddress(ipAddr);
 		newLog.setEntryUrl(entryUrl);
 
-		ExpandoValue city = ExpandoValueLocalServiceUtil.getValue(
-				user.getCompanyId(),
-				User.class.getName(),
-				CommunityConstants.EXPANDO,
-				CommunityConstants.CITY,
-				user.getUserId());
+        try {
+            Location userLocation = IpTranslationServiceUtil.getLocationForIp(ipAddr);
 
-		if (Validator.isNotNull(city)) {
-			newLog.setCity(city.getString());
-		}
+            if (Validator.isNotNull(userLocation)) {
+                newLog.setCity(userLocation.getCity());
+                newLog.setCountry(userLocation.getCountry());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		ExpandoValue country = ExpandoValueLocalServiceUtil.getValue(
-				user.getCompanyId(),
-				User.class.getName(),
-				CommunityConstants.EXPANDO,
-				CommunityConstants.COUNTRY,
-				user.getUserId());
-
-		if (Validator.isNotNull(country)) {
-			newLog.setCountry(country.getString());
-		}
-
-		updateLoginLog(newLog);
+        updateLoginLog(newLog);
 
 		return newLog;
 	}
