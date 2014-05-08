@@ -6,6 +6,13 @@
 	<portal-properties>additionalProperties.properties</portal-properties>
 	
 	<custom-jsp-dir>/WEB-INF/jsps</custom-jsp-dir>
+
+    <!-- Services -->
+    <service>
+        <service-type>com.liferay.portal.service.MembershipRequestLocalService</service-type>
+        <service-impl>org.xcolab.hooks.climatecolab.service.CustomMembershipRequestLocalServiceImpl</service-impl>
+    </service>
+
 	<servlet-filter>
 		<servlet-filter-name>MassMessaging</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.massmessaging.MassMessagingFilter</servlet-filter-impl>
@@ -89,6 +96,7 @@
 		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
 
+    <!-- Struts actions -->
     <!-- Structs action for handling the SendActivitySubscriptionNotifications to subscribers -->
     <struts-action>
         <struts-action-path>/portal/schedulerSendEmailNotifications</struts-action-path>
@@ -112,5 +120,4 @@
             org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction
         </struts-action-impl>
     </struts-action>
-	
 </hook>

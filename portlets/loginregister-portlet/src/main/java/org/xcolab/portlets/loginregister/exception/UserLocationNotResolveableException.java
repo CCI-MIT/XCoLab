@@ -8,4 +8,11 @@ public class UserLocationNotResolveableException extends Exception {
 	public UserLocationNotResolveableException(String message) {
 		super(message);
 	}
+<<<<<<< Updated upstream
+=======
+
+	public UserLocationNotResolveableException(Exception e) {
+		super(e);
+	}
+>>>>>>> Stashed changes
 }
