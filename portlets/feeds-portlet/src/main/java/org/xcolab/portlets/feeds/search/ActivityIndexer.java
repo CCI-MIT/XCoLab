@@ -1,5 +1,6 @@
 package org.xcolab.portlets.feeds.search;
 
+import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -23,15 +24,8 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 import javax.portlet.PortletURL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * This class indexes all User activities that are already clustered together (like seen in the Feeds portlet)
@@ -46,8 +40,6 @@ public class ActivityIndexer extends BaseIndexer {
     public static final String CREATE_DATE_KEY = "createDate";
     private static final String ACTIVITY_ID_KEY = "activityId";
     private static final String TYPE_KEY = "type_";
-
-    private static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
 
     public static final String[] CLASS_NAMES = {SocialActivity.class.getName()};
 
@@ -127,7 +119,7 @@ public class ActivityIndexer extends BaseIndexer {
 
             // Try to get a similar activity in the time frame
             subQuery = BooleanQueryFactoryUtil.create(context);
-            subQuery.addNumericRangeTerm(CREATE_DATE_KEY, 0L, (sa.getCreateDate() - AGGREGATION_TIME_WINDOW));
+            subQuery.addNumericRangeTerm(CREATE_DATE_KEY, 0L, (sa.getCreateDate() - ActivityUtil.AGGREGATION_TIME_WINDOW));
             query.add(subQuery, BooleanClauseOccur.MUST_NOT);
 
             Hits hits = SearchEngineUtil.search(context, query);
@@ -166,7 +158,7 @@ public class ActivityIndexer extends BaseIndexer {
 
     private void reindexActivities() throws SystemException {
         List<SocialActivity> allActivities = SocialActivityLocalServiceUtil.getSocialActivities(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-        List<SocialActivity> aggregatedActivities = groupActivities(allActivities);
+        List<SocialActivity> aggregatedActivities = ActivityUtil.groupActivities(allActivities);
 
         for (SocialActivity sa : aggregatedActivities) {
             try {
@@ -175,49 +167,5 @@ public class ActivityIndexer extends BaseIndexer {
                 _log.error("Could not reindex SocialActivity with primary key " + sa.getActivityId(), e);
             }
         }
-    }
-
-    private List<SocialActivity> groupActivities(List<SocialActivity> activities) {
-        //find all activities of same type
-        Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
-        for (SocialActivity a : activities) {
-            if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
-                activitiesMap.put(getSocialActivityKey(a), new LinkedList<SocialActivity>());
-            }
-            activitiesMap.get(getSocialActivityKey(a)).add(a);
-        }
-
-        //cluster
-        List<SocialActivity> aggregatedActivities = new LinkedList<>();
-        Comparator<SocialActivity> sorter = new Comparator<SocialActivity>() {
-            @Override
-            public int compare(SocialActivity o1, SocialActivity o2) {
-                return new Long(o1.getCreateDate()).compareTo(o2.getCreateDate());
-            }
-        };
-        for (Collection<SocialActivity> sal : activitiesMap.values()) {
-            List<SocialActivity> ascending = new ArrayList<>(sal); //convert to array for sorting
-            Collections.sort(ascending, sorter);
-
-            SocialActivity curMin = null;
-            for (SocialActivity sa : ascending) {
-                if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) curMin = sa;
-                else {
-                    aggregatedActivities.add(curMin);
-                    curMin = sa;
-                }
-            }
-            aggregatedActivities.add(curMin);
-        }
-        //horrible code start
-        Collections.sort(aggregatedActivities, sorter);
-        Collections.reverse(aggregatedActivities);
-        //horrible code end
-
-        return aggregatedActivities;
-    }
-
-    private String getSocialActivityKey(SocialActivity sa) {
-        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType() + "_" + sa.getUserId();
     }
 }
