@@ -1,5 +1,6 @@
 package com.ext.utils.subscriptions;
 
+import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -9,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by kmang on 08/05/14.
+ * Created by kmang on 09/05/14.
  */
-public class ActivitySubscriptionWhitelistProposalSupportHandler implements ActivitySubscriptionWhitelistHandler {
+public class ActivitySubscriptionWhitelistProposalVoteHandler implements ActivitySubscriptionWhitelistHandler {
     @Override
     public List<Long> getWhitelistedUsers(long classPk) {
         List<Long> contributorIds = new ArrayList<>();

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalActivityKeys;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -224,6 +225,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             if (publishActivity) eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
                     contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
         }
+
+        // Automatically subscribe author to own proposal
+        subscribe(proposalId, authorId);
 
 
         return proposal;
@@ -1044,6 +1048,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
             eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            if (!isSubscribed(proposalId, userId)) {
+                subscribe(proposalId, userId);
+            }
         }
     }
 

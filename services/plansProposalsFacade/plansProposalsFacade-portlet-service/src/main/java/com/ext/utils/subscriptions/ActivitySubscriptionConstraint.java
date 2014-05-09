@@ -25,6 +25,12 @@ public class ActivitySubscriptionConstraint {
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
         whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.SUPPORTER_REMOVE.ordinal(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
+        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE.ordinal(),
+                new ActivitySubscriptionWhitelistProposalSupportHandler());
+        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE_SWITCH.ordinal(),
+                new ActivitySubscriptionWhitelistProposalSupportHandler());
+        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE_RETRACT.ordinal(),
+                new ActivitySubscriptionWhitelistProposalSupportHandler());
     }
 
     private long classNameId;
