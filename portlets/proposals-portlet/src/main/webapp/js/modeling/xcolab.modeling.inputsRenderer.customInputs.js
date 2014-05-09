@@ -93,6 +93,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					}
 					screenHtml.push("</div><div class='option-description-long'>");
 					screenHtml.push(option.descriptionLong);
+					if (option.descriptionLong && $.trim(option.descriptionLong).length > 0) {
+						screenHtml.push(" <a href='javascript:;' class='see-less'>see less</a>");
+					}
 					screenHtml.push("</div></td>");
 					screenHtml.push(option.additionalColumns);
 					screenHtml.push("</tr>");
@@ -386,7 +389,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			
 			event.preventDefault();
 			var shortDescriptionElem = $(this).parents('.option-description-short');
-			console.log('see more clicked', shortDescriptionElem);
 			var isExpanded = shortDescriptionElem.next().is(':visible');
 			var hasContent = $.trim(shortDescriptionElem.next().text()).length > 0;
 			self.container.find('.option-description-long:visible').slideUp();
@@ -394,6 +396,13 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				shortDescriptionElem.next().slideDown();
 			
 			}
+			return false;
+
+		});
+		
+		this.container.on('click', '.option-description-long .see-less', function(event) {
+			event.preventDefault();
+			self.container.find('.option-description-long:visible').slideUp();
 			return false;
 
 		});
