@@ -210,6 +210,11 @@
 
 				</div>
 				<div id="warning"></div>
+				<div class="pickerButtons">
+                	<div class="blue-button btn"><a href="#" id="savePickedProposals">OK</a></div>
+                	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">CANCEL</a></div>
+					<div class="clearfix clear"><!--  --></div>
+                </div>
 			</div>
 		</div>
 		<!--  /Proposals Picker  -->

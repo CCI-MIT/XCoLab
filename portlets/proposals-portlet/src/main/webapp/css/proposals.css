@@ -329,3 +329,7 @@ div.sponsorLogo img {
 #popup_proposalPicker .popup {
 	padding: 15px;
 }
+
+.pickerButtons .btn {
+	float: right;
+}

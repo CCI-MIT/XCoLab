@@ -6,6 +6,7 @@ var currentSectionId;
 var pickMultipleProposals = false;
 var contestPK = 0;
 var contests = [];
+var pickedProposals = [];
 
 var proposalPickerProposalEntryTemplate = Handlebars.compile($("#proposalPickerProposalEntryTemplate").html());
 var proposalPickerContestEntryTemplate = Handlebars.compile($("#proposalPickerContestEntryTemplate").html());
@@ -105,10 +106,31 @@ function proposalPickerTabSelected(element, type){
     }
 }
 
+function initializePickedProposals() {
+    pickedProposals = [];
+	$("input[name='sectionsContent[" + currentSectionId + "]']").siblings('ul').find('li').each(function() {
+		var proposalLink = $(this).find('a').eq(0);
+		var proposal = {};
+		proposal.proposalName = proposalLink.text();
+		
+		var linkELementsRegex =  /.*contestId\/(\d*)\/planId\/(\d*)/;
+		var match = linkELementsRegex.exec(proposalLink.attr('href'));
+		if (match != null) {
+			proposal.proposalId = match[2];
+			proposal.contestId = match[1];
+		}
+		pickedProposals.push(proposal);
+	});
+    
+    
+}
+
 
 /* Pick just a single proposal */
 function pickProposal(sectionId){
     currentSectionId = sectionId;
+    initializePickedProposals();
+    
     pickMultipleProposals = false;
     updateTabRibbons();
     $('#popup_proposalPicker').show();
@@ -118,6 +140,8 @@ function pickProposal(sectionId){
 /* Pick a list of proposals */
 function pickProposalList(sectionId){
     currentSectionId = sectionId;
+    initializePickedProposals();
+    
     pickMultipleProposals = true;
     updateTabRibbons();
     $('#popup_proposalPicker').show();
@@ -126,16 +150,35 @@ function pickProposalList(sectionId){
 
 /* click "select" in the picker */
 function selectProposal(proposalId, proposalName, contestName, linkClicked, contestId){
-	if (linkClicked.hasClass('selected')) return;
+	
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     linkClicked.parent().parent().addClass('ui-datatable-highlight');
     //linkClicked.remove();
-    linkClicked.addClass('selected');
     if(pickMultipleProposals) {
-        if($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
+    	var idx = -1;
+    	var proposal = null;
+		for (var i = 0; i < pickedProposals.length; i++) {
+			if (pickedProposals[i].proposalId == proposalId) {
+				proposal = pickedProposals[i];
+				idx = i;
+			}
+		}
+    	if (linkClicked.hasClass('selected')) {
+    		linkClicked.removeClass('selected');
+			pickedProposals.splice(idx, 1);
+			return;
+    	}
+    	else {
+    		linkClicked.addClass('selected');
+    		if (idx == -1) {
+    			pickedProposals.push({proposalId: proposalId, proposalName: proposalName, contestName: contestName, contestId: contestId});
+    		}
+    	}
+    	/*
+        if ($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
             inputField.val(inputField.val() + proposalId + ',');
             inputField.siblings('ul').append('<li><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
-        }
+        }*/
     } else{
         if (inputField.val()) inputField.next().remove();
         inputField.val(proposalId);
@@ -327,4 +370,32 @@ $("#breadContestsList").click(function(event) {
 	event.preventDefault();
 	$("#proposalsPicker_proposalsContainer").hide();
 	$("#proposalPickerTableContests").show();
+});
+
+$("#cancelPickedProposals").click(function(event) {
+	$('#popup_proposalPicker').hide();   
+	event.preventDefault();
+	return false;
+});
+
+
+$("#savePickedProposals").click(function(event) {
+    var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
+    var proposalListContainer = inputField.siblings('ul');
+    var proposalIds = [];
+    proposalListContainer.empty();
+	for (var i = 0; i < pickedProposals.length; i++) {
+		var proposal = pickedProposals[i];
+		proposalIds.push(proposal.proposalId);
+		proposalListContainer.append('<li><a href="/web/guest/plans/-/plans/contestId/' + proposal.contestId + '/planId/' + proposal.proposalId + '">' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+	}
+	inputField.val(proposalIds.join(","));
+	/*
+    if ($.inArray(proposalId.toString(), inputField.val().split(','))<0) {
+        inputField.val(inputField.val() + proposalId + ',');
+        inputField.siblings('ul').append('<li><a href="/web/guest/plans/-/plans/contestId/' + contestId + '/planId/' + proposalId + '">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+    }*/   
+	$('#popup_proposalPicker').hide();   
+	event.preventDefault();
+	return false;
 });

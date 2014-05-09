@@ -299,6 +299,11 @@ public class ProposalPickerJSONController {
         		contests.add(Pair.of(c, c.getCreated() == null ? new Date(0) : c.getCreated()));
         	}
         }
+        else {
+        	for (Contest c: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+        		contests.add(Pair.of(c, c.getCreated() == null ? new Date(0) : c.getCreated()));
+        	}
+        }
     	
     	return contests;
     }
