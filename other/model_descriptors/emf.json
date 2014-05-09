@@ -179,7 +179,7 @@
 					{
 						name : 'energySupplyTechnologiesShort',
 						title : 'Energy supply technologies',
-						description : '<p>For the <span class="wizardTooltipPlaceholder" data-tooltip-id="ccs">Greater efficiency</span> option, the EMF 27 exercise considered two combinations of no-carbon energy supply technologies. Select your preferred option. If you’d like to choose from a more detailed set of  energy supply options, click on the Back button and select <span class="wizardTooltipPlaceholder" data-tooltip-id="ccs">Baseline efficiency</span>.',
+						description : '<p>For the <span class="wizardTooltipPlaceholder" data-tooltip-id="greater">Greater efficiency</span> option, the EMF 27 exercise considered two combinations of no-carbon energy supply technologies. Select your preferred option. If you’d like to choose from a more detailed set of  energy supply options, click on the Back button and select <span class="wizardTooltipPlaceholder" data-tooltip-id="baseline">Baseline efficiency</span>.',
 						inputsTableHeader : '<tr><th colspan="2"></th><th>Wind-solar</th><th>Biofuels</th><th>Nuclear</th><th><span class="wizardTooltipPlaceholder" data-tooltip-id="ccs">CCS</span></th></tr>',
 						inputsFooter : '',
 

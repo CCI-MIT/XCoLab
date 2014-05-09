@@ -30,10 +30,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 
 	CustomInputsRenderer.prototype.renderEdit = function(container, model) {
 		var self = this;
-		this.container = container
+		this.container = container;
 		this.definition = {};
 		this.values = {};
-		this.visibleScreen = {};
 		this.screensStack = [];
 		
 		this.renderDefinition = function(definition) {
@@ -211,7 +210,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			for (var key in self.values) {
 				inputValsKey.push(key + "=" + self.values[key].value);
 			}
-			console.log(inputValsKey, currentScreen);
 			inputValsKey.sort();
 			
 			var transitionKey = inputValsKey.join(',');
@@ -228,7 +226,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						}
 					}
 					if (transitionMatched) {
-						console.log('should execute transition', transition);
 						return transition;
 					}
 				}
@@ -240,15 +237,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			if (transition) {
 				this.processTransition(transition);
 			}
+			window.location.hash = escape(JSON.stringify({screens: self.screensStack, values: self.values}));
 		}
 		
 		this.processTransition = function(transition) {
-			console.log('processing transition', transition);
 			if (transition.targetScreen) {
 				self.showScreen(transition.targetScreen);
 			}
 			if (transition.showRunButton) {
-				console.log('showRunButton');
 				self.container.find('.wizardRunTheModel').show();
 			}
 		}
@@ -282,7 +278,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			if (!showNext) {
 				screenElem.find(".wizardNavigateNext").hide();
 			}
-			console.log("showing current screen buttons", showNext, showRun);
 		}
 		
 		this.findCurrentResult = function() {
@@ -313,7 +308,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.updateWizardOutputsValues = function() {
 			var outputs = self.findCurrentResult().outputs;
 			
-			console.log('generating for outputs: ', outputs);
 			// remove all valueBinding inputs to update it with new ones
 				
 			self.container.find(".valueBinding").remove();
@@ -410,7 +404,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.container.on('click', '.optionDef', function(event, val1, val2, val3) {
 			self.updateWizardOutputsValues();
 			var currentScreen = self.screensStack[self.screensStack.length-1];
-			console.log('click on option def', event);
 			
 			var input = $(event.currentTarget);
 			input.siblings().removeClass('selected');
@@ -418,34 +411,87 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			self.values[input.attr('name')] = {
 					value: input.attr('value'), 
 					screen: input.parents(".wizardScreen").find("h3").text(), 
+					screenName: input.parents(".wizardScreen").attr('id').substring('screen_'.length),
 					name: input.find("h6").text()
 			};
+
+			window.location.hash = escape(JSON.stringify({screens: self.screensStack, values: self.values}));
 			self.updateCurrentScreenButtons();
 			self.updateSelectedOptionsInfo();
+			return false;
 		});
 		
 
 		this.container.on('click', '.wizardNavigateNext', function() {
 			self.navigateNext();
-			
+			return false;
 		});
 		
 		this.container.on('click', '.wizardNavigateBack', function() {
 			self.navigateBack();
-			
+			return false;
 		});
 		
 		this.container.on('click', '.wizardRunTheModel', function() {
 			self.updateWizardOutputsValues();
 			self.modelingWidget.runTheModel();
+			return false;
 		});
 		
 		this.renderDefinition(eval("(" + model.customInputsDefinition + ")"));
-
-		self.updateWizardOutputsValues();
-		self.updateSelectedOptionsInfo();
 		
+		function processHashChange() {
+			var obj = {screens: [], values: {}};
+			try {
+				if (window.location.hash.length > 1) {
+					obj = $.parseJSON(unescape(window.location.hash.substring(1)));
+				}
+			}
+			catch (e) {
+				console.error(e);
+			}
+			if (typeof(obj) != 'object') {
+				obj = {};
+			}
+			if (!('screens' in obj) || obj.screens.length == 0) {
+				obj.screens = [self.definition.defaultScreen];
+			}
+			if (!('values' in obj)) {
+				obj.values = {};
+			}
+			
+			// check if there is any value that should be deselected
+			for (var key in self.values) {
+				if (! (key in obj.values) || obj.values[key] != self.values[key]) {
+					$("#option_" + self.values[key].screenName + "_" + key + "_" + self.values[key].value).removeClass('selected');
+				}
+			}
+				
+			// make sure that all values got selected
+			for (var key in obj.values) {
+				$("#option_" + obj.values[key].screenName + "_" + key + "_" + obj.values[key].value).addClass('selected');
+			}
+
+			console.log('setting screens', self.screensStack, obj.screens);
+			self.screensStack = obj.screens;
+			console.log('setting values', self.values, obj.values);
+			self.values = obj.values;
+			self.showScreen(self.screensStack[self.screensStack.length-1], true);
+			
+			
+			self.updateWizardOutputsValues();
+			self.updateSelectedOptionsInfo();
+			self.updateCurrentScreenButtons();
+		}
+
 		$(".runSimulationButtonHighlight").html("<span>VIEW</span> model run");
+		
+		$(window).on('hashchange', function() {
+			processHashChange();
+			
+		});
+		
+		processHashChange();
 	};
 	
 	CustomInputsRenderer.prototype.renderView = function(container, model) {
