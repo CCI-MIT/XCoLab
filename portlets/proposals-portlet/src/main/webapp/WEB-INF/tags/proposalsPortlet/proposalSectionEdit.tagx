@@ -62,7 +62,7 @@
                         <li><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)</li>
                     </c:forEach>
                 </ul>
-                <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Add Proposals</a></div>
+                <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Manage Proposal Selection</a></div>
             </c:when>
 
 
