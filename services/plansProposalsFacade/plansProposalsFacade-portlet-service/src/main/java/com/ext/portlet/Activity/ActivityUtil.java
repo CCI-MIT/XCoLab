@@ -48,11 +48,17 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.portlet.social.service.persistence.SocialActivityUtil;
 
+import javax.management.Query;
+
 public class ActivityUtil {
 
     private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
     private final static String encoding = "UTF-8";
+
+    public static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
+
+    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static SubscriptionProvider provider = new SubscriptionProvider() {
 
@@ -112,7 +118,6 @@ public class ActivityUtil {
     }
     
     public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next, boolean showAdmin) throws SystemException, PortalException {
-		long millisBefore = System.currentTimeMillis();
         Hits hits;
     	if (showAdmin) {
             hits = getActivitySearchResults(pagestart, next);
@@ -137,13 +142,10 @@ public class ActivityUtil {
             }
         }
 
-        _log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
 		return aggregatedSocialActivities;
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException, PortalException {
-		long millisBefore = System.currentTimeMillis();
-
         Hits hits = getActivitySearchResults(userId, pagestart, next);
         List<SocialActivity> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
         for (Document activityDoc : hits.getDocs()) {
@@ -155,12 +157,68 @@ public class ActivityUtil {
             }
         }
 
-        _log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
         return aggregatedSocialActivities;
     }
 
+    public static List<SocialActivity> groupAllActivities() throws SystemException {
+        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(DEFAULT_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+    }
+
+    public static List<SocialActivity> groupUserActivities(long userId) throws SystemException {
+        return groupActivities(SocialActivityLocalServiceUtil.getUserActivities(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+    }
+
+    public static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
+        //find all activities of same type
+        Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
+        for (SocialActivity a : activities) {
+            if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
+                activitiesMap.put(getSocialActivityKey(a), new LinkedList<SocialActivity>());
+            }
+            activitiesMap.get(getSocialActivityKey(a)).add(a);
+        }
+
+        //cluster
+        List<SocialActivity> aggregatedActivities = new LinkedList<>();
+        Comparator<SocialActivity> sorter = new Comparator<SocialActivity>() {
+            @Override
+            public int compare(SocialActivity o1, SocialActivity o2) {
+                return new Long(o1.getCreateDate()).compareTo(o2.getCreateDate());
+            }
+        };
+        for (Collection<SocialActivity> sal : activitiesMap.values()) {
+            List<SocialActivity> ascending = new ArrayList<>(sal); //convert to array for sorting
+            Collections.sort(ascending, sorter);
+
+            SocialActivity curMin = null;
+            for (SocialActivity sa : ascending) {
+                if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) curMin = sa;
+                else {
+                    aggregatedActivities.add(curMin);
+                    curMin = sa;
+                }
+            }
+            aggregatedActivities.add(curMin);
+        }
+        //horrible code start
+        Collections.sort(aggregatedActivities, sorter);
+        Collections.reverse(aggregatedActivities);
+        //horrible code end
+
+        return aggregatedActivities;
+    }
+
+    private static String getSocialActivityKey(SocialActivity sa) {
+        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType() + "_" + sa.getUserId();
+    }
+
     public static int getAllActivitiesCount() throws SystemException, PortalException {
-        return getActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        int searchResultCount = getActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        if (searchResultCount == 0) {
+            return groupAllActivities().size();
+        }
+
+        return searchResultCount;
     }
 
     public static void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
@@ -204,7 +262,12 @@ public class ActivityUtil {
 
     public static int getActivitiesCount(long userId) throws SystemException, PortalException {
 
-        return getActivitySearchResults(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        int searchResultCount = getActivitySearchResults(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        if (searchResultCount == 0) {
+            return groupUserActivities(userId).size();
+        }
+
+        return searchResultCount;
     }
 
 
