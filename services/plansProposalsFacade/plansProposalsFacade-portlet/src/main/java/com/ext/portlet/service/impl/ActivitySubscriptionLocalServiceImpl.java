@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil;
@@ -23,6 +22,7 @@ import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.SocialActivityMessageLimitationHelper;
+import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -37,11 +37,8 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
@@ -406,7 +403,16 @@ public class ActivitySubscriptionLocalServiceImpl
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
         Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", activity.getClassNameId());
         Criterion criterionClassPK = RestrictionsFactoryUtil.eq("classPK", activity.getClassPK());
-        query.add(RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK));
+        Criterion combinedCriterion = RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK);
+
+        // Check for constraints which users should receive notifications
+        ActivitySubscriptionConstraint subscriptionConstraint = new ActivitySubscriptionConstraint(activity.getClassNameId(), activity.getType());
+        if (subscriptionConstraint.areSubscribersConstrained()) {
+            Criterion contrainedUsers = RestrictionsFactoryUtil.in("receiverId", subscriptionConstraint.getWhitelist(activity.getClassPK()));
+            query.add(RestrictionsFactoryUtil.and(combinedCriterion, contrainedUsers));
+        } else {
+            query.add(combinedCriterion);
+        }
 
         return ActivitySubscriptionLocalServiceUtil.dynamicQuery(query);
     }

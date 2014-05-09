@@ -10,7 +10,6 @@
 	<bean id="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" 
 		class="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" />
 		
-		
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" 
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" />
 		
@@ -19,4 +18,7 @@
 	
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityVotingHandler"
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityVotingHandler" />
+
+    <bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivitySupportingHandler"
+          class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivitySupportingHandler" />
 </beans>

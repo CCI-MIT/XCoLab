@@ -1115,6 +1115,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+
+        Proposal proposal = getProposal(proposalId);
+        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
     }
 
 
