@@ -45,8 +45,9 @@ public class ActivityIndexer extends BaseIndexer {
     public static final String USER_ID_KEY = "userId";
     public static final String CREATE_DATE_KEY = "createDate";
     private static final String ACTIVITY_ID_KEY = "activityId";
+    private static final String TYPE_KEY = "type_";
 
-    private static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 24l; // 1d
+    private static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
 
     public static final String[] CLASS_NAMES = {SocialActivity.class.getName()};
 
@@ -120,6 +121,10 @@ public class ActivityIndexer extends BaseIndexer {
             subQuery.addExactTerm(USER_ID_KEY, sa.getUserId());
             query.add(subQuery, BooleanClauseOccur.MUST);
 
+            subQuery = BooleanQueryFactoryUtil.create(context);
+            subQuery.addExactTerm(TYPE_KEY, sa.getType());
+            query.add(subQuery, BooleanClauseOccur.MUST);
+
             // Try to get a similar activity in the time frame
             subQuery = BooleanQueryFactoryUtil.create(context);
             subQuery.addNumericRangeTerm(CREATE_DATE_KEY, 0L, (sa.getCreateDate() - AGGREGATION_TIME_WINDOW));
@@ -154,6 +159,7 @@ public class ActivityIndexer extends BaseIndexer {
         document.addNumber(CLASS_PK_KEY, sa.getClassPK());
         document.addNumber(USER_ID_KEY, sa.getUserId());
         document.addNumber(CREATE_DATE_KEY, sa.getCreateDate());
+        document.addNumber(TYPE_KEY, sa.getType());
 
         return document;
     }

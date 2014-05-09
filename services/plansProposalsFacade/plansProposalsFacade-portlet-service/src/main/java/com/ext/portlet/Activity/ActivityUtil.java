@@ -112,7 +112,6 @@ public class ActivityUtil {
     }
     
     public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next, boolean showAdmin) throws SystemException, PortalException {
-		long millisBefore = System.currentTimeMillis();
         Hits hits;
     	if (showAdmin) {
             hits = getActivitySearchResults(pagestart, next);
@@ -137,13 +136,10 @@ public class ActivityUtil {
             }
         }
 
-        _log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
 		return aggregatedSocialActivities;
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException, PortalException {
-		long millisBefore = System.currentTimeMillis();
-
         Hits hits = getActivitySearchResults(userId, pagestart, next);
         List<SocialActivity> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
         for (Document activityDoc : hits.getDocs()) {
@@ -155,7 +151,6 @@ public class ActivityUtil {
             }
         }
 
-        _log.warn(String.format("retrieveWindowedActivites took %d ms", System.currentTimeMillis() - millisBefore));
         return aggregatedSocialActivities;
     }
 
