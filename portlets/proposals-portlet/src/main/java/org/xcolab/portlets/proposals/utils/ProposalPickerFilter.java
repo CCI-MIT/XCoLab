@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
-import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
 
 /**
@@ -17,5 +17,5 @@ import com.ext.portlet.model.Proposal;
  */
 public interface ProposalPickerFilter {
     public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion);
-    public void filterContests(List<Pair<Contest,Date>> proposals, Object additionalFilterCriterion);
+    public void filterContests(List<Pair<ContestWrapper,Date>> proposals, Object additionalFilterCriterion);
 }

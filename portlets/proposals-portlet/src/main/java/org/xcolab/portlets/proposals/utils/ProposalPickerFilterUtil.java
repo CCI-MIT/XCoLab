@@ -38,7 +38,7 @@ public enum ProposalPickerFilterUtil {
         }
 
 		@Override
-		public void filterContests(List<Pair<Contest, Date>> proposals,
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
 				Object additionalFilterCriterion) {
 			// do nothing
 		}
@@ -69,12 +69,12 @@ public enum ProposalPickerFilterUtil {
         }
 
 		@Override
-		public void filterContests(List<Pair<Contest, Date>> contests,
+		public void filterContests(List<Pair<ContestWrapper, Date>> contests,
 				Object additionalFilterCriterion) {
             if (!(additionalFilterCriterion instanceof String)) return;
             String searchCriterion = (String) additionalFilterCriterion;
-            for (Iterator<Pair<Contest,Date>> i = contests.iterator(); i.hasNext();){
-                ContestWrapper c = new ContestWrapper(i.next().getLeft());
+            for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
+                ContestWrapper c = i.next().getLeft();
                 
                  try{
                      // CONTEST NAME
@@ -121,7 +121,7 @@ public enum ProposalPickerFilterUtil {
         }
 
 		@Override
-		public void filterContests(List<Pair<Contest, Date>> proposals,
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
 				Object additionalFilterCriterion) {
 			// do nothing
 			
@@ -148,7 +148,7 @@ public enum ProposalPickerFilterUtil {
         }
 
 		@Override
-		public void filterContests(List<Pair<Contest, Date>> proposals,
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
 				Object additionalFilterCriterion) {
 			// do nothing
 			
@@ -181,7 +181,7 @@ public enum ProposalPickerFilterUtil {
         return ACCEPTALL;
     }
 
-	public void filterContests(List<Pair<Contest, Date>> contests,
+	public void filterContests(List<Pair<ContestWrapper, Date>> contests,
 			String filterText) {
         this.getProposalPickerFilter().filterContests(contests, filterText);
 		

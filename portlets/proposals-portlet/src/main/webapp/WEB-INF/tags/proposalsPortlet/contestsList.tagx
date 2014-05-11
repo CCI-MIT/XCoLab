@@ -44,7 +44,7 @@
         		<td class="column contestWhere">
         			<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
         		</td>
-        		<td class="column contest who g">
+        		<td class="column contestWho g">
                     <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
                 </td>
 

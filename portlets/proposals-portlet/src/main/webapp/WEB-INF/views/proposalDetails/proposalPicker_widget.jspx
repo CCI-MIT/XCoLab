@@ -27,7 +27,7 @@
 		<portlet:param name="filterText" value="@@REPLACE-FILTERTEXT@@" />
 		<portlet:param name="start" value="@@REPLACE-START@@" />
 		<portlet:param name="end" value="@@REPLACE-END@@" />
-		<portlet:param name="sortColumn" value="@@REPLACE-SORTCOLOMN@@" />
+		<portlet:param name="contestSortColumn" value="@@REPLACE-CONTESTSORTCOLOMN@@" />
 		<portlet:param name="sortOrder" value="@@REPLACE-SORTORDER@@" />
 		<portlet:param name="sectionId" value="@@REPLACE-SECTIONID@@" />
 	</portlet:resourceURL>
@@ -98,26 +98,50 @@
 					
 					<div id="proposalPicker_viewArea">
 					<div id="proposalPickerTableContests">
-						<div class="blueheaderbar tooltips">
+						<div class="blueheaderbar tooltips" data-entity='contest'>
 							<div class="contest" style="">
-								<span class='text'>Contest</span>
+								<a href="#" data-sort-column="Name">Contest</a>
+								<div class="tooltip">
+									click to sort by name
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 								
 							</div>
 							<div class="proposal">
-								<span class='text'><!--  --></span>
+								<a href="#" data-sort-column="Proposals"><!--  --></a>
+								<div class="tooltip">
+									click to sort by<br />number of proposals
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 							<div class="comment">
-								<span class='text'> <!--  --></span>
+								<a href="#" data-sort-column="Comments"> <!--  --></a>
+								<div class="tooltip">
+									click to sort by<br />number of comments
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 
 							<div class="what">
-								<span class='text'> What</span>
+								<a href="#" data-sort-column="What"> What</a>
+								<div class="tooltip">
+									click to sort by what
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 							<div class="where">
-								<span class='text'> Where</span>
+								<a href="#" data-sort-column="Where"> Where</a>
+								<div class="tooltip">
+									click to sort by where
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 							<div class="who">
-								<span class='text'> Who</span>
+								<a href="#" data-sort-column="Who"> Who</a>
+								<div class="tooltip">
+									click to sort by who
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 						</div>
 
@@ -134,28 +158,43 @@
 								<!--  -->
 							</span>
 						</div>
-						<div class="blueheaderbar tooltips">
+						<div class="blueheaderbar tooltips" data-entity='proposal'>
 							<div class="proposalname">
 								<div style="display: inline-block">
-
-									<span class='text'>Proposal name</span>
+									<a href="#" data-sort-column="Proposal">Proposal name</a>
+									<div class="tooltip">
+										click to sort by name
+										<div class="tt-arrow"><!-- --></div>
+									</div>
 								</div>
 								/&#160;
 
 								<div style="display: inline-block">
-									<span class='text'>Author(s)</span>
+									<a href="#" data-sort-column="Author">Author(s)</a>
+									<div class="tooltip">
+										click to sort by author
+										<div class="tt-arrow"><!-- --></div>
+									</div>
 								</div>
 							</div>
 
 							<div class="thumbs">
-								<span class='text'>
+								<a href="#" data-sort-column="Supporters">
 									<!--  -->
-								</span>
+								</a>
+								<div class="tooltip">
+									click to sort by<br />number of supporters
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 
 							<div class="propcomm">
-								<span class='text'> <!--  -->
-								</span>
+								<a href="#" data-sort-column="Comments"> <!--  -->
+								</a>
+								<div class="tooltip">
+									click to sort by<br />number of comments
+									<div class="tt-arrow"><!-- --></div>
+								</div>
 							</div>
 							<div class="modified">
 								<span class='text'>Contests</span>
@@ -293,13 +332,13 @@
         		<td class="column contestCommentsCount">
 					{{contest.totalCommentsCount}}
         		</td>
-        		<td class="column contest what g">
+        		<td class="column contestWhat g">
 					{{contest.what}}
         		</td>
-        		<td class="column contest where">
+        		<td class="column contestWhere">
 					{{contest.where}}
         		</td>
-        		<td class="column contest who g">
+        		<td class="column contestWho g">
 					{{contest.who}}
                 </td>
             </tr>

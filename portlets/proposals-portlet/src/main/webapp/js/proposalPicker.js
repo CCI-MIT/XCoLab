@@ -1,7 +1,8 @@
 var proposalsPerPage = 5;
 var proposalPickerPage = 0;
-var sortOrder = 'ASC';
+var sortOrder = 'DESC';
 var sortColumn = 'Supporters';
+var contestSortColumn = 'Proposals';
 var currentSectionId;
 var pickMultipleProposals = false;
 var contestPK = 0;
@@ -74,6 +75,7 @@ function replaceURLPlaceholders(rawUrl){
     URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
     URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
     URL = URL.replace('%40%40REPLACE-SORTCOLOMN%40%40',sortColumn);
+    URL = URL.replace('%40%40REPLACE-CONTESTSORTCOLOMN%40%40',contestSortColumn);
     URL = URL.replace('%40%40REPLACE-SORTORDER%40%40',sortOrder);
     URL = URL.replace('%40%40REPLACE-SECTIONID%40%40',currentSectionId);
     URL = URL.replace('%40%40REPLACE-CONTESTPK%40%40',contestPK);
@@ -290,7 +292,7 @@ function sortByColumn(link, column){
 var container = document.getElementById('popup_proposalPicker');
 var input = document.getElementById('prop-search');
 
-var colors = ['#fdff62'];
+var higlighterClasses = ['higlightText1'];
 var instance;
 var highlighter = function() {
     instance && instance.revert();
@@ -305,9 +307,10 @@ var highlighter = function() {
             instance = findAndReplaceDOMText(container, {
                 find: regex,
                 replace: function(portion, match) {
+                	console.log('findandreplace.replace', 'portion', portion, 'match', match);
                     called = true;
-                    var el = document.createElement('em');
-                    el.style.backgroundColor = colors[match.index % colors.length];
+                    var el = document.createElement('span');
+                    $(el).addClass(higlighterClasses[match.index % higlighterClasses.length]);
                     el.innerHTML = portion.text;
                     return el;
                 }
@@ -398,4 +401,33 @@ $("#savePickedProposals").click(function(event) {
 	$('#popup_proposalPicker').hide();   
 	event.preventDefault();
 	return false;
+});
+
+$("#popup_proposalPicker .blueheaderbar a").click(function(event) {
+	event.preventDefault();
+	var link = $(this);
+	var parentContainer = link.parents(".blueheaderbar");
+	var column = link.attr('data-sort-column');
+    link.parent().parent().children().each(function() {
+        $(this).children().remove('.sort-arrow');
+    });
+
+    if (sortOrder == 'ASC'){
+        sortOrder = 'DESC';
+        link.parent().append(sortArrowDown);
+    } else {
+        sortOrder = 'ASC';
+        link.parent().append(sortArrowUp);
+    }
+    if (parentContainer.attr('data-entity') == 'proposal') {
+        sortColumn = column;
+    	loadProposals();
+    }
+    else {
+        contestSortColumn = column;
+    	loadContests();
+    }
+	
+	return false;
+	
 });

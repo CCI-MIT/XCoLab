@@ -13,6 +13,7 @@ public class ContestWrapper {
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
+    private static final String HOW = "how";
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
@@ -343,6 +344,15 @@ public class ContestWrapper {
         return getTermNameFromSpace(WHERE);
     }
 
+    public List<OntologyTerm> getHow() throws PortalException,
+            SystemException {
+        return getTermFromSpace(HOW);
+    }
+
+    public String getHowName() throws PortalException, SystemException {
+        return getTermNameFromSpace(HOW);
+    }
+
     public String getTermNameFromSpace(String space) throws PortalException, SystemException {
         String ontologyJoinedName = ontologyJoinedNames.get(space);
         if (ontologyJoinedName == null) {
@@ -350,6 +360,9 @@ public class ContestWrapper {
             ontologyJoinedName = ontologyJoinedNames.get(space);
         }
 
+        if (ontologyJoinedName == null) {
+        	return "";
+        }
         return ontologyJoinedName;
     }
 
