@@ -262,7 +262,12 @@ function addPaginationToContestsPickerTable(prev,next,totalPages){
 var pickerTimer;
 var inputHandler =  function(){
     pickerTimer && clearTimeout(pickerTimer);
-    pickerTimer = setTimeout(loadProposals, 400);
+    if ($("#proposalPickerTableContests").is(":visible")) {
+    	pickerTimer = setTimeout(loadContests, 400);	
+    }
+    else {
+    	pickerTimer = setTimeout(loadProposals, 400);
+    }
 };
 
 // SORT ARROWS
