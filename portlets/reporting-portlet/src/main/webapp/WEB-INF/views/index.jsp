@@ -5,6 +5,7 @@
 		<portlet:param name="report" value="userActivitiesReport" />
 	</portlet:resourceURL>
 	
-	<h1>i co?</h1>
-	<a href="${downloadCsv }">${downloadCsv }</a>
+	<h1>Reports generator</h1>
+	
+	<a class='btn btn-primary' href="${downloadCsv }">Download user activities report</a>
 </jsp:root>
