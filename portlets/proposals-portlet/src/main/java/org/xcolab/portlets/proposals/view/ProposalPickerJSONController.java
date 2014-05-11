@@ -339,10 +339,10 @@ public class ProposalPickerJSONController {
 				public int compare(Pair<Proposal, Date> o1,
 						Pair<Proposal, Date> o2) {
 					try {
-						return -(ProposalLocalServiceUtil.getSupportersCount(o1
+						return ProposalLocalServiceUtil.getSupportersCount(o1
 								.getLeft().getProposalId()) - ProposalLocalServiceUtil
 								.getSupportersCount(o2.getLeft()
-										.getProposalId()));
+										.getProposalId());
 					} catch (PortalException e) {
 					} catch (SystemException e) {
 					}
@@ -355,7 +355,7 @@ public class ProposalPickerJSONController {
 				public int compare(Pair<Proposal, Date> o1,
 						Pair<Proposal, Date> o2) {
 					try {
-						return -(int) (ProposalLocalServiceUtil
+						return (int) (ProposalLocalServiceUtil
 								.getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
 								.getCommentsCount(o2.getLeft().getProposalId()));
 					} catch (PortalException e) {
