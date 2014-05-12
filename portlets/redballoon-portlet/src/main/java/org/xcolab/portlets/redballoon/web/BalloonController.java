@@ -2,9 +2,12 @@ package org.xcolab.portlets.redballoon.web;
 
 import java.io.IOException;
 
+import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderResponse;
 import javax.validation.Valid;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
 import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
 
@@ -25,7 +30,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 
 @RequestMapping("view")
 @Controller
@@ -39,7 +43,7 @@ public class BalloonController {
 			@RequestParam(required=false) String linkuuid, 
 			@RequestParam(required=false) String context,
 			@Valid UserEmailBean userEmailBean, BindingResult bindingResult) 
-					throws SystemException, PortalException, IOException {
+					throws SystemException, PortalException, IOException, ParserConfigurationException {
 		
 		BalloonLink link = null;
 		BalloonUserTracking but = null;
@@ -64,6 +68,19 @@ public class BalloonController {
 		if (but.getBalloonTextId() > 0) {
 			BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
 			model.addAttribute("balloonText", text);
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+			Element element = doc.createElement( "meta");
+
+			element.setAttribute( "property", "og:title" );
+			element.setAttribute( "content", text.getFacebookSubject() );
+			response.addProperty( MimeResponse.MARKUP_HEAD_ELEMENT, element );
+
+			element = doc.createElement( "meta");
+			element.setAttribute( "property", "og:description" );
+			element.setAttribute( "content", text.getFacebookDescription() );
+			
+			response.addProperty( MimeResponse.MARKUP_HEAD_ELEMENT, element );
 		}
 		
 		if (StringUtils.isNotBlank(but.getEmail())) {
