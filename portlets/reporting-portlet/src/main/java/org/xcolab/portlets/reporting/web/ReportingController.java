@@ -117,10 +117,11 @@ public class ReportingController {
 		Writer w = response.getWriter();
 		CSVWriter csvWriter = new CSVWriter(w);
 		
-		csvWriter.writeNext(new String[] {"userId", "screenName", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount"});
+		csvWriter.writeNext(new String[] {"userId", "screenName", "emailAddress", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount"});
 		for (UserActivityReportBean uarb: userActivities.values()) {
 			User u = uarb.getUser();
-			csvWriter.writeNext(new String[] {String.valueOf(u.getUserId()), u.getScreenName(), u.getFullName(), 
+			csvWriter.writeNext(new String[] {String.valueOf(u.getUserId()), u.getScreenName(),
+                    u.getEmailAddresses().get(0).getAddress(), u.getFullName(),
 					String.valueOf(uarb.getCommentsCount()), String.valueOf(uarb.getProposalsCount()), String.valueOf(uarb.getProposalFinalistsCount()), 
 					String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount())});
 		}
