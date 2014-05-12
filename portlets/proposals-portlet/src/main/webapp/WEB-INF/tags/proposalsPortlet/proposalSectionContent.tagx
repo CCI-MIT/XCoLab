@@ -29,7 +29,7 @@
                     Value not set.
                 </c:when>
                 <c:otherwise>
-                    <collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" /> in Contest ${p.contest.contestShortName}
+                    <collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}" />
                 </c:otherwise>
             </c:choose>
         </c:when>
@@ -41,7 +41,7 @@
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="p" items="${pl}">
-                        <li><collab:proposalLink proposalId="${p.proposalId}" contestId="${p.contest.contestPK}" text="${p.name}" /> in Contest ${p.contest.contestShortName}</li>
+                        <li><collab:proposalLink proposalId="${p.proposalId}" contestId="${p.contest.contestPK}" text="${p.name}" /></li>
                     </c:forEach>
                 </c:otherwise>
             </c:choose>

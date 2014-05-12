@@ -62,7 +62,6 @@
 						height="20" alt="X" />
 					</a>
 				</div>
-				<h4>Choose your proposal</h4>
 				<div class="prop-tabs">
 					<ul>
 						<li class="c"><a href="javascript:;"
@@ -78,7 +77,7 @@
 						</a></li>
 						<li class=""><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
-								My subscriptions / supporting
+								Proposals I support or subscribe to
 								<div id="numberOfSubscriptionsSupporting">&#160;</div>
 						</a></li>
 					</ul>
@@ -92,7 +91,7 @@
 							class="rteInitialized"
 							style="height: 22px; width: 175px; padding: 0 5px;" />
 						<div class="blue-button">
-							<a href="#">Search</a>
+							<a href="javascript:;">Search</a>
 						</div>
 					</div>
 					
@@ -250,8 +249,8 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<div class="blue-button btn"><a href="#" id="savePickedProposals">OK</a></div>
-                	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">CANCEL</a></div>
+                	<div class="blue-button btn"><a href="#" id="savePickedProposals">Choose proposal</a></div>
+                	<div class="gray-button btn"><a href="#" id="cancelPickedProposals">Cancel</a></div>
 					<div class="clearfix clear"><!--  --></div>
                 </div>
 			</div>
