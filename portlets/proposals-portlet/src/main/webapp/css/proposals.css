@@ -347,10 +347,19 @@ div.sponsorLogo img {
 	font-style: normal;
 }
 
-#popup_proposalPicker .contestlist td {
+#popup_proposalPicker .contestlist td{
+	height: 45px;
+}
+
+#popup_proposalPicker .propbox {
 	height: 45px;
 }
 
 #popup_proposalPicker h4 {
 	margin-bottom: 10px;
+}
+
+.proposalPicker_contestsScrollContainer {
+	height: 300px;
+	overflow-y: scroll;
 }

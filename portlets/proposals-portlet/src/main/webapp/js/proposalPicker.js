@@ -1,4 +1,4 @@
-var proposalsPerPage = 5;
+var proposalsPerPage = 50;
 var proposalPickerPage = 0;
 var sortOrder = 'DESC';
 var sortColumn = 'Supporters';
