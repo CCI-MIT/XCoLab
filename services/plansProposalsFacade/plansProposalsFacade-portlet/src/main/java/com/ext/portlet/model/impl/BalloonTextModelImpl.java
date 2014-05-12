@@ -58,9 +58,13 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             { "acceptTosText", Types.CLOB },
             { "emailTemplate", Types.CLOB },
             { "emailSubjectTemplate", Types.CLOB },
+            { "twitterDescription", Types.CLOB },
+            { "twitterSubject", Types.CLOB },
+            { "facebookDescription", Types.CLOB },
+            { "facebookSubject", Types.CLOB },
             { "enabled", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText TEXT null,emailTemplate TEXT null,emailSubjectTemplate TEXT null,enabled BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_BalloonText (id_ LONG not null primary key,name VARCHAR(75) null,textBeforeForm TEXT null,textAfterForm TEXT null,textBeforeShareButtons TEXT null,textAfterShareButtons TEXT null,acceptTosText TEXT null,emailTemplate TEXT null,emailSubjectTemplate TEXT null,twitterDescription TEXT null,twitterSubject TEXT null,facebookDescription TEXT null,facebookSubject TEXT null,enabled BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_BalloonText";
     public static final String ORDER_BY_JPQL = " ORDER BY balloonText.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_BalloonText.id_ ASC";
@@ -93,6 +97,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
     private String _acceptTosText;
     private String _emailTemplate;
     private String _emailSubjectTemplate;
+    private String _twitterDescription;
+    private String _twitterSubject;
+    private String _facebookDescription;
+    private String _facebookSubject;
     private boolean _enabled;
     private boolean _originalEnabled;
     private boolean _setOriginalEnabled;
@@ -124,6 +132,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         model.setAcceptTosText(soapModel.getAcceptTosText());
         model.setEmailTemplate(soapModel.getEmailTemplate());
         model.setEmailSubjectTemplate(soapModel.getEmailSubjectTemplate());
+        model.setTwitterDescription(soapModel.getTwitterDescription());
+        model.setTwitterSubject(soapModel.getTwitterSubject());
+        model.setFacebookDescription(soapModel.getFacebookDescription());
+        model.setFacebookSubject(soapModel.getFacebookSubject());
         model.setEnabled(soapModel.getEnabled());
 
         return model;
@@ -192,6 +204,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         attributes.put("acceptTosText", getAcceptTosText());
         attributes.put("emailTemplate", getEmailTemplate());
         attributes.put("emailSubjectTemplate", getEmailSubjectTemplate());
+        attributes.put("twitterDescription", getTwitterDescription());
+        attributes.put("twitterSubject", getTwitterSubject());
+        attributes.put("facebookDescription", getFacebookDescription());
+        attributes.put("facebookSubject", getFacebookSubject());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -254,6 +270,32 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
         if (emailSubjectTemplate != null) {
             setEmailSubjectTemplate(emailSubjectTemplate);
+        }
+
+        String twitterDescription = (String) attributes.get(
+                "twitterDescription");
+
+        if (twitterDescription != null) {
+            setTwitterDescription(twitterDescription);
+        }
+
+        String twitterSubject = (String) attributes.get("twitterSubject");
+
+        if (twitterSubject != null) {
+            setTwitterSubject(twitterSubject);
+        }
+
+        String facebookDescription = (String) attributes.get(
+                "facebookDescription");
+
+        if (facebookDescription != null) {
+            setFacebookDescription(facebookDescription);
+        }
+
+        String facebookSubject = (String) attributes.get("facebookSubject");
+
+        if (facebookSubject != null) {
+            setFacebookSubject(facebookSubject);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -396,6 +438,66 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @JSON
     @Override
+    public String getTwitterDescription() {
+        if (_twitterDescription == null) {
+            return StringPool.BLANK;
+        } else {
+            return _twitterDescription;
+        }
+    }
+
+    @Override
+    public void setTwitterDescription(String twitterDescription) {
+        _twitterDescription = twitterDescription;
+    }
+
+    @JSON
+    @Override
+    public String getTwitterSubject() {
+        if (_twitterSubject == null) {
+            return StringPool.BLANK;
+        } else {
+            return _twitterSubject;
+        }
+    }
+
+    @Override
+    public void setTwitterSubject(String twitterSubject) {
+        _twitterSubject = twitterSubject;
+    }
+
+    @JSON
+    @Override
+    public String getFacebookDescription() {
+        if (_facebookDescription == null) {
+            return StringPool.BLANK;
+        } else {
+            return _facebookDescription;
+        }
+    }
+
+    @Override
+    public void setFacebookDescription(String facebookDescription) {
+        _facebookDescription = facebookDescription;
+    }
+
+    @JSON
+    @Override
+    public String getFacebookSubject() {
+        if (_facebookSubject == null) {
+            return StringPool.BLANK;
+        } else {
+            return _facebookSubject;
+        }
+    }
+
+    @Override
+    public void setFacebookSubject(String facebookSubject) {
+        _facebookSubject = facebookSubject;
+    }
+
+    @JSON
+    @Override
     public boolean getEnabled() {
         return _enabled;
     }
@@ -462,6 +564,10 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         balloonTextImpl.setAcceptTosText(getAcceptTosText());
         balloonTextImpl.setEmailTemplate(getEmailTemplate());
         balloonTextImpl.setEmailSubjectTemplate(getEmailSubjectTemplate());
+        balloonTextImpl.setTwitterDescription(getTwitterDescription());
+        balloonTextImpl.setTwitterSubject(getTwitterSubject());
+        balloonTextImpl.setFacebookDescription(getFacebookDescription());
+        balloonTextImpl.setFacebookSubject(getFacebookSubject());
         balloonTextImpl.setEnabled(getEnabled());
 
         balloonTextImpl.resetOriginalValues();
@@ -592,6 +698,39 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
             balloonTextCacheModel.emailSubjectTemplate = null;
         }
 
+        balloonTextCacheModel.twitterDescription = getTwitterDescription();
+
+        String twitterDescription = balloonTextCacheModel.twitterDescription;
+
+        if ((twitterDescription != null) && (twitterDescription.length() == 0)) {
+            balloonTextCacheModel.twitterDescription = null;
+        }
+
+        balloonTextCacheModel.twitterSubject = getTwitterSubject();
+
+        String twitterSubject = balloonTextCacheModel.twitterSubject;
+
+        if ((twitterSubject != null) && (twitterSubject.length() == 0)) {
+            balloonTextCacheModel.twitterSubject = null;
+        }
+
+        balloonTextCacheModel.facebookDescription = getFacebookDescription();
+
+        String facebookDescription = balloonTextCacheModel.facebookDescription;
+
+        if ((facebookDescription != null) &&
+                (facebookDescription.length() == 0)) {
+            balloonTextCacheModel.facebookDescription = null;
+        }
+
+        balloonTextCacheModel.facebookSubject = getFacebookSubject();
+
+        String facebookSubject = balloonTextCacheModel.facebookSubject;
+
+        if ((facebookSubject != null) && (facebookSubject.length() == 0)) {
+            balloonTextCacheModel.facebookSubject = null;
+        }
+
         balloonTextCacheModel.enabled = getEnabled();
 
         return balloonTextCacheModel;
@@ -599,7 +738,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(getId());
@@ -619,6 +758,14 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(getEmailTemplate());
         sb.append(", emailSubjectTemplate=");
         sb.append(getEmailSubjectTemplate());
+        sb.append(", twitterDescription=");
+        sb.append(getTwitterDescription());
+        sb.append(", twitterSubject=");
+        sb.append(getTwitterSubject());
+        sb.append(", facebookDescription=");
+        sb.append(getFacebookDescription());
+        sb.append(", facebookSubject=");
+        sb.append(getFacebookSubject());
         sb.append(", enabled=");
         sb.append(getEnabled());
         sb.append("}");
@@ -628,7 +775,7 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.BalloonText");
@@ -669,6 +816,22 @@ public class BalloonTextModelImpl extends BaseModelImpl<BalloonText>
         sb.append(
             "<column><column-name>emailSubjectTemplate</column-name><column-value><![CDATA[");
         sb.append(getEmailSubjectTemplate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>twitterDescription</column-name><column-value><![CDATA[");
+        sb.append(getTwitterDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>twitterSubject</column-name><column-value><![CDATA[");
+        sb.append(getTwitterSubject());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>facebookDescription</column-name><column-value><![CDATA[");
+        sb.append(getFacebookDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>facebookSubject</column-name><column-value><![CDATA[");
+        sb.append(getFacebookSubject());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>enabled</column-name><column-value><![CDATA[");

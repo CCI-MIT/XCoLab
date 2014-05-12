@@ -28,6 +28,10 @@
 		<column name="acceptTosText" type="String" />
 		<column name="emailTemplate" type="String" />
 		<column name="emailSubjectTemplate" type="String" />
+		<column name="twitterDescription" type="String" />
+		<column name="twitterSubject" type="String" />
+		<column name="facebookDescription" type="String" />
+		<column name="facebookSubject" type="String" />
 		<column name="enabled" type="boolean" />
 		
     	<finder return-type="Collection" name="Enabled">

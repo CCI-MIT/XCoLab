@@ -143,6 +143,10 @@
 		<property name="acceptTosText" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="emailTemplate" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="emailSubjectTemplate" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="twitterDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="twitterSubject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="facebookDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="facebookSubject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="enabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.BalloonUserTrackingImpl" table="xcolab_BalloonUserTracking">

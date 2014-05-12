@@ -22,6 +22,10 @@ public class BalloonTextSoap implements Serializable {
     private String _acceptTosText;
     private String _emailTemplate;
     private String _emailSubjectTemplate;
+    private String _twitterDescription;
+    private String _twitterSubject;
+    private String _facebookDescription;
+    private String _facebookSubject;
     private boolean _enabled;
 
     public BalloonTextSoap() {
@@ -39,6 +43,10 @@ public class BalloonTextSoap implements Serializable {
         soapModel.setAcceptTosText(model.getAcceptTosText());
         soapModel.setEmailTemplate(model.getEmailTemplate());
         soapModel.setEmailSubjectTemplate(model.getEmailSubjectTemplate());
+        soapModel.setTwitterDescription(model.getTwitterDescription());
+        soapModel.setTwitterSubject(model.getTwitterSubject());
+        soapModel.setFacebookDescription(model.getFacebookDescription());
+        soapModel.setFacebookSubject(model.getFacebookSubject());
         soapModel.setEnabled(model.getEnabled());
 
         return soapModel;
@@ -158,6 +166,38 @@ public class BalloonTextSoap implements Serializable {
 
     public void setEmailSubjectTemplate(String emailSubjectTemplate) {
         _emailSubjectTemplate = emailSubjectTemplate;
+    }
+
+    public String getTwitterDescription() {
+        return _twitterDescription;
+    }
+
+    public void setTwitterDescription(String twitterDescription) {
+        _twitterDescription = twitterDescription;
+    }
+
+    public String getTwitterSubject() {
+        return _twitterSubject;
+    }
+
+    public void setTwitterSubject(String twitterSubject) {
+        _twitterSubject = twitterSubject;
+    }
+
+    public String getFacebookDescription() {
+        return _facebookDescription;
+    }
+
+    public void setFacebookDescription(String facebookDescription) {
+        _facebookDescription = facebookDescription;
+    }
+
+    public String getFacebookSubject() {
+        return _facebookSubject;
+    }
+
+    public void setFacebookSubject(String facebookSubject) {
+        _facebookSubject = facebookSubject;
     }
 
     public boolean getEnabled() {

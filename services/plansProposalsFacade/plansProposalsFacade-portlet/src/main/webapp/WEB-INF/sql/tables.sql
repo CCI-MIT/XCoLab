@@ -49,6 +49,10 @@ create table xcolab_BalloonText (
 	acceptTosText TEXT null,
 	emailTemplate TEXT null,
 	emailSubjectTemplate TEXT null,
+	twitterDescription TEXT null,
+	twitterSubject TEXT null,
+	facebookDescription TEXT null,
+	facebookSubject TEXT null,
 	enabled BOOLEAN
 );
 

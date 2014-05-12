@@ -35,6 +35,12 @@ public class AddEditBalloonTextAction {
 		balloonText.setAcceptTosText(addEditBalloonTextBean.getAcceptTosText());
 		balloonText.setEmailTemplate(addEditBalloonTextBean.getEmailTemplate());
 		balloonText.setEmailSubjectTemplate(addEditBalloonTextBean.getEmailSubjectTemplate());
+		balloonText.setFacebookDescription(addEditBalloonTextBean.getFacebookDescription());
+		balloonText.setFacebookSubject(addEditBalloonTextBean.getFacebookTitle());
+
+		balloonText.setTwitterDescription(addEditBalloonTextBean.getTwitterDescription());
+		balloonText.setTwitterSubject(addEditBalloonTextBean.getTwitterTitle());
+		
 		
 		if (addEditBalloonTextBean.getBalloonTextId() > 0) 
 			BalloonTextLocalServiceUtil.updateBalloonText(balloonText);
