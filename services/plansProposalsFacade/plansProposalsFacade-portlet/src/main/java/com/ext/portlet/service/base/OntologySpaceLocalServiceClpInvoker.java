@@ -155,7 +155,7 @@ public class OntologySpaceLocalServiceClpInvoker {
                 "com.ext.portlet.model.OntologySpace"
             };
 
-        _methodName516 = "getTopTerm";
+        _methodName516 = "getTopTerms";
 
         _methodParameterTypes516 = new String[] {
                 "com.ext.portlet.model.OntologySpace"
@@ -278,7 +278,7 @@ public class OntologySpaceLocalServiceClpInvoker {
 
         if (_methodName516.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
-            return OntologySpaceLocalServiceUtil.getTopTerm((com.ext.portlet.model.OntologySpace) arguments[0]);
+            return OntologySpaceLocalServiceUtil.getTopTerms((com.ext.portlet.model.OntologySpace) arguments[0]);
         }
 
         throw new UnsupportedOperationException();
