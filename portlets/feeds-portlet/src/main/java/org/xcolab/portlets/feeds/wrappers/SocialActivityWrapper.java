@@ -7,6 +7,9 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.model.Proposal;
+import com.liferay.portal.model.User;
 import org.jsoup.Jsoup;
 
 import com.liferay.portal.kernel.log.Log;
@@ -162,13 +165,9 @@ public class SocialActivityWrapper implements Serializable {
 
 
     public static enum ActivityType {
-		VOTE("up", "com.ext.portlet.model.Proposal2",
-				"com.ext.portlet.model.Proposal3",
-				"com.ext.portlet.model.Proposal4",
-				"com.ext.portlet.model.Proposal7",
-				"com.ext.portlet.model.Proposal8",
-				"com.ext.portlet.model.Proposal14",
-				"com.ext.portlet.model.Proposal15",
+		VOTE("up", Proposal.class.getName() + ProposalActivityKeys.VOTE.ordinal(),
+                Proposal.class.getName() + ProposalActivityKeys.VOTE_RETRACT.ordinal(),
+                Proposal.class.getName() + ProposalActivityKeys.VOTE_SWITCH.ordinal(),
 				"com.ext.portlet.plans.model.PlanItem7",
 				"com.ext.portlet.plans.model.PlanItem8",
 				"com.ext.portlet.plans.model.PlanItem9",
@@ -177,9 +176,9 @@ public class SocialActivityWrapper implements Serializable {
 				"com.ext.portlet.plans.model.PlanItem14",
 				"com.ext.portlet.plans.model.PlanItem15"
 		),
-		EDIT("edit", "com.ext.portlet.model.Proposal1",
-				"com.ext.portlet.model.Proposal5",
-				"com.ext.portlet.model.Proposal6",
+		EDIT("edit", Proposal.class.getName() + ProposalActivityKeys.ATTRIBUTE_UPDATE.ordinal(),
+				Proposal.class.getName() + ProposalActivityKeys.USER_ADD.ordinal(),
+                Proposal.class.getName() + ProposalActivityKeys.USER_REMOVE.ordinal(),
 				"com.ext.portlet.plans.model.PlanItem0",
 				"com.ext.portlet.plans.model.PlanItem2",
 				"com.ext.portlet.plans.model.PlanItem3",
@@ -192,7 +191,7 @@ public class SocialActivityWrapper implements Serializable {
 				"com.ext.portlet.plans.model.PlanItem17",
 				"com.ext.portlet.plans.model.PlanItem18",
                 "com.liferay.portlet.blogs.model.BlogsEntry3"),
-		NEW("new", "com.ext.portlet.model.Proposal0",
+		NEW("new", Proposal.class.getName() + ProposalActivityKeys.PROPOSAL_CREATE.ordinal(),
 				"com.ext.portlet.plans.model.PlanItem1",
                 "com.liferay.portlet.blogs.model.BlogsEntry2"),
 		COMMENT("comment", "com.ext.portlet.discussions.model.DiscussionCategoryGroup0",
@@ -202,7 +201,7 @@ public class SocialActivityWrapper implements Serializable {
 				"com.ext.portlet.discussions.model.DiscussionCategoryGroup4",
 				"com.ext.portlet.discussions.model.DiscussionCategoryGroup5",
                 "com.liferay.portlet.blogs.model.BlogsEntry1"),
-        USER("new_user", "com.liferay.portal.model.User1",
+        USER("new_user", User.class.getName()+"1",
 				"com.liferay.portal.model.User2",
 				"com.liferay.portal.model.User3",
 				"com.liferay.portal.model.User4",

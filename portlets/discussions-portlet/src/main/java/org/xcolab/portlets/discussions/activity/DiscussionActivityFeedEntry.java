@@ -28,6 +28,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
@@ -174,7 +175,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
     public String getCategoryGroup(DiscussionCategoryGroup categoryGroup) {
 
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
-        return String.format(hyperlink, navUrl.toString(), categoryGroup.getDescription());
+        return String.format(hyperlink, StringEscapeUtils.escapeHtml(navUrl.toString()), categoryGroup.getDescription());
     }
 
     public String getCategory(DiscussionCategory category) throws PortalException, SystemException {
@@ -184,8 +185,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 
         return String.format(
                 hyperlink,
-                navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId",
-                        String.valueOf(category.getCategoryId())).toString(), category.getName());
+                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId",
+                        String.valueOf(category.getCategoryId())).toString()), category.getName());
     }
 
     public String getDiscussion(DiscussionMessage discussion) throws PortalException, SystemException {
@@ -197,8 +198,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
         return String.format(
                 hyperlink,
-                navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(thread.getMessageId())).toString(), thread.getSubject());
+                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
+                        String.valueOf(thread.getMessageId())).toString()), thread.getSubject());
     }
 
     public String getComment(DiscussionMessage comment) throws PortalException, SystemException {
@@ -210,9 +211,9 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 
         return String.format(
                 hyperlink,
-                navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
+                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
                         String.valueOf(comment.getThreadId()), "messageId", String.valueOf(comment.getMessageId()))
-                        .toString(), text);
+                        .toString()), text);
     }
 
     @Override
