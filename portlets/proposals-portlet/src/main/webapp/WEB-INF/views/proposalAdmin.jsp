@@ -99,7 +99,7 @@
             		<form action="${deleteProposalURL }" method="post" id="deleteProposalForm">
             			<div class="blue-button">
                 			<a href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
-                    		    DELETE plan
+                    		    DELETE proposal
                     		</a>
                     	</div>
             		</form>
