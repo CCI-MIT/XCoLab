@@ -4,10 +4,8 @@
  * or the license.txt file included in this distribution for the full text of the license.
  */
 
-package com.ext.portlet;
+package com.ext.portlet.Activity;
 
-import com.ext.portlet.Activity.SubscriberFactory;
-import com.ext.portlet.Activity.SubscriptionProvider;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public enum DiscussionActivityKeys implements SubscriberFactory {

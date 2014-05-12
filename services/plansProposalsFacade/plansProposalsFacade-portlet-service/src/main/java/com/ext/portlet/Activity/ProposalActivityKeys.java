@@ -1,4 +1,4 @@
-package com.ext.portlet;
+package com.ext.portlet.Activity;
 
 
 public enum ProposalActivityKeys {

@@ -1,6 +1,6 @@
 package org.xcolab.proposals.events.handlers.social;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.google.common.eventbus.Subscribe;
 import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;

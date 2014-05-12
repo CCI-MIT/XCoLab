@@ -7,7 +7,10 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.Activity.LoginRegisterActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
+import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.model.User;
 import org.jsoup.Jsoup;
@@ -194,18 +197,13 @@ public class SocialActivityWrapper implements Serializable {
 		NEW("new", Proposal.class.getName() + ProposalActivityKeys.PROPOSAL_CREATE.ordinal(),
 				"com.ext.portlet.plans.model.PlanItem1",
                 "com.liferay.portlet.blogs.model.BlogsEntry2"),
-		COMMENT("comment", "com.ext.portlet.discussions.model.DiscussionCategoryGroup0",
-				"com.ext.portlet.discussions.model.DiscussionCategoryGroup1",
-				"com.ext.portlet.discussions.model.DiscussionCategoryGroup2",
-				"com.ext.portlet.discussions.model.DiscussionCategoryGroup3",
-				"com.ext.portlet.discussions.model.DiscussionCategoryGroup4",
-				"com.ext.portlet.discussions.model.DiscussionCategoryGroup5",
+		COMMENT("comment", DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ALL.ordinal(),
+                DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_CATEGORY.ordinal(),
+                DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_DISCUSSION.ordinal(),
+                DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.ordinal(),
+                DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_COMMENT.ordinal(),
                 "com.liferay.portlet.blogs.model.BlogsEntry1"),
-        USER("new_user", User.class.getName()+"1",
-				"com.liferay.portal.model.User2",
-				"com.liferay.portal.model.User3",
-				"com.liferay.portal.model.User4",
-				"com.liferay.portal.model.User5");
+        USER("new_user", User.class.getName()+ LoginRegisterActivityKeys.USER_REGISTERED.ordinal());
 
         private final String[] classes;
         private final String displayName;

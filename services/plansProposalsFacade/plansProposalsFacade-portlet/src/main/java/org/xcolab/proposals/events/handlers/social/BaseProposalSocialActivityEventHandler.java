@@ -6,7 +6,7 @@ import com.liferay.portal.model.User;
 import org.xcolab.proposals.events.BaseProposalUserActivityEvent;
 import org.xcolab.proposals.events.handlers.BaseEventHandler;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;

@@ -1,4 +1,4 @@
-package org.xcolab.portlets.loginregister.activity;
+package com.ext.portlet.Activity;
 
 import com.ext.portlet.community.CommunityUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -6,7 +6,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import com.liferay.portlet.social.model.SocialActivity;
 
 public enum LoginRegisterActivityKeys {
     USER_REGISTERED(1, "New account created", "%s joined ClimateColab community");

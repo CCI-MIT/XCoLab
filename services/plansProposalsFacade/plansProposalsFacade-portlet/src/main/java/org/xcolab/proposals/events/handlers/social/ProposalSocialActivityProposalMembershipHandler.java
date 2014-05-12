@@ -3,7 +3,7 @@ package org.xcolab.proposals.events.handlers.social;
 import org.xcolab.proposals.events.ProposalMemberAddedEvent;
 import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.google.common.eventbus.Subscribe;
 
 public class ProposalSocialActivityProposalMembershipHandler extends BaseProposalSocialActivityEventHandler {

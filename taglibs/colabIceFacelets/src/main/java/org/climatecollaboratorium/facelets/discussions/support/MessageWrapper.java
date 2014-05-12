@@ -10,14 +10,13 @@ import java.util.List;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 
-import com.ext.portlet.DiscussionActivityKeys;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
 import org.climatecollaboratorium.utils.HumanTime;
 import org.climatecollaboratorium.validation.ValueRequiredValidator;
 
-import com.ext.portlet.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionCategoryGroup;

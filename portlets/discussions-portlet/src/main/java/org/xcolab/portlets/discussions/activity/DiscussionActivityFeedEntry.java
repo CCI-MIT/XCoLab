@@ -6,9 +6,10 @@
 
 package org.xcolab.portlets.discussions.activity;
 
+import com.liferay.portal.kernel.util.Validator;
 import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
 
-import com.ext.portlet.DiscussionActivityKeys;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.BaseFeedEntryWithMailInfo;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
@@ -195,11 +196,17 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         DiscussionMessage thread = discussion.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil
                 .getThread(discussion) : discussion;
 
+        String linkText;
+        if (Validator.isNull(thread.getSubject())) {
+            linkText = "climatecolab.org";
+        } else {
+            linkText = thread.getSubject();
+        }
         NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
         return String.format(
                 hyperlink,
                 StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(thread.getMessageId())).toString()), thread.getSubject());
+                        String.valueOf(thread.getMessageId())).toString()), linkText);
     }
 
     public String getComment(DiscussionMessage comment) throws PortalException, SystemException {

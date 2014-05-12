@@ -1,6 +1,6 @@
 package com.ext.utils.subscriptions;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 

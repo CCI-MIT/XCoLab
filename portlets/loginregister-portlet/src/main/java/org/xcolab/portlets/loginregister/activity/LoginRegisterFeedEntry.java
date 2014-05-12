@@ -2,12 +2,7 @@ package org.xcolab.portlets.loginregister.activity;
 
 import com.ext.portlet.Activity.BaseFeedEntryWithMailInfo;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
-import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;

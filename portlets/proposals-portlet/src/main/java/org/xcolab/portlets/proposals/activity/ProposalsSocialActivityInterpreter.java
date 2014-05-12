@@ -8,7 +8,7 @@ import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerat
 import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;

@@ -2,10 +2,6 @@ package org.xcolab.portlets.loginregister;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -37,7 +33,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.portlets.loginregister.activity.LoginRegisterActivityKeys;
+import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolveableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 

@@ -5,7 +5,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.model.User;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
 import com.google.common.eventbus.Subscribe;
 import com.liferay.portal.kernel.exception.PortalException;
