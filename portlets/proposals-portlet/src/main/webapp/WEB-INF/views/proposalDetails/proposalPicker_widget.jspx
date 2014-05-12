@@ -276,7 +276,7 @@
             <div class="row1">
                 <div class="title-author">
                     <h4>
-						<a href="#">{{data.proposalName}}</a>
+						<a href="javascript:;">{{data.proposalName}}</a>
                         /&#160;
 						{{#if data.team}}
 							{{data.team}}
@@ -321,7 +321,7 @@
                         		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
-                		<a href="#">{{contest.contestShortName}}</a>
+                		<a href="javascript:;">{{contest.contestShortName}}</a>
                 			{{contest.contestName}}
             		</div>
             	</td>
