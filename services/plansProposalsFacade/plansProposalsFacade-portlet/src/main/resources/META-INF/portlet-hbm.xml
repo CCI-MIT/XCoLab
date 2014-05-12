@@ -560,6 +560,7 @@
 		<property name="ontologySpaceId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="descriptionUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="order_" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.OntologyTermEntityImpl" table="xcolab_OntologyTermEntity">
 		<cache usage="read-write" />

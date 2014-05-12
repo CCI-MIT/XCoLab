@@ -514,6 +514,7 @@
 		<field name="descriptionUrl" type="String">
 			<hint name="max-length">1024</hint>
 		</field>
+		<field name="order_" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.OntologyTermEntity">
 		<field name="id" type="long" />

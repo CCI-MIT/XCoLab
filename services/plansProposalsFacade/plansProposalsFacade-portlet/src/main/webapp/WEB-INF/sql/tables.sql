@@ -397,7 +397,8 @@ create table xcolab_OntologyTerm (
 	parentId LONG,
 	ontologySpaceId LONG,
 	name VARCHAR(256) null,
-	descriptionUrl VARCHAR(1024) null
+	descriptionUrl VARCHAR(1024) null,
+	order_ INTEGER
 );
 
 create table xcolab_OntologyTermEntity (

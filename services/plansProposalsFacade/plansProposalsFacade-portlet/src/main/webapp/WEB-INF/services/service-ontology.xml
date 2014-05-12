@@ -32,6 +32,12 @@
         <column name="ontologySpaceId" type="long" />
         <column name="name" type="String" />
         <column name="descriptionUrl" type="String" />
+        <column name="order_" type="int" />
+
+        <order by="asc">
+            <order-column name="order_" />
+            <order-column name="id" />
+        </order>
         
         <finder name="ParentId" return-type="Collection">
             <finder-column name="parentId" />

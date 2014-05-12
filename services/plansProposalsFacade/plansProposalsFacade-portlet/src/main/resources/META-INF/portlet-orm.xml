@@ -673,6 +673,7 @@
 			<basic name="ontologySpaceId" />
 			<basic name="name" />
 			<basic name="descriptionUrl" />
+			<basic name="order_" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
