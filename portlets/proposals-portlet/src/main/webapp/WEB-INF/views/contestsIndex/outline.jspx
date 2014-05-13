@@ -77,7 +77,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         	<c:if test="${not showAllContests }">
 				<c:choose>
 					<c:when test="${showActiveContests }">
-						<span class="otherContestsCount">If you select
+						<span class="otherContestsCount prior">
+						<img src="/climatecolab-theme/images/contests-archive.png" height='20px' />&amp;nbsp;
+						If you select
 							<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
 					
 							<span class='count'><!--  --></span>
@@ -90,7 +92,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					<c:otherwise>
 						<span class="otherContestsCount">If you select
 							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
-							<span class='count'><!--  --></span> currently open 
+							<span class='count'><!--  --></span> current  
 							<span class='plural'>contests</span>
 							<span class='singular'>contest</span>
 							will be displayed
@@ -112,11 +114,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var ontologySpaces = {};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
-			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], isSpace: true};
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], otherContests: [], isSpace: true};
 		</c:forEach>
 		
-		<c:forEach var="term" items="${ontologyTerms}">
-			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}]};
+		<c:forEach var="term" items="${ontologyTerms}" varStatus='termStatus'>
+			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${termStatus.index}  };
 		</c:forEach>
 		
 		for (var termId in ontologyTerms) {
@@ -138,6 +140,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			if (term == null || typeof(term) != 'object') return;
 			// don't add contests to the space root if they have been associated with one of its children 
 			/*if (term.parent == null &amp;&amp; level &gt; 0) return;*/
+			if (! ('orderFromTerm' in contest)) {
+				contest.orderFromTerm = [];
+			} 
+			if (! (term.space.id in contest.orderFromTerm)) {
+				contest.orderFromTerm[term.space.id] = [];
+			}
+			contest.orderFromTerm[term.space.id].push(term.order);
+			
 			if (isOther) {
 				for (var i = 0 ; i &lt; term.otherContests.length; i++) {
 					if (term.otherContests[i].id == contest.id) return;
@@ -151,6 +161,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				term.contests.push(contest);
 			}
 			addContestToTermAndParents(level+1, contest, term.parent, isOther);
+			
+			if (level == 0) {
+				// all of the ordering informations have been processed, we need to reverse the ordering information so it starts from root
+				var before = contest.orderFromTerm[term.space.id].slice();
+				
+				contest.orderFromTerm[term.space.id].reverse();
+			}
 			
 		}
 		var contestsCount = 0;
@@ -167,8 +184,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
 				ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
 			}
-			
-			
 		</c:forEach>
 
 		<c:forEach var="contest" items="${otherContests}">
@@ -179,6 +194,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			for (var idx in focusArea.terms) {
 				addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
+				ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
 			}
 			
 		</c:forEach>
@@ -213,8 +229,27 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		}
 		jQuery(".contest-count .count").text(contestsCount);
 		
-		function renderContests(contests) {
-			contests.sort(function(a, b) { - (a.created - b.created) });
+		function renderContests(contests, space) {
+			//contests.sort(function(a, b) { - (a.created - b.created) });
+			contests.sort(function(a, b) { 
+				var orderArrayA = a.orderFromTerm[space.id],  orderArrayB = b.orderFromTerm[space.id];
+				for (var i = 0; i < orderArrayA.length && i < orderArrayB.length; i++) {
+					if (orderArrayA[i] != orderArrayB[i]) {
+						return orderArrayA[i] - orderArrayB[i];
+					}
+				}
+				// contests have the same "prefix" in ontolog terms tree, check if the prefixes differ in length, if they do, 
+				// contest with shorter prefix should be shown first
+				if (orderArrayA.length != orderArrayB.length) {
+					return orderArrayA.length - orderArrayB.length;
+				}
+				// contests have the same prefixes, then return 
+				if (a.created != b.created) {
+					return a.created - b.created;
+				}
+				return a.id - b.id;
+				
+			});
 			var container = jQuery(".contest-outline-right");
 			var contestsListHtml = [];
 			if (contests.length == 0) {
@@ -247,7 +282,10 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				contestsListHtml.push(contest.name);
 				if ((duplicateContestNames[contest.name] > 1 && contest.created > 0) || !contest.active) {
 					contestsListHtml.push(" ");
-					contestsListHtml.push(new Date(contest.created).getFullYear());
+					var year = new Date(contest.created).getFullYear();
+					if (contest.name.indexOf("" + year) < 0) {
+						contestsListHtml.push(new Date(contest.created).getFullYear());
+					}
 				}
 				contestsListHtml.push("<span class='count'>");
 				contestsListHtml.push(contest.proposalsCount);
@@ -278,11 +316,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 			//alert('unique count' + uniqueCount);
 			container.find(".contest-count .count").text(uniqueCount);
-			/*
 			contestsListHtml.push("<div class='otherContestsInfo'>");
 			contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
 			contestsListHtml.push("</div>");
-			*/
 			
 			jQuery(".otherContestsInfoContainer").hide();
 			container.find(".contest-list").html(contestsListHtml.join(''));
@@ -355,7 +391,6 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				toShowContainer.find(".section").appendTo(container.find('.section-list'));
 				toShowContainer.remove();
 			}
-			console.log("Current term", currentTerm.id, container.find("#sectionDetails_" + currentTerm.id));
 			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
 			
 
@@ -377,9 +412,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				elem.attr('href', href + window.location.hash);
 				
 			});
+			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
+			if (currentSpace.otherContests.length > 0) {
+				otherContestsInfoContainer.find(".count").text(currentSpace.otherContests.length);
+				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural")
+				.removeClass(currentSpace.otherContests.length == 1 ? "plural" : "singular");
+			}
 			
 			renderBreadcrumbSections([currentSpace]);
-			renderContests(currentSpace.contests);
+			renderContests(currentSpace.contests, currentSpace);
 			
 			
 		}
@@ -430,7 +471,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			termAndParents.reverse();
 			renderBreadcrumbSections(termAndParents);
 			
-			renderContests(currentTerm.contests);
+			renderContests(currentTerm.contests, currentTerm.space);
 			
 		}
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
