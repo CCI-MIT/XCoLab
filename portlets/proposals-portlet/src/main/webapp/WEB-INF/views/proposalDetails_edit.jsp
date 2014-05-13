@@ -185,7 +185,7 @@
 
         <c:forEach var="section" items="${proposal.sections }">
             <c:if test="${not section.locked }">
-                <div class="addpropbox q3" data-section-id="${section.sectionDefinitionId }">
+                <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
                     <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasNotMappedSections and not empty baseProposal }"/>
                 </div>
             </c:if>

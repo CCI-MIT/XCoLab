@@ -57,11 +57,14 @@
             <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
                 <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
                 <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
-                <ul>
+                <table>
                     <c:forEach var="p" items="${pl}">
-                        <li><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)</li>
-                    </c:forEach>
-                </ul>
+                		<tr>
+                			<td><collab:proposalLink proposalId="${p.proposalId }" contestId="${p.contest.contestPK}" text="${p.name}"/> </td>
+                			<td class="removeProposalFromList"><a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a></td>
+                		</tr>
+                	</c:forEach>
+                </table>
                 <div class="blue-button"><a href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId});">Add proposal</a></div>
             </c:when>
 
