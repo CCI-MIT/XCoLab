@@ -16,6 +16,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.service.ProposalLocalServiceWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
@@ -975,7 +978,7 @@ public class AdminTasksBean {
 		System.out.println("Bad activities count: " + badCount);
 	}
 
-	public String fixProposalDiscussionsUrls() throws SystemException, PortalException {
+	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
 		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0,
 				Integer.MAX_VALUE)) {
 			Contest contest = Proposal2PhaseLocalServiceUtil
@@ -984,6 +987,8 @@ public class AdminTasksBean {
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
 			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(
 					contest.getContestPK(), proposal.getProposalId()));
+            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+            proposalDiscussion.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, proposalName));
 			DiscussionCategoryGroupLocalServiceUtil
 					.updateDiscussionCategoryGroup(proposalDiscussion);
 		}

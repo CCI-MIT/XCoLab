@@ -15,7 +15,12 @@ public enum DiscussionActivityKeys implements SubscriberFactory {
 	ADD_DISCUSSION("Discussion created"),
 	ADD_COMMENT("Discussion post added"), 
 	ADD_DISCUSSION_COMMENT("Comment added");
-	
+
+    /**
+     * Used to describe the action of a proposal discussion activity
+     */
+    public static final String PROPOSAL_DISCUSSION_FORMAT_STRING = "Proposal %s";
+
 	private String prettyName;
 	
 	private DiscussionActivityKeys(String name) {

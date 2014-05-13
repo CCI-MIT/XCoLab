@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.service.persistence.*;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -99,7 +100,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * Default description of group working on a plan.
      */
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
-
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
@@ -323,6 +323,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId, updatedDate);
         updateProposal(proposal);
+
+        // Update the proposal name in the discussion category
+        if (attributeName.equals(ProposalAttributeKeys.NAME)) {
+            DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            dcg.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, stringValue));
+            discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
+        }
 
         if (publishActivity)
             eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
