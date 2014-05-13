@@ -56,6 +56,8 @@ public class MassMessagingPortlet extends MVCPortlet {
     private final static String MAIL_PROPS = "/colabMail.properties";
     private final static Log _log = LogFactoryUtil.getLog(MassMessagingPortlet.class);
 
+    private final static String UNREGISTER_LINK_TEXT = "Click here to unsubscribe from Climate CoLab newsletters.";
+
     @Override
     public void doDispatch(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
         renderRequest.setAttribute("sendAs", readSendAsProperties());
@@ -377,7 +379,7 @@ public class MassMessagingPortlet extends MVCPortlet {
                 messageBodyText +=
                     "<br /><br /><a href='" +
                     NotificationUnregisterUtils.getMassmessagingUnregisterLink(user, serviceContext) +
-                    "'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
+                    "'>" + UNREGISTER_LINK_TEXT + "</a>";
             }
             if (StringUtils.isNotBlank(sendAs)) {
 

@@ -76,11 +76,11 @@ public class NotificationUnregisterUtils {
     }
     
     public static String getToken(ActivitySubscription subscription) {
-        return getToken(subscription.getCreateDate().getTime() + "" + subscription.getPk());
+        return getToken(Math.floor(1.0 * subscription.getCreateDate().getTime() / 1000.f) + "" + subscription.getPk());
     }
     
     public static String getToken(User user) {
-        return getToken(user.getCreateDate() + "" + user.getUserId());
+        return getToken(Math.floor(1.0 * user.getCreateDate().getTime() / 1000.f) + "" + user.getUserId());
     }
     
     private static String getToken(String baseString) {

@@ -1,9 +1,8 @@
 package org.xcolab.portlets.notificationunregister;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import javax.management.Notification;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
@@ -23,7 +22,6 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.log.LogUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -35,8 +33,14 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 public class NotificationUnregisterController {
 
 	private final static Log _log = LogFactoryUtil.getLog(NotificationUnregisterController.class);
-	
-	@RequestMapping
+
+    private static final String UNSUBSCRIBE_TITLE = "You have been unsubscribed";
+    private static final String UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT = "You may still receive email notifications if you are subscribed to other activity on the Climate CoLab.  " +
+            "To manage your subscriptions, please log in to your account, select “My profile”, and select the “Manage” " +
+            "button underneath “Subscribed Activity” on the righthand side.";
+
+
+    @RequestMapping
 	public String register(PortletRequest request, PortletResponse response, Model model) throws SystemException {
 	    
 	    Long userId = ParamUtil.getLong(request, "userId", 0);
@@ -76,23 +80,28 @@ public class NotificationUnregisterController {
 	        return "error";
 	    }
 
+        String responseText = null;
 	    // unregister user
 	    if (subscription != null) {
 	        ActivitySubscriptionLocalServiceUtil.delete(subscription);
+            responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
 
 	    if (user != null) {
-            getUnregisterUserHandler(typeId).unregister(user);
+            NotificationUnregisterHandler handler = getUnregisterUserHandler(typeId);
+            handler.unregister(user);
+            responseText = handler.getSuccessResponse();
 	    }
 
-        model.addAttribute("unregisteringSubscription", unregisteringSubscription);
+        model.addAttribute("responseTitle", UNSUBSCRIBE_TITLE);
+        model.addAttribute("responseText", responseText);
 	    
 	    return "view";
 	}
 
     private NotificationUnregisterHandler getUnregisterUserHandler(int type) {
         if (type == NotificationUnregisterUtils.ACTIVITY_TYPE) {
-            return new ActivityNotificationUnregisterHandler();
+            return new ActivityDailyDigestNotificationUnregisterHandler();
         } else if (type == NotificationUnregisterUtils.MASSMESSAGING_TYPE) {
             return new MassmessagingNotificationUnregisterHandler();
         } else {
@@ -103,9 +112,13 @@ public class NotificationUnregisterController {
 
 interface NotificationUnregisterHandler {
     public void unregister(User user) throws SystemException;
+    public String getSuccessResponse();
 }
 
 class MassmessagingNotificationUnregisterHandler implements NotificationUnregisterHandler {
+
+    private static final String UNSUBSCRIBE_RESPONSE_TEXT =
+            "Your address has been excluded from our newsletter recipients.";
 
     @Override
     public void unregister(User user) throws SystemException {
@@ -131,9 +144,19 @@ class MassmessagingNotificationUnregisterHandler implements NotificationUnregist
             MessagingIgnoredRecipientsLocalServiceUtil.addMessagingIgnoredRecipients(ignoredRecipient);
         }
     }
+
+    @Override
+    public String getSuccessResponse() {
+        return UNSUBSCRIBE_RESPONSE_TEXT;
+    }
 }
 
-class ActivityNotificationUnregisterHandler implements NotificationUnregisterHandler {
+class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUnregisterHandler {
+
+    private static final String UNSUBSCRIBE_RESPONSE_TEXT =
+            "from the daily digest and all email notifications about activity on the Climate CoLab.  " +
+                    "To resubscribe or manage your subscriptions, please log in to your account, select “My profile”, " +
+                    "and select the “Manage” button underneath “Subscribed Activity” on the righthand side.";
 
     @Override
     public void unregister(User user) throws SystemException {
@@ -141,5 +164,10 @@ class ActivityNotificationUnregisterHandler implements NotificationUnregisterHan
         prefs.setEmailActivityDailyDigest(false);
         prefs.setEmailOnActivity(false);
         MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+    }
+
+    @Override
+    public String getSuccessResponse() {
+        return UNSUBSCRIBE_RESPONSE_TEXT;
     }
 }

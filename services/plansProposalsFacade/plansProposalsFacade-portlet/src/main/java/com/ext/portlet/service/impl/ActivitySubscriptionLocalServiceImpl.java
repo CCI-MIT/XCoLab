@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -78,6 +79,19 @@ public class ActivitySubscriptionLocalServiceImpl
 	// 1 am
 	private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 	private Date lastDailyEmailNotification = new Date();
+
+    private static final String FAQ_DIGEST_URL_PATH = "/faqs#digest";
+
+    private static final String FAQ_DIGEST_LINK_PLACEHOLDER = "FAQ_DIGEST_LINK_PLACEHOLDER";
+
+    private static final String UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER = "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
+
+    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to a contest, proposal or discussion post on the Climate CoLab.  " +
+            "To receive all notifications in a daily digest, please click <a href='FAQ_DIGEST_LINK_PLACEHOLDER'>here</a> for instructions.  " +
+            "To stop receiving notifications from this contest, proposal or discussion post, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+
+    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the Climate CoLab.  " +
+            "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
 
     public List<ActivitySubscription> getActivitySubscriptions(Class clasz, Long classPK, Integer type, String extraData)
@@ -360,7 +374,8 @@ public class ActivitySubscriptionLocalServiceImpl
 			String subject = "CoLab Activities Daily digest";
 			String body = userDigestBodyMap.get(recipient);
 			body += "</ul>";
-			sendEmailMessage(recipient, subject, body, NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext), serviceContext);
+            String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+			sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
 		}
 	}
 
@@ -393,7 +408,9 @@ public class ActivitySubscriptionLocalServiceImpl
 			if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
 					!MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
 
-				sendEmailMessage(recipient, subject, messageTemplate, NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext), serviceContext);
+                String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(serviceContext.getPortalURL(),
+                        NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext));
+				sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, serviceContext.getPortalURL());
 			}
 
 		}
@@ -417,7 +434,7 @@ public class ActivitySubscriptionLocalServiceImpl
         return ActivitySubscriptionLocalServiceUtil.dynamicQuery(query);
     }
 
-	private void sendEmailMessage(User recipient, String subject, String body, String unregisterLink, ServiceContext serviceContext) {
+	private void sendEmailMessage(User recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) {
 		try {
 			InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
 			InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
@@ -425,15 +442,12 @@ public class ActivitySubscriptionLocalServiceImpl
 			body +=  MESSAGE_FOOTER_TEMPLATE;
 
             // Add the proper domain to all links
-			body  = body.replaceAll("\"/web/guest", "\"" + serviceContext.getPortalURL() + "/web/guest")
-					.replaceAll("\'/web/guest", "\'" + serviceContext.getPortalURL() + "/web/guest").replaceAll("\n", "\n<br />");
-			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, serviceContext));
+			body  = body.replaceAll("\"/web/guest", "\"" +portalBaseUrl + "/web/guest")
+					.replaceAll("\'/web/guest", "\'" + portalBaseUrl + "/web/guest").replaceAll("\n", "\n<br />");
+			String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, portalBaseUrl));
 
 			// add link to unsubscribe
-			message +=
-					"<br /><br /><a href='" +
-							unregisterLink +
-							"'>Don't want to receive updates from the Climate CoLab?  Click here to unsubscribe.</a>";
+			message += "<br /><br />" + unregisterFooter;
 			MailEngine.send(fromEmail, toEmail, subject, message, true);
 		} catch (MailEngineException e) {
 			_log.error("Can't send email message");
@@ -487,8 +501,19 @@ public class ActivitySubscriptionLocalServiceImpl
         return entry.getBody();
     }
 
-    private String getUserLink(User user, ServiceContext serviceContext) {
-        return USER_PROFILE_LINK_TEMPLATE.replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId())).replaceAll(DOMAIN_PLACEHOLDER, serviceContext.getPortalURL());
+    private String getUserLink(User user, String portalBaseUrl) {
+        return USER_PROFILE_LINK_TEMPLATE.replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId())).replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 
+    private String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl, String unsubscribeUrl) {
+        String faqUrl = portalBaseUrl + FAQ_DIGEST_URL_PATH;
+        String footer =  StringUtil.replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER, faqUrl);
+        footer = StringUtil.replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
+        return  footer;
+    }
+
+    private String getUnsubscribeDailyDigestFooter(String unsubscribeUrl) {
+        String footer =  StringUtil.replace(UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
+        return  footer;
+    }
 }

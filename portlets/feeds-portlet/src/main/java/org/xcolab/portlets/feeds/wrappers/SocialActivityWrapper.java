@@ -171,6 +171,8 @@ public class SocialActivityWrapper implements Serializable {
 		VOTE("up", Proposal.class.getName() + ProposalActivityKeys.VOTE.ordinal(),
                 Proposal.class.getName() + ProposalActivityKeys.VOTE_RETRACT.ordinal(),
                 Proposal.class.getName() + ProposalActivityKeys.VOTE_SWITCH.ordinal(),
+                Proposal.class.getName() + ProposalActivityKeys.SUPPORTER_ADD.ordinal(),
+                Proposal.class.getName() + ProposalActivityKeys.SUPPORTER_REMOVE.ordinal(),
 				"com.ext.portlet.plans.model.PlanItem7",
 				"com.ext.portlet.plans.model.PlanItem8",
 				"com.ext.portlet.plans.model.PlanItem9",
