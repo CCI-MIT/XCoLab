@@ -13,6 +13,7 @@ public class ContestWrapper {
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
+    private static final String HOW = "how";
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
@@ -117,6 +118,16 @@ public class ContestWrapper {
 
     public Date getCreated() {
         return contest.getCreated();
+    }
+
+    public long getCreatedTime() {
+    	if (contest.getCreated() != null) {
+    		return contest.getCreated().getTime();
+    	}
+    	else if (contest.getUpdated() != null) {
+    		return contest.getUpdated().getTime();
+    	}
+    	return 0;
     }
 
     public void setCreated(Date created) {
@@ -337,6 +348,16 @@ public class ContestWrapper {
     public List<OntologyTerm> getWhere() throws PortalException,
             SystemException {
         return getTermFromSpace(WHERE);
+    }
+
+    public String getHowName() throws PortalException, SystemException {
+        return getTermNameFromSpace(HOW);
+    }
+    
+
+    public List<OntologyTerm> getHow() throws PortalException,
+            SystemException {
+        return getTermFromSpace(HOW);
     }
 
     public String getWhereName() throws PortalException, SystemException {

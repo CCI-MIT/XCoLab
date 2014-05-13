@@ -18,6 +18,7 @@ public class OntologyTermSoap implements Serializable {
     private long _ontologySpaceId;
     private String _name;
     private String _descriptionUrl;
+    private int _order_;
 
     public OntologyTermSoap() {
     }
@@ -30,6 +31,7 @@ public class OntologyTermSoap implements Serializable {
         soapModel.setOntologySpaceId(model.getOntologySpaceId());
         soapModel.setName(model.getName());
         soapModel.setDescriptionUrl(model.getDescriptionUrl());
+        soapModel.setOrder_(model.getOrder_());
 
         return soapModel;
     }
@@ -116,5 +118,13 @@ public class OntologyTermSoap implements Serializable {
 
     public void setDescriptionUrl(String descriptionUrl) {
         _descriptionUrl = descriptionUrl;
+    }
+
+    public int getOrder_() {
+        return _order_;
+    }
+
+    public void setOrder_(int order_) {
+        _order_ = order_;
     }
 }

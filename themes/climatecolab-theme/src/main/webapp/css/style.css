@@ -226,7 +226,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .headline.formmargin {margin-right:10px;}
 
 .headline h1 {float:left; display:inline; width:auto; margin-right:30px;}
-.headline .view {float:left;  height:34px; background:url(../images/view-bg-old.png) no-repeat 3px 3px; margin-right:16px;}
+.headline .view {float:left;  height:34px; background:url(../images/view-bg.png) no-repeat 3px 3px; margin-right:16px;}
 .headline .show {float:left; display:inline; height:26px; padding-top:8px; font:12px "Lucida Grande", Arial, sans-serif; vertical-align:middle;}
 .headline .divider {float:left; height:30px; width:5px; margin-right:5px; border-right:1px dotted #333;}
 
@@ -269,7 +269,7 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar a {font-weight:normal;}
 
 /* list page */
-.blueheaderbar .contest {float:left; width:377px; height:37px; padding-left:9px;}
+.blueheaderbar .contest {float:left; width:357px; height:37px; padding-left:9px;}
 .blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .proposal {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
@@ -280,12 +280,14 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 .blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .what {float:left; width:168px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .what {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
 .blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .where {float:left;  width:160px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .where {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
 .blueheaderbar .where a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .who {float:left; width:155px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .who {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
 .blueheaderbar .who a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
+.blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
+.blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
@@ -609,7 +611,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .fixed-position-inner-relative {overflow: auto;}
 .fixed-position-inner-fixed {position: absolute;}
 
-.contest-detail .what, .contest-detail .where, .contest-detail .who {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:10px;}
+.contest-detail .what, .contest-detail .where, .contest-detail .who, .contest-detail .how {float:left; font-size:16px; height:24px; display:inline; padding-top:1px; padding-right:10px; background: none;width: auto;}
 .contest-detail .what {background:url(../images/icon-list-what.png) no-repeat; padding-left:30px;}
 .contest-detail .where {background:url(../images/icon-list-where.png) no-repeat; padding-left:33px;}
 .contest-detail .who {background:url(../images/icon-list-who.png) no-repeat; padding-left:25px;}
@@ -935,9 +937,12 @@ ul li {
 /* OUTLINE VIEW - added 1-24-2014 */
 
 .contest-outline-left {float:left; width:490px; /* 51% */ min-height:600px; border-right:1px solid #e3e0d9; padding-bottom:150px; -webkit-box-shadow: inset -14px 0 10px -10px #ccc; -moz-box-shadow: inset -14px 0 10px -10px #ccc; box-shadow: inset -14px 0 10px -10px #ccc;}
-.contest-outline-right {width:470px; height:640px; padding-bottom:150px; position:fixed; left:50%; margin-left: 20px; display: none;}
+.contest-outline-right {width:470px; padding-bottom:150px; /*position:fixed; left:50%;*/ float: right; margin-left: 20px;/* display: none;*/}
 .contest-outline-left, .contest-outline-right div {-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
-
+.contest-outline-right div.ctest {
+	width: 425px;
+	padding-bottom: 5px;
+}
 /* left side */
 .expand {float:left; font:12px "Lucida Grande", Arial, sans-serif; padding:15px 0 0 0;}
 .contest-count {font:12px "Lucida Grande", Arial, sans-serif; color:#858585; margin-right:20px; padding:10px 0 20px 10px;}
@@ -976,10 +981,10 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .contest-section2 .section-head {color:#66af45;}
 .contest-section3 .section-head {color:#539bd4;}
 .contest-section4 .section-head {color:#e46970;}
-.section-head h2 {font-size:25px; display:inline-block;}
+.section-head h2 {font-size:25px; display:inline-block; width: 380px;}
 .section-head h2 span {font-size:13px; font-weight:200; color:#828282; vertical-align:middle;}
 
-.section-head .active-icon {display:inline-block; width:19px; height:19px; margin-right:14px;}
+.section-head .active-icon {display:inline-block; width:19px; height:19px; margin-right:14px; float: left; margin-top: 5px; }
 .contest-section1 .active-icon {background-image:url(../images/contest-icon-cplus-orange.png);}
 .contest-section1 .open .active-icon {background-image:url(../images/contest-icon-cminus-orange.png);}
 .contest-section2 .active-icon {background-image:url(../images/contest-icon-cplus-green.png);}
@@ -1000,7 +1005,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .level1 li.active > a { color:#ffffff; background-color: #3192b1}
 .level1 li a.open {background-image:url(../images/contest-icon-minus-orange.png);}
 .level1 li.active a.open {background-image:url(../images/contest-icon-minus.png);}
-.level1 li.active a.open .count {color:#ffffff;}
+.level1 li.active a.open.active .count {color:#ffffff;}
 
 .level1 li.no-child a, .level1 li.no-child a.open {background-image:none;}
 
@@ -1015,14 +1020,14 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .cintro h2 {margin-bottom:24px; color:#231f20;}
 .cintro strong {color:#545454;}
 
-.contest-outline-right .contest-count {display:inline; font:28px "proxima-nova", Arial, Helvetica, sans-serif; color:#858585; padding-left:30px;}
-.contest-outline-right .contest-count span {font-size:28px;}
-.show-active {float:right; text-align:right; position:relative; font:12px "Lucida Grande", Arial, sans-serif; padding:10px 16px 20px 0;}
+.contest-outline-right .contest-count {font:18px "proxima-nova", Arial, Helvetica, sans-serif; color:#858585; padding: 0px 0 0px 0;}
+.contest-outline-right .contest-count span {font-size:18px;}
+.show-active {float:right; text-align:right; position:relative; font:12px "Lucida Grande", Arial, sans-serif; padding:0px 16px 0px 0;}
 .show-active a:after {
-	content:""; position:absolute; top:16px; right:0; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:4px solid #3192b1;
+	content:""; position:absolute; top:6px; right:0; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:4px solid #3192b1;
 	}
 
-.section-list {margin-bottom:10px;}
+.section-list {margin-bottom:25px;  margin-top: 47px;}
 
 .slevel1 {background-image:url(../images/contest-1x1-white.gif); background-repeat:repeat-x; background-position:top; background-color:#e0dacb; margin-left:0;}
 .slevel2 {background-image:url(../images/contest-1x1-white.gif); background-repeat:repeat-x; background-position:top; background-color:#d1cbbf; margin-left:9px;}
@@ -1032,8 +1037,8 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .slevel6 {background-image:url(../images/contest-1x1-white.gif); background-repeat:repeat-x; background-position:top; background-color:#aaa69f; margin-left:25px;} 
 
 
-.contest-list {font-size:14px; height:350px; margin-left:30px; overflow-y:scroll; overflow-x:hidden;}
-.prop-head {text-align:right; font:10px "Lucida Grande", Arial, sans-serif; color:#858585; padding:10px 0;}
+.contest-list {font-size:14px; margin-left:30px; overflow-y: auto; overflow-x:hidden;}
+.prop-head {text-align:right; font:10px "Lucida Grande", Arial, sans-serif; color:#858585; padding:0px 0px 10px 0;}
 
 .spacr {background-color:#ffffff; padding-left:4px;}
 .slevel1 .spacr {margin-left:30px;}
@@ -1045,6 +1050,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 .txt {background-color:#e8e8e8; padding:10px; border-top:1px solid #939393;}
 
+.section a {display: block; text-decoration: none; color: #000; cursor: pointer;}
 .section {position:relative;}
 .section.active .txt {background-color:#3192b1; color:#ffffff; border-top:1px solid #ffffff;}
 
@@ -1052,8 +1058,11 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 
 
 
-.contest-list a {background:url(../images/contest-arrow-dwn.png); background-repeat:no-repeat; background-position:0 11px; width:390px; padding:5px 0 5px 28px; display:inline-block;}
-.contest-list a.active {background-image:url(../images/contest-arrow-up.png);}
+.contest-list a.trigger {background:url(../images/contest-arrow-dwn.png); background-repeat:no-repeat; background-position:0 11px; width:20px; display:inline-block; height: 20px;}
+.contest-list a.contestName {width:355px; padding:5px 0 5px 0px; }
+.contest-list .viewContestDetails a {background: none; padding: 0;}
+.contest-list .viewContestDetails { }
+.contest-list a.trigger.active {background-image:url(../images/contest-arrow-up.png);}
 .contest-list a .count {float:right; background:url(../images/contest-icon-prop.png) no-repeat; width:24px; padding-left:24px; text-align:center; vertical-align:middle; font-size:12px; font-weight:700; color:#858585;}
 
 .detail {font-size:12px; margin:0 0 15px 29px; padding:5px 0; color:#858585; line-height:19px; border-bottom:1px solid #e8e8e8; display: none;}
@@ -1063,15 +1072,67 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .where {color:#66af45;}
 .who {color:#539bd4;}
 .how {color:#e46970;}
-
+.detail .how, .detail .what, .detail .where, .detail .who {width: auto; background: none; display: inline-block; margin-right: 5px; padding: 0;}
 .contest-outline-left li ul {
 	display: none;
 }
-
 /** just to hide outline as it's in beta stage **/
 .headline .outline {
+	display: inline;
+}
+
+.contest-outline-left ul.level1 a .count.zero {color:#ccc;}
+
+.otherContestsCount.plural .plural, .otherContestsCount.singular .singular {
+	display: inline;
+}
+
+.otherContestsCount.singular .plural, .otherContestsCount.plural .singular {
 	display: none;
 }
 
+.otherContestsInfo {
+	margin-top: 10px;
+}
 
+#priorActiveAllWidget {
+	border: 1px solid #30a3fb;
+	-moz-box-shadow:0px 2px 2px #666; -webkit-box-shadow:0px 2px 2px #666; box-shadow:0px 2px 2px #666;
+	position: absolute;
+	display: none;
+	z-index: 1000;
+	background: #fff;
+	text-align: left;
+	padding: 10px 10px 10px 10px;
+	width: 125px;
+}
+
+#priorActiveAllWidget ul {
+	margin-left: 0;
+	list-style: none;
+}
+
+#priorActiveAllWidget ul li {
+	margin-left: 0;
+	list-style: none;
+	background: none;
+	padding: 5px;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+	background: #D6EDFF;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+	background: #D6EDFF;
+}
+
+
+#priorActiveAllWidget ul li a,
+#priorActiveAllWidget ul li a:after {
+	background: none;
+	border: 0;
+}
 /* --------------------------------------------------------------------------------------------------------------- */

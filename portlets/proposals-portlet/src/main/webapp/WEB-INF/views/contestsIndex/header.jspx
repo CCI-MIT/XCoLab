@@ -11,16 +11,19 @@
 			<portlet:param name="viewType" value="LIST" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeToGridViewTypeURL">
 			<portlet:param name="viewType" value="GRID" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeToOutlineViewTypeURL">
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
 			
 		<div class="view ${fn:toLowerCase(viewType)}view">
@@ -62,35 +65,46 @@
 				</div>
 			</div>
 		</div>
-		<div class="show"><a href="/web/guest/resources/-/wiki/Main/What%2C+Where%2C+Who+taxonomy--Quick+view">Outline View</a></div>
-  		<div class="divider"><!--  --></div> 
-		<div class="show">
-			<c:choose>
-				<c:when test="${showActiveContests }">
-					<a href="/web/guest/plans/-/plans/contestsType/prior" >Show prior contests</a>
-				</c:when>
-				<c:otherwise>
-					<a href="/web/guest/plans/" >Show active contests</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-  		<div class="divider"><!--  --></div> 
+			<div class="show">
+				<div class="show-active">
+					<c:choose>
+						<c:when test="${showActiveContests }">
+							<a href="#" >Active contests</a>
+						</c:when>
+						<c:when test="${not showActiveContests and not showAllContests }">
+							<a href="#" >Prior contests</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" >All contests</a>
+						</c:otherwise>
+					</c:choose>
+					<div id="priorActiveAllWidget">
+						<ul>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="/web/guest/plans/" >Active contests</a></li>
+							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior contests</a></li>
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All contests</a></li>
+						</ul>
+						
+					</div>
+				</div>
+			</div>
+  			<div class="divider"><!--  --></div> 
   		<div class="show">
   			<a href="/web/guest/plans/-/plans/contestId/1300102">Suggest a new contest</a>
   		</div> 
- 		<div class="filter" style="position: relative;">
- 			<portlet:renderURL var="filterURL" />
- 			<form action="${filterURL }" id="filterContestsForm" method="get">
- 				<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
- 				<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
- 				<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
- 				<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
- 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
-    			<c:if test="${not empty sortFilterPage.filter }">
-        			<a href="javascript:;" id="contestsFilterClear">&#160;</a>
-        		</c:if>
-            </form>
-        </div>
+ 			<div class="filter" style="position: relative;">
+ 				<portlet:renderURL var="filterURL" />
+	 			<form action="${filterURL }" id="filterContestsForm" method="get">
+ 					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+ 					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+ 					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+ 					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+	 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter contests" name="filter" />
+    				<c:if test="${not empty sortFilterPage.filter }">
+        				<a href="javascript:;" id="contestsFilterClear">&#160;</a>
+        			</c:if>
+	            </form>
+    	    </div>
 
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />

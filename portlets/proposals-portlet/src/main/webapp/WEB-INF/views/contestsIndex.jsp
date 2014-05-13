@@ -23,7 +23,29 @@
 		
 	</div>
 	<script>
+	<![CDATA[
 		// set contest view type, see https://issues.liferay.com/browse/LPS-25733 
 		setContestsViewTypeCookie('${viewType}');
+		
+		jQuery(".show-active").hover(
+				function() {
+					var self = jQuery(this);
+					if (! self.hasClass('mouseIn')) {
+						jQuery(this).addClass('mouseIn visible');
+						jQuery("#priorActiveAllWidget").slideDown();
+					}
+				},
+				function() {
+					var self = jQuery(this);
+					self.removeClass('mouseIn');
+					setTimeout(function() {
+						if (! self.hasClass('mouseIn') && self.hasClass('visible')) {
+							jQuery("#priorActiveAllWidget").slideUp();
+							self.removeClass('visible');
+						}
+					}, 500);
+				}
+		);
+	]]>
 	</script>
 </jsp:root>

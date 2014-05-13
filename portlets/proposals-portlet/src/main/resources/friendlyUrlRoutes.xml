@@ -7,6 +7,11 @@
         <generated-parameter name="showActiveContests">false</generated-parameter>
     </route>
     <route>
+        <pattern>/contestsType/all</pattern>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+        <generated-parameter name="showAllContests">true</generated-parameter>
+    </route>
+    <route>
         <pattern>/viewType/{viewType}</pattern>
         <generated-parameter name="viewType">{viewType}</generated-parameter>
     </route>
@@ -26,6 +31,19 @@
     <route>
         <pattern>/contestsType/prior/filter/{filterString}</pattern>
         <generated-parameter name="showActiveContests">false</generated-parameter>
+        <generated-parameter name="filter">{filterString}</generated-parameter>
+    </route>
+    
+    <route>
+        <pattern>/contestsType/all/viewType/{viewType}</pattern>
+        <generated-parameter name="viewType">{viewType}</generated-parameter>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+        <generated-parameter name="showAllContests">true</generated-parameter>
+    </route>
+    <route>
+        <pattern>/contestsType/all/filter/{filterString}</pattern>
+        <generated-parameter name="showActiveContests">false</generated-parameter>
+        <generated-parameter name="showAllContests">true</generated-parameter>
         <generated-parameter name="filter">{filterString}</generated-parameter>
     </route>
     

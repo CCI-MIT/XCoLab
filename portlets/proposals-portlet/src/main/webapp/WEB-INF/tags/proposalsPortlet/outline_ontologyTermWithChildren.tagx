@@ -16,7 +16,7 @@
 				<li class="${empty term.children ? 'no-child last-child' : 'trigger' }" id="ontologyTerm_${term.id }">
 					<a href="#"  data-term-id="${term.id }">
 						<span>${term.name }</span>
-						<span class="count">5</span>
+						<span class="count">0</span>
 					</a>
 					<c:if test="${not empty term.children }">
 						<proposalsPortlet:outline_ontologyTermWithChildren terms="${term.children }" section="${section + 1 }" level="${level + 1 }" />
