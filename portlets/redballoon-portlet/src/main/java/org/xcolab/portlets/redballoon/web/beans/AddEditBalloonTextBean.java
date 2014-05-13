@@ -12,6 +12,10 @@ public class AddEditBalloonTextBean {
 	private String acceptTosText;
 	private String emailTemplate;
 	private String emailSubjectTemplate;
+	private String facebookDescription;
+	private String facebookTitle;
+	private String twitterDescription;
+	private String twitterTitle;
 	private boolean enabled;
 	
 	public AddEditBalloonTextBean() {
@@ -29,6 +33,10 @@ public class AddEditBalloonTextBean {
 		enabled = text.getEnabled();
 		emailTemplate = text.getEmailTemplate();
 		emailSubjectTemplate = text.getEmailSubjectTemplate();
+		facebookDescription = text.getFacebookDescription();
+		facebookTitle = text.getFacebookSubject();
+		twitterDescription = text.getTwitterDescription();
+		twitterTitle = text.getTwitterSubject();
 	}
 	public String getName() {
 		return name;
@@ -110,6 +118,37 @@ public class AddEditBalloonTextBean {
 		this.emailSubjectTemplate = emailSubjectTemplate;
 	}
 	
-	
+	public String getFacebookDescription() {
+		return facebookDescription;
+	}
+
+	public void setFacebookDescription(String facebookDescription) {
+		this.facebookDescription = facebookDescription;
+	}
+
+	public String getFacebookTitle() {
+		return facebookTitle;
+	}
+
+	public void setFacebookTitle(String facebookTitle) {
+		this.facebookTitle = facebookTitle;
+	}
+
+	public String getTwitterDescription() {
+		return twitterDescription;
+	}
+
+	public void setTwitterDescription(String twitterDescription) {
+		this.twitterDescription = twitterDescription;
+	}
+
+	public String getTwitterTitle() {
+		return twitterTitle;
+	}
+
+	public void setTwitterTitle(String twitterTitle) {
+		this.twitterTitle = twitterTitle;
+	}
+
 
 }

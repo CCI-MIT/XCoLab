@@ -29,11 +29,15 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
     public String acceptTosText;
     public String emailTemplate;
     public String emailSubjectTemplate;
+    public String twitterDescription;
+    public String twitterSubject;
+    public String facebookDescription;
+    public String facebookSubject;
     public boolean enabled;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(id);
@@ -53,6 +57,14 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         sb.append(emailTemplate);
         sb.append(", emailSubjectTemplate=");
         sb.append(emailSubjectTemplate);
+        sb.append(", twitterDescription=");
+        sb.append(twitterDescription);
+        sb.append(", twitterSubject=");
+        sb.append(twitterSubject);
+        sb.append(", facebookDescription=");
+        sb.append(facebookDescription);
+        sb.append(", facebookSubject=");
+        sb.append(facebookSubject);
         sb.append(", enabled=");
         sb.append(enabled);
         sb.append("}");
@@ -114,6 +126,30 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             balloonTextImpl.setEmailSubjectTemplate(emailSubjectTemplate);
         }
 
+        if (twitterDescription == null) {
+            balloonTextImpl.setTwitterDescription(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setTwitterDescription(twitterDescription);
+        }
+
+        if (twitterSubject == null) {
+            balloonTextImpl.setTwitterSubject(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setTwitterSubject(twitterSubject);
+        }
+
+        if (facebookDescription == null) {
+            balloonTextImpl.setFacebookDescription(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setFacebookDescription(facebookDescription);
+        }
+
+        if (facebookSubject == null) {
+            balloonTextImpl.setFacebookSubject(StringPool.BLANK);
+        } else {
+            balloonTextImpl.setFacebookSubject(facebookSubject);
+        }
+
         balloonTextImpl.setEnabled(enabled);
 
         balloonTextImpl.resetOriginalValues();
@@ -132,6 +168,10 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
         acceptTosText = objectInput.readUTF();
         emailTemplate = objectInput.readUTF();
         emailSubjectTemplate = objectInput.readUTF();
+        twitterDescription = objectInput.readUTF();
+        twitterSubject = objectInput.readUTF();
+        facebookDescription = objectInput.readUTF();
+        facebookSubject = objectInput.readUTF();
         enabled = objectInput.readBoolean();
     }
 
@@ -186,6 +226,30 @@ public class BalloonTextCacheModel implements CacheModel<BalloonText>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(emailSubjectTemplate);
+        }
+
+        if (twitterDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(twitterDescription);
+        }
+
+        if (twitterSubject == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(twitterSubject);
+        }
+
+        if (facebookDescription == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(facebookDescription);
+        }
+
+        if (facebookSubject == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(facebookSubject);
         }
 
         objectOutput.writeBoolean(enabled);

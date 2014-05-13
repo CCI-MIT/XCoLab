@@ -24,6 +24,7 @@
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
         <module>contests-portlet</module>
+        <module>reporting-portlet</module>
         <module>search-portlet</module>
         <module>feeds-portlet</module>
         <module>messaging-portlet</module>

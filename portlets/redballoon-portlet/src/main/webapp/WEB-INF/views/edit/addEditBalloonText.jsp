@@ -71,6 +71,28 @@
     	<label for="balloonTextEmailSubjectTemplate">Subject for email that is sent to the user after registration</label>
     	<form:textarea class="form-control" id="balloonTextEmailSubjectTemplate" path="emailSubjectTemplate" />
   	</div>
+  	
+  	
+  	<div class="form-group">
+    	<label for="facebookPageTitle">Facebook - page title</label>
+    	<form:input class="form-control" id="facebookPageTitle" path="facebookTitle" />
+  	</div>
+  	
+  	<div class="form-group">
+    	<label for="facebookPageDescription">Facebook - page description</label>
+    	<form:textarea class="form-control" id="facebookPageDescription" path="facebookDescription" />
+  	</div>
+  	
+  	<div class="form-group">
+    	<label for="twitterTitle">Twitter - page title</label>
+    	<form:input class="form-control" id="twitterPageTitle" path="twitterTitle" />
+  	</div>
+  	
+  	<div class="form-group">
+    	<label for="twitterDscription">Twitter - page description</label>
+    	<form:textarea class="form-control" id="twitterPageDescription" path="twitterDescription" />
+  	</div>
+  	
   	<div class="form-group ckeditorContainer">
     	<label for="balloonTextTextBeforeForm">Email that is sent to the user after registration</label>
        <p><strong>URLPLACEHOLDER</strong> will be replaced with the users link.<br/></p>

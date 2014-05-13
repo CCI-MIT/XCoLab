@@ -178,6 +178,66 @@ public interface BalloonTextModel extends BaseModel<BalloonText> {
     public void setEmailSubjectTemplate(String emailSubjectTemplate);
 
     /**
+     * Returns the twitter description of this balloon text.
+     *
+     * @return the twitter description of this balloon text
+     */
+    @AutoEscape
+    public String getTwitterDescription();
+
+    /**
+     * Sets the twitter description of this balloon text.
+     *
+     * @param twitterDescription the twitter description of this balloon text
+     */
+    public void setTwitterDescription(String twitterDescription);
+
+    /**
+     * Returns the twitter subject of this balloon text.
+     *
+     * @return the twitter subject of this balloon text
+     */
+    @AutoEscape
+    public String getTwitterSubject();
+
+    /**
+     * Sets the twitter subject of this balloon text.
+     *
+     * @param twitterSubject the twitter subject of this balloon text
+     */
+    public void setTwitterSubject(String twitterSubject);
+
+    /**
+     * Returns the facebook description of this balloon text.
+     *
+     * @return the facebook description of this balloon text
+     */
+    @AutoEscape
+    public String getFacebookDescription();
+
+    /**
+     * Sets the facebook description of this balloon text.
+     *
+     * @param facebookDescription the facebook description of this balloon text
+     */
+    public void setFacebookDescription(String facebookDescription);
+
+    /**
+     * Returns the facebook subject of this balloon text.
+     *
+     * @return the facebook subject of this balloon text
+     */
+    @AutoEscape
+    public String getFacebookSubject();
+
+    /**
+     * Sets the facebook subject of this balloon text.
+     *
+     * @param facebookSubject the facebook subject of this balloon text
+     */
+    public void setFacebookSubject(String facebookSubject);
+
+    /**
      * Returns the enabled of this balloon text.
      *
      * @return the enabled of this balloon text

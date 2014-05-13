@@ -93,6 +93,10 @@
 			<basic name="acceptTosText" />
 			<basic name="emailTemplate" />
 			<basic name="emailSubjectTemplate" />
+			<basic name="twitterDescription" />
+			<basic name="twitterSubject" />
+			<basic name="facebookDescription" />
+			<basic name="facebookSubject" />
 			<basic name="enabled" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

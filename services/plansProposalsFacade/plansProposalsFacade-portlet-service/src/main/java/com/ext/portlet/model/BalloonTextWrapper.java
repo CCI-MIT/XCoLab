@@ -46,6 +46,10 @@ public class BalloonTextWrapper implements BalloonText,
         attributes.put("acceptTosText", getAcceptTosText());
         attributes.put("emailTemplate", getEmailTemplate());
         attributes.put("emailSubjectTemplate", getEmailSubjectTemplate());
+        attributes.put("twitterDescription", getTwitterDescription());
+        attributes.put("twitterSubject", getTwitterSubject());
+        attributes.put("facebookDescription", getFacebookDescription());
+        attributes.put("facebookSubject", getFacebookSubject());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -108,6 +112,32 @@ public class BalloonTextWrapper implements BalloonText,
 
         if (emailSubjectTemplate != null) {
             setEmailSubjectTemplate(emailSubjectTemplate);
+        }
+
+        String twitterDescription = (String) attributes.get(
+                "twitterDescription");
+
+        if (twitterDescription != null) {
+            setTwitterDescription(twitterDescription);
+        }
+
+        String twitterSubject = (String) attributes.get("twitterSubject");
+
+        if (twitterSubject != null) {
+            setTwitterSubject(twitterSubject);
+        }
+
+        String facebookDescription = (String) attributes.get(
+                "facebookDescription");
+
+        if (facebookDescription != null) {
+            setFacebookDescription(facebookDescription);
+        }
+
+        String facebookSubject = (String) attributes.get("facebookSubject");
+
+        if (facebookSubject != null) {
+            setFacebookSubject(facebookSubject);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -316,6 +346,86 @@ public class BalloonTextWrapper implements BalloonText,
     @Override
     public void setEmailSubjectTemplate(java.lang.String emailSubjectTemplate) {
         _balloonText.setEmailSubjectTemplate(emailSubjectTemplate);
+    }
+
+    /**
+    * Returns the twitter description of this balloon text.
+    *
+    * @return the twitter description of this balloon text
+    */
+    @Override
+    public java.lang.String getTwitterDescription() {
+        return _balloonText.getTwitterDescription();
+    }
+
+    /**
+    * Sets the twitter description of this balloon text.
+    *
+    * @param twitterDescription the twitter description of this balloon text
+    */
+    @Override
+    public void setTwitterDescription(java.lang.String twitterDescription) {
+        _balloonText.setTwitterDescription(twitterDescription);
+    }
+
+    /**
+    * Returns the twitter subject of this balloon text.
+    *
+    * @return the twitter subject of this balloon text
+    */
+    @Override
+    public java.lang.String getTwitterSubject() {
+        return _balloonText.getTwitterSubject();
+    }
+
+    /**
+    * Sets the twitter subject of this balloon text.
+    *
+    * @param twitterSubject the twitter subject of this balloon text
+    */
+    @Override
+    public void setTwitterSubject(java.lang.String twitterSubject) {
+        _balloonText.setTwitterSubject(twitterSubject);
+    }
+
+    /**
+    * Returns the facebook description of this balloon text.
+    *
+    * @return the facebook description of this balloon text
+    */
+    @Override
+    public java.lang.String getFacebookDescription() {
+        return _balloonText.getFacebookDescription();
+    }
+
+    /**
+    * Sets the facebook description of this balloon text.
+    *
+    * @param facebookDescription the facebook description of this balloon text
+    */
+    @Override
+    public void setFacebookDescription(java.lang.String facebookDescription) {
+        _balloonText.setFacebookDescription(facebookDescription);
+    }
+
+    /**
+    * Returns the facebook subject of this balloon text.
+    *
+    * @return the facebook subject of this balloon text
+    */
+    @Override
+    public java.lang.String getFacebookSubject() {
+        return _balloonText.getFacebookSubject();
+    }
+
+    /**
+    * Sets the facebook subject of this balloon text.
+    *
+    * @param facebookSubject the facebook subject of this balloon text
+    */
+    @Override
+    public void setFacebookSubject(java.lang.String facebookSubject) {
+        _balloonText.setFacebookSubject(facebookSubject);
     }
 
     /**

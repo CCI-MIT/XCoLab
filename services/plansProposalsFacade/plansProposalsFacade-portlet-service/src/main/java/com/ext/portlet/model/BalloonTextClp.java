@@ -29,6 +29,10 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
     private String _acceptTosText;
     private String _emailTemplate;
     private String _emailSubjectTemplate;
+    private String _twitterDescription;
+    private String _twitterSubject;
+    private String _facebookDescription;
+    private String _facebookSubject;
     private boolean _enabled;
     private BaseModel<?> _balloonTextRemoteModel;
 
@@ -78,6 +82,10 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         attributes.put("acceptTosText", getAcceptTosText());
         attributes.put("emailTemplate", getEmailTemplate());
         attributes.put("emailSubjectTemplate", getEmailSubjectTemplate());
+        attributes.put("twitterDescription", getTwitterDescription());
+        attributes.put("twitterSubject", getTwitterSubject());
+        attributes.put("facebookDescription", getFacebookDescription());
+        attributes.put("facebookSubject", getFacebookSubject());
         attributes.put("enabled", getEnabled());
 
         return attributes;
@@ -140,6 +148,32 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
         if (emailSubjectTemplate != null) {
             setEmailSubjectTemplate(emailSubjectTemplate);
+        }
+
+        String twitterDescription = (String) attributes.get(
+                "twitterDescription");
+
+        if (twitterDescription != null) {
+            setTwitterDescription(twitterDescription);
+        }
+
+        String twitterSubject = (String) attributes.get("twitterSubject");
+
+        if (twitterSubject != null) {
+            setTwitterSubject(twitterSubject);
+        }
+
+        String facebookDescription = (String) attributes.get(
+                "facebookDescription");
+
+        if (facebookDescription != null) {
+            setFacebookDescription(facebookDescription);
+        }
+
+        String facebookSubject = (String) attributes.get("facebookSubject");
+
+        if (facebookSubject != null) {
+            setFacebookSubject(facebookSubject);
         }
 
         Boolean enabled = (Boolean) attributes.get("enabled");
@@ -352,6 +386,98 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
     }
 
     @Override
+    public String getTwitterDescription() {
+        return _twitterDescription;
+    }
+
+    @Override
+    public void setTwitterDescription(String twitterDescription) {
+        _twitterDescription = twitterDescription;
+
+        if (_balloonTextRemoteModel != null) {
+            try {
+                Class<?> clazz = _balloonTextRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTwitterDescription",
+                        String.class);
+
+                method.invoke(_balloonTextRemoteModel, twitterDescription);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getTwitterSubject() {
+        return _twitterSubject;
+    }
+
+    @Override
+    public void setTwitterSubject(String twitterSubject) {
+        _twitterSubject = twitterSubject;
+
+        if (_balloonTextRemoteModel != null) {
+            try {
+                Class<?> clazz = _balloonTextRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setTwitterSubject",
+                        String.class);
+
+                method.invoke(_balloonTextRemoteModel, twitterSubject);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getFacebookDescription() {
+        return _facebookDescription;
+    }
+
+    @Override
+    public void setFacebookDescription(String facebookDescription) {
+        _facebookDescription = facebookDescription;
+
+        if (_balloonTextRemoteModel != null) {
+            try {
+                Class<?> clazz = _balloonTextRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFacebookDescription",
+                        String.class);
+
+                method.invoke(_balloonTextRemoteModel, facebookDescription);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getFacebookSubject() {
+        return _facebookSubject;
+    }
+
+    @Override
+    public void setFacebookSubject(String facebookSubject) {
+        _facebookSubject = facebookSubject;
+
+        if (_balloonTextRemoteModel != null) {
+            try {
+                Class<?> clazz = _balloonTextRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFacebookSubject",
+                        String.class);
+
+                method.invoke(_balloonTextRemoteModel, facebookSubject);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public boolean getEnabled() {
         return _enabled;
     }
@@ -454,6 +580,10 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         clone.setAcceptTosText(getAcceptTosText());
         clone.setEmailTemplate(getEmailTemplate());
         clone.setEmailSubjectTemplate(getEmailSubjectTemplate());
+        clone.setTwitterDescription(getTwitterDescription());
+        clone.setTwitterSubject(getTwitterSubject());
+        clone.setFacebookDescription(getFacebookDescription());
+        clone.setFacebookSubject(getFacebookSubject());
         clone.setEnabled(getEnabled());
 
         return clone;
@@ -500,7 +630,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(21);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(getId());
@@ -520,6 +650,14 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         sb.append(getEmailTemplate());
         sb.append(", emailSubjectTemplate=");
         sb.append(getEmailSubjectTemplate());
+        sb.append(", twitterDescription=");
+        sb.append(getTwitterDescription());
+        sb.append(", twitterSubject=");
+        sb.append(getTwitterSubject());
+        sb.append(", facebookDescription=");
+        sb.append(getFacebookDescription());
+        sb.append(", facebookSubject=");
+        sb.append(getFacebookSubject());
         sb.append(", enabled=");
         sb.append(getEnabled());
         sb.append("}");
@@ -529,7 +667,7 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(34);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.BalloonText");
@@ -570,6 +708,22 @@ public class BalloonTextClp extends BaseModelImpl<BalloonText>
         sb.append(
             "<column><column-name>emailSubjectTemplate</column-name><column-value><![CDATA[");
         sb.append(getEmailSubjectTemplate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>twitterDescription</column-name><column-value><![CDATA[");
+        sb.append(getTwitterDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>twitterSubject</column-name><column-value><![CDATA[");
+        sb.append(getTwitterSubject());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>facebookDescription</column-name><column-value><![CDATA[");
+        sb.append(getFacebookDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>facebookSubject</column-name><column-value><![CDATA[");
+        sb.append(getFacebookSubject());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>enabled</column-name><column-value><![CDATA[");
