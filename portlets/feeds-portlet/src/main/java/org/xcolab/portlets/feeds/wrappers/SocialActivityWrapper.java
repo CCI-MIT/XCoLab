@@ -203,7 +203,7 @@ public class SocialActivityWrapper implements Serializable {
                 DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.ordinal(),
                 DiscussionCategoryGroup.class.getName() + DiscussionActivityKeys.ADD_COMMENT.ordinal(),
                 "com.liferay.portlet.blogs.model.BlogsEntry1"),
-        USER("new_user", User.class.getName()+ LoginRegisterActivityKeys.USER_REGISTERED.ordinal());
+        USER("new_user", User.class.getName()+ LoginRegisterActivityKeys.USER_REGISTERED.getType());
 
         private final String[] classes;
         private final String displayName;
