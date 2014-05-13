@@ -121,7 +121,7 @@ public class ReportingController {
 		for (UserActivityReportBean uarb: userActivities.values()) {
 			User u = uarb.getUser();
 			csvWriter.writeNext(new String[] {String.valueOf(u.getUserId()), u.getScreenName(),
-                    u.getEmailAddresses().get(0).getAddress(), u.getFullName(),
+					(u.getEmailAddresses().isEmpty() ? "" : u.getEmailAddresses().get(0).getAddress()), u.getFullName(),
 					String.valueOf(uarb.getCommentsCount()), String.valueOf(uarb.getProposalsCount()), String.valueOf(uarb.getProposalFinalistsCount()), 
 					String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount())});
 		}
