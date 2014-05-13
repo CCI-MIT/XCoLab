@@ -520,7 +520,7 @@ public class UserIndexer extends BaseIndexer {
 
 	            for (MemberCategory category : MemberCategory.values()) {
 	                try {
-	                    if (category.equals(MemberCategory.ALL)) continue;
+	                    if (category.equals(MemberCategory.ALL) || category.equals(MemberCategory.DEFAULT)) continue;
 	                    for (String roleName: category.getRoleNames()) {
 	                        Role role = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, roleName);
 	                        roleIdToCategoryMap.put(role.getRoleId(), category);

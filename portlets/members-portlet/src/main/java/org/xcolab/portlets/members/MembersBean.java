@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 
+import com.liferay.portal.model.User;
 import org.apache.commons.lang.StringUtils;
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
@@ -57,7 +58,7 @@ public class MembersBean extends DataSource implements Serializable {
     private List<HandlerRegistration> handlerRegistrations = new ArrayList<HandlerRegistration>();
     
 
-    private MemberCategory categoryFilter = MemberCategory.MEMBER;
+    private MemberCategory categoryFilter = MemberCategory.DEFAULT;
     
     /**
      * Represents a mapping from member category to a role that represents this category. 
@@ -86,7 +87,7 @@ public class MembersBean extends DataSource implements Serializable {
         }
         for (MemberCategory category: MemberCategory.values()) {
             try {
-                if (category.equals(MemberCategory.ALL)) continue;
+                if (category.equals(MemberCategory.ALL) || category.equals(MemberCategory.DEFAULT)) continue;
                 for (String roleName: category.getRoleNames()) {
                     categoryRoleMap.put(category, RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, roleName));
                 }
@@ -116,9 +117,10 @@ public class MembersBean extends DataSource implements Serializable {
         searchResults.clear();
 
         SearchContext context = new SearchContext();
-        context.setCompanyId(10112L);
+        context.setCompanyId(DEFAULT_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
-        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, "com.liferay.portal.model.User");
+        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, User.class.getName());
+
         if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
             if (categoryFilter.equals(MemberCategory.MODERATOR) || categoryFilter.equals(MemberCategory.STAFF)) {
                 BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
@@ -147,7 +149,13 @@ public class MembersBean extends DataSource implements Serializable {
                 query.add(subQueryExclude, BooleanClauseOccurImpl.MUST_NOT);
                 
                 
+            } else if (categoryFilter.equals(MemberCategory.DEFAULT)) {
+                BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+                subQuery.addExactTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase());
+                subQuery.addExactTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase());
+                query.add(subQuery, BooleanClauseOccurImpl.MUST_NOT);
             }
+
             else {
                 query.addRequiredTerm("memberCategory", categoryFilter.name(), false);
             }
@@ -167,7 +175,7 @@ public class MembersBean extends DataSource implements Serializable {
        
         
        for (Document userDoc: hits.getDocs()) {
-           if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
+           if (categoryFilter != null && !(categoryFilter.equals(MemberCategory.ALL) || categoryFilter.equals(MemberCategory.DEFAULT))) {
                // user has enabled category filter, show results from given category and mark them as
                // from that category
                String[] categories = userDoc.getValues("memberCategory");
@@ -236,7 +244,7 @@ public class MembersBean extends DataSource implements Serializable {
             // ignore, enum value parsing error
         }
         
-        if (category != null && ! category.equals(categoryFilter)) {
+        if (category != null && !category.equals(categoryFilter)) {
             categoryFilter = category;
             updateSearchResults();
         }
@@ -244,62 +252,7 @@ public class MembersBean extends DataSource implements Serializable {
     }
 
     private void updateSearchResults() throws SystemException, NumberFormatException, PortalException, ParseException {
-        /*
-    	searchResults.clear();
-
-    	 SearchContext context = new SearchContext();
-    	 context.setCompanyId(10112L);
-    	 BooleanQuery query = BooleanQueryFactoryUtil.create(context);
-         query.addRequiredTerm(Field.ENTRY_CLASS_NAME, "com.liferay.portal.model.User");
-         if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
-             if (categoryFilter.equals(MemberCategory.MODERATOR) || categoryFilter.equals(MemberCategory.STAFF)) {
-                 BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
-                 subQuery.addExactTerm("memberCategory", MemberCategory.MODERATOR.name().toLowerCase());
-                 subQuery.addExactTerm("memberCategory", MemberCategory.STAFF.name().toLowerCase());
-                 query.add(subQuery, BooleanClauseOccurImpl.MUST);
-             }
-             else {
-                 query.addRequiredTerm("memberCategory", categoryFilter.name(), false);
-             }
-         }
-         if (StringUtils.isNotBlank(searchPhrase)) {
-             BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
-             String fuzzyPhrase = searchPhrase + "*";
-             subQuery.addTerm("screenName", fuzzyPhrase);
-             subQuery.addTerm("firstName", fuzzyPhrase);
-             subQuery.addTerm("lastName", fuzzyPhrase);
-             query.add(subQuery, BooleanClauseOccurImpl.MUST);
-         }
-
-
-         Hits hits = SearchEngineUtil.search(10112L, query, 0, Integer.MAX_VALUE);
-        
-         
-        System.out.println(hits.getLength());
-        
-        for (Document userDoc: hits.getDocs()) {
-            if (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL)) {
-                // user has enabled category filter, show results from given category and mark them as
-                // from that category
-                String[] categories = userDoc.getValues("memberCategory");
-                boolean include = true;
-                if (categoryFilter.equals(MemberCategory.MEMBER) && categories.length > 1) {
-                	include = false;
-                }
-                if (include) 
-                	searchResults.add(new MemberListItemBean(userDoc, categoryFilter));
-            }
-            else {
-                // autodetect member category
-                searchResults.add(new MemberListItemBean(userDoc));
-            }
-        }
-        
-        sortSearchResults();
-        */
         onePageDataModel = null;
-       
-        
     }
     
     public int getUsersCount() {

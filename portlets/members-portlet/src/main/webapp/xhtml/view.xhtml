@@ -284,7 +284,7 @@
                 </ice:commandLink>
                 </li>
                 <li
-                        class="#{membersBean.categoryFilter == null or membersBean.categoryFilter == 'ALL' ? 'c' : ''}">
+                        class="#{membersBean.categoryFilter == 'ALL' ? 'c' : ''}">
                     <ice:commandLink
                             actionListener="#{membersBean.updateCategoryFilter}"
                             value="All"

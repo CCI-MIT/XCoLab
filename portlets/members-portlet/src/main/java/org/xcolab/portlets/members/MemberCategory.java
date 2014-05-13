@@ -1,6 +1,7 @@
 package org.xcolab.portlets.members;
 
 public enum MemberCategory {
+    DEFAULT("Default"),
 	ALL("All"),
     MEMBER("User"),
     CATALYST("Catalyst"),
