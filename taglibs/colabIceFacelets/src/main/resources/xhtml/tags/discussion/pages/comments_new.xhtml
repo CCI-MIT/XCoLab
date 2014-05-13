@@ -50,8 +50,16 @@
             </ice:outputText><br />
             <ice:outputText value="#{message.createDate}"  nospan="true" >
                 <f:convertDateTime pattern="hh:mm a" locale="en_US" timeZone="America/New_York" />
-            </ice:outputText><br /><br /><br />
-            
+            </ice:outputText><br /><br />
+            <div class="role-indicator">
+                <div style="width: 16px">
+                    <img
+                            src="/climatecolab-theme/images/icon_mem-${message.authorRole.lowerCase}.png"
+                            width="16" height="16" />
+                </div>
+                ${message.authorRole.printName}
+            </div>
+            <br /><br />
                         <span class="com_num messageLink" rel="#{message.id}">#{message.messageNum} </span>
                         |
                         <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"

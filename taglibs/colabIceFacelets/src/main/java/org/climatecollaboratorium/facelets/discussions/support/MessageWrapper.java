@@ -9,8 +9,13 @@ import java.util.List;
 
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
+import javax.portlet.PortletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
@@ -32,6 +37,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import org.xcolab.enums.MemberRole;
 
 public class MessageWrapper implements Serializable {
     /**
@@ -278,6 +284,28 @@ public class MessageWrapper implements Serializable {
 
     public User getAuthor() throws PortalException, SystemException {
         return DiscussionMessageLocalServiceUtil.getAuthor(wrapped);
+    }
+
+    public MemberRole getAuthorRole() throws SystemException, PortalException {
+        List<Role> roles = getAuthor().getRoles();
+
+        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
+        MemberRole currentRole = MemberRole.MEMBER;
+        MemberRole role = MemberRole.MEMBER;
+
+        for (Role r : roles) {
+            final String roleString = r.getName();
+
+            currentRole = MemberRole.getMember(roleString);
+            if (currentRole != null && role != null) {
+                if (currentRole.ordinal() > role.ordinal()) {
+                    role = currentRole;
+                }
+            }
+        }
+
+        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
+        return role;
     }
     
     public Date getCreateDate() {
