@@ -121,6 +121,10 @@ div.sponsorLogo img {
     position: relative;
 }
 
+.addpropInputContainer > select {
+    width: 100%;
+}
+
 #uploadWidget {
     background: url(../img/image_upload-button.png) no-repeat;
     width: 219px;
