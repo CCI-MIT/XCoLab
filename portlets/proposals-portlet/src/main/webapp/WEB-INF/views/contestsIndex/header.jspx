@@ -142,7 +142,7 @@
 	    <c:otherwise>
             <div id="archivedContestsMarkerContainer">
                 <img src="/climatecolab-theme/images/contests-archive.png" />
-                <strong>Archived:</strong>You are currently viewing archived contests.&#160; <a href="/web/guest/plans" >Back to active contests</a>
+                <strong>Archived:</strong>&#160;You are currently viewing archived contests.&#160; <a href="/web/guest/plans" >Back to active contests</a>
             </div>
 		</c:otherwise>
 	</c:choose>
