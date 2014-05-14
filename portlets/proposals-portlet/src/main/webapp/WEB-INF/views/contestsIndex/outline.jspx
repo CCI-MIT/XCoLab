@@ -280,13 +280,15 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				contestsListHtml.push(contest.contestUrl);
 				contestsListHtml.push("'>");
 				contestsListHtml.push(contest.name);
+                /*
+                // Add contest create year to prior contests
 				if ((duplicateContestNames[contest.name] > 1 && contest.created > 0) || !contest.active) {
 					contestsListHtml.push(" ");
 					var year = new Date(contest.created).getFullYear();
 					if (contest.name.indexOf("" + year) < 0) {
 						contestsListHtml.push(new Date(contest.created).getFullYear());
 					}
-				}
+				}*/
 				contestsListHtml.push("<span class='count'>");
 				contestsListHtml.push(contest.proposalsCount);
 				contestsListHtml.push("</span></a>");
