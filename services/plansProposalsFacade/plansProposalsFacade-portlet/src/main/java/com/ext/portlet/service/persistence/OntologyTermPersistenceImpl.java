@@ -86,7 +86,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByParentId",
             new String[] { Long.class.getName() },
-            OntologyTermModelImpl.PARENTID_COLUMN_BITMASK);
+            OntologyTermModelImpl.PARENTID_COLUMN_BITMASK |
+            OntologyTermModelImpl.ORDER__COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_PARENTID = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParentId",
@@ -108,7 +109,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByParentIdSpaceId",
             new String[] { Long.class.getName(), Long.class.getName() },
             OntologyTermModelImpl.PARENTID_COLUMN_BITMASK |
-            OntologyTermModelImpl.ONTOLOGYSPACEID_COLUMN_BITMASK);
+            OntologyTermModelImpl.ONTOLOGYSPACEID_COLUMN_BITMASK |
+            OntologyTermModelImpl.ORDER__COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_PARENTIDSPACEID = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -131,7 +133,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySpaceId",
             new String[] { Long.class.getName() },
-            OntologyTermModelImpl.ONTOLOGYSPACEID_COLUMN_BITMASK);
+            OntologyTermModelImpl.ONTOLOGYSPACEID_COLUMN_BITMASK |
+            OntologyTermModelImpl.ORDER__COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_SPACEID = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySpaceId",
@@ -150,7 +153,8 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, OntologyTermImpl.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
             new String[] { String.class.getName() },
-            OntologyTermModelImpl.NAME_COLUMN_BITMASK);
+            OntologyTermModelImpl.NAME_COLUMN_BITMASK |
+            OntologyTermModelImpl.ORDER__COLUMN_BITMASK);
     public static final FinderPath FINDER_PATH_COUNT_BY_NAME = new FinderPath(OntologyTermModelImpl.ENTITY_CACHE_ENABLED,
             OntologyTermModelImpl.FINDER_CACHE_ENABLED, Long.class,
             FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
@@ -2378,6 +2382,7 @@ public class OntologyTermPersistenceImpl extends BasePersistenceImpl<OntologyTer
         ontologyTermImpl.setOntologySpaceId(ontologyTerm.getOntologySpaceId());
         ontologyTermImpl.setName(ontologyTerm.getName());
         ontologyTermImpl.setDescriptionUrl(ontologyTerm.getDescriptionUrl());
+        ontologyTermImpl.setOrder_(ontologyTerm.getOrder_());
 
         return ontologyTermImpl;
     }

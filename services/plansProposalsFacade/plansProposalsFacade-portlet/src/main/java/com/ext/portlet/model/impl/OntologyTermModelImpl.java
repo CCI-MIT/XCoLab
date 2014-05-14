@@ -53,12 +53,13 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
             { "parentId", Types.BIGINT },
             { "ontologySpaceId", Types.BIGINT },
             { "name", Types.VARCHAR },
-            { "descriptionUrl", Types.VARCHAR }
+            { "descriptionUrl", Types.VARCHAR },
+            { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologyTerm (id_ LONG not null primary key,parentId LONG,ontologySpaceId LONG,name VARCHAR(256) null,descriptionUrl VARCHAR(1024) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologyTerm (id_ LONG not null primary key,parentId LONG,ontologySpaceId LONG,name VARCHAR(256) null,descriptionUrl VARCHAR(1024) null,order_ INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_OntologyTerm";
-    public static final String ORDER_BY_JPQL = " ORDER BY ontologyTerm.id ASC";
-    public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologyTerm.id_ ASC";
+    public static final String ORDER_BY_JPQL = " ORDER BY ontologyTerm.order_ ASC, ontologyTerm.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologyTerm.order_ ASC, xcolab_OntologyTerm.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -74,7 +75,8 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     public static long NAME_COLUMN_BITMASK = 1L;
     public static long ONTOLOGYSPACEID_COLUMN_BITMASK = 2L;
     public static long PARENTID_COLUMN_BITMASK = 4L;
-    public static long ID_COLUMN_BITMASK = 8L;
+    public static long ORDER__COLUMN_BITMASK = 8L;
+    public static long ID_COLUMN_BITMASK = 16L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.OntologyTerm"));
     private static ClassLoader _classLoader = OntologyTerm.class.getClassLoader();
@@ -91,6 +93,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
     private String _name;
     private String _originalName;
     private String _descriptionUrl;
+    private int _order_;
     private long _columnBitmask;
     private OntologyTerm _escapedModel;
 
@@ -115,6 +118,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         model.setOntologySpaceId(soapModel.getOntologySpaceId());
         model.setName(soapModel.getName());
         model.setDescriptionUrl(soapModel.getDescriptionUrl());
+        model.setOrder_(soapModel.getOrder_());
 
         return model;
     }
@@ -178,6 +182,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         attributes.put("ontologySpaceId", getOntologySpaceId());
         attributes.put("name", getName());
         attributes.put("descriptionUrl", getDescriptionUrl());
+        attributes.put("order_", getOrder_());
 
         return attributes;
     }
@@ -213,6 +218,12 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         if (descriptionUrl != null) {
             setDescriptionUrl(descriptionUrl);
         }
+
+        Integer order_ = (Integer) attributes.get("order_");
+
+        if (order_ != null) {
+            setOrder_(order_);
+        }
     }
 
     @JSON
@@ -223,6 +234,8 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
 
     @Override
     public void setId(long id) {
+        _columnBitmask = -1L;
+
         _id = id;
     }
 
@@ -312,6 +325,19 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         _descriptionUrl = descriptionUrl;
     }
 
+    @JSON
+    @Override
+    public int getOrder_() {
+        return _order_;
+    }
+
+    @Override
+    public void setOrder_(int order_) {
+        _columnBitmask = -1L;
+
+        _order_ = order_;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -348,6 +374,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         ontologyTermImpl.setOntologySpaceId(getOntologySpaceId());
         ontologyTermImpl.setName(getName());
         ontologyTermImpl.setDescriptionUrl(getDescriptionUrl());
+        ontologyTermImpl.setOrder_(getOrder_());
 
         ontologyTermImpl.resetOriginalValues();
 
@@ -356,15 +383,33 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
 
     @Override
     public int compareTo(OntologyTerm ontologyTerm) {
-        long primaryKey = ontologyTerm.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder_() < ontologyTerm.getOrder_()) {
+            value = -1;
+        } else if (getOrder_() > ontologyTerm.getOrder_()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        if (getId() < ontologyTerm.getId()) {
+            value = -1;
+        } else if (getId() > ontologyTerm.getId()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -436,12 +481,14 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
             ontologyTermCacheModel.descriptionUrl = null;
         }
 
+        ontologyTermCacheModel.order_ = getOrder_();
+
         return ontologyTermCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
@@ -453,6 +500,8 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         sb.append(getName());
         sb.append(", descriptionUrl=");
         sb.append(getDescriptionUrl());
+        sb.append(", order_=");
+        sb.append(getOrder_());
         sb.append("}");
 
         return sb.toString();
@@ -460,7 +509,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.OntologyTerm");
@@ -485,6 +534,10 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
         sb.append(
             "<column><column-name>descriptionUrl</column-name><column-value><![CDATA[");
         sb.append(getDescriptionUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order_</column-name><column-value><![CDATA[");
+        sb.append(getOrder_());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

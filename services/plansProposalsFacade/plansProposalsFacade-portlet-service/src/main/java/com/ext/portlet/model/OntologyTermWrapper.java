@@ -42,6 +42,7 @@ public class OntologyTermWrapper implements OntologyTerm,
         attributes.put("ontologySpaceId", getOntologySpaceId());
         attributes.put("name", getName());
         attributes.put("descriptionUrl", getDescriptionUrl());
+        attributes.put("order_", getOrder_());
 
         return attributes;
     }
@@ -76,6 +77,12 @@ public class OntologyTermWrapper implements OntologyTerm,
 
         if (descriptionUrl != null) {
             setDescriptionUrl(descriptionUrl);
+        }
+
+        Integer order_ = (Integer) attributes.get("order_");
+
+        if (order_ != null) {
+            setOrder_(order_);
         }
     }
 
@@ -197,6 +204,26 @@ public class OntologyTermWrapper implements OntologyTerm,
     @Override
     public void setDescriptionUrl(java.lang.String descriptionUrl) {
         _ontologyTerm.setDescriptionUrl(descriptionUrl);
+    }
+
+    /**
+    * Returns the order_ of this ontology term.
+    *
+    * @return the order_ of this ontology term
+    */
+    @Override
+    public int getOrder_() {
+        return _ontologyTerm.getOrder_();
+    }
+
+    /**
+    * Sets the order_ of this ontology term.
+    *
+    * @param order_ the order_ of this ontology term
+    */
+    @Override
+    public void setOrder_(int order_) {
+        _ontologyTerm.setOrder_(order_);
     }
 
     @Override

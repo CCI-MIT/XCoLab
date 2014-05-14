@@ -25,6 +25,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
     private long _ontologySpaceId;
     private String _name;
     private String _descriptionUrl;
+    private int _order_;
     private BaseModel<?> _ontologyTermRemoteModel;
 
     public OntologyTermClp() {
@@ -69,6 +70,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         attributes.put("ontologySpaceId", getOntologySpaceId());
         attributes.put("name", getName());
         attributes.put("descriptionUrl", getDescriptionUrl());
+        attributes.put("order_", getOrder_());
 
         return attributes;
     }
@@ -103,6 +105,12 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
         if (descriptionUrl != null) {
             setDescriptionUrl(descriptionUrl);
+        }
+
+        Integer order_ = (Integer) attributes.get("order_");
+
+        if (order_ != null) {
+            setOrder_(order_);
         }
     }
 
@@ -217,6 +225,28 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         }
     }
 
+    @Override
+    public int getOrder_() {
+        return _order_;
+    }
+
+    @Override
+    public void setOrder_(int order_) {
+        _order_ = order_;
+
+        if (_ontologyTermRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologyTermRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOrder_", int.class);
+
+                method.invoke(_ontologyTermRemoteModel, order_);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getOntologyTermRemoteModel() {
         return _ontologyTermRemoteModel;
     }
@@ -289,21 +319,40 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         clone.setOntologySpaceId(getOntologySpaceId());
         clone.setName(getName());
         clone.setDescriptionUrl(getDescriptionUrl());
+        clone.setOrder_(getOrder_());
 
         return clone;
     }
 
     @Override
     public int compareTo(OntologyTerm ontologyTerm) {
-        long primaryKey = ontologyTerm.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder_() < ontologyTerm.getOrder_()) {
+            value = -1;
+        } else if (getOrder_() > ontologyTerm.getOrder_()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        if (getId() < ontologyTerm.getId()) {
+            value = -1;
+        } else if (getId() > ontologyTerm.getId()) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -334,7 +383,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
@@ -346,6 +395,8 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         sb.append(getName());
         sb.append(", descriptionUrl=");
         sb.append(getDescriptionUrl());
+        sb.append(", order_=");
+        sb.append(getOrder_());
         sb.append("}");
 
         return sb.toString();
@@ -353,7 +404,7 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.OntologyTerm");
@@ -378,6 +429,10 @@ public class OntologyTermClp extends BaseModelImpl<OntologyTerm>
         sb.append(
             "<column><column-name>descriptionUrl</column-name><column-value><![CDATA[");
         sb.append(getDescriptionUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order_</column-name><column-value><![CDATA[");
+        sb.append(getOrder_());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

@@ -1,6 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -48,6 +51,7 @@ public class ContestsIndexController extends BaseProposalsController {
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model, 
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
+            @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
         if (viewType == null) {
@@ -70,8 +74,12 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<ContestWrapper>();
-        for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false)) {
-        	contests.add(new ContestWrapper(contest));
+        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE) :
+        	ContestLocalServiceUtil.getContestsByActivePrivate(showActiveContests, false);
+        
+        for (Contest contest: contestsToWrap) {
+        	if (! contest.isContestPrivate())
+        		contests.add(new ContestWrapper(contest));
         }
 
         model.addAttribute("contests", contests);
@@ -80,8 +88,9 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
+        model.addAttribute("showAllContests", showAllContests);
 
-        setSeoTexts(request, showActiveContests ? "Active contests" : "Prior contests", null, null);
+        setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
         	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
@@ -90,7 +99,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTerms(0, Integer.MAX_VALUE);
         	
         	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
-        	Map<Long, OntologySpaceWrapper> ontologySpaces = new TreeMap<>();
+        	Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
         	Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
         	
         	for (FocusArea area: focusAreasRaw) {
@@ -116,10 +125,25 @@ public class ContestsIndexController extends BaseProposalsController {
         	for (FocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
-        	
+
+            List<ContestWrapper> otherContests = new ArrayList<ContestWrapper>();
+            for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
+            	otherContests.add(new ContestWrapper(contest));
+            }
+        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {
+
+				@Override
+				public int compare(OntologySpaceWrapper o1,
+						OntologySpaceWrapper o2) {
+					return o1.getOrder() - o2.getOrder();
+				}
+        		
+        	});
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
-        	model.addAttribute("ontologySpaces", ontologySpaces.values());
+        	model.addAttribute("ontologySpaces", sortedSpaces);
+        	model.addAttribute("otherContests", otherContests);
         	
         }
         

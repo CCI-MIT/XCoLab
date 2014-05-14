@@ -87,6 +87,20 @@ public interface OntologySpaceModel extends BaseModel<OntologySpace> {
      */
     public void setDescription(String description);
 
+    /**
+     * Returns the order of this ontology space.
+     *
+     * @return the order of this ontology space
+     */
+    public int getOrder();
+
+    /**
+     * Sets the order of this ontology space.
+     *
+     * @param order the order of this ontology space
+     */
+    public void setOrder(int order);
+
     @Override
     public boolean isNew();
 

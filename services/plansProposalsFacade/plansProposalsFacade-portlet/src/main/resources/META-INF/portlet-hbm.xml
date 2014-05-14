@@ -567,6 +567,7 @@
 		</id>
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="order" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="order_" />
 	</class>
 	<class name="com.ext.portlet.model.impl.OntologyTermImpl" table="xcolab_OntologyTerm">
 		<cache usage="read-write" />
@@ -577,6 +578,7 @@
 		<property name="ontologySpaceId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="descriptionUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="order_" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.OntologyTermEntityImpl" table="xcolab_OntologyTermEntity">
 		<cache usage="read-write" />

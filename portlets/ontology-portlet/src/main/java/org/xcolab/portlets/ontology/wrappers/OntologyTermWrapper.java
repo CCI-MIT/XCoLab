@@ -69,4 +69,11 @@ public class OntologyTermWrapper {
         return ret;
     }
 
+    public void setWeight(Integer weight) {
+        ontologyTerm.setOrder_(weight);
+    }
+
+    public Integer getWeight() {
+        return ontologyTerm.getOrder_();
+    }
 }
