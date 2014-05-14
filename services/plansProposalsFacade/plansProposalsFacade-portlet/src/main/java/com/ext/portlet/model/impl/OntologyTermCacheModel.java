@@ -25,10 +25,11 @@ public class OntologyTermCacheModel implements CacheModel<OntologyTerm>,
     public long ontologySpaceId;
     public String name;
     public String descriptionUrl;
+    public int order_;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(id);
@@ -40,6 +41,8 @@ public class OntologyTermCacheModel implements CacheModel<OntologyTerm>,
         sb.append(name);
         sb.append(", descriptionUrl=");
         sb.append(descriptionUrl);
+        sb.append(", order_=");
+        sb.append(order_);
         sb.append("}");
 
         return sb.toString();
@@ -65,6 +68,8 @@ public class OntologyTermCacheModel implements CacheModel<OntologyTerm>,
             ontologyTermImpl.setDescriptionUrl(descriptionUrl);
         }
 
+        ontologyTermImpl.setOrder_(order_);
+
         ontologyTermImpl.resetOriginalValues();
 
         return ontologyTermImpl;
@@ -77,6 +82,7 @@ public class OntologyTermCacheModel implements CacheModel<OntologyTerm>,
         ontologySpaceId = objectInput.readLong();
         name = objectInput.readUTF();
         descriptionUrl = objectInput.readUTF();
+        order_ = objectInput.readInt();
     }
 
     @Override
@@ -97,5 +103,7 @@ public class OntologyTermCacheModel implements CacheModel<OntologyTerm>,
         } else {
             objectOutput.writeUTF(descriptionUrl);
         }
+
+        objectOutput.writeInt(order_);
     }
 }

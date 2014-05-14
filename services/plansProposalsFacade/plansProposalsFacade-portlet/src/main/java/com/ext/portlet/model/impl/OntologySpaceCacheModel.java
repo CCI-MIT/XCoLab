@@ -23,10 +23,11 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
     public long id;
     public String name;
     public String description;
+    public int order;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(id);
@@ -34,6 +35,8 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
         sb.append(name);
         sb.append(", description=");
         sb.append(description);
+        sb.append(", order=");
+        sb.append(order);
         sb.append("}");
 
         return sb.toString();
@@ -57,6 +60,8 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
             ontologySpaceImpl.setDescription(description);
         }
 
+        ontologySpaceImpl.setOrder(order);
+
         ontologySpaceImpl.resetOriginalValues();
 
         return ontologySpaceImpl;
@@ -67,6 +72,7 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
         id = objectInput.readLong();
         name = objectInput.readUTF();
         description = objectInput.readUTF();
+        order = objectInput.readInt();
     }
 
     @Override
@@ -85,5 +91,7 @@ public class OntologySpaceCacheModel implements CacheModel<OntologySpace>,
         } else {
             objectOutput.writeUTF(description);
         }
+
+        objectOutput.writeInt(order);
     }
 }

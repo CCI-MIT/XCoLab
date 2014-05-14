@@ -109,6 +109,19 @@
                 </ice:column>
                 <ice:column>
                     <f:facet name="header">
+                        Weight
+                    </f:facet>
+
+                    <f:subview rendered="#{ ontologyAdmin.editedTermId == term.id }">
+                        <ice:inputText value="#{term.weight}" />
+                    </f:subview>
+
+                    <f:subview rendered="#{not (ontologyAdmin.editedTermId == term.id)}">
+                        ${term.weight}
+                    </f:subview>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
                         Action
                     </f:facet>
                     

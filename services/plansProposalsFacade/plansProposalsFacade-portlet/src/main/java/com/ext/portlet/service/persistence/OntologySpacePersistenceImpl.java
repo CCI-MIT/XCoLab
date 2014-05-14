@@ -97,7 +97,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(OntologySpacePersistenceImpl.class);
     private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-                "id"
+                "id", "order"
             });
     private static OntologySpace _nullOntologySpace = new OntologySpaceImpl() {
             @Override
@@ -627,6 +627,7 @@ public class OntologySpacePersistenceImpl extends BasePersistenceImpl<OntologySp
         ontologySpaceImpl.setId(ontologySpace.getId());
         ontologySpaceImpl.setName(ontologySpace.getName());
         ontologySpaceImpl.setDescription(ontologySpace.getDescription());
+        ontologySpaceImpl.setOrder(ontologySpace.getOrder());
 
         return ontologySpaceImpl;
     }

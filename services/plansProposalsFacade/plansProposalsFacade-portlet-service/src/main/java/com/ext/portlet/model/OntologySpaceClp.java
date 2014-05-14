@@ -23,6 +23,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
     private long _id;
     private String _name;
     private String _description;
+    private int _order;
     private BaseModel<?> _ontologySpaceRemoteModel;
 
     public OntologySpaceClp() {
@@ -65,6 +66,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
+        attributes.put("order", getOrder());
 
         return attributes;
     }
@@ -87,6 +89,12 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
 
         if (description != null) {
             setDescription(description);
+        }
+
+        Integer order = (Integer) attributes.get("order");
+
+        if (order != null) {
+            setOrder(order);
         }
     }
 
@@ -150,6 +158,28 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
                 Method method = clazz.getMethod("setDescription", String.class);
 
                 method.invoke(_ontologySpaceRemoteModel, description);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public int getOrder() {
+        return _order;
+    }
+
+    @Override
+    public void setOrder(int order) {
+        _order = order;
+
+        if (_ontologySpaceRemoteModel != null) {
+            try {
+                Class<?> clazz = _ontologySpaceRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOrder", int.class);
+
+                method.invoke(_ontologySpaceRemoteModel, order);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -227,21 +257,28 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         clone.setId(getId());
         clone.setName(getName());
         clone.setDescription(getDescription());
+        clone.setOrder(getOrder());
 
         return clone;
     }
 
     @Override
     public int compareTo(OntologySpace ontologySpace) {
-        long primaryKey = ontologySpace.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder() < ontologySpace.getOrder()) {
+            value = -1;
+        } else if (getOrder() > ontologySpace.getOrder()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -272,7 +309,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(getId());
@@ -280,6 +317,8 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         sb.append(getName());
         sb.append(", description=");
         sb.append(getDescription());
+        sb.append(", order=");
+        sb.append(getOrder());
         sb.append("}");
 
         return sb.toString();
@@ -287,7 +326,7 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.OntologySpace");
@@ -304,6 +343,10 @@ public class OntologySpaceClp extends BaseModelImpl<OntologySpace>
         sb.append(
             "<column><column-name>description</column-name><column-value><![CDATA[");
         sb.append(getDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order</column-name><column-value><![CDATA[");
+        sb.append(getOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

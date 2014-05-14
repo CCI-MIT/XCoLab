@@ -16,15 +16,18 @@
 }
 
 .contestlist.table .column.contestWhat {
-	width: 153px;
+	width: 118px;
 }
 
 .contestlist.table .column.contestWhere {
-	width: 140px;
+	width: 105px;
 }
 
 .contestlist.table .column.contestWho {
-	width: 140px;
+	width: 105px;
+}
+.contestlist.table .column.contestHow {
+	width: 105px;
 }
 
 .contestSubscribe img {

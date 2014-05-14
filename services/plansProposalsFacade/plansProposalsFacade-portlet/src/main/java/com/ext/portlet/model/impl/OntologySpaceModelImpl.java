@@ -51,12 +51,13 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
             { "name", Types.VARCHAR },
-            { "description", Types.VARCHAR }
+            { "description", Types.VARCHAR },
+            { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologySpace (id_ LONG not null primary key,name VARCHAR(256) null,description TEXT null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologySpace (id_ LONG not null primary key,name VARCHAR(256) null,description TEXT null,order_ INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_OntologySpace";
-    public static final String ORDER_BY_JPQL = " ORDER BY ontologySpace.id ASC";
-    public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologySpace.id_ ASC";
+    public static final String ORDER_BY_JPQL = " ORDER BY ontologySpace.order ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologySpace.order_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -70,7 +71,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.OntologySpace"),
             true);
     public static long NAME_COLUMN_BITMASK = 1L;
-    public static long ID_COLUMN_BITMASK = 2L;
+    public static long ORDER_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.OntologySpace"));
     private static ClassLoader _classLoader = OntologySpace.class.getClassLoader();
@@ -81,6 +82,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
     private String _name;
     private String _originalName;
     private String _description;
+    private int _order;
     private long _columnBitmask;
     private OntologySpace _escapedModel;
 
@@ -103,6 +105,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         model.setId(soapModel.getId());
         model.setName(soapModel.getName());
         model.setDescription(soapModel.getDescription());
+        model.setOrder(soapModel.getOrder());
 
         return model;
     }
@@ -164,6 +167,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
+        attributes.put("order", getOrder());
 
         return attributes;
     }
@@ -186,6 +190,12 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
 
         if (description != null) {
             setDescription(description);
+        }
+
+        Integer order = (Integer) attributes.get("order");
+
+        if (order != null) {
+            setOrder(order);
         }
     }
 
@@ -240,6 +250,19 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         _description = description;
     }
 
+    @JSON
+    @Override
+    public int getOrder() {
+        return _order;
+    }
+
+    @Override
+    public void setOrder(int order) {
+        _columnBitmask = -1L;
+
+        _order = order;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -274,6 +297,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         ontologySpaceImpl.setId(getId());
         ontologySpaceImpl.setName(getName());
         ontologySpaceImpl.setDescription(getDescription());
+        ontologySpaceImpl.setOrder(getOrder());
 
         ontologySpaceImpl.resetOriginalValues();
 
@@ -282,15 +306,21 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
 
     @Override
     public int compareTo(OntologySpace ontologySpace) {
-        long primaryKey = ontologySpace.getPrimaryKey();
+        int value = 0;
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
+        if (getOrder() < ontologySpace.getOrder()) {
+            value = -1;
+        } else if (getOrder() > ontologySpace.getOrder()) {
+            value = 1;
         } else {
-            return 0;
+            value = 0;
         }
+
+        if (value != 0) {
+            return value;
+        }
+
+        return 0;
     }
 
     @Override
@@ -350,12 +380,14 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
             ontologySpaceCacheModel.description = null;
         }
 
+        ontologySpaceCacheModel.order = getOrder();
+
         return ontologySpaceCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(getId());
@@ -363,6 +395,8 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         sb.append(getName());
         sb.append(", description=");
         sb.append(getDescription());
+        sb.append(", order=");
+        sb.append(getOrder());
         sb.append("}");
 
         return sb.toString();
@@ -370,7 +404,7 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.OntologySpace");
@@ -387,6 +421,10 @@ public class OntologySpaceModelImpl extends BaseModelImpl<OntologySpace>
         sb.append(
             "<column><column-name>description</column-name><column-value><![CDATA[");
         sb.append(getDescription());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>order</column-name><column-value><![CDATA[");
+        sb.append(getOrder());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

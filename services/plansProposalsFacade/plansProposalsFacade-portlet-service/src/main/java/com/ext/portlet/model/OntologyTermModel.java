@@ -115,6 +115,20 @@ public interface OntologyTermModel extends BaseModel<OntologyTerm> {
      */
     public void setDescriptionUrl(String descriptionUrl);
 
+    /**
+     * Returns the order_ of this ontology term.
+     *
+     * @return the order_ of this ontology term
+     */
+    public int getOrder_();
+
+    /**
+     * Sets the order_ of this ontology term.
+     *
+     * @param order_ the order_ of this ontology term
+     */
+    public void setOrder_(int order_);
+
     @Override
     public boolean isNew();
 

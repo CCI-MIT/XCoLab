@@ -127,6 +127,28 @@ public enum ContestsColumn {
             return 0;
         }
     }),
+    HOW(new Comparator<ContestWrapper>() {
+
+        @Override
+        public int compare(ContestWrapper o1, ContestWrapper o2) {
+            try {
+            	String s1 = o1.getHowName();
+            	String s2 = o2.getHowName();
+            	
+            	if (s1 == null) {
+            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
+            		return -1;
+            	}
+            	else if (s2 == null) return 1;
+            	return s1.toLowerCase().compareTo(s2.toLowerCase());
+            } catch (PortalException e) {
+                _log.error("Can't get who for contest", e);
+            } catch (SystemException e) {
+                _log.error("Can't get who for contest", e);
+            }
+            return 0;
+        }
+    }),
 
     REFERENCE_DATE (new Comparator<ContestWrapper>() {
         @Override
