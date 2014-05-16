@@ -1,0 +1,212 @@
+#set ($registrationURL = "/web/guest/loginregister/-/login/register/finalize")
+
+#set ($screenName = $themeDisplay.getUser().getScreenName())
+#set ($user_error = $request.getParameter("user_error"))
+#set ($bio_error = $request.getParameter("bio_error"))
+
+#if ($request.getParameter('postRegistration'))
+<script type="text/javascript" src="$javascript_folder/postRegistration.js?tt=$themeTimestamp"></script>
+<div id="popup_postRegistration" class="popup-wrap small">
+    <div class="popup">
+        <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_postRegistration').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
+
+        <h3 style="margin-bottom: 30px;">You're all set!</h3>
+        <p>Now you can choose your username (or use the one we created for you) and complete a short bio to tell the Climate CoLab community about yourself.</p>
+        <div class="login_popup_box">
+            <form id="postRegister_form" method="post" action="$registrationURL"
+                  onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+
+                <div id="error" class="popup-message" style="display: none;">
+                    Your user name must only contain alphabetical or numerical characters and your bio must not exceed 2000 characters.
+                </div>
+
+                <label style="margin: 0 10px 5px 0;">Username:</label>
+                <input name="screenName" type="text" id="reg_username" value="$screenName" onkeypress="return submitenter(this,event)" style="padding: 5px; float:right; margin-right:2px;"/>
+                <div id="screenName_error" style="display: none;">
+                    <div class="clearfix"></div>
+                    <div class="error-message">The specified user name is either not valid or already taken.</div>
+                </div>
+
+                <div class="clearfix"></div>
+                <label>Bio:</label>
+                <br/>
+                <textarea name="bio" type="text" id="reg_bio" onkeypress="return submitenter(this,event)" rows="6" cols="40" style="padding: 5px; float:right;"></textarea>
+                <div class="clearfix"><!-- --></div>
+                <div class="inputLimitContainer" style="margin-bottom: 20px; float:right;">
+                    <span class="limit_characterCount"><!--  --></span>/&#160;
+                    <span class="limit_charactersMax">2000</span> characters
+                </div>
+                <div id="bio_error" style="display: none;">
+                    <div class="clearfix"></div>
+                    <div class="error-message">Your bio text is too long.</div>
+                </div>
+                <input name="redirect" type="hidden" id="redirect" value="" />
+                <div class="clearfix"><!-- --></div>
+                <div class="btns">
+                    <div class="blue-button">
+                        <a href="javascript:;" class="login-submit" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(initializeTextEditors);
+
+    function initializeTextEditors() {
+        jQuery("input[type='text'], textarea").each(function() {
+            if (jQuery(this).hasClass('rteInitialized')) {
+                return;
+            }
+
+            console.log("no rteinitilized");
+            var tmp = this;
+            var thiz = jQuery(this);
+
+            var limitCharactersMax = thiz.parent().find(".limit_charactersMax");
+            var limitCharacterCount = thiz.parent().find(".limit_characterCount");
+
+
+            if (limitCharactersMax.length > 0) {
+                console.log("limit character max > 0");
+                thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});
+                this.limitCharacterCounter = limitCharacterCount;
+                updateCharacterCounter(thiz);
+            }
+            else {
+                thiz.attr({validateLength: false});
+            }
+
+            if (thiz.hasClass("rte")) {
+                console.log("rte");
+                var editor = CKEDITOR.replace(thiz.attr("id"));
+
+                thiz.get(0)["ckeditor"] = editor;
+                editor.updatedCharCount = false;
+
+                function updateEditorCharCount() {
+                    try{
+                        if (editor == null) return;
+
+                        if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || !editor.updatedCharCount)) {
+                            markEditorDirty(thiz);
+                            updateCharacterCounter(thiz, editor);
+                            editor.updatedCharCount = true;
+                            editor.resetDirty();
+                        }
+
+                        setTimeout(updateEditorCharCount, 1000);
+                    } catch (e) {
+                        if (typeof(console) != 'undefined' && typeof(console.log) != 'undefined') {
+                            console.log(e);
+                        }
+                    }
+                }
+                if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
+                    console.log("update set callback");
+                    updateEditorCharCount();
+                }
+
+                editor.on("blur", function() {
+                    updateCharacterCounter(thiz, editor);
+                    console.log("on");
+                });
+
+                // initiate char counters
+                setTimeout(function() { updateCharacterCounter(thiz, editor); }, 2000);
+            }
+            else {
+                console.log("else events to bind");
+                eventsToBind = {
+                    keypress: function(event) {
+                        if (! shouldAllowMoreCharacters(thiz)) {
+                            //event.preventDefault();
+                        }
+                        if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
+                            updateCharacterCounter(thiz);
+                            console.log("keypress");
+                        }
+                    },
+                    keyup: function(event) {
+                        if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
+                            updateCharacterCounter(thiz);
+                            console.log("keyup");
+                        }
+                    },
+                    change: function(event) {
+                        markEditorDirty(thiz);
+                        console.log("change");
+                    }
+                };
+                thiz.bind(eventsToBind);
+                thiz.bind('input propertychange', function() {
+                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
+                        updateCharacterCounter(thiz);
+                        console.log("propertychange");
+                    }
+                });
+            }
+            jQuery(this).addClass('rteInitialized');
+        });
+
+
+
+    };
+
+    /**
+     * Updates character counter for given input
+     * @param input
+     * @param editor
+     * @returns
+     */
+    function updateCharacterCounter(input, editor) {
+        console.log("update char counter");
+        var parent = input.parents('.addpropbox');
+        var elem = input.get(0);
+        var max = input.attr('maxCharacters');
+        if (elem && elem.limitCharacterCounter) {
+            var count = countCharacters(input, editor);
+            if (count > 1 * max) {
+                elem.limitCharacterCounter.parent().addClass('overflow');
+                input.addClass('invalid');
+            }
+            else {
+                elem.limitCharacterCounter.parent().removeClass('overflow');
+                input.removeClass('invalid');
+            }
+            elem.limitCharacterCounter.text(count);
+            if (count > 0) {
+                parent.removeClass('empty').addClass('notempty');
+            }
+            else {
+                parent.removeClass('notempty').addClass('empty');
+            }
+        }
+    }
+
+    /**
+     * Counts characters
+     * @param input
+     * @param editor
+     * @returns
+     */
+    function countCharacters(input, editor) {
+        if (editor) {
+            if (editor == null || editor.document == null) return 0;
+            if (editor.document['$'].body.textContent) {
+                return jQuery.trim(editor.document['$'].body.textContent).length;
+
+            }
+            if (editor.document['$'].body.innerText) {
+                return jQuery.trim(editor.document['$'].body.innerText).length;
+            }
+        }
+        return jQuery.trim(input.val().replace(/<[^>]*>/g, "").replace(/\s+/g, " ").length);
+
+    }
+</script>
+#end
+
+<!-- /popup login -->

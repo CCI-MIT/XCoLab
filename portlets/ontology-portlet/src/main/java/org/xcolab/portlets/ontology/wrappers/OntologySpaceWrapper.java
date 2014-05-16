@@ -49,7 +49,7 @@ public class OntologySpaceWrapper {
     
     public void addTerm(ActionEvent e) throws SystemException {
         changingTerm = !changingTerm;
-        newTerm = new OntologyTermWrapper(OntologySpaceLocalServiceUtil.getTopTerm(space));
+        newTerm = null;
     }
 
     public void setNewTerm(OntologyTermWrapper newTerm) {
@@ -77,6 +77,20 @@ public class OntologySpaceWrapper {
         return ret;
         
     }
+
+    public List<OntologyTermWrapper> getCurrentChildTerms() throws SystemException {
+        if (newTerm == null) {
+            List<OntologyTermWrapper> topLevelTerms = new ArrayList<>();
+
+            for (OntologyTerm term : OntologySpaceLocalServiceUtil.getTopTerms(space)) {
+                topLevelTerms.add(new OntologyTermWrapper(term));
+            }
+
+            return topLevelTerms;
+        } else {
+            return newTerm.getChildTerms();
+        }
+    }
     
     public void selectTerm(ActionEvent e) throws PortalException, SystemException {
         Long termId = Long.parseLong(e.getComponent().getAttributes().get("termId").toString());
@@ -87,7 +101,12 @@ public class OntologySpaceWrapper {
     
     public void setNewTermId(ActionEvent e) throws PortalException, SystemException {
         Long termId = Long.parseLong(e.getComponent().getAttributes().get("termId").toString());
-        newTerm = new OntologyTermWrapper(OntologyTermLocalServiceUtil.getOntologyTerm(termId));
+        if (termId == 0) {
+            newTerm = null;
+        }
+        else {
+            newTerm = new OntologyTermWrapper(OntologyTermLocalServiceUtil.getOntologyTerm(termId));
+        }
         
     }
 
@@ -95,6 +114,5 @@ public class OntologySpaceWrapper {
         terms.remove(ontologySpaceTermWrapper);
         
     }
-    
 
 }

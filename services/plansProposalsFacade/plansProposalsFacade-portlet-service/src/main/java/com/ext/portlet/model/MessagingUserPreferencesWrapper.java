@@ -43,6 +43,7 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
         attributes.put("emailOnSend", getEmailOnSend());
         attributes.put("emailOnReceipt", getEmailOnReceipt());
         attributes.put("emailOnActivity", getEmailOnActivity());
+        attributes.put("emailActivityDailyDigest", getEmailActivityDailyDigest());
 
         return attributes;
     }
@@ -78,6 +79,13 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
 
         if (emailOnActivity != null) {
             setEmailOnActivity(emailOnActivity);
+        }
+
+        Boolean emailActivityDailyDigest = (Boolean) attributes.get(
+                "emailActivityDailyDigest");
+
+        if (emailActivityDailyDigest != null) {
+            setEmailActivityDailyDigest(emailActivityDailyDigest);
         }
     }
 
@@ -251,6 +259,36 @@ public class MessagingUserPreferencesWrapper implements MessagingUserPreferences
     @Override
     public void setEmailOnActivity(boolean emailOnActivity) {
         _messagingUserPreferences.setEmailOnActivity(emailOnActivity);
+    }
+
+    /**
+    * Returns the email activity daily digest of this messaging user preferences.
+    *
+    * @return the email activity daily digest of this messaging user preferences
+    */
+    @Override
+    public boolean getEmailActivityDailyDigest() {
+        return _messagingUserPreferences.getEmailActivityDailyDigest();
+    }
+
+    /**
+    * Returns <code>true</code> if this messaging user preferences is email activity daily digest.
+    *
+    * @return <code>true</code> if this messaging user preferences is email activity daily digest; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isEmailActivityDailyDigest() {
+        return _messagingUserPreferences.isEmailActivityDailyDigest();
+    }
+
+    /**
+    * Sets whether this messaging user preferences is email activity daily digest.
+    *
+    * @param emailActivityDailyDigest the email activity daily digest of this messaging user preferences
+    */
+    @Override
+    public void setEmailActivityDailyDigest(boolean emailActivityDailyDigest) {
+        _messagingUserPreferences.setEmailActivityDailyDigest(emailActivityDailyDigest);
     }
 
     @Override

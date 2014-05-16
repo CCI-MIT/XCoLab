@@ -2,7 +2,9 @@ package org.xcolab.portlets.userprofile;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.community.CommunityConstants;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.utils.userInput.UserInputException;
 import com.ext.utils.userInput.service.UserInputFilterUtil;
@@ -12,6 +14,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -28,6 +31,7 @@ import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
 import org.xcolab.commons.utils.PwdEncryptor;
+import org.xcolab.enums.MemberRole;
 
 import javax.faces.event.ActionEvent;
 import javax.imageio.ImageIO;
@@ -58,6 +62,7 @@ public class UserWrapper implements Serializable {
     private String email;
     private List<SupportedPlanBean> supportedPlans = new ArrayList<SupportedPlanBean>();
     private List<UserActivityBean> userActivities = new ArrayList<UserActivityBean>();
+    private List<ProposalBean> userProposals = new ArrayList<ProposalBean>();
     private int maxActivitiesCount = 50;
     private String screenName;
     private File newUserProfile;
@@ -68,6 +73,8 @@ public class UserWrapper implements Serializable {
     private String currentPassword;
     private String newPasswordRetype;
     private Boolean attendsConference;
+
+    private MemberRole role;
 
     private boolean profileWasComplete = false;
     private boolean fireGoogleEvent = false;
@@ -126,7 +133,32 @@ public class UserWrapper implements Serializable {
                 userActivities.add(a);
         }
 
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+        userProposals = new ArrayList<>();
+
+        for (Proposal p : proposals) {
+            userProposals.add(new ProposalBean(p));
+        }
+
         profileWasComplete = profileIsComplete();
+
+        List<Role> roles = user.getRoles();
+        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
+        MemberRole currentRole = MemberRole.MEMBER;
+        role = MemberRole.MEMBER;
+
+        for (Role r: roles) {
+            final String roleString = r.getName();
+
+            currentRole = MemberRole.getMember(roleString);
+            if (currentRole != null && role != null) {
+                if (currentRole.ordinal() > role.ordinal()) {
+                    role = currentRole;
+                }
+            }
+        }
+
+        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
     }
 
     private boolean profileIsComplete() {
@@ -212,6 +244,8 @@ public class UserWrapper implements Serializable {
     public List<UserActivityBean> getActivities() {
         return userActivities;
     }
+
+    public List<ProposalBean> getProposals() { return userProposals; }
 
     private String getName(String name, String defaultName) {
         if (name == null || name.trim().equals("")) {
@@ -492,4 +526,6 @@ public class UserWrapper implements Serializable {
     public boolean isFireGoogleEvent() {
         return fireGoogleEvent;
     }
+
+    public MemberRole getRole() { return role; }
 }

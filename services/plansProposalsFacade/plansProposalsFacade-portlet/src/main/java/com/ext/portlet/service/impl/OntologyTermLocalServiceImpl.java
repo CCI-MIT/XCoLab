@@ -53,7 +53,9 @@ public class OntologyTermLocalServiceImpl
         
         OntologyTerm t = createOntologyTerm(termId);
         t.setName(name);
-        t.setParentId(parentId);
+        if (parentId != null) {
+        	t.setParentId(parentId);
+        }
         t.setOntologySpaceId(spaceId);
         t.setDescriptionUrl(descriptionUrl);
         

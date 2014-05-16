@@ -50,5 +50,4 @@ public class ValidScreenNameValidator implements
 	public boolean validateScreenName(String name) {
 		return name != null && name.matches("^[a-zA-Z0-9]+$");
 	}
-
 }

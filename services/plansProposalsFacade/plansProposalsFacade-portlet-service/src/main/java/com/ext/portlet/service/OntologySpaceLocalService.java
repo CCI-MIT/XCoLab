@@ -240,7 +240,7 @@ public interface OntologySpaceLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.OntologyTerm getTopTerm(
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getTopTerms(
         com.ext.portlet.model.OntologySpace space)
         throws com.liferay.portal.kernel.exception.SystemException;
 }

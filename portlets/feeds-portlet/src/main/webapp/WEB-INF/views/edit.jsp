@@ -11,8 +11,14 @@
 <h1>Edit</h1>
 <portlet:actionURL var="updatePreferencesURL" />
 <form:form action="${updatePreferencesURL }" commandName="feedsPreferences">
-	<input type="hidden" name="action" value="save" />
+	<input type="hidden" name="action" value="savePreferences" />
 	<table>
+        <tr>
+            <td>Portlet title:</td>
+            <td>
+                <form:input path="portletTitle" />
+            </td>
+        </tr>
 		<tr>
 			<td>feed type:</td>
 			<td>
@@ -42,12 +48,24 @@
 				<form:select path="feedStyle" items="${feedDisplayStyles }" />
 			</td>
 		</tr>
+        <tr>
+            <td>feed max length:</td>
+            <td>
+                <form:input path="feedMaxLength" />
+            </td>
+        </tr>
 		<tr>
 			<td>remove admin:</td>
 			<td>
 				<form:checkbox path="removeAdmin"  />
 			</td>
 		</tr>
+        <tr>
+            <td>show see more link:</td>
+            <td>
+                <form:checkbox path="seeMoreLinkShown"  />
+            </td>
+        </tr>
 	</table>
 	<input type="submit" value="Save" />
 </form:form>

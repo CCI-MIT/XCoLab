@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
@@ -40,6 +43,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         long userId = themeDisplay.getUser().getUserId();
         
         DiscussionCategoryGroupLocalServiceUtil.addComment(dcg, newMessage.getTitle(), newMessage.getDescription(), themeDisplay.getUser());
+        // Update activity counter for user
+        Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
+        indexer.reindex(userId);
         
         int analyticsValue = 0;
         int supportedCount = DiscussionCategoryGroupLocalServiceUtil.getUserMessages(userId);

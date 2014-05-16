@@ -1,48 +1,15 @@
 package org.xcolab.portlets.randomproposals;
 
-import java.util.Map;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-
 public class Helper {
 
-
-    private static Map getRequestMap() {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-        Map map = ec.getRequestMap();
-
-        return map;
-    }
-    
-    public static ThemeDisplay getThemeDisplay() {
-        Map map = getRequestMap();
-        if (map != null) {
-            return (ThemeDisplay) map.get(WebKeys.THEME_DISPLAY);
-        }
-        return null;
+    public static ThemeDisplay getThemeDisplay(PortletRequest request) {
+        return (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
     }
 
-    public static String getPortletId() {
-        ThemeDisplay td = getThemeDisplay();
-        if (td != null) {
-            return td.getPortletDisplay().getRootPortletId();
-        }
-        return null;
-    }
 
-    public static PortletPreferences getPortletPrefs() {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-        PortletRequest pReq = (PortletRequest) ec.getRequest();
-        PortletPreferences prefs = pReq.getPreferences();
-        return prefs;
-    }
 
 }

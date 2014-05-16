@@ -18,6 +18,7 @@ public class MessagingUserPreferencesSoap implements Serializable {
     private boolean _emailOnSend;
     private boolean _emailOnReceipt;
     private boolean _emailOnActivity;
+    private boolean _emailActivityDailyDigest;
 
     public MessagingUserPreferencesSoap() {
     }
@@ -31,6 +32,7 @@ public class MessagingUserPreferencesSoap implements Serializable {
         soapModel.setEmailOnSend(model.getEmailOnSend());
         soapModel.setEmailOnReceipt(model.getEmailOnReceipt());
         soapModel.setEmailOnActivity(model.getEmailOnActivity());
+        soapModel.setEmailActivityDailyDigest(model.getEmailActivityDailyDigest());
 
         return soapModel;
     }
@@ -132,5 +134,17 @@ public class MessagingUserPreferencesSoap implements Serializable {
 
     public void setEmailOnActivity(boolean emailOnActivity) {
         _emailOnActivity = emailOnActivity;
+    }
+
+    public boolean getEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    public boolean isEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    public void setEmailActivityDailyDigest(boolean emailActivityDailyDigest) {
+        _emailActivityDailyDigest = emailActivityDailyDigest;
     }
 }

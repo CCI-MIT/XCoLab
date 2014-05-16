@@ -16,10 +16,8 @@
 <div class="alignright" style="display:none;">
 	<a href="${activitiesDumpURL }"><liferay-ui:icon image="download" />activities in CSV format</a>
 </div>
-<br />
-<br />
 <div class="clearfix"><!--  --></div>
-
+<h2>${portletTitle}</h2>
 <c:choose>
 	<c:when test="${empty activities  }">
 		Nothing found.
@@ -75,7 +73,7 @@
 					
 					</c:otherwise> 
 				</c:choose>
-				<c:if test="${not empty activities }">
+				<c:if test="${ not isLastPage }">
 					<a href="${nextURL }">older &amp;raquo;</a>
 				</c:if>
 			</div>
@@ -95,8 +93,12 @@
 	</c:otherwise>
 </c:choose>
 
-
-<c:if test="${not empty filterUserId}">      
+<c:if test="${seeMoreLinkShown}">
+    <div class="alignright" style="margin-top:10px;">
+        <a href="/web/guest/activities">View all activities</a>
+    </div>
+</c:if>
+<c:if test="${not empty filterUserId}">
 	<script type="text/javascript">
 		var filterSettings = {
 			filterUserId: ${filterUserId},

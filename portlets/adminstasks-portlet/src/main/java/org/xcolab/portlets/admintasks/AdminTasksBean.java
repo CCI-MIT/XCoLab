@@ -16,6 +16,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.service.ProposalLocalServiceWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
 import org.xcolab.portlets.admintasks.migration.DataMigrator;
@@ -24,6 +28,7 @@ import org.xcolab.utils.UrlBuilder;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.discussions.DiscussionActions;
+import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -33,6 +38,7 @@ import com.ext.portlet.model.PlanItemGroup;
 import com.ext.portlet.model.PlanSection;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
@@ -42,6 +48,8 @@ import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.utils.iptranslation.Location;
+import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
@@ -970,7 +978,7 @@ public class AdminTasksBean {
 		System.out.println("Bad activities count: " + badCount);
 	}
 
-	public String fixProposalDiscussionsUrls() throws SystemException, PortalException {
+	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
 		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0,
 				Integer.MAX_VALUE)) {
 			Contest contest = Proposal2PhaseLocalServiceUtil
@@ -979,6 +987,8 @@ public class AdminTasksBean {
 					.getDiscussionCategoryGroup(proposal.getDiscussionId());
 			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(
 					contest.getContestPK(), proposal.getProposalId()));
+            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+            proposalDiscussion.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, proposalName));
 			DiscussionCategoryGroupLocalServiceUtil
 					.updateDiscussionCategoryGroup(proposalDiscussion);
 		}
@@ -1004,6 +1014,46 @@ public class AdminTasksBean {
 			}
 		}
 		return null;
+	}
+	
+	public String translateIp() throws Exception {
+		System.out.println(IpTranslationServiceUtil.getLocationForIp("89.67.113.30"));
+		return null;
+	}
+	
+	public String reloadIpLocationData() throws Exception {
+		IpTranslationServiceUtil.reloadLocationAndBlockData();
+		return null;
+		
+	}
+	
+
+	public String populateLocationDataIntoBalloon() throws Exception {
+		for (BalloonUserTracking but: BalloonUserTrackingLocalServiceUtil.getBalloonUserTrackings(0, Integer.MAX_VALUE)) {
+			Location location = IpTranslationServiceUtil.getLocationForIp(but.getIp());
+			if (location != null) {
+				if (StringUtils.isBlank(but.getCity()) && StringUtils.isNotBlank(location.getCity())) {
+					but.setCity(location.getCity());
+				}
+
+				if (StringUtils.isBlank(but.getCountry()) && StringUtils.isNotBlank(location.getCountry())) {
+					but.setCountry(location.getCountry());
+				}
+				
+				if (but.getLatitude() == 0 && location.getLatitude() != 0) {
+					but.setLatitude(location.getLatitude());
+				}
+				if (but.getLongitude() == 0 && location.getLongitude() != 0) {
+					but.setLongitude(location.getLongitude());
+				}
+				
+				BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+			}
+		}
+		
+		//IpTranslationServiceUtil.reloadLocationAndBlockData();
+		return null;
+		
 	}
 
 	public DataBean getDataBean() {

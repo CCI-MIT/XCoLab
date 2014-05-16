@@ -81,7 +81,10 @@
 					</a>
 				</div>
 			</c:if>
-            
+            <div class="clearfix">&#160;</div>
+            <div class="message-share-button">
+                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> Share via CoLab messaging</a>
+            </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {
                     addthis.toolbox("#shareProposalToolbox");
@@ -96,7 +99,7 @@
                             <a href="#" style="${(proposal.ribbonText.length() gt 8 and proposal.ribbonText.length() lt 14)  ? 'top: 26px;' : ''}">${proposal.ribbonText.length() gt 13 ? 'Winner' : proposal.ribbonText}</a>
                         </span>
                 <div class="badge-text" style="${proposal.ribbonText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(proposal.ribbonText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${proposal.ribbonText.length() gt 13 ? proposal.ribbonText : ''}</div>
-                <span class="badge-year">2013</span>
+                <span class="badge-year">${contest.activePhase.phaseReferenceYear}</span>
             </div>
         </c:if>
 
@@ -204,5 +207,21 @@
     </c:if>
                 
     </div>
+    <script type="text/javascript">
+        // Addthis: Alert a message when the user shares somewhere
+        function shareEventHandler(evt) {
+            if (evt.type == 'addthis.menu.share') {
+                var service = evt.data.service;
 
+                try {
+                    pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
+                }
+                catch (error) {
+                }
+            }
+        }
+
+        // Listen for the share event
+        addthis.addEventListener('addthis.menu.share', shareEventHandler);
+    </script>
 </jsp:root>

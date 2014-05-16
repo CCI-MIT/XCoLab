@@ -44,8 +44,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 	
 	public static String CATEGORY_ADDED = "%s added category %s to %s"; // user, categorygroup
 	public static String DISCUSSION_ADDED = "%s started new discussion %s in %s"; // user, thread, categorygroup
-    public static String COMMENT_ADDED = "%s added comment to %s in %s"; // user, thread, category
-    public static String DISCUSSION_COMMENT_ADDED = "%s added comment to %s"; // user, comment, thread, categorygroup
+    public static String COMMENT_ADDED = "%s added a comment to %s in %s"; // user, thread, category
+    public static String DISCUSSION_COMMENT_ADDED = "%s added a comment to %s"; // user, comment, thread, categorygroup
 	
 	public static String hyperlink = "<a href=\"%s\">%s</a>";
 		

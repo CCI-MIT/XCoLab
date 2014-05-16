@@ -21,6 +21,14 @@ create table xcolab_AnalyticsUserEvent (
 	primary key (userId, idString)
 );
 
+create table xcolab_BalloonLink (
+	uuid_ VARCHAR(75) not null primary key,
+	targetUrl VARCHAR(75) null,
+	visits INTEGER,
+	balloonUserUuid VARCHAR(75) null,
+	createDate DATE null
+);
+
 create table xcolab_BalloonStatsEntry (
 	id_ LONG not null primary key,
 	firstContestId LONG,
@@ -31,11 +39,49 @@ create table xcolab_BalloonStatsEntry (
 	extraData VARCHAR(256) null
 );
 
+create table xcolab_BalloonText (
+	id_ LONG not null primary key,
+	name VARCHAR(75) null,
+	textBeforeForm TEXT null,
+	textAfterForm TEXT null,
+	textBeforeShareButtons TEXT null,
+	textAfterShareButtons TEXT null,
+	acceptTosText TEXT null,
+	emailTemplate TEXT null,
+	emailSubjectTemplate TEXT null,
+	twitterDescription TEXT null,
+	twitterSubject TEXT null,
+	facebookDescription TEXT null,
+	facebookSubject TEXT null,
+	enabled BOOLEAN
+);
+
+create table xcolab_BalloonUserTracking (
+	uuid_ VARCHAR(75) not null primary key,
+	email VARCHAR(200) null,
+	parent VARCHAR(75) null,
+	ip VARCHAR(75) null,
+	createDate DATE null,
+	registrationDate DATE null,
+	formFiledDate DATE null,
+	userId LONG,
+	balloonTextId LONG,
+	referrer VARCHAR(500) null,
+	latitude DOUBLE,
+	longitude DOUBLE,
+	city VARCHAR(75) null,
+	country VARCHAR(75) null,
+	extraData TEXT null,
+	balloonLinkUuid VARCHAR(75) null,
+	balloonLinkContext VARCHAR(75) null,
+	userAgent VARCHAR(500) null
+);
+
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	ContestName VARCHAR(2048) null,
 	ContestShortName VARCHAR(1024) null,
-	ContestDescription VARCHAR(2048) null,
+	ContestDescription VARCHAR(3072) null,
 	ContestModelDescription VARCHAR(2048) null,
 	ContestPositionsDescription VARCHAR(2048) null,
 	defaultPlanDescription TEXT null,
@@ -51,6 +97,7 @@ create table xcolab_Contest (
 	plansOpenByDefault BOOLEAN,
 	sponsorLogoId LONG,
 	sponsorText VARCHAR(2048) null,
+	sponsorLink VARCHAR(75) null,
 	flag INTEGER,
 	flagText VARCHAR(1024) null,
 	flagTooltip VARCHAR(1024) null,
@@ -188,6 +235,16 @@ create table xcolab_LandingPage (
 	updated DATE null
 );
 
+create table xcolab_LoginLog (
+	pk LONG not null primary key,
+	userId LONG,
+	createDate DATE null,
+	ipAddress VARCHAR(75) null,
+	city VARCHAR(75) null,
+	country VARCHAR(75) null,
+	entryUrl VARCHAR(75) null
+);
+
 create table xcolab_Message (
 	messageId LONG not null primary key,
 	fromId LONG,
@@ -263,7 +320,8 @@ create table xcolab_MessagingUserPreferences (
 	userId LONG,
 	emailOnSend BOOLEAN,
 	emailOnReceipt BOOLEAN,
-	emailOnActivity BOOLEAN
+	emailOnActivity BOOLEAN,
+	emailActivityDailyDigest BOOLEAN
 );
 
 create table xcolab_ModelCategory (
@@ -345,7 +403,8 @@ create table xcolab_ModelPosition (
 create table xcolab_OntologySpace (
 	id_ LONG not null primary key,
 	name VARCHAR(256) null,
-	description TEXT null
+	description TEXT null,
+	order_ INTEGER
 );
 
 create table xcolab_OntologyTerm (
@@ -353,7 +412,8 @@ create table xcolab_OntologyTerm (
 	parentId LONG,
 	ontologySpaceId LONG,
 	name VARCHAR(256) null,
-	descriptionUrl VARCHAR(1024) null
+	descriptionUrl VARCHAR(1024) null,
+	order_ INTEGER
 );
 
 create table xcolab_OntologyTermEntity (

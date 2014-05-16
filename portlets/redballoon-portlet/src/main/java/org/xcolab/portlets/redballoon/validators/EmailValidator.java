@@ -1,15 +1,9 @@
 package org.xcolab.portlets.redballoon.validators;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
 
-@FacesValidator("EmailValidator")
-public class EmailValidator implements Validator {
-
+//@FacesValidator("EmailValidator")
+public class EmailValidator  {
+/*
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uIComponent,
 			Object object) throws ValidatorException {
@@ -20,5 +14,5 @@ public class EmailValidator implements Validator {
 			throw new ValidatorException(new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, msg, msg));
 		}
-	}
+	}*/
 }

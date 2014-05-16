@@ -598,6 +598,20 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Returns a list of proposals associated with the given contest phase which are both generally visible and visible in the given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return list of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getActiveProposalsInContestPhase(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Returns a list of proposals associated with given contest</p>
     *
     * @param contestId id of a contest phase
@@ -608,6 +622,19 @@ public interface ProposalLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContest(
         long contestId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+    *
+    * @param userId    The userId of the user
+    * @return A list of proposals the user has contributed to
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -840,7 +867,7 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * <p>Sends a request to join proposal teamp</p>
+    * <p>Sends a request to join proposal team</p>
     *
     * @param proposalId proposal id
     * @param userId     user id
@@ -848,8 +875,8 @@ public interface ProposalLocalService extends BaseLocalService,
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
-    public void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

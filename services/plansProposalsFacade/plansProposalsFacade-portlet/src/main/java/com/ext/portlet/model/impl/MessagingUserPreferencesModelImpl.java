@@ -54,9 +54,10 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
             { "userId", Types.BIGINT },
             { "emailOnSend", Types.BOOLEAN },
             { "emailOnReceipt", Types.BOOLEAN },
-            { "emailOnActivity", Types.BOOLEAN }
+            { "emailOnActivity", Types.BOOLEAN },
+            { "emailActivityDailyDigest", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingUserPreferences (messagingPreferencesId LONG not null primary key,userId LONG,emailOnSend BOOLEAN,emailOnReceipt BOOLEAN,emailOnActivity BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingUserPreferences (messagingPreferencesId LONG not null primary key,userId LONG,emailOnSend BOOLEAN,emailOnReceipt BOOLEAN,emailOnActivity BOOLEAN,emailActivityDailyDigest BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingUserPreferences";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingUserPreferences.messagingPreferencesId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingUserPreferences.messagingPreferencesId ASC";
@@ -88,6 +89,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
     private boolean _emailOnSend;
     private boolean _emailOnReceipt;
     private boolean _emailOnActivity;
+    private boolean _emailActivityDailyDigest;
     private long _columnBitmask;
     private MessagingUserPreferences _escapedModel;
 
@@ -113,6 +115,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         model.setEmailOnSend(soapModel.getEmailOnSend());
         model.setEmailOnReceipt(soapModel.getEmailOnReceipt());
         model.setEmailOnActivity(soapModel.getEmailOnActivity());
+        model.setEmailActivityDailyDigest(soapModel.getEmailActivityDailyDigest());
 
         return model;
     }
@@ -177,6 +180,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         attributes.put("emailOnSend", getEmailOnSend());
         attributes.put("emailOnReceipt", getEmailOnReceipt());
         attributes.put("emailOnActivity", getEmailOnActivity());
+        attributes.put("emailActivityDailyDigest", getEmailActivityDailyDigest());
 
         return attributes;
     }
@@ -212,6 +216,13 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
 
         if (emailOnActivity != null) {
             setEmailOnActivity(emailOnActivity);
+        }
+
+        Boolean emailActivityDailyDigest = (Boolean) attributes.get(
+                "emailActivityDailyDigest");
+
+        if (emailActivityDailyDigest != null) {
+            setEmailActivityDailyDigest(emailActivityDailyDigest);
         }
     }
 
@@ -307,6 +318,22 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         _emailOnActivity = emailOnActivity;
     }
 
+    @JSON
+    @Override
+    public boolean getEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    @Override
+    public boolean isEmailActivityDailyDigest() {
+        return _emailActivityDailyDigest;
+    }
+
+    @Override
+    public void setEmailActivityDailyDigest(boolean emailActivityDailyDigest) {
+        _emailActivityDailyDigest = emailActivityDailyDigest;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -343,6 +370,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         messagingUserPreferencesImpl.setEmailOnSend(getEmailOnSend());
         messagingUserPreferencesImpl.setEmailOnReceipt(getEmailOnReceipt());
         messagingUserPreferencesImpl.setEmailOnActivity(getEmailOnActivity());
+        messagingUserPreferencesImpl.setEmailActivityDailyDigest(getEmailActivityDailyDigest());
 
         messagingUserPreferencesImpl.resetOriginalValues();
 
@@ -413,12 +441,14 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
 
         messagingUserPreferencesCacheModel.emailOnActivity = getEmailOnActivity();
 
+        messagingUserPreferencesCacheModel.emailActivityDailyDigest = getEmailActivityDailyDigest();
+
         return messagingUserPreferencesCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{messagingPreferencesId=");
         sb.append(getMessagingPreferencesId());
@@ -430,6 +460,8 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         sb.append(getEmailOnReceipt());
         sb.append(", emailOnActivity=");
         sb.append(getEmailOnActivity());
+        sb.append(", emailActivityDailyDigest=");
+        sb.append(getEmailActivityDailyDigest());
         sb.append("}");
 
         return sb.toString();
@@ -437,7 +469,7 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.MessagingUserPreferences");
@@ -462,6 +494,10 @@ public class MessagingUserPreferencesModelImpl extends BaseModelImpl<MessagingUs
         sb.append(
             "<column><column-name>emailOnActivity</column-name><column-value><![CDATA[");
         sb.append(getEmailOnActivity());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>emailActivityDailyDigest</column-name><column-value><![CDATA[");
+        sb.append(getEmailActivityDailyDigest());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

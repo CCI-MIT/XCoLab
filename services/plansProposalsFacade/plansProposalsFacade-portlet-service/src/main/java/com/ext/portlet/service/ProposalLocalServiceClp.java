@@ -152,6 +152,10 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes71;
     private String _methodName72;
     private String[] _methodParameterTypes72;
+    private String _methodName73;
+    private String[] _methodParameterTypes73;
+    private String _methodName74;
+    private String[] _methodParameterTypes74;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -349,149 +353,157 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                 "long", "java.lang.String", "boolean", "int", "int"
             };
 
-        _methodName39 = "getProposalsInContest";
+        _methodName39 = "getActiveProposalsInContestPhase";
 
         _methodParameterTypes39 = new String[] { "long" };
 
-        _methodName40 = "countProposalsInContestPhase";
+        _methodName40 = "getProposalsInContest";
 
         _methodParameterTypes40 = new String[] { "long" };
 
-        _methodName41 = "getMembers";
+        _methodName41 = "getUserProposals";
 
         _methodParameterTypes41 = new String[] { "long" };
 
-        _methodName42 = "getSupporters";
+        _methodName42 = "countProposalsInContestPhase";
 
         _methodParameterTypes42 = new String[] { "long" };
 
-        _methodName43 = "getSupportersCount";
+        _methodName43 = "getMembers";
 
         _methodParameterTypes43 = new String[] { "long" };
 
-        _methodName44 = "isSupporter";
+        _methodName44 = "getSupporters";
 
-        _methodParameterTypes44 = new String[] { "long", "long" };
+        _methodParameterTypes44 = new String[] { "long" };
 
-        _methodName45 = "addSupporter";
+        _methodName45 = "getSupportersCount";
 
-        _methodParameterTypes45 = new String[] { "long", "long" };
+        _methodParameterTypes45 = new String[] { "long" };
 
-        _methodName46 = "addSupporter";
+        _methodName46 = "isSupporter";
 
-        _methodParameterTypes46 = new String[] { "long", "long", "boolean" };
+        _methodParameterTypes46 = new String[] { "long", "long" };
 
-        _methodName47 = "removeSupporter";
+        _methodName47 = "addSupporter";
 
         _methodParameterTypes47 = new String[] { "long", "long" };
 
-        _methodName48 = "getVoters";
+        _methodName48 = "addSupporter";
 
-        _methodParameterTypes48 = new String[] { "long", "long" };
+        _methodParameterTypes48 = new String[] { "long", "long", "boolean" };
 
-        _methodName49 = "getVotesCount";
+        _methodName49 = "removeSupporter";
 
         _methodParameterTypes49 = new String[] { "long", "long" };
 
-        _methodName50 = "addVote";
+        _methodName50 = "getVoters";
 
-        _methodParameterTypes50 = new String[] { "long", "long", "long" };
+        _methodParameterTypes50 = new String[] { "long", "long" };
 
-        _methodName51 = "addVote";
+        _methodName51 = "getVotesCount";
 
-        _methodParameterTypes51 = new String[] { "long", "long", "long", "boolean" };
+        _methodParameterTypes51 = new String[] { "long", "long" };
 
-        _methodName52 = "removeVote";
+        _methodName52 = "addVote";
 
-        _methodParameterTypes52 = new String[] { "long", "long" };
+        _methodParameterTypes52 = new String[] { "long", "long", "long" };
 
-        _methodName53 = "getCommentsCount";
+        _methodName53 = "addVote";
 
-        _methodParameterTypes53 = new String[] { "long" };
+        _methodParameterTypes53 = new String[] { "long", "long", "long", "boolean" };
 
-        _methodName54 = "isUserAMember";
+        _methodName54 = "removeVote";
 
         _methodParameterTypes54 = new String[] { "long", "long" };
 
-        _methodName55 = "isOpen";
+        _methodName55 = "getCommentsCount";
 
         _methodParameterTypes55 = new String[] { "long" };
 
-        _methodName56 = "getMembershipRequests";
+        _methodName56 = "isUserAMember";
 
-        _methodParameterTypes56 = new String[] { "long" };
+        _methodParameterTypes56 = new String[] { "long", "long" };
 
-        _methodName57 = "addMembershipRequest";
+        _methodName57 = "isOpen";
 
-        _methodParameterTypes57 = new String[] {
+        _methodParameterTypes57 = new String[] { "long" };
+
+        _methodName58 = "getMembershipRequests";
+
+        _methodParameterTypes58 = new String[] { "long" };
+
+        _methodName59 = "addMembershipRequest";
+
+        _methodParameterTypes59 = new String[] {
                 "long", "long", "java.lang.String"
             };
 
-        _methodName58 = "removeUserFromTeam";
+        _methodName60 = "removeUserFromTeam";
 
-        _methodParameterTypes58 = new String[] { "long", "long" };
+        _methodParameterTypes60 = new String[] { "long", "long" };
 
-        _methodName59 = "dennyMembershipRequest";
+        _methodName61 = "dennyMembershipRequest";
 
-        _methodParameterTypes59 = new String[] {
+        _methodParameterTypes61 = new String[] {
                 "long", "long", "long", "java.lang.String", "long"
             };
 
-        _methodName60 = "approveMembershipRequest";
+        _methodName62 = "approveMembershipRequest";
 
-        _methodParameterTypes60 = new String[] {
+        _methodParameterTypes62 = new String[] {
                 "long", "java.lang.Long",
                 "com.liferay.portal.model.MembershipRequest", "java.lang.String",
                 "java.lang.Long"
             };
 
-        _methodName61 = "hasUserRequestedMembership";
-
-        _methodParameterTypes61 = new String[] { "long", "long" };
-
-        _methodName62 = "joinIfNotAMemberAndProposalIsOpen";
-
-        _methodParameterTypes62 = new String[] { "long", "long" };
-
-        _methodName63 = "isSubscribed";
+        _methodName63 = "hasUserRequestedMembership";
 
         _methodParameterTypes63 = new String[] { "long", "long" };
 
-        _methodName64 = "subscribe";
+        _methodName64 = "joinIfNotAMemberAndProposalIsOpen";
 
         _methodParameterTypes64 = new String[] { "long", "long" };
 
-        _methodName65 = "subscribe";
+        _methodName65 = "isSubscribed";
 
-        _methodParameterTypes65 = new String[] { "long", "long", "boolean" };
+        _methodParameterTypes65 = new String[] { "long", "long" };
 
-        _methodName66 = "unsubscribe";
+        _methodName66 = "subscribe";
 
         _methodParameterTypes66 = new String[] { "long", "long" };
 
-        _methodName67 = "unsubscribe";
+        _methodName67 = "subscribe";
 
         _methodParameterTypes67 = new String[] { "long", "long", "boolean" };
 
-        _methodName68 = "hasUserVoted";
+        _methodName68 = "unsubscribe";
 
-        _methodParameterTypes68 = new String[] { "long", "long", "long" };
+        _methodParameterTypes68 = new String[] { "long", "long" };
 
-        _methodName69 = "getUserSupportedProposalsCount";
+        _methodName69 = "unsubscribe";
 
-        _methodParameterTypes69 = new String[] { "long" };
+        _methodParameterTypes69 = new String[] { "long", "long", "boolean" };
 
-        _methodName70 = "getUserVotedProposalsCount";
+        _methodName70 = "hasUserVoted";
 
-        _methodParameterTypes70 = new String[] { "long" };
+        _methodParameterTypes70 = new String[] { "long", "long", "long" };
 
-        _methodName71 = "getModifiedAfter";
+        _methodName71 = "getUserSupportedProposalsCount";
 
-        _methodParameterTypes71 = new String[] { "java.util.Date" };
+        _methodParameterTypes71 = new String[] { "long" };
 
-        _methodName72 = "getProposalLink";
+        _methodName72 = "getUserVotedProposalsCount";
 
-        _methodParameterTypes72 = new String[] {
+        _methodParameterTypes72 = new String[] { "long" };
+
+        _methodName73 = "getModifiedAfter";
+
+        _methodParameterTypes73 = new String[] { "java.util.Date" };
+
+        _methodName74 = "getProposalLink";
+
+        _methodParameterTypes74 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal"
             };
@@ -1807,6 +1819,38 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getActiveProposalsInContestPhase(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName39,
+                    _methodParameterTypes39, new Object[] { contestPhaseId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public java.util.List<com.ext.portlet.model.Proposal> getProposalsInContest(
         long contestId)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -1814,8 +1858,40 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName39,
-                    _methodParameterTypes39, new Object[] { contestId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName40,
+                    _methodParameterTypes40, new Object[] { contestId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName41,
+                    _methodParameterTypes41, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -1845,8 +1921,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName40,
-                    _methodParameterTypes40, new Object[] { contestPhaseId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName42,
+                    _methodParameterTypes42, new Object[] { contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -1877,8 +1953,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName41,
-                    _methodParameterTypes41, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName43,
+                    _methodParameterTypes43, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -1909,8 +1985,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName42,
-                    _methodParameterTypes42, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName44,
+                    _methodParameterTypes44, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -1940,8 +2016,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName43,
-                    _methodParameterTypes43, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName45,
+                    _methodParameterTypes45, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -1971,8 +2047,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName44,
-                    _methodParameterTypes44, new Object[] { proposalId, userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName46,
+                    _methodParameterTypes46, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2000,8 +2076,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName45,
-                _methodParameterTypes45, new Object[] { proposalId, userId });
+            _invokableLocalService.invokeMethod(_methodName47,
+                _methodParameterTypes47, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2028,8 +2104,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName46,
-                _methodParameterTypes46,
+            _invokableLocalService.invokeMethod(_methodName48,
+                _methodParameterTypes48,
                 new Object[] { proposalId, userId, publishActivity });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2056,8 +2132,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName47,
-                _methodParameterTypes47, new Object[] { proposalId, userId });
+            _invokableLocalService.invokeMethod(_methodName49,
+                _methodParameterTypes49, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2086,8 +2162,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName48,
-                    _methodParameterTypes48,
+            returnObj = _invokableLocalService.invokeMethod(_methodName50,
+                    _methodParameterTypes50,
                     new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2117,8 +2193,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName49,
-                    _methodParameterTypes49,
+            returnObj = _invokableLocalService.invokeMethod(_methodName51,
+                    _methodParameterTypes51,
                     new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2143,8 +2219,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName50,
-                _methodParameterTypes50,
+            _invokableLocalService.invokeMethod(_methodName52,
+                _methodParameterTypes52,
                 new Object[] { proposalId, contestPhaseId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2172,8 +2248,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName51,
-                _methodParameterTypes51,
+            _invokableLocalService.invokeMethod(_methodName53,
+                _methodParameterTypes53,
                 new Object[] { proposalId, contestPhaseId, userId, publishActivity });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2200,8 +2276,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName52,
-                _methodParameterTypes52, new Object[] { contestPhaseId, userId });
+            _invokableLocalService.invokeMethod(_methodName54,
+                _methodParameterTypes54, new Object[] { contestPhaseId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2229,8 +2305,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName53,
-                    _methodParameterTypes53, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName55,
+                    _methodParameterTypes55, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2260,8 +2336,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName54,
-                    _methodParameterTypes54, new Object[] { proposalId, userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName56,
+                    _methodParameterTypes56, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2291,8 +2367,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName55,
-                    _methodParameterTypes55, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName57,
+                    _methodParameterTypes57, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2323,8 +2399,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName56,
-                    _methodParameterTypes56, new Object[] { proposalId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName58,
+                    _methodParameterTypes58, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2348,20 +2424,22 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
         try {
-            _invokableLocalService.invokeMethod(_methodName57,
-                _methodParameterTypes57,
-                new Object[] {
-                    proposalId,
-                    
-                userId,
-                    
-                ClpSerializer.translateInput(comment)
-                });
+            returnObj = _invokableLocalService.invokeMethod(_methodName59,
+                    _methodParameterTypes59,
+                    new Object[] {
+                        proposalId,
+                        
+                    userId,
+                        
+                    ClpSerializer.translateInput(comment)
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2380,6 +2458,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     " is not a valid exception");
             }
         }
+
+        return (com.liferay.portal.model.MembershipRequest) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
@@ -2387,8 +2467,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName58,
-                _methodParameterTypes58, new Object[] { proposalId, userId });
+            _invokableLocalService.invokeMethod(_methodName60,
+                _methodParameterTypes60, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2415,8 +2495,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName59,
-                _methodParameterTypes59,
+            _invokableLocalService.invokeMethod(_methodName61,
+                _methodParameterTypes61,
                 new Object[] {
                     proposalId,
                     
@@ -2456,8 +2536,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName60,
-                _methodParameterTypes60,
+            _invokableLocalService.invokeMethod(_methodName62,
+                _methodParameterTypes62,
                 new Object[] {
                     proposalId,
                     
@@ -2496,8 +2576,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName61,
-                    _methodParameterTypes61, new Object[] { proposalId, userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName63,
+                    _methodParameterTypes63, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2525,8 +2605,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName62,
-                _methodParameterTypes62, new Object[] { proposalId, userId });
+            _invokableLocalService.invokeMethod(_methodName64,
+                _methodParameterTypes64, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2554,8 +2634,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName63,
-                    _methodParameterTypes63, new Object[] { proposalId, userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName65,
+                    _methodParameterTypes65, new Object[] { proposalId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2583,61 +2663,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName64,
-                _methodParameterTypes64, new Object[] { proposalId, userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-    }
-
-    @Override
-    public void subscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName65,
-                _methodParameterTypes65,
-                new Object[] { proposalId, userId, automatic });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-    }
-
-    @Override
-    public void unsubscribe(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        try {
             _invokableLocalService.invokeMethod(_methodName66,
                 _methodParameterTypes66, new Object[] { proposalId, userId });
         } catch (Throwable t) {
@@ -2661,7 +2686,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public void unsubscribe(long proposalId, long userId, boolean automatic)
+    public void subscribe(long proposalId, long userId, boolean automatic)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
@@ -2689,13 +2714,68 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
+    public void unsubscribe(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName68,
+                _methodParameterTypes68, new Object[] { proposalId, userId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void unsubscribe(long proposalId, long userId, boolean automatic)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName69,
+                _methodParameterTypes69,
+                new Object[] { proposalId, userId, automatic });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
     public boolean hasUserVoted(long proposalId, long contestPhaseId,
         long userId) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName68,
-                    _methodParameterTypes68,
+            returnObj = _invokableLocalService.invokeMethod(_methodName70,
+                    _methodParameterTypes70,
                     new Object[] { proposalId, contestPhaseId, userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2721,8 +2801,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName69,
-                    _methodParameterTypes69, new Object[] { userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName71,
+                    _methodParameterTypes71, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2747,8 +2827,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName70,
-                    _methodParameterTypes70, new Object[] { userId });
+            returnObj = _invokableLocalService.invokeMethod(_methodName72,
+                    _methodParameterTypes72, new Object[] { userId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2774,8 +2854,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName71,
-                    _methodParameterTypes71,
+            returnObj = _invokableLocalService.invokeMethod(_methodName73,
+                    _methodParameterTypes73,
                     new Object[] { ClpSerializer.translateInput(date) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2802,8 +2882,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName72,
-                    _methodParameterTypes72,
+            returnObj = _invokableLocalService.invokeMethod(_methodName74,
+                    _methodParameterTypes74,
                     new Object[] {
                         ClpSerializer.translateInput(contest),
                         

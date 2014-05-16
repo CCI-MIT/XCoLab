@@ -29,20 +29,11 @@ import java.util.Date;
  */
 public class ImageUploadUtils {
 
-    public static long uploadImage(URL imageUrl) {
-        try {
-            return uploadImage(imageUrl.openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0L;
-    }
-
-    public static long uploadImage(InputStream is) {
+    public static long uploadImage(URL url) {
         try {
             byte[] imgBArr;
-            imgBArr = IOUtils.toByteArray(is);
-            imgBArr = resizeAndCropImage(imgBArr);
+            BufferedImage image = ImageIO.read(url);
+            imgBArr = resizeAndCropImage(image);
 
             long imageId = CounterLocalServiceUtil
                     .increment(Image.class.getName());
@@ -64,11 +55,10 @@ public class ImageUploadUtils {
 
     }
 
-    private static byte[] resizeAndCropImage(byte[] imgBArr) throws IOException {
+    private static byte[] resizeAndCropImage(BufferedImage img) throws IOException {
         int newW = 150;
         int newH = 150;
 
-        BufferedImage img = ImageIO.read(new ByteArrayInputStream(imgBArr));
         // crop image
 
         int w = img.getWidth();

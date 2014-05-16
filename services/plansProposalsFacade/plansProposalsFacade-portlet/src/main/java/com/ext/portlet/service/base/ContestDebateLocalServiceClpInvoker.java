@@ -41,18 +41,18 @@ public class ContestDebateLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName484;
-    private String[] _methodParameterTypes484;
-    private String _methodName485;
-    private String[] _methodParameterTypes485;
-    private String _methodName490;
-    private String[] _methodParameterTypes490;
-    private String _methodName491;
-    private String[] _methodParameterTypes491;
-    private String _methodName492;
-    private String[] _methodParameterTypes492;
-    private String _methodName493;
-    private String[] _methodParameterTypes493;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
+    private String _methodName509;
+    private String[] _methodParameterTypes509;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
+    private String _methodName515;
+    private String[] _methodParameterTypes515;
+    private String _methodName516;
+    private String[] _methodParameterTypes516;
+    private String _methodName517;
+    private String[] _methodParameterTypes517;
 
     public ContestDebateLocalServiceClpInvoker() {
         _methodName0 = "addContestDebate";
@@ -137,33 +137,33 @@ public class ContestDebateLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestDebate"
             };
 
-        _methodName484 = "getBeanIdentifier";
+        _methodName508 = "getBeanIdentifier";
 
-        _methodParameterTypes484 = new String[] {  };
+        _methodParameterTypes508 = new String[] {  };
 
-        _methodName485 = "setBeanIdentifier";
+        _methodName509 = "setBeanIdentifier";
 
-        _methodParameterTypes485 = new String[] { "java.lang.String" };
+        _methodParameterTypes509 = new String[] { "java.lang.String" };
 
-        _methodName490 = "createContestDebate";
+        _methodName514 = "createContestDebate";
 
-        _methodParameterTypes490 = new String[] {
+        _methodParameterTypes514 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName491 = "getContestDebates";
+        _methodName515 = "getContestDebates";
 
-        _methodParameterTypes491 = new String[] { "java.lang.Long" };
+        _methodParameterTypes515 = new String[] { "java.lang.Long" };
 
-        _methodName492 = "store";
+        _methodName516 = "store";
 
-        _methodParameterTypes492 = new String[] {
+        _methodParameterTypes516 = new String[] {
                 "com.ext.portlet.model.ContestDebate"
             };
 
-        _methodName493 = "delete";
+        _methodName517 = "delete";
 
-        _methodParameterTypes493 = new String[] {
+        _methodParameterTypes517 = new String[] {
                 "com.ext.portlet.model.ContestDebate"
             };
     }
@@ -257,38 +257,38 @@ public class ContestDebateLocalServiceClpInvoker {
             return ContestDebateLocalServiceUtil.updateContestDebate((com.ext.portlet.model.ContestDebate) arguments[0]);
         }
 
-        if (_methodName484.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes484, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return ContestDebateLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName485.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes485, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             ContestDebateLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName490.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes490, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             return ContestDebateLocalServiceUtil.createContestDebate((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName491.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes491, parameterTypes)) {
+        if (_methodName515.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             return ContestDebateLocalServiceUtil.getContestDebates((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName492.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
             ContestDebateLocalServiceUtil.store((com.ext.portlet.model.ContestDebate) arguments[0]);
 
             return null;
         }
 
-        if (_methodName493.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
+        if (_methodName517.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
             ContestDebateLocalServiceUtil.delete((com.ext.portlet.model.ContestDebate) arguments[0]);
 
             return null;

@@ -24,6 +24,8 @@ import java.util.Map;
 
 import javax.portlet.PortletURL;
 
+import com.ext.portlet.Activity.ActivityUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import org.xcolab.portlets.members.MemberCategory;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -254,7 +256,7 @@ public class UserIndexer extends BaseIndexer {
 		document.addKeyword("teamIds", user.getTeamIds());
 		document.addKeyword("userGroupIds", user.getUserGroupIds());
 		document.addDate("joinDate", user.getCreateDate());
-		document.addNumber("activities", SocialActivityLocalServiceUtil.getUserActivitiesCount(user.getUserId()));
+		document.addNumber("activities", ActivityUtil.getActivitiesCount(user.getUserId()));
 		document.addKeyword("memberCategory", getUserCategories(user));
         document.addKeyword("realName", new DefaultFullNameGenerator().getFullName(
                 user.getFirstName(),  user.getMiddleName(),  user.getLastName()));
@@ -518,7 +520,7 @@ public class UserIndexer extends BaseIndexer {
 
 	            for (MemberCategory category : MemberCategory.values()) {
 	                try {
-	                    if (category.equals(MemberCategory.ALL)) continue;
+	                    if (category.equals(MemberCategory.ALL) || category.equals(MemberCategory.DEFAULT)) continue;
 	                    for (String roleName: category.getRoleNames()) {
 	                        Role role = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, roleName);
 	                        roleIdToCategoryMap.put(role.getRoleId(), category);

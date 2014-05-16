@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.service.persistence.*;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.*;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -37,16 +42,8 @@ import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
-import com.ext.portlet.service.persistence.Proposal2PhasePK;
-import com.ext.portlet.service.persistence.ProposalSupporterPK;
-import com.ext.portlet.service.persistence.ProposalVersionPK;
-import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -104,7 +101,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * Default description of group working on a plan.
      */
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
-
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
@@ -224,6 +220,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                     contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
         }
 
+        // Automatically subscribe author to own proposal
+        subscribe(proposalId, authorId);
+
 
         return proposal;
     }
@@ -325,6 +324,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create newly created version descriptor
         createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId, updatedDate);
         updateProposal(proposal);
+
+        // Update the proposal name in the discussion category
+        if (attributeName.equals(ProposalAttributeKeys.NAME)) {
+            DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            dcg.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, stringValue));
+            discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
+        }
 
         if (publishActivity)
             eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
@@ -580,6 +586,35 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
         return proposals;
     }
+
+    /**
+     * <p>Returns a list of proposals associated with the given contest phase which are both generally visible and visible in the given contest phase</p>
+     *
+     * @param contestPhaseId id of a contest phase
+     * @return list of proposals from given contest phase
+     * @throws PortalException in case of an LR error
+     * @throws SystemException in case of an LR error
+     */
+    public List<Proposal> getActiveProposalsInContestPhase(long contestPhaseId)
+            throws PortalException, SystemException {
+
+        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
+        phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
+        phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
+
+        final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
+        phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("contestPhaseId").eq(contestPhaseId));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
+        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
+
+        final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
+        proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
+                .add(PropertyFactoryUtil.forName("proposal.visible").eq(true))
+                .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
+
+        return dynamicQuery(proposalsInPhaseNotDeleted);
+    }
     
     /**
      * <p>Returns a list of proposals associated with given contest</p>
@@ -604,6 +639,68 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
         return proposals;
     }
+
+    /**
+     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+     * @param userId    The userId of the user
+     * @return          A list of proposals the user has contributed to
+     * @throws SystemException
+     */
+    public List<Proposal> getUserProposals(long userId) throws SystemException, PortalException {
+        // Get all groups the user is in
+        List<Long> groupIds = new ArrayList<>();
+        User user = userLocalService.getUser(userId);
+        List<Group> groups = user.getGroups();
+
+        for (Group group : groups) {
+            groupIds.add(group.getGroupId());
+        }
+
+        Criterion criterion = RestrictionsFactoryUtil.eq("authorId", userId);
+        criterion = RestrictionsFactoryUtil.or(criterion, RestrictionsFactoryUtil.in("groupId", groupIds));
+
+		final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+		final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, (ClassLoader) PortletBeanLocatorUtil.locate(
+				ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"))
+                .add(criterion)
+                .add(PropertyFactoryUtil.forName("visible").eq(true))
+                .addOrder(OrderFactoryUtil.desc("createDate"));
+        List<Proposal> proposals =  proposalLocalService.dynamicQuery(query);
+
+        // Filter out "deleted" proposals
+        List<Proposal> returnList = new ArrayList<>();
+        for (Proposal proposal : proposals) {
+            List<Proposal2Phase> p2Phases = proposal2PhaseLocalService.getByProposalId(proposal.getProposalId());
+
+            // Count number of invisible attributes
+            int invisibleCount = 0;
+            int overallCount = 0;
+            for (Proposal2Phase phase : p2Phases) {
+				overallCount++;
+
+                // Try to get
+                try {
+                    final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
+                            phase.getProposalId(), phase.getContestPhaseId(), ProposalContestPhaseAttributeKeys.VISIBLE);
+
+                    if (visibleAttribute.getNumericValue() == 0) {
+                        invisibleCount++;
+                    }
+
+                } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    // We ignore the exception here since it does not have an impact
+                }
+
+            }
+
+            // Either we don't have an invisible entry in the attributes table or there is at least one visible
+            if ((overallCount == 0) || (overallCount != invisibleCount)) {
+                returnList.add(proposal);
+            }
+        }
+
+        return returnList;
+    }
     
     /**
      * <p>Returns count of proposals associated with given contest phase</p>
@@ -615,21 +712,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public long countProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
         
-        final DynamicQuery phaseProposals = DynamicQueryFactoryUtil.forClass(Proposal2Phase.class, "phaseProposalIds");
-        phaseProposals.setProjection(ProjectionFactoryUtil.property("phaseProposalIds.primaryKey.proposalId"));
-        phaseProposals.add(PropertyFactoryUtil.forName("phaseProposalIds.primaryKey.contestPhaseId").eq(contestPhaseId));
-        
-        final DynamicQuery phaseInvisibleProposals = DynamicQueryFactoryUtil.forClass(ProposalContestPhaseAttribute.class, "proposalContestPhaseAttributes");
-        phaseInvisibleProposals.setProjection(ProjectionFactoryUtil.property("proposalContestPhaseAttributes.proposalId"));
-        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.name").eq(ProposalContestPhaseAttributeKeys.VISIBLE));
-        phaseInvisibleProposals.add(PropertyFactoryUtil.forName("proposalContestPhaseAttributes.numericValue").eq(0L));
-        
-        final DynamicQuery proposalsInPhaseNotDeleted = DynamicQueryFactoryUtil.forClass(Proposal.class, "proposal");
-        proposalsInPhaseNotDeleted.add(PropertyFactoryUtil.forName("proposal.proposalId").in(phaseProposals))
-            .add(PropertyFactoryUtil.forName("proposal.visible").eq(true))
-            .add(PropertyFactoryUtil.forName("proposal.proposalId").notIn(phaseInvisibleProposals));
-        
-        return dynamicQueryCount(proposalsInPhaseNotDeleted);
+        List<Proposal> activeProposals = getActiveProposalsInContestPhase(contestPhaseId);
+        return activeProposals.size();
     }
 
     /**
@@ -903,7 +987,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     /**
-     * <p>Sends a request to join proposal teamp</p>
+     * <p>Sends a request to join proposal team</p>
      *
      * @param proposalId proposal id
      * @param userId     user id
@@ -911,10 +995,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
-    public void addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+    public MembershipRequest addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
-        MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
     }
 
 
@@ -965,6 +1049,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
             eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            if (!isSubscribed(proposalId, userId)) {
+                subscribe(proposalId, userId);
+            }
         }
     }
 
@@ -1036,6 +1124,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+
+        Proposal proposal = getProposal(proposalId);
+        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
     }
 
 
@@ -1066,6 +1158,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
+
+        Proposal proposal = getProposal(proposalId);
+        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);
     }
 
     /**
@@ -1162,7 +1258,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
-        String groupName = "Proposal_" + proposalId;
+        String groupName = "Proposal_" + proposalId + "_" + new Date().getTime();
 
         Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),

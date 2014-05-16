@@ -2,7 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.util.List;
 
-import com.ext.portlet.DiscussionActivityKeys;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.Activity.ActivityUtil;
@@ -133,7 +133,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
         if (! dcg.isIsQuiet()) {
             SocialActivityLocalServiceUtil.addActivity(author.getUserId(), scopeGroup.getGroupId(),
                     DiscussionCategoryGroup.class.getName(), dcg.getId(), 
-                    DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.id(), 
+                    DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(dcg.getId(), 
                     comment.getThreadId() > 0 ? comment.getThreadId() : comment.getMessageId(),
                     comment.getMessageId()), 0);

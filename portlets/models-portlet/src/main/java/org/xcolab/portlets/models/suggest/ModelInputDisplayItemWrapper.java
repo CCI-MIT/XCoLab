@@ -39,7 +39,12 @@ public class ModelInputDisplayItemWrapper implements Serializable{
             }
             else {
                 String defVal = wrappedItem.getMetaData() != null && wrappedItem.getMetaData().getDefault() != null ? wrappedItem.getMetaData().getDefault()[0] : null;
-                value = defVal == null || defVal.trim().length() == 0 ? Double.parseDouble(wrappedItem.getMetaData().getMin()[0]) : Double.parseDouble(defVal);
+                try {
+                	value = defVal == null || defVal.trim().length() == 0 ? Double.parseDouble(wrappedItem.getMetaData().getMin()[0]) : Double.parseDouble(defVal);
+                }
+                catch (NumberFormatException e) {
+                	value = null;
+                }
             }
         }
     }

@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class BalloonStatsEntryServiceClpInvoker {
-    private String _methodName468;
-    private String[] _methodParameterTypes468;
-    private String _methodName469;
-    private String[] _methodParameterTypes469;
+    private String _methodName492;
+    private String[] _methodParameterTypes492;
+    private String _methodName493;
+    private String[] _methodParameterTypes493;
 
     public BalloonStatsEntryServiceClpInvoker() {
-        _methodName468 = "getBeanIdentifier";
+        _methodName492 = "getBeanIdentifier";
 
-        _methodParameterTypes468 = new String[] {  };
+        _methodParameterTypes492 = new String[] {  };
 
-        _methodName469 = "setBeanIdentifier";
+        _methodName493 = "setBeanIdentifier";
 
-        _methodParameterTypes469 = new String[] { "java.lang.String" };
+        _methodParameterTypes493 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName468.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes468, parameterTypes)) {
+        if (_methodName492.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes492, parameterTypes)) {
             return BalloonStatsEntryServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName469.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes469, parameterTypes)) {
+        if (_methodName493.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes493, parameterTypes)) {
             BalloonStatsEntryServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

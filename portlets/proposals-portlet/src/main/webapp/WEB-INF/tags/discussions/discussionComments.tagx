@@ -38,64 +38,83 @@
         		<c:otherwise>
         			<table class="comments" id="commentsTable" >
 						<c:forEach var="message" items="${discussion.comments }" varStatus="status">
-							<tr class="${message.expertReview ? 'expertReview' : ''} ${status.index mod 2 == 0 ? 'odd' : 'even'}">
-								<td class="commentor ${message.expertReview ? 'expertReview' : ''}">
-									<a id="_message_${message.messageId}"></a>
-									<proposalsPortlet:userPortrait  screenName="${message.author.screenName}" portraitId="${message.author.portraitId}" width="59" height="59" />
-									<br />
-									<proposalsPortlet:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />
-									<br />
-									
-									<c:if test="${message.expertReview}">
-										<strong>Expert Review</strong><br />
-									</c:if>
-                                    <collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
-                                    <collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
-                    				
-                    				<br /><br /><br />
-                    				<a href="#_message_${message.messageId}">
-                    					<span class="com_num messageLink" rel="${message.messageId}">${status.index + 1} </span>
-                    				</a>
-                        			|
-                        			<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"  
-                        				addthis:title="${discussion.description}" addthis:description="${message.body}"
-                        				addthis:url="${discussion.discussionUrl}" 
-                        				data-hash="#_message_${message.messageId}">
-	                    				<span>share</span>
-                        			</a>
-								</td>
-								<td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
-									<div id="message_${message.messageId}" class="content">
-										${message.body }
-									</div>
-									<c:if test="${discussionPermissions.canAdminMessages }">
-										<div class="commentsActions">
+                            <discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
+                                <tr class="${message.expertReview ? 'expertReview' : ''} ${status.index mod 2 == 0 ? 'odd' : 'even'}">
+                                    <td class="commentor ${message.expertReview ? 'expertReview' : ''}">
+                                        <a id="_message_${message.messageId}"></a>
+                                        <proposalsPortlet:userPortrait  screenName="${message.author.screenName}" portraitId="${message.author.portraitId}" width="59" height="59" />
+                                        <br />
+                                        <proposalsPortlet:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />
+                                        <br />
 
-                                            <portlet:actionURL var="editCommentURL">
-                                                <portlet:param name="action" value="editComment" />
-                                            </portlet:actionURL>
-                                            <a href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
-                                            |
-                                            <portlet:actionURL var="toggleExpertReviewURL">
-												<portlet:param name="action" value="toggleDiscussionMessageFlag" />
-												<portlet:param name="flag" value="EXPERT_REVIEW" />
-												<portlet:param name="discussionId" value="${discussion.id}" />
-												<portlet:param name="messageId" value="${message.messageId }" />
-											</portlet:actionURL>
-											<a href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>
-											| 
-											<portlet:actionURL var="deleteMessageURL">
-												<portlet:param name="action" value="deleteDiscussionMessageFlag" />
-												<portlet:param name="discussionId" value="${discussion.id}" />
-												<portlet:param name="messageId" value="${message.messageId }" />
-											</portlet:actionURL>
-											<a href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
-									
-										</div>
-									</c:if>
-								</td>
-							</tr>
-							
+                                        <c:if test="${message.expertReview}">
+                                            <strong>Expert Review</strong><br />
+                                        </c:if>
+                                        <collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
+                                        <collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
+
+                                        <br />
+                                        <div class="role-indicator">
+                                            <div style="width: 16px">
+                                                <img
+                                                        src="/climatecolab-theme/images/icon_mem-${role.lowerCase}.png"
+                                                        width="16" height="16" />
+                                            </div>
+                                            ${role.printName}
+                                        </div>
+
+                                        <br /><br />
+                                        <a href="#_message_${message.messageId}">
+                                            <span class="com_num messageLink" rel="${message.messageId}">${status.index + 1} </span>
+                                        </a>
+                                        |
+                                        <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"
+                                            addthis:title="${discussion.description}" addthis:description="${message.body}"
+                                            addthis:url="${discussion.discussionUrl}"
+                                            data-hash="#_message_${message.messageId}">
+                                            <span>share</span>
+                                        </a>
+                                    </td>
+                                    <td class="the-comment ${message.expertReview ? 'expertReview' : ''}">
+                                        <c:choose>
+                                            <c:when test="${authorId == message.author.userId}">
+                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-creator-overlay.png"></img></div>
+                                            </c:when>
+                                            <c:when test="${isContributing}">
+                                                <div class="thread-creator-overlay"><img src="/climatecolab-theme/images/Thread-contributor-overlay.png"></img></div>
+                                            </c:when>
+                                        </c:choose>
+                                        <div id="message_${message.messageId}" class="content">
+                                            ${message.body }
+                                        </div>
+                                        <c:if test="${discussionPermissions.canAdminMessages }">
+                                            <div class="commentsActions">
+
+                                                <portlet:actionURL var="editCommentURL">
+                                                    <portlet:param name="action" value="editComment" />
+                                                </portlet:actionURL>
+                                                <a href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
+                                                |
+                                                <portlet:actionURL var="toggleExpertReviewURL">
+                                                    <portlet:param name="action" value="toggleDiscussionMessageFlag" />
+                                                    <portlet:param name="flag" value="EXPERT_REVIEW" />
+                                                    <portlet:param name="discussionId" value="${discussion.id}" />
+                                                    <portlet:param name="messageId" value="${message.messageId }" />
+                                                </portlet:actionURL>
+                                                <a href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>
+                                                |
+                                                <portlet:actionURL var="deleteMessageURL">
+                                                    <portlet:param name="action" value="deleteDiscussionMessageFlag" />
+                                                    <portlet:param name="discussionId" value="${discussion.id}" />
+                                                    <portlet:param name="messageId" value="${message.messageId }" />
+                                                </portlet:actionURL>
+                                                <a href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
+
+                                            </div>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </discussions:getRoleName>
 						</c:forEach>
 					</table>
         		

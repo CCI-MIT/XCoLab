@@ -50,6 +50,52 @@ import java.rmi.RemoteException;
 public class ProposalServiceSoap {
     private static Log _log = LogFactoryUtil.getLog(ProposalServiceSoap.class);
 
+    /**
+    * This method returns the index of the latest version of a proposal within a given contestPhaseId
+    *
+    * @param contestPhaseId    The ID of the contest phase
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static java.lang.String getProposalVersionFirstIndex(
+        long contestPhaseId, long proposalId) throws RemoteException {
+        try {
+            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersionFirstIndex(contestPhaseId,
+                    proposalId);
+
+            return returnValue.toString();
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    /**
+    * This method returns the index of the passed version of a proposal
+    *
+    * @param version           The proposal version
+    * @param proposalId        The ID of the proposal
+    * @return The index of the latest version in a list of all versions of the proposal
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static java.lang.String getProposalVersionIndex(long version,
+        long proposalId) throws RemoteException {
+        try {
+            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersionIndex(version,
+                    proposalId);
+
+            return returnValue.toString();
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
     public static java.lang.String getProposalVersions(long contestPhaseId,
         long proposalId, int start, int end) throws RemoteException {
         try {

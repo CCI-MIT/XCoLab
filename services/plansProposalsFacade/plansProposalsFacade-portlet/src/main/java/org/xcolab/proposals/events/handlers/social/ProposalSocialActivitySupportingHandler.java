@@ -1,28 +1,22 @@
 package org.xcolab.proposals.events.handlers.social;
 
-import org.xcolab.proposals.events.ProposalMemberAddedEvent;
-import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
-
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.google.common.eventbus.Subscribe;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 
+/**
+ * Created by kmang on 08/05/14.
+ */
 public class ProposalSocialActivitySupportingHandler extends BaseProposalSocialActivityEventHandler {
 
-
     @Subscribe
-    public void handleEvent(ProposalMemberAddedEvent event) {
-        addSocialActivity(
-                event, 
-                ProposalActivityKeys.USER_ADD, 
-                null);
-    }
-    
-    @Subscribe
-    public void handleEvent(ProposalMemberRemovedEvent event) {
-        addSocialActivity(
-                event, 
-                ProposalActivityKeys.USER_REMOVE, 
-                null);
+    public void handleEvent(ProposalSupporterAddedEvent event) {
+        addSocialActivity(event, ProposalActivityKeys.SUPPORTER_ADD, "");
     }
 
+    @Subscribe
+    public void handleEvent(ProposalSupporterRemovedEvent event) {
+        addSocialActivity(event, ProposalActivityKeys.SUPPORTER_REMOVE, "");
+    }
 }

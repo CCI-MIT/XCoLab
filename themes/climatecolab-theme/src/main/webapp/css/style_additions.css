@@ -594,12 +594,13 @@ cursor: pointer;
 
 
 #uploadImageContainer {
-	width: 100%;
+	width: 136px;
 	height: 30px;
 	background: url(../images/profile_upload-button.gif) no-repeat 15px 0px;
 	margin-top: 20px;
 	cursor: pointer;
 }
+
 #portraitUploadInput {
 	width: 140px;
 	height: 30px;
@@ -748,9 +749,20 @@ font-weight: 400;
     margin-bottom: 20px;
 }
 
+.popupreg_head {
+    float:left;
+    width: 50%;
+}
+
 .popupreg_head h1 {
     color: #000;
     font-size: 36px;
+}
+
+.sso-register {
+    float: right;
+    width: 50%;
+    margin-bottom: 20px;
 }
 
 .popupreg_txt.req {
@@ -863,7 +875,7 @@ display: inline;
 
 
 .popup .login_popup_box {
-    width: 374px;
+    /* width: 374px;*/
     padding: 17px 0 10px 13px;
     /*background: url(../images/search-bg.png);*/
     font-size: 14px;
@@ -877,6 +889,12 @@ display: inline;
 
 #popup_forgotpassword .username {
 	width: 224px;
+}
+
+.inputLimitContainer {
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: right;
 }
 
 .inputLimitContainer.overflow {
@@ -1293,11 +1311,6 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 }
 */
 
-
-#p_p_id_145_ {
-	display:none;
-}
-
 .add-comment textarea.field {
 	width: 100%;
 	max-width: 100% !important;
@@ -1434,4 +1447,156 @@ div.portlet-column {
     height: 5px;
     display: inline-block;
     white-space: nowrap;
+}
+.js .controls-hidden .lfr-meta-actions {
+	display: block;
+}
+
+.login-box-table {
+    float: left;
+
+}
+
+table.login-box-table td {
+    padding: 0 3px 0 0;
+    vertical-align: middle;
+}
+
+table.login-box-table th {
+    padding: 0 3px 10px 0;
+    vertical-align: middle;
+}
+
+.role-indicator div {
+    float: left;
+    margin-right: 15px;
+}
+
+.clearfix.lfr-pagination {
+	visibility: visible;
+}
+
+.lfr-pagination .pager {
+	padding-top: 0;
+	text-align: inherit;
+}
+.lfr-pagination .pager li {
+	background: none;
+	float: left;
+}
+
+.lfr-pagination .pager li a {
+	cursor: pointer;
+}
+
+.lfr-pagination .pager li.disabled a {
+	color: #ccc;
+	cursor: default;
+}
+
+.lfr-pagination .lfr-pagination-config {
+	display: none;
+}
+
+/**
+Admin interface fixes
+*/
+
+div#p_p_id_145_ {
+    height: 44px;
+    background-color: #118ade;
+    background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#118ade),color-stop(100%,#1273c7));
+    background-image: -webkit-linear-gradient(top,#118ade,#1273c7);
+    background-image: -moz-linear-gradient(top,#118ade,#1273c7);
+    background-image: -o-linear-gradient(top,#118ade,#1273c7);
+    background-image: linear-gradient(top,#118ade,#1273c7);
+}
+#p_p_id_145_ ul {
+    background: transparent none;
+}
+
+#p_p_id_145_ li {
+    background: transparent none;
+}
+
+#p_p_id_145_ div.navbar-inner {
+    width: 100%;
+}
+
+#p_p_id_145_ div.container > div {
+    display: block;
+    position: static;
+}
+
+#_145_dockbar div.container > a {
+    display: none;
+}
+
+#p_p_id_145_ ul.nav {
+    display: inline-block;
+    float:left;
+    position: static;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls {
+    float: right;
+}
+
+#p_p_id_145_ .dropdown ul {
+    display: none;
+    width: 100%;
+}
+
+#p_p_id_145_ .dropdown ul li span {
+    padding-right: 5px;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls > li {
+    float:left;
+}
+
+#p_p_id_145_ li.open ul {
+    display: block;
+    background-color: #30a3fb;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls li.dropdown a {
+    display:block;
+}
+#p_p_id_145_ i {
+    width: 9px;
+    height: 9px;
+}
+
+#p_p_id_145_ i.icon-plus {
+    background-image: url(../images/contest-icon-plus.png) !important;
+}
+
+#p_p_id_145_ ul.nav.nav-add-controls li > a {
+    background: #118ade;
+    border: 1px solid;
+    border-radius: 3px;
+    padding-top: 2px;
+}
+
+#p_p_id_145_ ul.nav.nav-add-controls li a > span {
+    z-index: 100;
+}
+
+#p_p_id_145_ ul#_145_navAddControls > li{
+    display: inline-block;
+}
+
+#p_p_id_145_ .nav.nav-account-controls > li {
+    position: relative;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls li ul.dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    width: 200px;
+}
+
+#p_p_id_145_ .dropdown ul li span:hover {
+    color: black;
 }

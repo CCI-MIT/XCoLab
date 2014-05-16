@@ -16,6 +16,7 @@ public class OntologySpaceSoap implements Serializable {
     private long _id;
     private String _name;
     private String _description;
+    private int _order;
 
     public OntologySpaceSoap() {
     }
@@ -26,6 +27,7 @@ public class OntologySpaceSoap implements Serializable {
         soapModel.setId(model.getId());
         soapModel.setName(model.getName());
         soapModel.setDescription(model.getDescription());
+        soapModel.setOrder(model.getOrder());
 
         return soapModel;
     }
@@ -96,5 +98,13 @@ public class OntologySpaceSoap implements Serializable {
 
     public void setDescription(String description) {
         _description = description;
+    }
+
+    public int getOrder() {
+        return _order;
+    }
+
+    public void setOrder(int order) {
+        _order = order;
     }
 }

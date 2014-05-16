@@ -1,6 +1,22 @@
 var itemsPerPage = 10;
-function loadHistory(page){
-    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + getPhaseId() + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage), { get_param: 'value' }, function(data) {
+var defaultPhaseId = -1;
+
+function loadHistory(page) {
+    // Load the page with items of the current contest phase
+    if (page == -1 && getPhaseId() != defaultPhaseId) {
+        $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-version-first-index/contestPhaseId/' + getPhaseId() + '/proposalId/' + proposalId, { get_param: 'value' }, function(data) {
+            var page = 0;
+            page = Math.floor(data.index / itemsPerPage);
+            load(page, defaultPhaseId);
+        });
+    } else if (page == -1) {
+        load(page + 1, defaultPhaseId);
+    } else {
+        load(page, defaultPhaseId);
+    }
+}
+function load(page, phaseId){
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage - 1), { get_param: 'value' }, function(data) {
         $('#versions > div > div > table > tbody').empty();
         var even = true;
         $.each(data.versions, function(index, attr) {
@@ -28,7 +44,12 @@ function addPagination(prev,next,currentPage,totalPages){
 
 function triggerHistoryVisibility(){
     if ($('#versions').hasClass('hidden')) {
-        loadHistory(0);
+        if (getVersion() != -1) {
+            loadHistoryForVersion(getVersion());
+        } else {
+            loadHistory(-1);
+        }
+
         $('#versionContainerTrigger').text("Hide history");
 
     }
@@ -59,9 +80,23 @@ function getPhaseId(){
 }
 
 function getVersion(){
+    // Try to get it when an old version was selected
+    var version = $( "#versionId" ).html();
+    if (version != 0) {
+        return version;
+    }
+
     var url = window.document.URL.toString().split("/");
     for (var i = 0; i < url.length; i++) {
         if(url[i] == 'version') return url[i+1];
     }
     return -1;
+}
+
+function loadHistoryForVersion(version) {
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-version-index/version/' + version + '/proposalId/' + proposalId, { get_param: 'value' }, function(data) {
+        var page = 0;
+        page = Math.floor(data.index / itemsPerPage);
+        load(page, defaultPhaseId);
+    });
 }

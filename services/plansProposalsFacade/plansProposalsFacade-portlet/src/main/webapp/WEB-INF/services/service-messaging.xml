@@ -82,6 +82,7 @@
 		<column name="emailOnSend" type="boolean"/>
         <column name="emailOnReceipt" type="boolean"/>
         <column name="emailOnActivity" type="boolean"/>
+        <column name="emailActivityDailyDigest" type="boolean"/>
 
 
 

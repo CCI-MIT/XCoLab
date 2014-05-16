@@ -5,6 +5,12 @@ create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, t
 create index IX_1413A2B6 on xcolab_ActivitySubscription (classNameId, classPK, type_, receiverId);
 create index IX_33049EE6 on xcolab_ActivitySubscription (receiverId);
 
+create index IX_1AD9FFEC on xcolab_BalloonLink (balloonUserUuid);
+
+create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
+
+create index IX_AFDD82EB on xcolab_BalloonUserTracking (email);
+
 create index IX_5192E6B6 on xcolab_Contest (PlanTypeId);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
 create index IX_9AB21749 on xcolab_Contest (contestActive, contestPrivate);

@@ -132,23 +132,41 @@ public class OntologyAdminBean {
         newSpaceDescription = "";
     }
     
-    public void deleteTerm(ActionEvent e) throws PortalException, SystemException {
-        Long termId = null;
+    public void deleteSpace(ActionEvent e) throws PortalException, SystemException {
+        Long spaceId = null;
         try {
-            Object term = e.getComponent().getAttributes().get("termId");
-            if (term != null) {
-                termId = Long.parseLong(term.toString());
+            Object space = e.getComponent().getAttributes().get("spaceId");
+            if (space != null) {
+				spaceId = Long.parseLong(space.toString());
             }
 
         }
         catch (NumberFormatException ex) {
             // ignore
         }
-        if (termId != null) {
-            removeNodeWithChildren(termId);
+        if (spaceId != null) {
+            removeOntologySpace(spaceId);
         }
         
     }
+
+	public void deleteTerm(ActionEvent e) throws PortalException, SystemException {
+		Long termId = null;
+		try {
+			Object term = e.getComponent().getAttributes().get("termId");
+			if (term != null) {
+				termId = Long.parseLong(term.toString());
+			}
+
+		}
+		catch (NumberFormatException ex) {
+			// ignore
+		}
+		if (termId != null) {
+			removeNodeWithChildren(termId);
+		}
+
+	}
     
     private void removeNodeWithChildren(long nodeId) throws SystemException, PortalException {
         for (OntologyTerm t: OntologyTermLocalServiceUtil.getChildTerms(OntologyTermLocalServiceUtil.getOntologyTerm(nodeId))) {
@@ -157,6 +175,10 @@ public class OntologyAdminBean {
         OntologyTermLocalServiceUtil.deleteOntologyTerm(nodeId);
         
     }
+
+	private void removeOntologySpace(long spaceId) throws SystemException, PortalException {
+		OntologySpaceLocalServiceUtil.deleteOntologySpace(spaceId);
+	}
     
     public void editTerm(ActionEvent e) throws PortalException, SystemException {
         Long termId = null;

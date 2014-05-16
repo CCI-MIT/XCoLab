@@ -16,15 +16,18 @@
 }
 
 .contestlist.table .column.contestWhat {
-	width: 153px;
+	width: 118px;
 }
 
 .contestlist.table .column.contestWhere {
-	width: 140px;
+	width: 105px;
 }
 
 .contestlist.table .column.contestWho {
-	width: 140px;
+	width: 105px;
+}
+.contestlist.table .column.contestHow {
+	width: 105px;
 }
 
 .contestSubscribe img {
@@ -33,7 +36,7 @@
 	margin-right: 5px;
 }
 
-td.ontologyItem {
+td .ontologyItem {
 	padding-right:30px;
 	padding-top:2px;
 }
@@ -55,15 +58,15 @@ div.sponsorLogo table {
 
 .heading-sponsor-logo img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 60px;
     height: auto;
     width: auto;
 }
 
 .heading-sponsor-logo {
     max-width: 200px;
-    max-height: 45px;
     min-height: 30px;
+    max-height: 60px;
     float: right;
     margin: 0 0 0 3px;
     padding: 3px;
@@ -118,11 +121,8 @@ div.sponsorLogo img {
     position: relative;
 }
 
-
-.inputLimitContainer {
-	margin-top: 5px;
-	font-size: 12px;
-	text-align: right;
+.addpropInputContainer > select {
+    width: 100%;
 }
 
 #uploadWidget {
@@ -270,4 +270,41 @@ div.sponsorLogo img {
 
 .addpropbox.notempty .copyFromBaseProposalTriggerContainer {
 	display: none;
+}
+
+.ui-autocomplete.ui-menu {
+    z-index: 100;
+}
+
+.recipient-error {
+    color: red;
+    font-weight: bold;
+}
+
+.message-share-button {
+    margin-top: 15px;
+}
+
+#share-proposal-container table.colab td.b {
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+#share-proposal-container table.colab td input {
+    width: 90%;
+}
+
+.thread-creator-overlay {
+    background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
+    float: left;
+    line-height: 0;
+    font-size: 0;
+    color: transparent;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+}
+
+.commentor-header {
+    float:left;
 }

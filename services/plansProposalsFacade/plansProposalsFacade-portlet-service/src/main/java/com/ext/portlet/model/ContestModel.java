@@ -341,6 +341,21 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setSponsorText(String sponsorText);
 
     /**
+     * Returns the sponsor link of this contest.
+     *
+     * @return the sponsor link of this contest
+     */
+    @AutoEscape
+    public String getSponsorLink();
+
+    /**
+     * Sets the sponsor link of this contest.
+     *
+     * @param sponsorLink the sponsor link of this contest
+     */
+    public void setSponsorLink(String sponsorLink);
+
+    /**
      * Returns the flag of this contest.
      *
      * @return the flag of this contest

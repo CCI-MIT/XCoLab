@@ -8,6 +8,8 @@ import com.ext.portlet.service.base.OntologySpaceLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.util.List;
+
 /**
  * The implementation of the ontology space local service.
  *
@@ -38,7 +40,7 @@ public class OntologySpaceLocalServiceImpl
         store(space);
         
         // create parent term for new space
-        OntologyTerm t = OntologyTermLocalServiceUtil.createTerm(null, "all", space.getId(), null);
+        OntologyTerm t = OntologyTermLocalServiceUtil.createTerm(0L, "all", space.getId(), null);
         
         return space;
     }
@@ -52,8 +54,8 @@ public class OntologySpaceLocalServiceImpl
         }
     }
     
-    public OntologyTerm getTopTerm(OntologySpace space) throws SystemException {
-        return OntologyTermLocalServiceUtil.findByParentIdSpaceId(0L, space.getId()).get(0);
+    public List<OntologyTerm> getTopTerms(OntologySpace space) throws SystemException {
+        return OntologyTermLocalServiceUtil.findByParentIdSpaceId(0L, space.getId());
     }
     
 }

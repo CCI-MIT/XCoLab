@@ -94,9 +94,9 @@ public class FormatTimeSpanTag extends SimpleTagSupport {
         
         public String format(long val) {
             if (val == 1) {
-                return namePlural;
+                return nameSingular;
             }
-            return nameSingular;
+            return namePlural;
                 
         }
     }

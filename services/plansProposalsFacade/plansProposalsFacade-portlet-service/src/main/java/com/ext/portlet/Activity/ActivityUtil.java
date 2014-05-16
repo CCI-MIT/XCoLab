@@ -14,26 +14,51 @@ import java.util.*;
 
 import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.BooleanClauseOccurImpl;
+import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.ParseException;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchEngineUtil;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.SortFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.social.NoSuchActivityException;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import com.liferay.portlet.social.service.persistence.SocialActivityUtil;
+
+import javax.management.Query;
 
 public class ActivityUtil {
 
     private static Log _log = LogFactoryUtil.getLog(ActivityUtil.class);
 
     private final static String encoding = "UTF-8";
+
+    public static final long AGGREGATION_TIME_WINDOW = 1000 * 60 * 60 * 1l; // 1h
+
+    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static SubscriptionProvider provider = new SubscriptionProvider() {
 
@@ -93,31 +118,54 @@ public class ActivityUtil {
     }
     
     public static List<SocialActivity> retrieveWindowedActivities(int pagestart, int next, boolean showAdmin) throws SystemException, PortalException {
-    	List<SocialActivity> activities = null;
-    	if (showAdmin) { 
-    		activities = SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+        Hits hits;
+    	if (showAdmin) {
+            hits = getActivitySearchResults(pagestart, next);
     	}
     	else {
-
             Role r = RoleLocalServiceUtil.getRole(10112L,"Administrator");
             
-            List<Object> administratorsIds = new ArrayList<Object>();
+            List<Long> administratorsIds = new ArrayList<Long>();
             for (long userId: UserLocalServiceUtil.getRoleUserIds(r.getRoleId())) {
             	administratorsIds.add(userId);
             }
-    		DynamicQuery dq = DynamicQueryFactoryUtil.forClass(SocialActivity.class, PortalClassLoaderUtil.getClassLoader());
-    		dq.add(RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", administratorsIds)));
-    		dq.addOrder(OrderFactoryUtil.desc("createDate"));
-    		activities = SocialActivityLocalServiceUtil.dynamicQuery(dq, pagestart, next);
+    		hits = getActivitySearchResults(administratorsIds, pagestart, next);
     	}
 
-        return groupActivities(activities);
+        List<SocialActivity> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
+        for (Document activityDoc : hits.getDocs()) {
+            try {
+                SocialActivity sa = SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
+                aggregatedSocialActivities.add(sa);
+            } catch (Exception e) {
+                _log.error(e);
+            }
+        }
+
+		return aggregatedSocialActivities;
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException {
-        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, pagestart, next);
+    public static List<SocialActivity> retrieveWindowedActivities(long userId, int pagestart, int next) throws SystemException, PortalException {
+        Hits hits = getActivitySearchResults(userId, pagestart, next);
+        List<SocialActivity> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
+        for (Document activityDoc : hits.getDocs()) {
+            try {
+                SocialActivity sa = SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
+                aggregatedSocialActivities.add(sa);
+            } catch (Exception e) {
+                _log.error(e);
+            }
+        }
 
-        return groupActivities(activities);
+        return aggregatedSocialActivities;
+    }
+
+    public static List<SocialActivity> groupAllActivities() throws SystemException {
+        return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(DEFAULT_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+    }
+
+    public static List<SocialActivity> groupUserActivities(long userId) throws SystemException {
+        return groupActivities(SocialActivityLocalServiceUtil.getUserActivities(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
     }
 
     public static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
@@ -131,7 +179,7 @@ public class ActivityUtil {
         }
 
         //cluster
-        List<SocialActivity> ret = new LinkedList<>();
+        List<SocialActivity> aggregatedActivities = new LinkedList<>();
         Comparator<SocialActivity> sorter = new Comparator<SocialActivity>() {
             @Override
             public int compare(SocialActivity o1, SocialActivity o2) {
@@ -142,80 +190,35 @@ public class ActivityUtil {
             List<SocialActivity> ascending = new ArrayList<>(sal); //convert to array for sorting
             Collections.sort(ascending, sorter);
 
-            final long groupSize = 1000 * 60 * 60 * 24l; //1 day
             SocialActivity curMin = null;
             for (SocialActivity sa : ascending) {
-                if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < groupSize) curMin = sa;
+                if (curMin == null || sa.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) curMin = sa;
                 else {
-                    ret.add(curMin);
+                    aggregatedActivities.add(curMin);
                     curMin = sa;
                 }
             }
-            ret.add(curMin);
+            aggregatedActivities.add(curMin);
         }
         //horrible code start
-        Collections.sort(ret, sorter);
-        Collections.reverse(ret);
+        Collections.sort(aggregatedActivities, sorter);
+        Collections.reverse(aggregatedActivities);
         //horrible code end
 
-        return ret;
+        return aggregatedActivities;
     }
 
     private static String getSocialActivityKey(SocialActivity sa) {
-        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType();
+        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType() + "_" + sa.getUserId();
     }
 
-    public static int getAllActivitiesCount() throws SystemException {
-        return SocialActivityLocalServiceUtil.getSocialActivitiesCount();
-    }
+    public static int getAllActivitiesCount() throws SystemException, PortalException {
+        int searchResultCount = getActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        if (searchResultCount == 0) {
+            return groupAllActivities().size();
+        }
 
-    public static List<SocialActivity> retrieveActivities(long userId, int pagestart, int count) throws SystemException, PortalException {
-        List<SocialActivity> activities = SocialActivityLocalServiceUtil.getUserActivities(userId, pagestart, count);
-        return activities;
-    /*
-        List<ActivitySubscription> subscriptions = ActivitySubscriptionLocalServiceUtil.findByUser(userId);
-		Long companyId = UserLocalServiceUtil.getUser(userId).getCompanyId();
-		if (subscriptions.size() ==0) return Collections.emptyList();
-		DynamicQuery query = DynamicQueryFactoryUtil.forClass(SocialActivity.class);
-		Criterion crit = null;
-		for (ActivitySubscription sub : subscriptions) {
-			Map<String,Number> criterion = new HashMap<String,Number>();
-			int type = Integer.parseInt(sub.getActivitytype());
-			if (sub.getEntityId() <0) {
-				Portlet p = PortletLocalServiceUtil.getPortletById(companyId, sub.getPortletId());
-			
-				String[] classnames = p.getSocialActivityInterpreterInstance().getClassNames();
-				for (String classname:classnames) {
-					criterion.put("classNameId", ClassNameLocalServiceUtil.getClassNameId(classname));
-					criterion.put("type", type);
-				}
-			} else {
-				criterion.put("classPK",sub.getEntityId());
-				criterion.put("type", type);
-			}
-			if (crit == null) {
-				crit = RestrictionsFactoryUtil.allEq(criterion);
-			} else {
-				crit = RestrictionsFactoryUtil.or(crit,RestrictionsFactoryUtil.allEq(criterion));
-			}
-		}
-		query.add(crit).addOrder(OrderFactoryUtil.desc("createDate"));
-		
-		
-		List<SocialActivity> activities = new ArrayList<SocialActivity>();
-		List<Object> queryResults = SocialActivityLocalServiceUtil.dynamicQuery(query,pagestart,pagestart+count-1);
-//		for (Object activity : queryResults
-//				.subList(pagestart, Math.min(pagestart + count - 1, queryResults.size() - 1))) {
-//			activities.add((SocialActivity) activity);
-//		}
-		
-		for(Object activity:queryResults) {
-			activities.add((SocialActivity)activity);
-		}
-		
-		return activities;
-		*/
-        //return null;
+        return searchResultCount;
     }
 
     public static void deleteSubscription(String portlet, long userid, long entityid, int type) throws SystemException {
@@ -259,7 +262,12 @@ public class ActivityUtil {
 
     public static int getActivitiesCount(long userId) throws SystemException, PortalException {
 
-        return retrieveActivities(userId, 0, Integer.MAX_VALUE).size();
+        int searchResultCount = getActivitySearchResults(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
+        if (searchResultCount == 0) {
+            return groupUserActivities(userId).size();
+        }
+
+        return searchResultCount;
     }
 
 
@@ -378,6 +386,50 @@ public class ActivityUtil {
             }
         }
         return ret;
+    }
+
+    private static Hits getActivitySearchResults(long userId, int start, int end) throws SearchException {
+        SearchContext context = new SearchContext();
+        context.setCompanyId(10112L);
+        BooleanQuery query = BooleanQueryFactoryUtil.create(context);
+        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
+
+        BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+        subQuery.addExactTerm("userId", userId);
+
+        try {
+            query.add(subQuery, BooleanClauseOccur.MUST);
+        } catch (ParseException e) {
+            _log.error(e);
+        }
+
+        Sort sort = SortFactoryUtil.create("createDate", Sort.FLOAT_TYPE, true);
+        return SearchEngineUtil.search(SearchEngineUtil.getDefaultSearchEngineId(), context.getCompanyId(), query, sort, start, end);
+    }
+
+    private static Hits getActivitySearchResults(int start, int end) throws SearchException {
+        return getActivitySearchResults(new ArrayList<Long>(), start, end);
+    }
+
+    private static Hits getActivitySearchResults(List<Long> excludedUserIds, int start, int end) throws SearchException {
+        SearchContext context = new SearchContext();
+        context.setCompanyId(10112L);
+        BooleanQuery query = BooleanQueryFactoryUtil.create(context);
+        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
+
+        BooleanQuery excludeQuery = BooleanQueryFactoryUtil.create(context);
+        for (Long excludedUserId : excludedUserIds) {
+            excludeQuery.addExactTerm("userId", excludedUserId);
+        }
+
+        try {
+            query.add(excludeQuery, BooleanClauseOccurImpl.MUST_NOT);
+        } catch (ParseException e) {
+            _log.error(e);
+        }
+
+        Sort sort = SortFactoryUtil.create("createDate", Sort.FLOAT_TYPE, true);
+        return SearchEngineUtil.search(SearchEngineUtil.getDefaultSearchEngineId(), context.getCompanyId(), query, sort, start, end);
     }
 
 }

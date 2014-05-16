@@ -6,9 +6,6 @@ import java.util.List;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +27,8 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 @Controller
 @RequestMapping("view")
@@ -53,7 +52,7 @@ public class ContestProposalsController extends BaseProposalsController {
         User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
 
-        for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
 
@@ -63,10 +62,8 @@ public class ContestProposalsController extends BaseProposalsController {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
-            if (proposalWrapper.isVisibleInPhase()) {
-                proposals.add(proposalWrapper);
-            }
-            
+            proposals.add(proposalWrapper);
+
             // set phase attributes
             List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
             for (ProposalContestPhaseAttribute attribute: phaseAttributes) {

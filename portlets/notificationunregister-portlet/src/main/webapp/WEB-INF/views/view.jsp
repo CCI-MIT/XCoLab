@@ -11,14 +11,8 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<h2>
-	<c:choose >
-		<c:when test="#{unregisteringSubscription }">
-			Your subscription has been removed.	
-		</c:when> 
-		<c:otherwise>
-			Your address has been excluded from our newsletter recipients.
-		</c:otherwise>
-	</c:choose>
+	<h2 style="margin-bottom: 10px;">
+	    ${responseTitle}
 	</h2>
+    ${responseText}
 </jsp:root>

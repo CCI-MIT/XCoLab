@@ -40,6 +40,7 @@ public class OntologySpaceWrapper implements OntologySpace,
         attributes.put("id", getId());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
+        attributes.put("order", getOrder());
 
         return attributes;
     }
@@ -62,6 +63,12 @@ public class OntologySpaceWrapper implements OntologySpace,
 
         if (description != null) {
             setDescription(description);
+        }
+
+        Integer order = (Integer) attributes.get("order");
+
+        if (order != null) {
+            setOrder(order);
         }
     }
 
@@ -143,6 +150,26 @@ public class OntologySpaceWrapper implements OntologySpace,
     @Override
     public void setDescription(java.lang.String description) {
         _ontologySpace.setDescription(description);
+    }
+
+    /**
+    * Returns the order of this ontology space.
+    *
+    * @return the order of this ontology space
+    */
+    @Override
+    public int getOrder() {
+        return _ontologySpace.getOrder();
+    }
+
+    /**
+    * Sets the order of this ontology space.
+    *
+    * @param order the order of this ontology space
+    */
+    @Override
+    public void setOrder(int order) {
+        _ontologySpace.setOrder(order);
     }
 
     @Override

@@ -4,8 +4,14 @@ import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ActivitySubscriptionServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventServiceUtil;
+import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
+import com.ext.portlet.service.BalloonLinkServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
 import com.ext.portlet.service.BalloonStatsEntryServiceUtil;
+import com.ext.portlet.service.BalloonTextLocalServiceUtil;
+import com.ext.portlet.service.BalloonTextServiceUtil;
+import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
@@ -37,6 +43,8 @@ import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
 import com.ext.portlet.service.FocusAreaServiceUtil;
 import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
+import com.ext.portlet.service.LoginLogLocalServiceUtil;
+import com.ext.portlet.service.LoginLogServiceUtil;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusServiceUtil;
@@ -176,9 +184,18 @@ public class ClpMessageListener extends BaseMessageListener {
             AnalyticsUserEventLocalServiceUtil.clearService();
 
             AnalyticsUserEventServiceUtil.clearService();
+            BalloonLinkLocalServiceUtil.clearService();
+
+            BalloonLinkServiceUtil.clearService();
             BalloonStatsEntryLocalServiceUtil.clearService();
 
             BalloonStatsEntryServiceUtil.clearService();
+            BalloonTextLocalServiceUtil.clearService();
+
+            BalloonTextServiceUtil.clearService();
+            BalloonUserTrackingLocalServiceUtil.clearService();
+
+            BalloonUserTrackingServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();
@@ -224,6 +241,9 @@ public class ClpMessageListener extends BaseMessageListener {
             LandingPageLocalServiceUtil.clearService();
 
             LandingPageServiceUtil.clearService();
+            LoginLogLocalServiceUtil.clearService();
+
+            LoginLogServiceUtil.clearService();
             MessageLocalServiceUtil.clearService();
 
             MessageServiceUtil.clearService();

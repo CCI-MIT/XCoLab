@@ -13,6 +13,7 @@ public class ContestWrapper {
     private static final String WHERE = "where";
     private static final String WHAT = "what";
     private static final String WHO = "who";
+    private static final String HOW = "how";
     private final static Map<Long, FocusArea> faCache = new HashMap<Long, FocusArea>();
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
@@ -119,6 +120,16 @@ public class ContestWrapper {
         return contest.getCreated();
     }
 
+    public long getCreatedTime() {
+    	if (contest.getCreated() != null) {
+    		return contest.getCreated().getTime();
+    	}
+    	else if (contest.getUpdated() != null) {
+    		return contest.getUpdated().getTime();
+    	}
+    	return 0;
+    }
+
     public void setCreated(Date created) {
         contest.setCreated(created);
     }
@@ -215,6 +226,18 @@ public class ContestWrapper {
         contest.setSponsorText(sponsorText);
     }
 
+    public String getSponsorLink() {
+        return contest.getSponsorLink();
+    }
+
+    public void setSponsorLink(String sponsorLink) {
+        contest.setSponsorLink(sponsorLink);
+    }
+
+    public boolean getSponsorLinkAvailable() {
+        return !contest.getSponsorLink().equals("");
+    }
+
     public int getFlag() {
         return contest.getFlag();
     }
@@ -279,6 +302,11 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
 
+    public long getTotalCommentsCount() throws PortalException, SystemException {
+        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+    }
+
+
     public long getVotesCount() throws PortalException, SystemException {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }
@@ -320,6 +348,16 @@ public class ContestWrapper {
     public List<OntologyTerm> getWhere() throws PortalException,
             SystemException {
         return getTermFromSpace(WHERE);
+    }
+
+    public String getHowName() throws PortalException, SystemException {
+        return getTermNameFromSpace(HOW);
+    }
+    
+
+    public List<OntologyTerm> getHow() throws PortalException,
+            SystemException {
+        return getTermFromSpace(HOW);
     }
 
     public String getWhereName() throws PortalException, SystemException {

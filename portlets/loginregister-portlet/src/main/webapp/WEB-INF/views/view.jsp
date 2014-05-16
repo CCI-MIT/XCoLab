@@ -17,26 +17,41 @@
 		<portlet:param name="isRegistering" value="true" />
 		<portlet:param name="redirect" value="${redirect}" />
 	</portlet:actionURL>
+    <portlet:actionURL name="initiateOpenIdRegistration" var="SSOGoogleURL">
+        <portlet:param name="SSO" value="google" />
+        <portlet:param name="action" value="initiateOpenIdRegistration" />
+    </portlet:actionURL>
+    <portlet:actionURL name="initiateRegistration" var="SSOFbURL">
+        <portlet:param name="SSO" value="facebook" />
+        <portlet:param name="action" value="initiateRegistration" />
+    </portlet:actionURL>
 
 	<div class="popupreg_form">
 
 
+            <div class="popupreg_head">
+                <h1>Join the CoLab</h1>
+            </div>
 
-		<div class="popupreg_head">
-			<h1>Join the CoLab</h1>
-		</div>
+            <div class="sso-register">
+                <div style="float: right">
+                    <h1>Or sign in with:</h1><br/>
+                    <a href="${SSOFbURL}" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
+                    <a href="${SSOGoogleURL }" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
+                </div>
+            </div>
 
-        
-		<div class="is-required">
-			<img src="/climatecolab-theme/images/reg-star.png" width="8"
-				height="7" align="texttop" /> is a required field.
-		</div>
+
+        <div class="is-required">
+            <img src="/climatecolab-theme/images/reg-star.png" width="8"
+                 height="7" align="texttop" /> is a required field.
+        </div>
 
 		<c:if test="${ error != null and isRegistering }">
 			<div class="error-message">${error}</div>
 		</c:if>
 
-		<form action="/loginregister-portlet/fileUploadServlet" method="post"
+		<form style="margin-top: 20px;" action="/loginregister-portlet/fileUploadServlet" method="post"
 			enctype="multipart/form-data" target="_fileUploadFrame"
 			id="fileUploadForm">
 			<input type="file" name="file" id="portraitUploadInput" />
@@ -58,7 +73,9 @@
 						</div></td>
 
 					<th class="second" rowspan="4">Photo</th>
-					<td rowspan="4"><c:choose>
+					<td rowspan="4">
+                        <div style="float: right">
+                            <c:choose>
 							<c:when test="${ createUserBean.getImageId() != null }">
 								<img src="/image/contest?img_id=${createUserBean.getImageId() }" id="userPortrait"
 									width="150" height="150" />
@@ -68,8 +85,13 @@
 									width="150" height="150" />
 							</c:otherwise>
 						</c:choose>
+                        <div class="clearfix">
+                            <!--  -->
+                        </div>
+						<div id="uploadImageContainer"><!--  --></div>
+    </div>
+    </td>
 
-						<div id="uploadImageContainer"><!--  --></div></td>
 
 				</tr>
 				<tr>
@@ -134,10 +156,15 @@
 				<tr>
 					<th>Short Bio</th>
 					<td colspan="3"><form:textarea
-							cssClass="ckeditor shortBioContent" path="shortBio" />
+							cssClass="ckeditor_placeholder shortBioContent" path="shortBio" />
+                        <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
+                            <span class="limit_characterCount"><!--  --></span>/&#160;
+                            <span class="limit_charactersMax">2000</span> characters
+                        </div>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="alert alert-error" path="shortBio" />
-						</div></td>
+						</div>
+                    </td>
 				</tr>
 
                 <c:if test="${ createUserBean.captchaNeeded }">
@@ -159,7 +186,8 @@
 					<th nowrap="nowrap">Terms of use</th>
 					<td class="popupreg_terms-right" colspan="3">By registering
 						for this site, you agree to abide<br /> by the 
-						<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a>. 
+						<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a> and
+                        <a href="/web/guest/resources/-/wiki/Main/Community%20philosophy%20and%20policies">Community Philosophy and Policy</a>.
                         <p>We require a valid email address in order to count your vote.</p>
 					</td>
 				</tr>
@@ -230,9 +258,68 @@
 			jQuery(function() {
 				updateUploadBtnOffset();
 				$(window).resize(updateUploadBtnOffset);
-				
+				initializeCkeditor();
+
+                for (var key in CKEDITOR.instances) {
+                    // Set initial text length
+                    var len = jQuery.trim(strip(CKEDITOR.instances[key].getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                    validateCharlength( $('[id="'+key+'"]'), len);
+                }
 			});
-			
+
+            var data = $('.ckeditor-placeholder').val();
+            function updateTextarea() {
+                for (var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+                data = jQuery('.ckeditor-placeholder').val();
+            }
+
+            function initializeCkeditor() {
+                jQuery('ckeditor_placeholder').val(data);
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].destroy(true);
+                }
+
+                var config = { extraPlugins: 'onchange'};
+
+                $('.ckeditor_placeholder').each(function (idx, val) {
+                    var textId = $(this).attr('id');
+                    var editor = CKEDITOR.replace(textId, config);
+                    editor.setData($(this).val());
+                });
+
+                // Editor change callback
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
+                        var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                        validateCharlength( $('[id="'+key+'"]'), len);
+                    });
+                }
+            }
+
+            function strip(html)
+            {
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = html;
+                return tmp.textContent || tmp.innerText || "";
+            }
+
+            function validateCharlength(elem, len) {
+                var charCountContainer = elem.parent().find('.inputLimitContainer');
+
+                var elem = charCountContainer.children('.limit_characterCount');
+                var max = parseInt(charCountContainer.children('.limit_charactersMax').text());
+                if (elem) {
+                    if (len > max) {
+                        charCountContainer.addClass('overflow');
+                    }
+                    else {
+                        charCountContainer.removeClass('overflow');
+                    }
+                    elem.text(""+len);
+                }
+            }
 			
 		</script>
 

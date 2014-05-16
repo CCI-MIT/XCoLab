@@ -29,11 +29,7 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalSupporter;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.ext.portlet.service.ContestPhaseLocalService;
 import com.liferay.portal.model.User;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -409,14 +405,23 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return dcg;
     }
 
-    public long getCommentsCount(Contest contest) throws PortalException, SystemException {
+    public long getTotalCommentsCount(Contest contest) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
+    }
+
+    public long getCommentsCount(Contest contest) throws PortalException, SystemException {
+        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
     }
 
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
         long proposalsCommentsCount = 0;
-        for (Proposal proposal: proposalLocalService.getProposalsInContest(contest.getContestPK())) {
-            proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
+        try {
+            ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            for (Proposal proposal: proposalLocalService.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK())) {
+                proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
+            }
+        } catch (SystemException e) {
+            return 0;
         }
         return proposalsCommentsCount;
     }

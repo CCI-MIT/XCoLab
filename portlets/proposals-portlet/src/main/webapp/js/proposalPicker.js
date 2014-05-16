@@ -218,11 +218,13 @@ var highlighter = function() {
 };
 
 // http://mathiasbynens.be/notes/oninput
-input.onkeyup = inputHandler;
-input.oninput = function() {
-    input.onkeyup = null;
-    inputHandler();
-};
+if (input) {
+	input.onkeyup = inputHandler;
+	input.oninput = function() {
+		input.onkeyup = null;
+		inputHandler();
+	};
+}
 
 // -- SPINNING (LOADING) WHEEL --
 

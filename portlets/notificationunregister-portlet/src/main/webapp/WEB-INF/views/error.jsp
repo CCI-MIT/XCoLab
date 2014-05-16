@@ -11,6 +11,6 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<h2>Invalid request</h2>
+	<h2>The unsubscribe ticket has expired</h2>
 
 </jsp:root>

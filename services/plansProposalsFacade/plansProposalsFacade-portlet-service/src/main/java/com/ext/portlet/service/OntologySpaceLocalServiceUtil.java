@@ -272,10 +272,10 @@ public class OntologySpaceLocalServiceUtil {
         getService().store(space);
     }
 
-    public static com.ext.portlet.model.OntologyTerm getTopTerm(
+    public static java.util.List<com.ext.portlet.model.OntologyTerm> getTopTerms(
         com.ext.portlet.model.OntologySpace space)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getTopTerm(space);
+        return getService().getTopTerms(space);
     }
 
     public static void clearService() {

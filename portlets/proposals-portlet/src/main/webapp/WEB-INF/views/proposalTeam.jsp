@@ -14,7 +14,9 @@
 
     <div id="content">
         <liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
+        <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" />
 
+        <liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." />
         <div class="headline prophead" style="position: relative;">
             <h2>
                 <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
@@ -39,6 +41,37 @@
                             <div id="requestButtons">
                                 <div class="blue-button" style="display:block;">
                                     <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form:form>
+                </div>
+            </c:if>
+            <c:if test="${proposalsPermissions.isTeamMember}">
+                <div class="prop-butt-popover">
+                    <img src="/climatecolab-theme/images/icon-request-membership.png"
+                         width="24" height="22" alt="request membership" class="request-membership-icon"/>
+
+
+                    <portlet:actionURL var="inviteMemberURL">
+                        <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                        <portlet:param name="planId" value="${proposal.proposalId }" />
+                        <portlet:param name="action" value="inviteMember" />
+                    </portlet:actionURL>
+
+                    <portlet:resourceURL id="inviteMembers-validateRecipient" var="inviteMemberValidationURL">
+                    </portlet:resourceURL>
+
+                    <form:form id="requestInviteForm" action="${inviteMemberURL }" method="post" commandName="requestMembershipInviteBean" style="float:left;">
+                        <div class="requestMembershipDIV">
+                            <form:textarea id="invite-recipient" cssClass="requestComment" path="inviteRecipient" placeholder="Enter screen name or last name" style="display:none;"/>
+                            <div id="invite-member-validation-url" style="display: none">${inviteMemberValidationURL}</div>
+                            <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
+                            <!--<form:errors cssClass="alert alert-error" path="requestComment" />-->
+                            <div id="requestButtons">
+                                <div class="blue-button" style="display:block;">
+                                    <a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
                                 </div>
                             </div>
                         </div>

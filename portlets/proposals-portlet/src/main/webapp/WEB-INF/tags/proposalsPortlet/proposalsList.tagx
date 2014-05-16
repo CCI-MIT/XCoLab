@@ -44,7 +44,7 @@
             <div class="row1">
                 <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
                     <h4>
-                    	<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="true" />
+                    	<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="false" />
                         /&#160;
                         <c:choose>
                         	<c:when test="${empty proposal.team}">

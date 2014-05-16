@@ -17,4 +17,63 @@
         <column name="ip" type="String" />
         <column name="extraData" type="String" />	
 	</entity>
+	
+	<entity name="BalloonText" local-service="true">
+		<column name="id" type="long" primary="true" />
+		<column name="name" type="String" />
+		<column name="textBeforeForm" type="String" />
+		<column name="textAfterForm" type="String" />
+		<column name="textBeforeShareButtons" type="String" />
+		<column name="textAfterShareButtons" type="String" />
+		<column name="acceptTosText" type="String" />
+		<column name="emailTemplate" type="String" />
+		<column name="emailSubjectTemplate" type="String" />
+		<column name="twitterDescription" type="String" />
+		<column name="twitterSubject" type="String" />
+		<column name="facebookDescription" type="String" />
+		<column name="facebookSubject" type="String" />
+		<column name="enabled" type="boolean" />
+		
+    	<finder return-type="Collection" name="Enabled">
+    		<finder-column name="enabled" />
+    	</finder>
+	</entity>
+	
+	<entity name="BalloonUserTracking" local-service="true">
+        <column name="uuid" type="String" primary="true" />
+        <column name="email" type="String" />
+        <column name="parent" type="String" />
+        <column name="ip" type="String" />
+        <column name="createDate" type="Date" />
+        <column name="registrationDate" type="Date" />
+        <column name="formFiledDate" type="Date" />
+        <column name="userId" type="long" />
+        <column name="balloonTextId" type="long" />
+        <column name="referrer" type="String" />
+        <column name="latitude" type="double" />
+        <column name="longitude" type="double" />
+        <column name="city" type="String" />
+        <column name="country" type="String" />
+        <column name="extraData" type="String" />
+        <column name="balloonLinkUuid" type="String" />
+        <column name="balloonLinkContext" type="String" />
+        <column name="userAgent" type="String" />
+        
+    	<finder return-type="Collection" name="Email">
+    		<finder-column name="email" />
+    	</finder>
+	</entity>
+	
+	<entity name="BalloonLink" local-service="true">
+		<column name="uuid" type="String" primary="true" />
+		<column name="targetUrl" type="String" />
+		<column name="visits" type="int" />
+		<column name="balloonUserUuid" type="String" />
+		<column name="createDate" type="Date" />
+		
+    	<finder return-type="Collection" name="BalloonUserUuid">
+    		<finder-column name="balloonUserUuid" />
+    	</finder>
+	</entity>
+	
 </service-builder>

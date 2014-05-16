@@ -157,7 +157,7 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
                 "com.ext.portlet.model.OntologySpace"
             };
 
-        _methodName21 = "getTopTerm";
+        _methodName21 = "getTopTerms";
 
         _methodParameterTypes21 = new String[] {
                 "com.ext.portlet.model.OntologySpace"
@@ -730,7 +730,7 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
     }
 
     @Override
-    public com.ext.portlet.model.OntologyTerm getTopTerm(
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getTopTerms(
         com.ext.portlet.model.OntologySpace space)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -754,6 +754,6 @@ public class OntologySpaceLocalServiceClp implements OntologySpaceLocalService {
             }
         }
 
-        return (com.ext.portlet.model.OntologyTerm) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<com.ext.portlet.model.OntologyTerm>) ClpSerializer.translateOutput(returnObj);
     }
 }

@@ -325,7 +325,8 @@ public interface ActivitySubscriptionLocalService extends BaseLocalService,
         com.ext.portlet.model.ActivitySubscription activitySubscription)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public void sendEmailNotifications()
+    public void sendEmailNotifications(
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

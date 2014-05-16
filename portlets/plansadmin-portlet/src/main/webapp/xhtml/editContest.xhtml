@@ -138,8 +138,8 @@
            
            </f:subview>
 
-            <ice:outputText />
-            <ice:commandButton value="Transfer supports to votes" action="#{contestsAdmin.editedContest.transferSupports}" />
+            <ice:outputLabel value="Sponsor link" />
+            <ice:inputText value="#{contestsAdmin.editedContest.contest.sponsorLink}" />
            
            <ice:commandButton value="Save" action="#{contestsAdmin.editedContest.save}" />
         </ice:panelGrid>

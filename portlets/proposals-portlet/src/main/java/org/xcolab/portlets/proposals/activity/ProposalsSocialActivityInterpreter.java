@@ -3,11 +3,12 @@ package org.xcolab.portlets.proposals.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.xcolab.portlets.proposals.activity.generators.DefaultFeedEntryGenerator;
 import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import com.ext.portlet.ProposalActivityKeys;
+import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -68,7 +69,7 @@ implements ICollabActivityInterpreter {
         try {
             Proposal rawProposal = ProposalLocalServiceUtil.getProposal(classPK);
             ProposalWrapper proposal = new ProposalWrapper(rawProposal);
-            return "Proposal: " + String.format(hyperlink, ProposalsURLGenerator.getProposalURL(rawProposal), proposal.getName());
+            return "Proposal: " + String.format(hyperlink, StringEscapeUtils.escapeHtml(ProposalsURLGenerator.getProposalURL(rawProposal)), proposal.getName());
             
         } catch (SystemException e) {
             _log.error("Can't find plan for id: " + classPK, e);

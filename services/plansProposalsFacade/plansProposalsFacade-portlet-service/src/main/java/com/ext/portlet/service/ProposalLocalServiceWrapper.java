@@ -702,6 +702,22 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Returns a list of proposals associated with the given contest phase which are both generally visible and visible in the given contest phase</p>
+    *
+    * @param contestPhaseId id of a contest phase
+    * @return list of proposals from given contest phase
+    * @throws PortalException in case of an LR error
+    * @throws SystemException in case of an LR error
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getActiveProposalsInContestPhase(
+        long contestPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getActiveProposalsInContestPhase(contestPhaseId);
+    }
+
+    /**
     * <p>Returns a list of proposals associated with given contest</p>
     *
     * @param contestId id of a contest phase
@@ -715,6 +731,21 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _proposalLocalService.getProposalsInContest(contestId);
+    }
+
+    /**
+    * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
+    *
+    * @param userId    The userId of the user
+    * @return A list of proposals the user has contributed to
+    * @throws SystemException
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getUserProposals(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getUserProposals(userId);
     }
 
     /**
@@ -988,7 +1019,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-    * <p>Sends a request to join proposal teamp</p>
+    * <p>Sends a request to join proposal team</p>
     *
     * @param proposalId proposal id
     * @param userId     user id
@@ -997,11 +1028,12 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of LR error
     */
     @Override
-    public void addMembershipRequest(long proposalId, long userId,
-        java.lang.String comment)
+    public com.liferay.portal.model.MembershipRequest addMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _proposalLocalService.addMembershipRequest(proposalId, userId, comment);
+        return _proposalLocalService.addMembershipRequest(proposalId, userId,
+            comment);
     }
 
     /**

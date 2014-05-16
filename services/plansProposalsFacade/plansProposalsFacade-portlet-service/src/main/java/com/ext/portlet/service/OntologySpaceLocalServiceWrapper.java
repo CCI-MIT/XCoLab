@@ -286,10 +286,10 @@ public class OntologySpaceLocalServiceWrapper
     }
 
     @Override
-    public com.ext.portlet.model.OntologyTerm getTopTerm(
+    public java.util.List<com.ext.portlet.model.OntologyTerm> getTopTerms(
         com.ext.portlet.model.OntologySpace space)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _ontologySpaceLocalService.getTopTerm(space);
+        return _ontologySpaceLocalService.getTopTerms(space);
     }
 
     /**

@@ -39,6 +39,8 @@ public class CommunityConstants {
     
     public static String COUNTRY = "country";
     public static String COUNTRY_PREF = "country_pref";
+
+	public static String CITY = "city";
     
     public static String RED_BALLOON = "redBalloon";
 
@@ -53,4 +55,6 @@ public class CommunityConstants {
     public static final String PLANFAN_REMOVE = "planfan_remove";
     public static final String PLANFAN_ID = "planfan_id";
     public static final String FB_ID = "facebook_id";
+
+	public static final String MEMBERSHIP_REQUEST_TYPE = "membership_request_type";
 }
