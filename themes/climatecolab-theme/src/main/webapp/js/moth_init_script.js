@@ -430,47 +430,6 @@ function updateBreadcrumb(placeholder, items) {
     jQuery(placeholder).html(breadcrumb.join(''));
 }
 
-
-
-
-// redirect from one phase to another
-
-	var mapping = {
-			13801: 15101, 
-			15049: 15103, 
-			13605: 15105, 
-			15025: 15102, 
-			14632: 15106,
-			15068: 15104, 
-			
-			14707: 15110,
-			14629: 15108,
-			14620: 15112,
-			15070: 15107,
-			15015: 15111,
-			15056: 15109
-	
-			};
-	
-	if (window.collabUserId != 10144) {
-		var loc = document.location.toString();
-		var planIdPos = loc.indexOf("/planId/");
-		if (planIdPos > 0) {
-			var planIdEnd = loc.indexOf("#", planIdPos);
-			if (planIdEnd == -1) {
-				planIdEnd = loc.length;
-			}
-			planIdPos += 8;
-			var planId = loc.substring(planIdPos,planIdEnd); 
-		
-			if (planId in mapping) {
-				var newLoc = loc.replace(planId, mapping[planId]);
-				document.location = newLoc;
-			}
-		} 
-	}
-
-
 	function submitenter(myfield,e)	{
 		var keycode;
 		if (window.event) keycode = window.event.keyCode;
