@@ -9,13 +9,9 @@ import java.util.List;
 
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
-import javax.portlet.PortletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.liferay.portal.model.Role;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
@@ -212,7 +208,7 @@ public class MessageWrapper implements Serializable {
             ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
-                    DiscussionActivityKeys.ADD_COMMENT.id(), 
+                    DiscussionActivityKeys.ADD_FORUM_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId(), getThreadId(wrapped), wrapped.getMessageId()), 0);
         }
     }
@@ -241,7 +237,7 @@ public class MessageWrapper implements Serializable {
             ThemeDisplay td = Helper.getThemeDisplay();
             SocialActivityLocalServiceUtil.addActivity(td.getUserId(), td.getScopeGroupId(),
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
-                    DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.id(), 
+                    DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryGroupId(), getThreadId(wrapped), wrapped.getMessageId()), 0);
                     
             */

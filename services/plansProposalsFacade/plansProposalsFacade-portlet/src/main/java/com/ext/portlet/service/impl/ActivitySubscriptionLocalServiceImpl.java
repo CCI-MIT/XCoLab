@@ -1,8 +1,11 @@
 package com.ext.portlet.service.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -47,6 +51,7 @@ import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceU
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.collections.comparators.ComparatorChain;
 
 /**
  * The implementation of the activity subscription local service.
@@ -79,6 +84,23 @@ public class ActivitySubscriptionLocalServiceImpl
 	// 1 am
 	private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 	private Date lastDailyEmailNotification = new Date();
+
+    private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
+            + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
+
+    private final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
+
+    private final String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+
+    private final String USER_ID_PLACEHOLDER = "USER_ID";
+
+    private final String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
+
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "Climate CoLab Activities – Daily Digest DATE";
+
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER = "DATE";
+
+    private static final String DAILY_DIGEST_ENTRY_TEXT = "Climate CoLab Digest for DATE";
 
     private static final String FAQ_DIGEST_URL_PATH = "/faqs#digest";
 
@@ -322,62 +344,79 @@ public class ActivitySubscriptionLocalServiceImpl
 		return h.process(activityObjects);
 	}
 
-    private final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
-            + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
-
-    private final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
-
-    private final String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
-
-    private final String USER_ID_PLACEHOLDER = "USER_ID";
-
-    private final String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
-
-
-
     private void sendDailyDigestNotifications(List<SocialActivity> activities, ServiceContext serviceContext) throws SystemException, PortalException {
-		Map<User, String> userDigestBodyMap = new HashMap<>();
+        Map<User, List<SocialActivity>> userActivitiesDigestMap = getUserToActivityDigestMap(activities);
 
-		for (SocialActivity activity : activities) {
-
-			SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, activity, serviceContext);
-			if (entry == null) {
-				continue;
-			}
-
-			String messageTemplate = getMailBody(entry);
-
-			// Aggregate all activities for all users
-			for (Object subscriptionObj : getActivitySubscribers(activity)) {
-				ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
-
-				User recipient = UserLocalServiceUtil.getUser(subscription.getReceiverId());
-				if (subscription.getReceiverId() == activity.getUserId()) {
-					continue;
-				}
-
-				if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
-						MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
-
-					String userDigestBody = userDigestBodyMap.get(recipient);
-					if (userDigestBody == null) {
-						userDigestBody = "<ul>";
-					}
-					userDigestBody += "<li>" + messageTemplate + "</li>";
-					userDigestBodyMap.put(recipient, userDigestBody);
-				}
-			}
-		}
-
+        String subject = StringUtil.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification));
 		// Send the digest to each user which is included in the set of subscriptions
-		for (User recipient : userDigestBodyMap.keySet()) {
-			String subject = "CoLab Activities Daily digest";
-			String body = userDigestBodyMap.get(recipient);
-			body += "</ul>";
+		for (User recipient : userActivitiesDigestMap.keySet()) {
+            final List<SocialActivity> userDigestActivities = userActivitiesDigestMap.get(recipient);
+            String body = getDigestMessageBody(serviceContext, userDigestActivities);
             String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+
 			sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
 		}
 	}
+
+    private String getDigestMessageBody(ServiceContext serviceContext, List<SocialActivity> userDigestActivities) {
+        Comparator<SocialActivity> socialActivityClassIdComparator = new Comparator<SocialActivity>() {
+            @Override
+            public int compare(SocialActivity o1, SocialActivity o2) {
+                return (int)(o1.getClassNameId() - o2.getClassNameId());
+            }
+        };
+        Comparator<SocialActivity> socialActivityCreateDateComparator = new Comparator<SocialActivity>() {
+            @Override
+            public int compare(SocialActivity o1, SocialActivity o2) {
+                return (int)(o1.getCreateDate() - o2.getCreateDate());
+            }
+        };
+
+        ComparatorChain comparatorChain = new ComparatorChain();
+        comparatorChain.addComparator(socialActivityClassIdComparator);
+        comparatorChain.addComparator(socialActivityCreateDateComparator);
+
+        Collections.sort(userDigestActivities, comparatorChain);
+        String body = StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)) + "<br/><br/>";
+
+        for (SocialActivity socialActivity : userDigestActivities) {
+            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(StringPool.BLANK, socialActivity, serviceContext);
+            if (entry == null) {
+                continue;
+            }
+
+            body += "<div style='margin-left: 10px'>" + getMailBody(entry) + "</div><br/><br/>";
+        }
+        return body;
+    }
+
+    private Map<User, List<SocialActivity>> getUserToActivityDigestMap(List<SocialActivity> activities) throws SystemException, PortalException {
+        Map<User, List<SocialActivity>> userDigestActivitiesMap = new HashMap<>();
+
+        for (SocialActivity activity : activities) {
+            // Aggregate all activities for all users
+            for (Object subscriptionObj : getActivitySubscribers(activity)) {
+                ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+
+                User recipient = UserLocalServiceUtil.getUser(subscription.getReceiverId());
+                if (subscription.getReceiverId() == activity.getUserId()) {
+                    continue;
+                }
+
+                if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
+                        MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
+
+                    List<SocialActivity> userDigestActivities = userDigestActivitiesMap.get(recipient);
+                    if (Validator.isNull(userDigestActivities)) {
+                        userDigestActivities = new ArrayList<>();
+                        userDigestActivitiesMap.put(recipient, userDigestActivities);
+                    }
+                    userDigestActivities.add(activity);
+                }
+            }
+        }
+        return userDigestActivitiesMap;
+    }
 
 
     private void sendInstantNotifications(SocialActivity activity, ServiceContext serviceContext) throws SystemException, PortalException {
@@ -515,5 +554,10 @@ public class ActivitySubscriptionLocalServiceImpl
     private String getUnsubscribeDailyDigestFooter(String unsubscribeUrl) {
         String footer =  StringUtil.replace(UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
         return  footer;
+    }
+
+    private String dateToDateString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        return formatter.format(date);
     }
 }

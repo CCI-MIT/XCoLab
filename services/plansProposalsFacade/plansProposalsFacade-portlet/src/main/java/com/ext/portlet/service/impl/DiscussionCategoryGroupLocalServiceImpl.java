@@ -133,7 +133,7 @@ public class DiscussionCategoryGroupLocalServiceImpl
         if (! dcg.isIsQuiet()) {
             SocialActivityLocalServiceUtil.addActivity(author.getUserId(), scopeGroup.getGroupId(),
                     DiscussionCategoryGroup.class.getName(), dcg.getId(), 
-                    DiscussionActivityKeys.ADD_DISCUSSION_COMMENT.id(), 
+                    DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(dcg.getId(), 
                     comment.getThreadId() > 0 ? comment.getThreadId() : comment.getMessageId(),
                     comment.getMessageId()), 0);
