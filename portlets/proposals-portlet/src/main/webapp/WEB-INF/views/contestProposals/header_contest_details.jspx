@@ -122,10 +122,11 @@
             <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
                 <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
                     <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                    <div class="clearfix">&#160;</div>
+                    <span class="clearfix"></span>
                     <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                    <div class="clearfix">&#160;</div>
+                    <span class="clearfix"></span>
                     <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}" addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
+                    <span class="clearfix"></span>
                 </div>
             </div>
         </div>
