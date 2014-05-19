@@ -13,12 +13,15 @@ import java.util.TreeSet;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.service.ProposalLocalServiceWrapper;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.data.DataBean;
 import org.xcolab.portlets.admintasks.migration.DataIntegrityChecker;
@@ -1055,6 +1058,17 @@ public class AdminTasksBean {
 		return null;
 		
 	}
+
+    public void triggerSupportsToVote() throws SystemException, PortalException {
+        PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
+                request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
+
+        for (Contest activeContest : ContestLocalServiceUtil.getContestsByActivePrivate(true, false)) {
+            ContestLocalServiceUtil.transferSupportsToVote(activeContest, serviceContext);
+        }
+    }
 
 	public DataBean getDataBean() {
 		return dataBean;

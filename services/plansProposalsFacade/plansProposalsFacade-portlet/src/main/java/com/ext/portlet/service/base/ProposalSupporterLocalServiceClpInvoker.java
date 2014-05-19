@@ -49,6 +49,10 @@ public class ProposalSupporterLocalServiceClpInvoker {
     private String[] _methodParameterTypes514;
     private String _methodName515;
     private String[] _methodParameterTypes515;
+    private String _methodName516;
+    private String[] _methodParameterTypes516;
+    private String _methodName517;
+    private String[] _methodParameterTypes517;
 
     public ProposalSupporterLocalServiceClpInvoker() {
         _methodName0 = "addProposalSupporter";
@@ -156,6 +160,14 @@ public class ProposalSupporterLocalServiceClpInvoker {
         _methodName515 = "getProposals";
 
         _methodParameterTypes515 = new String[] { "long" };
+
+        _methodName516 = "getSupportingUsersForProposal";
+
+        _methodParameterTypes516 = new String[] { "long" };
+
+        _methodName517 = "getProposalSupportersForProposals";
+
+        _methodParameterTypes517 = new String[] { "java.util.List" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -268,6 +280,16 @@ public class ProposalSupporterLocalServiceClpInvoker {
         if (_methodName515.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
             return ProposalSupporterLocalServiceUtil.getProposals(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName516.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes516, parameterTypes)) {
+            return ProposalSupporterLocalServiceUtil.getSupportingUsersForProposal(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName517.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes517, parameterTypes)) {
+            return ProposalSupporterLocalServiceUtil.getProposalSupportersForProposals((java.util.List<com.ext.portlet.model.Proposal>) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

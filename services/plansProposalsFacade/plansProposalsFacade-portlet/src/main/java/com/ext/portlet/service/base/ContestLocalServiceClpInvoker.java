@@ -131,8 +131,6 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes557;
     private String _methodName558;
     private String[] _methodParameterTypes558;
-    private String _methodName559;
-    private String[] _methodParameterTypes559;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -397,13 +395,12 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes557 = new String[] { "java.util.List" };
 
-        _methodName558 = "getContestSupportingUser";
+        _methodName558 = "transferSupportsToVote";
 
-        _methodParameterTypes558 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName559 = "transferSupportToVotes";
-
-        _methodParameterTypes559 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes558 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.liferay.portal.service.ServiceContext"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -745,12 +742,8 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName558.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes558, parameterTypes)) {
-            return ContestLocalServiceUtil.getContestSupportingUser((com.ext.portlet.model.Contest) arguments[0]);
-        }
-
-        if (_methodName559.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes559, parameterTypes)) {
-            ContestLocalServiceUtil.transferSupportToVotes((com.ext.portlet.model.Contest) arguments[0]);
+            ContestLocalServiceUtil.transferSupportsToVote((com.ext.portlet.model.Contest) arguments[0],
+                (com.liferay.portal.service.ServiceContext) arguments[1]);
 
             return null;
         }

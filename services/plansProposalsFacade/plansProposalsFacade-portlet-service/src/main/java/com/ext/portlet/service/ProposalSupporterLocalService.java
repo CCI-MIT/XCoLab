@@ -244,4 +244,15 @@ public interface ProposalSupporterLocalService extends BaseLocalService,
         long userId)
         throws com.liferay.portal.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.liferay.portal.model.User> getSupportingUsersForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposalSupportersForProposals(
+        java.util.List<com.ext.portlet.model.Proposal> proposals)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

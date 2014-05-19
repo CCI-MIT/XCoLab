@@ -29,6 +29,9 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ContestPhaseLocalService;
 import com.liferay.portal.model.User;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
@@ -111,7 +114,28 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private static final long USER_MESSAGE_SENDER = 1011659L;
+    private static final long ADMINISTRATOR_USER_ID = 10144L;
+
+    private static final int CONTEST_PHASE_TYPE_WINNER_SELECTION = 13;
+
+    /**
+     * Support to vote constants
+     */
+    private static final String SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
+            "you have supported the following proposals in the contest <b>%s</b>:<br/>" +
+            "%s<br/>" +
+            "Vote now for your most favorite proposal in this contest. Please beware that you can only vote for one" +
+            "proposal per contest." +
+            "<br/><br/>Sincerely,<br/>the Climate Colab Team";
+    private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
+            "the voting phase in contest <b>%s</b> has started. We automatically transferred your support for proposal %s into a vote!" +
+            "<br/><br/>Sincerely,<br/>the Climate Colab Team";
+
+    private static final String SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING = "Your vote in contest %s";
+
+    private static final String SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING = "Please vote for your favorite proposal in contest %s";
+
+    private static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
         List<Contest> contests = contestPersistence.findByContestActive(contestActive);
@@ -610,70 +634,62 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return listOfContests;
     }
 
-    public Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {
-        HashMap<User, List<Proposal>> supportMap = new HashMap<>();
+    /**
+     * This method transfers users' supports for proposals in the passed contest to a vote. If a user has only supported
+     * one proposal within the passed contest, the support is automatically transferred to a vote and the user is notified
+     * about this action. If the user supports more than one proposal in the passed contest, a message is sent to the user
+     * which the user to vote for his/her favourite proposal of the list of supported proposals
+     * @param contest               The contest object
+     * @param serviceContext        The service contest containing the portal base URL
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public void transferSupportsToVote(Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
-
-        List<Long> proposalIds = new ArrayList<>();
-        // Get all the proposalIds of proposals in the contest
-        for (Proposal2Phase proposal2Phase : proposal2PhasePersistence.findByContestPhaseId(lastOrActivePhase.getContestPhasePK())) {
-            Proposal proposal = proposalLocalService.getProposal(proposal2Phase.getProposalId());
-
-            // set proper version for proposal to reflect max version that proposal has reached at given phase
-            if (proposal2Phase.getVersionTo() > 0) {
-                proposal.setCurrentVersion(proposal2Phase.getVersionTo());
-            }
-            proposalIds.add(proposal.getProposalId());
-        }
-
-        DynamicQuery proposalSupportQuery = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, PortalClassLoaderUtil.getClassLoader());
-        proposalSupportQuery.add(PropertyFactoryUtil.forName("primaryKey.proposalId").in(proposalIds));
-        //proposalSupportQuery.add(PropertyFactoryUtil.forName("proposalId").eq(3001));
-        List<ProposalSupporter> supportingUsers = proposalSupporterLocalService.dynamicQuery(proposalSupportQuery);
-
-        // Generate a list of supporting proposals for each user
-        for (ProposalSupporter supporter : supportingUsers) {
-            User user = userLocalService.getUser(supporter.getUserId());
-
-            List<Proposal> proposals = supportMap.get(user);
-            if (proposals == null) {
-                proposals = new ArrayList<Proposal>();
-                supportMap.put(user, proposals);
-            }
-
-            proposals.add(proposalLocalService.getProposal(supporter.getProposalId()));
-        }
-
-        return supportMap;
-    }
-
-    public void transferSupportToVotes(Contest contest) throws SystemException, PortalException, MailEngineException, AddressException {
-        Map<User, List<Proposal>> supportingMap = getContestSupportingUser(contest);
-        ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
-
-        // before voting phase
-        if (lastOrActivePhase.getContestPhaseType() != 12) {
+        // Vote is only possible in Winner Selection phase
+        if (lastOrActivePhase.getContestPhaseType() != CONTEST_PHASE_TYPE_WINNER_SELECTION) {
             return;
         }
 
-        for (User user : supportingMap.keySet()) {
+        Map<User, List<Proposal>> userToSupportsMap = getContestSupportingUser(contest);
+        for (User user : userToSupportsMap.keySet()) {
             // Do nothing if the user has already voted
             if (proposalVoteLocalService.hasUserVoted(lastOrActivePhase.getContestPhasePK(), user.getUserId())) {
                 continue;
             }
 
-            List<Proposal> proposals = supportingMap.get(user);
+            List<Proposal> proposals = userToSupportsMap.get(user);
 
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
                 voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                sendVoteMessageNotification(user, contest, proposals.get(0));
+                sendVoteMessageNotification(user, contest, proposals.get(0), serviceContext);
             }
             // Send a notification to the user
             else {
-                sendVoteMessageQuestion(user, contest, proposals);
+                sendVoteMessageQuestion(user, contest, proposals, serviceContext);
             }
         }
+    }
+
+    private Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {
+        List<Proposal> proposalsInContest = proposalLocalService.getProposalsInContest(contest.getContestPK());
+
+        HashMap<User, List<Proposal>> userToSupportsMap = new HashMap<>();
+        // Generate a list of supporting proposals for each user
+        for (ProposalSupporter supporter : proposalSupporterLocalService.getProposalSupportersForProposals(proposalsInContest)) {
+            User user = userLocalService.getUser(supporter.getUserId());
+
+            List<Proposal> proposals = userToSupportsMap.get(user);
+            if (proposals == null) {
+                proposals = new ArrayList<Proposal>();
+                userToSupportsMap.put(user, proposals);
+            }
+
+            proposals.add(proposalLocalService.getProposal(supporter.getProposalId()));
+        }
+
+        return userToSupportsMap;
     }
 
     private void voteForProposal(long userId, long proposalId, long contestPhaseId) throws SystemException, PortalException {
@@ -699,39 +715,47 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
     }
 
-    private void sendVoteMessageQuestion(User recipient, Contest contest, List<Proposal> supportedProposals)
-            throws PortalException, SystemException, AddressException, MailEngineException {
+    private void sendVoteMessageQuestion(User recipient, Contest contest, List<Proposal> supportedProposals, ServiceContext serviceContext)
+            throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<Long>();
         recipientIds.add(recipient.getUserId());
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder messageBody = new StringBuilder();
 
         for (Proposal proposal : supportedProposals) {
             final String proposalName = proposalLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-            final String proposalLink = proposalLocalService.getProposalLink(contest, proposal);
-            builder.append(String.format("<li><a href='%s'>%s</a></li>", proposalLink, proposalName));
+            final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLink(contest, proposal);
+            messageBody.append(String.format(LINK_FORMAT_STRING + "<br />", proposalLink, proposalName));
         }
 
-        String subject = String.format("Please vote for your favorite proposal in contest %s", contest.getContestName());
-        String body = String.format("Hi %s,<br/>please vote for your most favorite proposal in the contest %s:<br/>" +
-                "<ul>%s</ul><br/><br/>Sincerely,<br/>the ClimateColab Team", recipient.getFullName(), contest.getContestName(), builder.toString());
-        MessageUtil.sendMessage(subject,
-                body, USER_MESSAGE_SENDER, USER_MESSAGE_SENDER, recipientIds, null);
+        String subject = String.format(SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING, contest.getContestName());
+        String body = String.format(SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestName(), messageBody.toString());
+        sendMessage(subject, body, ADMINISTRATOR_USER_ID, recipientIds);
     }
 
-    private void sendVoteMessageNotification(User recipient, Contest contest, Proposal votedProposal)
-            throws PortalException, SystemException, AddressException, MailEngineException {
+    private void sendVoteMessageNotification(User recipient, Contest contest, Proposal votedProposal, ServiceContext serviceContext)
+            throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<Long>();
         recipientIds.add(recipient.getUserId());
 
         final String proposalName = proposalLocalService.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-        final String proposalLink = proposalLocalService.getProposalLink(contest, votedProposal);
-        String link = String.format("<a href='%s'>%s</a>", proposalLink, proposalName);
+        final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLink(contest, votedProposal);
+        String link = String.format(LINK_FORMAT_STRING, proposalLink, proposalName);
 
-        String subject = String.format("Your vote in contest %s", contest.getContestName());
-        String body = String.format("Hi %s,<br/>the voting phase in contest %s ended. We transferred your support for proposal %s into a vote!<br/><br/>Sincerely,<br/>the ClimateColab Team",
+        String subject = String.format(SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING, contest.getContestName());
+        String body = String.format(SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING,
                 recipient.getFullName(), contest.getContestName(), link);
-        MessageUtil.sendMessage(subject,body, USER_MESSAGE_SENDER, USER_MESSAGE_SENDER, recipientIds, null);
+
+        sendMessage(subject,body, ADMINISTRATOR_USER_ID, recipientIds);
     }
 
+    private void sendMessage(String subject, String body, long senderId, List<Long> recipientIds) {
+        try {
+            MessageUtil.sendMessage(subject,body, senderId, senderId, recipientIds, null);
+        } catch (MailEngineException | AddressException e) {
+            _log.error("Could not send vote message", e);
+        } catch (PortalException | SystemException e) {
+            _log.error("Could not send vote message", e);
+        }
+    }
 }

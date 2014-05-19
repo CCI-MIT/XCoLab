@@ -130,8 +130,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes60;
     private String _methodName61;
     private String[] _methodParameterTypes61;
-    private String _methodName62;
-    private String[] _methodParameterTypes62;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -398,13 +396,12 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _methodParameterTypes60 = new String[] { "java.util.List" };
 
-        _methodName61 = "getContestSupportingUser";
+        _methodName61 = "transferSupportsToVote";
 
-        _methodParameterTypes61 = new String[] { "com.ext.portlet.model.Contest" };
-
-        _methodName62 = "transferSupportToVotes";
-
-        _methodParameterTypes62 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes61 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.liferay.portal.service.ServiceContext"
+            };
     }
 
     @Override
@@ -2206,16 +2203,18 @@ public class ContestLocalServiceClp implements ContestLocalService {
     }
 
     @Override
-    public java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>> getContestSupportingUser(
-        com.ext.portlet.model.Contest contest)
+    public void transferSupportsToVote(com.ext.portlet.model.Contest contest,
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName61,
-                    _methodParameterTypes61,
-                    new Object[] { ClpSerializer.translateInput(contest) });
+            _invokableLocalService.invokeMethod(_methodName61,
+                _methodParameterTypes61,
+                new Object[] {
+                    ClpSerializer.translateInput(contest),
+                    
+                ClpSerializer.translateInput(serviceContext)
+                });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -2225,46 +2224,6 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public void transferSupportToVotes(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            com.liferay.util.mail.MailEngineException,
-            javax.mail.internet.AddressException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName62,
-                _methodParameterTypes62,
-                new Object[] { ClpSerializer.translateInput(contest) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof com.liferay.util.mail.MailEngineException) {
-                throw (com.liferay.util.mail.MailEngineException) t;
-            }
-
-            if (t instanceof javax.mail.internet.AddressException) {
-                throw (javax.mail.internet.AddressException) t;
             }
 
             if (t instanceof RuntimeException) {

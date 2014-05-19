@@ -275,6 +275,19 @@ public class ProposalSupporterLocalServiceUtil {
         return getService().getProposals(userId);
     }
 
+    public static java.util.List<com.liferay.portal.model.User> getSupportingUsersForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getSupportingUsersForProposal(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalSupporter> getProposalSupportersForProposals(
+        java.util.List<com.ext.portlet.model.Proposal> proposals)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getProposalSupportersForProposals(proposals);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
@@ -44,6 +45,8 @@ public class ProposalSupporterLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalSupporterLocalServiceUtil} to access the proposal supporter local service.
      */
 
+    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+
     public ProposalSupporter create(long proposalID, long userID) {
         return createProposalSupporter(new ProposalSupporterPK(proposalID, userID));
     }
@@ -62,8 +65,8 @@ public class ProposalSupporterLocalServiceImpl
             return null;
         }
     }
-/*
-    public List<User> getSupportingUsers(long proposalId) throws SystemException, com.liferay.portal.kernel.exception.PortalException {
+
+    public List<User> getSupportingUsersForProposal(long proposalId) throws SystemException, com.liferay.portal.kernel.exception.PortalException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class,
                 (ClassLoader) PortletBeanLocatorUtil.locate(ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
         query.add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));
@@ -75,5 +78,19 @@ public class ProposalSupporterLocalServiceImpl
         }
 
         return users;
-    }*/
+    }
+
+    public List<ProposalSupporter> getProposalSupportersForProposals(List<Proposal> proposals) throws SystemException {
+        if (proposals.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<Long> proposalIds = new ArrayList<>();
+        for (Proposal proposal : proposals) {
+            proposalIds.add(proposal.getProposalId());
+        }
+
+        DynamicQuery proposalSupportQuery = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class);
+        proposalSupportQuery.add(PropertyFactoryUtil.forName("primaryKey.proposalId").in(proposalIds));
+        return proposalSupporterLocalService.dynamicQuery(proposalSupportQuery);
+    }
 }

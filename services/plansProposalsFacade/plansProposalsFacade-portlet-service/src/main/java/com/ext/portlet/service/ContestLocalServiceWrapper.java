@@ -605,21 +605,23 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestsMatchingOntologyTerms(ontologyTerms);
     }
 
+    /**
+    * This method transfers users' supports for proposals in the passed contest to a vote. If a user has only supported
+    * one proposal within the passed contest, the support is automatically transferred to a vote and the user is notified
+    * about this action. If the user supports more than one proposal in the passed contest, a message is sent to the user
+    * which the user to vote for his/her favourite proposal of the list of supported proposals
+    *
+    * @param contest               The contest object
+    * @param serviceContext        The service contest containing the portal base URL
+    * @throws SystemException
+    * @throws PortalException
+    */
     @Override
-    public java.util.Map<com.liferay.portal.model.User, java.util.List<com.ext.portlet.model.Proposal>> getContestSupportingUser(
-        com.ext.portlet.model.Contest contest)
+    public void transferSupportsToVote(com.ext.portlet.model.Contest contest,
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getContestSupportingUser(contest);
-    }
-
-    @Override
-    public void transferSupportToVotes(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            com.liferay.util.mail.MailEngineException,
-            javax.mail.internet.AddressException {
-        _contestLocalService.transferSupportToVotes(contest);
+        _contestLocalService.transferSupportsToVote(contest, serviceContext);
     }
 
     /**
