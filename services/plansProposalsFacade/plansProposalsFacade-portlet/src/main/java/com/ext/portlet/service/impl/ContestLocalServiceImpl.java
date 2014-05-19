@@ -122,9 +122,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * Support to vote constants
      */
     private static final String SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
-            "you have supported the following proposals in the contest <b>%s</b>:<br/>" +
+            "you have supported the following proposals in the contest <b>%s</b>:<br/><br/>" +
             "%s<br/>" +
-            "Vote now for your most favorite proposal in this contest. Please beware that you can only vote for one" +
+            "Vote now for your most favorite proposal in this contest. Beware that you can only vote for one" +
             "proposal per contest." +
             "<br/><br/>Sincerely,<br/>the Climate Colab Team";
     private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
