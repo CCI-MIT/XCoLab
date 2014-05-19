@@ -68,7 +68,7 @@
                 ON (xcolab_PlanItem.id_ = t2.itemId),
                 xcolab_PlanMeta pm
             WHERE 
-                xcolab_PlanItem.state = 'ACTIVE' AND 
+                xcolab_PlanItem.state_ = 'ACTIVE' AND
                 (pm.contestPhase = ?) AND 
                 pm.planId = xcolab_PlanItem.planId
                 

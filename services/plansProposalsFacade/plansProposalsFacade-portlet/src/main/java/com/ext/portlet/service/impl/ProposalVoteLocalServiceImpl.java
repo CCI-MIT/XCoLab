@@ -53,5 +53,4 @@ public class ProposalVoteLocalServiceImpl
             return false;
         }
     }
-
 }

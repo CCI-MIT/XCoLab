@@ -32,7 +32,10 @@ import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalService;
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.model.User;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -451,12 +454,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
-        long votesCount = 0;
-        for (PlanItem pi : PlanItemLocalServiceUtil.getPlansByContest(contest.getContestPK())) {
-            votesCount += PlanItemLocalServiceUtil.getVotes(pi);
+        List<Long> proposalIds = new ArrayList<>();
+        for (Proposal proposal : proposalLocalService.getProposalsInContest(contest.getContestPK())) {
+            proposalIds.add(proposal.getProposalId());
         }
 
-        return votesCount;
+        DynamicQuery votesQuery = DynamicQueryFactoryUtil.forClass(ProposalVote.class);
+        votesQuery.add(RestrictionsFactoryUtil.in("proposalId", proposalIds));
+
+        return dynamicQueryCount(votesQuery);
     }
 
     public long getTotalComments(Contest contest) throws PortalException, SystemException {
