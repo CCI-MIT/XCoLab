@@ -32,7 +32,7 @@ public class SendEmailNotifications implements MessageListener {
 
             // Workaround to get the right port (80) on production
             int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
-            if (Validator.isNull(port)) {
+            if (Validator.isNull(port) || port == 0) {
                 port = PortalUtil.getPortalPort(false);
             }
 
