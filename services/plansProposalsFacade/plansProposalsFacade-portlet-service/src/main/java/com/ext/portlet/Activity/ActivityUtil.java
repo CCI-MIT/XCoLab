@@ -61,7 +61,7 @@ public class ActivityUtil {
     	}
     	else {
             List<Long> administratorsIds = getAdministratorIds();
-    		hits = getExcludedUserAggregatedActivitySearchResults(administratorsIds, start, end);
+    		hits = getAggregatedActivitySearchResultsExcludingUsers(administratorsIds, start, end);
     	}
 
         return retrieveAggregatedSocialActivities(hits);
@@ -185,6 +185,7 @@ public class ActivityUtil {
             aggregatedActivities.add(curMin);
         }
 
+        // Sort the activities in reverse order (sort by date DESC)
         Collections.sort(aggregatedActivities, Collections.reverseOrder(sorter));
 
         return aggregatedActivities;
@@ -214,10 +215,10 @@ public class ActivityUtil {
     }
 
     private static Hits getAllAggregatedActivitySearchResults(int start, int end) throws SearchException {
-        return getExcludedUserAggregatedActivitySearchResults(new ArrayList<Long>(), start, end);
+        return getAggregatedActivitySearchResultsExcludingUsers(new ArrayList<Long>(), start, end);
     }
 
-    private static Hits getExcludedUserAggregatedActivitySearchResults(List<Long> excludedUserIds, int start, int end) throws SearchException {
+    private static Hits getAggregatedActivitySearchResultsExcludingUsers(List<Long> excludedUserIds, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
         context.setCompanyId(DEFAULT_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
