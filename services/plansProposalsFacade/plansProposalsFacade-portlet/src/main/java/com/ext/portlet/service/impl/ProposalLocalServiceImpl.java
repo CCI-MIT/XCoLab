@@ -1364,7 +1364,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposal  The proposal object (must not be null)
      * @return          Proposal URL as String
      */
-    public String getProposalLink(Contest contest, Proposal proposal) {
+    public String getProposalLinkUrl(Contest contest, Proposal proposal) {
         String link = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
         return String.format(link, contest.getContestPK(), proposal.getProposalId());
     }

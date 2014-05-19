@@ -501,7 +501,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodParameterTypes73 = new String[] { "java.util.Date" };
 
-        _methodName74 = "getProposalLink";
+        _methodName74 = "getProposalLinkUrl";
 
         _methodParameterTypes74 = new String[] {
                 "com.ext.portlet.model.Contest",
@@ -2876,7 +2876,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public java.lang.String getProposalLink(
+    public java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
         Object returnObj = null;

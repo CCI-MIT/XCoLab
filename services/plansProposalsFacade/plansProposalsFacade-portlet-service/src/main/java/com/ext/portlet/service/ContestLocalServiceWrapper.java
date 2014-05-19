@@ -625,6 +625,18 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     /**
+    * Returns the URL link address for the passed contest
+    *
+    * @param contest   The contest object
+    * @return Contest URL as String
+    */
+    @Override
+    public java.lang.String getContestLinkUrl(
+        com.ext.portlet.model.Contest contest) {
+        return _contestLocalService.getContestLinkUrl(contest);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ContestLocalService getWrappedContestLocalService() {

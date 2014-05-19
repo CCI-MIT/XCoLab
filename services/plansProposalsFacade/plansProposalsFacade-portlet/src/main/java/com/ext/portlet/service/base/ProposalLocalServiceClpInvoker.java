@@ -504,7 +504,7 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodParameterTypes569 = new String[] { "java.util.Date" };
 
-        _methodName574 = "getProposalLink";
+        _methodName574 = "getProposalLinkUrl";
 
         _methodParameterTypes574 = new String[] {
                 "com.ext.portlet.model.Contest",
@@ -1010,7 +1010,7 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName574.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes574, parameterTypes)) {
-            return ProposalLocalServiceUtil.getProposalLink((com.ext.portlet.model.Contest) arguments[0],
+            return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
                 (com.ext.portlet.model.Proposal) arguments[1]);
         }
 

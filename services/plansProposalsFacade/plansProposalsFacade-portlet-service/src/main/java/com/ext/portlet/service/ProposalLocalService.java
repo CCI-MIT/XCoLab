@@ -1063,7 +1063,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @return Proposal URL as String
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getProposalLink(
+    public java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal);
 }

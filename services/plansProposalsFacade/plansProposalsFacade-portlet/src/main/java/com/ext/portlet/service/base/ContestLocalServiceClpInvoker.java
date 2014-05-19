@@ -131,6 +131,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes557;
     private String _methodName558;
     private String[] _methodParameterTypes558;
+    private String _methodName559;
+    private String[] _methodParameterTypes559;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -401,6 +403,10 @@ public class ContestLocalServiceClpInvoker {
                 "com.ext.portlet.model.Contest",
                 "com.liferay.portal.service.ServiceContext"
             };
+
+        _methodName559 = "getContestLinkUrl";
+
+        _methodParameterTypes559 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -746,6 +752,11 @@ public class ContestLocalServiceClpInvoker {
                 (com.liferay.portal.service.ServiceContext) arguments[1]);
 
             return null;
+        }
+
+        if (_methodName559.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes559, parameterTypes)) {
+            return ContestLocalServiceUtil.getContestLinkUrl((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

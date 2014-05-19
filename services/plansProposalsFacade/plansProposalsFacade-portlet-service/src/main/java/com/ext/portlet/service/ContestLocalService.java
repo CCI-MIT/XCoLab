@@ -487,4 +487,14 @@ public interface ContestLocalService extends BaseLocalService,
         com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the URL link address for the passed contest
+    *
+    * @param contest   The contest object
+    * @return Contest URL as String
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getContestLinkUrl(
+        com.ext.portlet.model.Contest contest);
 }

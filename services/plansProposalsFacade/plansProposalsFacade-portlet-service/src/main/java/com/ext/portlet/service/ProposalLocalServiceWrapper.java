@@ -1260,10 +1260,10 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @return Proposal URL as String
     */
     @Override
-    public java.lang.String getProposalLink(
+    public java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
-        return _proposalLocalService.getProposalLink(contest, proposal);
+        return _proposalLocalService.getProposalLinkUrl(contest, proposal);
     }
 
     /**

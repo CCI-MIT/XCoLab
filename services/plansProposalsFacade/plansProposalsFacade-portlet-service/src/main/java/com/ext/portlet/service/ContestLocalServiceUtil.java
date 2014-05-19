@@ -575,6 +575,17 @@ public class ContestLocalServiceUtil {
         getService().transferSupportsToVote(contest, serviceContext);
     }
 
+    /**
+    * Returns the URL link address for the passed contest
+    *
+    * @param contest   The contest object
+    * @return Contest URL as String
+    */
+    public static java.lang.String getContestLinkUrl(
+        com.ext.portlet.model.Contest contest) {
+        return getService().getContestLinkUrl(contest);
+    }
+
     public static void clearService() {
         _service = null;
     }

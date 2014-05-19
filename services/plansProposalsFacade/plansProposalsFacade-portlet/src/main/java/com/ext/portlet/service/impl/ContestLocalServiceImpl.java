@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,6 +85,7 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.util.mail.MailEngineException;
 import edu.mit.cci.roma.client.Simulation;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.analytics.AnalyticsUtil;
 
@@ -124,21 +126,31 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     /**
      * Support to vote constants
      */
-    private static final String SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
-            "you have supported the following proposals in the contest <b>%s</b>:<br/><br/>" +
-            "%s<br/>" +
-            "Vote now for your most favorite proposal in this contest. Beware that you can only vote for one" +
-            "proposal per contest." +
-            "<br/><br/>Sincerely,<br/>the Climate Colab Team";
-    private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/>" +
-            "the voting phase in contest <b>%s</b> has started. We automatically transferred your support for proposal %s into a vote!" +
-            "<br/><br/>Sincerely,<br/>the Climate Colab Team";
+    private static final String SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
+            "This year's voting period has started! Vote now to help your favorite proposals win the Popular Choice award. " +
+            "We have noted that you have supported the following proposals in the contest <b>%s</b>:<br/><br/>" +
+            "%s<br/><br/>" +
+            "Click the links above to visit the proposal page and cast your vote.  Please note that you can only vote for one proposal per contest." +
+            "<br/><br/>Thank you!" +
+            "<br/><br/>Sincerely,<br/>The Climate Colab Team";
+    private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
+            "This year's voting period has started!  We have automatically transferred your support for the proposal %s in the %s contest to an official vote." +
+            "<br/><br/>Share this proposal with your friends!  <a href='%s'>Twitter</a>  <a href='%s'>Facebook</a>  Email" +
+            "<br/><br/>Please note that you can only vote for one proposal per contest.  To change your vote in this contest, simply vote for another proposal in the %s contest and your vote will transfer. " +
+            "To retract your vote in this contest, click \"Retract vote\" on the %s proposal page." +
+            "<br /><br/>Thanks!" +
+            "<br/><br/>Sincerely,<br/>The Climate Colab Team";
 
     private static final String SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING = "Your vote in contest %s";
 
     private static final String SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING = "Please vote for your favorite proposal in contest %s";
 
     private static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
+
+
+    private static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
+    private static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
+    private static final String PROPOSAL_SHARE_MESSAGE_FORMAT_STRING = "I have voted for the Climate CoLab's proposal <b>%s</b>. Check it out.";
 
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
         List<Contest> contests = contestPersistence.findByContestActive(contestActive);
@@ -459,6 +471,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             proposalIds.add(proposal.getProposalId());
         }
 
+        if (proposalIds.size() == 0) {
+            return 0L;
+        }
+
         DynamicQuery votesQuery = DynamicQueryFactoryUtil.forClass(ProposalVote.class);
         votesQuery.add(RestrictionsFactoryUtil.in("proposalId", proposalIds));
 
@@ -678,6 +694,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
     }
 
+    /**
+     * Returns the URL link address for the passed contest
+     *
+     * @param contest   The contest object
+     * @return          Contest URL as String
+     */
+    public String getContestLinkUrl(Contest contest) {
+        String link = "/web/guest/plans/-/plans/contestId/%d";
+        return String.format(link, contest.getContestPK());
+    }
+
     private Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {
         List<Proposal> proposalsInContest = proposalLocalService.getProposalsInContest(contest.getContestPK());
 
@@ -730,12 +757,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         for (Proposal proposal : supportedProposals) {
             final String proposalName = proposalLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-            final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLink(contest, proposal);
+            final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal);
             messageBody.append(String.format(LINK_FORMAT_STRING + "<br />", proposalLink, proposalName));
         }
 
-        String subject = String.format(SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING, contest.getContestName());
-        String body = String.format(SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestName(), messageBody.toString());
+        String subject = String.format(SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING, contest.getContestShortName());
+        String body = String.format(SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestShortName(), messageBody.toString());
         sendMessage(subject, body, ADMINISTRATOR_USER_ID, recipientIds);
     }
 
@@ -745,12 +772,18 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         recipientIds.add(recipient.getUserId());
 
         final String proposalName = proposalLocalService.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-        final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLink(contest, votedProposal);
-        String link = String.format(LINK_FORMAT_STRING, proposalLink, proposalName);
+        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, votedProposal);
+        final String proposalLink = String.format(LINK_FORMAT_STRING, proposalUrl, proposalName);
 
-        String subject = String.format(SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING, contest.getContestName());
+        final String contestUrl = serviceContext.getPortalURL() + getContestLinkUrl(contest);
+        final String contestLink = String.format(LINK_FORMAT_STRING, contestUrl, contest.getContestShortName());
+
+        String subject = String.format(SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING, contest.getContestShortName());
         String body = String.format(SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING,
-                recipient.getFullName(), contest.getContestName(), link);
+                recipient.getFullName(), proposalLink, contestLink,
+                getProposalTwitterShareLink(contest, votedProposal, serviceContext),
+                getProposalFacebookShareLink(contest, votedProposal, serviceContext),
+                contestLink, proposalLink);
 
         sendMessage(subject,body, ADMINISTRATOR_USER_ID, recipientIds);
     }
@@ -763,5 +796,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         } catch (PortalException | SystemException e) {
             _log.error("Could not send vote message", e);
         }
+    }
+
+    private String getProposalFacebookShareLink(Contest contest, Proposal proposalToShare, ServiceContext serviceContext) throws SystemException, PortalException {
+        final String proposalName = proposalLocalService.getAttribute(proposalToShare.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposalToShare);
+        final String shareMessage = String.format(PROPOSAL_SHARE_MESSAGE_FORMAT_STRING, proposalName);
+        return String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl, StringEscapeUtils.escapeHtml(shareMessage));
+    }
+
+
+    private String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, ServiceContext serviceContext) throws SystemException, PortalException {
+        final String proposalName = proposalLocalService.getAttribute(proposalToShare.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposalToShare);
+        final String shareMessage = String.format(PROPOSAL_SHARE_MESSAGE_FORMAT_STRING, proposalName);
+        return String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, StringEscapeUtils.escapeHtml(shareMessage));
     }
 }

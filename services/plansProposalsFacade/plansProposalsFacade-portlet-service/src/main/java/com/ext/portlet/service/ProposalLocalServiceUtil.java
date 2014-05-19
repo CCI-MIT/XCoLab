@@ -1205,10 +1205,10 @@ public class ProposalLocalServiceUtil {
     * @param proposal  The proposal object (must not be null)
     * @return Proposal URL as String
     */
-    public static java.lang.String getProposalLink(
+    public static java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
-        return getService().getProposalLink(contest, proposal);
+        return getService().getProposalLinkUrl(contest, proposal);
     }
 
     public static void clearService() {
