@@ -281,11 +281,9 @@
                     CKEDITOR.instances[key].destroy(true);
                 }
 
-                var config = { extraPlugins: 'onchange'};
-
                 $('.ckeditor_placeholder').each(function (idx, val) {
                     var textId = $(this).attr('id');
-                    var editor = CKEDITOR.replace(textId, config);
+                    var editor = CKEDITOR.replace(textId);
                     editor.setData($(this).val());
                 });
 

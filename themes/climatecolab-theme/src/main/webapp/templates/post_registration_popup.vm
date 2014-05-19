@@ -61,7 +61,7 @@
                 return;
             }
 
-            console.log("no rteinitilized");
+            // console.log("no rteinitilized");
             var tmp = this;
             var thiz = jQuery(this);
 
@@ -70,7 +70,7 @@
 
 
             if (limitCharactersMax.length > 0) {
-                console.log("limit character max > 0");
+                // console.log("limit character max > 0");
                 thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});
                 this.limitCharacterCounter = limitCharacterCount;
                 updateCharacterCounter(thiz);
@@ -80,7 +80,7 @@
             }
 
             if (thiz.hasClass("rte")) {
-                console.log("rte");
+                // console.log("rte");
                 var editor = CKEDITOR.replace(thiz.attr("id"));
 
                 thiz.get(0)["ckeditor"] = editor;
@@ -105,13 +105,13 @@
                     }
                 }
                 if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
-                    console.log("update set callback");
+                    // console.log("update set callback");
                     updateEditorCharCount();
                 }
 
                 editor.on("blur", function() {
                     updateCharacterCounter(thiz, editor);
-                    console.log("on");
+                    // console.log("on");
                 });
 
                 // initiate char counters
@@ -126,25 +126,25 @@
                         }
                         if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
                             updateCharacterCounter(thiz);
-                            console.log("keypress");
+                            // console.log("keypress");
                         }
                     },
                     keyup: function(event) {
                         if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
                             updateCharacterCounter(thiz);
-                            console.log("keyup");
+                            // console.log("keyup");
                         }
                     },
                     change: function(event) {
                         markEditorDirty(thiz);
-                        console.log("change");
+                        // console.log("change");
                     }
                 };
                 thiz.bind(eventsToBind);
                 thiz.bind('input propertychange', function() {
                     if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
                         updateCharacterCounter(thiz);
-                        console.log("propertychange");
+                        // console.log("propertychange");
                     }
                 });
             }
