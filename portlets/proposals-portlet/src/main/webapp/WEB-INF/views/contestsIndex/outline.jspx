@@ -67,8 +67,22 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
         <div class="section-list">
         	<!--  -->
         </div>
-        
-        <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span> contests</div></div>
+
+        <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span>
+            <span class="active-title" style="display: none;"> active</span>
+            <span class="inactive-title" style="display: none;"> prior</span>
+            <span class='plural'> contests</span>
+            <span class='singular'> contest</span>
+        </div>
+
+            <div class="other-contest-count" style="display: none;">
+                (<span class="count"><!-- --></span>
+                <span class="active-title" style="display:none;"><a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'> active</a></span>
+                <span class="inactive-title" style="display:none;"><a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' > prior</a></span>
+                <span class='plural'> contests</span>
+                <span class='singular'> contest</span>)
+            </div>
+        </div>
         <div class="prop-head">Proposals</div>
         <div class="contest-list">
        		<!--  -->
@@ -82,7 +96,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						If you select
 							<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
 					
-							<span class='count'><!--  --></span>
+							<span class='count'><!-- --></span>
 							completed 
 							<span class='plural'>contests</span>
 							<span class='singular'>contest</span>
@@ -92,7 +106,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					<c:otherwise>
 						<span class="otherContestsCount">If you select
 							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
-							<span class='count'><!--  --></span> current  
+							<span class='count'><!-- --></span> current
 							<span class='plural'>contests</span>
 							<span class='singular'>contest</span>
 							will be displayed
@@ -101,7 +115,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				</c:choose>
 			</c:if>
 		</div>
-    
+
  		
     </div> <!-- / contest-outline-right -->
 	</div>
@@ -112,6 +126,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var otherContests = {};
 		var focusAreas = {};
 		var ontologySpaces = {};
+
+        var showActiveContests = ${showActiveContests};
+        var showAllContests = ${showAllContests};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
 			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], otherContests: [], isSpace: true};
@@ -318,6 +335,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 			//alert('unique count' + uniqueCount);
 			container.find(".contest-count .count").text(uniqueCount);
+            container.find(".contest-count").addClass(uniqueCount == 1 ? "singular" : "plural");
 			//contestsListHtml.push("<div class='otherContestsInfo'>");
 			//contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
 			//contestsListHtml.push("</div>");
@@ -414,12 +432,30 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				elem.attr('href', href + window.location.hash);
 				
 			});
+
 			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
 			if (currentSpace.otherContests.length > 0) {
 				otherContestsInfoContainer.find(".count").text(currentSpace.otherContests.length);
 				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural")
 				.removeClass(currentSpace.otherContests.length == 1 ? "plural" : "singular");
+
+                jQuery(".other-contest-count").addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural");
+                jQuery(".other-contest-count .count").text(currentSpace.otherContests.length);
 			}
+
+            if (!showAllContests) {
+                var countContainer = jQuery(".section-contest-count-container .contest-count");
+                var otherCountContainer = jQuery(".section-contest-count-container .other-contest-count");
+                otherCountContainer.css('display', 'inline-block');
+
+                if (showActiveContests) {
+                    countContainer.find(".active-title").show();
+                    otherCountContainer.find(".inactive-title").show();
+                } else {
+                    countContainer.find(".inactive-title").show();
+                    otherCountContainer.find(".active-title").show();
+                }
+            }
 			
 			renderBreadcrumbSections([currentSpace]);
 			renderContests(currentSpace.contests, currentSpace);
