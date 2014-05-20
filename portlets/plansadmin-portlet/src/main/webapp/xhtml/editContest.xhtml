@@ -140,6 +140,9 @@
 
             <ice:outputLabel value="Sponsor link" />
             <ice:inputText value="#{contestsAdmin.editedContest.contest.sponsorLink}" />
+
+            <ice:outputLabel value="Invisible" />
+            <ice:selectBooleanCheckbox value="#{contestsAdmin.editedContest.contest.contestPrivate}" />
            
            <ice:commandButton value="Save" action="#{contestsAdmin.editedContest.save}" />
         </ice:panelGrid>

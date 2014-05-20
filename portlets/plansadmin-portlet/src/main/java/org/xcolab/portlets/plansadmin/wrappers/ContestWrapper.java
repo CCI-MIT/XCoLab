@@ -271,8 +271,4 @@ public class ContestWrapper {
         phases.add(new ContestPhaseWrapper(null, this));
         
     }
-
-    public void transferSupports() throws SystemException, AddressException, MailEngineException, PortalException {
-        ContestLocalServiceUtil.transferSupportToVotes(contest);
-    }
 }
