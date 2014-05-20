@@ -344,7 +344,8 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 			//alert('unique count' + uniqueCount);
 			container.find(".contest-count .count").text(uniqueCount);
-            container.find(".contest-count").addClass(uniqueCount == 1 ? "singular" : "plural");
+            container.find(".contest-count").removeClass("singular plural")
+                    .addClass(uniqueCount == 1 ? "singular" : "plural");
 			//contestsListHtml.push("<div class='otherContestsInfo'>");
 			//contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
 			//contestsListHtml.push("</div>");
@@ -445,26 +446,11 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
 			if (currentSpace.otherContests.length > 0) {
 				otherContestsInfoContainer.find(".count").text(currentSpace.otherContests.length);
-				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural")
-				.removeClass(currentSpace.otherContests.length == 1 ? "plural" : "singular");
-
-                jQuery(".other-contest-count").addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural");
-                jQuery(".other-contest-count .count").text(currentSpace.otherContests.length);
+				otherContestsInfoContainer.find(".otherContestsCount").show().removeClass("plural singular")
+                        .addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural");
 			}
 
-            if (!showAllContests) {
-                var countContainer = jQuery(".section-contest-count-container .contest-count");
-                var otherCountContainer = jQuery(".section-contest-count-container .other-contest-count");
-                otherCountContainer.css('display', 'inline-block');
-
-                if (showActiveContests) {
-                    countContainer.find(".active-title").show();
-                    otherCountContainer.find(".inactive-title").show();
-                } else {
-                    countContainer.find(".inactive-title").show();
-                    otherCountContainer.find(".active-title").show();
-                }
-            }
+            refreshInactiveContestDisplay(currentSpace.otherContests);
 			
 			renderBreadcrumbSections([currentSpace]);
 			renderContests(currentSpace.contests, currentSpace);
@@ -500,12 +486,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			
 			if (currentTerm.otherContests.length > 0) {
 				otherContestsInfoContainer.find(".count").text(currentTerm.otherContests.length);
-				otherContestsInfoContainer.find(".otherContestsCount").show().addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural")
-					.removeClass(currentTerm.otherContests.length == 1 ? "plural" : "singular");
+				otherContestsInfoContainer.find(".otherContestsCount").show().removeClass("plural singular")
+                        .addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural");
 			}
 			else {
 				otherContestsInfoContainer.find(".otherContestsCount").hide();
 			}
+
+            refreshInactiveContestDisplay(currentTerm.otherContests);
 			
 			var termAndParents = [];
 			var term = currentTerm;
@@ -521,6 +509,36 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			renderContests(currentTerm.contests, currentTerm.space);
 			
 		}
+
+        function refreshInactiveContestDisplay(contests) {
+            if (contests.length == 0) {
+                jQuery(".section-contest-count-container .other-contest-count").hide();
+            }
+
+            jQuery(".other-contest-count").removeClass("singular plural")
+                    .addClass(contests.length == 1 ? "singular" : "plural");
+            jQuery(".other-contest-count .count").text(contests.length);
+
+            if (!showAllContests) {
+                var countContainer = jQuery(".section-contest-count-container .contest-count");
+                var otherCountContainer = jQuery(".section-contest-count-container .other-contest-count");
+                otherCountContainer.css('display', 'inline-block');
+
+                // Update link
+                jQuery('.other-contest-count .showOtherContestsLink').each(function() {
+                    $(this).attr('href', $(this).attr("data-base-url") + window.location.hash);
+                });
+
+
+                if (showActiveContests) {
+                    countContainer.find(".active-title").show();
+                    otherCountContainer.find(".inactive-title").show();
+                } else {
+                    countContainer.find(".inactive-title").show();
+                    otherCountContainer.find(".active-title").show();
+                }
+            }
+        }
 		jQuery(".contest-outline-left").on('click', 'a', function(event) {
 			event.preventDefault();
 			var that = this;
