@@ -1027,7 +1027,7 @@ box-shadow: inset -14px 0 10px -10px #ccc;}
 .contest-count.singular .plural, .contest-count.plural .singular,
 .other-contest-count.singular .plural, .other-contest-count.plural .singular {display: none;}
 .other-contest-count {font:13px "Lucida Grande", Arial, sans-serif; color:#858585; margin-right:20px; padding:10px 0 20px 10px;}
-.other-contest-count span.count {font:14px "proxima-nova", Arial, Helvetica, sans-serif; font-weight:700; color:#000; padding: 10px 0 20px 0;}
+.other-contest-count span.count {font:14px "proxima-nova", Arial, Helvetica, sans-serif; padding: 10px 0 20px 0;}
 .show-active {float:right; text-align:right; position:relative; font:12px "Lucida Grande", Arial, sans-serif; padding:0px 16px 0px 0;}
 .show-active a:after {
 	content:""; position:absolute; top:6px; right:0; width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:4px solid #3192b1;
