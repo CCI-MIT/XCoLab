@@ -272,7 +272,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         return name.toString();
     }
 
-    private final static String PROPOSAL_COMMENT_MSG_MAIL_BODY_TEMPLATE = "<b>USER_LINK_PLACEHOLDER posted a comment on the HREAD_TOPIC_PLACEHOLDER</b>:" +
+    private final static String PROPOSAL_COMMENT_MSG_MAIL_BODY_TEMPLATE = "<b>USER_LINK_PLACEHOLDER posted a comment on the THREAD_TOPIC_PLACEHOLDER</b>:" +
             "<br/><br/>" + "<div style='margin-left: 20px'>MESSAGE_BODY_PLACEHOLDER</div>";
 
     private final static String FORUM_COMMENT_MSG_MAIL_BODY_TEMPLATE = "<b>USER_LINK_PLACEHOLDER posted a comment on THREAD_TOPIC_PLACEHOLDER in the forum THREAD_GROUP_PLACEHOLDER</b>:" +
