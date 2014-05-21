@@ -147,6 +147,8 @@
 		</field>
 		<field name="contestPrivate" type="boolean" />
 		<field name="usePermissions" type="boolean" />
+		<field name="defaultModelId" type="long" />
+		<field name="otherModels" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />

@@ -10,13 +10,28 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var that = this;
 		
 		jQuery(modelingWidget).on('scenarioRendered', function(event) {
-			that.updateSelectedOptionsInfo(true);
+			if (that.updateSelectedOptionsInfo) {
+				that.updateSelectedOptionsInfo(true);
+			}
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
 			if (event.model.usesCustomInputs) {
 				that.model = event.model;
 				that.render(modelingWidget.container, event.model);
+			}
+		});
+
+		jQuery(modelingWidget).on('scenarioFetched', function(event) {
+			console.log("scenario fetched event", event, this);
+			if (event.scenario.usesCustomInputs) {
+				that.model = event.scenario;
+				that.scenario = event.scenario;
+				if (! this.inEditMode) {
+					// if widget is in edit mode then there is no need to rerender 
+					console.log("renrendering?", this.inEditMode);
+					that.render(modelingWidget.container, event.scenario);
+				}
 			}
 		});
 		
@@ -497,6 +512,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	CustomInputsRenderer.prototype.renderView = function(container, model) {
 		var that = this;
 		var inputsContainer = jQuery("<div class='act_left act_left-list'></div>").appendTo(container);
+		
+		console.log('render view', model);
 		jQuery.each(model.inputs, function(idx, input) {
 			var inputContainer = jQuery("<div></div>").appendTo(inputsContainer);
 			that.modelingWidget.getInputRenderer(input).render(inputContainer, input, that.modelingWidget, idx);

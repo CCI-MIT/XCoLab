@@ -498,6 +498,35 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setUsePermissions(boolean usePermissions);
 
+    /**
+     * Returns the default model ID of this contest.
+     *
+     * @return the default model ID of this contest
+     */
+    public long getDefaultModelId();
+
+    /**
+     * Sets the default model ID of this contest.
+     *
+     * @param defaultModelId the default model ID of this contest
+     */
+    public void setDefaultModelId(long defaultModelId);
+
+    /**
+     * Returns the other models of this contest.
+     *
+     * @return the other models of this contest
+     */
+    @AutoEscape
+    public String getOtherModels();
+
+    /**
+     * Sets the other models of this contest.
+     *
+     * @param otherModels the other models of this contest
+     */
+    public void setOtherModels(String otherModels);
+
     @Override
     public boolean isNew();
 

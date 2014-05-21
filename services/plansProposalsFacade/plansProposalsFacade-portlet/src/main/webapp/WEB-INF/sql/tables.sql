@@ -102,7 +102,9 @@ create table xcolab_Contest (
 	weight INTEGER,
 	resourcesUrl VARCHAR(1024) null,
 	contestPrivate BOOLEAN,
-	usePermissions BOOLEAN
+	usePermissions BOOLEAN,
+	defaultModelId LONG,
+	otherModels VARCHAR(75) null
 );
 
 create table xcolab_ContestDebate (

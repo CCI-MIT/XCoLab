@@ -5370,6 +5370,8 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setResourcesUrl(contest.getResourcesUrl());
         contestImpl.setContestPrivate(contest.isContestPrivate());
         contestImpl.setUsePermissions(contest.isUsePermissions());
+        contestImpl.setDefaultModelId(contest.getDefaultModelId());
+        contestImpl.setOtherModels(contest.getOtherModels());
 
         return contestImpl;
     }

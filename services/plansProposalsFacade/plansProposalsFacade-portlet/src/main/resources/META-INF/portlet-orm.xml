@@ -170,6 +170,8 @@
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />
 			<basic name="usePermissions" />
+			<basic name="defaultModelId" />
+			<basic name="otherModels" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

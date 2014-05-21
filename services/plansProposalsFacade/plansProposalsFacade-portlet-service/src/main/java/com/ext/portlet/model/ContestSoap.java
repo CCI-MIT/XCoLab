@@ -43,6 +43,8 @@ public class ContestSoap implements Serializable {
     private String _resourcesUrl;
     private boolean _contestPrivate;
     private boolean _usePermissions;
+    private long _defaultModelId;
+    private String _otherModels;
 
     public ContestSoap() {
     }
@@ -79,6 +81,8 @@ public class ContestSoap implements Serializable {
         soapModel.setResourcesUrl(model.getResourcesUrl());
         soapModel.setContestPrivate(model.getContestPrivate());
         soapModel.setUsePermissions(model.getUsePermissions());
+        soapModel.setDefaultModelId(model.getDefaultModelId());
+        soapModel.setOtherModels(model.getOtherModels());
 
         return soapModel;
     }
@@ -378,5 +382,21 @@ public class ContestSoap implements Serializable {
 
     public void setUsePermissions(boolean usePermissions) {
         _usePermissions = usePermissions;
+    }
+
+    public long getDefaultModelId() {
+        return _defaultModelId;
+    }
+
+    public void setDefaultModelId(long defaultModelId) {
+        _defaultModelId = defaultModelId;
+    }
+
+    public String getOtherModels() {
+        return _otherModels;
+    }
+
+    public void setOtherModels(String otherModels) {
+        _otherModels = otherModels;
     }
 }
