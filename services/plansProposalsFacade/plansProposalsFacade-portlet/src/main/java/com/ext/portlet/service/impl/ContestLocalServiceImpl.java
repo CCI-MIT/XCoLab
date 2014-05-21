@@ -88,6 +88,8 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.utils.emailnotification.ContestVoteNotification;
+import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 
 import javax.mail.internet.AddressException;
 
@@ -119,38 +121,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
-    private static final long ADMINISTRATOR_USER_ID = 10144L;
-
     private static final int CONTEST_PHASE_TYPE_WINNER_SELECTION = 13;
-
-    /**
-     * Support to vote constants
-     */
-    private static final String SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
-            "This year's voting period has started! Vote now to help your favorite proposals win the Popular Choice award. " +
-            "We have noted that you have supported the following proposals in the contest <b>%s</b>:<br/><br/>" +
-            "%s<br/><br/>" +
-            "Click the links above to visit the proposal page and cast your vote.  Please note that you can only vote for one proposal per contest." +
-            "<br/><br/>Thank you!" +
-            "<br/><br/>Sincerely,<br/>The Climate Colab Team";
-    private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
-            "This year's voting period has started!  We have automatically transferred your support for the proposal %s in the %s contest to an official vote." +
-            "<br/><br/>Share this proposal with your friends!  <a href='%s'>Twitter</a>  <a href='%s'>Facebook</a>  Email" +
-            "<br/><br/>Please note that you can only vote for one proposal per contest.  To change your vote in this contest, simply vote for another proposal in the %s contest and your vote will transfer. " +
-            "To retract your vote in this contest, click \"Retract vote\" on the %s proposal page." +
-            "<br /><br/>Thanks!" +
-            "<br/><br/>Sincerely,<br/>The Climate Colab Team";
-
-    private static final String SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING = "Your vote in contest %s";
-
-    private static final String SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING = "Please vote for your favorite proposal in contest %s";
-
-    private static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
-
-
-    private static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
-    private static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
-    private static final String PROPOSAL_SHARE_MESSAGE_FORMAT_STRING = "I have voted for the Climate CoLab's proposal <b>%s</b>. Check it out.";
 
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
         List<Contest> contests = contestPersistence.findByContestActive(contestActive);
@@ -685,11 +656,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
                 voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                sendVoteMessageNotification(user, contest, proposals.get(0), serviceContext);
+                new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendEmailNotification();
             }
             // Send a notification to the user
             else {
-                sendVoteMessageQuestion(user, contest, proposals, serviceContext);
+                new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
             }
         }
     }
@@ -746,70 +717,5 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     analyticsValue);
         }*/
         }
-    }
-
-    private void sendVoteMessageQuestion(User recipient, Contest contest, List<Proposal> supportedProposals, ServiceContext serviceContext)
-            throws PortalException, SystemException {
-        List<Long> recipientIds = new ArrayList<Long>();
-        recipientIds.add(recipient.getUserId());
-
-        StringBuilder messageBody = new StringBuilder();
-
-        for (Proposal proposal : supportedProposals) {
-            final String proposalName = proposalLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-            final String proposalLink = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal);
-            messageBody.append(String.format(LINK_FORMAT_STRING + "<br />", proposalLink, proposalName));
-        }
-
-        String subject = String.format(SUPPORT_TO_VOTE_QUESTION_SUBJECT_FORMAT_STRING, contest.getContestShortName());
-        String body = String.format(SUPPORT_TO_VOTE_QUESTION_MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestShortName(), messageBody.toString());
-        sendMessage(subject, body, ADMINISTRATOR_USER_ID, recipientIds);
-    }
-
-    private void sendVoteMessageNotification(User recipient, Contest contest, Proposal votedProposal, ServiceContext serviceContext)
-            throws PortalException, SystemException {
-        List<Long> recipientIds = new ArrayList<Long>();
-        recipientIds.add(recipient.getUserId());
-
-        final String proposalName = proposalLocalService.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, votedProposal);
-        final String proposalLink = String.format(LINK_FORMAT_STRING, proposalUrl, proposalName);
-
-        final String contestUrl = serviceContext.getPortalURL() + getContestLinkUrl(contest);
-        final String contestLink = String.format(LINK_FORMAT_STRING, contestUrl, contest.getContestShortName());
-
-        String subject = String.format(SUPPORT_TO_VOTE_SUCCESS_SUBJECT_FORMAT_STRING, contest.getContestShortName());
-        String body = String.format(SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING,
-                recipient.getFullName(), proposalLink, contestLink,
-                getProposalTwitterShareLink(contest, votedProposal, serviceContext),
-                getProposalFacebookShareLink(contest, votedProposal, serviceContext),
-                contestLink, proposalLink);
-
-        sendMessage(subject,body, ADMINISTRATOR_USER_ID, recipientIds);
-    }
-
-    private void sendMessage(String subject, String body, long senderId, List<Long> recipientIds) {
-        try {
-            MessageUtil.sendMessage(subject,body, senderId, senderId, recipientIds, null);
-        } catch (MailEngineException | AddressException e) {
-            _log.error("Could not send vote message", e);
-        } catch (PortalException | SystemException e) {
-            _log.error("Could not send vote message", e);
-        }
-    }
-
-    private String getProposalFacebookShareLink(Contest contest, Proposal proposalToShare, ServiceContext serviceContext) throws SystemException, PortalException {
-        final String proposalName = proposalLocalService.getAttribute(proposalToShare.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposalToShare);
-        final String shareMessage = String.format(PROPOSAL_SHARE_MESSAGE_FORMAT_STRING, proposalName);
-        return String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl, StringEscapeUtils.escapeHtml(shareMessage));
-    }
-
-
-    private String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, ServiceContext serviceContext) throws SystemException, PortalException {
-        final String proposalName = proposalLocalService.getAttribute(proposalToShare.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-        final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposalToShare);
-        final String shareMessage = String.format(PROPOSAL_SHARE_MESSAGE_FORMAT_STRING, proposalName);
-        return String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, StringEscapeUtils.escapeHtml(shareMessage));
     }
 }
