@@ -308,3 +308,7 @@ div.sponsorLogo img {
 .commentor-header {
     float:left;
 }
+
+.wizardSelectedOptionsInfo li  {
+	font-weight: normal !important;
+}

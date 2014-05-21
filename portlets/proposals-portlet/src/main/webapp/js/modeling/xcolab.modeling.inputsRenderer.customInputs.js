@@ -43,6 +43,17 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	CustomInputsRenderer.prototype.containerHtml = "<div class='act_left act_left-list'></div>";
 	CustomInputsRenderer.prototype.containerHtmlEdit = "<div class='act-edit_left'></div>";
 
+	CustomInputsRenderer.prototype.findScreenAndOptionForNameValue = function(name, value) {
+		for (var i = 0; i < this.definition.screens.length; i++) {
+			var screen = this.definition.screens[i];
+			for (var k = 0; k < screen.options.length; k++) {
+				var option = screen.options[k];
+				if (option.name == name && option.value == value) return [screen, option]; 
+			}
+		}
+		return null;
+	};
+	
 	CustomInputsRenderer.prototype.renderEdit = function(container, model) {
 		var self = this;
 		this.container = container;
@@ -50,6 +61,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.values = {};
 		this.screensStack = [];
 		
+
 		this.renderDefinition = function(definition) {
 			self.definition = definition;
 			self.container.empty();
@@ -345,16 +357,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			
 		}
 		
-		function findScreenAndOptionForNameValue(name, value) {
-			for (var i = 0; i < self.definition.screens.length; i++) {
-				var screen = self.definition.screens[i];
-				for (var k = 0; k < screen.options.length; k++) {
-					var option = screen.options[k];
-					if (option.name == name && option.value == value) return [screen, option]; 
-				}
-			}
-			return null;
-		}
 		this.updateSelectedOptionsInfo = function(wasModelRun) {
 			var selectedOptionsHtml = [];
 			selectedOptionsHtml.push("<ul class='wizardSelectedOptionsInfo'>");
@@ -364,7 +366,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				var result = self.findCurrentResult();
 				if (result != null) {
 					for (var key in result.values) {
-						var screenAndOption = findScreenAndOptionForNameValue(key, result.values[key]);
+						var screenAndOption = self.findScreenAndOptionForNameValue(key, result.values[key]);
 						if (screenAndOption != null) {
 							selectedOptionsHtml.push("<li><strong>");
 							selectedOptionsHtml.push(screenAndOption[0].title);
@@ -377,7 +379,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			}
 			else {
 				for (var key in self.values) {
-					var screenAndOption = findScreenAndOptionForNameValue(key, self.values[key].value);
+					var screenAndOption = self.findScreenAndOptionForNameValue(key, self.values[key].value);
 					if (screenAndOption != null) {
 						selectedOptionsHtml.push("<li><strong>");
 						selectedOptionsHtml.push(screenAndOption[0].title);
@@ -510,14 +512,55 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	};
 	
 	CustomInputsRenderer.prototype.renderView = function(container, model) {
+		this.definition = eval("(" + model.customInputsDefinition + ")");
 		var that = this;
 		var inputsContainer = jQuery("<div class='act_left act_left-list'></div>").appendTo(container);
+		// find input value
+		var inputs = {};
+		for (var i =0; i < model.inputs.length; i++) {
+			inputs[model.inputs[i].metaData.internalName] =model.inputs[i].value.values[0][0];
+		}
+		var result = null;
+		for (var i=0; i < this.definition.results.length; i++) {
+			var resultCandidate = this.definition.results[i];
+			if (resultCandidate.isDefault && result == null) {
+				result = resultCandidate;
+			}
+			var matchedResult = true;
+			for (var key in inputs) {
+				if (!(key in result.outputs) || !(result.outputs[key] == inputs[key])) {
+					matchedResult = false;
+					break;
+				}
+			}
+			if (matchedResult) {
+				result = resultCandidate;
+				break;
+			}
+		}
+		console.log("result found", result);
 		
-		console.log('render view', model);
-		jQuery.each(model.inputs, function(idx, input) {
-			var inputContainer = jQuery("<div></div>").appendTo(inputsContainer);
-			that.modelingWidget.getInputRenderer(input).render(inputContainer, input, that.modelingWidget, idx);
-		});
+		var selectedOptionsHtml = [];
+		selectedOptionsHtml.push("<ul class='wizardSelectedOptionsInfo'>");
+		
+		if (result != null) {
+			for (var key in result.values) {
+				var screenAndOption = this.findScreenAndOptionForNameValue(key, result.values[key]);
+				if (screenAndOption != null) {
+					selectedOptionsHtml.push("<li><strong>");
+					selectedOptionsHtml.push(screenAndOption[0].title);
+					selectedOptionsHtml.push("</strong>: ");
+					selectedOptionsHtml.push(screenAndOption[1].title);
+					selectedOptionsHtml.push("</li>");
+				}
+			}
+		}
+		
+		
+		selectedOptionsHtml.push("</ul>");		
+		inputsContainer.append(selectedOptionsHtml.join(''));
+		
+		
 	};
 	CustomInputsRenderer.prototype.render = function(container, scenario) {
 		if (scenario.modelId != this.modelId) {
