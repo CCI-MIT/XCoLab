@@ -20,11 +20,11 @@
     <div id="content">
 
         This page is shared by contest Fellows only. Advisors and Judges will not be able to view this page
-        <portlet:actionURL var="saveFellowRatingURL">
+        <portlet:actionURL var="saveScreeningURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="saveFellowRating"/>
+            <portlet:param name="action" value="saveScreening"/>
         </portlet:actionURL>
 
         <portlet:actionURL var="sendEmailURL">
@@ -36,7 +36,7 @@
 
         <div class="judging_left">
             <div class="addpropbox">
-                <form:form id="fellowRatingForm" action="${saveFellowRatingURL }" method="post"
+                <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
                            commandName="judgeProposalBean">
 
                     <h3 style="margin-top: 0;">Rating</h3>
@@ -62,33 +62,36 @@
                     <h3>Advance Proposal</h3>
 
 
-                    <form:select path="fellowAction" items="${judgingOptions}" itemLabel="description"/>
+                    <form:select id="fellowAction" path="fellowAction" items="${judgingOptions}" itemLabel="description"/>
 
+                    <div id="fellowSelectJudgesContainer" style="display: none;">
+                        <h3>Select Judge(s)</h3>
+                        Select which Judge(s) will review this proposal.
+                        <table class="judgingForm">
+                            <tbody>
+                            <tr>
+                                <c:forEach var="judge" items="${contest.contestJudges }">
+                                    <td>
+                                        <proposalsPortlet:userPortrait screenName="${judge.screenName }"
+                                                                       portraitId="${judge.portraitId}" width="30"
+                                                                       height="30"/>
+                                        <!--<c:choose>
 
-                    <h3>Select Judge(s)</h3>
-                    Select which Judge(s) will review this proposal.
-                    <table class="judgingForm">
-                        <tbody>
-                        <tr>
-                            <c:forEach var="judge" items="${contest.contestJudges }">
-                                <td>
-                                    <proposalsPortlet:userPortrait screenName="${judge.screenName }"
-                                                                   portraitId="${judge.portraitId}" width="30"
-                                                                   height="30"/><br/>
-                                    <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                     text="${judge.fullName} (${judge.comments})"/><br/>
-                                    <form:checkbox path="selectedJudges" value="${judge.userId}"/>
-                                </td>
-                            </c:forEach>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 3}">
-                    <h3>Comment to send to author</h3>
-                    <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
-                    </c:if>
-
+                                        </c:choose>-->
+                                        <br/>
+                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}"
+                                                                         text="${judge.fullName} (${judge.comments})"/><br/>
+                                        <form:checkbox path="selectedJudges" value="${judge.userId}"/>
+                                    </td>
+                                </c:forEach>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="fellowCommentContainer" style="display: none">
+                        <h3>Comment to send to author</h3>
+                        <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
+                    </div>
                     <c:choose>
                         <c:when test="${!judgeProposalBean.judgingStatus}">
                             <div class="blue-button" style="display:block; float:right;">
@@ -98,10 +101,9 @@
                         </c:when>
                         <c:otherwise>(No more changes possible)</c:otherwise>
                     </c:choose>
-
                 </form:form>
             </div>
-            <c:if test="${judgeProposalBean.fellowAction.attributeValue ne 0 and judgeProposalBean.fellowAction.attributeValue ne 3 and !judgeProposalBean.judgingStatus}">
+            <c:if test="${judgeProposalBean.fellowAction.commentEnabled and !judgeProposalBean.judgingStatus}">
                 <div class="addpropbox">
                     <div class="blue-button" style="display:block; float:right;">
                         <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
@@ -134,5 +136,38 @@
 
 
     </div>
+
+    <script type="text/javascript">
+        var fellowActions = {};
+
+        <c:forEach var="fellowAction" items="${judgingOptions}">
+                fellowActions[${fellowAction.attributeValue}] = {attributeValue: ${fellowAction.attributeValue}, description: "${fellowAction.description}", selectJudgesEnabled: ${fellowAction.selectJudgesEnabled}, commentEnabled: ${fellowAction.commentEnabled}};
+        </c:forEach>
+
+        jQuery( document ).ready(function() {
+            jQuery('#fellowAction').change(function() {
+                refreshCommentFieldVisibility();
+            });
+
+            refreshCommentFieldVisibility();
+        });
+
+        function refreshCommentFieldVisibility() {
+            var fellowActionSelectIdx = document.getElementById("fellowAction").selectedIndex;
+            if (fellowActions[fellowActionSelectIdx].commentEnabled) {
+                jQuery('#fellowCommentContainer').slideDown();
+            } else {
+                jQuery('#fellowCommentContainer').slideUp();
+            }
+
+            if (fellowActions[fellowActionSelectIdx].selectJudgesEnabled) {
+                jQuery('#fellowSelectJudgesContainer').slideDown();
+            } else {
+                jQuery('#fellowSelectJudgesContainer').slideUp();
+            }
+        }
+
+
+    </script>
 
 </jsp:root>

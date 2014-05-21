@@ -34,14 +34,18 @@ public class JudgingSystemActions {
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "No decision"), INCOMPLETE(1, "Incomplete"), OFFTOPIC(2, "Off-topic"), PASSTOJUDGES(3, "Advance to judges");
+        NO_DECISION(0, "No decision", false, false), INCOMPLETE(1, "Incomplete", true, false), OFFTOPIC(2, "Off-topic", true, false), PASSTOJUDGES(3, "Advance to judges", false, true);
 
         int attributeValue;
         String description;
+        boolean commentEnabled;
+        boolean selectJudgesEnabled;
 
-        private FellowAction(int attributeValue, String description) {
+        private FellowAction(int attributeValue, String description, boolean commentEnabled, boolean selectJudgesEnabled) {
             this.attributeValue = attributeValue;
             this.description = description;
+            this.commentEnabled = commentEnabled;
+            this.selectJudgesEnabled = selectJudgesEnabled;
         }
 
         public static FellowAction fromInt(Integer value) {
@@ -58,6 +62,14 @@ public class JudgingSystemActions {
 
         public String getDescription(){
             return description;
+        }
+
+        public boolean getCommentEnabled() {
+            return commentEnabled;
+        }
+
+        public boolean getSelectJudgesEnabled() {
+            return selectJudgesEnabled;
         }
     }
 }

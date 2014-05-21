@@ -14,6 +14,7 @@ import com.ext.portlet.service.persistence.DiscussionMessageUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.persistence.GroupUtil;
 import com.liferay.util.mail.MailEngine;
@@ -128,8 +129,8 @@ public class JudgeProposalActionController {
 
     }
 
-    @RequestMapping(params = {"action=saveFellowRating"})
-    public void saveFellowRating(ActionRequest request, Model model,
+    @RequestMapping(params = {"action=saveScreening"})
+    public void saveScreening(ActionRequest request, Model model,
                                  ActionResponse response, @Valid JudgeProposalBean judgeProposalBean,
                                  BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
@@ -139,15 +140,15 @@ public class JudgeProposalActionController {
         persistSelectedJudges(proposalId, contestPhaseId, judgeProposalBean.getSelectedJudges());
 
         // save fellow rating
-        if (judgeProposalBean.getFellowRating() != null)
+        if (Validator.isNotNull(judgeProposalBean.getFellowRating()))
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, judgeProposalBean.getFellowRating(), null);
 
         // save fellow action
-        if (judgeProposalBean.getFellowAction() != null)
+        if (Validator.isNotNull(judgeProposalBean.getFellowAction()))
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, judgeProposalBean.getFellowAction().getAttributeValue(), null);
 
         // save fellow comment
-        if (judgeProposalBean.getFellowComment() != null)
+        if (Validator.isNotNull(judgeProposalBean.getFellowComment()))
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, -1, judgeProposalBean.getFellowComment());
     }
 
@@ -171,11 +172,11 @@ public class JudgeProposalActionController {
         ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
 
 
-        String s = "";
+        String attributeValue = "";
         if (selectedJudges != null) {
-            for (Long l : selectedJudges) s += l + ";";
+            for (Long userId : selectedJudges) attributeValue += userId + ";";
         }
-        judges.setStringValue(s.replaceAll(";$", ""));
+        judges.setStringValue(attributeValue.replaceAll(";$", ""));
 
         try {
             ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(judges);
