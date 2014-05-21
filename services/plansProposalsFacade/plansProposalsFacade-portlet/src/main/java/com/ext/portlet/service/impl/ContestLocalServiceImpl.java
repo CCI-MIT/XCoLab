@@ -500,12 +500,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         List<Long> ret = new ArrayList<>();
         boolean addedDefault = false;
 
-        
-        for (String modelId:  contest.getOtherModels().split(",")) {
-        	long modelIdLong = Long.parseLong(modelId);
-        	ret.add(modelIdLong);
-        	if (modelIdLong == contest.getDefaultModelId()) {
-        		addedDefault = true;
+        if (StringUtils.isNotBlank(contest.getOtherModels())) {
+        	for (String modelId:  contest.getOtherModels().split(",")) {
+        		long modelIdLong = Long.parseLong(modelId);
+        		ret.add(modelIdLong);
+        		if (modelIdLong == contest.getDefaultModelId()) {
+        			addedDefault = true;
+        		}
         	}
         }
         if (! addedDefault) {
