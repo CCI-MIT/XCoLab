@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Mente on 21/05/14.
+ * Created by kmang on 21/05/14.
  */
 public class ContestVoteNotification extends EmailNotification {
     private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
@@ -56,6 +56,6 @@ public class ContestVoteNotification extends EmailNotification {
                 getContestLink(contest),
                 getProposalLink(contest, votedProposal));
 
-        sendMessage(subject,body, ADMINISTRATOR_USER_ID, recipientIds);
+        sendMessage(subject,body, recipientIds);
     }
 }

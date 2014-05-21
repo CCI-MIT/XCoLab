@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Mente on 21/05/14.
+ * Created by kmang on 21/05/14.
  */
 public class ContestVoteQuestionNotification extends EmailNotification {
 
