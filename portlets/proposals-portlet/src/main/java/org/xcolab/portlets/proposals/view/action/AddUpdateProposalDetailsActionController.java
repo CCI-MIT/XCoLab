@@ -9,6 +9,10 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,6 +46,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 
 @Controller
@@ -121,7 +126,7 @@ public class AddUpdateProposalDetailsActionController {
         else {
             // create
             createNew = true;
-            Proposal newProposal = ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(), 
+            Proposal newProposal = ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(),
                     proposalsContext.getContestPhase(request).getContestPhasePK());
             Proposal2Phase newProposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(newProposal.getProposalId(), 
                     proposalsContext.getContestPhase(request).getContestPhasePK());
@@ -247,6 +252,16 @@ public class AddUpdateProposalDetailsActionController {
     			PROPOSAL_ANALYTICS_ACTION , 
     			PROPOSAL_ANALYTICS_LABEL, 
     			analyticsValue);
+
+        if (createNew) {
+            // Send email notification to author
+            ServiceContext serviceContext = new ServiceContext();
+            serviceContext.setPortalURL(themeDisplay.getPortalURL());
+            if (Validator.isNotNull(serviceContext)) {
+                Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
+                new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendEmailNotification();
+            }
+        }
         
         
         proposalsContext.invalidateContext(request);

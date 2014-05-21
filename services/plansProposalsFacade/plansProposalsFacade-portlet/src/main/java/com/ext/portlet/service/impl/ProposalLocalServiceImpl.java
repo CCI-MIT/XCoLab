@@ -21,6 +21,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
+import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -85,6 +86,8 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  * @see com.ext.portlet.service.ProposalLocalServiceUtil
  */
 public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
+
+    private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 
     /**
      * Default community permissions for community forum category.
@@ -222,7 +225,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         // Automatically subscribe author to own proposal
         subscribe(proposalId, authorId);
-
 
         return proposal;
     }
@@ -1354,8 +1356,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         proposalVersionLocalService.addProposalVersion(proposalVersion);
     }
-
-    private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 
     /**
      * Returns the URL link address for the passed proposal and contest

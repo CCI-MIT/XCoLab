@@ -14,9 +14,10 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public abstract class EmailNotification {
 
     protected static final String FACEBOOK_PROPOSAL_SHARE_LINK = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
     protected static final String TWITTER_PROPOSAL_SHARE_LINK = "https://twitter.com/share?url=%s&text=%s";
+    protected static final String LINKEDIN_PROPOSAL_SHARE_LINK = "https://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s&summary=%s&source=";
+    protected static final String PINTEREST_PROPOSAL_SHARE_LINK = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
 
     protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
@@ -91,7 +94,8 @@ public abstract class EmailNotification {
      */
     protected String getProposalFacebookShareLink(Contest contest, Proposal proposalToShare) throws SystemException, PortalException {
         final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
-        return String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl);
+        String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, proposalUrl);
+        return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
 
 
@@ -105,9 +109,39 @@ public abstract class EmailNotification {
      * @throws SystemException
      * @throws PortalException
      */
-    protected String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException, PortalException {
+    protected String getProposalTwitterShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
         final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
-        return String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, StringEscapeUtils.escapeHtml(shareMessage));
+        try {
+            String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            return String.format(LINK_FORMAT_STRING, url, "Twitter");
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen
+            throw new SystemException(e);
+        }
+    }
+
+    protected String getProposalLinkedInShareLink(Contest contest, Proposal proposalToShare, String shareTitle, String shareMessage) throws SystemException {
+        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+        try {
+            String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, proposalUrl,
+                    URLEncoder.encode(shareTitle, "UTF-8"),
+                    URLEncoder.encode(shareMessage, "UTF-8"));
+            return String.format(LINK_FORMAT_STRING, url, "LinkedIn");
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen
+            throw new SystemException(e);
+        }
+    }
+
+    protected String getProposalPinterestShareLink(Contest contest, Proposal proposalToShare, String shareMessage) throws SystemException {
+        final String proposalUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+        try {
+            String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, proposalUrl, URLEncoder.encode(shareMessage, "UTF-8"));
+            return String.format(LINK_FORMAT_STRING, url, "Pinterest");
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen
+            throw new SystemException(e);
+        }
     }
 
     public abstract void sendEmailNotification() throws SystemException, PortalException;
