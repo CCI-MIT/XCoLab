@@ -517,4 +517,8 @@ public class ProposalWrapper {
 	public long getContestPK() {
 		return contest.getContestPK();
 	}
+
+    public Proposal getWrapped() {
+        return proposal;
+    }
 }

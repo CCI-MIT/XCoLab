@@ -257,10 +257,9 @@ public class AddUpdateProposalDetailsActionController {
             // Send email notification to author
             ServiceContext serviceContext = new ServiceContext();
             serviceContext.setPortalURL(themeDisplay.getPortalURL());
-            if (Validator.isNotNull(serviceContext)) {
-                Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
-                new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendEmailNotification();
-            }
+            Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
+            new ProposalCreationNotification(proposal.getWrapped(), contest, serviceContext).sendEmailNotification();
+
         }
         
         
