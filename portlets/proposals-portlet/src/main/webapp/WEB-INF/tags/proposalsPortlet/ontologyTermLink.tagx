@@ -5,15 +5,11 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
 	<jsp:directive.attribute name="ontologyTerms" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Ontology terms" />
+    <c:set var="ontologyBaseUrl" value="/web/guest/plans/-/plans/contestsType/all/viewType/OUTLINE#term=" />
 	<c:forEach var="item" items="${ontologyTerms }" varStatus="status">
-		<c:choose>
-			<c:when test="${not empty item.descriptionUrl }">
-				<a href="${item.descriptionUrl }">${item.name }</a>${status.last ? '' : ','}
-			</c:when>
-			<c:otherwise>
-				${item.name }${status.last ? '' : ','}
-			</c:otherwise>	
-		</c:choose>
-			
+        <a id="ontologyTerm_${item.id}" href="${ontologyBaseUrl}">${item.name }</a>${status.last ? '' : ','}
+        <script>
+            jQuery('#ontologyTerm_${item.id}').attr('href', encodeURI('${ontologyBaseUrl}${item.id}_${item.name}'));
+        </script>
 	</c:forEach>
 </jsp:root>
