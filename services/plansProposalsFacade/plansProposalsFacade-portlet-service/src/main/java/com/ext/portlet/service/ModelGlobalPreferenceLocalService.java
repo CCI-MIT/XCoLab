@@ -240,6 +240,11 @@ public interface ModelGlobalPreferenceLocalService extends BaseLocalService,
     public boolean isVisible(edu.mit.cci.roma.client.Simulation s)
         throws com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ModelGlobalPreference getByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     public void setVisible(edu.mit.cci.roma.client.Simulation s, boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException;
 

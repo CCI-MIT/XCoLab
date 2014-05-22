@@ -44,6 +44,8 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
         attributes.put("weight", getWeight());
         attributes.put("expertEvaluationPageId", getExpertEvaluationPageId());
         attributes.put("modelCategoryId", getModelCategoryId());
+        attributes.put("usesCustomInputs", getUsesCustomInputs());
+        attributes.put("customInputsDefinition", getCustomInputsDefinition());
 
         return attributes;
     }
@@ -86,6 +88,19 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
 
         if (modelCategoryId != null) {
             setModelCategoryId(modelCategoryId);
+        }
+
+        Boolean usesCustomInputs = (Boolean) attributes.get("usesCustomInputs");
+
+        if (usesCustomInputs != null) {
+            setUsesCustomInputs(usesCustomInputs);
+        }
+
+        String customInputsDefinition = (String) attributes.get(
+                "customInputsDefinition");
+
+        if (customInputsDefinition != null) {
+            setCustomInputsDefinition(customInputsDefinition);
         }
     }
 
@@ -237,6 +252,57 @@ public class ModelGlobalPreferenceWrapper implements ModelGlobalPreference,
     @Override
     public void setModelCategoryId(long modelCategoryId) {
         _modelGlobalPreference.setModelCategoryId(modelCategoryId);
+    }
+
+    /**
+    * Returns the uses custom inputs of this model global preference.
+    *
+    * @return the uses custom inputs of this model global preference
+    */
+    @Override
+    public boolean getUsesCustomInputs() {
+        return _modelGlobalPreference.getUsesCustomInputs();
+    }
+
+    /**
+    * Returns <code>true</code> if this model global preference is uses custom inputs.
+    *
+    * @return <code>true</code> if this model global preference is uses custom inputs; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isUsesCustomInputs() {
+        return _modelGlobalPreference.isUsesCustomInputs();
+    }
+
+    /**
+    * Sets whether this model global preference is uses custom inputs.
+    *
+    * @param usesCustomInputs the uses custom inputs of this model global preference
+    */
+    @Override
+    public void setUsesCustomInputs(boolean usesCustomInputs) {
+        _modelGlobalPreference.setUsesCustomInputs(usesCustomInputs);
+    }
+
+    /**
+    * Returns the custom inputs definition of this model global preference.
+    *
+    * @return the custom inputs definition of this model global preference
+    */
+    @Override
+    public java.lang.String getCustomInputsDefinition() {
+        return _modelGlobalPreference.getCustomInputsDefinition();
+    }
+
+    /**
+    * Sets the custom inputs definition of this model global preference.
+    *
+    * @param customInputsDefinition the custom inputs definition of this model global preference
+    */
+    @Override
+    public void setCustomInputsDefinition(
+        java.lang.String customInputsDefinition) {
+        _modelGlobalPreference.setCustomInputsDefinition(customInputsDefinition);
     }
 
     @Override

@@ -5,6 +5,9 @@
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
 
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
+	
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
 	
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.js"><!-- --></script>
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.ohlcRenderer.min.js"><!-- --></script>
@@ -27,6 +30,7 @@
 		
 		
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputsRenderer.tabbed.js"><!-- --></script>
+	<script src="/proposals-portlet/js/modeling/xcolab.modeling.inputsRenderer.customInputs.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsRenderer.lazyTabbed.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsTabs.chartTabRendered.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.outputsTabs.physicalImpactsTabRenderer.js"><!-- --></script>

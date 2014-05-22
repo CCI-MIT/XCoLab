@@ -425,10 +425,11 @@ public class ActivitySubscriptionLocalServiceWrapper
     }
 
     @Override
-    public void sendEmailNotifications()
+    public void sendEmailNotifications(
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _activitySubscriptionLocalService.sendEmailNotifications();
+        _activitySubscriptionLocalService.sendEmailNotifications(serviceContext);
     }
 
     @Override

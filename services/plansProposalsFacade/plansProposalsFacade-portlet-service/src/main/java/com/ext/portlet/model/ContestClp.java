@@ -50,6 +50,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _resourcesUrl;
     private boolean _contestPrivate;
     private boolean _usePermissions;
+    private long _defaultModelId;
+    private String _otherModels;
     private BaseModel<?> _contestRemoteModel;
 
     public ContestClp() {
@@ -119,6 +121,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
         attributes.put("usePermissions", getUsePermissions());
+        attributes.put("defaultModelId", getDefaultModelId());
+        attributes.put("otherModels", getOtherModels());
 
         return attributes;
     }
@@ -302,6 +306,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (usePermissions != null) {
             setUsePermissions(usePermissions);
+        }
+
+        Long defaultModelId = (Long) attributes.get("defaultModelId");
+
+        if (defaultModelId != null) {
+            setDefaultModelId(defaultModelId);
+        }
+
+        String otherModels = (String) attributes.get("otherModels");
+
+        if (otherModels != null) {
+            setOtherModels(otherModels);
         }
     }
 
@@ -979,6 +995,50 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public long getDefaultModelId() {
+        return _defaultModelId;
+    }
+
+    @Override
+    public void setDefaultModelId(long defaultModelId) {
+        _defaultModelId = defaultModelId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDefaultModelId", long.class);
+
+                method.invoke(_contestRemoteModel, defaultModelId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getOtherModels() {
+        return _otherModels;
+    }
+
+    @Override
+    public void setOtherModels(String otherModels) {
+        _otherModels = otherModels;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOtherModels", String.class);
+
+                method.invoke(_contestRemoteModel, otherModels);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1075,6 +1135,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setResourcesUrl(getResourcesUrl());
         clone.setContestPrivate(getContestPrivate());
         clone.setUsePermissions(getUsePermissions());
+        clone.setDefaultModelId(getDefaultModelId());
+        clone.setOtherModels(getOtherModels());
 
         return clone;
     }
@@ -1132,7 +1194,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(59);
+        StringBundler sb = new StringBundler(63);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1192,6 +1254,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestPrivate());
         sb.append(", usePermissions=");
         sb.append(getUsePermissions());
+        sb.append(", defaultModelId=");
+        sb.append(getDefaultModelId());
+        sb.append(", otherModels=");
+        sb.append(getOtherModels());
         sb.append("}");
 
         return sb.toString();
@@ -1199,7 +1265,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(91);
+        StringBundler sb = new StringBundler(97);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1320,6 +1386,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>usePermissions</column-name><column-value><![CDATA[");
         sb.append(getUsePermissions());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultModelId</column-name><column-value><![CDATA[");
+        sb.append(getDefaultModelId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>otherModels</column-name><column-value><![CDATA[");
+        sb.append(getOtherModels());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

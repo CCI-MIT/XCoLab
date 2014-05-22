@@ -170,6 +170,8 @@
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />
 			<basic name="usePermissions" />
+			<basic name="defaultModelId" />
+			<basic name="otherModels" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -566,6 +568,8 @@
 			<basic name="weight" />
 			<basic name="expertEvaluationPageId" />
 			<basic name="modelCategoryId" />
+			<basic name="usesCustomInputs" />
+			<basic name="customInputsDefinition" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

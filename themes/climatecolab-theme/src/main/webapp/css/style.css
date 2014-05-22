@@ -124,10 +124,10 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 
 /* top menus */
 #menu {float:left; width:400px; height:67px;}
-#menu li {float:left; list-style:none; border-left:1px solid #bebeb8;}
+#menu li {float:left; list-style:none; border-left:1px solid #bebeb8; box-sizing: content-box;}
 #menu li:hover {color:#454545;}
 #menu li.c {background:#fff; border-left:1px solid #888782;}
-#menu li a {height:41px; padding:26px 16px 0 15px; color:#0090ff; font-weight:700; display:inline-block;}
+#menu li a {height:41px; padding:26px 16px 0 15px; color:#0090ff; font-weight:700; display:inline-block; box-sizing: content-box;}
 #menu li a:hover, #menu li.c a {color:#454545; height:42px;}
 #menu li:hover + li, #menu li.c + li {border-left:1px solid #888782;}
 #menu li a.search {background:url(../images/icon-menu-search.png) no-repeat 24px 18px; height:22px; padding-top:45px; font-size:10px; color:#5e5e5e; text-transform:uppercase; font-family:Arial, Helvetica, sans-serif;}
@@ -661,7 +661,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .prop-tabs ul {height:37px;}
 .prop-tabs li {float:left; list-style:none; height:37px; margin-right:6px;}
 .prop-tabs li a {height:24px; padding:13px 12px 0; display:inline-block; font-size:13px; color:#fff; background:#30a3fb; text-transform:uppercase; font-weight:700;
--moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px;}
+-moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px; box-sizing: content-box;}
 .prop-tabs li a:hover {height:24px; padding:12px 11px 1px; background:#0f558a; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li.c a {height:25px; padding:12px 11px 0; color:#30a3fb; background:#fff; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li a div {display:inline; text-align:center; font:12px Arial, Helvetica, sans-serif; color:#fff; background:#0f558a; padding:0 5px; margin-left:5px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px;}

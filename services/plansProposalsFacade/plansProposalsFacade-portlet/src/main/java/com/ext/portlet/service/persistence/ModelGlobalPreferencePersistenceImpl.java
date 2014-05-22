@@ -1120,6 +1120,8 @@ public class ModelGlobalPreferencePersistenceImpl extends BasePersistenceImpl<Mo
         modelGlobalPreferenceImpl.setWeight(modelGlobalPreference.getWeight());
         modelGlobalPreferenceImpl.setExpertEvaluationPageId(modelGlobalPreference.getExpertEvaluationPageId());
         modelGlobalPreferenceImpl.setModelCategoryId(modelGlobalPreference.getModelCategoryId());
+        modelGlobalPreferenceImpl.setUsesCustomInputs(modelGlobalPreference.isUsesCustomInputs());
+        modelGlobalPreferenceImpl.setCustomInputsDefinition(modelGlobalPreference.getCustomInputsDefinition());
 
         return modelGlobalPreferenceImpl;
     }

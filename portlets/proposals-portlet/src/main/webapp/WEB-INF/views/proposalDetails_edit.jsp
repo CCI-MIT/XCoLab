@@ -244,7 +244,7 @@
                     <br />
                     <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                 </p>
-                <div class="blue-button"><a href="#" id="saveChangesButton">SAVE changes</a></div>
+                <div class="blue-button"><a href="#" id="saveChangesButton">PUBLISH changes</a></div>
                 <div class="gray-button">
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">

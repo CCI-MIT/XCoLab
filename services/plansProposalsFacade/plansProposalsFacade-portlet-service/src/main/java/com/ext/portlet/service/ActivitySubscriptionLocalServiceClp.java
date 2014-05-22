@@ -291,7 +291,9 @@ public class ActivitySubscriptionLocalServiceClp
 
         _methodName36 = "sendEmailNotifications";
 
-        _methodParameterTypes36 = new String[] {  };
+        _methodParameterTypes36 = new String[] {
+                "com.liferay.portal.service.ServiceContext"
+            };
 
         _methodName37 = "getSubscribedUsers";
 
@@ -1422,12 +1424,14 @@ public class ActivitySubscriptionLocalServiceClp
     }
 
     @Override
-    public void sendEmailNotifications()
+    public void sendEmailNotifications(
+        com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
             _invokableLocalService.invokeMethod(_methodName36,
-                _methodParameterTypes36, new Object[] {  });
+                _methodParameterTypes36,
+                new Object[] { ClpSerializer.translateInput(serviceContext) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

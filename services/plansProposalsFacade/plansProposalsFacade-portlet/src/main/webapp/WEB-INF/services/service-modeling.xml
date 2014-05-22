@@ -42,6 +42,8 @@
         <column name="weight" type="int"/>
         <column name="expertEvaluationPageId" type="long"/>
         <column name="modelCategoryId" type="long"/>
+        <column name="usesCustomInputs" type="boolean" />
+        <column name="customInputsDefinition" type="String" />
         <finder name="ModelId" return-type="ModelGlobalPreference">
             <finder-column name="modelId"/>
         </finder>

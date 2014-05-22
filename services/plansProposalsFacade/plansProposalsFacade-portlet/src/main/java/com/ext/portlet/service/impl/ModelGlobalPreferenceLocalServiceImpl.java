@@ -46,6 +46,20 @@ public class ModelGlobalPreferenceLocalServiceImpl
         }
         return (pref !=null && pref.getVisible());
     }
+    
+    public ModelGlobalPreference getByModelId(long modelId) throws SystemException {
+        ModelGlobalPreference pref = null;
+        try {
+            pref = modelGlobalPreferencePersistence.findByModelId(modelId);
+        } catch (NoSuchModelGlobalPreferenceException e) {
+        	pref = createModelGlobalPreference(CounterLocalServiceUtil.increment(ModelGlobalPreference.class.getName()));
+        	pref.setModelId(modelId);
+        	pref.setUsesCustomInputs(false);
+        	
+        	addModelGlobalPreference(pref);
+        }
+        return pref;
+    }
 
     public void setVisible(Simulation s, boolean visible) throws SystemException {
          ModelGlobalPreference pref = null;

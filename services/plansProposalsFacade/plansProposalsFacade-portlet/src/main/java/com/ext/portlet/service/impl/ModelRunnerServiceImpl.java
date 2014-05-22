@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
@@ -24,7 +25,6 @@ import com.liferay.portal.security.ac.AccessControlled;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
-import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 
@@ -108,7 +108,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
     
     private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
-
+    	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         jsonObject.put("scenarioId", scenario.getId());
@@ -131,12 +131,14 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             inputValuesArray.put(ModelUIFactory.convertToJson(item));
         }
         jsonObject.put("inputValues", inputValuesArray);
+        jsonObject.put("usesCustomInputs", modelPreference.isUsesCustomInputs());
+        jsonObject.put("customInputsDefinition", modelPreference.getCustomInputsDefinition());
         return jsonObject;
         
     }
 
     private JSONObject convertModel(Simulation simulation) throws SystemException, IllegalUIConfigurationException, IOException {
-
+    	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(simulation.getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         
@@ -153,6 +155,9 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             inputsArray.put(item.toJson());
         }
         jsonObject.put("inputs", inputsArray);
+        jsonObject.put("usesCustomInputs", modelPreference.isUsesCustomInputs());
+        jsonObject.put("customInputsDefinition", modelPreference.getCustomInputsDefinition());
+        
         return jsonObject;
     }
 

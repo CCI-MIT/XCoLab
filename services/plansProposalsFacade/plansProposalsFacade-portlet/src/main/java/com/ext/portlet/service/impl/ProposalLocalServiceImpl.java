@@ -13,6 +13,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.persistence.*;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -653,7 +654,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         Criterion criterion = RestrictionsFactoryUtil.eq("authorId", userId);
         criterion = RestrictionsFactoryUtil.or(criterion, RestrictionsFactoryUtil.in("groupId", groupIds));
 
-        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, PortalClassLoaderUtil.getClassLoader())
+		final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+		final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, (ClassLoader) PortletBeanLocatorUtil.locate(
+				ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"))
                 .add(criterion)
                 .add(PropertyFactoryUtil.forName("visible").eq(true))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
