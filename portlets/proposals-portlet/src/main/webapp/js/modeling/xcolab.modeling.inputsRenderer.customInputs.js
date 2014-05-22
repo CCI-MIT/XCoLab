@@ -7,6 +7,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	function CustomInputsRenderer(modelingWidget) {
 		this.modelingWidget = modelingWidget;		
 		this.modelId = -1;
+		this.rendered = false;
 		var that = this;
 		
 		jQuery(modelingWidget).on('scenarioRendered', function(event) {
@@ -23,13 +24,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
-			console.log("scenario fetched event", event, this);
 			if (event.scenario.usesCustomInputs) {
 				that.model = event.scenario;
 				that.scenario = event.scenario;
-				if (! this.inEditMode) {
+				if (! this.rendered ) {
 					// if widget is in edit mode then there is no need to rerender 
-					console.log("renrendering?", this.inEditMode);
+					this.rendered = true;
 					that.render(modelingWidget.container, event.scenario);
 				}
 			}
