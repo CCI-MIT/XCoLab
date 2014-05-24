@@ -5,37 +5,30 @@ import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.persistence.DiscussionMessageUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.persistence.GroupUtil;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,13 +39,14 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
+    // TODO: remove/change this
     @RequestMapping(params = {"action=sendComment"})
     public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException {
-        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request));
+        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
         //get judges decision
-        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalsContext.getProposal(request), proposalsContext.getUser(request));
+        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, proposalsContext.getUser(request));
         String message = proposalJudgeWrapper.getEmailMessage(contestPhaseId, new ProposalsPreferencesWrapper(request));
 
         if (message != null) {
@@ -80,53 +74,48 @@ public class JudgeProposalActionController {
                         title, message, author);
 
                 //mark as finished
-                persistAttribute(proposal.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 1, null);
+                //persistAttribute(proposal.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGING_STATUS, curren);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
     }
 
-    @RequestMapping(params = {"action=saveJudgeRating"})
-    public void saveJudgeRating(ActionRequest request, Model model,
+    @RequestMapping(params = {"action=saveAdvanceDetails"})
+    public void saveAdvanceDetails(ActionRequest request, Model model,
                                 ActionResponse response, @Valid JudgeProposalBean judgeProposalBean,
                                 BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
-        // save judge rating
-        if (judgeProposalBean.getJudgeRating() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_RATING, 0, judgeProposalBean.getJudgeRating(), null);
-
-        // save judge action
-        if (judgeProposalBean.getJudgeAction() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0, judgeProposalBean.getJudgeAction().getAttributeValue(), null);
+        // save judge decision
+        if (judgeProposalBean.getJudgeDecision() != JudgingSystemActions.JudgeDecision.NO_DECISION.getAttributeValue()) {
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, judgeProposalBean.getJudgeDecision());
+        }
 
         // save judge comment
         if (judgeProposalBean.getJudgeComment() != null)
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0, -1, judgeProposalBean.getJudgeComment());
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, 0, -1);
     }
 
-    @RequestMapping(params = {"action=sendJudgeRating"})
-    public void sendJudgeRating(ActionRequest request, Model model,
-                                ActionResponse response, @RequestParam("judgeComment") String judgeComment)
+    @RequestMapping(params = {"action=saveJudgingFeedback"})
+    public void saveJudgingFeedback(ActionRequest request, Model model, ActionResponse response,
+                                    @Valid JudgeProposalBean judgeProposalBean)
             throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException {
+
+
         ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request));
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        User currentUser = proposalsContext.getUser(request);
 
-        List<Long> recipientIds = new ArrayList<Long>();
-        String subject = "Judge comment from " + proposalsContext.getUser(request).getScreenName() + " for proposal [" + proposal.getProposalId() + "]";
+        // TODO: security handling
+        if (!proposal.isUserAmongSelectedJudge(currentUser)) {
 
-        ContestWrapper cr = new ContestWrapper(proposalsContext.getContest(request));
-        for (User fellow : cr.getContestFellows()) {
-            recipientIds.add(fellow.getUserId());
         }
 
-
-        String message = "Proposal: " + proposal.getName() + " \n\n " + judgeComment;
-        MessageUtil.sendMessage(subject, message, proposalsContext.getUser(request).getUserId(),
-                proposalsContext.getUser(request).getUserId(), recipientIds, null);
-
+        persistAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), judgeProposalBean.getJudgeRating());
+        persistAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), judgeProposalBean.getJudgeComment());
     }
 
     @RequestMapping(params = {"action=saveScreening"})
@@ -141,23 +130,38 @@ public class JudgeProposalActionController {
 
         // save fellow rating
         if (Validator.isNotNull(judgeProposalBean.getFellowRating()))
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, judgeProposalBean.getFellowRating(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, judgeProposalBean.getFellowRating());
 
         // save fellow action
         if (Validator.isNotNull(judgeProposalBean.getFellowAction()))
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, judgeProposalBean.getFellowAction().getAttributeValue(), null);
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, judgeProposalBean.getFellowAction());
 
         // save fellow comment
         if (Validator.isNotNull(judgeProposalBean.getFellowComment()))
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, -1, judgeProposalBean.getFellowComment());
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, judgeProposalBean.getFellowComment());
     }
 
-    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue, String stringValue) {
+
+    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue) {
         ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, attributeName, additionalId);
 
         attribute.setAdditionalId(additionalId);
-        if (numericValue != -1) attribute.setNumericValue(numericValue);
-        if (stringValue != null) attribute.setStringValue(stringValue);
+        attribute.setNumericValue(numericValue);
+
+        try {
+            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, String stringValue) {
+        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, attributeName, additionalId);
+
+        attribute.setAdditionalId(additionalId);
+        attribute.setStringValue(stringValue);
 
         try {
             ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);

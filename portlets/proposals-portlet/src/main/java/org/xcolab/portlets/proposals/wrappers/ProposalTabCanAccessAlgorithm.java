@@ -44,7 +44,8 @@ interface ProposalTabCanAccessAlgorithm {
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             if(!fellowAccess.canAccess(permissions, context, request)) return false;
             try {
-                ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(context.getProposal(request), context.getUser(request));
+                ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+                ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getUser(request));
                 return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
             } catch (Throwable e) {
 

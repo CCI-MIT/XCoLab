@@ -41,28 +41,11 @@
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     Rate the proposal based on the four criteria to the right.
-                    <table class="judgingForm">
-                        <tbody>
-                        <tr>
-                            <td>Poor</td>
-                            <td>Fair</td>
-                            <td>Good</td>
-                            <td>Very good</td>
-                            <td>Outstanding</td>
-                        </tr>
-                        <tr>
-                            <td><form:radiobutton path="fellowRating" value="1"/></td>
-                            <td><form:radiobutton path="fellowRating" value="2"/></td>
-                            <td><form:radiobutton path="fellowRating" value="3"/></td>
-                            <td><form:radiobutton path="fellowRating" value="4"/></td>
-                            <td><form:radiobutton path="fellowRating" value="5"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <proposalsPortlet:proposalRating path="fellowRating"/>
                     <h3>Advance Proposal</h3>
 
 
-                    <form:select id="fellowAction" path="fellowAction" items="${judgingOptions}" itemLabel="description"/>
+                    <form:select id="fellowAction" path="fellowAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                     <div id="fellowSelectJudgesContainer" style="display: none;">
                         <h3>Select Judge(s)</h3>
@@ -75,7 +58,8 @@
                                         <proposalsPortlet:userPortrait screenName="${judge.screenName }"
                                                                        portraitId="${judge.portraitId}" width="30"
                                                                        height="30"/>
-                                        <!--<c:choose>
+                                        <!-- TODO: judge status check
+                                        <c:choose>
 
                                         </c:choose>-->
                                         <br/>
@@ -92,24 +76,19 @@
                         <h3>Comment to send to author</h3>
                         <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
                     </div>
-                    <c:choose>
-                        <c:when test="${!judgeProposalBean.judgingStatus}">
+                            <!-- TODO: disable save -->
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save</a>
                             </div>
-                        </c:when>
-                        <c:otherwise>(No more changes possible)</c:otherwise>
-                    </c:choose>
+
                 </form:form>
             </div>
-            <c:if test="${judgeProposalBean.fellowAction.commentEnabled and !judgeProposalBean.judgingStatus}">
                 <div class="addpropbox">
                     <div class="blue-button" style="display:block; float:right;">
                         <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                     </div>
                 </div>
-            </c:if>
         </div>
 
         <div class="judging_right">

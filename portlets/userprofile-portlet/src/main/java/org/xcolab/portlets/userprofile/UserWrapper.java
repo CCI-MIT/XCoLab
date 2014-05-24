@@ -48,7 +48,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class UserWrapper implements Serializable {
+public class
+        UserWrapper implements Serializable {
 
     /**
      *

@@ -186,22 +186,28 @@
 
     <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
         <c:choose>
-            <c:when test="${proposal.isJudgeAssignedAndIncomplete > 0}">
-                <portlet:actionURL var="sendJudgeRatingURL">
+            <c:when test="${proposal.judgeReviewStatus.statusValue > 0}">
+                <portlet:actionURL var="saveJudgingFeedbackURL">
                     <portlet:param name="action_forwardToPage" value="proposalDetails"/>
                     <portlet:param name="contestId" value="${contest.contestPK }"/>
                     <portlet:param name="planId" value="${proposal.proposalId }"/>
-                    <portlet:param name="action" value="sendJudgeRating"/>
+                    <portlet:param name="action" value="saveJudgingFeedback"/>
                 </portlet:actionURL>
-                <form id="fellowRatingForm" action="${sendJudgeRatingURL }" method="post">
-                    <h3 style="margin-top: 10px;">Judges Comment</h3>
-                    <textarea id="judgeComment" cssClass="commentbox" name="judgeComment" style="width:100%;">Your comment.</textarea>
+                <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL }" method="post" commandName="judgeProposalBean">
+                    <h3 style="margin-top: 20px;">Judge Rating</h3>
+                    Please rate this proposal and write your comments in the box below. All your responses
+                    are saved when clicking on save.<br/>
+
+                    <proposalsPortlet:proposalRating path="judgeRating"/>
+
+                    <h3 style="margin-top: 10px;">Judges Feedback</h3>
+                    <form:textarea path="judgeComment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                         <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Send</a>
+                           onclick="jQuery(this).parents('form').submit();">Save</a>
                     </div>
-                </form>
+                </form:form>
             </c:when>
         </c:choose>
     </c:if>

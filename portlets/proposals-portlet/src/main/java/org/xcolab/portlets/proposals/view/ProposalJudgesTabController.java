@@ -3,16 +3,14 @@ package org.xcolab.portlets.proposals.view;
 import javax.portlet.PortletRequest;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
-import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -29,10 +27,12 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.JUDGE);
-        
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
-        model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));
-        model.addAttribute("judgingOptions", JudgingSystemActions.JudgeAction.values());
+        model.addAttribute("judgeProposalBean", new JudgeProposalBean(
+                new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
+        model.addAttribute("judgingOptions", JudgingSystemActions.JudgeDecision.values());
 
         return "proposalJudge";
     }
@@ -44,8 +44,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
-        
-        model.addAttribute("judgeProposalBean", new JudgeProposalBean(proposalsContext.getProposalWrapped(request)));
+
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
 
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 

@@ -5,19 +5,19 @@ package com.ext.portlet;
  *         First created on 10/7/13 at 7:37 PM
  */
 public class JudgingSystemActions {
-    public enum JudgeAction {
+    public enum JudgeDecision {
         NO_DECISION(0, "no decision"), DONT_MOVE_ON(1, "don't move on"), MOVE_ON(2, "move on");
 
         int attributeValue;
         String description;
 
-        private JudgeAction(int attributeValue, String description) {
+        private JudgeDecision(int attributeValue, String description) {
             this.attributeValue = attributeValue;
             this.description = description;
         }
 
-        public static JudgeAction fromInt(Integer value) {
-            for(JudgeAction a : values()) {
+        public static JudgeDecision fromInt(Integer value) {
+            for(JudgeDecision a : values()) {
                 if(a.attributeValue == value) return a;
             }
 
@@ -34,7 +34,10 @@ public class JudgingSystemActions {
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "No decision", false, false), INCOMPLETE(1, "Incomplete", true, false), OFFTOPIC(2, "Off-topic", true, false), PASSTOJUDGES(3, "Advance to judges", false, true);
+        NO_DECISION(0, "No decision", false, false),
+        INCOMPLETE(1, "Incomplete", true, false),
+        OFFTOPIC(2, "Off-topic", true, false),
+        PASS_TO_JUDGES(3, "Advance to judges", false, true);
 
         int attributeValue;
         String description;
@@ -70,6 +73,28 @@ public class JudgingSystemActions {
 
         public boolean getSelectJudgesEnabled() {
             return selectJudgesEnabled;
+        }
+    }
+
+    public enum JudgeReviewStatus {
+        NOT_RESPONSIBLE(0, "Judge is not responsible for reviewing"),
+        NOT_DONE(1, "Judge is responsible but has not finished yet"),
+        DONE(2, "Judge has finished the review");
+
+        private int statusValue;
+        private String statusDescription;
+
+        JudgeReviewStatus(int status, String statusDescription) {
+            this.statusValue = status;
+            this.statusDescription = statusDescription;
+        }
+
+        public int getStatusValue() {
+            return statusValue;
+        }
+
+        public String getStatusDescription() {
+            return statusDescription;
         }
     }
 }

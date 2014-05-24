@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,6 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalService;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
@@ -105,6 +105,15 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws SystemException, PortalException {
+        // First sort by contest phase type
+        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase));
+        Collections.sort(contestPhases, new Comparator<ContestPhase>() {
+            @Override
+            public int compare(ContestPhase o1, ContestPhase o2) {
+                return (int)(o1.getContestPhaseType() - o2.getContestPhaseType());
+            }
+        });
+
         boolean currentFound = false;
         for (ContestPhase phase : ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase))) {
             if (currentFound) {
@@ -281,7 +290,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
-
+    // TODO: make changes here
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
@@ -289,9 +298,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 ContestPhase nextPhase = getNextContestPhase(phase);
                 for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_ACTION);
-                    Long intData = (data == null) ? JudgingSystemActions.JudgeAction.NO_DECISION.getAttributeValue() : data.getNumericValue();
+                    Long intData = (data == null) ? JudgingSystemActions.JudgeDecision.NO_DECISION.getAttributeValue() : data.getNumericValue();
 
-                    if (JudgingSystemActions.JudgeAction.fromInt(intData.intValue()) == JudgingSystemActions.JudgeAction.MOVE_ON) {
+                    if (JudgingSystemActions.JudgeDecision.fromInt(intData.intValue()) == JudgingSystemActions.JudgeDecision.MOVE_ON) {
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
                 }

@@ -4,14 +4,12 @@ import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
-import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 /**
  * Created by patrickhiesel on 19/12/13.
@@ -20,13 +18,8 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
 
     private User currentUser;
 
-    public ProposalJudgeWrapper(Proposal proposal, User currentUser) {
+    public ProposalJudgeWrapper(ProposalWrapper proposal, User currentUser) {
         super(proposal);
-        this.currentUser = currentUser;
-    }
-
-    public ProposalJudgeWrapper(Proposal proposal, int version, User currentUser) {
-        super(proposal, version);
         this.currentUser = currentUser;
     }
 
@@ -37,18 +30,24 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
 
     /**
      *
-     * @return 0=not responsible, 1=responsible but no action yet, 2=judging done
      * @throws SystemException
      * @throws PortalException
      */
-    public int getIsJudgeAssignedAndIncomplete() throws SystemException, PortalException {
-        if (currentUser == null) return 0;
-        Proposal p = ProposalLocalServiceUtil.getProposal(this.getProposalId());
-        for (long l : this.getSelectedJudges()) {
-            if (currentUser.getUserId() == l)
-                return MessageRecipientStatusLocalServiceUtil.didReceiveJudgeCommentForProposal(p, currentUser) ? 2 : 1;
+    public JudgingSystemActions.JudgeReviewStatus getJudgeReviewStatus() throws SystemException, PortalException {
+        if (currentUser == null) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
+        for (long userId : this.getSelectedJudges()) {
+            if (currentUser.getUserId() == userId) {
+                long judgeRating = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), LONG_DEFAULT_VAL);
+                String judgeComment = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), STRING_DEFAULT_VAL);
+
+                if (Validator.isNotNull(judgeRating) && Validator.isNotNull(judgeComment)) {
+                    return JudgingSystemActions.JudgeReviewStatus.DONE;
+                } else {
+                    return JudgingSystemActions.JudgeReviewStatus.NOT_DONE;
+                }
+            }
         }
-        return 0;
+        return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
     }
 
     /**
@@ -62,14 +61,14 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         //get fellow decision
         ProposalContestPhaseAttribute p = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) p.getNumericValue());
-        if (fellowAction == JudgingSystemActions.FellowAction.PASSTOJUDGES) {
+        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
             //judge decided
-            String judgeText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0).getStringValue();
-            ProposalContestPhaseAttribute pa = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0);
-            JudgingSystemActions.JudgeAction judgeAction = JudgingSystemActions.JudgeAction.fromInt((int) pa.getNumericValue());
-            if (judgeAction == JudgingSystemActions.JudgeAction.DONT_MOVE_ON) {
+            String judgeText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, 0).getStringValue();
+            ProposalContestPhaseAttribute pa = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
+            JudgingSystemActions.JudgeDecision judgeDecision = JudgingSystemActions.JudgeDecision.fromInt((int) pa.getNumericValue());
+            if (judgeDecision == JudgingSystemActions.JudgeDecision.DONT_MOVE_ON) {
                 return prefs.replaceJudgingTemplate(prefs.getJudgingRejectionText(), judgeText);
-            } else if (judgeAction == JudgingSystemActions.JudgeAction.MOVE_ON) {
+            } else if (judgeDecision == JudgingSystemActions.JudgeDecision.MOVE_ON) {
                 return prefs.replaceJudgingTemplate(prefs.getJudgingAcceptanceText(), judgeText);
             }
         } else {
@@ -84,12 +83,19 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         return null;
     }
 
+    public Long getJudgeRating() throws SystemException, PortalException {
+        return getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), 0);
+    }
+
+    public String getJudgeComment() throws SystemException, PortalException {
+        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), "");
+    }
+
     public boolean shouldShowJudgingTab(long contestPhaseId) {
         ProposalContestPhaseAttribute a = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue());
-        return fellowAction == JudgingSystemActions.FellowAction.PASSTOJUDGES;
+        return fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES;
     }
-
 
     private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
         try {
@@ -112,5 +118,4 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
             return null;
         }
     }
-
 }

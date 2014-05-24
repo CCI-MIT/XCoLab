@@ -1,22 +1,28 @@
 package org.xcolab.enums;
 
 public enum MemberRole {
-	ALL("All"),
-    MEMBER("User"),
-    FELLOW("Fellow"),
-    ADVISOR("Advisor"),
-    EXPERT("Experts"),
-    JUDGES("Judges"),
-    STAFF("Staff", "Moderator", "Administrator"),
-    MODERATOR("Staff"),
-    CATALYST("Catalyst");
+    /**
+     * Important:
+     * Whenever these roles are modified (which should never happen) these Ids should be updated as well
+     */
+	ALL(0L, "All"),
+    MEMBER(10122L, "User"),
+    FELLOW(193261L, "Fellow"),
+    ADVISOR(193260L, "Advisor"),
+    EXPERT(44201L, "Experts"),
+    JUDGES(1251483L, "Judges"),
+    STAFF(31704L, "Staff", "Moderator", "Administrator"),
+    MODERATOR(31213L, "Staff"),
+    CATALYST(1430078L, "Catalyst");
     
     
     private final String[] roleNames;
+    private Long roleId;
 
    
     
-    MemberRole(String... roleNames) {
+    MemberRole(Long roleId, String... roleNames) {
+        this.roleId = roleId;
         this.roleNames = roleNames;
     } 
 
@@ -32,11 +38,25 @@ public enum MemberRole {
         return roleNames;
     }
 
+    public Long getRoleId() {
+        return roleId;
+    }
+
     static public MemberRole getMember(String aName) {
         MemberRole[] roles = MemberRole.values();
         for (MemberRole r : roles)
             if (isMemberInList(aName, r.getRoleNames()))
                 return r;
+        return null;
+    }
+
+    public static MemberRole getMemberByRoleId(Long roleId) {
+        for (MemberRole memberRole : MemberRole.values()) {
+            if (memberRole.getRoleId() == roleId) {
+                return memberRole;
+            }
+        }
+
         return null;
     }
 
@@ -49,4 +69,5 @@ public enum MemberRole {
 
         return false;
     }
+
 }

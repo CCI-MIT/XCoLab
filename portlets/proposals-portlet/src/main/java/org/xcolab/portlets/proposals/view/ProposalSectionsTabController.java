@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -95,6 +97,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         if (edit || move) {
             return "proposalDetails_edit";
         }
+
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
+
         return "proposalDetails";
     }
 }

@@ -22,11 +22,11 @@
 
 
         <h1>Rating</h1>
-        <portlet:actionURL var="saveJudgeRatingURL">
+        <portlet:actionURL var="saveAdvanceDetailsURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="saveJudgeRating"/>
+            <portlet:param name="action" value="saveAdvanceDetails"/>
         </portlet:actionURL>
         <portlet:actionURL var="sendEmailURL">
             <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
@@ -36,68 +36,67 @@
         </portlet:actionURL>
 
         <div class="judging_left">
-            <form:form id="fellowRatingForm" action="${saveJudgeRatingURL }" method="post"
-                       commandName="judgeProposalBean">
-                <div class="addpropbox">
-                    <h3>Promotion</h3>
-                    <form:select path="judgeAction" items="${judgingOptions}" itemLabel="description"/>
+            <c:choose>
+                <c:when test="${not proposal.allJudgesReviewFinished}">
+                    Not all judges have completed the review yet or this proposal was not forwarded to any judges.
+                </c:when>
+                <c:otherwise>
+                    <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL }" method="post"
+                               commandName="judgeProposalBean">
+                        <div class="addpropbox">
+                            <h3>Promotion</h3>
+                            <form:select path="judgeDecision" items="${judgingOptions}" itemLabel="description"/>
 
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
-                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                            <a href="javascript:;" class="requestMembershipSubmitButton"
-                               onclick="jQuery(this).parents('form').submit();">Save</a>
+                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                                   onclick="jQuery(this).parents('form').submit();">Save</a>
+                            </div>
                         </div>
-                    </c:if>
-                </div>
 
-                <div class="addpropbox">
+                        <div class="addpropbox">
 
-                    <h3>Comment to send to author</h3>
-                    <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
+                            <h3>Comment to send to author</h3>
+                            <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
 
-                    <c:if test="${!judgeProposalBean.judgingStatus and judgeProposalBean.judgeAction.attributeValue ne 0}">
-                        <div class="blue-button" style="display:block; float:left;">
-                            <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
+                            <div class="blue-button" style="display:block; float:left;">
+                                <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
+                            </div>
+                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                                   onclick="jQuery(this).parents('form').submit();">Save</a>
+                            </div>
+
                         </div>
-                    </c:if>
 
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
-                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                        <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Save</a>
-                    </div>
-                    </c:if>
-                </div>
+                        <div class="addpropbox" style="display:none;"> <!-- hide until someone changes his mind wants to see it again :) -->
 
-                <div class="addpropbox" style="display:none;"> <!-- hide until someone changes his mind wants to see it again :) -->
-
-                    <h3 style="margin-top: 0;">Rating</h3>
-                    <table class="judgingForm">
-                        <tbody>
-                        <tr>
-                            <td>poor</td>
-                            <td>fair</td>
-                            <td>good</td>
-                            <td>very good</td>
-                            <td>outstanding</td>
-                        </tr>
-                        <tr>
-                            <td><form:radiobutton path="judgeRating" value="1"/></td>
-                            <td><form:radiobutton path="judgeRating" value="2"/></td>
-                            <td><form:radiobutton path="judgeRating" value="3"/></td>
-                            <td><form:radiobutton path="judgeRating" value="4"/></td>
-                            <td><form:radiobutton path="judgeRating" value="5"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <c:if test="${!judgeProposalBean.judgingStatus}">
-                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                        <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Save</a>
-                    </div>
-                    </c:if>
-                </div>
-            </form:form>
+                            <h3 style="margin-top: 0;">Rating</h3>
+                            <table class="judgingForm">
+                                <tbody>
+                                <tr>
+                                    <td>poor</td>
+                                    <td>fair</td>
+                                    <td>good</td>
+                                    <td>very good</td>
+                                    <td>outstanding</td>
+                                </tr>
+                                <tr>
+                                    <td><form:radiobutton path="judgeRating" value="1"/></td>
+                                    <td><form:radiobutton path="judgeRating" value="2"/></td>
+                                    <td><form:radiobutton path="judgeRating" value="3"/></td>
+                                    <td><form:radiobutton path="judgeRating" value="4"/></td>
+                                    <td><form:radiobutton path="judgeRating" value="5"/></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                    <a href="javascript:;" class="requestMembershipSubmitButton"
+                                       onclick="jQuery(this).parents('form').submit();">Save</a>
+                                </div>
+                        </div>
+                    </form:form>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="judging_right">
             <div class="addpropbox">

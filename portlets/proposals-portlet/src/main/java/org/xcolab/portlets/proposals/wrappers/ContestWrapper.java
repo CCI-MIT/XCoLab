@@ -473,7 +473,7 @@ public class ContestWrapper {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == 0)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_CHECKMARK)
                     return false;
             }
         } catch (Exception e) {
@@ -487,12 +487,12 @@ public class ContestWrapper {
      *
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
-    public boolean getFellowStatus() {
+    public boolean getScreeningStatus() {
         try {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getFellowStatus() == 0)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_QUESTIONMARK)
                     return false;
             }
         } catch (Exception e) {

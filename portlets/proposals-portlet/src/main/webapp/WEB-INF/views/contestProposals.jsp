@@ -160,9 +160,12 @@
                     <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                     <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : true }" />
                 </portlet:renderURL>
-                <a href="${sortURL }">E-Mails</a>
+                <a href="${sortURL }">Overall status</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
-
+                <div class="tooltip">
+                    State of the final judging decision
+                    <div class="tt-arrow"><!-- --></div>
+                </div>
                 <portlet:renderURL var="sortURL">
                     <portlet:param name="contestId" value="${contest.contestPK }" />
                     <portlet:param name="pageToDisplay" value="contestProposals" />
@@ -171,20 +174,24 @@
                     <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : true }" />
                 </portlet:renderURL>
                 <a href="${sortURL }">Judge</a>
+                <div class="tooltip">
+                    All assigned judges have finished the proposal review
+                    <div class="tt-arrow"><!-- --></div>
+                </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
                 <c:if test="${proposalsPermissions.canFellowActions}">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestId" value="${contest.contestPK }" />
                         <portlet:param name="pageToDisplay" value="contestProposals" />
-                        <portlet:param name="sortColumn" value="FELLOWSTATUS" />
+                        <portlet:param name="sortColumn" value="SCREENINGSTATUS" />
                         <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
-                        <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'FELLOWSTATUS' ? not sortFilterPage.sortAscending : true }" />
+                        <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SCREENINGSTATUS' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
-                    <a href="${sortURL }" style="padding-left: 5px;">Fellow</a>
-                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="FELLOWSTATUS" />
+                    <a href="${sortURL }" style="padding-left: 5px;">Screening</a>
+                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
                 </c:if>
                 <div class="tooltip">
-                   E-Mails have been sent, Judge or fellow actions
+                    Fellows' screening decision
                     <div class="tt-arrow"><!-- --></div>
                 </div>
             </div>

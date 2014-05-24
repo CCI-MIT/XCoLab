@@ -3,53 +3,39 @@ package org.xcolab.portlets.proposals.requests;
 import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author pdeboer
  */
 public class JudgeProposalBean {
     private Long judgeRating;
-    private Long fellowRating;
-    private JudgingSystemActions.JudgeAction judgeAction;
-    private JudgingSystemActions.FellowAction fellowAction;
     private String judgeComment;
+    private Long fellowRating;
+    private JudgingSystemActions.JudgeDecision judgeDecision;
+    private JudgingSystemActions.FellowAction fellowAction;
     private String fellowComment;
     private List<Long> selectedJudges;
-    private Boolean judgingStatus;
 
-    public JudgeProposalBean(ProposalWrapper wrapper) throws PortalException, SystemException {
+    public JudgeProposalBean(ProposalJudgeWrapper wrapper) throws PortalException, SystemException {
 
         judgeRating = wrapper.getJudgeRating();
         fellowRating = wrapper.getFellowRating();
 
-        judgeAction = wrapper.getJudgeAction();
+        judgeDecision = wrapper.getJudgeDecision();
         fellowAction = wrapper.getFellowAction();
         selectedJudges = wrapper.getSelectedJudges();
 
-        judgeComment = wrapper.getJudgeComment();
         fellowComment = wrapper.getFellowComment();
 
-        judgingStatus = wrapper.getJudgingStatus();
+        judgeRating = wrapper.getJudgeRating();
+        judgeComment = wrapper.getJudgeComment();
     }
 
-    public JudgeProposalBean(){
+    public JudgeProposalBean() {
 
-    }
-
-    public Boolean getJudgingStatus() {
-        return judgingStatus;
-    }
-
-    public void setJudgingStatus(Boolean judgingStatus) {
-        this.judgingStatus = judgingStatus;
     }
 
     public Long getJudgeRating() {
@@ -68,24 +54,24 @@ public class JudgeProposalBean {
         this.fellowRating = fellowRating;
     }
 
-    public JudgingSystemActions.JudgeAction getJudgeAction() {
-        return judgeAction;
+    public int getJudgeDecision() {
+        return judgeDecision.getAttributeValue();
     }
 
-    public void setJudgeAction(JudgingSystemActions.JudgeAction judgeAction) {
-        this.judgeAction = judgeAction;
+    public void setJudgeDecision(int judgeDecisionValue) {
+        this.judgeDecision = JudgingSystemActions.JudgeDecision.fromInt(judgeDecisionValue);
     }
 
-    public JudgingSystemActions.FellowAction getFellowAction() {
-        return fellowAction;
+    public int getFellowAction() {
+        return fellowAction.getAttributeValue();
     }
 
-    public void setFellowAction(JudgingSystemActions.FellowAction fellowAction) {
-        this.fellowAction = fellowAction;
+    public void setFellowAction(int fellowActionValue) {
+        this.fellowAction = JudgingSystemActions.FellowAction.fromInt(fellowActionValue);
     }
 
     public String getJudgeComment() {
-        return judgeComment;
+       return judgeComment;
     }
 
     public void setJudgeComment(String judgeComment) {
