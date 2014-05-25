@@ -447,9 +447,6 @@ public class ContestWrapper {
             }
         }
         if(judges == null) return new LinkedList<>(); //return empty list if null
-        for (User u : judges) {
-            u.setComments("" + ContestLocalServiceUtil.getNumberOfProposalsForJudge(u, contest)); //ew!
-        }
         return judges;
     }
 

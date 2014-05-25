@@ -5,7 +5,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
+          xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
           xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -55,16 +55,29 @@
                             <tr>
                                 <c:forEach var="judge" items="${contest.contestJudges }">
                                     <td>
-                                        <proposalsPortlet:userPortrait screenName="${judge.screenName }"
-                                                                       portraitId="${judge.portraitId}" width="30"
-                                                                       height="30"/>
-                                        <!-- TODO: judge status check
-                                        <c:choose>
-
-                                        </c:choose>-->
+                                        <div class="review-status-container">
+                                            <proposalsPortlet:userPortrait screenName="${judge.screenName }"
+                                                                           portraitId="${judge.portraitId}" width="30"
+                                                                           height="30"/>
+                                            <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
+                                                                       proposalId="${proposal.proposalId}">
+                                                <c:choose>
+                                                    <c:when test="${judgeReviewStatus.statusValue eq 1}">
+                                                        <img src="/climatecolab-theme/images/icon_question-x.png" class="review-status-icon"/>
+                                                    </c:when>
+                                                    <c:when test="${judgeReviewStatus.statusValue eq 2}">
+                                                        <img src="/climatecolab-theme/images/icon_question-chk.png" class="review-status-icon"/>
+                                                    </c:when>
+                                                </c:choose>
+                                            </judging:judgeReviewStatus>
+                                        </div>
                                         <br/>
-                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                         text="${judge.fullName} (${judge.comments})"/><br/>
+                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                            <proposalsPortlet:userLinkSimple userId="${judge.userId}"
+                                                                             text="${judge.fullName} (${proposalCount})"/>
+
+                                        </judging:judgeAssignedProposalCount>
+                                        <br/>
                                         <form:checkbox path="selectedJudges" value="${judge.userId}"/>
                                     </td>
                                 </c:forEach>

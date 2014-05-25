@@ -98,7 +98,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             return "proposalDetails_edit";
         }
 
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
 
         return "proposalDetails";

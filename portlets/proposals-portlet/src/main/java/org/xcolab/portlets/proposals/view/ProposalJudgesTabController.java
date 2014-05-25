@@ -27,7 +27,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.JUDGE);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(
@@ -45,9 +45,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
 
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
-
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 
         return "proposalFellow";

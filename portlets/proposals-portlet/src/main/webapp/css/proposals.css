@@ -308,3 +308,16 @@ div.sponsorLogo img {
 .commentor-header {
     float:left;
 }
+
+div.review-status-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+img.review-status-icon {
+    width:15px;
+    position:absolute;
+    top:-7px;
+    right:-7px;
+}
