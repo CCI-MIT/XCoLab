@@ -94,7 +94,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var onlyEmptyOrZeros = true;
 			for (var i = 0; i < this.variable.values.length; i++) {
 				var val = parseFloat(this.variable.values[i][1]);
-				console.log(val);
 				if (val >= 0.001 || val <= -0.001) {
 					onlyEmptyOrZeros = false;
 				}
@@ -222,10 +221,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		    		shadow: false
 		    	},
 		    	legend : {
+		    	    renderer: $.jqplot.EnhancedLegendRenderer,
 		    		show :true,
 		    		location :'s',
 		    		placement: 'outside',
-		    		marginTop : '300px'
+		    		marginTop : '300px',
+		    		rendererOptions: {numberColumns: 5}
 		    	}
 		};
 		

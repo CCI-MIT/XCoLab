@@ -19,7 +19,11 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		jQuery(modelingWidget).on('modelFetched', function(event) {
 			if (event.model.usesCustomInputs) {
 				that.model = event.model;
-				that.render(modelingWidget.container, event.model);
+				if (! this.rendered ) {
+					// if widget is in edit mode then there is no need to rerender 
+					this.rendered = true;
+					that.render(modelingWidget.container, event.model);
+				}
 			}
 		});
 
@@ -27,6 +31,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			if (event.scenario.usesCustomInputs) {
 				that.model = event.scenario;
 				that.scenario = event.scenario;
+				console.log("scenario fetched", "this rendered?", this.rendered, "this", this);
 				if (! this.rendered ) {
 					// if widget is in edit mode then there is no need to rerender 
 					this.rendered = true;
@@ -489,9 +494,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				$("#option_" + obj.values[key].screenName + "_" + key + "_" + obj.values[key].value).addClass('selected');
 			}
 
-			console.log('setting screens', self.screensStack, obj.screens);
 			self.screensStack = obj.screens;
-			console.log('setting values', self.values, obj.values);
 			self.values = obj.values;
 			self.showScreen(self.screensStack[self.screensStack.length-1], true);
 			

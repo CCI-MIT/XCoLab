@@ -278,4 +278,12 @@ public class ContestWrapper {
         phases.add(new ContestPhaseWrapper(null, this));
         
     }
+    
+    public long getDefaultModelId() {
+    	return contest.getDefaultModelId();
+    }
+    
+    public void setDefaultModelId(long modelId) {
+    	contest.setDefaultModelId(modelId);
+    }
 }
