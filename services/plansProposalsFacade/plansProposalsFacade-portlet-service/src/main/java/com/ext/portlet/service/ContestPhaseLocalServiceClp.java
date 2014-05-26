@@ -74,6 +74,8 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     private String[] _methodParameterTypes32;
     private String _methodName33;
     private String[] _methodParameterTypes33;
+    private String _methodName34;
+    private String[] _methodParameterTypes34;
 
     public ContestPhaseLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -248,6 +250,13 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
         _methodName33 = "autoPromoteProposals";
 
         _methodParameterTypes33 = new String[] {  };
+
+        _methodName34 = "getNumberOfProposalsForJudge";
+
+        _methodParameterTypes34 = new String[] {
+                "com.liferay.portal.model.User",
+                "com.ext.portlet.model.ContestPhase"
+            };
     }
 
     @Override
@@ -1210,5 +1219,43 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User judge,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName34,
+                    _methodParameterTypes34,
+                    new Object[] {
+                        ClpSerializer.translateInput(judge),
+                        
+                    ClpSerializer.translateInput(phase)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Integer) returnObj).intValue();
     }
 }

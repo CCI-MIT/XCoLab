@@ -4,6 +4,7 @@ import javax.portlet.PortletRequest;
 
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Component;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.*;
 
@@ -194,11 +195,11 @@ public class ProposalsContextImpl implements ProposalsContext {
                     User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
 
                     if (version != null && version > 0) {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, version, contest, contestPhase, proposal2Phase, u);
                         else proposalWrapper = new ProposalWrapper(proposal, version, contest, contestPhase, proposal2Phase);
                     }
                     else {
-                        if (u != null && UserLocalServiceUtil.hasRoleUser(1251483,u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
+                        if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(),u.getUserId())) proposalWrapper = new ProposalJudgeWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
                                         proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase, u);
                         else proposalWrapper = new ProposalWrapper(proposal, proposal2Phase != null && proposal2Phase.getVersionTo() > 0 ?
                                 proposal2Phase.getVersionTo() : proposal.getCurrentVersion(), contest, contestPhase, proposal2Phase);

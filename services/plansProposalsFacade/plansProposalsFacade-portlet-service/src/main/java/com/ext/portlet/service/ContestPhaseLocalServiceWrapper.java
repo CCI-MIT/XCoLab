@@ -395,6 +395,16 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         _contestPhaseLocalService.autoPromoteProposals();
     }
 
+    @Override
+    public int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User judge,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getNumberOfProposalsForJudge(judge,
+            phase);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

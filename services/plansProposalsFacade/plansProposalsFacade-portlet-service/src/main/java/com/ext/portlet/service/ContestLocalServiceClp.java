@@ -384,24 +384,26 @@ public class ContestLocalServiceClp implements ContestLocalService {
 
         _methodParameterTypes57 = new String[] { "long" };
 
-        _methodName58 = "getNumberOfProposalsForJudge";
+        _methodName58 = "getContestsByActivePrivate";
 
-        _methodParameterTypes58 = new String[] {
-                "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
+        _methodParameterTypes58 = new String[] { "boolean", "boolean" };
+
+        _methodName59 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes59 = new String[] { "java.util.List" };
+
+        _methodName60 = "transferSupportsToVote";
+
+        _methodParameterTypes60 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName59 = "getContestsByActivePrivate";
-
-        _methodParameterTypes59 = new String[] { "boolean", "boolean" };
-
-        _methodName60 = "getContestsMatchingOntologyTerms";
-
-        _methodParameterTypes60 = new String[] { "java.util.List" };
-
-        _methodName61 = "transferSupportsToVote";
+        _methodName61 = "getProposalJudgeReviewCsv";
 
         _methodParameterTypes61 = new String[] {
                 "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.ContestPhase",
                 "com.liferay.portal.service.ServiceContext"
             };
 
@@ -2111,51 +2113,14 @@ public class ContestLocalServiceClp implements ContestLocalService {
     }
 
     @Override
-    public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
-        com.ext.portlet.model.Contest c)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName58,
-                    _methodParameterTypes58,
-                    new Object[] {
-                        ClpSerializer.translateInput(u),
-                        
-                    ClpSerializer.translateInput(c)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return ((Integer) returnObj).intValue();
-    }
-
-    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName59,
-                    _methodParameterTypes59,
+            returnObj = _invokableLocalService.invokeMethod(_methodName58,
+                    _methodParameterTypes58,
                     new Object[] { active, privateContest });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2183,8 +2148,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName60,
-                    _methodParameterTypes60,
+            returnObj = _invokableLocalService.invokeMethod(_methodName59,
+                    _methodParameterTypes59,
                     new Object[] { ClpSerializer.translateInput(ontologyTerms) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -2214,8 +2179,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName61,
-                _methodParameterTypes61,
+            _invokableLocalService.invokeMethod(_methodName60,
+                _methodParameterTypes60,
                 new Object[] {
                     ClpSerializer.translateInput(contest),
                     
@@ -2239,6 +2204,47 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public java.lang.String getProposalJudgeReviewCsv(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.ContestPhase contestPhase,
+        com.liferay.portal.service.ServiceContext serviceContext)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName61,
+                    _methodParameterTypes61,
+                    new Object[] {
+                        ClpSerializer.translateInput(contest),
+                        
+                    ClpSerializer.translateInput(contestPhase),
+                        
+                    ClpSerializer.translateInput(serviceContext)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override

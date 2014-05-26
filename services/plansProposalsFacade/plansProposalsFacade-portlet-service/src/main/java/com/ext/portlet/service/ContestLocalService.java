@@ -456,12 +456,6 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
-        com.ext.portlet.model.Contest c)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -484,6 +478,24 @@ public interface ContestLocalService extends BaseLocalService,
     * @throws PortalException
     */
     public void transferSupportsToVote(com.ext.portlet.model.Contest contest,
+        com.liferay.portal.service.ServiceContext serviceContext)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * This method generates a CSV string of all judge Reviews
+    *
+    * @param contest           The contest for which the review should be creatd
+    * @param contestPhase      The judging contest phase
+    * @param serviceContext    A serviceContext which must include the Portal's base URL
+    * @return
+    * @throws SystemException
+    * @throws PortalException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalJudgeReviewCsv(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.ContestPhase contestPhase,
         com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

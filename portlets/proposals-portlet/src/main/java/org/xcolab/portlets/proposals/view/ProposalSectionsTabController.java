@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
+import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -23,7 +23,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -99,7 +98,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
 
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
-        model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
+        model.addAttribute("judgeProposalBean", new JudgeProposalFeedbackBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
 
         return "proposalDetails";
     }

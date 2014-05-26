@@ -10,7 +10,7 @@ public enum MemberRole {
     FELLOW(193261L, "Fellow"),
     ADVISOR(193260L, "Advisor"),
     EXPERT(44201L, "Experts"),
-    JUDGES(1251483L, "Judges"),
+    JUDGES(1251483L, "Judges", "Judge"),
     STAFF(31704L, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst");

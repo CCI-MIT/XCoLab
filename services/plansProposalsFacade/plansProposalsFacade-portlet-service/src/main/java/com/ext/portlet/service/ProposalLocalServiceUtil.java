@@ -715,7 +715,7 @@ public class ProposalLocalServiceUtil {
     /**
     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
     *
-    * @param userId    The userId of the user
+    * @param userId The userId of the user
     * @return A list of proposals the user has contributed to
     * @throws SystemException
     */
@@ -1201,14 +1201,29 @@ public class ProposalLocalServiceUtil {
     /**
     * Returns the URL link address for the passed proposal and contest
     *
-    * @param contest   The contest object in which the proposal was written
-    * @param proposal  The proposal object (must not be null)
+    * @param contest  The contest object in which the proposal was written
+    * @param proposal The proposal object (must not be null)
     * @return Proposal URL as String
     */
     public static java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
         return getService().getProposalLinkUrl(contest, proposal);
+    }
+
+    /**
+    * Returns the URL link address for the passed proposal, contest and contestPhase
+    *
+    * @param contest       The contest object in which the proposal was written
+    * @param proposal      The proposal object
+    * @param contestPhase  The associated contestPhase of the proposal
+    * @return Proposal URL as String
+    */
+    public static java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return getService().getProposalLinkUrl(contest, proposal, contestPhase);
     }
 
     public static void clearService() {

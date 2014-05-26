@@ -582,14 +582,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public int getNumberOfProposalsForJudge(com.liferay.portal.model.User u,
-        com.ext.portlet.model.Contest c)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getNumberOfProposalsForJudge(u, c);
-    }
-
-    @Override
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -622,6 +614,27 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestLocalService.transferSupportsToVote(contest, serviceContext);
+    }
+
+    /**
+    * This method generates a CSV string of all judge Reviews
+    *
+    * @param contest           The contest for which the review should be creatd
+    * @param contestPhase      The judging contest phase
+    * @param serviceContext    A serviceContext which must include the Portal's base URL
+    * @return
+    * @throws SystemException
+    * @throws PortalException
+    */
+    @Override
+    public java.lang.String getProposalJudgeReviewCsv(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.ContestPhase contestPhase,
+        com.liferay.portal.service.ServiceContext serviceContext)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getProposalJudgeReviewCsv(contest,
+            contestPhase, serviceContext);
     }
 
     /**

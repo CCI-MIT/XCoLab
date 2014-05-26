@@ -37,7 +37,7 @@
         <div class="judging_left">
             <div class="addpropbox">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
-                           commandName="judgeProposalBean">
+                           commandName="fellowProposalScreeningBean">
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     Rate the proposal based on the four criteria to the right.

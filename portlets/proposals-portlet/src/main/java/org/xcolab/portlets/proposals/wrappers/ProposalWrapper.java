@@ -206,9 +206,9 @@ public class ProposalWrapper {
         return null;
     }
 
-    public JudgingSystemActions.JudgeDecision getJudgeDecision() throws SystemException, PortalException {
+    public JudgingSystemActions.AdvanceDecision getJudgeDecision() throws SystemException, PortalException {
         long judgingDecision = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, LONG_DEFAULT_VAL);
-        return JudgingSystemActions.JudgeDecision.fromInt((int)judgingDecision);
+        return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
     public Long getFellowRating() throws SystemException, PortalException {
@@ -480,9 +480,9 @@ public class ProposalWrapper {
 
     public GenericJudgingStatus getOverallStatus() {
         try {
-            if (getJudgeDecision() == JudgingSystemActions.JudgeDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
+            if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
                 return GenericJudgingStatus.STATUS_CHECKMARK;
-            } else if (getJudgeDecision() == JudgingSystemActions.JudgeDecision.DONT_MOVE_ON  && Validator.isNotNull(getFellowComment())) {
+            } else if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON  && Validator.isNotNull(getFellowComment())) {
                 return GenericJudgingStatus.STATUS_X;
             }
         } catch (Exception e) {

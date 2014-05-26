@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.portlets.proposals.requests.JudgeProposalBean;
+import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
+import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,9 +30,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
-        model.addAttribute("judgeProposalBean", new JudgeProposalBean(
-                new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
-        model.addAttribute("judgingOptions", JudgingSystemActions.JudgeDecision.values());
+        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper));
+        model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
         return "proposalJudge";
     }
@@ -46,7 +45,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
 
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
-        model.addAttribute("judgeProposalBean", new JudgeProposalBean(new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request))));
+        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalWrapper));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 
         return "proposalFellow";

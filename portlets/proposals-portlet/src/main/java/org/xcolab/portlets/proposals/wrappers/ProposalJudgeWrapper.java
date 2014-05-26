@@ -65,10 +65,10 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
             //judge decided
             String judgeText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, 0).getStringValue();
             ProposalContestPhaseAttribute pa = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
-            JudgingSystemActions.JudgeDecision judgeDecision = JudgingSystemActions.JudgeDecision.fromInt((int) pa.getNumericValue());
-            if (judgeDecision == JudgingSystemActions.JudgeDecision.DONT_MOVE_ON) {
+            JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) pa.getNumericValue());
+            if (advanceDecision == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON) {
                 return prefs.replaceJudgingTemplate(prefs.getJudgingRejectionText(), judgeText);
-            } else if (judgeDecision == JudgingSystemActions.JudgeDecision.MOVE_ON) {
+            } else if (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
                 return prefs.replaceJudgingTemplate(prefs.getJudgingAcceptanceText(), judgeText);
             }
         } else {

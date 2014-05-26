@@ -156,6 +156,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes73;
     private String _methodName74;
     private String[] _methodParameterTypes74;
+    private String _methodName75;
+    private String[] _methodParameterTypes75;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -506,6 +508,14 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         _methodParameterTypes74 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal"
+            };
+
+        _methodName75 = "getProposalLinkUrl";
+
+        _methodParameterTypes75 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase"
             };
     }
 
@@ -2888,6 +2898,37 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                         ClpSerializer.translateInput(contest),
                         
                     ClpSerializer.translateInput(proposal)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName75,
+                    _methodParameterTypes75,
+                    new Object[] {
+                        ClpSerializer.translateInput(contest),
+                        
+                    ClpSerializer.translateInput(proposal),
+                        
+                    ClpSerializer.translateInput(contestPhase)
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

@@ -368,6 +368,14 @@ public class ContestPhaseLocalServiceUtil {
         getService().autoPromoteProposals();
     }
 
+    public static int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User judge,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getNumberOfProposalsForJudge(judge, phase);
+    }
+
     public static void clearService() {
         _service = null;
     }

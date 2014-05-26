@@ -383,24 +383,26 @@ public class ContestLocalServiceClpInvoker {
 
         _methodParameterTypes553 = new String[] { "long" };
 
-        _methodName555 = "getNumberOfProposalsForJudge";
+        _methodName555 = "getContestsByActivePrivate";
 
-        _methodParameterTypes555 = new String[] {
-                "com.liferay.portal.model.User", "com.ext.portlet.model.Contest"
+        _methodParameterTypes555 = new String[] { "boolean", "boolean" };
+
+        _methodName556 = "getContestsMatchingOntologyTerms";
+
+        _methodParameterTypes556 = new String[] { "java.util.List" };
+
+        _methodName557 = "transferSupportsToVote";
+
+        _methodParameterTypes557 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName556 = "getContestsByActivePrivate";
-
-        _methodParameterTypes556 = new String[] { "boolean", "boolean" };
-
-        _methodName557 = "getContestsMatchingOntologyTerms";
-
-        _methodParameterTypes557 = new String[] { "java.util.List" };
-
-        _methodName558 = "transferSupportsToVote";
+        _methodName558 = "getProposalJudgeReviewCsv";
 
         _methodParameterTypes558 = new String[] {
                 "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.ContestPhase",
                 "com.liferay.portal.service.ServiceContext"
             };
 
@@ -731,27 +733,28 @@ public class ContestLocalServiceClpInvoker {
 
         if (_methodName555.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes555, parameterTypes)) {
-            return ContestLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
-                (com.ext.portlet.model.Contest) arguments[1]);
-        }
-
-        if (_methodName556.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes556, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsByActivePrivate(((Boolean) arguments[0]).booleanValue(),
                 ((Boolean) arguments[1]).booleanValue());
         }
 
-        if (_methodName557.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes557, parameterTypes)) {
+        if (_methodName556.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes556, parameterTypes)) {
             return ContestLocalServiceUtil.getContestsMatchingOntologyTerms((java.util.List<com.ext.portlet.model.OntologyTerm>) arguments[0]);
         }
 
-        if (_methodName558.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes558, parameterTypes)) {
+        if (_methodName557.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes557, parameterTypes)) {
             ContestLocalServiceUtil.transferSupportsToVote((com.ext.portlet.model.Contest) arguments[0],
                 (com.liferay.portal.service.ServiceContext) arguments[1]);
 
             return null;
+        }
+
+        if (_methodName558.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes558, parameterTypes)) {
+            return ContestLocalServiceUtil.getProposalJudgeReviewCsv((com.ext.portlet.model.Contest) arguments[0],
+                (com.ext.portlet.model.ContestPhase) arguments[1],
+                (com.liferay.portal.service.ServiceContext) arguments[2]);
         }
 
         if (_methodName559.equals(name) &&

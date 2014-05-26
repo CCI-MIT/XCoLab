@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
@@ -33,6 +34,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.model.User;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The implementation of the contest phase local service.
@@ -110,7 +113,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
             @Override
             public int compare(ContestPhase o1, ContestPhase o2) {
-                return (int)(o1.getContestPhaseType() - o2.getContestPhaseType());
+                return o1.getPhaseStartDate().compareTo(o2.getPhaseStartDate());
             }
         });
 
@@ -290,17 +293,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
-    // TODO: make changes here
         //Judging-based promotion
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
                 ContestPhase nextPhase = getNextContestPhase(phase);
                 for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                    ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_ACTION);
-                    Long intData = (data == null) ? JudgingSystemActions.JudgeDecision.NO_DECISION.getAttributeValue() : data.getNumericValue();
+                    ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+                    Long intData = (data == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : data.getNumericValue();
 
-                    if (JudgingSystemActions.JudgeDecision.fromInt(intData.intValue()) == JudgingSystemActions.JudgeDecision.MOVE_ON) {
+                    if (JudgingSystemActions.AdvanceDecision.fromInt(intData.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
                 }
@@ -309,6 +311,19 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 _log.info("done promoting phase " + phase.getContestPhasePK());
             }
         }
+    }
+
+    public int getNumberOfProposalsForJudge(User judge, ContestPhase phase) throws PortalException, SystemException{
+        List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK());
+        int counter=0;
+        for (Proposal p : proposals){
+            String judges = "";
+            try{
+                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+            } catch (NoSuchProposalContestPhaseAttributeException e) {  }
+            if (StringUtils.containsIgnoreCase(judges, judge.getUserId() + "")) counter++;
+        }
+        return counter;
     }
 
     private ProposalContestPhaseAttribute getAttribute(long proposalId, long phaseId, String key) {

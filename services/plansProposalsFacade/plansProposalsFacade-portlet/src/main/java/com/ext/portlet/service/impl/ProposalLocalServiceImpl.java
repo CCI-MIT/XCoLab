@@ -1,16 +1,13 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.service.persistence.*;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.*;
+import com.ext.portlet.NoSuchProposalSupporterException;
+import com.ext.portlet.NoSuchProposalVoteException;
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -21,30 +18,23 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
-import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.ProposalMemberAddedEvent;
-import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
-import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
-import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
-import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
-import org.xcolab.proposals.events.ProposalVotedOnEvent;
-import org.xcolab.services.EventBusService;
-import org.xcolab.utils.UrlBuilder;
-
-import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalSupporterException;
-import com.ext.portlet.NoSuchProposalVoteException;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
+import com.ext.portlet.service.persistence.ProposalSupporterPK;
+import com.ext.portlet.service.persistence.ProposalVersionPK;
+import com.ext.portlet.service.persistence.ProposalVotePK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.Criterion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -66,6 +56,23 @@ import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
+import org.xcolab.proposals.events.ProposalMemberAddedEvent;
+import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
+import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
+import org.xcolab.proposals.events.ProposalVotedOnEvent;
+import org.xcolab.services.EventBusService;
+import org.xcolab.utils.UrlBuilder;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The implementation of the proposal local service.
@@ -110,11 +117,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     @BeanReference(type = GroupService.class)
     private GroupService groupService;
-    
+
 
     @BeanReference(type = RoleLocalService.class)
     private RoleLocalService roleLocalService;
-    
+
     public ProposalLocalServiceImpl() {
     }
 
@@ -182,10 +189,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         // create discussions
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
                 .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
-        
+
         proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
-        
+
         proposal.setDiscussionId(proposalDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
@@ -518,13 +525,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         List<ProposalAttribute> attribute = proposalAttributePersistence.
                 findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
                         proposalId, version, version, attributeName, additionalId);
-        
-        if (attribute.isEmpty()) throw new NoSuchProposalAttributeException("Can't find attribute [" + 
-        		"proposalId: " + proposalId + ", " +
-        		"version: " + version + ", " +
-        		"attributeName: " + attributeName + ", " +
-        		"additionalId: " + additionalId + "]");
-        
+
+        if (attribute.isEmpty()) throw new NoSuchProposalAttributeException("Can't find attribute [" +
+                "proposalId: " + proposalId + ", " +
+                "version: " + version + ", " +
+                "attributeName: " + attributeName + ", " +
+                "additionalId: " + additionalId + "]");
+
         return attribute.get(0);
     }
 
@@ -617,7 +624,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         return dynamicQuery(proposalsInPhaseNotDeleted);
     }
-    
+
     /**
      * <p>Returns a list of proposals associated with given contest</p>
      *
@@ -644,8 +651,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     /**
      * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
-     * @param userId    The userId of the user
-     * @return          A list of proposals the user has contributed to
+     *
+     * @param userId The userId of the user
+     * @return A list of proposals the user has contributed to
      * @throws SystemException
      */
     public List<Proposal> getUserProposals(long userId) throws SystemException, PortalException {
@@ -661,13 +669,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         Criterion criterion = RestrictionsFactoryUtil.eq("authorId", userId);
         criterion = RestrictionsFactoryUtil.or(criterion, RestrictionsFactoryUtil.in("groupId", groupIds));
 
-		final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
-		final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, (ClassLoader) PortletBeanLocatorUtil.locate(
-				ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"))
+        final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
+        final DynamicQuery query = DynamicQueryFactoryUtil.forClass(Proposal.class, (ClassLoader) PortletBeanLocatorUtil.locate(
+                ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"))
                 .add(criterion)
                 .add(PropertyFactoryUtil.forName("visible").eq(true))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
-        List<Proposal> proposals =  proposalLocalService.dynamicQuery(query);
+        List<Proposal> proposals = proposalLocalService.dynamicQuery(query);
 
         // Filter out "deleted" proposals
         List<Proposal> returnList = new ArrayList<>();
@@ -678,7 +686,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             int invisibleCount = 0;
             int overallCount = 0;
             for (Proposal2Phase phase : p2Phases) {
-				overallCount++;
+                overallCount++;
 
                 // Try to get
                 try {
@@ -703,7 +711,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         return returnList;
     }
-    
+
     /**
      * <p>Returns count of proposals associated with given contest phase</p>
      *
@@ -713,7 +721,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      */
     public long countProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
-        
+
         List<Proposal> activeProposals = getActiveProposalsInContestPhase(contestPhaseId);
         return activeProposals.size();
     }
@@ -1183,29 +1191,31 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             return false;
         }
     }
-    
+
     /**
      * Returns number of proposals that user supports
+     *
      * @param userId
      * @return
      * @throws SystemException
      */
     public int getUserSupportedProposalsCount(long userId) throws SystemException {
-    	return proposalSupporterPersistence.countByUserId(userId);
+        return proposalSupporterPersistence.countByUserId(userId);
     }
 
     /**
      * Returns number of proposals that user has given his vote to
+     *
      * @param userId
      * @return
      * @throws SystemException
      */
     public int getUserVotedProposalsCount(long userId) throws SystemException {
-    	return proposalVotePersistence.countByUserId(userId);
+        return proposalVotePersistence.countByUserId(userId);
     }
-    
+
     public List<Proposal> getModifiedAfter(Date date) throws SystemException {
-    	return proposalPersistence.findByModifiedAfter(date);
+        return proposalPersistence.findByModifiedAfter(date);
     }
 
     /**
@@ -1305,11 +1315,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         rolesActionsMap.put(guest.getRoleId(), guestActions);
         rolesActionsMap.put(moderator.getRoleId(), moderatorActions);
 
-        
-        ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId, 
-        		DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-        		String.valueOf(group.getGroupId()), rolesActionsMap);
-        
+
+        ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
+                DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
+                String.valueOf(group.getGroupId()), rolesActionsMap);
+
 
         return group;
     }
@@ -1360,12 +1370,25 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns the URL link address for the passed proposal and contest
      *
-     * @param contest   The contest object in which the proposal was written
-     * @param proposal  The proposal object (must not be null)
-     * @return          Proposal URL as String
+     * @param contest  The contest object in which the proposal was written
+     * @param proposal The proposal object (must not be null)
+     * @return Proposal URL as String
      */
     public String getProposalLinkUrl(Contest contest, Proposal proposal) {
         String link = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
         return String.format(link, contest.getContestPK(), proposal.getProposalId());
+    }
+
+    /**
+     * Returns the URL link address for the passed proposal, contest and contestPhase
+     *
+     * @param contest       The contest object in which the proposal was written
+     * @param proposal      The proposal object
+     * @param contestPhase  The associated contestPhase of the proposal
+     * @return Proposal URL as String
+     */
+    public String getProposalLinkUrl(Contest contest, Proposal proposal, ContestPhase contestPhase) {
+        String link = "/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d";
+        return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
     }
 }

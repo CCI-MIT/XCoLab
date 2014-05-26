@@ -736,7 +736,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
     *
-    * @param userId    The userId of the user
+    * @param userId The userId of the user
     * @return A list of proposals the user has contributed to
     * @throws SystemException
     */
@@ -1255,8 +1255,8 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     /**
     * Returns the URL link address for the passed proposal and contest
     *
-    * @param contest   The contest object in which the proposal was written
-    * @param proposal  The proposal object (must not be null)
+    * @param contest  The contest object in which the proposal was written
+    * @param proposal The proposal object (must not be null)
     * @return Proposal URL as String
     */
     @Override
@@ -1264,6 +1264,23 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
         return _proposalLocalService.getProposalLinkUrl(contest, proposal);
+    }
+
+    /**
+    * Returns the URL link address for the passed proposal, contest and contestPhase
+    *
+    * @param contest       The contest object in which the proposal was written
+    * @param proposal      The proposal object
+    * @param contestPhase  The associated contestPhase of the proposal
+    * @return Proposal URL as String
+    */
+    @Override
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return _proposalLocalService.getProposalLinkUrl(contest, proposal,
+            contestPhase);
     }
 
     /**

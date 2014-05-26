@@ -1,7 +1,9 @@
 package com.ext.portlet.service.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
+import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
@@ -27,9 +31,16 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.Proposal2PhaseLocalService;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
@@ -43,7 +54,6 @@ import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
 
@@ -75,11 +85,16 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import edu.mit.cci.roma.client.Simulation;
-import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.csvExport.ProposalReview;
+import org.xcolab.utils.csvExport.ProposalReviewCsvExporter;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
+
+import javax.validation.Valid;
 
 /**
  * The implementation of the contest local service.
@@ -549,21 +564,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             _log.error("Can't reindex contest " + contest.getContestPK(), e);
         }
     }
-
-    public int getNumberOfProposalsForJudge(User u, Contest c) throws PortalException, SystemException{
-        long lastContestPhase = ContestPhaseLocalServiceUtil.getPhasesForContest(c).get(ContestPhaseLocalServiceUtil.getPhasesForContest(c).size()-1).getContestPhasePK();
-
-        List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(lastContestPhase);
-        int counter=0;
-        for (Proposal p : proposals){
-            String judges = "";
-            try{
-                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), lastContestPhase, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
-            } catch (NoSuchProposalContestPhaseAttributeException e) {  }
-            if (StringUtils.containsIgnoreCase(judges,u.getUserId()+"")) counter++;
-        }
-        return counter;
-    }
     
     public List<Contest> getContestsByActivePrivate(boolean active, boolean privateContest) throws SystemException {
     	return contestPersistence.findByContestActivecontestPrivate(active, privateContest);	
@@ -649,6 +649,99 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
             }
         }
+    }
+
+    /**
+     * This method generates a CSV string of all judge Reviews
+     *
+     * @param contest           The contest for which the review should be creatd
+     * @param contestPhase      The judging contest phase
+     * @param serviceContext    A serviceContext which must include the Portal's base URL
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase contestPhase, ServiceContext serviceContext) throws SystemException, PortalException {
+        List<Proposal> proposalsInPhase = proposalLocalService.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+
+        List<ProposalReview> proposalReviews = new ArrayList<>();
+        for (Proposal proposal : proposalsInPhase) {
+            try {
+                ProposalContestPhaseAttribute fellowActionAttribute = getProposalContestPhaseAttributeLocalService().
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
+                                ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+                JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
+
+                // Ignore proposals that have not been passed to judge
+                if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
+                    continue;
+                }
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
+                continue;   // just ignore this
+            }
+
+            final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, contestPhase);
+            final ProposalReview proposalReview = new ProposalReview(proposal, proposalUrl);
+            try {
+                final String judgeIdString = getProposalContestPhaseAttributeLocalService().
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
+                                ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+
+                for (String element : judgeIdString.split(";")) {
+                    long userId  = GetterUtil.getLong(element);
+                    User judge = userLocalService.getUser(userId);
+
+                    // Judge rating
+                    int judgeRating = (int)getProposalContestPhaseAttributeLocalService().
+                            getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
+                                    ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, judge.getUserId()).getNumericValue();
+                    String judgeComment = getProposalContestPhaseAttributeLocalService().
+                            getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
+                                    ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
+                    proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
+                }
+
+                proposalReviews.add(proposalReview);
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
+                _log.error("ContestPhaseAttribute of proposal with ID " + proposal.getProposalId() + " have not been found", e);
+            }
+        }
+
+        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalReviews, getJudgesForContest(contest));
+        return csvExporter.getCsvString();
+    }
+
+    private List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {
+        Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGES))) {
+            return roleToUserMap.get(MemberRole.JUDGES);
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
+     * Returns a map object that maps MemberRoles to a list of associated users for the respective MemberRole
+     * according to the ContestTeamMember table
+     *
+     * @param contest           The contest for which the mapping is requested
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
+    private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
+        Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
+        for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
+            MemberRole teamRole = MemberRole.getMember(ctm.getRole());
+            List<User> roleUsers = teamRoleToUsersMap.get(teamRole);
+            if (roleUsers == null) {
+                roleUsers = new ArrayList<>();
+                teamRoleToUsersMap.put(teamRole, roleUsers);
+            }
+            roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
+        }
+
+        return teamRoleToUsersMap;
     }
 
     /**

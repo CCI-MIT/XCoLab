@@ -75,6 +75,8 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes527;
     private String _methodName528;
     private String[] _methodParameterTypes528;
+    private String _methodName529;
+    private String[] _methodParameterTypes529;
 
     public ContestPhaseLocalServiceClpInvoker() {
         _methodName0 = "addContestPhase";
@@ -246,6 +248,13 @@ public class ContestPhaseLocalServiceClpInvoker {
         _methodName528 = "autoPromoteProposals";
 
         _methodParameterTypes528 = new String[] {  };
+
+        _methodName529 = "getNumberOfProposalsForJudge";
+
+        _methodParameterTypes529 = new String[] {
+                "com.liferay.portal.model.User",
+                "com.ext.portlet.model.ContestPhase"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -427,6 +436,12 @@ public class ContestPhaseLocalServiceClpInvoker {
             ContestPhaseLocalServiceUtil.autoPromoteProposals();
 
             return null;
+        }
+
+        if (_methodName529.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+            return ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
+                (com.ext.portlet.model.ContestPhase) arguments[1]);
         }
 
         throw new UnsupportedOperationException();

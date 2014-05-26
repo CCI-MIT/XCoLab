@@ -5,19 +5,19 @@ package com.ext.portlet;
  *         First created on 10/7/13 at 7:37 PM
  */
 public class JudgingSystemActions {
-    public enum JudgeDecision {
+    public enum AdvanceDecision {
         NO_DECISION(0, "no decision"), DONT_MOVE_ON(1, "don't move on"), MOVE_ON(2, "move on");
 
         int attributeValue;
         String description;
 
-        private JudgeDecision(int attributeValue, String description) {
+        private AdvanceDecision(int attributeValue, String description) {
             this.attributeValue = attributeValue;
             this.description = description;
         }
 
-        public static JudgeDecision fromInt(Integer value) {
-            for(JudgeDecision a : values()) {
+        public static AdvanceDecision fromInt(Integer value) {
+            for(AdvanceDecision a : values()) {
                 if(a.attributeValue == value) return a;
             }
 

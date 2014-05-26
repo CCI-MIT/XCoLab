@@ -8,7 +8,8 @@
           xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
           xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:liferay-ui="http://liferay.com/tld/ui">
     <jsp:directive.include file="./init.jspx"/>
 
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -17,23 +18,28 @@
         margin: 20px 0 10px 0 !important;
     }</style>
 
+    <portlet:actionURL var="saveAdvanceDetailsURL">
+        <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
+        <portlet:param name="contestId" value="${contest.contestPK }"/>
+        <portlet:param name="planId" value="${proposal.proposalId }"/>
+        <portlet:param name="action" value="saveAdvanceDetails"/>
+    </portlet:actionURL>
+    <portlet:actionURL var="sendEmailURL">
+        <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
+        <portlet:param name="contestId" value="${contest.contestPK }"/>
+        <portlet:param name="planId" value="${proposal.proposalId }"/>
+        <portlet:param name="action" value="sendComment"/>
+    </portlet:actionURL>
+    <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
+    </portlet:resourceURL>
+
     <div id="content">
-        This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page
+        This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
 
-
-        <h1>Rating</h1>
-        <portlet:actionURL var="saveAdvanceDetailsURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
-            <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="saveAdvanceDetails"/>
-        </portlet:actionURL>
-        <portlet:actionURL var="sendEmailURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
-            <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="planId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="sendComment"/>
-        </portlet:actionURL>
+        <h1 style="margin-top:15px;">Rating</h1>
+        <div style="display: inline-block;	float:right;">
+            <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+        </div>
 
         <div class="judging_left">
             <c:choose>
@@ -42,34 +48,30 @@
                 </c:when>
                 <c:otherwise>
                     <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL }" method="post"
-                               commandName="judgeProposalBean">
+                               commandName="proposalAdvancingBean">
                         <div class="addpropbox">
                             <h3>Promotion</h3>
-                            <form:select path="judgeDecision" items="${judgingOptions}" itemLabel="description"/>
+                            <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
-                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save</a>
-                            </div>
-                        </div>
+                            <div id="comment-container">
+                                <h3>Comment to send to author</h3>
+                                <div id="comment-header">
+                                    <!-- -->
+                                </div>
+                                <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
 
-                        <div class="addpropbox">
-
-                            <h3>Comment to send to author</h3>
-                            <form:textarea id="judgeComment" cssClass="commentbox" path="judgeComment" style="width:100%;"/>
-
-                            <div class="blue-button" style="display:block; float:left;">
-                                <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
-                            </div>
-                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save</a>
+                                <div class="blue-button" style="display:block; float:left;">
+                                    <a href="${sendEmailURL}">Send e-Mails</a>
+                                </div>
+                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                    <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+                                </div>
                             </div>
 
                         </div>
 
                         <div class="addpropbox" style="display:none;"> <!-- hide until someone changes his mind wants to see it again :) -->
-
+                            <!--
                             <h3 style="margin-top: 0;">Rating</h3>
                             <table class="judgingForm">
                                 <tbody>
@@ -93,6 +95,7 @@
                                     <a href="javascript:;" class="requestMembershipSubmitButton"
                                        onclick="jQuery(this).parents('form').submit();">Save</a>
                                 </div>
+                                -->
                         </div>
                     </form:form>
                 </c:otherwise>
@@ -118,5 +121,31 @@
         </div>
     </div>
 
+    <script>
+        var advanceCommentHeaders = new Array();
+
+        <c:forEach var="commentHeader" items="${proposalAdvancingBean.advanceCommentHeaders}">
+                advanceCommentHeaders.push("${commentHeader}");
+        </c:forEach>
+
+        jQuery( document ).ready(function() {
+            jQuery('#advanceDecision').change(function() {
+                refreshCommentHeader();
+            });
+
+            refreshCommentHeader();
+        });
+
+        function refreshCommentHeader() {
+            var advanceDecisionIdx = document.getElementById("advanceDecision").selectedIndex;
+            $('#comment-header').html(advanceCommentHeaders[advanceDecisionIdx]);
+
+            if (advanceDecisionIdx > 0) {
+                $('#comment-container').slideDown();
+            } else {
+                $('#comment-container').slideUp();
+            }
+        }
+    </script>
 
 </jsp:root>
