@@ -818,7 +818,7 @@ public class PlanItemLocalServiceImpl extends PlanItemLocalServiceBaseImpl {
 
 	public boolean isNameAvailable(String planName, Contest c)
 			throws SystemException, PortalException {
-		for (ContestPhase phase : ContestLocalServiceUtil.getPhases(c)) {
+		for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(c)) {
 			for (PlanItem item : ContestPhaseLocalServiceUtil.getPlans(phase)) {
 				if (getName(item).equals(planName))
 					return false;

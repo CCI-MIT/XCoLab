@@ -88,6 +88,27 @@ public interface ContestPhaseModel extends BaseModel<ContestPhase> {
     public void setContestPhaseType(long ContestPhaseType);
 
     /**
+     * Returns the fellow screening active of this contest phase.
+     *
+     * @return the fellow screening active of this contest phase
+     */
+    public boolean getFellowScreeningActive();
+
+    /**
+     * Returns <code>true</code> if this contest phase is fellow screening active.
+     *
+     * @return <code>true</code> if this contest phase is fellow screening active; <code>false</code> otherwise
+     */
+    public boolean isFellowScreeningActive();
+
+    /**
+     * Sets whether this contest phase is fellow screening active.
+     *
+     * @param fellowScreeningActive the fellow screening active of this contest phase
+     */
+    public void setFellowScreeningActive(boolean fellowScreeningActive);
+
+    /**
      * Returns the contest phase autopromote of this contest phase.
      *
      * @return the contest phase autopromote of this contest phase

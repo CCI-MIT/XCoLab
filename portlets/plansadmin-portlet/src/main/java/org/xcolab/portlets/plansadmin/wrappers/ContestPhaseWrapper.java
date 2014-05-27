@@ -1,10 +1,13 @@
 package org.xcolab.portlets.plansadmin.wrappers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
@@ -14,6 +17,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.enums.ContestPhasePromoteType;
 
 public class ContestPhaseWrapper {
     private ContestPhase contestPhase;
@@ -34,6 +38,23 @@ public class ContestPhaseWrapper {
 
     public void setContestPhaseType(long ContestPhaseType) {
         contestPhase.setContestPhaseType(ContestPhaseType);
+    }
+
+    public List<SelectItem> getAutopromoteItems() {
+        List<SelectItem> selectItems = new ArrayList<>();
+        for (ContestPhasePromoteType promoteType : ContestPhasePromoteType.values()) {
+            selectItems.add(new SelectItem(promoteType.getIndex(), promoteType.getValue(), promoteType.getDescription()));
+        }
+
+        return selectItems;
+    }
+
+    public void setAutopromoteItem(Integer index) {
+        setContestPhaseAutopromote(ContestPhasePromoteType.getPromoteType(index).getValue());
+    }
+
+    public Integer getAutopromoteItem() {
+        return ContestPhasePromoteType.getPromoteType(getContestPhaseAutopromote()).getIndex();
     }
 
     public String getContestPhaseAutopromote() {
@@ -89,7 +110,8 @@ public class ContestPhaseWrapper {
         return type;
         
     }
-    public void save(ActionEvent e) throws SystemException {
+
+    public void save(ActionEvent e) throws SystemException, PortalException {
         contestPhase.setContestPK(contestWrapper.getContest().getContestPK());
         if (contestPhase.getContestPhasePK() <= 0) {
             long id = CounterLocalServiceUtil.increment(ContestPhase.class.getName());

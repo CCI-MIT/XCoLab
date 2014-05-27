@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import org.xcolab.portlets.plansadmin.wrappers.ContestWrapper;
 
 import com.ext.portlet.model.Contest;
@@ -14,7 +15,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 public class ContestsAdmin {
     private ContestWrapper editedContest;
     
-    public List<ContestWrapper> getContests() throws SystemException {
+    public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<ContestWrapper>();
         
         for (Contest contest: ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {

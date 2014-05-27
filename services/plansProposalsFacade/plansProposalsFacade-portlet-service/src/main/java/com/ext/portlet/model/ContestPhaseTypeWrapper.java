@@ -41,6 +41,7 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
+        attributes.put("invisible", getInvisible());
 
         return attributes;
     }
@@ -69,6 +70,12 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
 
         if (status != null) {
             setStatus(status);
+        }
+
+        Boolean invisible = (Boolean) attributes.get("invisible");
+
+        if (invisible != null) {
+            setInvisible(invisible);
         }
     }
 
@@ -170,6 +177,36 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     @Override
     public void setStatus(java.lang.String status) {
         _contestPhaseType.setStatus(status);
+    }
+
+    /**
+    * Returns the invisible of this contest phase type.
+    *
+    * @return the invisible of this contest phase type
+    */
+    @Override
+    public boolean getInvisible() {
+        return _contestPhaseType.getInvisible();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest phase type is invisible.
+    *
+    * @return <code>true</code> if this contest phase type is invisible; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isInvisible() {
+        return _contestPhaseType.isInvisible();
+    }
+
+    /**
+    * Sets whether this contest phase type is invisible.
+    *
+    * @param invisible the invisible of this contest phase type
+    */
+    @Override
+    public void setInvisible(boolean invisible) {
+        _contestPhaseType.setInvisible(invisible);
     }
 
     @Override

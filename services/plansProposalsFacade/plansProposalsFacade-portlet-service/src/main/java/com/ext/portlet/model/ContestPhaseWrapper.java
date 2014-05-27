@@ -41,6 +41,7 @@ public class ContestPhaseWrapper implements ContestPhase,
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
             getContestPhaseDescriptionOverride());
@@ -74,6 +75,13 @@ public class ContestPhaseWrapper implements ContestPhase,
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Boolean fellowScreeningActive = (Boolean) attributes.get(
+                "fellowScreeningActive");
+
+        if (fellowScreeningActive != null) {
+            setFellowScreeningActive(fellowScreeningActive);
         }
 
         String contestPhaseAutopromote = (String) attributes.get(
@@ -219,6 +227,36 @@ public class ContestPhaseWrapper implements ContestPhase,
     @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _contestPhase.setContestPhaseType(ContestPhaseType);
+    }
+
+    /**
+    * Returns the fellow screening active of this contest phase.
+    *
+    * @return the fellow screening active of this contest phase
+    */
+    @Override
+    public boolean getFellowScreeningActive() {
+        return _contestPhase.getFellowScreeningActive();
+    }
+
+    /**
+    * Returns <code>true</code> if this contest phase is fellow screening active.
+    *
+    * @return <code>true</code> if this contest phase is fellow screening active; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isFellowScreeningActive() {
+        return _contestPhase.isFellowScreeningActive();
+    }
+
+    /**
+    * Sets whether this contest phase is fellow screening active.
+    *
+    * @param fellowScreeningActive the fellow screening active of this contest phase
+    */
+    @Override
+    public void setFellowScreeningActive(boolean fellowScreeningActive) {
+        _contestPhase.setFellowScreeningActive(fellowScreeningActive);
     }
 
     /**

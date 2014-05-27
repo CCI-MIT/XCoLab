@@ -100,8 +100,8 @@ public class ProposalCreationNotification extends EmailNotification {
         return body;
     }
 
-    private Date getProposalCreationDeadline() throws SystemException {
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getPhases(contest);
+    private Date getProposalCreationDeadline() throws SystemException, PortalException {
+        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getVisiblePhases(contest);
 
         for (ContestPhase phase : contestPhases) {
             if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getType()) {

@@ -156,7 +156,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
-    public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException {
+    public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {
         Date now = new Date();
         try {
             return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
@@ -188,7 +188,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             // Check whether the contestPhase with the latest start date is open (no endDate)
             ContestPhase latestOpenPhase = null;
             long latestStartTime = 0;
-            for (ContestPhase phase : contestLocalService.getPhases(contest)) {
+            for (ContestPhase phase : contestLocalService.getVisiblePhases(contest)) {
                 if (phase.getPhaseStartDate().getTime() > latestStartTime) {
                     if (phase.getPhaseEndDate() != null) {
                         latestOpenPhase = null;

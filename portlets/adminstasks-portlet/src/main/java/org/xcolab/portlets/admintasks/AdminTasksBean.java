@@ -301,7 +301,7 @@ public class AdminTasksBean {
 			String contestPhaseName) throws PortalException, SystemException {
 
 		for (ContestPhase cp : ContestLocalServiceUtil
-				.getPhases(ContestLocalServiceUtil.getContest(contestPk))) {
+				.getVisiblePhases(ContestLocalServiceUtil.getContest(contestPk))) {
 			if (ContestPhaseLocalServiceUtil.getName(cp).equals(
 					contestPhaseName)) {
 				return cp;

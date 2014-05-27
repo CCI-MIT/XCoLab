@@ -34,6 +34,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalService;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -248,7 +249,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     /**
      * Methods from ContestImpl *
      */
-    public List<ContestPhase> getPhases(Contest contest) {
+    public List<ContestPhase> getAllPhases(Contest contest) {
         try {
             return ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         } catch (SystemException e) {
@@ -256,6 +257,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return new ArrayList<ContestPhase>();
 
         }
+    }
+
+    public List<ContestPhase> getVisiblePhases(Contest contest) throws SystemException, PortalException {
+        List<ContestPhase> allPhases = getAllPhases(contest);
+
+        List<ContestPhase> visiblePhases = new ArrayList<>();
+        for (ContestPhase phase : allPhases) {
+            com.ext.portlet.model.ContestPhaseType phaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType());
+            if (!phaseType.getInvisible()) {
+                visiblePhases.add(phase);
+            }
+        }
+
+        return visiblePhases;
     }
 
     public PlanType getPlanType(Contest contest) throws SystemException, PortalException {
@@ -268,7 +283,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     public List<ContestPhase> getActivePhases(Contest contest) throws SystemException, PortalException {
-        List<ContestPhase> result = getPhases(contest);
+        List<ContestPhase> result = getVisiblePhases(contest);
         for (Iterator<ContestPhase> i = result.iterator(); i.hasNext(); ) {
             if (!ContestPhaseLocalServiceUtil.getPhaseActive(i.next())) {
                 i.remove();
@@ -277,17 +292,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return result;
     }
 
-    public ContestPhase getActivePhase(Contest contest) throws SystemException {
+    public ContestPhase getActivePhase(Contest contest) throws SystemException, PortalException {
 
-        for (ContestPhase phase : getPhases(contest)) {
+        for (ContestPhase phase : getVisiblePhases(contest)) {
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
         }
         return null;
     }
 
-    public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException {
+    public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException, PortalException {
         ContestPhase lastPhase = null;
-        for (ContestPhase phase : getPhases(contest)) {
+        for (ContestPhase phase : getVisiblePhases(contest)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
         }
@@ -399,7 +414,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // first - get current phase
         ContestPhase activePhase = getActiveOrLastPhase(contest);
         if (activePhase == null) {
-            List<ContestPhase> phases = getPhases(contest);
+            List<ContestPhase> phases = getVisiblePhases(contest);
             if (phases != null && !phases.isEmpty()) {
                 activePhase = phases.get(phases.size() - 1);
             }

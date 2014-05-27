@@ -119,6 +119,7 @@ create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
 	ContestPhaseType LONG,
+	fellowScreeningActive BOOLEAN,
 	contestPhaseAutopromote VARCHAR(75) null,
 	ContestPhaseDescriptionOverride TEXT null,
 	phaseActiveOverride BOOLEAN,
@@ -151,7 +152,8 @@ create table xcolab_ContestPhaseType (
 	id_ LONG not null primary key,
 	name VARCHAR(1024) null,
 	description TEXT null,
-	status VARCHAR(75) null
+	status VARCHAR(75) null,
+	invisible BOOLEAN
 );
 
 create table xcolab_ContestTeamMember (

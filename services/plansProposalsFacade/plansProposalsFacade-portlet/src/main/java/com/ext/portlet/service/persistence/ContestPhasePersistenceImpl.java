@@ -3080,6 +3080,7 @@ public class ContestPhasePersistenceImpl extends BasePersistenceImpl<ContestPhas
         contestPhaseImpl.setContestPhasePK(contestPhase.getContestPhasePK());
         contestPhaseImpl.setContestPK(contestPhase.getContestPK());
         contestPhaseImpl.setContestPhaseType(contestPhase.getContestPhaseType());
+        contestPhaseImpl.setFellowScreeningActive(contestPhase.isFellowScreeningActive());
         contestPhaseImpl.setContestPhaseAutopromote(contestPhase.getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(contestPhase.getContestPhaseDescriptionOverride());
         contestPhaseImpl.setPhaseActiveOverride(contestPhase.isPhaseActiveOverride());

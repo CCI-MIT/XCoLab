@@ -102,6 +102,27 @@ public interface ContestPhaseTypeModel extends BaseModel<ContestPhaseType> {
      */
     public void setStatus(String status);
 
+    /**
+     * Returns the invisible of this contest phase type.
+     *
+     * @return the invisible of this contest phase type
+     */
+    public boolean getInvisible();
+
+    /**
+     * Returns <code>true</code> if this contest phase type is invisible.
+     *
+     * @return <code>true</code> if this contest phase type is invisible; <code>false</code> otherwise
+     */
+    public boolean isInvisible();
+
+    /**
+     * Sets whether this contest phase type is invisible.
+     *
+     * @param invisible the invisible of this contest phase type
+     */
+    public void setInvisible(boolean invisible);
+
     @Override
     public boolean isNew();
 

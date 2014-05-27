@@ -221,6 +221,7 @@
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="fellowScreeningActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestPhaseAutopromote" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="phaseActiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -260,6 +261,7 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />

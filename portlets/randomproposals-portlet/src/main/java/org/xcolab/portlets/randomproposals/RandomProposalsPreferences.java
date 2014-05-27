@@ -92,7 +92,7 @@ public class RandomProposalsPreferences {
     		         });
     	 
     	 for (Contest c: contests) {
-           for (ContestPhase cp: ContestLocalServiceUtil.getPhases(c)) {
+           for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(c)) {
         	   phases.put(cp.getContestPhasePK()
         			   ,c.getContestPK() + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
         	   

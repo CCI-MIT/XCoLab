@@ -311,7 +311,7 @@ public class ContestWrapper {
         return ContestLocalServiceUtil.getVotesCount(contest);
     }
 
-    public ContestPhaseWrapper getLastPhase() {
+    public ContestPhaseWrapper getLastPhase() throws PortalException, SystemException {
         ContestPhaseWrapper last = null;
         for (ContestPhaseWrapper ph : getPhases()) {
             if (last == null || (ph.getPhaseReferenceDate() != null && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0))
@@ -320,7 +320,7 @@ public class ContestWrapper {
         return last;
     }
 
-    public ContestPhaseWrapper getActivePhase() throws NoSuchContestPhaseException, SystemException {
+    public ContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
         if (activePhase == null) {
             ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
             if (phase == null) return null;
@@ -405,10 +405,10 @@ public class ContestWrapper {
         return ontologySpaceCache.get(space);
     }
 
-    public List<ContestPhaseWrapper> getPhases() {
+    public List<ContestPhaseWrapper> getPhases() throws SystemException, PortalException {
         if (phases == null) {
             phases = new ArrayList<ContestPhaseWrapper>();
-            for (ContestPhase phase : ContestLocalServiceUtil.getPhases(contest)) {
+            for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
                 phases.add(new ContestPhaseWrapper(phase));
             }
         }

@@ -10,11 +10,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import javax.mail.internet.AddressException;
 
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.liferay.util.mail.MailEngineException;
 import org.xcolab.portlets.plansadmin.Helper;
 
 import com.icesoft.faces.component.inputfile.InputFile;
@@ -32,7 +30,7 @@ public class ContestWrapper {
 	private File newSponsorLogo;
 	private List<ContestPhaseWrapper> phases = new ArrayList<>();
 
-	public ContestWrapper(Contest contest) throws SystemException {
+	public ContestWrapper(Contest contest) throws SystemException, PortalException {
 		this.contest = contest;
 		if (contest == null) {
 		    this.contest = ContestLocalServiceUtil.createContest(0);
@@ -128,7 +126,7 @@ public class ContestWrapper {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest that doesn't exist", ""));
             return;
         }
-        if (! ContestLocalServiceUtil.getPhases(contest).isEmpty()) {
+        if (! ContestLocalServiceUtil.getVisiblePhases(contest).isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest as it has phases", ""));
             return;
         }
@@ -201,7 +199,7 @@ public class ContestWrapper {
 			SystemException {
 		FocusArea fa = ContestLocalServiceUtil.getFocusArea(contest);
 
-		for (ContestPhase phase : ContestLocalServiceUtil.getPhases(contest)) {
+		for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
 			for (PlanItem plan : PlanItemLocalServiceUtil
 					.getPlansInContestPhase(phase.getContestPhasePK())) {
 				FocusAreaLocalServiceUtil.tagClass(fa, PlanItem.class,
@@ -260,11 +258,11 @@ public class ContestWrapper {
 
 	private final static Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
 
-    public void refresh() throws SystemException {
+    public void refresh() throws SystemException, PortalException {
         phases.clear();
         
         if (contest.getContestPK() > 0) {
-            for (ContestPhase cp: ContestLocalServiceUtil.getPhases(contest)) {
+            for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(contest)) {
                 phases.add(new ContestPhaseWrapper(cp, this));
             }
         }

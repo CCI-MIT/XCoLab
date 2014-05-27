@@ -17,6 +17,7 @@ public class ContestPhaseSoap implements Serializable {
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
+    private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
     private boolean _phaseActiveOverride;
@@ -37,6 +38,7 @@ public class ContestPhaseSoap implements Serializable {
         soapModel.setContestPhasePK(model.getContestPhasePK());
         soapModel.setContestPK(model.getContestPK());
         soapModel.setContestPhaseType(model.getContestPhaseType());
+        soapModel.setFellowScreeningActive(model.getFellowScreeningActive());
         soapModel.setContestPhaseAutopromote(model.getContestPhaseAutopromote());
         soapModel.setContestPhaseDescriptionOverride(model.getContestPhaseDescriptionOverride());
         soapModel.setPhaseActiveOverride(model.getPhaseActiveOverride());
@@ -117,6 +119,18 @@ public class ContestPhaseSoap implements Serializable {
 
     public void setContestPhaseType(long ContestPhaseType) {
         _ContestPhaseType = ContestPhaseType;
+    }
+
+    public boolean getFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    public boolean isFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    public void setFellowScreeningActive(boolean fellowScreeningActive) {
+        _fellowScreeningActive = fellowScreeningActive;
     }
 
     public String getContestPhaseAutopromote() {

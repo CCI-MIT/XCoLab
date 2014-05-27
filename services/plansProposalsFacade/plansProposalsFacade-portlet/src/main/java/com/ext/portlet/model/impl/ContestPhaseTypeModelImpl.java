@@ -52,9 +52,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             { "id_", Types.BIGINT },
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
-            { "status", Types.VARCHAR }
+            { "status", Types.VARCHAR },
+            { "invisible", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,invisible BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhaseType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhaseType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhaseType.id_ ASC";
@@ -78,6 +79,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
     private String _name;
     private String _description;
     private String _status;
+    private boolean _invisible;
     private ContestPhaseType _escapedModel;
 
     public ContestPhaseTypeModelImpl() {
@@ -100,6 +102,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         model.setName(soapModel.getName());
         model.setDescription(soapModel.getDescription());
         model.setStatus(soapModel.getStatus());
+        model.setInvisible(soapModel.getInvisible());
 
         return model;
     }
@@ -163,6 +166,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         attributes.put("name", getName());
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
+        attributes.put("invisible", getInvisible());
 
         return attributes;
     }
@@ -191,6 +195,12 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
         if (status != null) {
             setStatus(status);
+        }
+
+        Boolean invisible = (Boolean) attributes.get("invisible");
+
+        if (invisible != null) {
+            setInvisible(invisible);
         }
     }
 
@@ -250,6 +260,22 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         _status = status;
     }
 
+    @JSON
+    @Override
+    public boolean getInvisible() {
+        return _invisible;
+    }
+
+    @Override
+    public boolean isInvisible() {
+        return _invisible;
+    }
+
+    @Override
+    public void setInvisible(boolean invisible) {
+        _invisible = invisible;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -281,6 +307,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         contestPhaseTypeImpl.setName(getName());
         contestPhaseTypeImpl.setDescription(getDescription());
         contestPhaseTypeImpl.setStatus(getStatus());
+        contestPhaseTypeImpl.setInvisible(getInvisible());
 
         contestPhaseTypeImpl.resetOriginalValues();
 
@@ -360,12 +387,14 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             contestPhaseTypeCacheModel.status = null;
         }
 
+        contestPhaseTypeCacheModel.invisible = getInvisible();
+
         return contestPhaseTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
         sb.append("{id=");
         sb.append(getId());
@@ -375,6 +404,8 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(getDescription());
         sb.append(", status=");
         sb.append(getStatus());
+        sb.append(", invisible=");
+        sb.append(getInvisible());
         sb.append("}");
 
         return sb.toString();
@@ -382,7 +413,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseType");
@@ -403,6 +434,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(
             "<column><column-name>status</column-name><column-value><![CDATA[");
         sb.append(getStatus());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>invisible</column-name><column-value><![CDATA[");
+        sb.append(getInvisible());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

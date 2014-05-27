@@ -323,9 +323,17 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     * Methods from ContestImpl *
     */
     @Override
-    public java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
+    public java.util.List<com.ext.portlet.model.ContestPhase> getAllPhases(
         com.ext.portlet.model.Contest contest) {
-        return _contestLocalService.getPhases(contest);
+        return _contestLocalService.getAllPhases(contest);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ContestPhase> getVisiblePhases(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getVisiblePhases(contest);
     }
 
     @Override
@@ -347,14 +355,16 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActivePhase(contest);
     }
 
     @Override
     public com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getActiveOrLastPhase(contest);
     }
 
@@ -635,6 +645,22 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalJudgeReviewCsv(contest,
             contestPhase, serviceContext);
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> getJudgesForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getJudgesForContest(contest);
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> getFellowsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getFellowsForContest(contest);
     }
 
     /**

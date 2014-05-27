@@ -54,6 +54,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "ContestPhasePK", Types.BIGINT },
             { "ContestPK", Types.BIGINT },
             { "ContestPhaseType", Types.BIGINT },
+            { "fellowScreeningActive", Types.BOOLEAN },
             { "contestPhaseAutopromote", Types.VARCHAR },
             { "ContestPhaseDescriptionOverride", Types.VARCHAR },
             { "phaseActiveOverride", Types.BOOLEAN },
@@ -65,7 +66,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,fellowScreeningActive BOOLEAN,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhase";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhase.PhaseStartDate ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhase.PhaseStartDate ASC";
@@ -98,6 +99,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     private long _originalContestPK;
     private boolean _setOriginalContestPK;
     private long _ContestPhaseType;
+    private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _originalContestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
@@ -137,6 +139,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         model.setContestPhasePK(soapModel.getContestPhasePK());
         model.setContestPK(soapModel.getContestPK());
         model.setContestPhaseType(soapModel.getContestPhaseType());
+        model.setFellowScreeningActive(soapModel.getFellowScreeningActive());
         model.setContestPhaseAutopromote(soapModel.getContestPhaseAutopromote());
         model.setContestPhaseDescriptionOverride(soapModel.getContestPhaseDescriptionOverride());
         model.setPhaseActiveOverride(soapModel.getPhaseActiveOverride());
@@ -208,6 +211,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
             getContestPhaseDescriptionOverride());
@@ -241,6 +245,13 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Boolean fellowScreeningActive = (Boolean) attributes.get(
+                "fellowScreeningActive");
+
+        if (fellowScreeningActive != null) {
+            setFellowScreeningActive(fellowScreeningActive);
         }
 
         String contestPhaseAutopromote = (String) attributes.get(
@@ -351,6 +362,22 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
     @Override
     public void setContestPhaseType(long ContestPhaseType) {
         _ContestPhaseType = ContestPhaseType;
+    }
+
+    @JSON
+    @Override
+    public boolean getFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    @Override
+    public boolean isFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    @Override
+    public void setFellowScreeningActive(boolean fellowScreeningActive) {
+        _fellowScreeningActive = fellowScreeningActive;
     }
 
     @JSON
@@ -574,6 +601,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         contestPhaseImpl.setContestPhasePK(getContestPhasePK());
         contestPhaseImpl.setContestPK(getContestPK());
         contestPhaseImpl.setContestPhaseType(getContestPhaseType());
+        contestPhaseImpl.setFellowScreeningActive(getFellowScreeningActive());
         contestPhaseImpl.setContestPhaseAutopromote(getContestPhaseAutopromote());
         contestPhaseImpl.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
         contestPhaseImpl.setPhaseActiveOverride(getPhaseActiveOverride());
@@ -665,6 +693,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
         contestPhaseCacheModel.ContestPhaseType = getContestPhaseType();
 
+        contestPhaseCacheModel.fellowScreeningActive = getFellowScreeningActive();
+
         contestPhaseCacheModel.contestPhaseAutopromote = getContestPhaseAutopromote();
 
         String contestPhaseAutopromote = contestPhaseCacheModel.contestPhaseAutopromote;
@@ -734,7 +764,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -742,6 +772,8 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
+        sb.append(", fellowScreeningActive=");
+        sb.append(getFellowScreeningActive());
         sb.append(", contestPhaseAutopromote=");
         sb.append(getContestPhaseAutopromote());
         sb.append(", ContestPhaseDescriptionOverride=");
@@ -769,7 +801,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(43);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -786,6 +818,10 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>ContestPhaseType</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>fellowScreeningActive</column-name><column-value><![CDATA[");
+        sb.append(getFellowScreeningActive());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>contestPhaseAutopromote</column-name><column-value><![CDATA[");
