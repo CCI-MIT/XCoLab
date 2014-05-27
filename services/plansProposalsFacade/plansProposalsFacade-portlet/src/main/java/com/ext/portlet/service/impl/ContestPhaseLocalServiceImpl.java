@@ -299,10 +299,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
                 ContestPhase nextPhase = getNextContestPhase(phase);
                 for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                    ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
-                    Long intData = (data == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : data.getNumericValue();
+                    ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+                    Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
 
-                    if (JudgingSystemActions.AdvanceDecision.fromInt(intData.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
+                    if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
                 }
