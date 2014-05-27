@@ -109,7 +109,7 @@ public class JudgeProposalActionController {
         }
 
         // save judge comment
-        if (proposalAdvancingBean.getAdvanceComment() != null) {
+        if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
             String completeComment = proposalAdvancingBean.getAdvanceCommentHeaders()[proposalAdvancingBean.getAdvanceDecision()] +
                     proposalAdvancingBean.getAdvanceComment();
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, 0, completeComment);
@@ -126,7 +126,7 @@ public class JudgeProposalActionController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
 
-        // TODO: security handling
+        // Security handling
         if (!proposal.isUserAmongSelectedJudge(currentUser)) {
             return;
         }
@@ -141,8 +141,13 @@ public class JudgeProposalActionController {
                                  BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        // save selection of judges
 
+        // Security handling
+        if (!proposalsContext.getProposalWrapped(request).isUserAmongFellows(proposalsContext.getUser(request))) {
+            return;
+        }
+
+        // save selection of judges
         persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
 
         // save fellow rating
@@ -154,8 +159,13 @@ public class JudgeProposalActionController {
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, fellowProposalScreeningBean.getFellowAction());
 
         // save fellow comment
-        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowComment()))
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, fellowProposalScreeningBean.getFellowComment());
+        if (fellowProposalScreeningBean.getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue() ||
+                fellowProposalScreeningBean.getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
+
+            String completeComment = fellowProposalScreeningBean.getScreeningRejectCommentHeaders()[fellowProposalScreeningBean.getFellowAction()] +
+                    fellowProposalScreeningBean.getFellowComment();
+            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, completeComment);
+        }
     }
 
     @ResourceMapping("getJudgingCsv")

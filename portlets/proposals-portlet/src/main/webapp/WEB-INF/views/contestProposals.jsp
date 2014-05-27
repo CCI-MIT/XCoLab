@@ -163,7 +163,7 @@
                 <a href="${sortURL }">Overall status</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
                 <div class="tooltip">
-                    State of the final judging decision
+                    State of the final advancing decision
                     <div class="tt-arrow"><!-- --></div>
                 </div>
                 <portlet:renderURL var="sortURL">

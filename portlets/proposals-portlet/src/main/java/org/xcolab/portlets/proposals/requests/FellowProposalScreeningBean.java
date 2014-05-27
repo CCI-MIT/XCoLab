@@ -3,7 +3,6 @@ package org.xcolab.portlets.proposals.requests;
 import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.List;
@@ -12,6 +11,16 @@ import java.util.List;
  * Created by kmang on 25/05/14.
  */
 public class FellowProposalScreeningBean {
+    // TODO: change
+    private static final String[] screeningRejectCommentHeaders = {
+            "", // FellowAction.NO_DECISION
+            "<DUMMY STRING>Unfortunately your proposal will not be accepted for the next contest phase due to incompletion. " +
+                    "Comments from the fellows: ", // FellowAction.INCOMPLETE
+            "<DUMMY STRING>Unfortunately your proposal will not be accepted for the next contest phase due to off-topic. " +
+                    "Comments from the fellows: ", // FellowAction.OFFTOPIC
+            "" // FellowAction.PASS_TO_JUDGES
+            };
+
     private Long fellowRating;
     private JudgingSystemActions.FellowAction fellowAction;
     private String fellowComment;
@@ -57,5 +66,9 @@ public class FellowProposalScreeningBean {
 
     public void setFellowComment(String fellowComment) {
         this.fellowComment = fellowComment;
+    }
+
+    public String[] getScreeningRejectCommentHeaders() {
+        return screeningRejectCommentHeaders;
     }
 }

@@ -35,9 +35,9 @@
 
     <div id="content">
         This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
-
-        <h1 style="margin-top:15px;">Rating</h1>
-        <div style="display: inline-block;	float:right;">
+        <br/>
+        <h1 style="display:inline-block; margin-top:15px;">Rating</h1>
+        <div style="display: inline-block;	float:right; margin-top: 20px;">
             <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
         </div>
 

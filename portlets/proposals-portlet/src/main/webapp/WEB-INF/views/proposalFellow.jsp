@@ -87,6 +87,9 @@
                     </div>
                     <div id="fellowCommentContainer" style="display: none">
                         <h3>Comment to send to author</h3>
+                        <div id="comment-header">
+                            <!-- -->
+                        </div>
                         <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
                     </div>
                             <!-- TODO: disable save -->
@@ -131,9 +134,13 @@
 
     <script type="text/javascript">
         var fellowActions = {};
+        var screeningCommentHeaders = new Array();
 
         <c:forEach var="fellowAction" items="${judgingOptions}">
                 fellowActions[${fellowAction.attributeValue}] = {attributeValue: ${fellowAction.attributeValue}, description: "${fellowAction.description}", selectJudgesEnabled: ${fellowAction.selectJudgesEnabled}, commentEnabled: ${fellowAction.commentEnabled}};
+        </c:forEach>
+        <c:forEach var="commentHeader" items="${fellowProposalScreeningBean.screeningRejectCommentHeaders}">
+                screeningCommentHeaders.push("${commentHeader}");
         </c:forEach>
 
         jQuery( document ).ready(function() {
@@ -157,8 +164,9 @@
             } else {
                 jQuery('#fellowSelectJudgesContainer').slideUp();
             }
-        }
 
+            $('#comment-header').html(screeningCommentHeaders[fellowActionSelectIdx]);
+        }
 
     </script>
 

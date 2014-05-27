@@ -250,6 +250,16 @@ public class ProposalWrapper {
         return false;
     }
 
+    public boolean isUserAmongFellows(User userInQuestion) throws SystemException, PortalException {
+        for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
+            if (fellow.getUserId() == userInQuestion.getUserId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public String getTeam() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
