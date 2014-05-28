@@ -241,6 +241,7 @@ ModelingWidget.prototype.runTheModel = function() {
 	});
 	
 	jQuery(modelingWidget).trigger("fetchingScenario");
+	jQuery(modelingWidget).trigger("runningModel");
 	
 	
 	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
