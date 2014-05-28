@@ -279,7 +279,9 @@ ul.ui-tabs-nav li.ui-state-active a{
 
 table.jqplot-table-legend, table.jqplot-cursor-legend { position: static; width: auto; border: 0; background: transparent; font: 12px Verdana, Geneva, sans-serif; }
 
-td.jqplot-table-legend {vertical-align: top; }
+table.jqplot-table-legend { margin-top: 25px; }
+
+td.jqplot-table-legend {vertical-align: top;}
 
 td.jqplot-table-legend > div {border: 0;}
 
