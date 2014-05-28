@@ -3,7 +3,7 @@
 					{
 						name : "policy",
 						title : "Policy",
-						description : "<p>Policy options considered in the Stanford Energy Modeling Forum’s EMF27 exercise are listed from the least to the most aggressive. More aggressive policies cause higher energy costs, which have cascading effects throughout the economy and result in lower global GDP. Select a policy by clicking in the box. To finalize your selection and go to the next choice, click Next.</p>",
+						description : "<p>Policy options are listed from the least to the most aggressive. More aggressive policies cause higher energy costs, which have cascading effects throughout the economy and result in lower global GDP. Select one of these policies for your proposal by clicking in the corresponding box. (For more on the underlying model, see: <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs'>Stanford Energy Modeling Forum’s EMF27</a>.)</p>",
 						options : [
 								{
 									name : 'policy',
@@ -18,7 +18,7 @@
 									value : 'fragmentedPolicy',
 									title : 'Fragmented policy',
 									description : 'Advanced economies cut emissions 50 percent by 2050, emerging economies reach 50 percent reduction level during 2050-2100 period',
-									descriptionLong : "<p><strong>What is Fragmented policy?</strong></p>"
+									descriptionLong : "<p><strong>What is the Fragmented policy?</strong></p>"
 											+ "<p>The advanced economies (the United States, Canada, Japan, Australia, New Zealand and the countries of the European Union, Scandinavia, and Eastern Europe) cut their emissions in half by 2050. The emerging economies follow this lead, but with a lag, each reaching the 50 percent reduction level during the 2050-2100 period. When a country reaches the 50 percent reduction level, it then continually reduces future emissions 2 percent per year. The major fossil fuel-producing countries (Venezuela, Angola, Nigeria, Russia, the former Soviet Union and the oil exporting nations of the Middle East) do not reduce emissions.</p>",
 
 									type : 'blueArrow'
@@ -77,7 +77,7 @@
 					{
 						name : 'energyEfficiencyEnergySupplyTechnologies',
 						title : 'Energy efficiency/Energy supply technologies',
-						description : '<p>For the 50 percent reduction and Fragmented policies, the EMF 27 exercise considered two combinations of efficiency and no-carbon energy supply technologies. Select your preferred combination. If you’d like to choose from a more detailed set of efficiency and supply technology options, click on the Back button and select one of the other policies.</p>',
+						description : '<p>For the 50 percent reduction and Fragmented policies, two combinations of efficiency and no-carbon energy supply technologies are available in <a href="/web/guest/resources/-/wiki/Main/EMF27+model+runs">the models</a>. Select your preferred combination. If you’d like to choose from a more detailed set of efficiency and supply technology options, click on the Back button and select one of the other policies.</p>',
 						inputsTableHeader : '<tr><th rowspan="2" colspan="2"><th colspan="2">Energy efficiency</th><th colspan="4">Energy supply technologies</th></tr>'
 								+ '<tr><th><span class="wizardTooltipPlaceholder" data-tooltip-id="baseline">Baseline</span></th><th><span class="wizardTooltipPlaceholder" data-tooltip-id="greater">Greater</span></th><th>Wind/Solar</th><th>Biofuels</th><th>Nuclear</th><th><span class="wizardTooltipPlaceholder" data-tooltip-id="ccs">CCS</span></th></tr>',
 						inputsFooter : '',
@@ -179,7 +179,7 @@
 					{
 						name : 'energySupplyTechnologiesShort',
 						title : 'Energy supply technologies',
-						description : '<p>For the <span class="wizardTooltipPlaceholder" data-tooltip-id="greater">Greater efficiency</span> option, the EMF 27 exercise considered two combinations of no-carbon energy supply technologies. Select your preferred option. If you’d like to choose from a more detailed set of  energy supply options, click on the Back button and select <span class="wizardTooltipPlaceholder" data-tooltip-id="baseline">Baseline efficiency</span>.',
+						description : '<p>For the <span class="wizardTooltipPlaceholder" data-tooltip-id="greater">Greater efficiency</span> option, the  combinations of no-carbon energy supplyare available in <a href="/web/guest/resources/-/wiki/Main/EMF27+model+runs">the models</a>. Select your preferred option. If you’d like to choose from a more detailed set of  energy supply options, click on the Back button and select <span class="wizardTooltipPlaceholder" data-tooltip-id="baseline">Baseline efficiency</span>.</p>',
 						inputsTableHeader : '<tr><th colspan="2"></th><th>Wind-solar</th><th>Biofuels</th><th>Nuclear</th><th><span class="wizardTooltipPlaceholder" data-tooltip-id="ccs">CCS</span></th></tr>',
 						inputsFooter : '',
 
