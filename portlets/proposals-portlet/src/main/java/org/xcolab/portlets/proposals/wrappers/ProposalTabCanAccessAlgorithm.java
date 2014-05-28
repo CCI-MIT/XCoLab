@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -58,7 +59,15 @@ interface ProposalTabCanAccessAlgorithm {
         
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-            return permissions.getCanFellowActions();
+            try {
+                ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(context.getContestPhase(request).getContestPhaseAutopromote());
+                return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
+                        permissions.getCanAdminAll();
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
+            }
+
+            return false;
         }
     };
     

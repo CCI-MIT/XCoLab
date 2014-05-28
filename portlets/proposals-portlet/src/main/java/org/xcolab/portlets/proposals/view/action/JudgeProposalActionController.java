@@ -102,6 +102,14 @@ public class JudgeProposalActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        User currentUser = proposalsContext.getUser(request);
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+
+        // Security handling
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+                !permissions.getCanAdminAll()) {
+            return;
+        }
 
         // save judge decision
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
@@ -135,8 +143,7 @@ public class JudgeProposalActionController {
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser)) &&
-                !permissions.getCanAdminAll()) {
+        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser))) {
             return;
         }
 

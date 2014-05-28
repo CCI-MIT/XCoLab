@@ -108,8 +108,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws SystemException, PortalException {
-        // First sort by contest phase type
-        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase));
+        // First sort by contest phase type (the list has to be initialized as modifiable..)
+        List<ContestPhase> contestPhases = new ArrayList(ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase)));
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
             @Override
             public int compare(ContestPhase o1, ContestPhase o2) {

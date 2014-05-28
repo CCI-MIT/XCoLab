@@ -480,7 +480,7 @@ public class ProposalWrapper {
         try {
             if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC)
                 return GenericJudgingStatus.STATUS_X;
-            if (getAllJudgesReviewFinished()) {
+            if (getSelectedJudges().size() > 0 && getAllJudgesReviewFinished()) {
                 return GenericJudgingStatus.STATUS_CHECKMARK;
             }
         } catch (Exception e) {
@@ -489,11 +489,15 @@ public class ProposalWrapper {
         return GenericJudgingStatus.STATUS_QUESTIONMARK;
     }
 
+    /**
+     * Determines whether the screening/advance decision of the proposal is done
+     * @return
+     */
     public GenericJudgingStatus getOverallStatus() {
         try {
             if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
                 return GenericJudgingStatus.STATUS_CHECKMARK;
-            } else if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON  && Validator.isNotNull(getFellowComment())) {
+            } else if (getScreeningStatus() == GenericJudgingStatus.STATUS_X && Validator.isNotNull(getFellowComment())) {
                 return GenericJudgingStatus.STATUS_X;
             }
         } catch (Exception e) {

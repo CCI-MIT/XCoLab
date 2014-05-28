@@ -151,7 +151,7 @@
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
 
-        <c:if test="${proposalsPermissions.canJudgeActions and proposal.is}">
+        <c:if test="${proposalsPermissions.canFellowActions}">
             <div class="judgefellow">
                 <portlet:renderURL var="sortURL">
                     <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -173,6 +173,7 @@
                     <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                     <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : true }" />
                 </portlet:renderURL>
+
                 <a href="${sortURL }">Judge</a>
                 <div class="tooltip">
                     All assigned judges have finished the proposal review

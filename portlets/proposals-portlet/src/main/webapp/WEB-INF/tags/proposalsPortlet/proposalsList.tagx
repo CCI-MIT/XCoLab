@@ -108,8 +108,11 @@
                                 <c:when test="${proposal.overallStatus.statusValue == 0}">
                                     Not yet done.
                                 </c:when>
+                                <c:when test="${proposal.overallStatus.statusValue == 1}">
+                                    Proposal review has been prepared and proposal will not advance.
+                                </c:when>
                                 <c:otherwise>
-                                    Proposal review has been prepared
+                                    Proposal review has been prepared and proposal will advance.
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -121,12 +124,7 @@
                                     Not yet done.
                                 </c:when>
                                 <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                    <c:if test="${proposal.screeningStatus.statusValue lt 2}">
-                                        Fellows decided that proposal will not proceed to next round.
-                                    </c:if>
-                                    <c:if test="${proposal.screeningStatus.statusValue eq 2}">
-                                        Proposal will not proceed to next round.
-                                    </c:if>
+                                    Fellows decided that proposal will not proceed to next round.
                                 </c:when>
                                 <c:otherwise>
                                     All judges have completed the reviewing process.

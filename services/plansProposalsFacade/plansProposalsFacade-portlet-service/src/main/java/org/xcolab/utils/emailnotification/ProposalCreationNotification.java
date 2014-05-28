@@ -104,7 +104,7 @@ public class ProposalCreationNotification extends EmailNotification {
         List<ContestPhase> contestPhases = ContestLocalServiceUtil.getVisiblePhases(contest);
 
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getType()) {
+            if (phase.getContestPhaseType() == ContestPhaseType.PROPOSAL_CREATION.getTypeId()) {
                 return phase.getPhaseEndDate();
             }
         }

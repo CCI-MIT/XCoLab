@@ -66,10 +66,11 @@
                                 <div id="comment-footer">
                                     <!-- -->
                                 </div>
-
-                                <div class="blue-button" style="display:block; float:left;">
-                                    <a href="${sendEmailURL}">Send e-Mails</a>
-                                </div>
+                                <c:if test="proposalsPermissions.canAdminAll">
+                                    <div class="blue-button" style="display:block; float:left;">
+                                        <a href="${sendEmailURL}">Send e-Mails</a>
+                                    </div>
+                                </c:if>
                                 <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                     <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
                                 </div>

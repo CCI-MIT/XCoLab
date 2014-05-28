@@ -1,7 +1,7 @@
 package org.xcolab.utils.judging;
 
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.model.User;
 
 import java.util.ArrayList;
@@ -12,11 +12,13 @@ import java.util.List;
  */
 public class ProposalReview {
     private Proposal proposal;
+    ContestPhase contestPhase;
     private String proposalUrl;
     private List<IndividualReview> reviews;
 
-    public ProposalReview(Proposal proposal, String proposalUrl) {
+    public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
         this.proposal = proposal;
+        this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
         this.reviews = new ArrayList<>();
     }
@@ -41,6 +43,14 @@ public class ProposalReview {
 
     public void setProposal(Proposal proposal) {
         this.proposal = proposal;
+    }
+
+    public ContestPhase getContestPhase() {
+        return contestPhase;
+    }
+
+    public void setContestPhase(ContestPhase contestPhase) {
+        this.contestPhase = contestPhase;
     }
 
     public String getProposalUrl() {

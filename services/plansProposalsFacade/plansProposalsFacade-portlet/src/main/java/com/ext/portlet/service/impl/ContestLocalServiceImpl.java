@@ -81,6 +81,7 @@ import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.utils.judging.ProposalReview;
@@ -632,7 +633,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public void transferSupportsToVote(Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
-        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getType()) {
+        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId()) {
             return;
         }
 
@@ -658,62 +659,72 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     /**
-     * This method generates a CSV string of all judge Reviews
+     * This method generates a CSV string of all judge Reviews of all previous contestPhases of a contest.
+     * By using the currentPhase parameter, the output is filtered to only include proposals that are in
+     * currentPhase.
      *
-     * @param contest           The contest for which the review should be creatd
-     * @param contestPhase      The judging contest phase
+     *
+     * @param contest           The contest for which the review should be created
+     * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
      * @param serviceContext    A serviceContext which must include the Portal's base URL
      * @return
      * @throws SystemException
      * @throws PortalException
      */
-    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase contestPhase, ServiceContext serviceContext) throws SystemException, PortalException {
-        List<Proposal> proposalsInPhase = proposalLocalService.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase, ServiceContext serviceContext) throws SystemException, PortalException {
+        Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
-        List<ProposalReview> proposalReviews = new ArrayList<>();
-        for (Proposal proposal : proposalsInPhase) {
-            try {
-                ProposalContestPhaseAttribute fellowActionAttribute = getProposalContestPhaseAttributeLocalService().
-                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
-                                ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-                JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
+        List<Proposal> stillActiveProposals = proposalLocalService.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
 
-                // Ignore proposals that have not been passed to judge
-                if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-                    continue;
-                }
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                continue;   // just ignore this
-            }
+        for (ContestPhase judgingPhase : getAllPhases(contest)) {
+            for (Proposal proposal : stillActiveProposals) {
+                try {
+                    ProposalContestPhaseAttribute fellowActionAttribute = getProposalContestPhaseAttributeLocalService().
+                            getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
+                                    ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+                    JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
 
-            final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, contestPhase);
-            final ProposalReview proposalReview = new ProposalReview(proposal, proposalUrl);
-            try {
-                final String judgeIdString = getProposalContestPhaseAttributeLocalService().
-                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
-                                ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
-
-                for (String element : judgeIdString.split(";")) {
-                    long userId  = GetterUtil.getLong(element);
-                    User judge = userLocalService.getUser(userId);
-
-                    // Judge rating
-                    int judgeRating = (int)getProposalContestPhaseAttributeLocalService().
-                            getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
-                                    ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, judge.getUserId()).getNumericValue();
-                    String judgeComment = getProposalContestPhaseAttributeLocalService().
-                            getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(),
-                                    ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
-                    proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
+                    // Ignore proposals that have not been passed to judge
+                    if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
+                        continue;
+                    }
+                } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    continue;   // just ignore this
                 }
 
-                proposalReviews.add(proposalReview);
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                _log.error("ContestPhaseAttribute of proposal with ID " + proposal.getProposalId() + " have not been found", e);
+                final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
+                final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
+                try {
+                    final String judgeIdString = getProposalContestPhaseAttributeLocalService().
+                            getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
+                                    ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+
+                    for (String element : judgeIdString.split(";")) {
+                        long userId  = GetterUtil.getLong(element);
+                        User judge = userLocalService.getUser(userId);
+
+                        // Judge rating
+                        int judgeRating = (int)getProposalContestPhaseAttributeLocalService().
+                                getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
+                                        ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, judge.getUserId()).getNumericValue();
+                        String judgeComment = getProposalContestPhaseAttributeLocalService().
+                                getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
+                                        ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
+                        proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
+                    }
+
+                    if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
+                        proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
+                    }
+                    proposalToProposalReviewsMap.get(proposal).add(proposalReview);
+
+                } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    _log.error("ContestPhaseAttribute of proposal with ID " + proposal.getProposalId() + " have not been found", e);
+                }
             }
         }
 
-        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalReviews, getJudgesForContest(contest));
+        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, getJudgesForContest(contest));
         return csvExporter.getCsvString();
     }
 
@@ -735,6 +746,18 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return new ArrayList<>();
     }
 
+    private List<ContestPhase> getJudgingContestPhases(Contest contest) throws SystemException {
+        List<ContestPhase> judgingPhases = new ArrayList<>();
+
+        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contest)) {
+            ContestPhasePromoteType promoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
+            if (promoteType == ContestPhasePromoteType.PROMOTE_JUDGED) {
+                judgingPhases.add(contestPhase);
+            }
+        }
+
+        return judgingPhases;
+    }
     /**
      * Returns a map object that maps MemberRoles to a list of associated users for the respective MemberRole
      * according to the ContestTeamMember table

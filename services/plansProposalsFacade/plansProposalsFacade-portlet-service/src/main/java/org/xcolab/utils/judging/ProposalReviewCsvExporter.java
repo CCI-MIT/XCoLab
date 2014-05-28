@@ -1,6 +1,7 @@
 package org.xcolab.utils.judging;
 
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -8,6 +9,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.ContestPhaseType;
 
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -22,19 +24,22 @@ public class ProposalReviewCsvExporter {
     private static final String DEL = ","; // delimiter
     private static final String TQF = ""; // text qualifier
 
-    private List<ProposalReview> proposalReviews;
+    // Cluster all proposal reviews by proposal since we have multiple reviews for each proposal (multiple judging phases)
+    private Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
     private List<User> reviewers;
+
+    // Helper variable, see comment below
     private Map<ProposalReview, Map<User, ProposalReview.IndividualReview>> userToReviewMaps;
 
-    public ProposalReviewCsvExporter(List<ProposalReview> proposalReviews, List<User> reviewers) {
-        this.proposalReviews = proposalReviews;
+    public ProposalReviewCsvExporter(Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap, List<User> reviewers) {
+        this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
         this.reviewers = reviewers;
 
         buildUserToReviewMaps();
     }
 
     public String getCsvString() throws SystemException, PortalException {
-        if (proposalReviews.size() == 0) {
+        if (proposalToProposalReviewsMap.size() == 0) {
             return StringPool.BLANK;
         }
 
@@ -42,28 +47,40 @@ public class ProposalReviewCsvExporter {
         // Set the table header
 
         StringBuilder tableBody = new StringBuilder();
-        for (ProposalReview proposalReview : proposalReviews) {
-            String proposalName = ProposalLocalServiceUtil.getAttribute(proposalReview.getProposal().getProposalId(),
+        for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
+            String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0).getStringValue();
-            tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
-                    "\"" + proposalReview.getProposalUrl() + "\"" +  delimiter + proposalReview.getAverageRating());
+            boolean isFirstLine = true;
 
-            StringBuilder ratingString = new StringBuilder();
-            StringBuilder commentString = new StringBuilder();
-            Map<User, ProposalReview.IndividualReview> userToReviewMap = userToReviewMaps.get(proposalReview);
-            for (User reviewer : reviewers) {
-                ProposalReview.IndividualReview individualReview = userToReviewMap.get(reviewer);
-                if (Validator.isNull(individualReview)) {
-                    ratingString.append(delimiter + " ");
-                    commentString.append(delimiter + " ");
+            for (ProposalReview proposalReview : proposalToProposalReviewsMap.get(proposal)) {
+                // Print the proposal name and url only for the first line of each proposal
+                if (isFirstLine) {
+                    tableBody.append(TQF + "\"" + escapeQuote(proposalName) + "\"" + delimiter +
+                            "\"" + proposalReview.getProposalUrl() + "\"" + delimiter);
                 } else {
-                    ratingString.append(delimiter + individualReview.getRating());
-                    commentString.append(delimiter + "\"" + escapeQuote(individualReview.getComment()) + "\"");
+                    tableBody.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter);
                 }
 
-            }
+                String contestPhaseName = ContestPhaseType.getContestPhaseTypeByTypeId(proposalReview.getContestPhase().getContestPhaseType()).getName();
+                tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"" +  delimiter + "\"" + proposalReview.getAverageRating() + "\"");
 
-            tableBody.append(ratingString).append(commentString).append("\n");
+                StringBuilder ratingString = new StringBuilder();
+                StringBuilder commentString = new StringBuilder();
+                Map<User, ProposalReview.IndividualReview> userToReviewMap = userToReviewMaps.get(proposalReview);
+                for (User reviewer : reviewers) {
+                    ProposalReview.IndividualReview individualReview = userToReviewMap.get(reviewer);
+                    if (Validator.isNull(individualReview)) {
+                        ratingString.append(delimiter + "\"\"");
+                        commentString.append(delimiter + "\"\"");
+                    } else {
+                        ratingString.append(delimiter + individualReview.getRating());
+                        commentString.append(delimiter + "\"" + escapeQuote(individualReview.getComment()) + TQF + "\"");
+                    }
+
+                }
+                tableBody.append(ratingString).append(commentString).append("\n");
+                isFirstLine = false;
+            }
         }
 
         String rawCsv = getTableHeader() + tableBody;
@@ -75,23 +92,25 @@ public class ProposalReviewCsvExporter {
      * with a long list of judges and/or proposals
      */
     private void buildUserToReviewMaps() {
-        userToReviewMaps = new HashMap<>(proposalReviews.size());
+        userToReviewMaps = new HashMap<>();
 
-        for (ProposalReview proposalReview : proposalReviews) {
-            Map<User, ProposalReview.IndividualReview> userToReviewMap = new HashMap<>(reviewers.size());
+        for (List<ProposalReview> proposalReviews : proposalToProposalReviewsMap.values()) {
+            for (ProposalReview proposalReview : proposalReviews) {
+                Map<User, ProposalReview.IndividualReview> userToReviewMap = new HashMap<>(reviewers.size());
 
-            for (ProposalReview.IndividualReview individualReview : proposalReview.getReviews()) {
-                userToReviewMap.put(individualReview.getReviewer(), individualReview);
+                for (ProposalReview.IndividualReview individualReview : proposalReview.getReviews()) {
+                    userToReviewMap.put(individualReview.getReviewer(), individualReview);
+                }
+
+                userToReviewMaps.put(proposalReview, userToReviewMap);
             }
-
-            userToReviewMaps.put(proposalReview, userToReviewMap);
         }
     }
 
     private String getTableHeader() {
         String delimiter = TQF + DEL + TQF;
 
-        String header = TQF + "Proposal title" + delimiter + "Proposal URL" + delimiter + "Avg";
+        String header = TQF + "Proposal title" + delimiter + "Proposal URL" + delimiter + "Contest Phase " + delimiter + "Avg";
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         StringBuilder commentSubHeader = new StringBuilder(TQF);
         for (User reviewer : reviewers) {
