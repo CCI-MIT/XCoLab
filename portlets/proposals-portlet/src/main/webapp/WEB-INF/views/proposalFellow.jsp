@@ -41,11 +41,11 @@
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     Rate the proposal based on the four criteria to the right.
-                    <proposalsPortlet:proposalRating path="fellowRating"/>
+                    <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
                     <h3>Advance Proposal</h3>
 
 
-                    <form:select id="fellowAction" path="fellowAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
+                    <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                     <div id="fellowSelectJudgesContainer" style="display: none;">
                         <h3>Select Judge(s)</h3>
@@ -87,12 +87,17 @@
                     </div>
                     <div id="fellowCommentContainer" style="display: none">
                         <h3>Comment to send to author</h3>
+                        <i style="font-size:10pt;">The message below will be used as a template as the response message to the author.</i>
+                        <br/>
+                        <br/>
                         <div id="comment-header">
                             <!-- -->
                         </div>
-                        <form:textarea id="fellowComment" cssClass="commentbox" path="fellowComment" style="width:100%;"/>
+                        <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningCommentBody" style="width:100%;"/>
+                        <div id="comment-footer">
+                            <!-- -->
+                        </div>
                     </div>
-                            <!-- TODO: disable save -->
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save</a>
@@ -100,11 +105,13 @@
 
                 </form:form>
             </div>
+            <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">
                     <div class="blue-button" style="display:block; float:right;">
                         <a class="requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                     </div>
                 </div>
+            </c:if>
         </div>
 
         <div class="judging_right">
@@ -133,18 +140,24 @@
     </div>
 
     <script type="text/javascript">
-        var fellowActions = {};
+        var fellowScreeningActions = {};
         var screeningCommentHeaders = new Array();
+        var screeningCommentFooters = new Array();
 
-        <c:forEach var="fellowAction" items="${judgingOptions}">
-                fellowActions[${fellowAction.attributeValue}] = {attributeValue: ${fellowAction.attributeValue}, description: "${fellowAction.description}", selectJudgesEnabled: ${fellowAction.selectJudgesEnabled}, commentEnabled: ${fellowAction.commentEnabled}};
+        <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
+                fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
+            description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
+            commentEnabled: ${fellowScreeningActions.commentEnabled}};
         </c:forEach>
-        <c:forEach var="commentHeader" items="${fellowProposalScreeningBean.screeningRejectCommentHeaders}">
+        <c:forEach var="commentHeader" items="${fellowProposalScreeningBean.fellowCommentHeaders}">
                 screeningCommentHeaders.push("${commentHeader}");
+        </c:forEach>
+        <c:forEach var="commentFooter" items="${fellowProposalScreeningBean.fellowCommentFooters}">
+                screeningCommentFooters.push("${commentFooter}");
         </c:forEach>
 
         jQuery( document ).ready(function() {
-            jQuery('#fellowAction').change(function() {
+            jQuery('#fellowScreeningAction').change(function() {
                 refreshCommentFieldVisibility();
             });
 
@@ -152,20 +165,21 @@
         });
 
         function refreshCommentFieldVisibility() {
-            var fellowActionSelectIdx = document.getElementById("fellowAction").selectedIndex;
-            if (fellowActions[fellowActionSelectIdx].commentEnabled) {
+            var fellowActionSelectIdx = document.getElementById("fellowScreeningAction").selectedIndex;
+            if (fellowScreeningActions[fellowActionSelectIdx].commentEnabled) {
                 jQuery('#fellowCommentContainer').slideDown();
             } else {
                 jQuery('#fellowCommentContainer').slideUp();
             }
 
-            if (fellowActions[fellowActionSelectIdx].selectJudgesEnabled) {
+            if (fellowScreeningActions[fellowActionSelectIdx].selectJudgesEnabled) {
                 jQuery('#fellowSelectJudgesContainer').slideDown();
             } else {
                 jQuery('#fellowSelectJudgesContainer').slideUp();
             }
 
             $('#comment-header').html(screeningCommentHeaders[fellowActionSelectIdx]);
+            $('#comment-footer').html(screeningCommentFooters[fellowActionSelectIdx]);
         }
 
     </script>

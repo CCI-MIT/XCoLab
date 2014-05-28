@@ -1,9 +1,7 @@
 package com.ext.portlet.service.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,12 +33,8 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalService;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
@@ -86,16 +80,13 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import edu.mit.cci.roma.client.Simulation;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.utils.csvExport.ProposalReview;
-import org.xcolab.utils.csvExport.ProposalReviewCsvExporter;
+import org.xcolab.utils.judging.ProposalReview;
+import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
-
-import javax.validation.Valid;
 
 /**
  * The implementation of the contest local service.

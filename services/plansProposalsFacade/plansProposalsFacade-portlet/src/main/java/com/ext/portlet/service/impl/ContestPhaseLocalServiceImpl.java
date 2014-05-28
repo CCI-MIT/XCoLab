@@ -305,6 +305,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
+
                 }
                 phase.setContestPhaseAutopromote("PROMOTE_DONE");
                 updateContestPhase(phase);

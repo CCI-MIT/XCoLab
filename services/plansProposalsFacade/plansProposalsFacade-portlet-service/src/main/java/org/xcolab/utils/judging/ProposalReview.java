@@ -1,4 +1,4 @@
-package org.xcolab.utils.csvExport;
+package org.xcolab.utils.judging;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;

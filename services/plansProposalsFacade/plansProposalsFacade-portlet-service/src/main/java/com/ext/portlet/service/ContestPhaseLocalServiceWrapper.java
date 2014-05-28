@@ -1,6 +1,5 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
@@ -353,7 +352,8 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-            throws com.liferay.portal.kernel.exception.SystemException, PortalException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getActivePhaseForContest(contest);
     }
 

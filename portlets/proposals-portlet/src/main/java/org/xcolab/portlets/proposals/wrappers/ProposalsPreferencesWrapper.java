@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import org.apache.commons.lang.StringUtils;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.IOException;
 
@@ -14,19 +15,17 @@ public class ProposalsPreferencesWrapper {
     private final static String TERMS_OF_SERVICE_PREF = "DEFAULT_DESCRIPTION";
     private String termsOfService;
 
-    private final static String JUDGING_INCOMPLETE_TEXT = "JUDGING_INCOMPLETE_TEXT";
-    private String judgingIncompleteText;
+    private final static String SCREENING_INCOMPLETE_TEXT = "SCREENING_INCOMPLETE_TEXT";
+    private String screeningIncompleteText;
 
-    private final static String JUDGINGE_REJECTION_TEXT = "JUDGINGE_REJECTION_TEXT";
-    private String judgingRejectionText;
+    private final static String ADVANCE_REJECTION_TEXT = "ADVANCE_REJECTION_TEXT";
+    private String advanceRejectionText;
 
-    private final static String JUDGING_ACCEPTANCE_TEXT = "JUDGING_ACCEPTANCE_TEXT";
-    private String judgingAcceptanceText;
+    private final static String ADVANCE_ACCEPTANCE_TEXT = "ADVANCE_ACCEPTANCE_TEXT";
+    private String advanceAcceptanceText;
 
-    private final static String JUDGING_OFFTOPIC_TEXT = "JUDGING_OFFTOPIC_TEXT";
-    private String judgingOfftopicText;
-
-    public final static String JUDGING_TEMPLATE_PLACEHOLDER = "{JUDGING_TEMPLATE_PLACEHOLDER}";
+    private final static String SCREENING_OFFTOPIC_TEXT = "SCREENING_OFFTOPIC_TEXT";
+    private String screeningOfftopicText;
 
     public ProposalsPreferencesWrapper() {
 
@@ -35,28 +34,24 @@ public class ProposalsPreferencesWrapper {
     public ProposalsPreferencesWrapper(PortletRequest request) {
         PortletPreferences preferences = request.getPreferences();
         termsOfService = preferences.getValue(TERMS_OF_SERVICE_PREF, "");
-        judgingIncompleteText = preferences.getValue(JUDGING_INCOMPLETE_TEXT, "your proposal was incomplete "+JUDGING_TEMPLATE_PLACEHOLDER);
-        judgingRejectionText = preferences.getValue(JUDGINGE_REJECTION_TEXT, "your proposal was rejected "+JUDGING_TEMPLATE_PLACEHOLDER);
-        judgingAcceptanceText = preferences.getValue(JUDGING_ACCEPTANCE_TEXT, "your proposal was accepted "+JUDGING_TEMPLATE_PLACEHOLDER);
-        judgingOfftopicText = preferences.getValue(JUDGING_OFFTOPIC_TEXT, "your proposal was offtopic "+JUDGING_TEMPLATE_PLACEHOLDER);
+        screeningIncompleteText = preferences.getValue(SCREENING_INCOMPLETE_TEXT, "your proposal was incomplete "
+                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
+        advanceRejectionText = preferences.getValue(ADVANCE_REJECTION_TEXT, "your proposal was rejected "
+                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
+        advanceAcceptanceText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT, "your proposal was accepted "
+                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
+        screeningOfftopicText = preferences.getValue(SCREENING_OFFTOPIC_TEXT, "your proposal was offtopic "
+                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences preferences = request.getPreferences();
         preferences.setValue(TERMS_OF_SERVICE_PREF, termsOfService);
-        preferences.setValue(JUDGING_INCOMPLETE_TEXT, judgingIncompleteText);
-        preferences.setValue(JUDGINGE_REJECTION_TEXT, judgingRejectionText);
-        preferences.setValue(JUDGING_OFFTOPIC_TEXT, judgingOfftopicText);
-        preferences.setValue(JUDGING_ACCEPTANCE_TEXT, judgingAcceptanceText);
+        preferences.setValue(SCREENING_INCOMPLETE_TEXT, screeningIncompleteText);
+        preferences.setValue(ADVANCE_REJECTION_TEXT, advanceRejectionText);
+        preferences.setValue(SCREENING_OFFTOPIC_TEXT, screeningOfftopicText);
+        preferences.setValue(ADVANCE_ACCEPTANCE_TEXT, advanceAcceptanceText);
         preferences.store();
-    }
-
-    public static String replaceJudgingTemplate(String templateText, String templateReplacement) {
-        return StringUtils.replace(templateText, JUDGING_TEMPLATE_PLACEHOLDER, templateReplacement);
-    }
-
-    public static String getJudgingTemplatePlaceholder() {
-        return JUDGING_TEMPLATE_PLACEHOLDER;
     }
 
     public String getTermsOfService() {
@@ -67,35 +62,43 @@ public class ProposalsPreferencesWrapper {
         this.termsOfService = termsOfService;
     }
 
-    public String getJudgingIncompleteText() {
-        return judgingIncompleteText;
+    public String getScreeningIncompleteText() {
+        return screeningIncompleteText;
     }
 
-    public void setJudgingIncompleteText(String judgingIncompleteText) {
-        this.judgingIncompleteText = judgingIncompleteText;
+    public void setScreeningIncompleteText(String screeningIncompleteText) {
+        this.screeningIncompleteText = screeningIncompleteText;
     }
 
-    public String getJudgingRejectionText() {
-        return judgingRejectionText;
+    public String getAdvanceRejectionText() {
+        return advanceRejectionText;
     }
 
-    public void setJudgingRejectionText(String judgingRejectionText) {
-        this.judgingRejectionText = judgingRejectionText;
+    public void setAdvanceRejectionText(String advanceRejectionText) {
+        this.advanceRejectionText = advanceRejectionText;
     }
 
-    public String getJudgingAcceptanceText() {
-        return judgingAcceptanceText;
+    public String getAdvanceAcceptanceText() {
+        return advanceAcceptanceText;
     }
 
-    public void setJudgingAcceptanceText(String judgingAcceptanceText) {
-        this.judgingAcceptanceText = judgingAcceptanceText;
+    public void setAdvanceAcceptanceText(String advanceAcceptanceText) {
+        this.advanceAcceptanceText = advanceAcceptanceText;
     }
 
-    public String getJudgingOfftopicText() {
-        return judgingOfftopicText;
+    public String getScreeningOfftopicText() {
+        return screeningOfftopicText;
     }
 
-    public void setJudgingOfftopicText(String judgingOfftopicText) {
-        this.judgingOfftopicText = judgingOfftopicText;
+    public void setScreeningOfftopicText(String screeningOfftopicText) {
+        this.screeningOfftopicText = screeningOfftopicText;
+    }
+
+    public String getCommentBeginTag() {
+        return ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG;
+    }
+
+    public String getCommentEndTag() {
+        return ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG;
     }
 }

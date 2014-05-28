@@ -50,39 +50,6 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
     }
 
-    /**
-     * get email message that is supposed that is supposed to be sent out to users based on the decisions either the fellow or the judge took
-     *
-     * @param contestPhaseId
-     * @param prefs
-     * @return
-     */
-    public String getEmailMessage(long contestPhaseId, ProposalsPreferencesWrapper prefs) {
-        //get fellow decision
-        ProposalContestPhaseAttribute p = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
-        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) p.getNumericValue());
-        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-            //judge decided
-            String judgeText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, 0).getStringValue();
-            ProposalContestPhaseAttribute pa = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
-            JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) pa.getNumericValue());
-            if (advanceDecision == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON) {
-                return prefs.replaceJudgingTemplate(prefs.getJudgingRejectionText(), judgeText);
-            } else if (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
-                return prefs.replaceJudgingTemplate(prefs.getJudgingAcceptanceText(), judgeText);
-            }
-        } else {
-            //fellow decided
-            String fellowText = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0).getStringValue();
-            if (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) {
-                return prefs.replaceJudgingTemplate(prefs.getJudgingIncompleteText(), fellowText);
-            } else if (fellowAction == JudgingSystemActions.FellowAction.OFFTOPIC) {
-                return prefs.replaceJudgingTemplate(prefs.getJudgingOfftopicText(), fellowText);
-            }
-        }
-        return null;
-    }
-
     public Long getJudgeRating() throws SystemException, PortalException {
         return getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), 0);
     }
@@ -95,27 +62,5 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         ProposalContestPhaseAttribute a = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue());
         return fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES;
-    }
-
-    private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
-        try {
-            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
-        } catch (NoSuchProposalContestPhaseAttributeException e) {
-            try {
-                ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
-                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
-                attribute.setProposalId(proposalId);
-                attribute.setContestPhaseId(contestPhaseId);
-                attribute.setName(attributeName);
-                ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
-                return attribute;
-            } catch (Exception e2) {
-                e.printStackTrace();
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

@@ -1253,6 +1253,42 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Sends out the judges' review about the proposal's advance decision as a CoLab message notification to all proposal
+    * contributers
+    *
+    * @param proposal      The proposal for which the notification should be sent
+    * @param contestPhase  The contestPhase in which the proposal is in
+    * @param request       A PortletRequest object to extract the Portal's base URL (may be null - choose default portal URL in that case)
+    */
+    @Override
+    public void contestPhasePromotionEmailNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase,
+        javax.portlet.PortletRequest request)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException {
+        _proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(proposal,
+            contestPhase, request);
+    }
+
+    /**
+    * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
+    *
+    * @param proposal  The proposal for which the notification should be sent
+    */
+    @Override
+    public void contestPhasePromotionCommentNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(proposal,
+            contestPhase);
+    }
+
+    /**
     * Returns the URL link address for the passed proposal and contest
     *
     * @param contest  The contest object in which the proposal was written

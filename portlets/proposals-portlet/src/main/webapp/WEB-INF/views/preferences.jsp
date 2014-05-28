@@ -19,23 +19,24 @@
 		<form:errors path="termsOfService"/>
 
         <h2>Judging System</h2>
-        In the following templates, please include <strong>${prefs.getJudgingTemplatePlaceholder()}</strong>, which will be replaced by the individual judging-comment.
+        In the following templates, please be sure that the custom comment will be placed within
+        <strong>${prefs.getCommentBeginTag()}${prefs.getCommentEndTag()}</strong>.
 
-        <label for="judgingIncompleteText">Judging Incomplete Text:</label>
-        <form:textarea path="judgingIncompleteText" id="judgingIncompleteText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="judgingIncompleteText" />
+        <label for="screeningIncompleteText">Screening Incomplete Text:</label>
+        <form:textarea path="screeningIncompleteText" id="screeningIncompleteText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="screeningIncompleteText" />
 
-        <label for="judgingRejectionText">Judging Rejection Text:</label>
-        <form:textarea path="judgingRejectionText" id="judgingRejectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="judgingRejectionText" />
+        <label for="screeningOfftopicText">Screening Offtopic Text:</label>
+        <form:textarea path="screeningOfftopicText" id="screeningOfftopicText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="screeningOfftopicText" />
 
-        <label for="judgingAcceptanceText">Judging Acceptance Text:</label>
-        <form:textarea path="judgingAcceptanceText" id="judgingAcceptanceText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="judgingAcceptanceText" />
+        <label for="advanceRejectionText">Advance Rejection Text:</label>
+        <form:textarea path="advanceRejectionText" id="advanceRejectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceRejectionText" />
 
-        <label for="judgingOfftopicText">Judging Offtopic Text:</label>
-        <form:textarea path="judgingOfftopicText" id="judgingOfftopicText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="judgingOfftopicText" />
+        <label for="advanceAcceptanceText">Advance Acceptance Text:</label>
+        <form:textarea path="advanceAcceptanceText" id="advanceAcceptanceText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceAcceptanceText" />
 		
 		<input type="submit" value="Save" />
 	</form:form>

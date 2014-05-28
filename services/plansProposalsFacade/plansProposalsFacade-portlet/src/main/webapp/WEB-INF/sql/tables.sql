@@ -733,7 +733,7 @@ create table xcolab_ProposalContestPhaseAttribute (
 	name VARCHAR(75) null,
 	additionalId LONG,
 	numericValue LONG,
-	stringValue VARCHAR(75) null,
+	stringValue TEXT null,
 	realValue DOUBLE
 );
 

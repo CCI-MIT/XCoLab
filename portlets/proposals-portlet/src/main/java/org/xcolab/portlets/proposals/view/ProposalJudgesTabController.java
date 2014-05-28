@@ -30,7 +30,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper));
+        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper,
+                proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
         return "proposalJudge";
@@ -45,7 +46,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
 
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
-        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalWrapper));
+        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalWrapper,
+                proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 
         return "proposalFellow";

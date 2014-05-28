@@ -11,9 +11,6 @@ public class JudgeProposalFeedbackBean {
     private Long judgeRating;
     private String judgeComment;
 
-
-
-
     public JudgeProposalFeedbackBean(ProposalJudgeWrapper wrapper) throws PortalException, SystemException {
         judgeRating = wrapper.getJudgeRating();
         judgeRating = wrapper.getJudgeRating();

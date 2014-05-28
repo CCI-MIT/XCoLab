@@ -3,18 +3,21 @@ package org.xcolab.portlets.proposals.requests;
 import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 /**
  * Created by kmang on 25/05/14.
  */
 public class ProposalAdvancingBean {
-    // TODO: change strings here
-    private static final String[] advanceCommentHeaders = {
-            "", // no decision
-            "<THIS IS A DUMMY STRING>Your proposal will not make it to the next phase. Comment: ", // don't move on
-            "<THIS IS A DUMMY STRING>Congratulations, your proposal gets into the next phase. Additional comment: " // move on
-    };
+
+    private String[] advanceCommentHeaders = {"", "", ""};
+    private String[] advanceCommentFooters = {"", "", ""};
 
     private JudgingSystemActions.AdvanceDecision advanceDecision;
 
@@ -23,8 +26,19 @@ public class ProposalAdvancingBean {
     public ProposalAdvancingBean() {
     }
 
-    public ProposalAdvancingBean(ProposalWrapper wrapper) throws PortalException, SystemException {
+    public ProposalAdvancingBean(ProposalWrapper wrapper, ProposalsPreferencesWrapper proposalsPreferencesWrapper) throws PortalException, SystemException {
         advanceDecision = wrapper.getJudgeDecision();
+        advanceComment = ProposalJudgingCommentHelper.extractComment(wrapper.getProposalReview());
+        advanceCommentHeaders = new String[] {
+                "",
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText())),
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText()))
+        };
+        advanceCommentFooters = new String[] {
+                "",
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText())),
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText()))
+        };
     }
 
     public int getAdvanceDecision() {
@@ -45,5 +59,13 @@ public class ProposalAdvancingBean {
 
     public String[] getAdvanceCommentHeaders() {
         return advanceCommentHeaders;
+    }
+
+    public String[] getAdvanceCommentFooters() {
+        return advanceCommentFooters;
+    }
+
+    private String removeLineBreaks(String html) {
+        return StringUtils.replace(html, "\n", "");
     }
 }

@@ -155,10 +155,14 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes568;
     private String _methodName569;
     private String[] _methodParameterTypes569;
-    private String _methodName574;
-    private String[] _methodParameterTypes574;
-    private String _methodName575;
-    private String[] _methodParameterTypes575;
+    private String _methodName570;
+    private String[] _methodParameterTypes570;
+    private String _methodName571;
+    private String[] _methodParameterTypes571;
+    private String _methodName577;
+    private String[] _methodParameterTypes577;
+    private String _methodName578;
+    private String[] _methodParameterTypes578;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -506,16 +510,31 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodParameterTypes569 = new String[] { "java.util.Date" };
 
-        _methodName574 = "getProposalLinkUrl";
+        _methodName570 = "contestPhasePromotionEmailNotifyProposalContributors";
 
-        _methodParameterTypes574 = new String[] {
+        _methodParameterTypes570 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase",
+                "javax.portlet.PortletRequest"
+            };
+
+        _methodName571 = "contestPhasePromotionCommentNotifyProposalContributors";
+
+        _methodParameterTypes571 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName577 = "getProposalLinkUrl";
+
+        _methodParameterTypes577 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal"
             };
 
-        _methodName575 = "getProposalLinkUrl";
+        _methodName578 = "getProposalLinkUrl";
 
-        _methodParameterTypes575 = new String[] {
+        _methodParameterTypes578 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
@@ -1018,14 +1037,31 @@ public class ProposalLocalServiceClpInvoker {
             return ProposalLocalServiceUtil.getModifiedAfter((java.util.Date) arguments[0]);
         }
 
-        if (_methodName574.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes574, parameterTypes)) {
+        if (_methodName570.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes570, parameterTypes)) {
+            ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors((com.ext.portlet.model.Proposal) arguments[0],
+                (com.ext.portlet.model.ContestPhase) arguments[1],
+                (javax.portlet.PortletRequest) arguments[2]);
+
+            return null;
+        }
+
+        if (_methodName571.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes571, parameterTypes)) {
+            ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors((com.ext.portlet.model.Proposal) arguments[0],
+                (com.ext.portlet.model.ContestPhase) arguments[1]);
+
+            return null;
+        }
+
+        if (_methodName577.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
             return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
                 (com.ext.portlet.model.Proposal) arguments[1]);
         }
 
-        if (_methodName575.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes575, parameterTypes)) {
+        if (_methodName578.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes578, parameterTypes)) {
             return ProposalLocalServiceUtil.getProposalLinkUrl((com.ext.portlet.model.Contest) arguments[0],
                 (com.ext.portlet.model.Proposal) arguments[1],
                 (com.ext.portlet.model.ContestPhase) arguments[2]);

@@ -151,7 +151,7 @@
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
 
-        <c:if test="${proposalsPermissions.canJudgeActions}">
+        <c:if test="${proposalsPermissions.canJudgeActions and proposal.is}">
             <div class="judgefellow">
                 <portlet:renderURL var="sortURL">
                     <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -160,7 +160,7 @@
                     <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                     <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : true }" />
                 </portlet:renderURL>
-                <a href="${sortURL }">Overall status</a>
+                <a href="${sortURL }">Overall</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
                 <div class="tooltip">
                     State of the final advancing decision
@@ -187,7 +187,7 @@
                         <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SCREENINGSTATUS' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
-                    <a href="${sortURL }" style="padding-left: 5px;">Screening</a>
+                    <a href="${sortURL }" style="padding-left: 5px;">Screen.</a>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
                 </c:if>
                 <div class="tooltip">

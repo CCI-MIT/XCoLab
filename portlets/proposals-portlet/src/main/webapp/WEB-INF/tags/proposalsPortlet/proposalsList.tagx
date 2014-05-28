@@ -15,7 +15,7 @@
 </c:if>
 <c:forEach var="proposal" items="${proposals }">
 
-    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
+    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
         <c:choose>
             <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
@@ -28,12 +28,12 @@
             </c:otherwise>
         </c:choose>
     </c:if>
-    <c:if test="${not proposalsPermissions.canJudgeActions and proposalsPermissions.canFellowActions}">
+    <c:if test="${proposalsPermissions.canFellowActions}"><!-- Fellows and admins -->
         <c:choose>
-            <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
+            <c:when test="${proposal.judgeDecision.attributeValue == 1}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
             </c:when>
-            <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
+            <c:when test="${proposal.judgeDecision.attributeValue == 2}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
             </c:when>
             <c:otherwise>
@@ -108,12 +108,9 @@
                                 <c:when test="${proposal.overallStatus.statusValue == 0}">
                                     Not yet done.
                                 </c:when>
-                                <c:when test="${proposal.overallStatus.statusValue == 1}">
-                                    Proposal will not proceed to next round (statement prepared).
-                                </c:when>
-                                <c:when test="${proposal.overallStatus.statusValue == 2}">
-                                    Proposal will proceed to next round (statement prepared).
-                                </c:when>
+                                <c:otherwise>
+                                    Proposal review has been prepared
+                                </c:otherwise>
                             </c:choose>
                         </div>
 

@@ -8,6 +8,7 @@ import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
+import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -19,6 +20,7 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
@@ -40,6 +42,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.MembershipRequest;
@@ -56,6 +59,7 @@ import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
@@ -67,7 +71,10 @@ import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
 import org.xcolab.utils.UrlBuilder;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,6 +102,8 @@ import java.util.Map;
 public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
+
+    private static final long ADMINISTRATOR_USER_ID = 10144L;
 
     /**
      * Default community permissions for community forum category.
@@ -1218,6 +1227,45 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposalPersistence.findByModifiedAfter(date);
     }
 
+    /**
+     * Sends out the judges' review about the proposal's advance decision as a CoLab message notification to all proposal
+     * contributers
+     * @param proposal      The proposal for which the notification should be sent
+     * @param contestPhase  The contestPhase in which the proposal is in
+     * @param request       A PortletRequest object to extract the Portal's base URL (may be null - choose default portal URL in that case)
+     */
+    public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
+            throws PortalException, SystemException, AddressException, MailEngineException {
+
+        String subject = "The judge status on your proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+
+        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+        String messageBody = reviewContentHelper.getContestPhasePromotionEmailBody();
+        if (Validator.isNotNull(messageBody)) {
+            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal), request);
+        }
+    }
+
+    /**
+     * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
+     * @param proposal  The proposal for which the notification should be sent
+     */
+    public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
+        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+        String commentBody = reviewContentHelper.getContestPhasePromotionCommentBody();
+        DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+    }
+
+    private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
+        List<Long> recipientIds = new ArrayList<>();
+
+        for (User contributor : getMembers(proposal.getProposalId())) {
+            recipientIds.add(contributor.getUserId());
+        }
+
+        return recipientIds;
+    }
     /**
      * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
      *

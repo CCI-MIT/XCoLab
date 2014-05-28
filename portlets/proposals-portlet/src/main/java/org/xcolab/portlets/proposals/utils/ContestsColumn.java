@@ -153,7 +153,12 @@ public enum ContestsColumn {
     REFERENCE_DATE (new Comparator<ContestWrapper>() {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
+            try {
+                return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
+            }
+            return 0;
         }
     }),
 

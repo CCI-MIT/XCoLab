@@ -5,6 +5,7 @@ import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -595,5 +596,27 @@ public class ProposalWrapper {
 
     public Proposal getWrapped() {
         return proposal;
+    }
+
+    protected ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
+        try {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            try {
+                ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
+                attribute.setProposalId(proposalId);
+                attribute.setContestPhaseId(contestPhaseId);
+                attribute.setName(attributeName);
+                ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
+                return attribute;
+            } catch (Exception e2) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

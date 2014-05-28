@@ -40,7 +40,7 @@
         <div style="display: inline-block;	float:right; margin-top: 20px;">
             <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
         </div>
-
+        <br/>
         <div class="judging_left">
             <c:choose>
                 <c:when test="${not proposal.allJudgesReviewFinished}">
@@ -55,10 +55,17 @@
 
                             <div id="comment-container">
                                 <h3>Comment to send to author</h3>
+                                <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
+                                    will be replacing the marked section in the text below.</i>
+                                <br/>
+                                <br/>
                                 <div id="comment-header">
                                     <!-- -->
                                 </div>
                                 <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
+                                <div id="comment-footer">
+                                    <!-- -->
+                                </div>
 
                                 <div class="blue-button" style="display:block; float:left;">
                                     <a href="${sendEmailURL}">Send e-Mails</a>
@@ -123,9 +130,13 @@
 
     <script>
         var advanceCommentHeaders = new Array();
+        var advanceCommentFooters = new Array();
 
         <c:forEach var="commentHeader" items="${proposalAdvancingBean.advanceCommentHeaders}">
                 advanceCommentHeaders.push("${commentHeader}");
+        </c:forEach>
+        <c:forEach var="commentFooter" items="${proposalAdvancingBean.advanceCommentFooters}">
+                advanceCommentFooters.push("${commentFooter}");
         </c:forEach>
 
         jQuery( document ).ready(function() {
@@ -138,13 +149,14 @@
 
         function refreshCommentHeader() {
             var advanceDecisionIdx = document.getElementById("advanceDecision").selectedIndex;
-            $('#comment-header').html(advanceCommentHeaders[advanceDecisionIdx]);
-
             if (advanceDecisionIdx > 0) {
                 $('#comment-container').slideDown();
             } else {
                 $('#comment-container').slideUp();
             }
+
+            $('#comment-header').html(advanceCommentHeaders[advanceDecisionIdx]);
+            $('#comment-footer').html(advanceCommentFooters[advanceDecisionIdx]);
         }
     </script>
 

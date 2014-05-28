@@ -841,7 +841,9 @@
 		<field name="name" type="String" />
 		<field name="additionalId" type="long" />
 		<field name="numericValue" type="long" />
-		<field name="stringValue" type="String" />
+		<field name="stringValue" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
 		<field name="realValue" type="double" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalContestPhaseAttributeType">

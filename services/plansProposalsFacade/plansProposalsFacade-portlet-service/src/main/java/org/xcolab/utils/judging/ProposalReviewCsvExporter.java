@@ -1,4 +1,4 @@
-package org.xcolab.utils.csvExport;
+package org.xcolab.utils.judging;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -3,7 +3,11 @@ package org.xcolab.portlets.proposals.requests;
 import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang.StringUtils;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.util.List;
 
@@ -11,45 +15,53 @@ import java.util.List;
  * Created by kmang on 25/05/14.
  */
 public class FellowProposalScreeningBean {
-    // TODO: change
-    private static final String[] screeningRejectCommentHeaders = {
-            "", // FellowAction.NO_DECISION
-            "<DUMMY STRING>Unfortunately your proposal will not be accepted for the next contest phase due to incompletion. " +
-                    "Comments from the fellows: ", // FellowAction.INCOMPLETE
-            "<DUMMY STRING>Unfortunately your proposal will not be accepted for the next contest phase due to off-topic. " +
-                    "Comments from the fellows: ", // FellowAction.OFFTOPIC
-            "" // FellowAction.PASS_TO_JUDGES
-            };
-
-    private Long fellowRating;
-    private JudgingSystemActions.FellowAction fellowAction;
-    private String fellowComment;
+    private Long fellowScreeningRating;
+    private JudgingSystemActions.FellowAction fellowScreeningAction;
+    private String fellowScreeningCommentBody;
     private List<Long> selectedJudges;
+
+    private String[] fellowCommentFooters = {"", "", "", ""};
+    private String[] fellowCommentHeaders = {"", "", "", ""};
+
+    public FellowProposalScreeningBean(ProposalWrapper wrapper, ProposalsPreferencesWrapper preferencesWrapper) throws PortalException, SystemException {
+        fellowScreeningRating = wrapper.getFellowRating();
+        fellowScreeningAction = wrapper.getFellowAction();
+        selectedJudges = wrapper.getSelectedJudges();
+
+        // Initialize comment headers and footers
+        fellowCommentHeaders = new String[]{
+                "",
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
+                ""
+        };
+        fellowCommentFooters = new String[]{
+                "",
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
+                ""
+        };
+        // Extract comment body from whole comment
+        fellowScreeningCommentBody = ProposalJudgingCommentHelper.extractComment(wrapper.getFellowComment());
+    }
 
     public FellowProposalScreeningBean() {
     }
 
-    public FellowProposalScreeningBean(ProposalWrapper wrapper) throws PortalException, SystemException {
-        fellowRating = wrapper.getFellowRating();
-        fellowAction = wrapper.getFellowAction();
-        fellowComment = wrapper.getFellowComment();
-        selectedJudges = wrapper.getSelectedJudges();
+    public Long getFellowScreeningRating() {
+        return fellowScreeningRating;
     }
 
-    public Long getFellowRating() {
-        return fellowRating;
+    public void setFellowScreeningRating(Long fellowScreeningRating) {
+        this.fellowScreeningRating = fellowScreeningRating;
     }
 
-    public void setFellowRating(Long fellowRating) {
-        this.fellowRating = fellowRating;
+    public int getFellowScreeningAction() {
+        return fellowScreeningAction.getAttributeValue();
     }
 
-    public int getFellowAction() {
-        return fellowAction.getAttributeValue();
-    }
-
-    public void setFellowAction(int fellowActionValue) {
-        this.fellowAction = JudgingSystemActions.FellowAction.fromInt(fellowActionValue);
+    public void setFellowScreeningAction(int fellowActionValue) {
+        this.fellowScreeningAction = JudgingSystemActions.FellowAction.fromInt(fellowActionValue);
     }
 
     public List<Long> getSelectedJudges() {
@@ -60,15 +72,23 @@ public class FellowProposalScreeningBean {
         this.selectedJudges = selectedJudges;
     }
 
-    public String getFellowComment() {
-        return fellowComment;
+    public String getFellowScreeningCommentBody() {
+        return fellowScreeningCommentBody;
     }
 
-    public void setFellowComment(String fellowComment) {
-        this.fellowComment = fellowComment;
+    public void setFellowScreeningCommentBody(String fellowCommentBody) {
+        this.fellowScreeningCommentBody = fellowCommentBody;
     }
 
-    public String[] getScreeningRejectCommentHeaders() {
-        return screeningRejectCommentHeaders;
+    public String[] getFellowCommentHeaders() {
+        return fellowCommentHeaders;
+    }
+
+    public String[] getFellowCommentFooters() {
+        return fellowCommentFooters;
+    }
+
+    private String removeLineBreaks(String html) {
+        return StringUtils.replace(html, "\n", "");
     }
 }
