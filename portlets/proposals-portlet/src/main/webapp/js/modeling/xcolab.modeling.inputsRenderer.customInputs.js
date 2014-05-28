@@ -19,6 +19,13 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				// user is viewing an existing scenario, we should recreate wiew
 				that.restoreWidgetState();
 			}
+			
+			// this is bad bad way of doing this, yet I don't see any better place to put it, it shouldn't be hardcoded (janusz)
+			// get column count in the legend
+			var legendElem = jQuery("table.jqplot-table-legend");
+			var columnCount = legendElem.find("tr:first td").length;
+			jQuery("table.jqplot-table-legend").prepend("<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" + 
+					"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs'>EMF27 model runs for more details</a></td></tr>");
 		});
 		
 		
@@ -36,8 +43,10 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					this.rendered = true;
 					that.render(modelingWidget.container, event.model);
 				}
-				
 			}
+		});
+		jQuery(modelingWidget).on('runTheModelMessageRendered', function(event) {
+			jQuery(".runTheModelToSee_box").text("Use the ‘View model run’ button to show results.");
 		});
 
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
@@ -145,11 +154,18 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				screenHtml.push("'><td class='inputContainer'>");
 				
 				if (option.type == 'blueArrow') {
+					/*
 					screenHtml.push("<i class='glyphicon glyphicon-circle-arrow-right optionSelector' name='");
 					screenHtml.push(option.name);
 					screenHtml.push("' value='");
 					screenHtml.push(option.value);
 					screenHtml.push("'></i>");
+					*/
+					screenHtml.push("<input class='optionSelector' type='radio' name='");
+					screenHtml.push(option.name);
+					screenHtml.push("' value='");
+					screenHtml.push(option.value);
+					screenHtml.push("'/>");
 				}
 				else {
 					screenHtml.push("<input class='optionSelector' type='");
@@ -422,7 +438,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		this.screensStack = [];
 		for (var key in result.values) {
 			var screenAndOption = this.findScreenAndOptionForNameValue(key, result.values[key]);
-			this.container.find("#option_" + screenAndOption[0].name + "_" + screenAndOption[1].name + "_" + result.values[key]).addClass('selected');
+			this.container.find("#option_" + screenAndOption[0].name + "_" + screenAndOption[1].name + "_" + result.values[key]).addClass('selected').find("input[type='radio']").attr('checked', true);
 			lastScreen = screenAndOption[0];
 			this.screensStack.push(screenAndOption[0].name);
 
@@ -474,12 +490,19 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		this.container.on('click', '.optionDef', function(event, val1, val2, val3) {
+			if (event.target.tagName == 'A') {
+				// links should lead to their targets
+				return true;
+			}
+			
 			self.updateWizardOutputsValues();
 			var currentScreen = self.screensStack[self.screensStack.length-1];
 			
 			var input = $(event.currentTarget);
 			input.siblings().removeClass('selected');
+			input.siblings().find('input[type="radio"]').removeAttr('checked');
 			input.addClass('selected');
+			input.find("input[type='radio']").attr('checked', true);
 			self.values[input.attr('name')] = {
 					value: input.attr('value'), 
 					screen: input.parents(".wizardScreen").find("h3").text(), 
@@ -535,13 +558,17 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			// check if there is any value that should be deselected
 			for (var key in self.values) {
 				if (! (key in obj.values) || obj.values[key] != self.values[key]) {
-					$("#option_" + self.values[key].screenName + "_" + key + "_" + self.values[key].value).removeClass('selected');
+					var id = "#option_" + self.values[key].screenName + "_" + key + "_" + self.values[key].value;
+					id = id.replace("\.", "\\.");
+					$(id).removeClass('selected').find("input[type='radio']").removeAttr('checked');
 				}
 			}
 				
 			// make sure that all values got selected
 			for (var key in obj.values) {
-				$("#option_" + obj.values[key].screenName + "_" + key + "_" + obj.values[key].value).addClass('selected');
+				var id = "#option_" + obj.values[key].screenName + "_" + key + "_" + obj.values[key].value;
+				id = id.replace("\.", "\\.");
+				$(id).addClass('selected').find("input[type='radio']").attr('checked', true);
 			}
 
 			self.screensStack = obj.screens;
