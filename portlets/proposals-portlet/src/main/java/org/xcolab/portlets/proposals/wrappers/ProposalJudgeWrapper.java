@@ -35,12 +35,19 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
      */
     public JudgingSystemActions.JudgeReviewStatus getJudgeReviewStatus() throws SystemException, PortalException {
         if (currentUser == null) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
+
+        // If the phase does not require initial fellow screening all judges should do the review
+        if (!getFellowScreeningNeccessary() && isUserAmongJudges(currentUser)) {
+            if (isJudgeFinishedWritingReview()) {
+                return JudgingSystemActions.JudgeReviewStatus.DONE;
+            } else {
+                return JudgingSystemActions.JudgeReviewStatus.NOT_DONE;
+            }
+        }
+
         for (long userId : this.getSelectedJudges()) {
             if (currentUser.getUserId() == userId) {
-                long judgeRating = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), LONG_DEFAULT_VAL);
-                String judgeComment = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), STRING_DEFAULT_VAL);
-
-                if (Validator.isNotNull(judgeRating) && Validator.isNotNull(judgeComment)) {
+                if (isJudgeFinishedWritingReview()) {
                     return JudgingSystemActions.JudgeReviewStatus.DONE;
                 } else {
                     return JudgingSystemActions.JudgeReviewStatus.NOT_DONE;
@@ -62,5 +69,19 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         ProposalContestPhaseAttribute a = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue());
         return fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES;
+    }
+
+    private boolean isJudgeFinishedWritingReview() throws SystemException, PortalException {
+        if (!isUserAmongJudges(currentUser)) {
+            return true;
+        }
+
+        long judgeRating = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), LONG_DEFAULT_VAL);
+        String judgeComment = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), STRING_DEFAULT_VAL);
+        if (Validator.isNotNull(judgeRating) && Validator.isNotNull(judgeComment)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -261,6 +261,16 @@ public class ProposalWrapper {
         return false;
     }
 
+    public boolean isUserAmongJudges(User userInQuestion) throws SystemException, PortalException {
+        for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+            if (judge.getUserId() == userInQuestion.getUserId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public String getTeam() throws PortalException, SystemException {
         return proposalAttributeUtil.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
@@ -350,6 +360,9 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
 
+    protected boolean getFellowScreeningNeccessary() {
+        return contestPhase.getFellowScreeningActive();
+    }
 
     protected String getContestPhaseAttributeStringValue(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
