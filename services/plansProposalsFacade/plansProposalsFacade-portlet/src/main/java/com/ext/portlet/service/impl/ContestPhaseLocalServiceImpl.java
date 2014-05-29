@@ -35,7 +35,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
+import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.enums.ContestPhasePromoteType;
+
+import javax.mail.internet.AddressException;
 
 /**
  * The implementation of the contest phase local service.
@@ -272,7 +276,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      */
     public void autoPromoteProposals() throws SystemException, PortalException {
         Date now = new Date();
-        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE")) {
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
@@ -294,10 +298,11 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             }
         }
         //Judging-based promotion
-        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
                 ContestPhase nextPhase = getNextContestPhase(phase);
+                boolean allProposalsReviewed = true;
                 for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
                     Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
@@ -306,6 +311,21 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
 
+                    if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                        allProposalsReviewed = false;
+                    }
+                }
+
+                // Only send out promotion notification messages if all proposals have been successfully reviewed
+                if (allProposalsReviewed) {
+                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+                        try {
+                            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+                        } catch (MailEngineException | AddressException e) {
+                            _log.error("Could not send proposal promotion colab messaging notification", e);
+                        }
+                    }
                 }
                 phase.setContestPhaseAutopromote("PROMOTE_DONE");
                 updateContestPhase(phase);

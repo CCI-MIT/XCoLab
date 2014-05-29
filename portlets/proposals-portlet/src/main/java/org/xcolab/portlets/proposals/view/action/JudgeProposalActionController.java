@@ -101,7 +101,7 @@ public class JudgeProposalActionController {
                                 BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -113,7 +113,7 @@ public class JudgeProposalActionController {
 
         // save judge decision
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, proposalAdvancingBean.getAdvanceDecision());
+            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, proposalAdvancingBean.getAdvanceDecision());
         }
 
         // save judge comment
@@ -122,9 +122,9 @@ public class JudgeProposalActionController {
             String judgeCommentTemplate = null;
             ProposalsPreferencesWrapper preferences = proposalsContext.getProposalsPreferences(request);
             if (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON.getAttributeValue()) {
-                judgeCommentTemplate = preferences.getAdvanceAcceptanceText();
+                judgeCommentTemplate = preferences.getAdvanceAcceptanceText(contestPhase.getContestPhaseType());
             } else if (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON.getAttributeValue()) {
-                judgeCommentTemplate = preferences.getAdvanceRejectionText();
+                judgeCommentTemplate = preferences.getAdvanceRejectionText(contestPhase.getContestPhaseType());
             }
 
             commentHelper.setAdvancingComment(judgeCommentTemplate, proposalAdvancingBean.getAdvanceComment());

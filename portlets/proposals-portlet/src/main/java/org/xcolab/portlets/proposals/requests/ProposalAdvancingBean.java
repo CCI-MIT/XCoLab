@@ -1,11 +1,9 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.model.ContestPhase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
@@ -26,18 +24,18 @@ public class ProposalAdvancingBean {
     public ProposalAdvancingBean() {
     }
 
-    public ProposalAdvancingBean(ProposalWrapper wrapper, ProposalsPreferencesWrapper proposalsPreferencesWrapper) throws PortalException, SystemException {
+    public ProposalAdvancingBean(ProposalWrapper wrapper, ContestPhase contestPhase, ProposalsPreferencesWrapper proposalsPreferencesWrapper) throws PortalException, SystemException {
         advanceDecision = wrapper.getJudgeDecision();
         advanceComment = ProposalJudgingCommentHelper.extractComment(wrapper.getProposalReview());
         advanceCommentHeaders = new String[] {
                 "",
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText())),
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText()))
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
+                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
         };
         advanceCommentFooters = new String[] {
                 "",
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText())),
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText()))
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
+                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
         };
     }
 

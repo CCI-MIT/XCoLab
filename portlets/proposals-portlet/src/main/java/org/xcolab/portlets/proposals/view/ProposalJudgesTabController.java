@@ -30,7 +30,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper,
+        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, proposalsContext.getContestPhase(request),
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 

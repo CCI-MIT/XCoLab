@@ -30,13 +30,29 @@
         <form:textarea path="screeningOfftopicText" id="screeningOfftopicText" cssStyle="width:100%; height:300px;" />
         <form:errors path="screeningOfftopicText" />
 
-        <label for="advanceRejectionText">Advance Rejection Text:</label>
-        <form:textarea path="advanceRejectionText" id="advanceRejectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceRejectionText" />
+        <label for="advanceRejectionSemifinalistSelectionText">Advance Rejection Text (Selection of semi-finalists):</label>
+        <form:textarea path="advanceRejectionSemifinalistSelectionText" id="advanceRejectionSemifinalistSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceRejectionSemifinalistSelectionText" />
 
-        <label for="advanceAcceptanceText">Advance Acceptance Text:</label>
-        <form:textarea path="advanceAcceptanceText" id="advanceAcceptanceText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceAcceptanceText" />
+        <label for="advanceRejectionFinalistSelectionText">Advance Rejection Text (Selection of finalists):</label>
+        <form:textarea path="advanceRejectionFinalistSelectionText" id="advanceRejectionFinalistSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceRejectionFinalistSelectionText" />
+
+        <label for="advanceRejectionWinnerSelectionText">Advance Rejection Text (Selection of winners):</label>
+        <form:textarea path="advanceRejectionWinnerSelectionText" id="advanceRejectionWinnerSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceRejectionWinnerSelectionText" />
+
+        <label for="advanceAcceptanceSemifinalistSelectionText">Advance Acceptance Text (Selection of semi-finalists):</label>
+        <form:textarea path="advanceAcceptanceSemifinalistSelectionText" id="advanceAcceptanceSemifinalistSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceAcceptanceSemifinalistSelectionText" />
+
+        <label for="advanceAcceptanceFinalistSelectionText">Advance Acceptance Text (Selection of finalists):</label>
+        <form:textarea path="advanceAcceptanceFinalistSelectionText" id="advanceAcceptanceFinalistSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceAcceptanceFinalistSelectionText" />
+
+        <label for="advanceAcceptanceWinnerSelectionText">Advance Acceptance Text (Selection of winners):</label>
+        <form:textarea path="advanceAcceptanceWinnerSelectionText" id="advanceAcceptanceWinnerSelectionText" cssStyle="width:100%; height:300px;" />
+        <form:errors path="advanceAcceptanceWinnerSelectionText" />
 		
 		<input type="submit" value="Save" />
 	</form:form>

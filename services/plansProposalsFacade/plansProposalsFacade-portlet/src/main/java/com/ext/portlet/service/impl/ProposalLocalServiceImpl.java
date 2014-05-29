@@ -1240,6 +1240,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String subject = "The judge status on your proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+        // TODO: check how line breaks behave in the email message
         String messageBody = reviewContentHelper.getContestPhasePromotionEmailBody();
         if (Validator.isNotNull(messageBody)) {
             MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal), request);

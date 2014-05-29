@@ -100,11 +100,19 @@ public class ProposalJudgingCommentHelper {
 
     public static String getCommentHeader(String message) {
         int commentTagBeginIndex = message.indexOf(REVIEW_COMMENT_BEGIN_TAG);
+
+        if (commentTagBeginIndex == -1) {
+            return "";
+        }
         return message.substring(0, commentTagBeginIndex);
     }
 
     public static String getCommentFooter(String message) {
         int commentTagEndIndex = message.indexOf(REVIEW_COMMENT_END_TAG) + REVIEW_COMMENT_END_TAG.length();
+
+        if (commentTagEndIndex == -1 + REVIEW_COMMENT_END_TAG.length()) {
+            return "";
+        }
         return message.substring(commentTagEndIndex);
     }
 
@@ -122,6 +130,10 @@ public class ProposalJudgingCommentHelper {
     }
 
     public static String wrapComment(String template, String comment) {
+        if (!template.contains(REVIEW_COMMENT_BEGIN_TAG) || !template.contains(REVIEW_COMMENT_END_TAG)) {
+            return comment;
+        }
+
         int commentBeginIndex = template.indexOf(REVIEW_COMMENT_BEGIN_TAG) + REVIEW_COMMENT_BEGIN_TAG.length();
         return template.substring(0, commentBeginIndex) + comment + template.substring(commentBeginIndex);
     }
