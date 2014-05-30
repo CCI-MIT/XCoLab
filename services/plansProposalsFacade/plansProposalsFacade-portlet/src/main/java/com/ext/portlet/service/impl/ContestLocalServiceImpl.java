@@ -685,47 +685,72 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
 
                     // Ignore proposals that have not been passed to judge
-                    if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
+                    if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES && judgingPhase.isFellowScreeningActive()) {
                         continue;
                     }
                 } catch (NoSuchProposalContestPhaseAttributeException e) {
-                    continue;   // just ignore this
+                    if (judgingPhase.isFellowScreeningActive()) {
+                        continue;
+                    }
                 }
 
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
-                try {
-                    final String judgeIdString = getProposalContestPhaseAttributeLocalService().
-                            getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
-                                    ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 
-                    for (String element : judgeIdString.split(";")) {
-                        long userId  = GetterUtil.getLong(element);
-                        User judge = userLocalService.getUser(userId);
-
-                        // Judge rating
-                        int judgeRating = (int)getProposalContestPhaseAttributeLocalService().
+                for (User judge : getSelectedJudges(proposal, judgingPhase)) {
+                    // Judge rating
+                    try {
+                        int judgeRating = (int) getProposalContestPhaseAttributeLocalService().
                                 getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, judge.getUserId()).getNumericValue();
                         String judgeComment = getProposalContestPhaseAttributeLocalService().
                                 getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
                         proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
+                    } catch (NoSuchProposalContestPhaseAttributeException e) {
+                        continue;   // just ignore this review since it's not yet finished
                     }
+                }
 
-                    if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
-                        proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
-                    }
+                if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
+                    proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
+                }
+
+                if (!proposalReview.isEmpty()) {
                     proposalToProposalReviewsMap.get(proposal).add(proposalReview);
-
-                } catch (NoSuchProposalContestPhaseAttributeException e) {
-                    _log.error("ContestPhaseAttribute of proposal with ID " + proposal.getProposalId() + " have not been found", e);
                 }
             }
         }
 
         ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, getJudgesForContest(contest));
         return csvExporter.getCsvString();
+    }
+
+    private List<User> getSelectedJudges(Proposal proposal, ContestPhase judgingPhase) throws SystemException, PortalException {
+        List<User> selectedJudges = null;
+
+        if (judgingPhase.isFellowScreeningActive()) {
+            try {
+                final String judgeIdString = getProposalContestPhaseAttributeLocalService().
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
+                                ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+
+                selectedJudges = new ArrayList<>();
+                for (String element : judgeIdString.split(";")) {
+                    long userId = GetterUtil.getLong(element);
+                    User judge = userLocalService.getUser(userId);
+                    selectedJudges.add(judge);
+                }
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
+                _log.error("ContestPhaseAttribute of proposal with ID " + proposal.getProposalId() + " have not been found", e);
+            }
+        }
+        // Choose all judges
+        else {
+            selectedJudges = getJudgesForContest(contestLocalService.getContest(judgingPhase.getContestPK()));
+        }
+
+        return selectedJudges;
     }
 
     public List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {

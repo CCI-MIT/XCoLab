@@ -74,6 +74,10 @@ public class JudgingSystemActions {
         public boolean getSelectJudgesEnabled() {
             return selectJudgesEnabled;
         }
+
+        public boolean isActionProhibitingAdvancing() {
+        return this != FellowAction.PASS_TO_JUDGES;
+        }
     }
 
     public enum JudgeReviewStatus {

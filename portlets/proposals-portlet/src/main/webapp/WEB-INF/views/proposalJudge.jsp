@@ -19,13 +19,13 @@
     }</style>
 
     <portlet:actionURL var="saveAdvanceDetailsURL">
-        <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
+        <portlet:param name="action_forwardToPage" value="proposalDetails_ADVANCING"/>
         <portlet:param name="contestId" value="${contest.contestPK }"/>
         <portlet:param name="planId" value="${proposal.proposalId }"/>
         <portlet:param name="action" value="saveAdvanceDetails"/>
     </portlet:actionURL>
     <portlet:actionURL var="sendEmailURL">
-        <portlet:param name="action_forwardToPage" value="proposalDetails_JUDGE"/>
+        <portlet:param name="action_forwardToPage" value="proposalDetails_ADVANCING"/>
         <portlet:param name="contestId" value="${contest.contestPK }"/>
         <portlet:param name="planId" value="${proposal.proposalId }"/>
         <portlet:param name="action" value="sendComment"/>

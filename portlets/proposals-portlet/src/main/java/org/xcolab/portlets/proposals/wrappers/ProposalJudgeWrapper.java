@@ -34,7 +34,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
      * @throws PortalException
      */
     public JudgingSystemActions.JudgeReviewStatus getJudgeReviewStatus() throws SystemException, PortalException {
-        if (currentUser == null) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
+        if (currentUser == null || !isJudgingContestPhase()) return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
 
         // If the phase does not require initial fellow screening all judges should do the review
         if (!getFellowScreeningNeccessary() && isUserAmongJudges(currentUser)) {

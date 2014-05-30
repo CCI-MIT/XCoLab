@@ -49,9 +49,12 @@
     		</ice:panelGroup>
     		<ice:panelGroup styleClass="column description">
     			<ice:inputTextarea value="#{contestPhaseType.description}" />
-    			
-    		</ice:panelGroup>
-    		<ice:panelGroup styleClass="column action">
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="column typeInvisible">
+                Phase invisible?&#160;
+                <ice:selectBooleanCheckbox value="#{contestPhaseType.invisible}" />
+            </ice:panelGroup>
+    		<ice:panelGroup>
     			<ice:commandButton value="Save" actionListener="#{contestPhaseType.save}"/>
     			<ice:commandButton value="Delete" actionListener="#{contestPhaseType.delete}"/>
     		</ice:panelGroup>
@@ -71,8 +74,11 @@
     		</ice:panelGroup>
     		<ice:panelGroup styleClass="column description">
     			<ice:inputTextarea value="#{contestPhaseTypeBean.newContestPhaseType.description}" />
-    			
-    		</ice:panelGroup>
+            </ice:panelGroup>
+            <ice:panelGroup>
+                Phase invisible?&#160;
+                <ice:selectBooleanCheckbox value="#{contestPhaseTypeBean.newContestPhaseType.invisible}" />
+            </ice:panelGroup>
     		<ice:panelGroup styleClass="column action">
     			<ice:commandButton value="Save" actionListener="#{contestPhaseTypeBean.newContestPhaseType.save}"/>
     		</ice:panelGroup>

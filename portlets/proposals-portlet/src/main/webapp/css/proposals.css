@@ -321,3 +321,13 @@ img.review-status-icon {
     top:-7px;
     right:-7px;
 }
+
+#judge-evaluation-criteria {
+    margin-top: 10px;
+}
+
+#judge-evaluation-criteria span.help-text {
+    font-style: italic;
+    font-size: 9pt;
+    margin: 5px 0 0 20px;
+}

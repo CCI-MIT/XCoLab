@@ -69,6 +69,10 @@ public class ProposalReview {
         this.reviews = reviews;
     }
 
+    public boolean isEmpty() {
+        return reviews.size() == 0;
+    }
+
     public class IndividualReview {
        private int rating;
         private User reviewer;

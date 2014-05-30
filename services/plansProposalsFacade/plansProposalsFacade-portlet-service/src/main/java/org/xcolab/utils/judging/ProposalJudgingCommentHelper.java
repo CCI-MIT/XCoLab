@@ -9,6 +9,9 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
@@ -19,6 +22,8 @@ import com.liferay.portal.kernel.util.StringUtil;
  * Created by kmang on 27/05/14.
  */
 public class ProposalJudgingCommentHelper {
+
+    private final static Log _log = LogFactoryUtil.getLog(ProposalJudgingCommentHelper.class);
 
     public static final String REVIEW_COMMENT_BEGIN_TAG = "<review_comment>";
     public static final String REVIEW_COMMENT_END_TAG = "</review_comment>";
@@ -140,20 +145,29 @@ public class ProposalJudgingCommentHelper {
 
     private String getContestPhasePromotionBody() throws NoSuchProposalContestPhaseAttributeException, SystemException {
         //get fellow decision
-        ProposalContestPhaseAttribute fellowActionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
-                getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
-        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
+        JudgingSystemActions.FellowAction fellowAction;
+        try {
+            ProposalContestPhaseAttribute fellowActionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
+                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
+            fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            fellowAction = JudgingSystemActions.FellowAction.NO_DECISION;
+        }
 
-        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-            String reviewText = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
+        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES || !contestPhase.isFellowScreeningActive()) {
+            try {
+                String reviewText = ProposalContestPhaseAttributeLocalServiceUtil.
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
 
-            ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
-            JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
+                ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
+                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
+                JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
-            if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
-                return reviewText;
+                if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                    return reviewText;
+                }
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
+                _log.error("Could not extract contest phase promotion body for proposal " + proposal.getProposalId() + " in contestPhase " + contestPhase.getContestPhasePK(), e);
             }
         } else if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION) {
             //fellow decided
@@ -163,7 +177,7 @@ public class ProposalJudgingCommentHelper {
             return fellowReviewText;
         }
 
-        return null;
+        return StringPool.BLANK;
     }
 
     private boolean persistAttribute(String attributeName, long numericValue) {

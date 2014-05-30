@@ -49,6 +49,13 @@ public class ContestPhaseTypeWrapper {
     public void setStatus(String status) {
         contestPhaseType.setStatus(status);
     }
+
+    public boolean getInvisible() {
+        return contestPhaseType.getInvisible();
+    }
+    public void setInvisible(boolean invisible) {
+        contestPhaseType.setInvisible(invisible);
+    }
     
     public void save(ActionEvent e) throws SystemException {
         if (contestPhaseType.getId() <= 0) {

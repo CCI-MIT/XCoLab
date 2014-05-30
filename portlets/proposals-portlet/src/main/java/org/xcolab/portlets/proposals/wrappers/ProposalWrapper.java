@@ -19,6 +19,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 import java.util.ArrayList;
@@ -242,7 +243,11 @@ public class ProposalWrapper {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudge(User user) {
+    public boolean isUserAmongSelectedJudge(User user) throws PortalException, SystemException {
+        if (!getFellowScreeningNeccessary()) {
+            return isUserAmongJudges(user);
+        }
+
         for (Long userId : getSelectedJudges()) {
             if (userId == user.getUserId()) {
                 return true;
@@ -269,6 +274,10 @@ public class ProposalWrapper {
         }
 
         return false;
+    }
+
+    public boolean isJudgingContestPhase() {
+        return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote()) == ContestPhasePromoteType.PROMOTE_JUDGED;
     }
 
 

@@ -40,11 +40,15 @@ interface ProposalTabCanAccessAlgorithm {
         }
     };
     
-    public final static ProposalTabCanAccessAlgorithm judgeAccess = new ProposalTabCanAccessAlgorithm() {
+    public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
         
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll())) {
+                    return false;
+                }
+
                 ContestPhase contestPhase = context.getContestPhase(request);
                 ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
                 if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.isFellowScreeningActive()) {
@@ -69,7 +73,8 @@ interface ProposalTabCanAccessAlgorithm {
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
                 ContestPhase contestPhase = context.getContestPhase(request);
-                if (!contestPhase.isFellowScreeningActive()) {
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
+                        !contestPhase.isFellowScreeningActive()) {
                     return false;
                 }
 

@@ -22,11 +22,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_JUDGE"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
     public String showJudgesPanel(PortletRequest request, Model model) 
             throws PortalException, SystemException {
         
-        setCommonModelAndPageAttributes(request, model, ProposalTab.JUDGE);
+        setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
@@ -37,13 +37,13 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return "proposalJudge";
     }
     
-    @RequestMapping(params = {"pageToDisplay=proposalDetails_FELLOW"})
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
     public String showFellowsPanel(PortletRequest request,Model model) 
             throws PortalException, SystemException {
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.FELLOW);
+        setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
         model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalWrapper,

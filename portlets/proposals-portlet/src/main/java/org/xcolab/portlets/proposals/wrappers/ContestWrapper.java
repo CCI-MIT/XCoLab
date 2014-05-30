@@ -18,6 +18,7 @@ public class ContestWrapper {
     private Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<String, List<OntologyTerm>>();
     private Map<String, String> ontologyJoinedNames = new HashMap<String, String>();
     private List<ContestPhaseWrapper> phases;
+    private List<ContestPhaseWrapper> visiblePhases;
     private ContestPhaseWrapper activePhase;
 
     private List<ContestTeamRoleWrapper> contestTeamMembersByRole;
@@ -408,11 +409,21 @@ public class ContestWrapper {
     public List<ContestPhaseWrapper> getPhases() throws SystemException, PortalException {
         if (phases == null) {
             phases = new ArrayList<ContestPhaseWrapper>();
-            for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
+            for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
                 phases.add(new ContestPhaseWrapper(phase));
             }
         }
         return phases;
+    }
+
+    public List<ContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
+        if (visiblePhases == null) {
+            visiblePhases = new ArrayList<ContestPhaseWrapper>();
+            for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
+                visiblePhases.add(new ContestPhaseWrapper(phase));
+            }
+        }
+        return visiblePhases;
     }
 
     public boolean getHasFocusArea() {

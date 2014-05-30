@@ -195,19 +195,42 @@
                 </portlet:actionURL>
                 <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL }" method="post" commandName="judgeProposalBean">
                     <h3 style="margin-top: 20px;">Judge Rating</h3>
-                    Please rate this proposal and write your comments in the box below. All your responses
-                    are saved when clicking on save.<br/>
+                    <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
+                    are saved when clicking on save.</i>
+                    <br/>
 
                     <proposalsPortlet:proposalRating path="judgeRating"/>
 
                     <h3 style="margin-top: 10px;">Judges Feedback</h3>
                     <form:textarea path="judgeComment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
-                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                        <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Save</a>
+                    <div class="clearfix" style="width: 100%;">
+                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                            <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+                        </div>
                     </div>
+
                 </form:form>
+                <div id="judge-evaluation-criteria">
+                    <h3 style="display: inline-block">Evaluation Criteria</h3>
+                    <span class="help-text">Click links to expand</span>
+                    <div class="criteria-item">
+                        <h4><a href="javascript:;" onclick="jQuery(this).parents('.criteria-item').children('span').slideToggle();">Feasibility of the actions proposed</a></h4>
+                        <span style="display: none;">Technical, economic, social, and political feasibility of the proposals.</span>
+                    </div>
+                    <div class="criteria-item">
+                        <h4><a href="javascript:;" onclick="jQuery(this).parents('.criteria-item').children('span').slideToggle();">Novelty of the proposal's ideas</a></h4>
+                        <span style="display: none;">Innovative thinking and originality is to be valued more than strict encyclopedic knowledge.  Judges may consider selecting a roster of finalists that represent a diverse range of approaches rather than proposals that are very similar.</span>
+                    </div>
+                    <div class="criteria-item">
+                        <h4><a href="javascript:;" onclick="jQuery(this).parents('.criteria-item').children('span').slideToggle();">Likely impact on climate change and desirability of other impacts</a></h4>
+                        <span style="display: none;">The extent to which the actions will fulfill on the stated mission.  For example, for mitigation actions, the impact should be based on the amount of greenhouse gas emission reductions; for adaptation actions, the extent to which the actions counteract the effects of climate change; etc.  Some proposals mention other impacts outside of the initial intention, and the potential of these should be taken into consideration.</span>
+                    </div>
+                    <div class="criteria-item">
+                        <h4><a href="javascript:;" onclick="jQuery(this).parents('.criteria-item').children('span').slideToggle();">Presentation quality</a></h4>
+                        <span style="display: none;">Proposals that are well-presented will be favored over those that aren't. Presentation quality includes how well written a proposal is, how well it uses graphics or other visual elements, and how compelling are its artistic representations of possible future worlds (if any).</span>
+                    </div>
+                </div>
             </c:when>
         </c:choose>
     </c:if>

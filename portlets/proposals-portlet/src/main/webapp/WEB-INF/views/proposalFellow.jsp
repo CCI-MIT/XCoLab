@@ -21,14 +21,14 @@
 
         This page is shared by contest Fellows only. Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveScreeningURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW"/>
+            <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="saveScreening"/>
         </portlet:actionURL>
 
         <portlet:actionURL var="sendEmailURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_FELLOW"/>
+            <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="planId" value="${proposal.proposalId }"/>
             <portlet:param name="action" value="sendComment"/>

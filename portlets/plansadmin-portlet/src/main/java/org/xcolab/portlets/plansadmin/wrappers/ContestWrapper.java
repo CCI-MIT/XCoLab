@@ -126,7 +126,7 @@ public class ContestWrapper {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest that doesn't exist", ""));
             return;
         }
-        if (! ContestLocalServiceUtil.getVisiblePhases(contest).isEmpty()) {
+        if (! ContestLocalServiceUtil.getAllPhases(contest).isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't remove contest as it has phases", ""));
             return;
         }
@@ -199,7 +199,7 @@ public class ContestWrapper {
 			SystemException {
 		FocusArea fa = ContestLocalServiceUtil.getFocusArea(contest);
 
-		for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
+		for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
 			for (PlanItem plan : PlanItemLocalServiceUtil
 					.getPlansInContestPhase(phase.getContestPhasePK())) {
 				FocusAreaLocalServiceUtil.tagClass(fa, PlanItem.class,
@@ -262,7 +262,7 @@ public class ContestWrapper {
         phases.clear();
         
         if (contest.getContestPK() > 0) {
-            for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(contest)) {
+            for (ContestPhase cp: ContestLocalServiceUtil.getAllPhases(contest)) {
                 phases.add(new ContestPhaseWrapper(cp, this));
             }
         }
