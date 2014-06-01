@@ -280,8 +280,9 @@
 				{values: {"policy": "bau", "energyEfficiency": "baseline", "energySupplyTechnologies": "nuclearCcs"}, outputs: {"input_scenario":"EMF27G6"}},
 				{values: {"policy": "bau", "energyEfficiency": "baseline", "energySupplyTechnologies": "noLowCarbon"}, outputs: {"input_scenario":"EMF27G8"}},
 
-				{values: {"policy": "bau", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "baselinePlusAllSupply"}, outputs: {"input_scenario":"EMF27G2"}},
-				{values: {"policy": "bau", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "greaterPlusWindSolarBio"}, outputs: {"input_scenario":"EMF27G7"}},
+
+				{values: {"policy": "bau", "energyEfficiency": "greater", "energySupplyTechnologies": "allNoCarbon"}, outputs: {"input_scenario":"EMF27G2"}},
+				{values: {"policy": "bau", "energyEfficiency": "greater", "energySupplyTechnologies": "windSolarBiofuels"}, outputs: {"input_scenario":"EMF27G7"}},
 
 
 				{values: {"policy": "450ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "allNoCarbon"}, outputs: {"input_scenario":"EMF27G9"}},
@@ -292,8 +293,8 @@
 				{values: {"policy": "450ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "nuclearCcs"}, outputs: {"input_scenario":"EMF27G15"}},
 				{values: {"policy": "450ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "noLowCarbon"}, outputs: {"input_scenario":"EMF27G30"}},
 
-				{values: {"policy": "450ppmCO2e", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "baselinePlusAllSupply"}, outputs: {"input_scenario":"EMF27G10"}},
-				{values: {"policy": "450ppmCO2e", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "greaterPlusWindSolarBio"}, outputs: {"input_scenario":"EMF27G16"}},
+				{values: {"policy": "450ppmCO2e", "energyEfficiency": "greater", "energySupplyTechnologies": "allNoCarbon"}, outputs: {"input_scenario":"EMF27G10"}},
+				{values: {"policy": "450ppmCO2e", "energyEfficiency": "greater", "energySupplyTechnologies": "windSolarBiofuels"}, outputs: {"input_scenario":"EMF27G16"}},
 
 
 				{values: {"policy": "550ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "allNoCarbon"}, outputs: {"input_scenario":"EMF27G17"}},
@@ -304,8 +305,8 @@
 				{values: {"policy": "550ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "nuclearCcs"}, outputs: {"input_scenario":"EMF27G23"}},
 				{values: {"policy": "550ppmCO2e", "energyEfficiency": "baseline", "energySupplyTechnologies": "noLowCarbon"}, outputs: {"input_scenario":"EMF27G25"}},
 
-				{values: {"policy": "550ppmCO2e", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "baselinePlusAllSupply"}, outputs: {"input_scenario":"EMF27G18"}},
-				{values: {"policy": "550ppmCO2e", "energyEfficiency": "greater", "energyEfficiencyEnergySupplyTechnologies": "greaterPlusWindSolarBio"}, outputs: {"input_scenario":"EMF27G24"}},
+				{values: {"policy": "550ppmCO2e", "energyEfficiency": "greater", "energySupplyTechnologies": "allNoCarbon"}, outputs: {"input_scenario":"EMF27G18"}},
+				{values: {"policy": "550ppmCO2e", "energyEfficiency": "greater", "energySupplyTechnologies": "windSolarBiofuels"}, outputs: {"input_scenario":"EMF27G24"}},
 
 
 				{values: {"policy": "g8_0.5", "energyEfficiencyEnergySupplyTechnologies": "baselinePlusAllSupply"}, outputs: {"input_scenario":"EMF27G26"}},
