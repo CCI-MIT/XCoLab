@@ -241,6 +241,7 @@ ModelingWidget.prototype.runTheModel = function() {
 	});
 	
 	jQuery(modelingWidget).trigger("fetchingScenario");
+	jQuery(modelingWidget).trigger("runningModel");
 	
 	
 	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
@@ -296,7 +297,9 @@ XCoLab.modeling = function(selector, options) {
 		options.renderers.push(XCoLab.modeling.headerRenderers[0]);
 	}
 	if (!('inputsRenderer' in options)) { 
-		options.renderers.push(XCoLab.modeling.inputsRenderers[0]);
+		for (var i = 0; i < XCoLab.modeling.inputsRenderers.length; i++) {
+			options.renderers.push(XCoLab.modeling.inputsRenderers[i]);
+		}
 	}
 	if (!('outputsRenderer' in options)) { 
 		options.renderers.push(XCoLab.modeling.outputsRenderers[0]);

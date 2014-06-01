@@ -1,23 +1,25 @@
 package org.xcolab.portlets.proposals.utils;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.*;
-
-
-import java.util.ArrayList;
-
-
-import org.apache.commons.lang3.StringUtils;
 import com.ext.portlet.model.Proposal;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +36,12 @@ public enum ProposalPickerFilterUtil {
         public void filter(List<Pair<Proposal,Date>> proposals, Object additionalFilterCriterion) {
             // do not modify the list
         }
+
+		@Override
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
+				Object additionalFilterCriterion) {
+			// do nothing
+		}
     }),
     TEXTBASED(new ProposalPickerFilter() {
         @Override
@@ -59,6 +67,39 @@ public enum ProposalPickerFilterUtil {
             }
 
         }
+
+		@Override
+		public void filterContests(List<Pair<ContestWrapper, Date>> contests,
+				Object additionalFilterCriterion) {
+            if (!(additionalFilterCriterion instanceof String)) return;
+            String searchCriterion = (String) additionalFilterCriterion;
+            for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
+                ContestWrapper c = i.next().getLeft();
+                
+                 try{
+                     // CONTEST NAME
+                     if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
+                         continue;
+                     }
+                     if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
+                    	 continue;
+                     }
+                     // focus area
+                     if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
+                    	 continue;
+                     }
+                     if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
+                    	 continue;
+                     }
+                     if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
+                    	 continue;
+                     }
+                     
+                     // Remove element if it does not match any criterion
+                     i.remove();
+                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
+            }
+		}
     }),
     WINNERSONLY(new ProposalPickerFilter() {
         @Override
@@ -78,6 +119,13 @@ public enum ProposalPickerFilterUtil {
                 } catch (Exception e){ /* LR EXCEPTIONS */e.printStackTrace(); }
             }
         }
+
+		@Override
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
+				Object additionalFilterCriterion) {
+			// do nothing
+			
+		}
     }),
     ONTOLOGY(new ProposalPickerFilter() {
         @Override
@@ -98,6 +146,13 @@ public enum ProposalPickerFilterUtil {
                 }
             } catch (Exception e){ /* LR EXCEPTIONS */ e.printStackTrace(); }
         }
+
+		@Override
+		public void filterContests(List<Pair<ContestWrapper, Date>> proposals,
+				Object additionalFilterCriterion) {
+			// do nothing
+			
+		}
     });
 
     private final ProposalPickerFilter proposalPickerFilter;
@@ -125,5 +180,11 @@ public enum ProposalPickerFilterUtil {
         if (filterKey.equalsIgnoreCase("WINNERSONLY")) return WINNERSONLY;
         return ACCEPTALL;
     }
+
+	public void filterContests(List<Pair<ContestWrapper, Date>> contests,
+			String filterText) {
+        this.getProposalPickerFilter().filterContests(contests, filterText);
+		
+	}
 
 }

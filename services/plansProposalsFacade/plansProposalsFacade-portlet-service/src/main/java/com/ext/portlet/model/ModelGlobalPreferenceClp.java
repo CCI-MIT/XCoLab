@@ -26,6 +26,8 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
     private int _weight;
     private long _expertEvaluationPageId;
     private long _modelCategoryId;
+    private boolean _usesCustomInputs;
+    private String _customInputsDefinition;
     private BaseModel<?> _modelGlobalPreferenceRemoteModel;
 
     public ModelGlobalPreferenceClp() {
@@ -71,6 +73,8 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         attributes.put("weight", getWeight());
         attributes.put("expertEvaluationPageId", getExpertEvaluationPageId());
         attributes.put("modelCategoryId", getModelCategoryId());
+        attributes.put("usesCustomInputs", getUsesCustomInputs());
+        attributes.put("customInputsDefinition", getCustomInputsDefinition());
 
         return attributes;
     }
@@ -113,6 +117,19 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
 
         if (modelCategoryId != null) {
             setModelCategoryId(modelCategoryId);
+        }
+
+        Boolean usesCustomInputs = (Boolean) attributes.get("usesCustomInputs");
+
+        if (usesCustomInputs != null) {
+            setUsesCustomInputs(usesCustomInputs);
+        }
+
+        String customInputsDefinition = (String) attributes.get(
+                "customInputsDefinition");
+
+        if (customInputsDefinition != null) {
+            setCustomInputsDefinition(customInputsDefinition);
         }
     }
 
@@ -257,6 +274,59 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         }
     }
 
+    @Override
+    public boolean getUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    @Override
+    public boolean isUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    @Override
+    public void setUsesCustomInputs(boolean usesCustomInputs) {
+        _usesCustomInputs = usesCustomInputs;
+
+        if (_modelGlobalPreferenceRemoteModel != null) {
+            try {
+                Class<?> clazz = _modelGlobalPreferenceRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setUsesCustomInputs",
+                        boolean.class);
+
+                method.invoke(_modelGlobalPreferenceRemoteModel,
+                    usesCustomInputs);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getCustomInputsDefinition() {
+        return _customInputsDefinition;
+    }
+
+    @Override
+    public void setCustomInputsDefinition(String customInputsDefinition) {
+        _customInputsDefinition = customInputsDefinition;
+
+        if (_modelGlobalPreferenceRemoteModel != null) {
+            try {
+                Class<?> clazz = _modelGlobalPreferenceRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCustomInputsDefinition",
+                        String.class);
+
+                method.invoke(_modelGlobalPreferenceRemoteModel,
+                    customInputsDefinition);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getModelGlobalPreferenceRemoteModel() {
         return _modelGlobalPreferenceRemoteModel;
     }
@@ -332,6 +402,8 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         clone.setWeight(getWeight());
         clone.setExpertEvaluationPageId(getExpertEvaluationPageId());
         clone.setModelCategoryId(getModelCategoryId());
+        clone.setUsesCustomInputs(getUsesCustomInputs());
+        clone.setCustomInputsDefinition(getCustomInputsDefinition());
 
         return clone;
     }
@@ -377,7 +449,7 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{modelGlobalPreferencePK=");
         sb.append(getModelGlobalPreferencePK());
@@ -391,6 +463,10 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         sb.append(getExpertEvaluationPageId());
         sb.append(", modelCategoryId=");
         sb.append(getModelCategoryId());
+        sb.append(", usesCustomInputs=");
+        sb.append(getUsesCustomInputs());
+        sb.append(", customInputsDefinition=");
+        sb.append(getCustomInputsDefinition());
         sb.append("}");
 
         return sb.toString();
@@ -398,7 +474,7 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ModelGlobalPreference");
@@ -427,6 +503,14 @@ public class ModelGlobalPreferenceClp extends BaseModelImpl<ModelGlobalPreferenc
         sb.append(
             "<column><column-name>modelCategoryId</column-name><column-value><![CDATA[");
         sb.append(getModelCategoryId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>usesCustomInputs</column-name><column-value><![CDATA[");
+        sb.append(getUsesCustomInputs());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>customInputsDefinition</column-name><column-value><![CDATA[");
+        sb.append(getCustomInputsDefinition());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

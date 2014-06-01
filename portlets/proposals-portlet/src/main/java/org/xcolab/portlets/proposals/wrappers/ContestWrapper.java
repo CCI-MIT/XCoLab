@@ -350,18 +350,17 @@ public class ContestWrapper {
         return getTermFromSpace(WHERE);
     }
 
-    public String getHowName() throws PortalException, SystemException {
-        return getTermNameFromSpace(HOW);
+    public String getWhereName() throws PortalException, SystemException {
+        return getTermNameFromSpace(WHERE);
     }
-    
 
     public List<OntologyTerm> getHow() throws PortalException,
             SystemException {
         return getTermFromSpace(HOW);
     }
 
-    public String getWhereName() throws PortalException, SystemException {
-        return getTermNameFromSpace(WHERE);
+    public String getHowName() throws PortalException, SystemException {
+        return getTermNameFromSpace(HOW);
     }
 
     public String getTermNameFromSpace(String space) throws PortalException, SystemException {
@@ -371,6 +370,9 @@ public class ContestWrapper {
             ontologyJoinedName = ontologyJoinedNames.get(space);
         }
 
+        if (ontologyJoinedName == null) {
+        	return "";
+        }
         return ontologyJoinedName;
     }
 

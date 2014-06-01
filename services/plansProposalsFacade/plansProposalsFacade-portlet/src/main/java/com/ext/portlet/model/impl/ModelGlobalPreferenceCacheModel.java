@@ -3,6 +3,7 @@ package com.ext.portlet.model.impl;
 import com.ext.portlet.model.ModelGlobalPreference;
 
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
 import java.io.Externalizable;
@@ -25,10 +26,12 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
     public int weight;
     public long expertEvaluationPageId;
     public long modelCategoryId;
+    public boolean usesCustomInputs;
+    public String customInputsDefinition;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{modelGlobalPreferencePK=");
         sb.append(modelGlobalPreferencePK);
@@ -42,6 +45,10 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         sb.append(expertEvaluationPageId);
         sb.append(", modelCategoryId=");
         sb.append(modelCategoryId);
+        sb.append(", usesCustomInputs=");
+        sb.append(usesCustomInputs);
+        sb.append(", customInputsDefinition=");
+        sb.append(customInputsDefinition);
         sb.append("}");
 
         return sb.toString();
@@ -57,6 +64,13 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         modelGlobalPreferenceImpl.setWeight(weight);
         modelGlobalPreferenceImpl.setExpertEvaluationPageId(expertEvaluationPageId);
         modelGlobalPreferenceImpl.setModelCategoryId(modelCategoryId);
+        modelGlobalPreferenceImpl.setUsesCustomInputs(usesCustomInputs);
+
+        if (customInputsDefinition == null) {
+            modelGlobalPreferenceImpl.setCustomInputsDefinition(StringPool.BLANK);
+        } else {
+            modelGlobalPreferenceImpl.setCustomInputsDefinition(customInputsDefinition);
+        }
 
         modelGlobalPreferenceImpl.resetOriginalValues();
 
@@ -71,6 +85,8 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         weight = objectInput.readInt();
         expertEvaluationPageId = objectInput.readLong();
         modelCategoryId = objectInput.readLong();
+        usesCustomInputs = objectInput.readBoolean();
+        customInputsDefinition = objectInput.readUTF();
     }
 
     @Override
@@ -82,5 +98,12 @@ public class ModelGlobalPreferenceCacheModel implements CacheModel<ModelGlobalPr
         objectOutput.writeInt(weight);
         objectOutput.writeLong(expertEvaluationPageId);
         objectOutput.writeLong(modelCategoryId);
+        objectOutput.writeBoolean(usesCustomInputs);
+
+        if (customInputsDefinition == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(customInputsDefinition);
+        }
     }
 }

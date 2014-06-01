@@ -11,11 +11,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		var that = this;
 		
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
-			that.render(modelingWidget.container, event.scenario);
+			if (! event.scenario.usesCustomInputs) {
+				that.render(modelingWidget.container, event.scenario);
+			}
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
-			that.render(modelingWidget.container, event.model);
+			if (! event.model.usesCustomInputs) {
+				that.render(modelingWidget.container, event.model);
+			}
 		});
 	}
 	

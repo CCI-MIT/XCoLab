@@ -44,11 +44,11 @@ import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.FocusAreaOntologyTerm;
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
-
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -76,6 +76,7 @@ import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
+
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
@@ -509,23 +510,40 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
         Contest contest = getContest(contestPK);
-        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
-
         List<Long> ret = new ArrayList<>();
-        for (Simulation s : planTypeLocalService.getAvailableModels(planType)) {
-            ret.add(s.getId());
+        boolean addedDefault = false;
+
+        if (StringUtils.isNotBlank(contest.getOtherModels())) {
+        	for (String modelId:  contest.getOtherModels().split(",")) {
+        		long modelIdLong = Long.parseLong(modelId);
+        		ret.add(modelIdLong);
+        		if (modelIdLong == contest.getDefaultModelId()) {
+        			addedDefault = true;
+        		}
+        	}
+        }
+        if (! addedDefault) {
+        	ret.add(contest.getDefaultModelId());
         }
 
         return ret;
     }
     
     public Map<Long, String> getModelIdsAndNames(long contestPK) throws SystemException, PortalException {
+    	List<Long> modelIds = getModelIds(contestPK);
+    	
         Contest contest = getContest(contestPK);
-        PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
 
         Map<Long, String> ret = new HashMap<>();
-        for (Simulation s : planTypeLocalService.getAvailableModels(planType)) {
-            ret.put(s.getId(), s.getName());
+        for (Long modelId: modelIds) {
+        	try {
+        		Simulation s = CollaboratoriumModelingService.repository().getSimulation(modelId);
+                ret.put(s.getId(), s.getName());
+        	
+        	}
+        	catch (IOException e) {
+        		throw new PortalException(e);
+        	}
         }
         return ret;
     }
@@ -533,11 +551,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);
-        if (contest.getPlanTypeId() > 0) {
-        	PlanType planType = planTypeLocalService.getPlanType(contest.getPlanTypeId());
-        	return planType.getDefaultModelId();
-        }
-        return 0L;
+        return contest.getDefaultModelId();
     }
 
     private void reindex(Contest contest) {

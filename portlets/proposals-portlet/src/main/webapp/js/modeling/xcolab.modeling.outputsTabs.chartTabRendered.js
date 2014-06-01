@@ -91,6 +91,15 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				if (errorPolicy.policy == serieErrorPolicy.NO_DISPLAY_WITH_MSG) shouldShow = false;
 				
 			});
+			var onlyEmptyOrZeros = true;
+			for (var i = 0; i < this.variable.values.length; i++) {
+				var val = parseFloat(this.variable.values[i][1]);
+				if (val >= 0.001 || val <= -0.001) {
+					onlyEmptyOrZeros = false;
+				}
+			}
+			
+			shouldShow = shouldShow & (!onlyEmptyOrZeros);
 			
 			if (shouldShow) {
 
@@ -98,7 +107,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 				var parseFunc = null;
 				if (singleSerie.variable.metaData.profiles[1] == 'java.lang.Integer') parseFunc = parseInt;
 				else parseFunc = parseFloat;
-				console.log(singleSerie.variable.metaData.profiles[1], parseFunc);
 
 				if (singleSerie.variable.metaData.units[1].toLowerCase().indexOf("percent") >= 0 || singleSerie.variable.metaData.units[1].toLowerCase().indexOf("%") >= 0) {
 					yaxis.tickOptions = {formatString: "%d %%"};
@@ -213,10 +221,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		    		shadow: false
 		    	},
 		    	legend : {
+		    	    renderer: $.jqplot.EnhancedLegendRenderer,
 		    		show :true,
 		    		location :'s',
 		    		placement: 'outside',
-		    		marginTop : '300px'
+		    		marginTop : '300px',
+		    		rendererOptions: {numberColumns: 5}
 		    	}
 		};
 		

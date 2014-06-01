@@ -23,6 +23,9 @@
 				<th>Description</th>
 				<th>Widget</th>
 				<th>Chart type</th>
+				<th>Order</th>
+				<th>Name override</th>
+				<th>chart oder pk</th>
 			</tr>
 			<c:forEach var="output" items="${allOutputs }">
 				<tr >
@@ -30,6 +33,9 @@
 					<td>${output }</td>
 					<td>${output.displayItemType }</td>
 					<td>${output.chartType }</td>
+					<td>${output.order }</td>
+					<td>${output.nameOverride }</td>
+					<td>${output.modelOutputChartOrderPK }</td>
 					</tr>
 			</c:forEach>
 		</table>

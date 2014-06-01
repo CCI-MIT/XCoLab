@@ -52,10 +52,28 @@
 		<field name="textAfterForm" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
+		<field name="textBeforeShareButtons" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="textAfterShareButtons" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="acceptTosText" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="emailTemplate" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="emailSubjectTemplate" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
+		<field name="enabled" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.BalloonUserTracking">
 		<field name="uuid" type="String" />
-		<field name="email" type="String" />
+		<field name="email" type="String">
+			<hint name="max-length">200</hint>
+		</field>
 		<field name="parent" type="String" />
 		<field name="ip" type="String" />
 		<field name="createDate" type="Date" />
@@ -63,11 +81,21 @@
 		<field name="formFiledDate" type="Date" />
 		<field name="userId" type="long" />
 		<field name="balloonTextId" type="long" />
+		<field name="referrer" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="latitude" type="double" />
+		<field name="longitude" type="double" />
+		<field name="city" type="String" />
+		<field name="country" type="String" />
 		<field name="extraData" type="String">
 			<hint name="max-length">2000000</hint>
 		</field>
 		<field name="balloonLinkUuid" type="String" />
 		<field name="balloonLinkContext" type="String" />
+		<field name="userAgent" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
@@ -78,7 +106,7 @@
 			<hint name="max-length">1024</hint>
 		</field>
 		<field name="ContestDescription" type="String">
-			<hint name="max-length">2048</hint>
+			<hint name="max-length">3072</hint>
 		</field>
 		<field name="ContestModelDescription" type="String">
 			<hint name="max-length">2048</hint>
@@ -103,6 +131,7 @@
 		<field name="sponsorText" type="String">
 			<hint name="max-length">2048</hint>
 		</field>
+		<field name="sponsorLink" type="String" />
 		<field name="flag" type="int" />
 		<field name="flagText" type="String">
 			<hint name="max-length">1024</hint>
@@ -383,6 +412,8 @@
 		<field name="weight" type="int" />
 		<field name="expertEvaluationPageId" type="long" />
 		<field name="modelCategoryId" type="long" />
+		<field name="usesCustomInputs" type="boolean" />
+		<field name="customInputsDefinition" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ModelInputGroup">
 		<field name="modelInputGroupPK" type="long" />

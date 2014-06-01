@@ -456,15 +456,16 @@ function initTooltips() {
         return jQuery("<span />");
     }
     
-    jQuery(".tooltips div a, .fieldWithTooltip").mouseover(function() {
+    jQuery(".tooltips div a, .fieldWithTooltip").not('.tooltipInitialized').mouseover(function() {
         var self = jQuery(this);
+        self.addClass('tooltipInitialized');
         var tooltip = findTooltip(self);
         
         tooltip.parent().css("position", "relative"); 
         tooltip.show();
         
         var offsets = {top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2};
-        if (self.hasClass('fieldWithTooltip')) {
+        if (self.hasClass('fieldWithTooltip') && ! self.hasClass('tooltipAbove')) {
         	delete offsets.top;
         	delete offsets.left;
         }

@@ -1,6 +1,8 @@
 CKEDITOR.plugins.add( 'proposalLink', {
     icons: 'proposalLink',
     init: function( editor ) {
+    	
+    	console.log('editor', editor);
 
     	var sectionContainer = null;//jQuery(editor.container.$).parents('.addpropbox');
     	var sectionId = null;
@@ -25,20 +27,25 @@ CKEDITOR.plugins.add( 'proposalLink', {
     		
     		editor.insertHtml(proposalLinkHtml.join(""));
     	});
+    	var editorSectionType = jQuery(editor.element).attr('data-section-type');
+    	var supportedSectionTypes = {'PROPOSAL_REFERENCE': true, 'PROPOSAL_LIST_REFERENCE': true, 'PROPOSAL_LIST_TEXT_REFERENCE': true};
+    	var addProposalPickerButton = editorSectionType && editorSectionType in supportedSectionTypes;
     	
-    	editor.ui.addButton( 'ProposalLink', {
-    	    label: 'Proposal link',
-    	    command: 'proposalLink',
-    	    toolbar: 'insert'
-    	});
+    	if (addProposalPickerButton) {
+    		editor.ui.addButton( 'ProposalLink', {
+    			label: 'Proposal link',
+    			command: 'proposalLink',
+    			toolbar: 'insert'
+    		});
     	
-    	editor.addCommand( 'proposalLink', new CKEDITOR.command( editor, {
-    	    exec: function( editor ) {
-    	    	sectionContainer = jQuery(editor.container.$).parents('.addpropbox');
-    	    	sectionId = sectionContainer.attr("data-section-id");
+    		editor.addCommand( 'proposalLink', new CKEDITOR.command( editor, {
+    			exec: function( editor ) {
+    				sectionContainer = jQuery(editor.container.$).parents('.addpropbox');
+    				sectionId = sectionContainer.attr("data-section-id");
     	    	
-    	    	pickProposal(sectionId);
-    	    }}));
+    				pickProposal(sectionId);
+    			}}));
+    	}
     	
     },
     

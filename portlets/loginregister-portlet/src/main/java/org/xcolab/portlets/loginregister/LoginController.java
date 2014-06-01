@@ -156,7 +156,7 @@ public class LoginController {
         			}
         		}
         		
-        		if (but != null && but.getUserId() != user.getUserId()) {
+        		if (but != null && user != null && but.getUserId() != user.getUserId()) {
         			but.setUserId(user.getUserId());
         			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
         		}

@@ -39,7 +39,7 @@
 .act_charts-bot2 { position:absolute; bottom:46px; left:0px; z-index:7; width:984px; height:7px; background:url(../images/actions_chart-shade-b2.png) no-repeat right;}
 
 .actions_chart-head { width:734px; min-height:85px; padding:0;}
-.actions_chart-head-bg { width:704px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
+.actions_chart-head-bg { width:734px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
 .actions_chart-head-shade { position:absolute; z-index:5;  width:734px; height:5px; background:url(../images/actions_charttop-shade.png) repeat-x;}
 .act-edit_left .actions_chart-head-shade {width: 480px;}
 .actions_chart { width:734px; background:url(../images/actions_chart-bg.gif);}
@@ -846,8 +846,8 @@ display: inline;
 }
 
 .popup-wrap.proposal-picker {
-    width: 832px;
-    margin-left: -416px;
+    width: 1044px;
+    margin-left: -522px;
 }
 
 .popup .error-message {

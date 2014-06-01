@@ -50,10 +50,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String resourcesUrl;
     public boolean contestPrivate;
     public boolean usePermissions;
+    public long defaultModelId;
+    public String otherModels;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(59);
+        StringBundler sb = new StringBundler(63);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -113,6 +115,10 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(contestPrivate);
         sb.append(", usePermissions=");
         sb.append(usePermissions);
+        sb.append(", defaultModelId=");
+        sb.append(defaultModelId);
+        sb.append(", otherModels=");
+        sb.append(otherModels);
         sb.append("}");
 
         return sb.toString();
@@ -221,6 +227,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         contestImpl.setContestPrivate(contestPrivate);
         contestImpl.setUsePermissions(usePermissions);
+        contestImpl.setDefaultModelId(defaultModelId);
+
+        if (otherModels == null) {
+            contestImpl.setOtherModels(StringPool.BLANK);
+        } else {
+            contestImpl.setOtherModels(otherModels);
+        }
 
         contestImpl.resetOriginalValues();
 
@@ -258,6 +271,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         resourcesUrl = objectInput.readUTF();
         contestPrivate = objectInput.readBoolean();
         usePermissions = objectInput.readBoolean();
+        defaultModelId = objectInput.readLong();
+        otherModels = objectInput.readUTF();
     }
 
     @Override
@@ -351,5 +366,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         objectOutput.writeBoolean(contestPrivate);
         objectOutput.writeBoolean(usePermissions);
+        objectOutput.writeLong(defaultModelId);
+
+        if (otherModels == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(otherModels);
+        }
     }
 }
