@@ -54,7 +54,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		}
 		else {
 			xaxisTicks = [];
-			for (var i=indexMin; i<=indexMax; i+=10) {
+			// as requested by Robert we should start from year that has 0 at the end (ie 2010)
+			
+			for (var i=indexMin + (10 - indexMin%10); i<=indexMax; i+=10) {
 				xaxisTicks.push(i);
 			}
 		}
