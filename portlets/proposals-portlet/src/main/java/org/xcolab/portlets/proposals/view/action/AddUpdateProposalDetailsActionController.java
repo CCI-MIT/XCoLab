@@ -13,6 +13,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,6 +47,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.utils.emailnotification.ProposalCreationNotification;
 
 
@@ -165,14 +168,14 @@ public class AddUpdateProposalDetailsActionController {
         }
         
         if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, xssClean(updateProposalSectionsBean.getPitch()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, xssClean(updateProposalSectionsBean.getPitch(), request));
         }
         else {
         	filledAll = false;
         }
 
         if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
-            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, xssClean(updateProposalSectionsBean.getDescription()));
+            ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, xssClean(updateProposalSectionsBean.getDescription(), request));
         }
         else {
         	filledAll = false;
@@ -196,7 +199,7 @@ public class AddUpdateProposalDetailsActionController {
             String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
             if (section.getType() == PlanSectionTypeKeys.TEXT || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                 if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionValue));
+                    ProposalLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), xssClean(newSectionValue, request));
                 }
                 else {
                 	filledAll = false;
@@ -290,13 +293,15 @@ public class AddUpdateProposalDetailsActionController {
     	return doc.body().html();
     }
 
-    private String xssClean(String sectionData) {
+    private String xssClean(String sectionData, PortletRequest request) {
+    	String baseUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
+    	baseUrl.substring(0, baseUrl.indexOf("/", 9));
         //http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
         Whitelist w = Whitelist.relaxed();
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
-    	Document doc = Jsoup.parse(sectionData);
+    	Document doc = Jsoup.parse(sectionData, baseUrl);
     	// Clean the document.
     	doc = new Cleaner(w).clean(doc);
 
