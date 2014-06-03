@@ -297,7 +297,7 @@ public class AddUpdateProposalDetailsActionController {
     	String baseUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
     	baseUrl.substring(0, baseUrl.indexOf("/", 9));
         //http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
-        Whitelist w = Whitelist.relaxed();
+        Whitelist w = Whitelist.relaxed().preserveRelativeLinks(true);
         w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
