@@ -1284,6 +1284,24 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.StaffMemberModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="userId" />
+			<basic name="categoryId" />
+			<basic name="firstNames" />
+			<basic name="lastName" />
+			<basic name="url" />
+			<basic name="photoUrl" />
+			<basic name="sort" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
 		<table name="xcolab_ActivitySubscription" />
 		<attributes />
@@ -1598,6 +1616,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
 		<table name="xcolab_ProposalVote" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.StaffMemberImpl" name="StaffMember">
+		<table name="xcolab_StaffMember" />
 		<attributes />
 	</entity>
 </entity-mappings>

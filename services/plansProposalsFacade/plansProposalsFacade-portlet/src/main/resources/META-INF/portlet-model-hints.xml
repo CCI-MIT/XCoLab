@@ -871,4 +871,14 @@
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
 	</model>
+	<model name="com.ext.portlet.model.StaffMember">
+		<field name="id" type="long" />
+		<field name="userId" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="firstNames" type="String" />
+		<field name="lastName" type="String" />
+		<field name="url" type="String" />
+		<field name="photoUrl" type="String" />
+		<field name="sort" type="int" />
+	</model>
 </model-hints>

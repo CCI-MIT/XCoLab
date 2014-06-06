@@ -79,6 +79,7 @@ import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
+import com.ext.portlet.model.StaffMemberClp;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -487,6 +488,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalVoteClp.class.getName())) {
             return translateInputProposalVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
+            return translateInputStaffMember(oldModel);
         }
 
         return oldModel;
@@ -1316,6 +1321,16 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputStaffMember(BaseModel<?> oldModel) {
+        StaffMemberClp oldClpModel = (StaffMemberClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getStaffMemberRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInput(Object obj) {
         if (obj instanceof BaseModel<?>) {
             return translateInput((BaseModel<?>) obj);
@@ -1713,6 +1728,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalVoteImpl")) {
             return translateOutputProposalVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.StaffMemberImpl")) {
+            return translateOutputStaffMember(oldModel);
         }
 
         return oldModel;
@@ -2279,6 +2299,10 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchProposalVoteException")) {
             return new com.ext.portlet.NoSuchProposalVoteException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
+            return new com.ext.portlet.NoSuchStaffMemberException();
         }
 
         return throwable;
@@ -3099,6 +3123,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalVoteRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputStaffMember(BaseModel<?> oldModel) {
+        StaffMemberClp newModel = new StaffMemberClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setStaffMemberRemoteModel(oldModel);
 
         return newModel;
     }

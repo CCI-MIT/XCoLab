@@ -768,3 +768,14 @@ create table xcolab_ProposalVote (
 	createDate DATE null,
 	primary key (contestPhaseId, userId)
 );
+
+create table xcolab_StaffMember (
+	id_ LONG not null primary key,
+	userId LONG,
+	categoryId LONG,
+	firstNames VARCHAR(75) null,
+	lastName VARCHAR(75) null,
+	url VARCHAR(75) null,
+	photoUrl VARCHAR(75) null,
+	sort INTEGER
+);
