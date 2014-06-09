@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,7 +31,13 @@ public class StaffMembersController {
         //retrieve staff members which belong to the category indicated in the portlet's preferences
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
                 .add(PropertyFactoryUtil.forName("categoryId").eq(new Long(preferences.getCategoryId())));
-        List<StaffMember> staffMembers = StaffMemberLocalServiceUtil.dynamicQuery(query);
+        List<StaffMember> results = StaffMemberLocalServiceUtil.dynamicQuery(query);
+
+        List<StaffMemberWrapper> staffMembers = new ArrayList<StaffMemberWrapper>();
+
+        for (StaffMember staffMember : results) {
+            staffMembers.add(new StaffMemberWrapper(staffMember));
+        }
 
         model.addAttribute("staffMembers", staffMembers);
 

@@ -9,8 +9,8 @@
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="./init.jspx" />
 
-    <c:if test="${not empty portletTitle }">
-        <h1>${portletTitle}</h1>
+    <c:if test="${not empty portletTitle}">
+        <h2>${portletTitle}</h2>
     </c:if>
 
     <c:choose>
@@ -18,26 +18,22 @@
             <table class="staffmembers-table">
                 <tr>
                 <c:forEach items="${staffMembers}" var="staffMember" varStatus="status">
-                    <c:if test="${(status.index % columnAmount) == 0 && status.index > 0}">
-                        </tr>
-                        <tr>
+                    <c:if test="${(status.index % columnAmount) == 0 and status.index > 0}">
                     </c:if>
                         <td>
                             <c:choose>
-                                <c:when test="${displayUrl && not empty staffMember.url}">
+                                <c:when test="${displayUrl and not empty staffMember.url}">
                                     <a href="${staffMember.url}">
-                                            ${staffMember.firstNames}
-                                            ${staffMember.lastName}
+                                            ${staffMember.name}
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                        ${staffMember.firstNames}
-                                        ${staffMember.lastName}
+                                        ${staffMember.name}
                                 </c:otherwise>
                             </c:choose>
-                            <br>
+                            <br />
                             <c:if test="${not empty staffMember.photoUrl}">
-                                <img src="${staffMember.photoUrl}" height="120">
+                                <img src="${staffMember.photoUrl}" height="120" />
                             </c:if>
                         </td>
                 </c:forEach>
@@ -49,15 +45,13 @@
                 <c:forEach items="${staffMembers}" var="staffMember">
                     <li>
                         <c:choose>
-                            <c:when test="${displayUrl && not empty staffMember.url}">
+                            <c:when test="${displayUrl and not empty staffMember.url}">
                                 <a href="${staffMember.url}">
-                                    ${staffMember.firstNames}
-                                    ${staffMember.lastName}
+                                    ${staffMember.name}
                                 </a>
                             </c:when>
                             <c:otherwise>
-                                ${staffMember.firstNames}
-                                ${staffMember.lastName}
+                                ${staffMember.name}
                             </c:otherwise>
                         </c:choose>
                     </li>
@@ -66,12 +60,4 @@
         </c:otherwise>
 
     </c:choose>
-
-    <ul>
-
-
-        Display Photo: ${displayPhoto}
-
-
-    </ul>
 </jsp:root>

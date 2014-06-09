@@ -103,7 +103,7 @@
 			<artifactId>liferay-faces-bridge-impl</artifactId>
 			<version>3.2.4-ga5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

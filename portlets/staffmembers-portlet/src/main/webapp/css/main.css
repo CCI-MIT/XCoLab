@@ -4,6 +4,19 @@
  * or the license.txt file included in this distribution for the full text of the license.
  */
 
+.staffmembers-table {
+    margin: 1em 0;
+    font-size: 1.1em;
+    img {
+        margin: 0.5em 0;
+    }
+}
+.staffmembers-table td {
+    text-align: center;
+}
 
-
-
+.staffmembers-list {
+    font-size: 1.1em;
+    line-height: 150%;
+    margin: 1em 0;
+}

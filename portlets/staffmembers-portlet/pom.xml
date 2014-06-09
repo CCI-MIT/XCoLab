@@ -6,12 +6,12 @@
     	<groupId>org.xcolab.portlets</groupId>
     	<version>1.0-SNAPSHOT</version>
   	</parent>
-  	
+
 	<artifactId>staffmembers-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>staffmembers-portlet Portlet</name>
 	<version>2.0-SNAPSHOT</version>
-	
+
 	<properties>
 		<spring.version>3.2.0.RELEASE</spring.version>
         <icefaces.version>3.2.0</icefaces.version>
@@ -82,53 +82,32 @@
 			</exclusions>
 		</dependency>
 
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces</artifactId>
-            <version>${icefaces.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-ace</artifactId>
-            <version>${icefaces.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-compat</artifactId>
-            <version>${icefaces.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.liferay.faces</groupId>
-            <artifactId>liferay-faces-bridge-impl</artifactId>
-            <version>3.2.4-ga5</version>
-        </dependency>
-		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
+			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.xcolab.services</groupId>
 			<artifactId>plansProposalsFacade-portlet-service</artifactId>
@@ -140,26 +119,26 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
   			<groupId>org.xcolab.taglibs</groupId>
   			<artifactId>colabJspTags</artifactId>
   			<version>1.0-SNAPSHOT</version>
   		</dependency>
-        
+
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>util-taglib</artifactId>
 			<version>${liferay.version}</version>
 			<!-- <scope>provided</scope>-->
 		</dependency>
-		
+
         <dependency>
 			<groupId>com.ocpsoft</groupId>
 			<artifactId>ocpsoft-pretty-time</artifactId>
 			<version>1.0.7</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc-portlet</artifactId>
@@ -171,14 +150,14 @@
 			<version>1.2</version>
 			<!--<scope>provided</scope>-->
 		</dependency>
-            
-            
+
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.3.0.Final</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
@@ -190,8 +169,8 @@
             <artifactId>jsoup</artifactId>
             <version>1.7.2</version>
         </dependency>
-            
-	</dependencies>	
+
+	</dependencies>
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>

@@ -29,7 +29,6 @@ public class StaffMemberWrapper implements Serializable {
         } catch (SystemException e) {
             return null;
         }
-
     }
     private boolean hasCoLabUser() {
         return this.getUser() != null;
@@ -43,20 +42,24 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
-    public String getPhoto() {
+    public String getPhotoUrl() {
         try {
-            if (this.hasCoLabUser()) {
-                return Helper.getThemeDisplay().getPathImage() + "/user_"
+            if (this.hasCoLabUser() && this.getUser().getPortraitId() != 0) {
+                return "/image/user_"
                         + (this.getUser().getFemale() ? "female" : "male") + "_portrait?img_id="
                         + this.getUser().getPortraitId();
-
             } else {
-                return this.staffMember.getFirstNames()+" "+this.staffMember.getLastName();
+                return this.staffMember.getPhotoUrl();
             }
-        } catch (Exception e) {
-            return "";
+        } catch (PortalException e) {
+            return null;
+        } catch (SystemException e) {
+            return null;
         }
+    }
 
+    public String getUrl() {
+        return this.staffMember.getUrl();
     }
 
 
