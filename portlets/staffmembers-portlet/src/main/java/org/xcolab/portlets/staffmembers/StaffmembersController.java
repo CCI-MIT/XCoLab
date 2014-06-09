@@ -20,13 +20,16 @@ import java.util.List;
 public class StaffMembersController {
     @RequestMapping
     public String showStaffMembers(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
+        StaffMembersPreferences preferences = new StaffMembersPreferences(request);
 
-        //_preferences = new StaffMembersPreferences(request);
+        model.addAttribute("portletTitle", preferences.getPortletTitle());
+        model.addAttribute("columnAmount", preferences.getColumnAmount());
+        model.addAttribute("displayPhoto", preferences.isDisplayPhoto());
+        model.addAttribute("displayUrl", preferences.isDisplayUrl());
 
-        //TODO: use the categoryId from the preferences
+        //retrieve staff members which belong to the category indicated in the portlet's preferences
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
-                .add(PropertyFactoryUtil.forName("categoryId").eq(new Long(1)));
-
+                .add(PropertyFactoryUtil.forName("categoryId").eq(new Long(preferences.getCategoryId())));
         List<StaffMember> staffMembers = StaffMemberLocalServiceUtil.dynamicQuery(query);
 
         model.addAttribute("staffMembers", staffMembers);

@@ -14,8 +14,9 @@
 	
 	<properties>
 		<spring.version>3.2.0.RELEASE</spring.version>
+        <icefaces.version>3.2.0</icefaces.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -80,7 +81,27 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
+        <dependency>
+            <groupId>org.icefaces</groupId>
+            <artifactId>icefaces</artifactId>
+            <version>${icefaces.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.icefaces</groupId>
+            <artifactId>icefaces-ace</artifactId>
+            <version>${icefaces.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.icefaces</groupId>
+            <artifactId>icefaces-compat</artifactId>
+            <version>${icefaces.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liferay.faces</groupId>
+            <artifactId>liferay-faces-bridge-impl</artifactId>
+            <version>3.2.4-ga5</version>
+        </dependency>
 		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
