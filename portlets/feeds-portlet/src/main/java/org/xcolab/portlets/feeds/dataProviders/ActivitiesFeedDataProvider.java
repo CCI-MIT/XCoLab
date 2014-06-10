@@ -1,22 +1,5 @@
 package org.xcolab.portlets.feeds.dataProviders;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.ui.Model;
-import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.feeds.FeedTypeDataProvider;
-import org.xcolab.portlets.feeds.FeedsPreferences;
-import org.xcolab.portlets.feeds.Helper;
-import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
-
 import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -25,6 +8,17 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.model.SocialActivity;
+import org.springframework.ui.Model;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.feeds.FeedTypeDataProvider;
+import org.xcolab.portlets.feeds.FeedsPreferences;
+import org.xcolab.portlets.feeds.Helper;
+import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
@@ -61,10 +55,17 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 				// ignore
 			}
 		}
+        
+        List<SocialActivity> windowedActivities;
+        int startRetrievalAt = sortFilterPage.getPage() * pageSize;
+        int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
+        if (filterUserId == 0) {
+            windowedActivities = ActivityUtil.retrieveWindowedActivities(startRetrievalAt, endRetrievalAt);
+        } else {
+            windowedActivities = ActivityUtil.retrieveWindowedActivities(filterUserId, startRetrievalAt, endRetrievalAt);
+        }
 
-		for (SocialActivity activity : filterUserId == 0 ?
-				ActivityUtil.retrieveWindowedActivities(sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize) :
-				ActivityUtil.retrieveWindowedActivities(filterUserId, sortFilterPage.getPage() * pageSize, (sortFilterPage.getPage()+1) * pageSize)) {
+        for (SocialActivity activity : windowedActivities) {
 			if (SocialActivityWrapper.isEmpty(activity, request)) {
 				continue;
 			}
