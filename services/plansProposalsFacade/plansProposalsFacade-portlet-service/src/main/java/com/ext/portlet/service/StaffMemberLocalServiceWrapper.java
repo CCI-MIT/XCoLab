@@ -271,6 +271,13 @@ public class StaffMemberLocalServiceWrapper implements StaffMemberLocalService,
             arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.StaffMember> getStaffMembersByCategoryId(
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _staffMemberLocalService.getStaffMembersByCategoryId(categoryId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

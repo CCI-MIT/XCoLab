@@ -1,8 +1,8 @@
 package org.xcolab.portlets.staffmembers;
 
 import com.ext.portlet.model.StaffMember;
+import com.ext.portlet.service.StaffMemberLocalService;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,9 +29,7 @@ public class StaffMembersController {
         model.addAttribute("displayUrl", preferences.isDisplayUrl());
 
         //retrieve staff members which belong to the category indicated in the portlet's preferences
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(StaffMember.class)
-                .add(PropertyFactoryUtil.forName("categoryId").eq(new Long(preferences.getCategoryId())));
-        List<StaffMember> results = StaffMemberLocalServiceUtil.dynamicQuery(query);
+        List<StaffMember> results = StaffMemberLocalServiceUtil.getStaffMembersByCategoryId(new Long(preferences.getCategoryId()));
 
         List<StaffMemberWrapper> staffMembers = new ArrayList<StaffMemberWrapper>();
 
