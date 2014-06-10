@@ -45,8 +45,10 @@ public class StaffMemberWrapper implements Serializable {
     public String getPhotoUrl() {
         try {
             if (this.hasCoLabUser() && this.getUser().getPortraitId() != 0) {
+                String gender = (this.getUser().getFemale() ? "female" : "male");
+
                 return "/image/user_"
-                        + (this.getUser().getFemale() ? "female" : "male") + "_portrait?img_id="
+                        + gender + "_portrait?img_id="
                         + this.getUser().getPortraitId();
             } else {
                 return this.staffMember.getPhotoUrl();

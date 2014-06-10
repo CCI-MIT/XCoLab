@@ -4,19 +4,34 @@
  * or the license.txt file included in this distribution for the full text of the license.
  */
 
-.staffmembers-table {
-    margin: 1em 0;
+.staffmembers-list, .staffmembers-photos {
     font-size: 1.1em;
+    margin: 1em 0;
+}
+
+.staffmembers-photos {
+    list-style-type: none;
+    margin-top: 0;
+
+    li {
+        background-image: none;
+        float: left;
+        text-align: center;
+        display: block;
+        width: 200px;
+        margin: 0;
+        margin-top: 1em;
+        padding: 0;
+    }
+    li.clear-row {
+        clear: left;
+    }
+
     img {
         margin: 0.5em 0;
     }
 }
-.staffmembers-table td {
-    text-align: center;
-}
 
 .staffmembers-list {
-    font-size: 1.1em;
     line-height: 150%;
-    margin: 1em 0;
 }

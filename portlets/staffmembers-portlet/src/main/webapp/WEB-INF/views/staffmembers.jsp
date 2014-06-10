@@ -15,49 +15,15 @@
 
     <c:choose>
         <c:when test="${displayPhoto}">
-            <table class="staffmembers-table">
-                <tr>
-                <c:forEach items="${staffMembers}" var="staffMember" varStatus="status">
-                    <c:if test="${(status.index % columnAmount) == 0 and status.index > 0}">
-                    </c:if>
-                        <td>
-                            <c:choose>
-                                <c:when test="${displayUrl and not empty staffMember.url}">
-                                    <a href="${staffMember.url}">
-                                            ${staffMember.name}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                        ${staffMember.name}
-                                </c:otherwise>
-                            </c:choose>
-                            <br />
-                            <c:if test="${not empty staffMember.photoUrl}">
-                                <img src="${staffMember.photoUrl}" height="120" />
-                            </c:if>
-                        </td>
-                </c:forEach>
-                </tr>
-            </table>
+            <ul class="staffmembers-photos">
+                <jsp:directive.include file="./staffmembers-items.jspx" />
+            </ul>
         </c:when>
         <c:otherwise>
             <ul class="staffmembers-list">
-                <c:forEach items="${staffMembers}" var="staffMember">
-                    <li>
-                        <c:choose>
-                            <c:when test="${displayUrl and not empty staffMember.url}">
-                                <a href="${staffMember.url}">
-                                    ${staffMember.name}
-                                </a>
-                            </c:when>
-                            <c:otherwise>
-                                ${staffMember.name}
-                            </c:otherwise>
-                        </c:choose>
-                    </li>
-                </c:forEach>
+                <jsp:directive.include file="./staffmembers-items.jspx" />
             </ul>
         </c:otherwise>
-
     </c:choose>
+
 </jsp:root>
