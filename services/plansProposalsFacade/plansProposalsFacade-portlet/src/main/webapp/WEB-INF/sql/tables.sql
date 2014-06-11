@@ -777,5 +777,7 @@ create table xcolab_StaffMember (
 	lastName VARCHAR(75) null,
 	url VARCHAR(75) null,
 	photoUrl VARCHAR(75) null,
+	role VARCHAR(75) null,
+	organization VARCHAR(75) null,
 	sort INTEGER
 );

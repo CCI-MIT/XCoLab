@@ -14,7 +14,8 @@ public class StaffMembersPreferencesController {
     @RequestMapping
     public String showStaffMembers(RenderRequest request, RenderResponse response, Model model) {
     	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(request));
-        
+    	model.addAttribute("categories", StaffMembersPreferences.getCategories());
+
         return "edit";
     }
 	

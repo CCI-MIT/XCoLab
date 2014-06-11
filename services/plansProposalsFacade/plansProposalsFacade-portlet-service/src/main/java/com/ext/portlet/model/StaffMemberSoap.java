@@ -20,6 +20,8 @@ public class StaffMemberSoap implements Serializable {
     private String _lastName;
     private String _url;
     private String _photoUrl;
+    private String _role;
+    private String _organization;
     private int _sort;
 
     public StaffMemberSoap() {
@@ -35,6 +37,8 @@ public class StaffMemberSoap implements Serializable {
         soapModel.setLastName(model.getLastName());
         soapModel.setUrl(model.getUrl());
         soapModel.setPhotoUrl(model.getPhotoUrl());
+        soapModel.setRole(model.getRole());
+        soapModel.setOrganization(model.getOrganization());
         soapModel.setSort(model.getSort());
 
         return soapModel;
@@ -138,6 +142,22 @@ public class StaffMemberSoap implements Serializable {
 
     public void setPhotoUrl(String photoUrl) {
         _photoUrl = photoUrl;
+    }
+
+    public String getRole() {
+        return _role;
+    }
+
+    public void setRole(String role) {
+        _role = role;
+    }
+
+    public String getOrganization() {
+        return _organization;
+    }
+
+    public void setOrganization(String organization) {
+        _organization = organization;
     }
 
     public int getSort() {

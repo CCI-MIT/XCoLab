@@ -64,6 +64,13 @@ public class StaffMemberWrapper implements Serializable {
         return this.staffMember.getUrl();
     }
 
+    public String getRole() {
+        return this.staffMember.getRole();
+    }
+
+    public String getOrganization() {
+        return this.staffMember.getOrganization();
+    }
 
 
     

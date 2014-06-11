@@ -58,9 +58,11 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
             { "lastName", Types.VARCHAR },
             { "url", Types.VARCHAR },
             { "photoUrl", Types.VARCHAR },
+            { "role", Types.VARCHAR },
+            { "organization", Types.VARCHAR },
             { "sort", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_StaffMember (id_ LONG not null primary key,userId LONG,categoryId LONG,firstNames VARCHAR(75) null,lastName VARCHAR(75) null,url VARCHAR(75) null,photoUrl VARCHAR(75) null,sort INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_StaffMember (id_ LONG not null primary key,userId LONG,categoryId LONG,firstNames VARCHAR(75) null,lastName VARCHAR(75) null,url VARCHAR(75) null,photoUrl VARCHAR(75) null,role VARCHAR(75) null,organization VARCHAR(75) null,sort INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_StaffMember";
     public static final String ORDER_BY_JPQL = " ORDER BY staffMember.sort ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_StaffMember.sort ASC";
@@ -94,6 +96,8 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
     private String _lastName;
     private String _url;
     private String _photoUrl;
+    private String _role;
+    private String _organization;
     private int _sort;
     private long _columnBitmask;
     private StaffMember _escapedModel;
@@ -121,6 +125,8 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
         model.setLastName(soapModel.getLastName());
         model.setUrl(soapModel.getUrl());
         model.setPhotoUrl(soapModel.getPhotoUrl());
+        model.setRole(soapModel.getRole());
+        model.setOrganization(soapModel.getOrganization());
         model.setSort(soapModel.getSort());
 
         return model;
@@ -187,6 +193,8 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
         attributes.put("lastName", getLastName());
         attributes.put("url", getUrl());
         attributes.put("photoUrl", getPhotoUrl());
+        attributes.put("role", getRole());
+        attributes.put("organization", getOrganization());
         attributes.put("sort", getSort());
 
         return attributes;
@@ -234,6 +242,18 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
 
         if (photoUrl != null) {
             setPhotoUrl(photoUrl);
+        }
+
+        String role = (String) attributes.get("role");
+
+        if (role != null) {
+            setRole(role);
+        }
+
+        String organization = (String) attributes.get("organization");
+
+        if (organization != null) {
+            setOrganization(organization);
         }
 
         Integer sort = (Integer) attributes.get("sort");
@@ -360,6 +380,36 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
 
     @JSON
     @Override
+    public String getRole() {
+        if (_role == null) {
+            return StringPool.BLANK;
+        } else {
+            return _role;
+        }
+    }
+
+    @Override
+    public void setRole(String role) {
+        _role = role;
+    }
+
+    @JSON
+    @Override
+    public String getOrganization() {
+        if (_organization == null) {
+            return StringPool.BLANK;
+        } else {
+            return _organization;
+        }
+    }
+
+    @Override
+    public void setOrganization(String organization) {
+        _organization = organization;
+    }
+
+    @JSON
+    @Override
     public int getSort() {
         return _sort;
     }
@@ -409,6 +459,8 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
         staffMemberImpl.setLastName(getLastName());
         staffMemberImpl.setUrl(getUrl());
         staffMemberImpl.setPhotoUrl(getPhotoUrl());
+        staffMemberImpl.setRole(getRole());
+        staffMemberImpl.setOrganization(getOrganization());
         staffMemberImpl.setSort(getSort());
 
         staffMemberImpl.resetOriginalValues();
@@ -514,6 +566,22 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
             staffMemberCacheModel.photoUrl = null;
         }
 
+        staffMemberCacheModel.role = getRole();
+
+        String role = staffMemberCacheModel.role;
+
+        if ((role != null) && (role.length() == 0)) {
+            staffMemberCacheModel.role = null;
+        }
+
+        staffMemberCacheModel.organization = getOrganization();
+
+        String organization = staffMemberCacheModel.organization;
+
+        if ((organization != null) && (organization.length() == 0)) {
+            staffMemberCacheModel.organization = null;
+        }
+
         staffMemberCacheModel.sort = getSort();
 
         return staffMemberCacheModel;
@@ -521,7 +589,7 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(getId());
@@ -537,6 +605,10 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
         sb.append(getUrl());
         sb.append(", photoUrl=");
         sb.append(getPhotoUrl());
+        sb.append(", role=");
+        sb.append(getRole());
+        sb.append(", organization=");
+        sb.append(getOrganization());
         sb.append(", sort=");
         sb.append(getSort());
         sb.append("}");
@@ -546,7 +618,7 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(34);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.StaffMember");
@@ -579,6 +651,14 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
         sb.append(
             "<column><column-name>photoUrl</column-name><column-value><![CDATA[");
         sb.append(getPhotoUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>role</column-name><column-value><![CDATA[");
+        sb.append(getRole());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>organization</column-name><column-value><![CDATA[");
+        sb.append(getOrganization());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>sort</column-name><column-value><![CDATA[");

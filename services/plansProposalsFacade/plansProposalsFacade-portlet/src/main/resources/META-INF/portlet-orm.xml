@@ -1295,6 +1295,8 @@
 			<basic name="lastName" />
 			<basic name="url" />
 			<basic name="photoUrl" />
+			<basic name="role" />
+			<basic name="organization" />
 			<basic name="sort" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

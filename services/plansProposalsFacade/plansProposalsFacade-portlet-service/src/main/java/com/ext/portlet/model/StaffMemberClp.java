@@ -29,6 +29,8 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
     private String _lastName;
     private String _url;
     private String _photoUrl;
+    private String _role;
+    private String _organization;
     private int _sort;
     private BaseModel<?> _staffMemberRemoteModel;
 
@@ -76,6 +78,8 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
         attributes.put("lastName", getLastName());
         attributes.put("url", getUrl());
         attributes.put("photoUrl", getPhotoUrl());
+        attributes.put("role", getRole());
+        attributes.put("organization", getOrganization());
         attributes.put("sort", getSort());
 
         return attributes;
@@ -123,6 +127,18 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
 
         if (photoUrl != null) {
             setPhotoUrl(photoUrl);
+        }
+
+        String role = (String) attributes.get("role");
+
+        if (role != null) {
+            setRole(role);
+        }
+
+        String organization = (String) attributes.get("organization");
+
+        if (organization != null) {
+            setOrganization(organization);
         }
 
         Integer sort = (Integer) attributes.get("sort");
@@ -297,6 +313,50 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
     }
 
     @Override
+    public String getRole() {
+        return _role;
+    }
+
+    @Override
+    public void setRole(String role) {
+        _role = role;
+
+        if (_staffMemberRemoteModel != null) {
+            try {
+                Class<?> clazz = _staffMemberRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setRole", String.class);
+
+                method.invoke(_staffMemberRemoteModel, role);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getOrganization() {
+        return _organization;
+    }
+
+    @Override
+    public void setOrganization(String organization) {
+        _organization = organization;
+
+        if (_staffMemberRemoteModel != null) {
+            try {
+                Class<?> clazz = _staffMemberRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOrganization", String.class);
+
+                method.invoke(_staffMemberRemoteModel, organization);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
     public int getSort() {
         return _sort;
     }
@@ -392,6 +452,8 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
         clone.setLastName(getLastName());
         clone.setUrl(getUrl());
         clone.setPhotoUrl(getPhotoUrl());
+        clone.setRole(getRole());
+        clone.setOrganization(getOrganization());
         clone.setSort(getSort());
 
         return clone;
@@ -444,7 +506,7 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(getId());
@@ -460,6 +522,10 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
         sb.append(getUrl());
         sb.append(", photoUrl=");
         sb.append(getPhotoUrl());
+        sb.append(", role=");
+        sb.append(getRole());
+        sb.append(", organization=");
+        sb.append(getOrganization());
         sb.append(", sort=");
         sb.append(getSort());
         sb.append("}");
@@ -469,7 +535,7 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(34);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.StaffMember");
@@ -502,6 +568,14 @@ public class StaffMemberClp extends BaseModelImpl<StaffMember>
         sb.append(
             "<column><column-name>photoUrl</column-name><column-value><![CDATA[");
         sb.append(getPhotoUrl());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>role</column-name><column-value><![CDATA[");
+        sb.append(getRole());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>organization</column-name><column-value><![CDATA[");
+        sb.append(getOrganization());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>sort</column-name><column-value><![CDATA[");

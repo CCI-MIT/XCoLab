@@ -27,11 +27,13 @@ public class StaffMemberCacheModel implements CacheModel<StaffMember>,
     public String lastName;
     public String url;
     public String photoUrl;
+    public String role;
+    public String organization;
     public int sort;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(21);
 
         sb.append("{id=");
         sb.append(id);
@@ -47,6 +49,10 @@ public class StaffMemberCacheModel implements CacheModel<StaffMember>,
         sb.append(url);
         sb.append(", photoUrl=");
         sb.append(photoUrl);
+        sb.append(", role=");
+        sb.append(role);
+        sb.append(", organization=");
+        sb.append(organization);
         sb.append(", sort=");
         sb.append(sort);
         sb.append("}");
@@ -86,6 +92,18 @@ public class StaffMemberCacheModel implements CacheModel<StaffMember>,
             staffMemberImpl.setPhotoUrl(photoUrl);
         }
 
+        if (role == null) {
+            staffMemberImpl.setRole(StringPool.BLANK);
+        } else {
+            staffMemberImpl.setRole(role);
+        }
+
+        if (organization == null) {
+            staffMemberImpl.setOrganization(StringPool.BLANK);
+        } else {
+            staffMemberImpl.setOrganization(organization);
+        }
+
         staffMemberImpl.setSort(sort);
 
         staffMemberImpl.resetOriginalValues();
@@ -102,6 +120,8 @@ public class StaffMemberCacheModel implements CacheModel<StaffMember>,
         lastName = objectInput.readUTF();
         url = objectInput.readUTF();
         photoUrl = objectInput.readUTF();
+        role = objectInput.readUTF();
+        organization = objectInput.readUTF();
         sort = objectInput.readInt();
     }
 
@@ -134,6 +154,18 @@ public class StaffMemberCacheModel implements CacheModel<StaffMember>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(photoUrl);
+        }
+
+        if (role == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(role);
+        }
+
+        if (organization == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(organization);
         }
 
         objectOutput.writeInt(sort);

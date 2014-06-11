@@ -44,6 +44,8 @@ public class StaffMemberWrapper implements StaffMember,
         attributes.put("lastName", getLastName());
         attributes.put("url", getUrl());
         attributes.put("photoUrl", getPhotoUrl());
+        attributes.put("role", getRole());
+        attributes.put("organization", getOrganization());
         attributes.put("sort", getSort());
 
         return attributes;
@@ -91,6 +93,18 @@ public class StaffMemberWrapper implements StaffMember,
 
         if (photoUrl != null) {
             setPhotoUrl(photoUrl);
+        }
+
+        String role = (String) attributes.get("role");
+
+        if (role != null) {
+            setRole(role);
+        }
+
+        String organization = (String) attributes.get("organization");
+
+        if (organization != null) {
+            setOrganization(organization);
         }
 
         Integer sort = (Integer) attributes.get("sort");
@@ -280,6 +294,46 @@ public class StaffMemberWrapper implements StaffMember,
     @Override
     public void setPhotoUrl(java.lang.String photoUrl) {
         _staffMember.setPhotoUrl(photoUrl);
+    }
+
+    /**
+    * Returns the role of this staff member.
+    *
+    * @return the role of this staff member
+    */
+    @Override
+    public java.lang.String getRole() {
+        return _staffMember.getRole();
+    }
+
+    /**
+    * Sets the role of this staff member.
+    *
+    * @param role the role of this staff member
+    */
+    @Override
+    public void setRole(java.lang.String role) {
+        _staffMember.setRole(role);
+    }
+
+    /**
+    * Returns the organization of this staff member.
+    *
+    * @return the organization of this staff member
+    */
+    @Override
+    public java.lang.String getOrganization() {
+        return _staffMember.getOrganization();
+    }
+
+    /**
+    * Sets the organization of this staff member.
+    *
+    * @param organization the organization of this staff member
+    */
+    @Override
+    public void setOrganization(java.lang.String organization) {
+        _staffMember.setOrganization(organization);
     }
 
     /**

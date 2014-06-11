@@ -18,6 +18,8 @@
     	<column name="lastName" type="String" />
     	<column name="url" type="String" />
     	<column name="photoUrl" type="String" />
+    	<column name="role" type="String" />
+    	<column name="organization" type="String" />
     	<column name="sort" type="int" />
 
 

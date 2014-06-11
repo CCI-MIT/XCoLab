@@ -826,6 +826,8 @@ public class StaffMemberPersistenceImpl extends BasePersistenceImpl<StaffMember>
         staffMemberImpl.setLastName(staffMember.getLastName());
         staffMemberImpl.setUrl(staffMember.getUrl());
         staffMemberImpl.setPhotoUrl(staffMember.getPhotoUrl());
+        staffMemberImpl.setRole(staffMember.getRole());
+        staffMemberImpl.setOrganization(staffMember.getOrganization());
         staffMemberImpl.setSort(staffMember.getSort());
 
         return staffMemberImpl;

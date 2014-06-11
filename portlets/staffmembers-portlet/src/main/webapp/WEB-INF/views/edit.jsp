@@ -22,10 +22,7 @@
 		<tr>
 			<td>Category:</td>
 			<td>
-				<form:select path="categoryId">
-                    <form:option value="1">External members</form:option>
-                    <form:option value="2">Climate CoLab staff</form:option>
-                </form:select>
+				<form:select path="categoryId" items="${categories}" />
 			</td>
 		</tr>
 		<tr>

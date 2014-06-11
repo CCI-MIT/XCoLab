@@ -6,24 +6,18 @@ import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StaffMembersPreferences implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String portletTitle;
-    private int columnAmount;
-	private boolean displayPhoto;
-	private boolean displayUrl;
-	private int categoryId;
-
-
-	private final static String PORTLET_TITLE = "PORTLET_TITLE";
+    private final static String PORTLET_TITLE = "PORTLET_TITLE";
     private final static String COLUMN_AMOUNT = "COLUMN_AMOUNT";
     private final static String DISPLAY_PHOTO = "DISPLAY_PHOTO";
     private final static String DISPLAY_URL = "DISPLAY_URL";
     private final static String CATEGORY_ID = "CATEGORY_ID";
-
 
 
     private final static int defaultColumnAmount = 4;
@@ -31,6 +25,35 @@ public class StaffMembersPreferences implements Serializable {
     private final static boolean defaultDisplayUrl = true;
     private final static int defaultCategoryId = 1;
     private final static String defaultPortletTitle = "";
+
+    private static final Map<Integer, String> categories;
+    static
+    {
+        categories = new HashMap<Integer, String>();
+        categories.put(1, "Modeling Steering Committee: External Members");
+        categories.put(2, "Modeling Steering Committee: Climate CoLab Staff");
+        categories.put(3, "Expert Advisory Board");
+        categories.put(4, "Expert Council");
+        categories.put(5, "Project Staff: Team");
+        categories.put(5, "Project Staff: Vendors");
+        categories.put(6, "Project Staff: Advisors");
+        categories.put(7, "Advisors");
+        categories.put(8, "Judges");
+        categories.put(9, "Fellows 2014");
+        categories.put(10, "Fellows 2012 & 2013");
+        categories.put(11, "Catalysts");
+
+    }
+
+    public static Map<Integer, String> getCategories() {
+        return categories;
+    }
+
+    private String portletTitle;
+    private int columnAmount;
+    private boolean displayPhoto;
+    private boolean displayUrl;
+    private int categoryId;
 
     public StaffMembersPreferences() {
     	

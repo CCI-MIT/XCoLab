@@ -879,6 +879,8 @@
 		<field name="lastName" type="String" />
 		<field name="url" type="String" />
 		<field name="photoUrl" type="String" />
+		<field name="role" type="String" />
+		<field name="organization" type="String" />
 		<field name="sort" type="int" />
 	</model>
 </model-hints>

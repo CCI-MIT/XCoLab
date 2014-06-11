@@ -162,6 +162,36 @@ public interface StaffMemberModel extends BaseModel<StaffMember> {
     public void setPhotoUrl(String photoUrl);
 
     /**
+     * Returns the role of this staff member.
+     *
+     * @return the role of this staff member
+     */
+    @AutoEscape
+    public String getRole();
+
+    /**
+     * Sets the role of this staff member.
+     *
+     * @param role the role of this staff member
+     */
+    public void setRole(String role);
+
+    /**
+     * Returns the organization of this staff member.
+     *
+     * @return the organization of this staff member
+     */
+    @AutoEscape
+    public String getOrganization();
+
+    /**
+     * Sets the organization of this staff member.
+     *
+     * @param organization the organization of this staff member
+     */
+    public void setOrganization(String organization);
+
+    /**
      * Returns the sort of this staff member.
      *
      * @return the sort of this staff member
