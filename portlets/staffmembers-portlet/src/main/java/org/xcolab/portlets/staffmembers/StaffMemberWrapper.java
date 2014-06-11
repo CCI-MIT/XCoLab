@@ -61,7 +61,12 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public String getUrl() {
-        return this.staffMember.getUrl();
+        //use the colab profile url if url is not set
+        if ((this.staffMember.getUrl() == null || this.staffMember.getUrl().isEmpty()) && this.hasCoLabUser()) {
+            return "/web/guest/member/-/member/userId/"+this.getUser().getUserId();
+        } else {
+            return this.staffMember.getUrl();
+        }
     }
 
     public String getRole() {

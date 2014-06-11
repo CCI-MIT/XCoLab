@@ -35,13 +35,14 @@ public class StaffMembersPreferences implements Serializable {
         categories.put(3, "Expert Advisory Board");
         categories.put(4, "Expert Council");
         categories.put(5, "Project Staff: Team");
-        categories.put(5, "Project Staff: Vendors");
-        categories.put(6, "Project Staff: Advisors");
-        categories.put(7, "Advisors");
-        categories.put(8, "Judges");
-        categories.put(9, "Fellows 2014");
-        categories.put(10, "Fellows 2012 & 2013");
-        categories.put(11, "Catalysts");
+        categories.put(6, "Project Staff: Vendors");
+        categories.put(7, "Project Staff: Advisors");
+        categories.put(8, "Project Staff: Alumni");
+        categories.put(9, "Advisors");
+        categories.put(10, "Judges");
+        categories.put(11, "Fellows 2014");
+        categories.put(12, "Fellows 2012 & 2013");
+        categories.put(13, "Catalysts");
 
     }
 
