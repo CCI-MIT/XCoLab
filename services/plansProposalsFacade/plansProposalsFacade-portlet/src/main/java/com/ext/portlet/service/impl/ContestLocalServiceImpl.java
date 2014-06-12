@@ -294,7 +294,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException, PortalException {
         ContestPhase lastPhase = null;
-        for (ContestPhase phase : getVisiblePhases(contest)) {
+        for (ContestPhase phase : getAllPhases(contest)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
             if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
         }
@@ -689,7 +689,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                         continue;
                     }
                 } catch (NoSuchProposalContestPhaseAttributeException e) {
+                    // Skip when proposal fellow screening is active but not yet done for this proposal
                     if (judgingPhase.isFellowScreeningActive()) {
+                        _log.info("Fellow screening enabled proposal with ID " + proposal.getProposalId() + " has not been screened by fellows yet.");
                         continue;
                     }
                 }
@@ -697,7 +699,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
 
-                for (User judge : getSelectedJudges(proposal, judgingPhase)) {
+                for (User judge : getProposalReviewingJudges(proposal, judgingPhase)) {
                     // Judge rating
                     try {
                         int judgeRating = (int) getProposalContestPhaseAttributeLocalService().
@@ -708,6 +710,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                                         ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
                         proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
                     } catch (NoSuchProposalContestPhaseAttributeException e) {
+                        _log.info("Judge with ID " + judge.getUserId() + " has not yet reviewed proposal with ID " + proposal.getProposalId());
                         continue;   // just ignore this review since it's not yet finished
                     }
                 }
@@ -726,7 +729,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return csvExporter.getCsvString();
     }
 
-    private List<User> getSelectedJudges(Proposal proposal, ContestPhase judgingPhase) throws SystemException, PortalException {
+    /**
+     * Returns all Judge Users that have been selected by Fellows for the proposal review or all
+     * Contest Judges if fellow screening is disabled
+     *
+     * @param proposal
+     * @param judgingPhase
+     * @return
+     * @throws SystemException
+     * @throws PortalException
+     */
+    private List<User> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase) throws SystemException, PortalException {
         List<User> selectedJudges = null;
 
         if (judgingPhase.isFellowScreeningActive()) {

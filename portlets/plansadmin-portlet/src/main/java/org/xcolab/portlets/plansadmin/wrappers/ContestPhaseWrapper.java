@@ -65,6 +65,14 @@ public class ContestPhaseWrapper {
         contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
     }
 
+    public boolean getFellowScreeningActive() {
+        return contestPhase.getFellowScreeningActive();
+    }
+
+    public void setFellowScreeningActive(boolean fellowScreeningActive) {
+        contestPhase.setFellowScreeningActive(fellowScreeningActive);
+    }
+
     public String getContestPhaseDescriptionOverride() {
         return contestPhase.getContestPhaseDescriptionOverride();
     }

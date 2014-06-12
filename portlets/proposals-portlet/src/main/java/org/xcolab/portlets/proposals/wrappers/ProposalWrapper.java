@@ -230,16 +230,26 @@ public class ProposalWrapper {
         return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
     }
 
-    public List<Long> getSelectedJudges() {
+    public List<Long> getSelectedJudges() throws SystemException, PortalException {
         List<Long> selectedJudges = new ArrayList<Long>();
-        String s;
-        try {
-            s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
-        } catch (Exception e) {
-            return selectedJudges;
+
+        // All judges are selected when screening is disabled
+        if (!contestPhase.getFellowScreeningActive()) {
+            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                selectedJudges.add(judge.getUserId());
+            }
         }
-        if (s == null || s.length() == 0) return selectedJudges;
-        for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
+        else {
+            String s;
+            try {
+                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
+            } catch (Exception e) {
+                return selectedJudges;
+            }
+            if (s == null || s.length() == 0) return selectedJudges;
+            for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
+        }
+
         return selectedJudges;
     }
 
@@ -485,6 +495,9 @@ public class ProposalWrapper {
                 case PASS_TO_JUDGES:
                     return GenericJudgingStatus.STATUS_CHECKMARK;
                 default:
+                    if (!contestPhase.getFellowScreeningActive()) {
+                        return GenericJudgingStatus.STATUS_CHECKMARK;
+                    }
                     return GenericJudgingStatus.STATUS_QUESTIONMARK;
             }
 
@@ -519,7 +532,8 @@ public class ProposalWrapper {
         try {
             if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
                 return GenericJudgingStatus.STATUS_CHECKMARK;
-            } else if (getScreeningStatus() == GenericJudgingStatus.STATUS_X && Validator.isNotNull(getFellowComment())) {
+            } else if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON && Validator.isNotNull(getProposalReview()) ||
+                    getScreeningStatus() == GenericJudgingStatus.STATUS_X && Validator.isNotNull(getFellowComment())) {
                 return GenericJudgingStatus.STATUS_X;
             }
         } catch (Exception e) {

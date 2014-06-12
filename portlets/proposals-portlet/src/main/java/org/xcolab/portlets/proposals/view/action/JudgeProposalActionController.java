@@ -52,44 +52,15 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    // TODO: remove/change this
     @RequestMapping(params = {"action=sendComment"})
     public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException, AddressException, MailEngineException {
-        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        // Security handling
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!permissions.getCanAdminAll()) {
+            return;
+        }
 
-//        //get judges decision
-//        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, proposalsContext.getUser(request));
-//        String message = proposalJudgeWrapper.getEmailMessage(contestPhaseId, new ProposalsPreferencesWrapper(request));
-//
-//        if (message != null) {
-//            try {
-//                //get sender fellow
-//                User author = proposalsContext.getUser(request);
-//                List<User> contestFellows = proposalsContext.getContestWrapped(request).getContestFellows();
-//                if (!contestFellows.contains(author)) {
-//                    contestFellows.get(0);
-//                } //take first fellow of list to be the sender
-//
-//                //assemble recipients
-//                List<Long> recipients = new LinkedList<>();
-//                for (ProposalTeamMemberWrapper member : proposal.getMembers()) {
-//                    recipients.add(member.getUserId() );
-//                }
-//
-//                //send message
-//                String title = "Judges comments for your proposal '" + proposal.getName() + "'";
-//                MessageUtil.sendMessage(title, message, author.getUserId(),
-//                        author.getUserId(), recipients, request);
-//
-//                DiscussionCategoryGroupLocalServiceUtil.addComment(
-//                        DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId()),
-//                        title, message, author);
-//
-//            } catch (Throwable e) {
-//                e.printStackTrace();
-//            }
-//        }
+        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
         ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request), request);
         ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request));
 

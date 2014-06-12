@@ -64,3 +64,11 @@
 .contactFormPreferences {
     width: 100%;
 }
+
+.form-errors {
+    margin-top: 20px;
+}
+
+.form-erros span {
+    display: inline-block;
+}

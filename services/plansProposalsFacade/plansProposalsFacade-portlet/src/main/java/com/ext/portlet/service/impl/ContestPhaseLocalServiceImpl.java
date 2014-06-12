@@ -122,7 +122,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         });
 
         boolean currentFound = false;
-        for (ContestPhase phase : ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase))) {
+        for (ContestPhase phase : contestPhases) {
             if (currentFound) {
                 return phase;
             }

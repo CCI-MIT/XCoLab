@@ -2,6 +2,7 @@ package org.xcolab.utils.judging;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -23,13 +24,17 @@ import java.util.regex.Pattern;
 public class ProposalReviewCsvExporter {
     private static final String DEL = ","; // delimiter
     private static final String TQF = ""; // text qualifier
+    private static final String delimiter = TQF + DEL + TQF;
 
-    // Cluster all proposal reviews by proposal since we have multiple reviews for each proposal (multiple judging phases)
+    /*
+    * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
+    * have multiple reviews for each proposal (multiple judging phases)
+    */
     private Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
     private List<User> reviewers;
 
     // Helper variable, see comment below
-    private Map<ProposalReview, Map<User, ProposalReview.IndividualReview>> userToReviewMaps;
+    private Map<ProposalReview, Map<User, ProposalReview.IndividualReview>> proposalReviewToJudgeReviewMap;
 
     public ProposalReviewCsvExporter(Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap, List<User> reviewers) {
         this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
@@ -42,10 +47,7 @@ public class ProposalReviewCsvExporter {
         if (proposalToProposalReviewsMap.size() == 0) {
             return StringPool.BLANK;
         }
-
-        String delimiter = TQF + DEL + TQF;
-        // Set the table header
-
+        
         StringBuilder tableBody = new StringBuilder();
         for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
@@ -61,12 +63,12 @@ public class ProposalReviewCsvExporter {
                     tableBody.append(TQF + "\"\"" + delimiter + "\"\"" + delimiter);
                 }
 
-                String contestPhaseName = ContestPhaseType.getContestPhaseTypeByTypeId(proposalReview.getContestPhase().getContestPhaseType()).getName();
+                String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
                 tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"" +  delimiter + "\"" + proposalReview.getAverageRating() + "\"");
 
                 StringBuilder ratingString = new StringBuilder();
                 StringBuilder commentString = new StringBuilder();
-                Map<User, ProposalReview.IndividualReview> userToReviewMap = userToReviewMaps.get(proposalReview);
+                Map<User, ProposalReview.IndividualReview> userToReviewMap = proposalReviewToJudgeReviewMap.get(proposalReview);
                 for (User reviewer : reviewers) {
                     ProposalReview.IndividualReview individualReview = userToReviewMap.get(reviewer);
                     if (Validator.isNull(individualReview)) {
@@ -92,7 +94,7 @@ public class ProposalReviewCsvExporter {
      * with a long list of judges and/or proposals
      */
     private void buildUserToReviewMaps() {
-        userToReviewMaps = new HashMap<>();
+        proposalReviewToJudgeReviewMap = new HashMap<>();
 
         for (List<ProposalReview> proposalReviews : proposalToProposalReviewsMap.values()) {
             for (ProposalReview proposalReview : proposalReviews) {
@@ -102,15 +104,13 @@ public class ProposalReviewCsvExporter {
                     userToReviewMap.put(individualReview.getReviewer(), individualReview);
                 }
 
-                userToReviewMaps.put(proposalReview, userToReviewMap);
+                proposalReviewToJudgeReviewMap.put(proposalReview, userToReviewMap);
             }
         }
     }
 
     private String getTableHeader() {
-        String delimiter = TQF + DEL + TQF;
-
-        String header = TQF + "Proposal title" + delimiter + "Proposal URL" + delimiter + "Contest Phase " + delimiter + "Avg";
+        String header = TQF + "\"Proposal title\"" + delimiter + "\"Proposal URL\"" + delimiter + "\"Contest Phase\"" + delimiter + "\"Avg\"";
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         StringBuilder commentSubHeader = new StringBuilder(TQF);
         for (User reviewer : reviewers) {

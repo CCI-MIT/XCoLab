@@ -34,7 +34,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
-        return "proposalJudge";
+        return "proposalAdvancing";
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
@@ -50,7 +50,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 
-        return "proposalFellow";
+        return "proposalScreening";
     }
     
 }

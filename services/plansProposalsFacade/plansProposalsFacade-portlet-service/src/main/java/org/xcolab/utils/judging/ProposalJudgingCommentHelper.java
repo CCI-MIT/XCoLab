@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
- * This class is a helper class that interprets the Judging Feedback message made during judging contest phases
+ * This is a helper class that interprets the Judging Feedback message made during judging contest phases
  * for email notifications and proposal comment thread messages. In addition it is a utility class to get and set
  * Screening and Advance comments
  *
