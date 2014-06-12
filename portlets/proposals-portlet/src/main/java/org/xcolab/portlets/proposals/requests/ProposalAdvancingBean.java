@@ -5,6 +5,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -19,6 +20,7 @@ public class ProposalAdvancingBean {
 
     private JudgingSystemActions.AdvanceDecision advanceDecision;
 
+    @NotBlank
     private String advanceComment;
 
     public ProposalAdvancingBean() {

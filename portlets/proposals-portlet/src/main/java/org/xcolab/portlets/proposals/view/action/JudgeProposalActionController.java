@@ -13,6 +13,8 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -52,44 +55,15 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    // TODO: remove/change this
     @RequestMapping(params = {"action=sendComment"})
     public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException, AddressException, MailEngineException {
-        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        // Security handling
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!permissions.getCanAdminAll()) {
+            return;
+        }
 
-//        //get judges decision
-//        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, proposalsContext.getUser(request));
-//        String message = proposalJudgeWrapper.getEmailMessage(contestPhaseId, new ProposalsPreferencesWrapper(request));
-//
-//        if (message != null) {
-//            try {
-//                //get sender fellow
-//                User author = proposalsContext.getUser(request);
-//                List<User> contestFellows = proposalsContext.getContestWrapped(request).getContestFellows();
-//                if (!contestFellows.contains(author)) {
-//                    contestFellows.get(0);
-//                } //take first fellow of list to be the sender
-//
-//                //assemble recipients
-//                List<Long> recipients = new LinkedList<>();
-//                for (ProposalTeamMemberWrapper member : proposal.getMembers()) {
-//                    recipients.add(member.getUserId() );
-//                }
-//
-//                //send message
-//                String title = "Judges comments for your proposal '" + proposal.getName() + "'";
-//                MessageUtil.sendMessage(title, message, author.getUserId(),
-//                        author.getUserId(), recipients, request);
-//
-//                DiscussionCategoryGroupLocalServiceUtil.addComment(
-//                        DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId()),
-//                        title, message, author);
-//
-//            } catch (Throwable e) {
-//                e.printStackTrace();
-//            }
-//        }
+        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
         ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request), request);
         ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request));
 
@@ -100,6 +74,11 @@ public class JudgeProposalActionController {
                                 ActionResponse response, @Valid ProposalAdvancingBean proposalAdvancingBean,
                                 BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException {
+
+        if (result.hasErrors()) {
+            return;
+        }
+
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
@@ -133,9 +112,13 @@ public class JudgeProposalActionController {
 
     @RequestMapping(params = {"action=saveJudgingFeedback"})
     public void saveJudgingFeedback(ActionRequest request, Model model, ActionResponse response,
-                                    @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean)
+                                    @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
+                                    BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException {
 
+        if (result.hasErrors()) {
+            return;
+        }
 
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -153,8 +136,15 @@ public class JudgeProposalActionController {
 
     @RequestMapping(params = {"action=saveScreening"})
     public void saveScreening(ActionRequest request, Model model,
-                                 ActionResponse response, @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
+                                 ActionResponse response,
+                                 @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
                                  BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
+        if (result.hasErrors()) {
+            SessionErrors.clear(request);
+            SessionMessages.clear(request);
+            return;
+        }
+
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);

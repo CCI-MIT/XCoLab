@@ -2,13 +2,19 @@ package org.xcolab.portlets.proposals.requests;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author pdeboer
  */
 public class JudgeProposalFeedbackBean {
+    @NotNull
     private Long judgeRating;
+
+    @NotBlank
     private String judgeComment;
 
     public JudgeProposalFeedbackBean(ProposalJudgeWrapper wrapper) throws PortalException, SystemException {

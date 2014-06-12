@@ -28,19 +28,6 @@
             </c:otherwise>
         </c:choose>
     </c:if>
-    <c:if test="${proposalsPermissions.canFellowActions}"><!-- Fellows and admins -->
-        <c:choose>
-            <c:when test="${proposal.judgeDecision.attributeValue == 1}">
-                <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
-            </c:when>
-            <c:when test="${proposal.judgeDecision.attributeValue == 2}">
-                <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="additionalCSSClasses" scope="session" value=""/>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
 
 <div class="propbox ${proposal.featured ? 'featured' : ''} ${additionalCSSClasses}">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">

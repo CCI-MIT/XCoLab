@@ -198,10 +198,17 @@
                     <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
                     are saved when clicking on save.</i>
                     <br/>
+                    <form:errors cssClass="alert alert-error" />
 
+                    <div class="form-errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="judgeRating" />
+                    </div>
                     <proposalsPortlet:proposalRating path="judgeRating"/>
 
                     <h3 style="margin-top: 10px;">Judges Feedback</h3>
+                    <div class="form-errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="judgeComment" />
+                    </div>
                     <form:textarea path="judgeComment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
                     <div class="clearfix" style="width: 100%;">

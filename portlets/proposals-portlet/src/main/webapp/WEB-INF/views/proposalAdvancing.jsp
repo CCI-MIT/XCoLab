@@ -62,6 +62,9 @@
                                 <div id="comment-header">
                                     <!-- -->
                                 </div>
+                                <div class="form-errors"><!--  -->
+                                    <form:errors cssClass="alert alert-error" path="advanceComment" />
+                                </div>
                                 <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
                                 <div id="comment-footer">
                                     <!-- -->

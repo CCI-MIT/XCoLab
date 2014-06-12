@@ -5,19 +5,25 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by kmang on 25/05/14.
  */
-public class FellowProposalScreeningBean {
+public class FellowProposalScreeningBean implements Serializable {
     private Long fellowScreeningRating;
     private JudgingSystemActions.FellowAction fellowScreeningAction;
+
+    @NotBlank
     private String fellowScreeningCommentBody;
+
     private List<Long> selectedJudges;
 
     private String[] fellowCommentFooters = {"", "", "", ""};

@@ -1,11 +1,3 @@
-.reg_errors {
-	margin-top: 20px;
-}
-
-.reg_errors span {
-	display: inline-block;
-}
-
 div.req {
 	background: url(../images/reg-star.png) no-repeat;
 	width: 20px;

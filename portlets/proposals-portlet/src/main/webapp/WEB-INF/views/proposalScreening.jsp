@@ -18,6 +18,7 @@
     }</style>
 
     <div id="content">
+        <form:errors cssClass="alert alert-error" />
 
         This page is shared by contest Fellows only. Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveScreeningURL">
@@ -38,6 +39,7 @@
             <div class="addpropbox">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
                            commandName="fellowProposalScreeningBean">
+                    <form:errors path="*" cssClass="alert alert-error" />
 
                     <h3 style="margin-top: 0;">Rating</h3>
                     Rate the proposal based on the four criteria to the right.
@@ -92,6 +94,9 @@
                         <br/>
                         <div id="comment-header">
                             <!-- -->
+                        </div>
+                        <div class="form-errors"><!--  -->
+                            <form:errors cssClass="alert alert-error" path="fellowScreeningCommentBody" />
                         </div>
                         <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningCommentBody" style="width:100%;"/>
                         <div id="comment-footer">
