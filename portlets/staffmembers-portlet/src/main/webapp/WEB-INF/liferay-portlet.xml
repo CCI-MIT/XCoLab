@@ -4,12 +4,10 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>staffmembers-portlet</portlet-name>
-		<instanceable>true</instanceable>
-        <requires-namespaced-parameters>false</requires-namespaced-parameters> 
-		<header-portlet-css>/css/main.css</header-portlet-css>
         <preferences-company-wide>false</preferences-company-wide>
-        <preferences-unique-per-layout>true</preferences-unique-per-layout>
         <preferences-owned-by-group>true</preferences-owned-by-group>
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
