@@ -25,5 +25,6 @@
             </ul>
         </c:otherwise>
     </c:choose>
+    <div class="clear"></div>
 
 </jsp:root>
