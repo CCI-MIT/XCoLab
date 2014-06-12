@@ -37,7 +37,7 @@
                 <span class="staffmembers-organization">${staffMember.organization}</span><br />
             </c:if>
             <c:if test="${displayPhoto and not empty staffMember.photoUrl}">
-                <img src="${staffMember.photoUrl}" height="120" />
+                <img src="${staffMember.photoUrl}" />
             </c:if>
         </li>
     </c:forEach>

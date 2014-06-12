@@ -4,8 +4,7 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>staffmembers-portlet</portlet-name>
-        <preferences-company-wide>false</preferences-company-wide>
-        <preferences-owned-by-group>true</preferences-owned-by-group>
+		<instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 	</portlet>

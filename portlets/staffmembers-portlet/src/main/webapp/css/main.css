@@ -9,6 +9,10 @@
     margin: 1em 0;
 }
 
+.staffmembers-role {
+    font-size: 0.9em;
+}
+
 .staffmembers-photos {
     list-style-type: none;
     margin-top: 0;
@@ -29,6 +33,9 @@
 
     img {
         margin: 0.5em 0;
+        max-width: 100px;
+        max-height: 100px;
+        height: auto;
     }
 }
 
