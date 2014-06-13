@@ -44,14 +44,17 @@ public class StaffMemberWrapper implements Serializable {
 
     public String getPhotoUrl() {
         try {
-            if (this.hasCoLabUser() && this.getUser().getPortraitId() != 0) {
+            if (this.staffMember.getPhotoUrl() != null && !this.staffMember.getPhotoUrl().isEmpty()) {
+                return this.staffMember.getPhotoUrl();
+            //if the photoUrl is not directly set, use the one from the climate colab profile
+            } else if (this.hasCoLabUser() && this.getUser().getPortraitId() != 0) {
                 String gender = (this.getUser().getFemale() ? "female" : "male");
 
                 return "/image/user_"
                         + gender + "_portrait?img_id="
                         + this.getUser().getPortraitId();
             } else {
-                return this.staffMember.getPhotoUrl();
+                return null;
             }
         } catch (PortalException e) {
             return null;
@@ -77,7 +80,7 @@ public class StaffMemberWrapper implements Serializable {
         return nl2br(this.staffMember.getOrganization());
     }
 
-    //if string is not null, returns a string with line endings converted to html breaks. 
+    //if string is not null, returns a string with line endings converted to html breaks.
     private static String nl2br(String string) {
         if (string != null) {
             //allow line breaks in the string and render them as html
