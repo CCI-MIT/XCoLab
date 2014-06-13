@@ -70,13 +70,20 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public String getRole() {
-        return this.staffMember.getRole();
+        return nl2br(this.staffMember.getRole());
     }
 
     public String getOrganization() {
-        return this.staffMember.getOrganization();
+        return nl2br(this.staffMember.getOrganization());
     }
 
-
-    
+    //if string is not null, returns a string with line endings converted to html breaks. 
+    private static String nl2br(String string) {
+        if (string != null) {
+            //allow line breaks in the string and render them as html
+            return string.replaceAll("\n", "<br />\n");
+        } else {
+            return null;
+        }
+    }
 }
