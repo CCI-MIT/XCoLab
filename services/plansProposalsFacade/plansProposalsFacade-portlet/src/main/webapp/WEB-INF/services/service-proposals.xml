@@ -198,5 +198,17 @@
     	<column name="name" type="String" primary="true" />
     	<column name="copyOnPromote" type="boolean" />
     </entity>
-    
+
+    <entity name="ProposalRating" local-service="true" >
+        <column name="id" type="long" primary="true" />
+        <column name="proposalId" type="long" />
+        <column name="contestPhaseId" type="long" />
+        <column name="userId" type="long" />
+        <column name="ratingType" type="int" />
+        <column name="rating" type="long" />
+        <column name="comment" type="String" />
+        <column name="otherDataString" type="String" />
+    </entity>
+
+
 </service-builder>

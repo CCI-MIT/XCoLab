@@ -627,10 +627,12 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     /**
-    * This method generates a CSV string of all judge Reviews
+    * This method generates a CSV string of all judge Reviews of all previous contestPhases of a contest.
+    * By using the currentPhase parameter, the output is filtered to only include proposals that are in
+    * currentPhase.
     *
-    * @param contest           The contest for which the review should be creatd
-    * @param contestPhase      The judging contest phase
+    * @param contest           The contest for which the review should be created
+    * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
     * @param serviceContext    A serviceContext which must include the Portal's base URL
     * @return
     * @throws SystemException
@@ -639,12 +641,12 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     @Override
     public java.lang.String getProposalJudgeReviewCsv(
         com.ext.portlet.model.Contest contest,
-        com.ext.portlet.model.ContestPhase contestPhase,
+        com.ext.portlet.model.ContestPhase currentPhase,
         com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getProposalJudgeReviewCsv(contest,
-            contestPhase, serviceContext);
+            currentPhase, serviceContext);
     }
 
     @Override

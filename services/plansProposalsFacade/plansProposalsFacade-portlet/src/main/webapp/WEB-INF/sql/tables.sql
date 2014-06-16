@@ -742,6 +742,17 @@ create table xcolab_ProposalContestPhaseAttributeType (
 	copyOnPromote BOOLEAN
 );
 
+create table xcolab_ProposalRating (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	contestPhaseId LONG,
+	userId LONG,
+	ratingType INTEGER,
+	rating LONG,
+	comment_ VARCHAR(75) null,
+	otherDataString VARCHAR(75) null
+);
+
 create table xcolab_ProposalSupporter (
 	proposalId LONG not null,
 	userId LONG not null,

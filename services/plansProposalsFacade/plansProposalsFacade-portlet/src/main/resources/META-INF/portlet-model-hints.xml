@@ -850,6 +850,16 @@
 		<field name="name" type="String" />
 		<field name="copyOnPromote" type="boolean" />
 	</model>
+	<model name="com.ext.portlet.model.ProposalRating">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="ratingType" type="int" />
+		<field name="rating" type="long" />
+		<field name="comment" type="String" />
+		<field name="otherDataString" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.ProposalSupporter">
 		<field name="proposalId" type="long" />
 		<field name="userId" type="long" />

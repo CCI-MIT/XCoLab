@@ -589,12 +589,14 @@ public class ProposalWrapper {
     public boolean getAllJudgesReviewFinished() throws SystemException, PortalException {
         if (getSelectedJudges().size() > 0) {
             for (long userId : getSelectedJudges()) {
-                long judgeRating = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, userId, LONG_DEFAULT_VAL);
-                String judgeComment = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, userId, STRING_DEFAULT_VAL);
-
-                if (judgeRating == LONG_DEFAULT_VAL || judgeComment.equals(STRING_DEFAULT_VAL)) {
+                ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
+                        userId,
+                        this.proposal.getProposalId(),
+                        this.contestPhase.getContestPhasePK());
+                if (!proposalRating.isRatingComplete()) {
                     return false;
                 }
+
             }
         }
 

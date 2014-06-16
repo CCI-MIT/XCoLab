@@ -76,6 +76,7 @@ import com.ext.portlet.model.ProposalAttributeTypeClp;
 import com.ext.portlet.model.ProposalClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
+import com.ext.portlet.model.ProposalRatingClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
@@ -475,6 +476,10 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     ProposalContestPhaseAttributeTypeClp.class.getName())) {
             return translateInputProposalContestPhaseAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalRatingClp.class.getName())) {
+            return translateInputProposalRating(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
@@ -1286,6 +1291,16 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputProposalRating(BaseModel<?> oldModel) {
+        ProposalRatingClp oldClpModel = (ProposalRatingClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputProposalSupporter(BaseModel<?> oldModel) {
         ProposalSupporterClp oldClpModel = (ProposalSupporterClp) oldModel;
 
@@ -1698,6 +1713,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl")) {
             return translateOutputProposalContestPhaseAttributeType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingImpl")) {
+            return translateOutputProposalRating(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -2267,6 +2287,10 @@ public class ClpSerializer {
         if (className.equals(
                     "com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException")) {
             return new com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchProposalRatingException")) {
+            return new com.ext.portlet.NoSuchProposalRatingException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchProposalSupporterException")) {
@@ -3069,6 +3093,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalContestPhaseAttributeTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalRating(BaseModel<?> oldModel) {
+        ProposalRatingClp newModel = new ProposalRatingClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingRemoteModel(oldModel);
 
         return newModel;
     }

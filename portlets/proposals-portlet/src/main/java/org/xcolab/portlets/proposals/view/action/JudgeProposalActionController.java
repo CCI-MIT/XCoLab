@@ -6,9 +6,11 @@ import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -34,7 +36,8 @@ import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.mail.internet.AddressException;
@@ -130,8 +133,30 @@ public class JudgeProposalActionController {
             return;
         }
 
-        persistAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, currentUser.getUserId(), judgeProposalFeedbackBean.getJudgeRating());
-        persistAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, currentUser.getUserId(), judgeProposalFeedbackBean.getJudgeComment());
+        //find existing rating
+        ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
+                currentUser.getUserId(),
+                proposal.getProposalId(),
+                contestPhase.getContestPhasePK());
+        if (proposalRating != null) {
+            ProposalRatingLocalServiceUtil.updateRating(
+                    proposalRating.getId(),
+                    judgeProposalFeedbackBean.getJudgeRating(),
+                    judgeProposalFeedbackBean.getJudgeComment(),
+                    ""
+            );
+        } else {
+            //create a new rating
+            ProposalRatingLocalServiceUtil.addJudgeRating(
+                    proposal.getProposalId(),
+                    contestPhase.getContestPhasePK(),
+                    currentUser.getUserId(),
+                    judgeProposalFeedbackBean.getJudgeRating(),
+                    judgeProposalFeedbackBean.getJudgeComment(),
+                    ""
+            );
+        }
+
     }
 
     @RequestMapping(params = {"action=saveScreening"})

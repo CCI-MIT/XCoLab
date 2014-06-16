@@ -154,6 +154,8 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
@@ -409,6 +411,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalContestPhaseAttributeTypeLocalServiceUtil.clearService();
 
             ProposalContestPhaseAttributeTypeServiceUtil.clearService();
+            ProposalRatingLocalServiceUtil.clearService();
+
+            ProposalRatingServiceUtil.clearService();
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();

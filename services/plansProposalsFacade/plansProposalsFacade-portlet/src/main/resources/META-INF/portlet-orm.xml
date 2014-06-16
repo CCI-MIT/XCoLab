@@ -1237,6 +1237,26 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalRatingModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="contestPhaseId" />
+			<basic name="userId" />
+			<basic name="ratingType" />
+			<basic name="rating" />
+			<basic name="comment">
+				<column name="COMMENT_" />
+			</basic>
+			<basic name="otherDataString" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalSupporterModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.ProposalSupporterPK" />
 		<attributes>
@@ -1584,6 +1604,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalContestPhaseAttributeTypeImpl" name="ProposalContestPhaseAttributeType">
 		<table name="xcolab_ProposalContestPhaseAttributeType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalRatingImpl" name="ProposalRating">
+		<table name="xcolab_ProposalRating" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">

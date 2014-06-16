@@ -79,6 +79,7 @@ import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalRatingPersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
@@ -583,6 +584,12 @@ public abstract class PlanItemGroupLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
     @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
     protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingService.class)
+    protected com.ext.portlet.service.ProposalRatingService proposalRatingService;
+    @BeanReference(type = ProposalRatingPersistence.class)
+    protected ProposalRatingPersistence proposalRatingPersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterLocalService.class)
     protected com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterService.class)
@@ -5216,6 +5223,63 @@ public abstract class PlanItemGroupLocalServiceBaseImpl
     public void setProposalContestPhaseAttributeTypePersistence(
         ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence) {
         this.proposalContestPhaseAttributeTypePersistence = proposalContestPhaseAttributeTypePersistence;
+    }
+
+    /**
+     * Returns the proposal rating local service.
+     *
+     * @return the proposal rating local service
+     */
+    public com.ext.portlet.service.ProposalRatingLocalService getProposalRatingLocalService() {
+        return proposalRatingLocalService;
+    }
+
+    /**
+     * Sets the proposal rating local service.
+     *
+     * @param proposalRatingLocalService the proposal rating local service
+     */
+    public void setProposalRatingLocalService(
+        com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService) {
+        this.proposalRatingLocalService = proposalRatingLocalService;
+    }
+
+    /**
+     * Returns the proposal rating remote service.
+     *
+     * @return the proposal rating remote service
+     */
+    public com.ext.portlet.service.ProposalRatingService getProposalRatingService() {
+        return proposalRatingService;
+    }
+
+    /**
+     * Sets the proposal rating remote service.
+     *
+     * @param proposalRatingService the proposal rating remote service
+     */
+    public void setProposalRatingService(
+        com.ext.portlet.service.ProposalRatingService proposalRatingService) {
+        this.proposalRatingService = proposalRatingService;
+    }
+
+    /**
+     * Returns the proposal rating persistence.
+     *
+     * @return the proposal rating persistence
+     */
+    public ProposalRatingPersistence getProposalRatingPersistence() {
+        return proposalRatingPersistence;
+    }
+
+    /**
+     * Sets the proposal rating persistence.
+     *
+     * @param proposalRatingPersistence the proposal rating persistence
+     */
+    public void setProposalRatingPersistence(
+        ProposalRatingPersistence proposalRatingPersistence) {
+        this.proposalRatingPersistence = proposalRatingPersistence;
     }
 
     /**

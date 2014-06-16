@@ -79,6 +79,7 @@
 	<import class="com.ext.portlet.model.ProposalAttributeType" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttributeType" />
+	<import class="com.ext.portlet.model.ProposalRating" />
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
@@ -966,6 +967,19 @@
 			<generator class="assigned" />
 		</id>
 		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalRatingImpl" table="xcolab_ProposalRating">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ratingType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="rating" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="comment" type="com.liferay.portal.dao.orm.hibernate.StringType" column="comment_" />
+		<property name="otherDataString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalSupporterImpl" table="xcolab_ProposalSupporter">
 		<cache usage="read-write" />

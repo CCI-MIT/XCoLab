@@ -2270,7 +2270,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
     @Override
     public java.lang.String getProposalJudgeReviewCsv(
         com.ext.portlet.model.Contest contest,
-        com.ext.portlet.model.ContestPhase contestPhase,
+        com.ext.portlet.model.ContestPhase currentPhase,
         com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -2282,7 +2282,7 @@ public class ContestLocalServiceClp implements ContestLocalService {
                     new Object[] {
                         ClpSerializer.translateInput(contest),
                         
-                    ClpSerializer.translateInput(contestPhase),
+                    ClpSerializer.translateInput(currentPhase),
                         
                     ClpSerializer.translateInput(serviceContext)
                     });
