@@ -213,18 +213,13 @@ public class ProposalWrapper {
         return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
-    public Long getFellowRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, LONG_DEFAULT_VAL);
-    }
+
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
         Long action = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
-    public String getFellowComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, STRING_DEFAULT_VAL);
-    }
 
     public String getProposalReview() throws SystemException, PortalException {
         return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
@@ -529,6 +524,7 @@ public class ProposalWrapper {
      * @return
      */
     public GenericJudgingStatus getOverallStatus() {
+        //TODO: ADAPT TO NEW MULTIPLICITY OF FELLOW RATINGS <-> PROPOSALS
         try {
             if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
                 return GenericJudgingStatus.STATUS_CHECKMARK;

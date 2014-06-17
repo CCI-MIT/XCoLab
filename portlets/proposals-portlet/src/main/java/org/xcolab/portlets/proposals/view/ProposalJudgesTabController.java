@@ -1,8 +1,8 @@
 package org.xcolab.portlets.proposals.view;
 
-import javax.portlet.PortletRequest;
-
 import com.ext.portlet.JudgingSystemActions;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -46,7 +46,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
-        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalWrapper,
+        ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
+        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
 

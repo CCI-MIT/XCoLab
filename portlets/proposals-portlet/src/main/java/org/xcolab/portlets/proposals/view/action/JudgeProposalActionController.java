@@ -185,19 +185,43 @@ public class JudgeProposalActionController {
         persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
 
         // save fellow rating
-        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningRating()))
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, fellowProposalScreeningBean.getFellowScreeningRating());
+        //if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningRating()))
+        //    persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, fellowProposalScreeningBean.getFellowScreeningRating());
 
         // save fellow action
         if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction()))
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, fellowProposalScreeningBean.getFellowScreeningAction());
 
-        // save fellow comment
-        ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        // save fellow comment and rating
+        String comment = "";
         if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
-            commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningIncompleteText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
+            comment = ProposalJudgingCommentHelper.wrapComment(proposalsContext.getProposalsPreferences(request).getScreeningIncompleteText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
         } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
-            commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningOfftopicText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
+            comment = ProposalJudgingCommentHelper.wrapComment(proposalsContext.getProposalsPreferences(request).getScreeningOfftopicText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
+        }
+        //find existing rating
+        ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getFellowRatingForProposal(
+                currentUser.getUserId(),
+                proposalId,
+                contestPhaseId);
+        //update if existent
+        if (proposalRating != null) {
+            ProposalRatingLocalServiceUtil.updateRating(
+                    proposalRating.getId(),
+                    fellowProposalScreeningBean.getFellowScreeningRating(),
+                    comment,
+                    ""
+            );
+        } else {
+            //create a new rating
+            ProposalRatingLocalServiceUtil.addFellowRating(
+                    proposalId,
+                    contestPhaseId,
+                    currentUser.getUserId(),
+                    fellowProposalScreeningBean.getFellowScreeningRating(),
+                    comment,
+                    ""
+            );
         }
     }
 
