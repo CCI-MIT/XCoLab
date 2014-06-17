@@ -331,3 +331,16 @@ img.review-status-icon {
     font-size: 9pt;
     margin: 5px 0 0 20px;
 }
+.judging_comments table {
+    position: relative;
+    top: 15px;
+}
+.judging_comments h2 {
+    margin: 0.5em 0;
+}
+.judging_left table.judgingForm {
+    margin: 1em 0;
+}
+.judging_left h4 {
+   margin: 1.25em 0 0 0;
+}

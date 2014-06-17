@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,8 +16,11 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 
 import javax.portlet.PortletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -29,12 +33,23 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
 
         model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
         model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, proposalsContext.getContestPhase(request),
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
+
+        List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getAllRatingsForProposal(proposal.getProposalId());
+        List<ProposalRatingWrapper> ratingComments = new ArrayList<ProposalRatingWrapper>();
+        //wrap the comments
+        for (ProposalRating r : ratings) {
+            ratingComments.add(new ProposalRatingWrapper(r));
+        }
+
+        model.addAttribute("ratingComments", ratingComments);
 
         return "proposalAdvancing";
     }
@@ -48,14 +63,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         Proposal proposal = proposalsContext.getProposal(request);
-
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
         model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
-
-        model.addAttribute("comments", ProposalRatingLocalServiceUtil.getAllRatingsForProposal(proposal.getProposalId()));
 
         return "proposalScreening";
     }

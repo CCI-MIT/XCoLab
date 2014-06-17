@@ -1,0 +1,69 @@
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+        xmlns:form="http://www.springframework.org/tags/form"
+        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+        xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_1.0"
+        xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/discussions"
+        xmlns:addthis="http://www.addthis.com/help/api-spec"
+        xmlns:portlet="http://java.sun.com/portlet_2_0"
+        version="2.0">
+    <jsp:directive.attribute name="proposalRatings" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
+    <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
+
+    <table class="comments">
+        <c:forEach var="rating" items="${proposalRatings}" varStatus="status">
+            <discussions:getRoleName userId="${rating.author.userId}" proposalId="${proposalId}">
+                <tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
+                    <td class="commentor">
+                        <proposalsPortlet:userPortrait  screenName="${rating.author.screenName}" portraitId="${rating.author.portraitId}" width="59" height="59" />
+                        <br />
+                        <proposalsPortlet:userLinkSimple text="${rating.author.screenName}" userId="${rating.author.userId}" /> <br />
+                        <br />
+
+                        <div class="role-indicator">
+                            <div style="width: 16px">
+                                <img
+                                        src="/climatecolab-theme/images/icon_mem-${role.lowerCase}.png"
+                                        width="16" height="16" />
+                            </div>
+                            ${role.printName}
+                        </div>
+                    </td>
+                    <td class="the-comment">
+                        <div class="content">
+                            <c:if test="${rating.rating > 0}">
+                                <p>
+                                    <strong>Rating:</strong>
+                                    <c:choose>
+                                        <c:when test="${rating.rating == 1}">
+                                            poor
+                                        </c:when>
+                                        <c:when test="${rating.rating == 2}">
+                                            fair
+                                        </c:when>
+                                        <c:when test="${rating.rating == 3}">
+                                            good
+                                        </c:when>
+                                        <c:when test="${rating.rating == 4}">
+                                            very good
+                                        </c:when>
+                                        <c:when test="${rating.rating == 5}">
+                                            outstanding
+                                        </c:when>
+                                    </c:choose>
+                                </p>
+                            </c:if>
+                            <p>
+                                <strong>Comment:</strong>
+                                ${rating.comment}
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </discussions:getRoleName>
+        </c:forEach>
+    </table>
+</jsp:root>

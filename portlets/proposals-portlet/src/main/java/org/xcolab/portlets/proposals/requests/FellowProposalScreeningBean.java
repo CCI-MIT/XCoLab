@@ -4,7 +4,6 @@ import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -17,10 +16,10 @@ import java.util.List;
  */
 public class FellowProposalScreeningBean implements Serializable {
     private Long fellowScreeningRating;
+    private String fellowScreeningRatingComment;
     private JudgingSystemActions.FellowAction fellowScreeningAction;
 
-    @NotBlank
-    private String fellowScreeningCommentBody;
+    private String fellowScreeningActionCommentBody;
 
     private List<Long> selectedJudges;
 
@@ -30,6 +29,7 @@ public class FellowProposalScreeningBean implements Serializable {
     public FellowProposalScreeningBean(ProposalFellowWrapper wrapper, ProposalsPreferencesWrapper preferencesWrapper) throws PortalException, SystemException {
         fellowScreeningRating = wrapper.getFellowRating();
         fellowScreeningAction = wrapper.getFellowAction();
+        fellowScreeningRatingComment = wrapper.getFellowRatingComment();
         selectedJudges = wrapper.getSelectedJudges();
 
         // Initialize comment headers and footers
@@ -46,7 +46,7 @@ public class FellowProposalScreeningBean implements Serializable {
                 ""
         };
         // Extract comment body from whole comment
-        fellowScreeningCommentBody = ProposalJudgingCommentHelper.extractComment(wrapper.getFellowComment());
+        fellowScreeningActionCommentBody = ProposalJudgingCommentHelper.extractComment(wrapper.getFellowActionComment());
     }
 
     public FellowProposalScreeningBean() {
@@ -76,12 +76,20 @@ public class FellowProposalScreeningBean implements Serializable {
         this.selectedJudges = selectedJudges;
     }
 
-    public String getFellowScreeningCommentBody() {
-        return fellowScreeningCommentBody;
+    public String getFellowScreeningActionCommentBody() {
+        return fellowScreeningActionCommentBody;
     }
 
-    public void setFellowScreeningCommentBody(String fellowCommentBody) {
-        this.fellowScreeningCommentBody = fellowCommentBody;
+    public void setFellowScreeningActionCommentBody(String fellowActionCommentBody) {
+        this.fellowScreeningActionCommentBody = fellowActionCommentBody;
+    }
+
+    public String getFellowScreeningRatingComment() {
+        return fellowScreeningRatingComment;
+    }
+
+    public void setFellowScreeningRatingComment(String fellowScreeningRatingComment) {
+        this.fellowScreeningRatingComment = fellowScreeningRatingComment;
     }
 
     public String[] getFellowCommentHeaders() {

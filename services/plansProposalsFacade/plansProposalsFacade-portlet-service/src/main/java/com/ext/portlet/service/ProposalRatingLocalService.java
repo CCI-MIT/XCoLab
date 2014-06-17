@@ -233,6 +233,11 @@ public interface ProposalRatingLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalRating> getAllRatingsForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(
         long judgeId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException;

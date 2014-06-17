@@ -273,6 +273,13 @@ public class ProposalRatingLocalServiceWrapper
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.ProposalRating> getAllRatingsForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalRatingLocalService.getAllRatingsForProposal(proposalId);
+    }
+
+    @Override
     public com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(
         long judgeId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {

@@ -44,6 +44,10 @@
                     <h3 style="margin-top: 0;">Rating</h3>
                     Rate the proposal based on the four criteria to the right.
                     <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
+
+                    <h4>Rating comment:</h4>
+                    <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
+
                     <h3>Advance Proposal</h3>
 
 
@@ -87,7 +91,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="fellowCommentContainer" style="display: none">
+                    <div id="fellowActionCommentContainer" style="display: none">
                         <h3>Comment to send to author</h3>
                         <i style="font-size:10pt;">The message below will be used as a template as the response message to the author.</i>
                         <br/>
@@ -96,9 +100,9 @@
                             <!-- -->
                         </div>
                         <div class="form-errors"><!--  -->
-                            <form:errors cssClass="alert alert-error" path="fellowScreeningCommentBody" />
+                            <form:errors cssClass="alert alert-error" path="fellowScreeningActionCommentBody" />
                         </div>
-                        <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningCommentBody" style="width:100%;"/>
+                        <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningActionCommentBody" style="width:100%;"/>
                         <div id="comment-footer">
                             <!-- -->
                         </div>
@@ -172,9 +176,9 @@
         function refreshCommentFieldVisibility() {
             var fellowActionSelectIdx = document.getElementById("fellowScreeningAction").selectedIndex;
             if (fellowScreeningActions[fellowActionSelectIdx].commentEnabled) {
-                jQuery('#fellowCommentContainer').slideDown();
+                jQuery('#fellowActionCommentContainer').slideDown();
             } else {
-                jQuery('#fellowCommentContainer').slideUp();
+                jQuery('#fellowActionCommentContainer').slideUp();
             }
 
             if (fellowScreeningActions[fellowActionSelectIdx].selectJudgesEnabled) {

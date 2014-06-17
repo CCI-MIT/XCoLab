@@ -213,11 +213,13 @@ public class ProposalWrapper {
         return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
-
-
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
         Long action = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
+    }
+
+    public String getFellowActionComment() throws SystemException, PortalException {
+        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0, STRING_DEFAULT_VAL);
     }
 
 

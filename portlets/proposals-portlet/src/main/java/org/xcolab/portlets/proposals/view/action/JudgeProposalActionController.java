@@ -184,21 +184,24 @@ public class JudgeProposalActionController {
         // save selection of judges
         persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
 
-        // save fellow rating
-        //if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningRating()))
-        //    persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, fellowProposalScreeningBean.getFellowScreeningRating());
-
         // save fellow action
-        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction()))
+        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction()) && fellowProposalScreeningBean.getFellowScreeningAction() > 0) {
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, fellowProposalScreeningBean.getFellowScreeningAction());
 
-        // save fellow comment and rating
-        String comment = "";
-        if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
-            comment = ProposalJudgingCommentHelper.wrapComment(proposalsContext.getProposalsPreferences(request).getScreeningIncompleteText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
-        } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
-            comment = ProposalJudgingCommentHelper.wrapComment(proposalsContext.getProposalsPreferences(request).getScreeningOfftopicText(), fellowProposalScreeningBean.getFellowScreeningCommentBody());
+            //save fellow action comment
+            ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+
+            if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
+                commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningIncompleteText(), fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+            } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
+                commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningOfftopicText(), fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+            }
         }
+
+        // save fellow comment and rating
+        String comment = fellowProposalScreeningBean.getFellowScreeningRatingComment();
+        Long rating = fellowProposalScreeningBean.getFellowScreeningRating();
+
         //find existing rating
         ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getFellowRatingForProposal(
                 currentUser.getUserId(),
@@ -208,7 +211,7 @@ public class JudgeProposalActionController {
         if (proposalRating != null) {
             ProposalRatingLocalServiceUtil.updateRating(
                     proposalRating.getId(),
-                    fellowProposalScreeningBean.getFellowScreeningRating(),
+                    rating,
                     comment,
                     ""
             );
@@ -218,7 +221,7 @@ public class JudgeProposalActionController {
                     proposalId,
                     contestPhaseId,
                     currentUser.getUserId(),
-                    fellowProposalScreeningBean.getFellowScreeningRating(),
+                    rating,
                     comment,
                     ""
             );

@@ -111,6 +111,10 @@
                     </form:form>
                 </c:otherwise>
             </c:choose>
+            <div class="judging_comments addpropbox">
+                <h2>Comments by Judges and Fellows</h2>
+                <proposalsPortlet:proposalRatingComments proposalRatings="${ratingComments}" proposalId="${proposal.proposalId}" />
+            </div>
         </div>
         <div class="judging_right">
             <div class="addpropbox">

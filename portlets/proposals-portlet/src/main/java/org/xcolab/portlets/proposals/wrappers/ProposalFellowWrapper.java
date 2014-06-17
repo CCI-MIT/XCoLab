@@ -46,7 +46,7 @@ public class ProposalFellowWrapper extends ProposalWrapper {
 
     }
 
-    public String getFellowComment() throws SystemException, PortalException {
+    public String getFellowRatingComment() throws SystemException, PortalException {
         if (this.proposalRating != null) {
             return this.proposalRating.getComment();
         } else {

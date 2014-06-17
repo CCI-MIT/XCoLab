@@ -13,8 +13,7 @@ public class ProposalContestPhaseAttributeKeys {
     public static final String JUDGE_REVIEW_COMMENT = "JUDGE_REVIEW_COMMENT";
     public static final String JUDGE_DECISION = "JUDGE_DECISION";
     public static final String PROPOSAL_REVIEW = "PROPOSAL_REVIEW";     // Will be send out to the proposal author
-    public static final String FELLOW_RATING = "FELLOW_RATING";
     public static final String FELLOW_ACTION = "FELLOW_ACTION";
-    public static final String FELLOW_COMMENT = "FELLOW_COMMENT";
+    public static final String FELLOW_ACTION_COMMENT = "FELLOW_ACTION_COMMENT";
     public static final String SELECTED_JUDGES = "SELECTED_JUDGES";
 }
