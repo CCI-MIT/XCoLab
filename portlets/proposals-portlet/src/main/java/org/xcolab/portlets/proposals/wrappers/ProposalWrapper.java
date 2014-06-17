@@ -486,20 +486,20 @@ public class ProposalWrapper {
         try {
             switch (getFellowAction()) {
                 case INCOMPLETE: case OFFTOPIC:
-                    return GenericJudgingStatus.STATUS_X;
+                    return GenericJudgingStatus.STATUS_REJECTED;
                 case PASS_TO_JUDGES:
-                    return GenericJudgingStatus.STATUS_CHECKMARK;
+                    return GenericJudgingStatus.STATUS_ACCEPTED;
                 default:
                     if (!contestPhase.getFellowScreeningActive()) {
-                        return GenericJudgingStatus.STATUS_CHECKMARK;
+                        return GenericJudgingStatus.STATUS_ACCEPTED;
                     }
-                    return GenericJudgingStatus.STATUS_QUESTIONMARK;
+                    return GenericJudgingStatus.STATUS_UNKNOWN;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  GenericJudgingStatus.STATUS_QUESTIONMARK;
+        return  GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
     /**
@@ -509,14 +509,14 @@ public class ProposalWrapper {
     public GenericJudgingStatus getJudgeStatus() {
         try {
             if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC)
-                return GenericJudgingStatus.STATUS_X;
+                return GenericJudgingStatus.STATUS_REJECTED;
             if (getSelectedJudges().size() > 0 && getAllJudgesReviewFinished()) {
-                return GenericJudgingStatus.STATUS_CHECKMARK;
+                return GenericJudgingStatus.STATUS_ACCEPTED;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return GenericJudgingStatus.STATUS_QUESTIONMARK;
+        return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
     /**
@@ -524,25 +524,24 @@ public class ProposalWrapper {
      * @return
      */
     public GenericJudgingStatus getOverallStatus() {
-        //TODO: ADAPT TO NEW MULTIPLICITY OF FELLOW RATINGS <-> PROPOSALS
         try {
             if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
-                return GenericJudgingStatus.STATUS_CHECKMARK;
+                return GenericJudgingStatus.STATUS_ACCEPTED;
             } else if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON && Validator.isNotNull(getProposalReview()) ||
-                    getScreeningStatus() == GenericJudgingStatus.STATUS_X && Validator.isNotNull(getFellowComment())) {
-                return GenericJudgingStatus.STATUS_X;
+                    getScreeningStatus() == GenericJudgingStatus.STATUS_REJECTED) {
+                return GenericJudgingStatus.STATUS_REJECTED;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return GenericJudgingStatus.STATUS_QUESTIONMARK;
+        return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
     public enum GenericJudgingStatus {
-        STATUS_QUESTIONMARK(0),
-        STATUS_X(1),
-        STATUS_CHECKMARK(2);
+        STATUS_UNKNOWN(0),
+        STATUS_REJECTED(1),
+        STATUS_ACCEPTED(2);
 
         private int statusValue;
 
@@ -589,7 +588,7 @@ public class ProposalWrapper {
                         userId,
                         this.proposal.getProposalId(),
                         this.contestPhase.getContestPhasePK());
-                if (!proposalRating.isRatingComplete()) {
+                if (proposalRating == null || !proposalRating.isRatingComplete()) {
                     return false;
                 }
 

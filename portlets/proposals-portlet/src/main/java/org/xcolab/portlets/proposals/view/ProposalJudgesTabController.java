@@ -1,6 +1,8 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +47,15 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+        Proposal proposal = proposalsContext.getProposal(request);
+
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
         model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
+
+        model.addAttribute("comments", ProposalRatingLocalServiceUtil.getAllRatingsForProposal(proposal.getProposalId()));
 
         return "proposalScreening";
     }

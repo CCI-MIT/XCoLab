@@ -6,6 +6,7 @@ import com.ext.portlet.service.base.ProposalRatingLocalServiceBaseImpl;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -46,6 +47,13 @@ public class ProposalRatingLocalServiceImpl
         int getId() {
             return this.id;
         }
+    }
+
+    public List<ProposalRating> getAllRatingsForProposal(long proposalId) throws SystemException {
+        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRating.class)
+                .add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));
+        query.addOrder(OrderFactoryUtil.asc("ratingType"));
+        return dynamicQuery(query);
     }
 
     public ProposalRating getJudgeRatingForProposal(long judgeId, long proposalId, long contestPhaseId) throws SystemException {

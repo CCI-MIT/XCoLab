@@ -2,7 +2,6 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
 
-import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -481,7 +480,7 @@ public class ContestWrapper {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_CHECKMARK)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_ACCEPTED)
                     return false;
             }
         } catch (Exception e) {
@@ -500,7 +499,7 @@ public class ContestWrapper {
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_QUESTIONMARK)
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == ProposalWrapper.GenericJudgingStatus.STATUS_UNKNOWN)
                     return false;
             }
         } catch (Exception e) {
