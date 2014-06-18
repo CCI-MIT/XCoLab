@@ -5,12 +5,10 @@ import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -82,7 +80,8 @@ public class JudgeProposalActionController {
             return;
         }
 
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        Proposal proposal = proposalsContext.getProposal(request);
+        long proposalId = proposal.getProposalId();
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -93,6 +92,19 @@ public class JudgeProposalActionController {
             return;
         }
 
+        //check if advancement was frozen
+        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+                proposalId,
+                contestPhase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
+                0
+        );
+
+        //disallow saving
+        if (isFrozen) {
+            return;
+        }
+
         // save judge decision
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
             persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, proposalAdvancingBean.getAdvanceDecision());
@@ -100,7 +112,7 @@ public class JudgeProposalActionController {
 
         // save judge comment
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
-            ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+            ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
             String judgeCommentTemplate = null;
             ProposalsPreferencesWrapper preferences = proposalsContext.getProposalsPreferences(request);
             if (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON.getAttributeValue()) {
@@ -110,6 +122,16 @@ public class JudgeProposalActionController {
             }
 
             commentHelper.setAdvancingComment(judgeCommentTemplate, proposalAdvancingBean.getAdvanceComment());
+        }
+
+        //freeze the advancement
+        if (request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
+            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "true");
+        }
+
+        //forcefully promote the advancement
+        if (request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
+            ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
     }
 

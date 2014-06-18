@@ -265,6 +265,14 @@ public class ProposalContestPhaseAttributeLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static boolean isAttributeSetAndTrue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .isAttributeSetAndTrue(proposalId, contestPhaseId,
+            attributeName, additionalId);
+    }
+
     /**
     * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
     *

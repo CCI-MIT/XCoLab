@@ -47,7 +47,7 @@
                     Not all judges have completed the review yet or this proposal was not forwarded to any judges.
                 </c:when>
                 <c:otherwise>
-                    <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL }" method="post"
+                    <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
                                commandName="proposalAdvancingBean">
                         <div class="addpropbox">
                             <h3>Advance Proposal to Semi-Finalist Round?</h3>
@@ -76,9 +76,32 @@
                                         <a href="${sendEmailURL}">Send e-Mails</a>
                                     </div>
                                 </c:if>
-                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                    <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
-                                </div>
+                                <c:choose>
+                                    <c:when test="${isFrozen}">
+                                        The advancement is finalized and may not be changed anymore.
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                            <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                                Save
+                                            </a>
+                                        </div>
+                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                            <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
+                                            <a href="javascript:;" onclick="$('#submit-freeze').click();">
+                                                Finalize and freeze
+                                            </a>
+                                        </div>
+                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                            <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                            <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                Force promotion to next phase
+                                            </a>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+
+
                             </div>
 
                         </div>
@@ -147,5 +170,10 @@
             $('#comment-footer').html(advanceCommentFooters[advanceDecisionIdx]);
         }
     </script>
+    <c:if test="${isFrozen}">
+        <script>
+            $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
+        </script>
+    </c:if>
 
 </jsp:root>

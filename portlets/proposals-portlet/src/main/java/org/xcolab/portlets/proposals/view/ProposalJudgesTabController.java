@@ -1,8 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -14,9 +17,9 @@ import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
@@ -35,10 +38,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
         Proposal proposal = proposalsContext.getProposal(request);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
-        model.addAttribute("discussionId", proposalsContext.getProposal(request).getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, proposalsContext.getContestPhase(request),
+        model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
+        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, contestPhase,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
@@ -46,6 +50,14 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         List<ProposalRatingWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId()));
 
 
+        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+                proposal.getProposalId(),
+                contestPhase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
+                0
+        );
+
+        model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("fellowRatings", fellowRatings);
         model.addAttribute("judgeRatings", judgeRatings);
 

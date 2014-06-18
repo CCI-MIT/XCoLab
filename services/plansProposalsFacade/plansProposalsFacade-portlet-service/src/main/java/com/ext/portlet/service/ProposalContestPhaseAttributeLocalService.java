@@ -235,6 +235,11 @@ public interface ProposalContestPhaseAttributeLocalService
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
     *

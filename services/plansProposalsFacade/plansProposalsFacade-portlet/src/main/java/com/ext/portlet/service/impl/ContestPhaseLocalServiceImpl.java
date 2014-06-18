@@ -1,33 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseColumn;
-import com.ext.portlet.model.PlanItem;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -40,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.mail.internet.AddressException;
+import java.util.*;
 
 /**
  * The implementation of the contest phase local service.
@@ -307,10 +287,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                         // Decide about the promotion
-                        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
-                        Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
-
-                        if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
+                        if (didJudgeDecideToPromote(p, phase)) {
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                         }
 
@@ -330,6 +307,40 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
+    }
+
+    private boolean didJudgeDecideToPromote(Proposal p, ContestPhase phase) {
+        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+        Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
+
+        if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void forcePromotionOfProposalInPhase(Proposal p, ContestPhase phase) throws SystemException, PortalException {
+        Date now = new Date();
+        ContestPhase nextPhase = getNextContestPhase(phase);
+
+        // Decide about the promotion
+        if (didJudgeDecideToPromote(p, phase)) {
+            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+        }
+
+        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+        try {
+            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+        } catch (MailEngineException | AddressException e) {
+            _log.error("Could not send proposal promotion colab messaging notification", e);
+        }
+
+        //TODO: set promote_done or not?
+        //phase.setContestPhaseAutopromote("PROMOTE_DONE");
+        //updateContestPhase(phase);
+        _log.info("done forcefully promoting proposal "+ p.getProposalId() +" from phase " + phase.getContestPhasePK());
     }
 
 

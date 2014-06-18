@@ -277,6 +277,14 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
             parameterTypes, arguments);
     }
 
+    @Override
+    public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.isAttributeSetAndTrue(proposalId,
+            contestPhaseId, attributeName, additionalId);
+    }
+
     /**
     * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
     *

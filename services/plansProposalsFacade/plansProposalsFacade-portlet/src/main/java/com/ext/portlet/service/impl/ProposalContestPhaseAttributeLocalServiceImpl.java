@@ -1,14 +1,13 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalContestPhaseAttributeType;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal contest phase attribute local service.
@@ -31,6 +30,19 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil} to access the proposal contest phase attribute local service.
      */
+
+    public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId, String attributeName, long additionalId) throws SystemException {
+        boolean isTrue = false;
+        try {
+            ProposalContestPhaseAttribute boolAttr = getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+            if (boolAttr.getStringValue().equals("true")) {
+                isTrue = true;
+            }
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            //isTrue stays false
+        }
+        return isTrue;
+    }
     
     /**
      * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>

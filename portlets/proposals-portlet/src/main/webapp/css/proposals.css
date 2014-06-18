@@ -338,6 +338,7 @@ img.review-status-icon {
    margin: 1.25em 0 0 0;
 }
 .judging_comments {
+    clear:both;
     .comment {
         width: 49%;
         display: inline-block;
