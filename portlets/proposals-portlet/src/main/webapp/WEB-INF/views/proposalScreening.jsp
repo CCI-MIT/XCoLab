@@ -39,17 +39,7 @@
             <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
                        commandName="fellowProposalScreeningBean">
                 <div class="addpropbox">
-                    <form:errors path="*" cssClass="alert alert-error" />
-
-                    <h3 style="margin-top: 0;">Rating</h3>
-                    Rate the proposal based on the four criteria to the right.
-                    <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
-
-                    <h4>Rating comment:</h4>
-                    <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
-                </div>
-                <div class="addpropbox">
-                    <h3>Advance Proposal</h3>
+                    <h3>Advance Proposal to Judges for Review?</h3>
 
 
                     <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
@@ -108,11 +98,24 @@
                             <!-- -->
                         </div>
                     </div>
-                            <div class="blue-button" style="display:block; float:right;">
-                                <a href="javascript:;" class="requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save</a>
-                            </div>
+                    <div class="blue-button" style="display:block; float:right;">
+                        <a href="javascript:;" class="requestMembershipSubmitButton"
+                           onclick="jQuery(this).parents('form').submit();">Save</a>
+                    </div>
                 </div>
+                <div class="addpropbox">
+                    <form:errors path="*" cssClass="alert alert-error" />
+
+                    <h3 style="margin-top: 0;">My Rating</h3>
+                    <p>
+                        This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
+                    </p>
+                    <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
+
+                    <h4>Rating comment:</h4>
+                    <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
+                </div>
+
             </form:form>
             <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">

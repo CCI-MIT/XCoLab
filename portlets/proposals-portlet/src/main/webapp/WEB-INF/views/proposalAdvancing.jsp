@@ -50,7 +50,7 @@
                     <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL }" method="post"
                                commandName="proposalAdvancingBean">
                         <div class="addpropbox">
-                            <h3>Promotion</h3>
+                            <h3>Advance Proposal to Semi-Finalist Round?</h3>
                             <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                             <div id="comment-container">

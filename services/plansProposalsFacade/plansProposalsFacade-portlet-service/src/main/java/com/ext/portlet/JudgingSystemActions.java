@@ -6,7 +6,9 @@ package com.ext.portlet;
  */
 public class JudgingSystemActions {
     public enum AdvanceDecision {
-        NO_DECISION(0, "no decision"), DONT_MOVE_ON(1, "don't move on"), MOVE_ON(2, "move on");
+        NO_DECISION(0, "No decision made yet"),
+        DONT_MOVE_ON(1, "Do Not Advance"),
+        MOVE_ON(2, "Advance");
 
         int attributeValue;
         String description;
@@ -34,10 +36,10 @@ public class JudgingSystemActions {
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "No decision", false, false),
-        INCOMPLETE(1, "Incomplete", true, false),
-        OFFTOPIC(2, "Off-topic", true, false),
-        PASS_TO_JUDGES(3, "Advance to judges", false, true);
+        NO_DECISION(0, "No decision made yet", false, false),
+        INCOMPLETE(1, "Do Not Advance: incomplete", true, false),
+        OFFTOPIC(2, "Do Not Advance: off-topic", true, false),
+        PASS_TO_JUDGES(3, "Advance", false, true);
 
         int attributeValue;
         String description;
