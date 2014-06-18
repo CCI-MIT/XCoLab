@@ -33,7 +33,7 @@ public class ProposalFellowWrapper extends ProposalWrapper {
                     contestPhase.getContestPhasePK());
         } catch (Exception e) {
             this.proposalRating = null;
-        }
+            }
     }
 
 

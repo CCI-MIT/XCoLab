@@ -86,7 +86,6 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         } else {
             return 0L;
         }
-
     }
 
     public String getJudgeComment() throws SystemException, PortalException {

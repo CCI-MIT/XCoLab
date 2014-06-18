@@ -12,12 +12,13 @@
         version="2.0">
     <jsp:directive.attribute name="proposalRatings" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
+    <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
 
-    <table class="comments">
+    <div class="comments">
         <c:forEach var="rating" items="${proposalRatings}" varStatus="status">
             <discussions:getRoleName userId="${rating.author.userId}" proposalId="${proposalId}">
-                <tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
-                    <td class="commentor">
+                <div class="comment">
+                    <div class="commentor">
                         <proposalsPortlet:userPortrait  screenName="${rating.author.screenName}" portraitId="${rating.author.portraitId}" width="59" height="59" />
                         <br />
                         <proposalsPortlet:userLinkSimple text="${rating.author.screenName}" userId="${rating.author.userId}" /> <br />
@@ -31,10 +32,10 @@
                             </div>
                             ${role.printName}
                         </div>
-                    </td>
-                    <td class="the-comment">
+                    </div>
+                    <div class="the-comment">
                         <div class="content">
-                            <c:if test="${rating.rating > 0}">
+                            <c:if test="${showRating and rating.rating > 0}">
                                 <p>
                                     <strong>Rating:</strong>
                                     <c:choose>
@@ -61,9 +62,9 @@
                                 ${rating.comment}
                             </p>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             </discussions:getRoleName>
         </c:forEach>
-    </table>
+    </div>
 </jsp:root>

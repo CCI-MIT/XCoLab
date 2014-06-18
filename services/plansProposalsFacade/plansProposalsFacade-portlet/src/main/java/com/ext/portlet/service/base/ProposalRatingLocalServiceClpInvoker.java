@@ -49,14 +49,16 @@ public class ProposalRatingLocalServiceClpInvoker {
     private String[] _methodParameterTypes520;
     private String _methodName521;
     private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
+    private String _methodName523;
+    private String[] _methodParameterTypes523;
     private String _methodName524;
     private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
     private String _methodName526;
     private String[] _methodParameterTypes526;
+    private String _methodName527;
+    private String[] _methodParameterTypes527;
+    private String _methodName528;
+    private String[] _methodParameterTypes528;
 
     public ProposalRatingLocalServiceClpInvoker() {
         _methodName0 = "addProposalRating";
@@ -149,35 +151,39 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         _methodParameterTypes515 = new String[] { "java.lang.String" };
 
-        _methodName520 = "getAllRatingsForProposal";
+        _methodName520 = "getFellowRatingsForProposal";
 
         _methodParameterTypes520 = new String[] { "long" };
 
-        _methodName521 = "getJudgeRatingForProposal";
+        _methodName521 = "getJudgeRatingsForProposal";
 
-        _methodParameterTypes521 = new String[] { "long", "long", "long" };
+        _methodParameterTypes521 = new String[] { "long" };
 
-        _methodName522 = "getFellowRatingForProposal";
+        _methodName523 = "getJudgeRatingForProposal";
 
-        _methodParameterTypes522 = new String[] { "long", "long", "long" };
+        _methodParameterTypes523 = new String[] { "long", "long", "long" };
 
-        _methodName524 = "addJudgeRating";
+        _methodName524 = "getFellowRatingForProposal";
 
-        _methodParameterTypes524 = new String[] {
-                "long", "long", "long", "long", "java.lang.String",
-                "java.lang.String"
-            };
+        _methodParameterTypes524 = new String[] { "long", "long", "long" };
 
-        _methodName525 = "addFellowRating";
-
-        _methodParameterTypes525 = new String[] {
-                "long", "long", "long", "long", "java.lang.String",
-                "java.lang.String"
-            };
-
-        _methodName526 = "updateRating";
+        _methodName526 = "addJudgeRating";
 
         _methodParameterTypes526 = new String[] {
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String"
+            };
+
+        _methodName527 = "addFellowRating";
+
+        _methodParameterTypes527 = new String[] {
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String"
+            };
+
+        _methodName528 = "updateRating";
+
+        _methodParameterTypes528 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
     }
@@ -285,25 +291,30 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         if (_methodName520.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
-            return ProposalRatingLocalServiceUtil.getAllRatingsForProposal(((Long) arguments[0]).longValue());
+            return ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(((Long) arguments[0]).longValue());
         }
 
         if (_methodName521.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
-            return ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue(),
-                ((Long) arguments[2]).longValue());
+            return ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
-            return ProposalRatingLocalServiceUtil.getFellowRatingForProposal(((Long) arguments[0]).longValue(),
+        if (_methodName523.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+            return ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue());
         }
 
         if (_methodName524.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+            return ProposalRatingLocalServiceUtil.getFellowRatingForProposal(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue());
+        }
+
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.addJudgeRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -311,8 +322,8 @@ public class ProposalRatingLocalServiceClpInvoker {
                 (java.lang.String) arguments[4], (java.lang.String) arguments[5]);
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.addFellowRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -320,8 +331,8 @@ public class ProposalRatingLocalServiceClpInvoker {
                 (java.lang.String) arguments[4], (java.lang.String) arguments[5]);
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName528.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
             return ProposalRatingLocalServiceUtil.updateRating(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);

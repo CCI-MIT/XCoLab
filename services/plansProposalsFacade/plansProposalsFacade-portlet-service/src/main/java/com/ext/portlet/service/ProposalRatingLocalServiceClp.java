@@ -56,6 +56,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     private String[] _methodParameterTypes23;
     private String _methodName24;
     private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
 
     public ProposalRatingLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -151,35 +153,39 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
 
-        _methodName19 = "getAllRatingsForProposal";
+        _methodName19 = "getFellowRatingsForProposal";
 
         _methodParameterTypes19 = new String[] { "long" };
 
-        _methodName20 = "getJudgeRatingForProposal";
+        _methodName20 = "getJudgeRatingsForProposal";
 
-        _methodParameterTypes20 = new String[] { "long", "long", "long" };
+        _methodParameterTypes20 = new String[] { "long" };
 
-        _methodName21 = "getFellowRatingForProposal";
+        _methodName21 = "getJudgeRatingForProposal";
 
         _methodParameterTypes21 = new String[] { "long", "long", "long" };
 
-        _methodName22 = "addJudgeRating";
+        _methodName22 = "getFellowRatingForProposal";
 
-        _methodParameterTypes22 = new String[] {
-                "long", "long", "long", "long", "java.lang.String",
-                "java.lang.String"
-            };
+        _methodParameterTypes22 = new String[] { "long", "long", "long" };
 
-        _methodName23 = "addFellowRating";
+        _methodName23 = "addJudgeRating";
 
         _methodParameterTypes23 = new String[] {
                 "long", "long", "long", "long", "java.lang.String",
                 "java.lang.String"
             };
 
-        _methodName24 = "updateRating";
+        _methodName24 = "addFellowRating";
 
         _methodParameterTypes24 = new String[] {
+                "long", "long", "long", "long", "java.lang.String",
+                "java.lang.String"
+            };
+
+        _methodName25 = "updateRating";
+
+        _methodParameterTypes25 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
     }
@@ -695,7 +701,7 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRating> getAllRatingsForProposal(
+    public java.util.List<com.ext.portlet.model.ProposalRating> getFellowRatingsForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -722,14 +728,41 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     }
 
     @Override
+    public java.util.List<com.ext.portlet.model.ProposalRating> getJudgeRatingsForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20, new Object[] { proposalId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalRating>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(
         long judgeId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
                     new Object[] { judgeId, proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -756,8 +789,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
                     new Object[] { judgeId, proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -786,8 +819,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName22,
-                    _methodParameterTypes22,
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
                     new Object[] {
                         proposalId,
                         
@@ -832,8 +865,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName23,
-                    _methodParameterTypes23,
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
                     new Object[] {
                         proposalId,
                         
@@ -878,8 +911,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName24,
-                    _methodParameterTypes24,
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
                     new Object[] {
                         proposalRatingId,
                         

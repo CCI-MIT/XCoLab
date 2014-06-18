@@ -36,9 +36,9 @@
         </portlet:actionURL>
 
         <div class="judging_left">
-            <div class="addpropbox">
-                <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
-                           commandName="fellowProposalScreeningBean">
+            <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
+                       commandName="fellowProposalScreeningBean">
+                <div class="addpropbox">
                     <form:errors path="*" cssClass="alert alert-error" />
 
                     <h3 style="margin-top: 0;">Rating</h3>
@@ -47,7 +47,8 @@
 
                     <h4>Rating comment:</h4>
                     <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
-
+                </div>
+                <div class="addpropbox">
                     <h3>Advance Proposal</h3>
 
 
@@ -111,9 +112,8 @@
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save</a>
                             </div>
-
-                </form:form>
-            </div>
+                </div>
+            </form:form>
             <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">
                     <div class="blue-button" style="display:block; float:right;">

@@ -49,22 +49,31 @@ public class ProposalRatingLocalServiceImpl
         }
     }
 
-    public List<ProposalRating> getAllRatingsForProposal(long proposalId) throws SystemException {
+
+
+    public List<ProposalRating> getFellowRatingsForProposal(long proposalId) throws SystemException {
+        return getRatingsForProposal(proposalId, ProposalRatingType.FELLOW.getId());
+    }
+    public List<ProposalRating> getJudgeRatingsForProposal(long proposalId) throws SystemException {
+        return getRatingsForProposal(proposalId, ProposalRatingType.JUDGE.getId());
+    }
+
+    protected List<ProposalRating> getRatingsForProposal(long proposalId, int ratingType) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRating.class)
+                .add(PropertyFactoryUtil.forName("ratingType").eq(ratingType))
                 .add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));
-        query.addOrder(OrderFactoryUtil.asc("ratingType"));
+        query.addOrder(OrderFactoryUtil.asc("userId"));
         return dynamicQuery(query);
     }
 
+
+
     public ProposalRating getJudgeRatingForProposal(long judgeId, long proposalId, long contestPhaseId) throws SystemException {
-        int ratingType = ProposalRatingType.JUDGE.getId();
-        return this.getRatingForProposal(ratingType, judgeId, proposalId, contestPhaseId);
+        return this.getRatingForProposal(ProposalRatingType.JUDGE.getId(), judgeId, proposalId, contestPhaseId);
     }
     public ProposalRating getFellowRatingForProposal(long judgeId, long proposalId, long contestPhaseId) throws SystemException {
-        int ratingType = ProposalRatingType.FELLOW.getId();
-        return this.getRatingForProposal(ratingType, judgeId, proposalId, contestPhaseId);
+        return this.getRatingForProposal(ProposalRatingType.FELLOW.getId(), judgeId, proposalId, contestPhaseId);
     }
-
 
     protected ProposalRating getRatingForProposal(int ratingType, long judgeId, long proposalId, long contestPhaseId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRating.class)

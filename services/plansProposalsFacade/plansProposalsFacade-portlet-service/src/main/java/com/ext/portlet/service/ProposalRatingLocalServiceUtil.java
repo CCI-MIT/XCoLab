@@ -262,10 +262,16 @@ public class ProposalRatingLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.ProposalRating> getAllRatingsForProposal(
+    public static java.util.List<com.ext.portlet.model.ProposalRating> getFellowRatingsForProposal(
         long proposalId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getAllRatingsForProposal(proposalId);
+        return getService().getFellowRatingsForProposal(proposalId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalRating> getJudgeRatingsForProposal(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getJudgeRatingsForProposal(proposalId);
     }
 
     public static com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(

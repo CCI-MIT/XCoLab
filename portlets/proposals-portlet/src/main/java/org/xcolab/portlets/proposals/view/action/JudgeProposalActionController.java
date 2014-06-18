@@ -163,13 +163,14 @@ public class JudgeProposalActionController {
     public void saveScreening(ActionRequest request, Model model,
                                  ActionResponse response,
                                  @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
-                                 BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException {
+                                 BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         if (result.hasErrors()) {
             SessionErrors.clear(request);
             SessionMessages.clear(request);
             return;
         }
 
+        long contestId = proposalsContext.getContest(request).getContestPK();
         long proposalId = proposalsContext.getProposal(request).getProposalId();
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -226,6 +227,7 @@ public class JudgeProposalActionController {
                     ""
             );
         }
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/SCREENING");
     }
 
     @ResourceMapping("getJudgingCsv")

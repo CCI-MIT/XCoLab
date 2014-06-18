@@ -42,16 +42,23 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
-        List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getAllRatingsForProposal(proposal.getProposalId());
-        List<ProposalRatingWrapper> ratingComments = new ArrayList<ProposalRatingWrapper>();
-        //wrap the comments
-        for (ProposalRating r : ratings) {
-            ratingComments.add(new ProposalRatingWrapper(r));
-        }
+        List<ProposalRatingWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId()));
+        List<ProposalRatingWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId()));
 
-        model.addAttribute("ratingComments", ratingComments);
+
+        model.addAttribute("fellowRatings", fellowRatings);
+        model.addAttribute("judgeRatings", judgeRatings);
 
         return "proposalAdvancing";
+    }
+
+    private static List<ProposalRatingWrapper> wrapProposalRatings(List<ProposalRating> ratings) {
+        List<ProposalRatingWrapper> wrappedRatings = new ArrayList<ProposalRatingWrapper>();
+        //wrap the comments
+        for (ProposalRating r : ratings) {
+            wrappedRatings.add(new ProposalRatingWrapper(r));
+        }
+        return wrappedRatings;
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})

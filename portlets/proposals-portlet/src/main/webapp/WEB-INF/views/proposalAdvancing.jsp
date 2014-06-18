@@ -56,7 +56,9 @@
                             <div id="comment-container">
                                 <h3>Comment to send to author</h3>
                                 <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
-                                    will be replacing the marked section in the text below.</i>
+                                    will be replacing the marked section in the text below.<br />
+                                    When writing this message, please consider the comments and rating of judges in the Fellows &amp; Judges Comments tab.
+                                </i>
                                 <br/>
                                 <br/>
                                 <div id="comment-header">
@@ -80,41 +82,9 @@
                             </div>
 
                         </div>
-
-                        <div class="addpropbox" style="display:none;"> <!-- hide until someone changes his mind wants to see it again :) -->
-                            <!--
-                            <h3 style="margin-top: 0;">Rating</h3>
-                            <table class="judgingForm">
-                                <tbody>
-                                <tr>
-                                    <td>poor</td>
-                                    <td>fair</td>
-                                    <td>good</td>
-                                    <td>very good</td>
-                                    <td>outstanding</td>
-                                </tr>
-                                <tr>
-                                    <td><form:radiobutton path="judgeRating" value="1"/></td>
-                                    <td><form:radiobutton path="judgeRating" value="2"/></td>
-                                    <td><form:radiobutton path="judgeRating" value="3"/></td>
-                                    <td><form:radiobutton path="judgeRating" value="4"/></td>
-                                    <td><form:radiobutton path="judgeRating" value="5"/></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                    <a href="javascript:;" class="requestMembershipSubmitButton"
-                                       onclick="jQuery(this).parents('form').submit();">Save</a>
-                                </div>
-                                -->
-                        </div>
                     </form:form>
                 </c:otherwise>
             </c:choose>
-            <div class="judging_comments addpropbox">
-                <h2>Comments by Judges and Fellows</h2>
-                <proposalsPortlet:proposalRatingComments proposalRatings="${ratingComments}" proposalId="${proposal.proposalId}" />
-            </div>
         </div>
         <div class="judging_right">
             <div class="addpropbox">
@@ -132,6 +102,16 @@
 
                 <h3>Presentation quality</h3>
                 <span>Proposals that are well-presented will be favored over those that aren't. Presentation quality includes how well written a proposal is, how well it uses graphics or other visual elements, and how compelling are its artistic representations of possible future worlds (if any).</span>
+            </div>
+        </div>
+        <div class="judging_comments">
+            <h2>Comments by Judges</h2>
+            <div class="addpropbox">
+                <proposalsPortlet:proposalRatingComments showRating="true" proposalRatings="${judgeRatings}" proposalId="${proposal.proposalId}" />
+            </div>
+            <h2>Comments by Fellows</h2>
+            <div class="addpropbox">
+                <proposalsPortlet:proposalRatingComments showRating="false" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
             </div>
         </div>
     </div>

@@ -55,7 +55,7 @@ public class ProposalJudgingCommentHelper {
         if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION &&
                 fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
             String fellowRejectionText = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0).getStringValue();
+                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0).getStringValue();
 
             return extractComment(fellowRejectionText);
         }
@@ -73,7 +73,7 @@ public class ProposalJudgingCommentHelper {
 
 
             String screeningMessage = wrapComment(template, comment);
-            persistAttribute(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, screeningMessage);
+            persistAttribute(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, screeningMessage);
         }
     }
 
@@ -172,7 +172,7 @@ public class ProposalJudgingCommentHelper {
         } else if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION) {
             //fellow decided
             String fellowReviewText = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0).getStringValue();
+                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0).getStringValue();
 
             return fellowReviewText;
         }
