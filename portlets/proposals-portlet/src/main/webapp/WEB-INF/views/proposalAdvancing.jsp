@@ -92,12 +92,14 @@
                                                 Finalize and freeze
                                             </a>
                                         </div>
-                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                            <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                            <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
-                                                Force promotion to next phase
-                                            </a>
-                                        </div>
+                                        <c:if test="${isAdmin}">
+                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                                <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                    Force promotion to next phase
+                                                </a>
+                                            </div>
+                                        </c:if>
                                     </c:otherwise>
                                 </c:choose>
 

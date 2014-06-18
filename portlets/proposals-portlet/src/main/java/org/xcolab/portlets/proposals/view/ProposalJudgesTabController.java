@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -34,12 +35,13 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
     public String showJudgesPanel(PortletRequest request, Model model) 
             throws PortalException, SystemException {
-        
+
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
         model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, contestPhase,
@@ -57,6 +59,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 0
         );
 
+        model.addAttribute("isAdmin", permissions.getCanAdminAll());
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("fellowRatings", fellowRatings);
         model.addAttribute("judgeRatings", judgeRatings);

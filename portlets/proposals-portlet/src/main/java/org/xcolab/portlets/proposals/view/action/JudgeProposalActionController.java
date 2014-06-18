@@ -130,7 +130,7 @@ public class JudgeProposalActionController {
         }
 
         //forcefully promote the advancement
-        if (request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
+        if (permissions.getCanAdminAll() && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
     }
