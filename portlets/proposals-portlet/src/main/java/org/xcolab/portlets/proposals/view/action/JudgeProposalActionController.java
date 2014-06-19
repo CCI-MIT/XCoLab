@@ -74,13 +74,14 @@ public class JudgeProposalActionController {
     public void saveAdvanceDetails(ActionRequest request, Model model,
                                 ActionResponse response, @Valid ProposalAdvancingBean proposalAdvancingBean,
                                 BindingResult result)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
         if (result.hasErrors()) {
             return;
         }
 
         Proposal proposal = proposalsContext.getProposal(request);
+        long contestId = proposalsContext.getContest(request).getContestPK();
         long proposalId = proposal.getProposalId();
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
@@ -100,8 +101,8 @@ public class JudgeProposalActionController {
                 0
         );
 
-        //disallow saving
-        if (isFrozen) {
+        //disallow saving for non-admins
+        if (isFrozen && !permissions.getCanAdminAll()) {
             return;
         }
 
@@ -129,10 +130,17 @@ public class JudgeProposalActionController {
             persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "true");
         }
 
+        //unfreeze the advancement
+        if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null && request.getParameter("isUnfreeze").equals("true")) {
+            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "false");
+        }
+
         //forcefully promote the advancement
         if (permissions.getCanAdminAll() && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
+
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposalId+"/tab/ADVANCING");
     }
 
     @RequestMapping(params = {"action=saveJudgingFeedback"})
@@ -205,10 +213,15 @@ public class JudgeProposalActionController {
         }
 
         // save selection of judges
-        persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
+        if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
+            persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
+        } else {
+            //clear selected judges attribute since the decision is not to pass the proposal.
+            persistSelectedJudges(proposalId, contestPhaseId, null);
+        }
 
         // save fellow action
-        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction()) && fellowProposalScreeningBean.getFellowScreeningAction() > 0) {
+        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
             persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, fellowProposalScreeningBean.getFellowScreeningAction());
 
             //save fellow action comment
@@ -250,41 +263,6 @@ public class JudgeProposalActionController {
             );
         }
         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/SCREENING");
-    }
-
-    @ResourceMapping("getJudgingCsv")
-    public void getJudgingCsv(ResourceRequest request, ResourceResponse response)
-            throws PortalException, SystemException {
-
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        User currentUser = proposalsContext.getUser(request);
-        // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll()) {
-            return;
-        }
-
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            String csvPayload = ContestLocalServiceUtil.getProposalJudgeReviewCsv(proposalsContext.getContest(request),
-                    proposalsContext.getContestPhase(request), serviceContext);
-            outputStream.write(csvPayload.getBytes());
-            response.setContentType("text/csv");
-            response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
-            response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=export.csv");
-
-            response.setContentLength(outputStream.size());
-            OutputStream out = response.getPortletOutputStream();
-            outputStream.writeTo(out);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 

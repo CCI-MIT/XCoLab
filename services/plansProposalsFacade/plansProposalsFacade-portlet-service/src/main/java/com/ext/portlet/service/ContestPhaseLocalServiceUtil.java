@@ -369,6 +369,14 @@ public class ContestPhaseLocalServiceUtil {
         getService().autoPromoteProposals();
     }
 
+    public static void forcePromotionOfProposalInPhase(
+        com.ext.portlet.model.Proposal p,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().forcePromotionOfProposalInPhase(p, phase);
+    }
+
     public static int getNumberOfProposalsForJudge(
         com.liferay.portal.model.User judge,
         com.ext.portlet.model.ContestPhase phase)

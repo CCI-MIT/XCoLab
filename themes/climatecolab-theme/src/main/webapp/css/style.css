@@ -292,21 +292,21 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
 .blueheaderbar .proposalname a {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .thumbs {float:left; width:67px; height:37px; position: relative;}
+.blueheaderbar .thumbs {float:left; width:67px; height:37px; position: relative;text-align: center;}
 .blueheaderbar .thumbs .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .thumbs a {background:url(../images/icon-proposal-thumb.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .votes {float:left; width:67px; height:37px; position: relative;}
+.blueheaderbar .votes {float:left; width:67px; height:37px; position: relative;text-align:center;}
 .blueheaderbar .votes .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .votes a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .propcomm {float:left; width:65px; height:37px; position: relative;}
+.blueheaderbar .propcomm {float:left; width:65px; height:37px; position: relative;text-align:center;}
 .blueheaderbar .propcomm .sort-arrow {position: absolute; top: 15px;}
 .blueheaderbar .propcomm a {background:url(../images/icon-list-comment.png) no-repeat 0 8px; width:24px; height:37px; display:inline-block;}
-.blueheaderbar .modified {float:left; width:85px; height:37px;}
+.blueheaderbar .modified {float:left; width:85px; height:37px;text-align: center;}
 .blueheaderbar .modified a {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .contributor {float:left; width:106px; height:37px;}
+.blueheaderbar .contributor {float:left; width:106px; height:37px;text-align: center;}
 .blueheaderbar .contributor a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .judgefellow {float:left; height:37px; width: 159px; position: relative; text-align: center;}
-.blueheaderbar .judgefellow a {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .judgefellow a {font-size: 0.9em}
 
 /* contest page */
 .blueheaderbar .contestbar {padding:11px 0 0 14px; position: relative;}

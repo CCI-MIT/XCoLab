@@ -5,6 +5,7 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
+import com.liferay.portal.model.User;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -42,6 +43,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        User currentUser = proposalsContext.getUser(request);
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
         model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, contestPhase,
@@ -59,6 +61,10 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 0
         );
 
+        boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+                !permissions.getCanAdminAll());
+
+        model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("isAdmin", permissions.getCanAdminAll());
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("fellowRatings", fellowRatings);
@@ -79,17 +85,22 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
     public String showFellowsPanel(PortletRequest request,Model model) 
             throws PortalException, SystemException {
-
-        model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
-
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         Proposal proposal = proposalsContext.getProposal(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        User currentUser = proposalsContext.getUser(request);
+
+        boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+                !permissions.getCanAdminAll());
+
+        model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
+        model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
 
         return "proposalScreening";
     }

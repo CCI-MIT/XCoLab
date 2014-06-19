@@ -98,22 +98,46 @@
                             <!-- -->
                         </div>
                     </div>
-                    <div class="blue-button" style="display:block; float:right;">
-                        <a href="javascript:;" class="requestMembershipSubmitButton"
-                           onclick="jQuery(this).parents('form').submit();">Save</a>
-                    </div>
+                    <c:choose>
+                        <c:when test="${hasNoWritePermission}">
+                            <p class="submitStatus error">
+                                <strong>You have no permission to advance this proposal.</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="blue-button" style="display:block; float:right;">
+                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                                   onclick="jQuery(this).parents('form').submit();">Save proposal decision</a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
                 <div class="addpropbox">
                     <form:errors path="*" cssClass="alert alert-error" />
 
                     <h3 style="margin-top: 0;">My Rating</h3>
-                    <p>
-                        This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
-                    </p>
-                    <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
 
-                    <h4>Rating comment:</h4>
-                    <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
+                    <c:choose>
+                        <c:when test="${hasNoWritePermission}">
+                            <p class="submitStatus error">
+                                <strong>You have no permission to rate this proposal.</strong>
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p>
+                                This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
+                            </p>
+                            <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
+
+                            <h4>Rating comment:</h4>
+                            <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
+                            <div class="blue-button" style="display:block; float:right;">
+                                <a href="javascript:;" class="requestMembershipSubmitButton"
+                                   onclick="jQuery(this).parents('form').submit();">Save</a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
             </form:form>
@@ -195,5 +219,10 @@
         }
 
     </script>
+    <c:if test="${hasNoWritePermission}">
+        <script>
+            $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
+        </script>
+    </c:if>
 
 </jsp:root>

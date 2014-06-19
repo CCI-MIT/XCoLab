@@ -75,8 +75,10 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes533;
     private String _methodName534;
     private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
 
     public ContestPhaseLocalServiceClpInvoker() {
         _methodName0 = "addContestPhase";
@@ -249,9 +251,16 @@ public class ContestPhaseLocalServiceClpInvoker {
 
         _methodParameterTypes534 = new String[] {  };
 
-        _methodName535 = "getNumberOfProposalsForJudge";
+        _methodName536 = "forcePromotionOfProposalInPhase";
 
-        _methodParameterTypes535 = new String[] {
+        _methodParameterTypes536 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName537 = "getNumberOfProposalsForJudge";
+
+        _methodParameterTypes537 = new String[] {
                 "com.liferay.portal.model.User",
                 "com.ext.portlet.model.ContestPhase"
             };
@@ -438,8 +447,16 @@ public class ContestPhaseLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+            ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase((com.ext.portlet.model.Proposal) arguments[0],
+                (com.ext.portlet.model.ContestPhase) arguments[1]);
+
+            return null;
+        }
+
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
         }

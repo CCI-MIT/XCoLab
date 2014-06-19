@@ -36,11 +36,8 @@
     <div id="content">
         This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
         <br/>
-        <h1 style="display:inline-block; margin-top:15px;">Rating</h1>
-        <div style="display: inline-block;	float:right; margin-top: 20px;">
-            <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
-        </div>
-        <br/>
+        <h1 style="margin-top:15px;">Rating</h1>
+
         <div class="judging_left">
             <c:choose>
                 <c:when test="${not proposal.allJudgesReviewFinished}">
@@ -57,7 +54,7 @@
                                 <h3>Comment to send to author</h3>
                                 <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
                                     will be replacing the marked section in the text below.<br />
-                                    When writing this message, please consider the comments and rating of judges in the Fellows &amp; Judges Comments tab.
+                                    When writing this message, please consider the comments and ratings of judges in the Fellows &amp; Judges Comments tab.
                                 </i>
                                 <br/>
                                 <br/>
@@ -77,8 +74,28 @@
                                     </div>
                                 </c:if>
                                 <c:choose>
+                                    <c:when test="${hasNoWritePermission}">
+                                        <p class="submitStatus error">
+                                            <strong>You have no permission to advance this proposal.</strong>
+                                        </p>
+                                    </c:when>
                                     <c:when test="${isFrozen}">
-                                        The advancement is finalized and may not be changed anymore.
+                                        <p class="submitStatus">
+                                            <strong>The advancement is finalized and may not be changed anymore.</strong>
+                                        </p>
+                                        <c:if test="${isAdmin}">
+                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                                    Save
+                                                </a>
+                                            </div>
+                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
+                                                <a href="javascript:;" onclick="$('#submit-unfreeze').click();">
+                                                    Unfreeze
+                                                </a>
+                                            </div>
+                                        </c:if>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
@@ -89,19 +106,19 @@
                                         <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                             <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
                                             <a href="javascript:;" onclick="$('#submit-freeze').click();">
-                                                Finalize and freeze
+                                                Freeze
                                             </a>
                                         </div>
-                                        <c:if test="${isAdmin}">
-                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                                <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                                <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
-                                                    Force promotion to next phase
-                                                </a>
-                                            </div>
-                                        </c:if>
                                     </c:otherwise>
                                 </c:choose>
+                                <c:if test="${isAdmin}">
+                                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                        <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                        <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                            Execute judging decision
+                                        </a>
+                                    </div>
+                                </c:if>
 
 
                             </div>
@@ -113,7 +130,6 @@
         </div>
         <div class="judging_right">
             <div class="addpropbox">
-
                 <h2>Evaluation criteria</h2>
 
                 <h3>Feasibility of the actions proposed</h3>
@@ -131,13 +147,17 @@
         </div>
         <div class="judging_comments">
             <h2>Comments by Judges</h2>
-            <div class="addpropbox">
-                <proposalsPortlet:proposalRatingComments showRating="true" proposalRatings="${judgeRatings}" proposalId="${proposal.proposalId}" />
-            </div>
+            <c:if test="${judgeRatings.size() > 0}">
+                <div class="addpropbox">
+                    <proposalsPortlet:proposalRatingComments showRating="true" proposalRatings="${judgeRatings}" proposalId="${proposal.proposalId}" />
+                </div>
+            </c:if>
             <h2>Comments by Fellows</h2>
-            <div class="addpropbox">
-                <proposalsPortlet:proposalRatingComments showRating="false" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
-            </div>
+            <c:if test="${fellowRatings.size() > 0}">
+                <div class="addpropbox">
+                    <proposalsPortlet:proposalRatingComments showRating="false" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                </div>
+            </c:if>
         </div>
     </div>
 
@@ -172,7 +192,7 @@
             $('#comment-footer').html(advanceCommentFooters[advanceDecisionIdx]);
         }
     </script>
-    <c:if test="${isFrozen}">
+    <c:if test="${hasNoWritePermission or (isFrozen and not isAdmin)}">
         <script>
             $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
         </script>

@@ -397,6 +397,15 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
+    public void forcePromotionOfProposalInPhase(
+        com.ext.portlet.model.Proposal p,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestPhaseLocalService.forcePromotionOfProposalInPhase(p, phase);
+    }
+
+    @Override
     public int getNumberOfProposalsForJudge(
         com.liferay.portal.model.User judge,
         com.ext.portlet.model.ContestPhase phase)

@@ -235,7 +235,7 @@ div.sponsorLogo img {
 .judging_left { float:left; width:474px; margin-top:50px;}
 .judging_right { float:left; width:454px; margin:50px 0 0 56px;}
 
-.fellow-judge-action {float:left; width:89px; padding-top:4px; text-align: center; margin-left: 12px;}
+.fellow-judge-action {float:left; width:147px; padding-top:4px; text-align: center; margin-left: 12px;}
 /*
 #copyProposalPopupContent {
 	overflow-y: scroll;
@@ -331,11 +331,8 @@ img.review-status-icon {
     font-size: 9pt;
     margin: 5px 0 0 20px;
 }
-.judging_left table.judgingForm {
+table.judgingForm {
     margin: 1em 0;
-}
-.judging_left h4 {
-   margin: 1.25em 0 0 0;
 }
 .judging_comments {
     clear:both;
@@ -360,5 +357,26 @@ img.review-status-icon {
     h2 {
         margin: 0.5em 0;
     }
+}
+.submitStatus {
+    margin-top: 1em;
+}
+.submitStatus.error {
+    color: #900;
+}
 
+.propbox.judgement-actions.featured .title-author {
+    width: 455px;
+}
+.propbox.judgement-actions .title-author {
+    width: 485px;
+}
+.blueheaderbar.judgement-actions .proposalname {
+    width: 489px;
+}
+
+#advanceDecision {
+    width: 100%;
+    font-size: 14px;
+    color: black;
 }

@@ -29,7 +29,7 @@
         </c:choose>
     </c:if>
 
-<div class="propbox ${proposal.featured ? 'featured' : ''} ${additionalCSSClasses}">
+<div class="propbox ${proposal.featured ? 'featured' : ''}${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? ' judgement-actions' : ''} ${additionalCSSClasses}">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
@@ -42,7 +42,7 @@
             </div>
             </c:if>
             <div class="row1">
-                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
+                <div class="title-author">
                     <h4>
                     	<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="false" />
                         /&#160;

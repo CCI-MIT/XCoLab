@@ -325,6 +325,12 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    public void forcePromotionOfProposalInPhase(
+        com.ext.portlet.model.Proposal p,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getNumberOfProposalsForJudge(
         com.liferay.portal.model.User judge,
