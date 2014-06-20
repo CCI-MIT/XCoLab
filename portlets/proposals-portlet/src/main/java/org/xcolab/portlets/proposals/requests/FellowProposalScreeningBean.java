@@ -33,20 +33,21 @@ public class FellowProposalScreeningBean implements Serializable {
         selectedJudges = wrapper.getSelectedJudges();
 
         // Initialize comment headers and footers
+        //TODO: decide if the header and footer should still be visible here since the text is quite lengthy now
         fellowCommentHeaders = new String[]{
-                "",
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
+                "","","",
+                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
+                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
                 ""
         };
         fellowCommentFooters = new String[]{
-                "",
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
+                "","","",
+                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningIncompleteText())),
+                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
                 ""
         };
         // Extract comment body from whole comment
-        fellowScreeningActionCommentBody = ProposalJudgingCommentHelper.extractComment(wrapper.getFellowActionComment());
+        fellowScreeningActionCommentBody = wrapper.getFellowActionComment();
     }
 
     public FellowProposalScreeningBean() {

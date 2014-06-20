@@ -77,6 +77,8 @@ import com.ext.portlet.model.ProposalClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
 import com.ext.portlet.model.ProposalRatingClp;
+import com.ext.portlet.model.ProposalRatingTypeClp;
+import com.ext.portlet.model.ProposalRatingValueClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
@@ -480,6 +482,14 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalRatingClp.class.getName())) {
             return translateInputProposalRating(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalRatingTypeClp.class.getName())) {
+            return translateInputProposalRatingType(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalRatingValueClp.class.getName())) {
+            return translateInputProposalRatingValue(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
@@ -1301,6 +1311,27 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputProposalRatingType(BaseModel<?> oldModel) {
+        ProposalRatingTypeClp oldClpModel = (ProposalRatingTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalRatingValue(
+        BaseModel<?> oldModel) {
+        ProposalRatingValueClp oldClpModel = (ProposalRatingValueClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingValueRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputProposalSupporter(BaseModel<?> oldModel) {
         ProposalSupporterClp oldClpModel = (ProposalSupporterClp) oldModel;
 
@@ -1718,6 +1749,16 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalRatingImpl")) {
             return translateOutputProposalRating(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingTypeImpl")) {
+            return translateOutputProposalRatingType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingValueImpl")) {
+            return translateOutputProposalRatingValue(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -2291,6 +2332,16 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchProposalRatingException")) {
             return new com.ext.portlet.NoSuchProposalRatingException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalRatingTypeException")) {
+            return new com.ext.portlet.NoSuchProposalRatingTypeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalRatingValueException")) {
+            return new com.ext.portlet.NoSuchProposalRatingValueException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchProposalSupporterException")) {
@@ -3103,6 +3154,28 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalRatingRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalRatingType(
+        BaseModel<?> oldModel) {
+        ProposalRatingTypeClp newModel = new ProposalRatingTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalRatingValue(
+        BaseModel<?> oldModel) {
+        ProposalRatingValueClp newModel = new ProposalRatingValueClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingValueRemoteModel(oldModel);
 
         return newModel;
     }

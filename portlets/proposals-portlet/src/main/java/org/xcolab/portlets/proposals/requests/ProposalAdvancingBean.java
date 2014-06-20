@@ -28,16 +28,17 @@ public class ProposalAdvancingBean {
 
     public ProposalAdvancingBean(ProposalWrapper wrapper, ContestPhase contestPhase, ProposalsPreferencesWrapper proposalsPreferencesWrapper) throws PortalException, SystemException {
         advanceDecision = wrapper.getJudgeDecision();
-        advanceComment = ProposalJudgingCommentHelper.extractComment(wrapper.getProposalReview());
+        advanceComment = wrapper.getProposalReview();
+        //TODO: decide if the header and footer should still be visible here since the text is quite lengthy now
         advanceCommentHeaders = new String[] {
-                "",
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
-                ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
+                "","",""
+                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
+                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
         };
         advanceCommentFooters = new String[] {
-                "",
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
-                ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
+                "","",""
+                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
+                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
         };
     }
 

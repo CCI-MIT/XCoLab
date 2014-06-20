@@ -249,6 +249,12 @@
 	<bean id="com.ext.portlet.service.ProposalRatingLocalService" class="com.ext.portlet.service.impl.ProposalRatingLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalRatingService" class="com.ext.portlet.service.impl.ProposalRatingServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalRatingPersistence" class="com.ext.portlet.service.persistence.ProposalRatingPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalRatingTypeLocalService" class="com.ext.portlet.service.impl.ProposalRatingTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalRatingTypeService" class="com.ext.portlet.service.impl.ProposalRatingTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ProposalRatingTypePersistence" class="com.ext.portlet.service.persistence.ProposalRatingTypePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalRatingValueLocalService" class="com.ext.portlet.service.impl.ProposalRatingValueLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalRatingValueService" class="com.ext.portlet.service.impl.ProposalRatingValueServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ProposalRatingValuePersistence" class="com.ext.portlet.service.persistence.ProposalRatingValuePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalSupporterLocalService" class="com.ext.portlet.service.impl.ProposalSupporterLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalSupporterService" class="com.ext.portlet.service.impl.ProposalSupporterServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalSupporterPersistence" class="com.ext.portlet.service.persistence.ProposalSupporterPersistenceImpl" parent="basePersistence" />

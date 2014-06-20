@@ -753,6 +753,19 @@ create table xcolab_ProposalRating (
 	otherDataString VARCHAR(75) null
 );
 
+create table xcolab_ProposalRatingType (
+	ratingTypeId LONG not null primary key,
+	label VARCHAR(75) null
+);
+
+create table xcolab_ProposalRatingValue (
+	ratingTypeId LONG not null,
+	value LONG not null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	primary key (ratingTypeId, value)
+);
+
 create table xcolab_ProposalSupporter (
 	proposalId LONG not null,
 	userId LONG not null,

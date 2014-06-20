@@ -1257,6 +1257,27 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalRatingTypeModelImpl">
+		<attributes>
+			<id name="ratingTypeId" />
+			<basic name="label" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ProposalRatingValueModelImpl">
+		<id-class class="com.ext.portlet.service.persistence.ProposalRatingValuePK" />
+		<attributes>
+			<id name="ratingTypeId" />
+			<id name="value" />
+			<basic name="name" />
+			<basic name="description" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalSupporterModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.ProposalSupporterPK" />
 		<attributes>
@@ -1608,6 +1629,14 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalRatingImpl" name="ProposalRating">
 		<table name="xcolab_ProposalRating" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalRatingTypeImpl" name="ProposalRatingType">
+		<table name="xcolab_ProposalRatingType" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ProposalRatingValueImpl" name="ProposalRatingValue">
+		<table name="xcolab_ProposalRatingValue" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalSupporterImpl" name="ProposalSupporter">

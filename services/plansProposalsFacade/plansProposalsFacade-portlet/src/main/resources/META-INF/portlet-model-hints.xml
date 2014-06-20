@@ -860,6 +860,16 @@
 		<field name="comment" type="String" />
 		<field name="otherDataString" type="String" />
 	</model>
+	<model name="com.ext.portlet.model.ProposalRatingType">
+		<field name="ratingTypeId" type="long" />
+		<field name="label" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalRatingValue">
+		<field name="ratingTypeId" type="long" />
+		<field name="value" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.ProposalSupporter">
 		<field name="proposalId" type="long" />
 		<field name="userId" type="long" />
