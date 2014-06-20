@@ -1,4 +1,4 @@
-function loadContests(move) {
+function proposalCopy_loadContests(move) {
     jQuery.getJSON('/api/jsonws/plansProposalsFacade-portlet.contest/get-contests-open-for-proposals', function(data) {
     	var html = ["<table>"];
     	jQuery(data).each(function(idx, obj) {
@@ -112,7 +112,7 @@ jQuery(function() {
 });
 
 function showCopyProposalPopup(move) {
-	loadContests(move);
+	proposalCopy_loadContests(move);
 	jQuery("#copyProposalContainer").show();
 	updatePopupSize();
 }
