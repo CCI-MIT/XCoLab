@@ -211,7 +211,7 @@
     </entity>
 
     <entity name="ProposalRatingType" local-service="true">
-        <column name="ratingTypeId" type="long" />
+        <column name="ratingTypeId" type="long" primary="true" />
         <column name="label" type="String" />
     </entity>
     <entity name="ProposalRatingValue" local-service="true">
