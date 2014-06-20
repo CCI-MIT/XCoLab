@@ -23,6 +23,7 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.portlets.reporting.beans.AuthorAttractionBean;
 import org.xcolab.portlets.reporting.beans.UserActivityReportBean;
 
 import javax.portlet.RenderRequest;
@@ -46,6 +47,55 @@ public class ReportingController {
     @RequestMapping
     public String showHomePage(RenderRequest request) {
         return "index";
+    }
+
+    @RequestMapping(params="report=proposalSupporterReport")
+    public void generateProposalSupporterReport(ResourceRequest request, ResourceResponse response) throws Exception {
+        AuthorAttractionBean aab = new AuthorAttractionBean();
+
+        Writer w = response.getWriter();
+        CSVWriter csvWriter = new CSVWriter(w);
+
+        csvWriter.writeNext(new String[]{"proposalName", "voterScreenname"});
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+
+        for (AuthorAttractionBean.ProposalSupporterPair pair : aab.getSupportersRegisteredBeforeVoting()) {
+            csvWriter.writeNext(new String[]{
+                    pair.getProposal().getProposalId()+"",
+                    pair.getSupporter().getScreenName()
+            });
+        }
+
+        response.setContentType("text/csv");
+        response.addProperty("Content-Disposition", "attachment;filename=proposalSupporterReport.csv");
+
+
+        w.close();
+    }
+
+    @RequestMapping(params="report=authorAttractionReport")
+    public void generateAuthorAttractionReport(ResourceRequest request, ResourceResponse response) throws Exception {
+        AuthorAttractionBean aab = new AuthorAttractionBean();
+
+        Writer w = response.getWriter();
+        CSVWriter csvWriter = new CSVWriter(w);
+
+        csvWriter.writeNext(new String[]{"authorScreenname", "voterScreenname"});
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+
+        for (AuthorAttractionBean.UserAttractionPairs pairs : aab.getSupportersOfFinalistsThatRegisteredBeforeVoting()) {
+            csvWriter.writeNext(new String[]{
+                    pairs.getAuthor().getScreenName(),
+                    pairs.getVoter().getScreenName()
+            });
+        }
+
+
+        response.setContentType("text/csv");
+        response.addProperty("Content-Disposition", "attachment;filename=userAttractionReport.csv");
+
+
+        w.close();
     }
 
     @RequestMapping(params = "report=userActivitiesReport")
