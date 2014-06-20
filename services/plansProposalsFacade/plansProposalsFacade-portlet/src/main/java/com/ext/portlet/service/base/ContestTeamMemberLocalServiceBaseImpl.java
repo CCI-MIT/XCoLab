@@ -80,6 +80,8 @@ import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersiste
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
+import com.ext.portlet.service.persistence.ProposalRatingTypePersistence;
+import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
@@ -590,6 +592,18 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalRatingService proposalRatingService;
     @BeanReference(type = ProposalRatingPersistence.class)
     protected ProposalRatingPersistence proposalRatingPersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingTypeLocalService proposalRatingTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeService.class)
+    protected com.ext.portlet.service.ProposalRatingTypeService proposalRatingTypeService;
+    @BeanReference(type = ProposalRatingTypePersistence.class)
+    protected ProposalRatingTypePersistence proposalRatingTypePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingValueLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingValueLocalService proposalRatingValueLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingValueService.class)
+    protected com.ext.portlet.service.ProposalRatingValueService proposalRatingValueService;
+    @BeanReference(type = ProposalRatingValuePersistence.class)
+    protected ProposalRatingValuePersistence proposalRatingValuePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterLocalService.class)
     protected com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterService.class)
@@ -5280,6 +5294,120 @@ public abstract class ContestTeamMemberLocalServiceBaseImpl
     public void setProposalRatingPersistence(
         ProposalRatingPersistence proposalRatingPersistence) {
         this.proposalRatingPersistence = proposalRatingPersistence;
+    }
+
+    /**
+     * Returns the proposal rating type local service.
+     *
+     * @return the proposal rating type local service
+     */
+    public com.ext.portlet.service.ProposalRatingTypeLocalService getProposalRatingTypeLocalService() {
+        return proposalRatingTypeLocalService;
+    }
+
+    /**
+     * Sets the proposal rating type local service.
+     *
+     * @param proposalRatingTypeLocalService the proposal rating type local service
+     */
+    public void setProposalRatingTypeLocalService(
+        com.ext.portlet.service.ProposalRatingTypeLocalService proposalRatingTypeLocalService) {
+        this.proposalRatingTypeLocalService = proposalRatingTypeLocalService;
+    }
+
+    /**
+     * Returns the proposal rating type remote service.
+     *
+     * @return the proposal rating type remote service
+     */
+    public com.ext.portlet.service.ProposalRatingTypeService getProposalRatingTypeService() {
+        return proposalRatingTypeService;
+    }
+
+    /**
+     * Sets the proposal rating type remote service.
+     *
+     * @param proposalRatingTypeService the proposal rating type remote service
+     */
+    public void setProposalRatingTypeService(
+        com.ext.portlet.service.ProposalRatingTypeService proposalRatingTypeService) {
+        this.proposalRatingTypeService = proposalRatingTypeService;
+    }
+
+    /**
+     * Returns the proposal rating type persistence.
+     *
+     * @return the proposal rating type persistence
+     */
+    public ProposalRatingTypePersistence getProposalRatingTypePersistence() {
+        return proposalRatingTypePersistence;
+    }
+
+    /**
+     * Sets the proposal rating type persistence.
+     *
+     * @param proposalRatingTypePersistence the proposal rating type persistence
+     */
+    public void setProposalRatingTypePersistence(
+        ProposalRatingTypePersistence proposalRatingTypePersistence) {
+        this.proposalRatingTypePersistence = proposalRatingTypePersistence;
+    }
+
+    /**
+     * Returns the proposal rating value local service.
+     *
+     * @return the proposal rating value local service
+     */
+    public com.ext.portlet.service.ProposalRatingValueLocalService getProposalRatingValueLocalService() {
+        return proposalRatingValueLocalService;
+    }
+
+    /**
+     * Sets the proposal rating value local service.
+     *
+     * @param proposalRatingValueLocalService the proposal rating value local service
+     */
+    public void setProposalRatingValueLocalService(
+        com.ext.portlet.service.ProposalRatingValueLocalService proposalRatingValueLocalService) {
+        this.proposalRatingValueLocalService = proposalRatingValueLocalService;
+    }
+
+    /**
+     * Returns the proposal rating value remote service.
+     *
+     * @return the proposal rating value remote service
+     */
+    public com.ext.portlet.service.ProposalRatingValueService getProposalRatingValueService() {
+        return proposalRatingValueService;
+    }
+
+    /**
+     * Sets the proposal rating value remote service.
+     *
+     * @param proposalRatingValueService the proposal rating value remote service
+     */
+    public void setProposalRatingValueService(
+        com.ext.portlet.service.ProposalRatingValueService proposalRatingValueService) {
+        this.proposalRatingValueService = proposalRatingValueService;
+    }
+
+    /**
+     * Returns the proposal rating value persistence.
+     *
+     * @return the proposal rating value persistence
+     */
+    public ProposalRatingValuePersistence getProposalRatingValuePersistence() {
+        return proposalRatingValuePersistence;
+    }
+
+    /**
+     * Sets the proposal rating value persistence.
+     *
+     * @param proposalRatingValuePersistence the proposal rating value persistence
+     */
+    public void setProposalRatingValuePersistence(
+        ProposalRatingValuePersistence proposalRatingValuePersistence) {
+        this.proposalRatingValuePersistence = proposalRatingValuePersistence;
     }
 
     /**

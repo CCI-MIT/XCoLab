@@ -41,12 +41,12 @@ public class BalloonTextLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
+    private String _methodName526;
+    private String[] _methodParameterTypes526;
+    private String _methodName527;
+    private String[] _methodParameterTypes527;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
 
     public BalloonTextLocalServiceClpInvoker() {
         _methodName0 = "addBalloonText";
@@ -131,17 +131,17 @@ public class BalloonTextLocalServiceClpInvoker {
                 "com.ext.portlet.model.BalloonText"
             };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName526 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes526 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName527 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes527 = new String[] { "java.lang.String" };
 
-        _methodName520 = "getBalloonTextsEnabled";
+        _methodName532 = "getBalloonTextsEnabled";
 
-        _methodParameterTypes520 = new String[] { "boolean" };
+        _methodParameterTypes532 = new String[] { "boolean" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class BalloonTextLocalServiceClpInvoker {
             return BalloonTextLocalServiceUtil.updateBalloonText((com.ext.portlet.model.BalloonText) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return BalloonTextLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             BalloonTextLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return BalloonTextLocalServiceUtil.getBalloonTextsEnabled(((Boolean) arguments[0]).booleanValue());
         }
 

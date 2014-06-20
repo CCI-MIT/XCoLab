@@ -41,28 +41,28 @@ public class PlanVoteLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
-    private String _methodName521;
-    private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
-    private String _methodName523;
-    private String[] _methodParameterTypes523;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
     private String _methodName526;
     private String[] _methodParameterTypes526;
     private String _methodName527;
     private String[] _methodParameterTypes527;
-    private String _methodName528;
-    private String[] _methodParameterTypes528;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
+    private String _methodName538;
+    private String[] _methodParameterTypes538;
+    private String _methodName539;
+    private String[] _methodParameterTypes539;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
 
     public PlanVoteLocalServiceClpInvoker() {
         _methodName0 = "addPlanVote";
@@ -149,55 +149,55 @@ public class PlanVoteLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.PlanVote" };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName526 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes526 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName527 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes527 = new String[] { "java.lang.String" };
 
-        _methodName520 = "voteForPlan";
+        _methodName532 = "voteForPlan";
 
-        _methodParameterTypes520 = new String[] {
+        _methodParameterTypes532 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName521 = "unvote";
+        _methodName533 = "unvote";
 
-        _methodParameterTypes521 = new String[] {
+        _methodParameterTypes533 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName522 = "getPlanVote";
+        _methodName534 = "getPlanVote";
 
-        _methodParameterTypes522 = new String[] {
+        _methodParameterTypes534 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName523 = "coutPlanVotes";
+        _methodName535 = "coutPlanVotes";
 
-        _methodParameterTypes523 = new String[] { "java.lang.Long" };
+        _methodParameterTypes535 = new String[] { "java.lang.Long" };
 
-        _methodName524 = "getPlanVotes";
+        _methodName536 = "getPlanVotes";
 
-        _methodParameterTypes524 = new String[] { "java.lang.Long" };
+        _methodParameterTypes536 = new String[] { "java.lang.Long" };
 
-        _methodName525 = "countPlanVotes";
+        _methodName537 = "countPlanVotes";
 
-        _methodParameterTypes525 = new String[] { "com.ext.portlet.model.PlanType" };
+        _methodParameterTypes537 = new String[] { "com.ext.portlet.model.PlanType" };
 
-        _methodName526 = "countPlanVotes";
+        _methodName538 = "countPlanVotes";
 
-        _methodParameterTypes526 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes538 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName527 = "countPlanVotesByPlanId";
+        _methodName539 = "countPlanVotesByPlanId";
 
-        _methodParameterTypes527 = new String[] { "java.lang.Long" };
+        _methodParameterTypes539 = new String[] { "java.lang.Long" };
 
-        _methodName528 = "store";
+        _methodName540 = "store";
 
-        _methodParameterTypes528 = new String[] { "com.ext.portlet.model.PlanVote" };
+        _methodParameterTypes540 = new String[] { "com.ext.portlet.model.PlanVote" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -289,63 +289,63 @@ public class PlanVoteLocalServiceClpInvoker {
             return PlanVoteLocalServiceUtil.updatePlanVote((com.ext.portlet.model.PlanVote) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return PlanVoteLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             PlanVoteLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return PlanVoteLocalServiceUtil.voteForPlan((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName521.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
             return PlanVoteLocalServiceUtil.unvote((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return PlanVoteLocalServiceUtil.getPlanVote((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName523.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             return PlanVoteLocalServiceUtil.coutPlanVotes((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
             return PlanVoteLocalServiceUtil.getPlanVotes((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             return PlanVoteLocalServiceUtil.countPlanVotes((com.ext.portlet.model.PlanType) arguments[0]);
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             return PlanVoteLocalServiceUtil.countPlanVotes((com.ext.portlet.model.Contest) arguments[0]);
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName539.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
             return PlanVoteLocalServiceUtil.countPlanVotesByPlanId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName528.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             PlanVoteLocalServiceUtil.store((com.ext.portlet.model.PlanVote) arguments[0]);
 
             return null;

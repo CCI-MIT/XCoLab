@@ -315,6 +315,11 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    public void promoteProposal(long proposalId, long nextPhaseId,
+        long currentPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     /**
     * Method responsible for autopromotion of proposals between phases.
     *

@@ -41,30 +41,38 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
-    private String _methodName521;
-    private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
-    private String _methodName523;
-    private String[] _methodParameterTypes523;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
     private String _methodName526;
     private String[] _methodParameterTypes526;
     private String _methodName527;
     private String[] _methodParameterTypes527;
-    private String _methodName528;
-    private String[] _methodParameterTypes528;
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
+    private String _methodName538;
+    private String[] _methodParameterTypes538;
+    private String _methodName539;
+    private String[] _methodParameterTypes539;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
+    private String _methodName541;
+    private String[] _methodParameterTypes541;
+    private String _methodName542;
+    private String[] _methodParameterTypes542;
+    private String _methodName543;
+    private String[] _methodParameterTypes543;
+    private String _methodName544;
+    private String[] _methodParameterTypes544;
+    private String _methodName545;
+    private String[] _methodParameterTypes545;
 
     public ProposalContestPhaseAttributeLocalServiceClpInvoker() {
         _methodName0 = "addProposalContestPhaseAttribute";
@@ -149,68 +157,90 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalContestPhaseAttribute"
             };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName526 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes526 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName527 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes527 = new String[] { "java.lang.String" };
 
-        _methodName520 = "isAttributeSetAndTrue";
+        _methodName532 = "isAttributeSetAndTrue";
 
-        _methodParameterTypes520 = new String[] {
+        _methodParameterTypes532 = new String[] {
                 "long", "long", "java.lang.String", "long"
             };
 
-        _methodName521 = "getProposalContestPhaseAttributes";
+        _methodName533 = "persistAttribute";
 
-        _methodParameterTypes521 = new String[] { "long", "long" };
+        _methodParameterTypes533 = new String[] {
+                "long", "long", "java.lang.String", "long", "long"
+            };
 
-        _methodName522 = "getProposalContestPhaseAttribute";
+        _methodName534 = "persistAttribute";
 
-        _methodParameterTypes522 = new String[] {
+        _methodParameterTypes534 = new String[] {
+                "long", "long", "java.lang.String", "long", "java.lang.String"
+            };
+
+        _methodName535 = "persistSelectedJudgesAttribute";
+
+        _methodParameterTypes535 = new String[] { "long", "long", "java.util.List" };
+
+        _methodName536 = "getOrCreateAttribute";
+
+        _methodParameterTypes536 = new String[] {
                 "long", "long", "java.lang.String", "long"
             };
 
-        _methodName523 = "getProposalContestPhaseAttribute";
+        _methodName537 = "getProposalContestPhaseAttributes";
 
-        _methodParameterTypes523 = new String[] {
+        _methodParameterTypes537 = new String[] { "long", "long" };
+
+        _methodName538 = "getProposalContestPhaseAttribute";
+
+        _methodParameterTypes538 = new String[] {
+                "long", "long", "java.lang.String", "long"
+            };
+
+        _methodName539 = "getProposalContestPhaseAttribute";
+
+        _methodParameterTypes539 = new String[] {
                 "long", "long", "java.lang.String"
             };
 
-        _methodName524 = "getAllContestPhaseAttributes";
+        _methodName540 = "getAllContestPhaseAttributes";
 
-        _methodParameterTypes524 = new String[] { "long" };
+        _methodParameterTypes540 = new String[] { "long" };
 
-        _methodName525 = "setProposalContestPhaseAttribute";
+        _methodName541 = "setProposalContestPhaseAttribute";
 
-        _methodParameterTypes525 = new String[] {
+        _methodParameterTypes541 = new String[] {
                 "long", "long", "java.lang.String", "long"
             };
 
-        _methodName526 = "setProposalContestPhaseAttribute";
+        _methodName542 = "setProposalContestPhaseAttribute";
 
-        _methodParameterTypes526 = new String[] {
+        _methodParameterTypes542 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName527 = "setProposalContestPhaseAttribute";
+        _methodName543 = "setProposalContestPhaseAttribute";
 
-        _methodParameterTypes527 = new String[] {
+        _methodParameterTypes543 = new String[] {
                 "long", "long", "java.lang.String", "double"
             };
 
-        _methodName528 = "setProposalContestPhaseAttribute";
+        _methodName544 = "setProposalContestPhaseAttribute";
 
-        _methodParameterTypes528 = new String[] {
+        _methodParameterTypes544 = new String[] {
                 "long", "long", "java.lang.String", "long", "java.lang.String",
                 "double"
             };
 
-        _methodName529 = "deleteProposalContestPhaseAttribute";
+        _methodName545 = "deleteProposalContestPhaseAttribute";
 
-        _methodParameterTypes529 = new String[] {
+        _methodParameterTypes545 = new String[] {
                 "long", "long", "java.lang.String"
             };
     }
@@ -304,54 +334,87 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute((com.ext.portlet.model.ProposalContestPhaseAttribute) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
                 ((Long) arguments[3]).longValue());
         }
 
-        if (_methodName521.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue(),
+                ((Long) arguments[4]).longValue());
+        }
+
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue(),
+                (java.lang.String) arguments[4]);
+        }
+
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.util.List<java.lang.Long>) arguments[2]);
+        }
+
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getOrCreateAttribute(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                ((Long) arguments[3]).longValue());
+        }
+
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
                 ((Long) arguments[3]).longValue());
         }
 
-        if (_methodName523.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+        if (_methodName539.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -360,8 +423,8 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName542.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
@@ -369,8 +432,8 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName543.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -379,8 +442,8 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName528.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
+        if (_methodName544.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes544, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -391,8 +454,8 @@ public class ProposalContestPhaseAttributeLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+        if (_methodName545.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes545, parameterTypes)) {
             ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2]);

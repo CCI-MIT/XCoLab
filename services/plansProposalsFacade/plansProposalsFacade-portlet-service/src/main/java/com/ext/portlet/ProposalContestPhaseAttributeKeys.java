@@ -16,5 +16,6 @@ public class ProposalContestPhaseAttributeKeys {
     public static final String FELLOW_ACTION = "FELLOW_ACTION";
     public static final String FELLOW_ACTION_COMMENT = "FELLOW_ACTION_COMMENT";
     public static final String FELLOW_ADVANCEMENT_FROZEN = "FELLOW_ADVANCEMENT_FROZEN";
+    public static final String PROMOTE_DONE = "PROMOTE_DONE";
     public static final String SELECTED_JUDGES = "SELECTED_JUDGES";
 }

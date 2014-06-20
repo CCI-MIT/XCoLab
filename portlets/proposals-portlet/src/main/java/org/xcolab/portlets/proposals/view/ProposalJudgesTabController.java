@@ -60,6 +60,12 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
                 0
         );
+        boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+                proposal.getProposalId(),
+                contestPhase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                0
+        );
 
         boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
                 !permissions.getCanAdminAll());
@@ -67,6 +73,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("isAdmin", permissions.getCanAdminAll());
         model.addAttribute("isFrozen", isFrozen);
+        model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("fellowRatings", fellowRatings);
         model.addAttribute("judgeRatings", judgeRatings);
 
@@ -88,19 +95,27 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         Proposal proposal = proposalsContext.getProposal(request);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, proposalsContext.getContestPhase(request));
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalWrapper, proposalsContext.getUser(request));
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         User currentUser = proposalsContext.getUser(request);
 
         boolean hasNoWritePermission = (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
                 !permissions.getCanAdminAll());
+        boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+                proposal.getProposalId(),
+                contestPhase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                0
+        );
 
+        model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
-        model.addAttribute("discussionId", proposalsContext.getProposal(request).getFellowDiscussionId());
+        model.addAttribute("discussionId", proposal.getFellowDiscussionId());
 
         return "proposalScreening";
     }

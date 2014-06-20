@@ -41,26 +41,26 @@ public class MessageLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
-    private String _methodName521;
-    private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
-    private String _methodName523;
-    private String[] _methodParameterTypes523;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
     private String _methodName526;
     private String[] _methodParameterTypes526;
     private String _methodName527;
     private String[] _methodParameterTypes527;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
+    private String _methodName538;
+    private String[] _methodParameterTypes538;
+    private String _methodName539;
+    private String[] _methodParameterTypes539;
 
     public MessageLocalServiceClpInvoker() {
         _methodName0 = "addMessage";
@@ -139,53 +139,53 @@ public class MessageLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.Message" };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName526 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes526 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName527 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes527 = new String[] { "java.lang.String" };
 
-        _methodName520 = "countSentMessage";
+        _methodName532 = "countSentMessage";
 
-        _methodParameterTypes520 = new String[] { "long" };
+        _methodParameterTypes532 = new String[] { "long" };
 
-        _methodName521 = "findSentMessages";
+        _methodName533 = "findSentMessages";
 
-        _methodParameterTypes521 = new String[] { "long", "int", "int" };
+        _methodParameterTypes533 = new String[] { "long", "int", "int" };
 
-        _methodName522 = "getRecipients";
+        _methodName534 = "getRecipients";
 
-        _methodParameterTypes522 = new String[] { "com.ext.portlet.model.Message" };
+        _methodParameterTypes534 = new String[] { "com.ext.portlet.model.Message" };
 
-        _methodName523 = "hasReciever";
+        _methodName535 = "hasReciever";
 
-        _methodParameterTypes523 = new String[] {
+        _methodParameterTypes535 = new String[] {
                 "com.ext.portlet.model.Message", "long"
             };
 
-        _methodName524 = "isOpened";
+        _methodName536 = "isOpened";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes536 = new String[] {
                 "com.ext.portlet.model.Message", "long"
             };
 
-        _methodName525 = "setOpened";
+        _methodName537 = "setOpened";
 
-        _methodParameterTypes525 = new String[] {
+        _methodParameterTypes537 = new String[] {
                 "com.ext.portlet.model.Message", "long"
             };
 
-        _methodName526 = "isArchived";
+        _methodName538 = "isArchived";
 
-        _methodParameterTypes526 = new String[] {
+        _methodParameterTypes538 = new String[] {
                 "com.ext.portlet.model.Message", "long"
             };
 
-        _methodName527 = "setArchived";
+        _methodName539 = "setArchived";
 
-        _methodParameterTypes527 = new String[] {
+        _methodParameterTypes539 = new String[] {
                 "com.ext.portlet.model.Message", "long"
             };
     }
@@ -279,63 +279,63 @@ public class MessageLocalServiceClpInvoker {
             return MessageLocalServiceUtil.updateMessage((com.ext.portlet.model.Message) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return MessageLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             MessageLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return MessageLocalServiceUtil.countSentMessage(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName521.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
             return MessageLocalServiceUtil.findSentMessages(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return MessageLocalServiceUtil.getRecipients((com.ext.portlet.model.Message) arguments[0]);
         }
 
-        if (_methodName523.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             return MessageLocalServiceUtil.hasReciever((com.ext.portlet.model.Message) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
             return MessageLocalServiceUtil.isOpened((com.ext.portlet.model.Message) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             MessageLocalServiceUtil.setOpened((com.ext.portlet.model.Message) arguments[0],
                 ((Long) arguments[1]).longValue());
 
             return null;
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             return MessageLocalServiceUtil.isArchived((com.ext.portlet.model.Message) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName539.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
             MessageLocalServiceUtil.setArchived((com.ext.portlet.model.Message) arguments[0],
                 ((Long) arguments[1]).longValue());
 

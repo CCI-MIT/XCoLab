@@ -41,26 +41,26 @@ public class PlanMetaLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
-    private String _methodName521;
-    private String[] _methodParameterTypes521;
-    private String _methodName522;
-    private String[] _methodParameterTypes522;
-    private String _methodName523;
-    private String[] _methodParameterTypes523;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
     private String _methodName526;
     private String[] _methodParameterTypes526;
     private String _methodName527;
     private String[] _methodParameterTypes527;
+    private String _methodName532;
+    private String[] _methodParameterTypes532;
+    private String _methodName533;
+    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
+    private String _methodName538;
+    private String[] _methodParameterTypes538;
+    private String _methodName539;
+    private String[] _methodParameterTypes539;
 
     public PlanMetaLocalServiceClpInvoker() {
         _methodName0 = "addPlanMeta";
@@ -139,49 +139,49 @@ public class PlanMetaLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName526 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes526 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName527 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes527 = new String[] { "java.lang.String" };
 
-        _methodName520 = "createPlanMeta";
+        _methodName532 = "createPlanMeta";
 
-        _methodParameterTypes520 = new String[] {
+        _methodParameterTypes532 = new String[] {
                 "com.ext.portlet.model.PlanItem", "java.lang.Long"
             };
 
-        _methodName521 = "getCurrentForPlan";
+        _methodName533 = "getCurrentForPlan";
 
-        _methodParameterTypes521 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes533 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName522 = "getAllForPlan";
+        _methodName534 = "getAllForPlan";
 
-        _methodParameterTypes522 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes534 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName523 = "createNewVersionForPlan";
+        _methodName535 = "createNewVersionForPlan";
 
-        _methodParameterTypes523 = new String[] { "com.ext.portlet.model.PlanItem" };
+        _methodParameterTypes535 = new String[] { "com.ext.portlet.model.PlanItem" };
 
-        _methodName524 = "createNewVersionForPlan";
+        _methodName536 = "createNewVersionForPlan";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes536 = new String[] {
                 "com.ext.portlet.model.PlanItem", "boolean"
             };
 
-        _methodName525 = "store";
+        _methodName537 = "store";
 
-        _methodParameterTypes525 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes537 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName526 = "vote";
+        _methodName538 = "vote";
 
-        _methodParameterTypes526 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes538 = new String[] { "com.ext.portlet.model.PlanMeta" };
 
-        _methodName527 = "unvote";
+        _methodName539 = "unvote";
 
-        _methodParameterTypes527 = new String[] { "com.ext.portlet.model.PlanMeta" };
+        _methodParameterTypes539 = new String[] { "com.ext.portlet.model.PlanMeta" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -273,61 +273,61 @@ public class PlanMetaLocalServiceClpInvoker {
             return PlanMetaLocalServiceUtil.updatePlanMeta((com.ext.portlet.model.PlanMeta) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName526.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
             return PlanMetaLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName527.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
             PlanMetaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName532.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return PlanMetaLocalServiceUtil.createPlanMeta((com.ext.portlet.model.PlanItem) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName521.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes521, parameterTypes)) {
+        if (_methodName533.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
             return PlanMetaLocalServiceUtil.getCurrentForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName522.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes522, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return PlanMetaLocalServiceUtil.getAllForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName523.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes523, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0]);
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
             return PlanMetaLocalServiceUtil.createNewVersionForPlan((com.ext.portlet.model.PlanItem) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             PlanMetaLocalServiceUtil.store((com.ext.portlet.model.PlanMeta) arguments[0]);
 
             return null;
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName538.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
             PlanMetaLocalServiceUtil.vote((com.ext.portlet.model.PlanMeta) arguments[0]);
 
             return null;
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName539.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
             PlanMetaLocalServiceUtil.unvote((com.ext.portlet.model.PlanMeta) arguments[0]);
 
             return null;

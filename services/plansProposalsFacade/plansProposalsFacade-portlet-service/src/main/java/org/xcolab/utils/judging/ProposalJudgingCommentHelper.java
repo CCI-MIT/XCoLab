@@ -25,25 +25,12 @@ public class ProposalJudgingCommentHelper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalJudgingCommentHelper.class);
 
-    public static final String REVIEW_COMMENT_BEGIN_TAG = "<review_comment>";
-    public static final String REVIEW_COMMENT_END_TAG = "</review_comment>";
-
     private Proposal proposal;
     private ContestPhase contestPhase;
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
-    }
-
-    public String getContestPhasePromotionCommentBody() throws NoSuchProposalContestPhaseAttributeException, SystemException {
-        return extractComment(getContestPhasePromotionBody());
-
-    }
-
-    public String getContestPhasePromotionEmailBody() throws NoSuchProposalContestPhaseAttributeException, SystemException {
-        String messageBody = StringUtil.replace(getContestPhasePromotionBody(), REVIEW_COMMENT_BEGIN_TAG, "");
-        return StringUtil.replace(messageBody, REVIEW_COMMENT_END_TAG, "");
     }
 
     public String getScreeningComment() throws NoSuchProposalContestPhaseAttributeException, SystemException {
@@ -57,23 +44,21 @@ public class ProposalJudgingCommentHelper {
             String fellowRejectionText = ProposalContestPhaseAttributeLocalServiceUtil.
                     getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0).getStringValue();
 
-            return extractComment(fellowRejectionText);
+            return fellowRejectionText;
         }
 
         return null;
     }
 
-    public void setScreeningComment(String template, String comment) throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    public void setScreeningComment(String comment) throws NoSuchProposalContestPhaseAttributeException, SystemException {
         ProposalContestPhaseAttribute fellowActionAttribute = ProposalContestPhaseAttributeLocalServiceUtil.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue());
 
+        //save comment if the action is "incomplete" or "off-topic"
         if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION &&
                 fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-
-
-            String screeningMessage = wrapComment(template, comment);
-            persistAttribute(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, screeningMessage);
+            persistAttribute(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, comment);
         }
     }
 
@@ -86,64 +71,33 @@ public class ProposalJudgingCommentHelper {
             String advanceDecisionText = ProposalContestPhaseAttributeLocalServiceUtil.
                     getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
 
-            return extractComment(advanceDecisionText);
+            return advanceDecisionText;
         }
 
         return null;
     }
 
-    public void setAdvancingComment(String template, String comment) throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    public void setAdvancingComment(String comment) throws NoSuchProposalContestPhaseAttributeException, SystemException {
         ProposalContestPhaseAttribute advanceDecisionAttribute = getProposalContestPhaseAttributeCreateIfNotExists(ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
         if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
 
-            String advanceMessage = wrapComment(template, comment);
+            String advanceMessage = comment;
             persistAttribute(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, advanceMessage);
         }
     }
 
-    public static String getCommentHeader(String message) {
-        int commentTagBeginIndex = message.indexOf(REVIEW_COMMENT_BEGIN_TAG);
-
-        if (commentTagBeginIndex == -1) {
-            return "";
-        }
-        return message.substring(0, commentTagBeginIndex);
-    }
-
-    public static String getCommentFooter(String message) {
-        int commentTagEndIndex = message.indexOf(REVIEW_COMMENT_END_TAG) + REVIEW_COMMENT_END_TAG.length();
-
-        if (commentTagEndIndex == -1 + REVIEW_COMMENT_END_TAG.length()) {
-            return "";
-        }
-        return message.substring(commentTagEndIndex);
-    }
-
-    public static String extractComment(String message) {
-        int commentBeginIndex = message.indexOf(REVIEW_COMMENT_BEGIN_TAG) + REVIEW_COMMENT_BEGIN_TAG.length();
-        int commentEndIndex = message.indexOf(REVIEW_COMMENT_END_TAG);
-
-        // Is comment pattern valid?
-        if ((commentBeginIndex - REVIEW_COMMENT_BEGIN_TAG.length()) == -1 ||
-                commentEndIndex == -1) {
-            return "";
-        }
-
-        return message.substring(commentBeginIndex, commentEndIndex);
-    }
-
-    public static String wrapComment(String template, String comment) {
-        if (!template.contains(REVIEW_COMMENT_BEGIN_TAG) || !template.contains(REVIEW_COMMENT_END_TAG)) {
-            return comment;
-        }
-
-        int commentBeginIndex = template.indexOf(REVIEW_COMMENT_BEGIN_TAG) + REVIEW_COMMENT_BEGIN_TAG.length();
-        return template.substring(0, commentBeginIndex) + comment + template.substring(commentBeginIndex);
-    }
-
-    private String getContestPhasePromotionBody() throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    /**
+     * Based on the fellows' and judges' decisions, this method returns the
+     * right comment wrapped in a standard text template, ready to be send per email
+     * or posted as a comment to the proposal authors.
+     *
+     * @return the comment wrapped with the correct template from the preferences
+     * @throws NoSuchProposalContestPhaseAttributeException
+     * @throws SystemException
+     */
+    public String getPromotionComment() throws NoSuchProposalContestPhaseAttributeException, SystemException {
         //get fellow decision
         JudgingSystemActions.FellowAction fellowAction;
         try {
@@ -154,7 +108,8 @@ public class ProposalJudgingCommentHelper {
             fellowAction = JudgingSystemActions.FellowAction.NO_DECISION;
         }
 
-        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES || !contestPhase.isFellowScreeningActive()) {
+        //JUDGE DECISION
+        if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
             try {
                 String reviewText = ProposalContestPhaseAttributeLocalServiceUtil.
                         getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0).getStringValue();
@@ -164,16 +119,22 @@ public class ProposalJudgingCommentHelper {
                 JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
                 if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                    //TODO: implement the wrapping email functionality
                     return reviewText;
                 }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 _log.error("Could not extract contest phase promotion body for proposal " + proposal.getProposalId() + " in contestPhase " + contestPhase.getContestPhasePK(), e);
             }
+        //FELLOW DECISION: Incomplete/Off-Topic
         } else if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION) {
-            //fellow decided
-            String fellowReviewText = ProposalContestPhaseAttributeLocalServiceUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0).getStringValue();
+            String fellowReviewText = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(
+                    proposal.getProposalId(),
+                    contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT,
+                    0
+            ).getStringValue();
 
+            //TODO: implement the wrapping email functionality
             return fellowReviewText;
         }
 

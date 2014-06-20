@@ -210,5 +210,16 @@
         <column name="otherDataString" type="String" />
     </entity>
 
+    <entity name="ProposalRatingType" local-service="true">
+        <column name="ratingTypeId" type="long" />
+        <column name="label" type="String" />
+    </entity>
+    <entity name="ProposalRatingValue" local-service="true">
+        <column name="ratingTypeId" type="long" primary="true" />
+        <column name="value" type="long" primary="true" />
+        <column name="name" type="String" />
+        <column name="description" type="String" />
+    </entity>
+
 
 </service-builder>

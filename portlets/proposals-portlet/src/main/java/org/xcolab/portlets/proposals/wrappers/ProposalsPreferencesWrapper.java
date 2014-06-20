@@ -41,24 +41,14 @@ public class ProposalsPreferencesWrapper {
     public ProposalsPreferencesWrapper(PortletRequest request) {
         this.preferences = request.getPreferences();
         termsOfService = preferences.getValue(TERMS_OF_SERVICE_PREF, "");
-        screeningIncompleteText = preferences.getValue(SCREENING_INCOMPLETE_TEXT, "your proposal was incomplete "
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
-        screeningOfftopicText = preferences.getValue(SCREENING_OFFTOPIC_TEXT, "your proposal was offtopic "
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
+        screeningIncompleteText = preferences.getValue(SCREENING_INCOMPLETE_TEXT, "%s");
+        screeningOfftopicText = preferences.getValue(SCREENING_OFFTOPIC_TEXT, "%s");
 
-        advanceAcceptanceSemifinalistSelectionText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "your proposal was accepted <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG + "<br/><br/>Sincerely,<br/>The Climate CoLab Team");
-//        advanceAcceptanceFinalistSelectionText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "your proposal was accepted "
-//                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
-        advanceAcceptanceWinnerSelectionText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), "your proposal was accepted <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG + "<br/><br/>Sincerely,<br/>The Climate CoLab Team");
+        advanceAcceptanceSemifinalistSelectionText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "%s");
+        advanceAcceptanceWinnerSelectionText = preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), "%s");
 
-        advanceRejectionSemifinalistSelectionText = preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "your proposal was rejected <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
-//        advanceRejectionFinalistSelectionText = preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "your proposal was rejected "
-//                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG);
-        advanceRejectionWinnerSelectionText = preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), "your proposal was rejected <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG + "<br/><br/>Sincerely,<br/>The Climate CoLab Team");
+        advanceRejectionSemifinalistSelectionText = preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), "%s");
+        advanceRejectionWinnerSelectionText = preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), "%s");
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
@@ -67,13 +57,9 @@ public class ProposalsPreferencesWrapper {
         preferences.setValue(SCREENING_INCOMPLETE_TEXT, screeningIncompleteText);
         preferences.setValue(SCREENING_OFFTOPIC_TEXT, screeningOfftopicText);
 
-        // TODO: enable template for invisible phase
         preferences.setValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), advanceAcceptanceSemifinalistSelectionText);
-        //preferences.setValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), advanceAcceptanceSemifinalistSelectionText);
         preferences.setValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), advanceAcceptanceWinnerSelectionText);
-
         preferences.setValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), advanceRejectionSemifinalistSelectionText);
-        //preferences.setValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.FINALIST_SELECTION.getTypeId(), advanceRejectionSemifinalistSelectionText);
         preferences.setValue(ADVANCE_REJECTION_TEXT_PREFIX + ContestPhaseType.SELECTION_OF_WINNERS.getTypeId(), advanceRejectionWinnerSelectionText);
 
         preferences.store();
@@ -151,21 +137,4 @@ public class ProposalsPreferencesWrapper {
         this.screeningOfftopicText = screeningOfftopicText;
     }
 
-    public String getCommentBeginTag() {
-        return ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG;
-    }
-
-    public String getCommentEndTag() {
-        return ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG;
-    }
-
-    public String getAdvanceRejectionText(long contestPhaseTypeId) {
-        return preferences.getValue(ADVANCE_REJECTION_TEXT_PREFIX + contestPhaseTypeId, "your proposal was rejected <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG) + "<br/><br/>Sincerely,<br/>The Climate CoLab Team";
-    }
-
-    public String getAdvanceAcceptanceText(long contestPhaseTypeId) {
-        return preferences.getValue(ADVANCE_ACCEPTANCE_TEXT_PREFIX + contestPhaseTypeId, "your proposal was accepted <br/><br/>"
-                + ProposalJudgingCommentHelper.REVIEW_COMMENT_BEGIN_TAG + ProposalJudgingCommentHelper.REVIEW_COMMENT_END_TAG + "<br/><br/>Sincerely,<br/>The Climate CoLab Team");
-    }
 }

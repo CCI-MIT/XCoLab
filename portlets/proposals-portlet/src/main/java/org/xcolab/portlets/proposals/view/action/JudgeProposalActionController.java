@@ -108,31 +108,42 @@ public class JudgeProposalActionController {
 
         // save judge decision
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
-            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, proposalAdvancingBean.getAdvanceDecision());
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
+                    0,
+                    proposalAdvancingBean.getAdvanceDecision()
+            );
         }
 
         // save judge comment
         if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
             ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-            String judgeCommentTemplate = null;
-            ProposalsPreferencesWrapper preferences = proposalsContext.getProposalsPreferences(request);
-            if (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON.getAttributeValue()) {
-                judgeCommentTemplate = preferences.getAdvanceAcceptanceText(contestPhase.getContestPhaseType());
-            } else if (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON.getAttributeValue()) {
-                judgeCommentTemplate = preferences.getAdvanceRejectionText(contestPhase.getContestPhaseType());
-            }
 
-            commentHelper.setAdvancingComment(judgeCommentTemplate, proposalAdvancingBean.getAdvanceComment());
+            commentHelper.setAdvancingComment(proposalAdvancingBean.getAdvanceComment());
         }
 
         //freeze the advancement
         if (request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
-            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "true");
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
+                    0,
+                    "true"
+            );
         }
 
         //unfreeze the advancement
         if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null && request.getParameter("isUnfreeze").equals("true")) {
-            persistAttribute(proposalId, contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "false");
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
+                    0,
+                    "false"
+            );
         }
 
         //forcefully promote the advancement
@@ -214,23 +225,37 @@ public class JudgeProposalActionController {
 
         // save selection of judges
         if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-            persistSelectedJudges(proposalId, contestPhaseId, fellowProposalScreeningBean.getSelectedJudges());
+            ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
+                    proposalId,
+                    contestPhaseId,
+                    fellowProposalScreeningBean.getSelectedJudges()
+            );
         } else {
             //clear selected judges attribute since the decision is not to pass the proposal.
-            persistSelectedJudges(proposalId, contestPhaseId, null);
+            ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
+                    proposalId,
+                    contestPhaseId,
+                    null
+            );
         }
 
         // save fellow action
         if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
-            persistAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, fellowProposalScreeningBean.getFellowScreeningAction());
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    contestPhaseId,
+                    ProposalContestPhaseAttributeKeys.FELLOW_ACTION,
+                    0,
+                    fellowProposalScreeningBean.getFellowScreeningAction()
+            );
 
             //save fellow action comment
             ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
 
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
-                commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningIncompleteText(), fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
             } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
-                commentHelper.setScreeningComment(proposalsContext.getProposalsPreferences(request).getScreeningOfftopicText(), fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
             }
         }
 
@@ -266,76 +291,7 @@ public class JudgeProposalActionController {
     }
 
 
-    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue) {
-        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, attributeName, additionalId);
 
-        attribute.setAdditionalId(additionalId);
-        attribute.setNumericValue(numericValue);
-
-        try {
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, String stringValue) {
-        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, attributeName, additionalId);
-
-        attribute.setAdditionalId(additionalId);
-        attribute.setStringValue(stringValue);
-
-        try {
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean persistSelectedJudges(long proposalId, long contestPhaseId, List<Long> selectedJudges) {
-        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttributeCreateIfNotExists(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
-
-
-        String attributeValue = "";
-        if (selectedJudges != null) {
-            for (Long userId : selectedJudges) attributeValue += userId + ";";
-        }
-        judges.setStringValue(attributeValue.replaceAll(";$", ""));
-
-        try {
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(judges);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
-        try {
-            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
-        } catch (NoSuchProposalContestPhaseAttributeException e) {
-            try {
-                ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
-                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
-                attribute.setProposalId(proposalId);
-                attribute.setContestPhaseId(contestPhaseId);
-                attribute.setName(attributeName);
-                ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
-                return attribute;
-            } catch (Exception e2) {
-                e.printStackTrace();
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
 }

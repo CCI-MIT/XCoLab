@@ -285,6 +285,36 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
             contestPhaseId, attributeName, additionalId);
     }
 
+    @Override
+    public boolean persistAttribute(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId, long numericValue) {
+        return _proposalContestPhaseAttributeLocalService.persistAttribute(proposalId,
+            contestPhaseId, attributeName, additionalId, numericValue);
+    }
+
+    @Override
+    public boolean persistAttribute(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue) {
+        return _proposalContestPhaseAttributeLocalService.persistAttribute(proposalId,
+            contestPhaseId, attributeName, additionalId, stringValue);
+    }
+
+    @Override
+    public boolean persistSelectedJudgesAttribute(long proposalId,
+        long contestPhaseId, java.util.List<java.lang.Long> selectedJudges) {
+        return _proposalContestPhaseAttributeLocalService.persistSelectedJudgesAttribute(proposalId,
+            contestPhaseId, selectedJudges);
+    }
+
+    @Override
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getOrCreateAttribute(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId) {
+        return _proposalContestPhaseAttributeLocalService.getOrCreateAttribute(proposalId,
+            contestPhaseId, attributeName, additionalId);
+    }
+
     /**
     * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
     *
@@ -414,7 +444,6 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param proposalId id of a proposal
     * @param contestPhaseId id of a contest phase
     * @param attributeName name of an attribute
-    * @param value value to be set
     * @throws SystemException in case of LR error
     */
     @Override
@@ -432,7 +461,6 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
     * @param proposalId id of a proposal
     * @param contestPhaseId id of a contest phase
     * @param attributeName name of an attribute
-    * @param value value to be set
     * @throws SystemException in case of LR error
     */
     @Override

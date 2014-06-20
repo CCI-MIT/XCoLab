@@ -111,13 +111,18 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <c:if test="${isAdmin}">
+                                <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
                                     <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                         <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
                                         <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
                                             Execute judging decision
                                         </a>
                                     </div>
+                                </c:if>
+                                <c:if test="${hasAlreadyBeenPromoted}">
+                                    <p class="submitStatus error">
+                                        <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                                    </p>
                                 </c:if>
 
 
@@ -155,7 +160,7 @@
             <h2>Comments by Fellows</h2>
             <c:if test="${fellowRatings.size() > 0}">
                 <div class="addpropbox">
-                    <proposalsPortlet:proposalRatingComments showRating="false" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                    <proposalsPortlet:proposalRatingComments showRating="${isAdmin ? 'true' : 'false'}" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
                 </div>
             </c:if>
         </div>

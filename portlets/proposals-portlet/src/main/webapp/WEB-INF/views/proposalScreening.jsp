@@ -111,6 +111,11 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
+                    <c:if test="${hasAlreadyBeenPromoted}">
+                        <p class="submitStatus error">
+                            <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                        </p>
+                    </c:if>
 
                 </div>
                 <div class="addpropbox">

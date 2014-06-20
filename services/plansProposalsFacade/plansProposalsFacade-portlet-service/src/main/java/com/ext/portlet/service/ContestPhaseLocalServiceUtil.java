@@ -357,6 +357,13 @@ public class ContestPhaseLocalServiceUtil {
         getService().promoteProposal(proposalId, nextPhaseId);
     }
 
+    public static void promoteProposal(long proposalId, long nextPhaseId,
+        long currentPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().promoteProposal(proposalId, nextPhaseId, currentPhaseId);
+    }
+
     /**
     * Method responsible for autopromotion of proposals between phases.
     *
