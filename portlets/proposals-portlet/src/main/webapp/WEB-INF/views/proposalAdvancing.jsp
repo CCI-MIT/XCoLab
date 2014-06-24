@@ -154,13 +154,13 @@
             <h2>Comments by Judges</h2>
             <c:if test="${judgeRatings.size() > 0}">
                 <div class="addpropbox">
-                    <proposalsPortlet:proposalRatingComments showRating="true" proposalRatings="${judgeRatings}" proposalId="${proposal.proposalId}" />
+                    <proposalsPortlet:proposalRatingComments showRating="true" proposalRatingsWrappers="${judgeRatings}" proposalId="${proposal.proposalId}" />
                 </div>
             </c:if>
             <h2>Comments by Fellows</h2>
             <c:if test="${fellowRatings.size() > 0}">
                 <div class="addpropbox">
-                    <proposalsPortlet:proposalRatingComments showRating="${isAdmin ? 'true' : 'false'}" proposalRatings="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                    <proposalsPortlet:proposalRatingComments showRating="${isAdmin ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
                 </div>
             </c:if>
         </div>

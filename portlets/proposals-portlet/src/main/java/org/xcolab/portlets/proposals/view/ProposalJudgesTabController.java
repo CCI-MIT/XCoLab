@@ -18,14 +18,10 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.portlets.proposals.wrappers.*;
 
 import javax.portlet.PortletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("view")
@@ -50,8 +46,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 proposalsContext.getProposalsPreferences(request)));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
-        List<ProposalRatingWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId()));
-        List<ProposalRatingWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId()));
+        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId()));
+        List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId()));
 
 
         boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
@@ -80,13 +76,24 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return "proposalAdvancing";
     }
 
-    private static List<ProposalRatingWrapper> wrapProposalRatings(List<ProposalRating> ratings) {
-        List<ProposalRatingWrapper> wrappedRatings = new ArrayList<ProposalRatingWrapper>();
-        //wrap the comments
+    private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings) throws SystemException, PortalException {
+        List<ProposalRatingsWrapper> wrappers = new ArrayList<ProposalRatingsWrapper>();
+        Map<Long, List<ProposalRating>> map = new HashMap<Long, List<ProposalRating>>();
+
         for (ProposalRating r : ratings) {
-            wrappedRatings.add(new ProposalRatingWrapper(r));
+            if (map.get(r.getUserId()) == null) {
+                map.put(r.getUserId(), new ArrayList<ProposalRating>());
+            }
+            map.get(r.getUserId()).add(r);
         }
-        return wrappedRatings;
+
+        for (Long userId : map.keySet()) {
+            List<ProposalRating> userRatings = map.get(userId);
+            ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, userRatings);
+            wrappers.add(wrapper);
+        }
+
+        return wrappers;
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})

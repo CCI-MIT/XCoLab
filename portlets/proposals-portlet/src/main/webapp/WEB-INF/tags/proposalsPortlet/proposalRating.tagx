@@ -5,24 +5,24 @@
         xmlns:collab="http://climatecolab.org/tags/collab_1.0"
         xmlns:form="http://www.springframework.org/tags/form"
         version="2.0">
-    <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Model path of the rating value" />
+    <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingType" />
+    <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
-    <table class="judgingForm">
-        <tbody>
-        <tr>
-            <td>Poor</td>
-            <td>Fair</td>
-            <td>Good</td>
-            <td>Very good</td>
-            <td>Outstanding</td>
-        </tr>
-        <tr>
-            <td><form:radiobutton path="${path}" value="1"/></td>
-            <td><form:radiobutton path="${path}" value="2"/></td>
-            <td><form:radiobutton path="${path}" value="3"/></td>
-            <td><form:radiobutton path="${path}" value="4"/></td>
-            <td><form:radiobutton path="${path}" value="5"/></td>
-        </tr>
-        </tbody>
-    </table>
+    <c:forEach var="type" items="${ratingTypes}">
+        <h5>${type.label}</h5>
+        <table class="judgingForm">
+            <tbody>
+            <tr>
+                <c:forEach var="value" items="${type.ratingValues}">
+                    <td><label for="rating${value.id}">${value.name}</label></td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <c:forEach var="value" items="${type.ratingValues}">
+                    <td><form:radiobutton id="rating${value.id}" path="${ratingValuesPath}[${type.id}]" value="${value.id}"/></td>
+                </c:forEach>
+            </tr>
+            </tbody>
+        </table>
+    </c:forEach>
 </jsp:root>

@@ -200,16 +200,13 @@
                     <br/>
                     <form:errors cssClass="alert alert-error" />
 
-                    <div class="form-errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="judgeRating" />
-                    </div>
-                    <proposalsPortlet:proposalRating path="judgeRating"/>
+                    <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
                     <h3 style="margin-top: 10px;">Judge Feedback</h3>
                     <div class="form-errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="judgeComment" />
+                        <form:errors cssClass="alert alert-error" path="comment" />
                     </div>
-                    <form:textarea path="judgeComment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
+                    <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
 
                     <div class="clearfix" style="width: 100%;">
                         <div class="blue-button" style="display:block; float:right; margin-top: 10px;">

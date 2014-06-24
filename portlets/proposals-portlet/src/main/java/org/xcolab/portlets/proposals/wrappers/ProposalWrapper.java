@@ -46,6 +46,8 @@ public class ProposalWrapper {
 
     private ProposalAttributeUtil proposalAttributeUtil;
 
+    protected ProposalRatingsWrapper proposalRatings;
+
     public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
     }
@@ -586,11 +588,12 @@ public class ProposalWrapper {
     public boolean getAllJudgesReviewFinished() throws SystemException, PortalException {
         if (getSelectedJudges().size() > 0) {
             for (long userId : getSelectedJudges()) {
-                ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
+                List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
                         userId,
                         this.proposal.getProposalId(),
                         this.contestPhase.getContestPhasePK());
-                if (proposalRating == null || !proposalRating.isRatingComplete()) {
+                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
+                if (!wrapper.isReviewComplete()) {
                     return false;
                 }
 
@@ -656,6 +659,22 @@ public class ProposalWrapper {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public List<ProposalRatingWrapper> getRatings() throws SystemException, PortalException {
+        if (this.proposalRatings != null) {
+            return this.proposalRatings.getRatings();
+        } else {
+            return new ArrayList<ProposalRatingWrapper>();
+        }
+    }
+
+    public String getRatingComment() throws SystemException, PortalException {
+        if (this.proposalRatings != null) {
+            return this.proposalRatings.getComment();
+        } else {
+            return "";
         }
     }
 }

@@ -1,8 +1,11 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.proposals.ProposalJudgeType;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalRatingLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.ProposalRatingFinderUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -34,87 +37,37 @@ public class ProposalRatingLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingLocalServiceUtil} to access the proposal rating local service.
      */
 
-    public enum ProposalRatingType {
-        JUDGE(1),
-        FELLOW(2);
-
-        private final int id;
-
-        ProposalRatingType(int id) {
-            this.id = id;
-        }
-
-        int getId() {
-            return this.id;
-        }
-    }
-
-
-
     public List<ProposalRating> getFellowRatingsForProposal(long proposalId) throws SystemException {
-        return getRatingsForProposal(proposalId, ProposalRatingType.FELLOW.getId());
+        return getRatingsForProposal(proposalId, ProposalJudgeType.FELLOW.getId());
     }
     public List<ProposalRating> getJudgeRatingsForProposal(long proposalId) throws SystemException {
-        return getRatingsForProposal(proposalId, ProposalRatingType.JUDGE.getId());
+        return getRatingsForProposal(proposalId, ProposalJudgeType.JUDGE.getId());
     }
 
-    protected List<ProposalRating> getRatingsForProposal(long proposalId, int ratingType) throws SystemException {
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRating.class)
-                .add(PropertyFactoryUtil.forName("ratingType").eq(ratingType))
-                .add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));
-        query.addOrder(OrderFactoryUtil.asc("userId"));
-        return dynamicQuery(query);
+    protected List<ProposalRating> getRatingsForProposal(long proposalId, int judgeType) throws SystemException {
+        return ProposalRatingFinderUtil.findByProposalIdJudgeType(proposalId, judgeType, 0, Integer.MAX_VALUE);
     }
 
 
 
-    public ProposalRating getJudgeRatingForProposal(long judgeId, long proposalId, long contestPhaseId) throws SystemException {
-        return this.getRatingForProposal(ProposalRatingType.JUDGE.getId(), judgeId, proposalId, contestPhaseId);
+    public List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
+        return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId, contestPhaseId);
     }
-    public ProposalRating getFellowRatingForProposal(long judgeId, long proposalId, long contestPhaseId) throws SystemException {
-        return this.getRatingForProposal(ProposalRatingType.FELLOW.getId(), judgeId, proposalId, contestPhaseId);
-    }
-
-    protected ProposalRating getRatingForProposal(int ratingType, long judgeId, long proposalId, long contestPhaseId) throws SystemException {
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRating.class)
-                .add(PropertyFactoryUtil.forName("userId").eq(judgeId))
-                .add(PropertyFactoryUtil.forName("ratingType").eq(ratingType))
-                .add(PropertyFactoryUtil.forName("proposalId").eq(proposalId))
-                .add(PropertyFactoryUtil.forName("contestPhaseId").eq(contestPhaseId));
-        List result = dynamicQuery(query);
-
-        if (result.size() > 0) {
-            return (ProposalRating)dynamicQuery(query).get(0);
-        } else {
-            return null;
-        }
+    public List<ProposalRating> getFellowRatingForProposalAndUser(long userId, long proposalId, long contestPhaseId) throws SystemException {
+        return this.getRatingsForProposalAndUser(proposalId, ProposalJudgeType.FELLOW.getId(), userId, contestPhaseId);
     }
 
-
-    public ProposalRating addJudgeRating(
-            long proposalId, long contestPhaseId, long judgeId,
-            long rating, String comment, String otherDataString
-    ) throws SystemException, NoSuchUserException {
-        int ratingType = ProposalRatingType.JUDGE.getId();
-
-        return this.addProposalRating(proposalId, contestPhaseId, judgeId, ratingType, rating, comment, otherDataString);
+    protected List<ProposalRating> getRatingsForProposalAndUser(long proposalId, int judgeType, long userId,  long contestPhaseId) throws SystemException {
+        return ProposalRatingFinderUtil.findByProposalIdJudgeTypeJudgeIdContestPhaseId(proposalId, judgeType, userId, contestPhaseId, 0, Integer.MAX_VALUE);
     }
 
-    public ProposalRating addFellowRating(
-            long proposalId, long contestPhaseId, long fellowId,
-            long rating, String comment, String otherDataString
-    ) throws SystemException, NoSuchUserException {
-        int ratingType = ProposalRatingType.FELLOW.getId();
-
-        return this.addProposalRating(proposalId, contestPhaseId, fellowId, ratingType, rating, comment, otherDataString);
-    }
 
     public ProposalRating updateRating(
-            long proposalRatingId, long rating, String comment, String otherDataString
+            long proposalRatingId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
         ProposalRating proposalRating = ProposalRatingLocalServiceUtil.fetchProposalRating(proposalRatingId);
 
-        proposalRating.setRating(rating);
+        proposalRating.setRatingValueId(ratingValueId);
         proposalRating.setComment(comment);
         proposalRating.setOtherDataString(otherDataString);
 
@@ -123,9 +76,8 @@ public class ProposalRatingLocalServiceImpl
         return proposalRating;
     }
 
-    protected ProposalRating addProposalRating(
-            long proposalId, long contestPhaseId, long userId, int ratingType,
-            long rating, String comment, String otherDataString
+    public ProposalRating addProposalRating(
+            long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
 
         long proposalRatingId = counterLocalService.increment(ProposalRating.class.getName());
@@ -135,8 +87,7 @@ public class ProposalRatingLocalServiceImpl
         proposalRating.setProposalId(proposalId);
         proposalRating.setContestPhaseId(contestPhaseId);
         proposalRating.setUserId(userId);
-        proposalRating.setRatingType(ratingType);
-        proposalRating.setRating(rating);
+        proposalRating.setRatingValueId(ratingValueId);
         proposalRating.setComment(comment);
         proposalRating.setOtherDataString(otherDataString);
 

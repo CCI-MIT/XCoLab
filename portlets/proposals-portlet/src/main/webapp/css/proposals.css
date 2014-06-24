@@ -332,7 +332,11 @@ img.review-status-icon {
     margin: 5px 0 0 20px;
 }
 table.judgingForm {
-    margin: 1em 0;
+    margin-bottom: 1em;
+    margin-top: -0.5em;
+}
+.addpropbox h5 {
+    margin-bottom: 0.75em;
 }
 .judging_comments {
     clear:both;

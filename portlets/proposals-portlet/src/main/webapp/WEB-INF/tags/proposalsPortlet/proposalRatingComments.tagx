@@ -10,18 +10,18 @@
         xmlns:addthis="http://www.addthis.com/help/api-spec"
         xmlns:portlet="http://java.sun.com/portlet_2_0"
         version="2.0">
-    <jsp:directive.attribute name="proposalRatings" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
+    <jsp:directive.attribute name="proposalRatingsWrappers" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
 
     <div class="comments">
-        <c:forEach var="rating" items="${proposalRatings}" varStatus="status">
-            <discussions:getRoleName userId="${rating.author.userId}" proposalId="${proposalId}">
+        <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
+            <discussions:getRoleName userId="${wrapper.author.userId}" proposalId="${proposalId}">
                 <div class="comment">
                     <div class="commentor">
-                        <proposalsPortlet:userPortrait  screenName="${rating.author.screenName}" portraitId="${rating.author.portraitId}" width="59" height="59" />
+                        <proposalsPortlet:userPortrait  screenName="${wrapper.author.screenName}" portraitId="${wrapper.author.portraitId}" width="59" height="59" />
                         <br />
-                        <proposalsPortlet:userLinkSimple text="${rating.author.screenName}" userId="${rating.author.userId}" /> <br />
+                        <proposalsPortlet:userLinkSimple text="${wrapper.author.screenName}" userId="${wrapper.author.userId}" /> <br />
                         <br />
 
                         <div class="role-indicator">
@@ -35,31 +35,20 @@
                     </div>
                     <div class="the-comment">
                         <div class="content">
-                            <c:if test="${showRating and rating.rating > 0}">
-                                <p>
-                                    <strong>Rating:</strong>
-                                    <c:choose>
-                                        <c:when test="${rating.rating == 1}">
-                                            poor
-                                        </c:when>
-                                        <c:when test="${rating.rating == 2}">
-                                            fair
-                                        </c:when>
-                                        <c:when test="${rating.rating == 3}">
-                                            good
-                                        </c:when>
-                                        <c:when test="${rating.rating == 4}">
-                                            very good
-                                        </c:when>
-                                        <c:when test="${rating.rating == 5}">
-                                            outstanding
-                                        </c:when>
-                                    </c:choose>
-                                </p>
+                            <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
+                                <strong>Rating:</strong>
+                                <ul>
+                                    <c:forEach var="rating" items="${wrapper.ratings}">
+                                    <li>
+                                        <em>${rating.ratingTypeLabel}:</em>
+                                        ${rating.ratingValueName}
+                                    </li>
+                                    </c:forEach>
+                                </ul>
                             </c:if>
                             <p>
-                                <strong>Comment:</strong>
-                                ${rating.comment}
+                                <strong>Comment:</strong><br/>
+                                ${wrapper.comment}
                             </p>
                         </div>
                     </div>

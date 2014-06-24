@@ -10,13 +10,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by patrickhiesel on 19/12/13.
  */
 public class ProposalJudgeWrapper extends ProposalWrapper {
     private User currentUser;
-    private ProposalRating proposalRating;
-
 
     public ProposalJudgeWrapper(ProposalWrapper proposal, User currentUser) {
         super(proposal);
@@ -27,12 +28,9 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
             Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(baseContest);
 
-            this.proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
-                    currentUser.getUserId(),
-                    proposal.getProposalId(),
-                    contestPhase.getContestPhasePK());
+            this.setProposalRatings(proposal.getProposalId(), contestPhase);
         } catch (Exception e) {
-            this.proposalRating = null;
+            this.proposalRatings = null;
         }
     }
 
@@ -41,14 +39,18 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         this.currentUser = currentUser;
 
         try {
-            this.proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
-                    currentUser.getUserId(),
-                    proposal.getProposalId(),
-                    contestPhase.getContestPhasePK());
+            this.setProposalRatings(proposal.getProposalId(), contestPhase);
         } catch (Exception e) {
-            this.proposalRating = null;
+            this.proposalRatings = null;
         }
+    }
 
+    private void setProposalRatings(long proposalId, ContestPhase contestPhase) throws SystemException, PortalException {
+        List<ProposalRating> list = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
+                currentUser.getUserId(),
+                proposalId,
+                contestPhase.getContestPhasePK());
+        this.proposalRatings = new ProposalRatingsWrapper(currentUser, list);
     }
 
     /**
@@ -80,23 +82,6 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
     }
 
-    public Long getJudgeRating() throws SystemException, PortalException {
-        if (this.proposalRating != null) {
-            return this.proposalRating.getRating();
-        } else {
-            return 0L;
-        }
-    }
-
-    public String getJudgeComment() throws SystemException, PortalException {
-        if (this.proposalRating != null) {
-            return this.proposalRating.getComment();
-        } else {
-            return "";
-        }
-
-    }
-
     public boolean shouldShowJudgingTab(long contestPhaseId) {
         ProposalContestPhaseAttribute a = getProposalContestPhaseAttributeCreateIfNotExists(getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue());
@@ -107,10 +92,6 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
         if (!isUserAmongJudges(currentUser)) {
             return true;
         }
-        if (this.proposalRating != null) {
-            return this.proposalRating.isRatingComplete();
-        } else {
-            return false;
-        }
+        return proposalRatings.isReviewComplete();
     }
 }

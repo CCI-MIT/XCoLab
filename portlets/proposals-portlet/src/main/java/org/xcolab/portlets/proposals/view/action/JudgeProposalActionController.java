@@ -2,24 +2,18 @@ package org.xcolab.portlets.proposals.view.action;
 
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.*;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,27 +21,25 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
+import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -158,12 +150,13 @@ public class JudgeProposalActionController {
     public void saveJudgingFeedback(ActionRequest request, Model model, ActionResponse response,
                                     @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
                                     BindingResult result)
-            throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException {
+            throws PortalException, SystemException, ProposalsAuthorizationException, AddressException, MailEngineException, IOException {
 
         if (result.hasErrors()) {
             return;
         }
 
+        long contestId = proposalsContext.getContest(request).getContestPK();
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
@@ -174,29 +167,14 @@ public class JudgeProposalActionController {
             return;
         }
 
-        //find existing rating
-        ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getJudgeRatingForProposal(
+        //find existing ratings
+        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
                 currentUser.getUserId(),
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
-        if (proposalRating != null) {
-            ProposalRatingLocalServiceUtil.updateRating(
-                    proposalRating.getId(),
-                    judgeProposalFeedbackBean.getJudgeRating(),
-                    judgeProposalFeedbackBean.getJudgeComment(),
-                    ""
-            );
-        } else {
-            //create a new rating
-            ProposalRatingLocalServiceUtil.addJudgeRating(
-                    proposal.getProposalId(),
-                    contestPhase.getContestPhasePK(),
-                    currentUser.getUserId(),
-                    judgeProposalFeedbackBean.getJudgeRating(),
-                    judgeProposalFeedbackBean.getJudgeComment(),
-                    ""
-            );
-        }
+
+        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId());
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposal.getProposalId()+"/");
 
     }
 
@@ -260,38 +238,63 @@ public class JudgeProposalActionController {
         }
 
         // save fellow comment and rating
-        String comment = fellowProposalScreeningBean.getFellowScreeningRatingComment();
-        Long rating = fellowProposalScreeningBean.getFellowScreeningRating();
-
-        //find existing rating
-        ProposalRating proposalRating = ProposalRatingLocalServiceUtil.getFellowRatingForProposal(
+        //find existing ratings
+        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(
                 currentUser.getUserId(),
                 proposalId,
                 contestPhaseId);
-        //update if existent
-        if (proposalRating != null) {
-            ProposalRatingLocalServiceUtil.updateRating(
-                    proposalRating.getId(),
-                    rating,
-                    comment,
-                    ""
-            );
-        } else {
-            //create a new rating
-            ProposalRatingLocalServiceUtil.addFellowRating(
-                    proposalId,
-                    contestPhaseId,
-                    currentUser.getUserId(),
-                    rating,
-                    comment,
-                    ""
-            );
-        }
+
+        this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId());
         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/SCREENING");
     }
 
 
+    private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean, long proposalId, long contestPhaseId, long currentUserId) throws NoSuchUserException, SystemException {
+        //initialize a map of existing ratings
+        Map<Long, ProposalRating> typeToRatingMap = new HashMap<Long, ProposalRating>();
+        for (ProposalRating r: existingRatings) {
+            ProposalRatingWrapper wrapper = new ProposalRatingWrapper(r);
+            typeToRatingMap.put(wrapper.getRatingTypeId(), r);
+        }
 
+        Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();
+        //now update the values and save or create a new rating of not existent yet
+        boolean commentAdded = false;
+        for (Long typeId: ratingsFromForm.keySet()) {
+            ProposalRating existingRating = typeToRatingMap.get(typeId);
+            long newRatingValueId = Long.parseLong(ratingsFromForm.get(typeId));
+
+            if (existingRating != null) {
+                //rating exists. update and save
+                existingRating.setRatingValueId(newRatingValueId);
+                //convention: save comment in first type
+                if (!commentAdded) {
+                    existingRating.setComment(ratingBean.getComment());
+                    existingRating.setCommentEnabled(true);
+                    commentAdded = true;
+                } else {
+                    existingRating.setComment(null);
+                    existingRating.setCommentEnabled(false);
+                }
+                ProposalRatingLocalServiceUtil.updateRating(existingRating);
+            } else {
+                String comment = null;
+                if (!commentAdded) {
+                    comment = ratingBean.getComment();
+                    commentAdded = true;
+                }
+                //create a new rating
+                ProposalRatingLocalServiceUtil.addRating(
+                        proposalId,
+                        contestPhaseId,
+                        currentUserId,
+                        newRatingValueId,
+                        comment,
+                        ""
+                );
+            }
+        }
+    }
 
 
 }

@@ -10,12 +10,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import java.util.List;
+
 /**
  * Created by Manuel Thurner
  */
 public class ProposalFellowWrapper extends ProposalWrapper {
     private User currentUser;
-    private ProposalRating proposalRating;
 
 
     public ProposalFellowWrapper(ProposalWrapper proposal, User currentUser) {
@@ -27,31 +28,13 @@ public class ProposalFellowWrapper extends ProposalWrapper {
             Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(baseContest);
 
-            this.proposalRating = ProposalRatingLocalServiceUtil.getFellowRatingForProposal(
+            List<ProposalRating> list = ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(
                     currentUser.getUserId(),
                     proposal.getProposalId(),
                     contestPhase.getContestPhasePK());
+            this.proposalRatings = new ProposalRatingsWrapper(currentUser, list);
         } catch (Exception e) {
-            this.proposalRating = null;
-            }
-    }
-
-
-    public Long getFellowRating() throws SystemException, PortalException {
-        if (this.proposalRating != null) {
-            return this.proposalRating.getRating();
-        } else {
-            return 0L;
+            this.proposalRatings = null;
         }
-
-    }
-
-    public String getFellowRatingComment() throws SystemException, PortalException {
-        if (this.proposalRating != null) {
-            return this.proposalRating.getComment();
-        } else {
-            return "";
-        }
-
     }
 }

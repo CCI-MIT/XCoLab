@@ -1,7 +1,15 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.proposals.ProposalJudgeType;
 import com.ext.portlet.service.base.ProposalRatingTypeLocalServiceBaseImpl;
+import com.ext.portlet.model.ProposalRatingType;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 
+import java.util.List;
 /**
  * The implementation of the proposal rating type local service.
  *
@@ -23,4 +31,17 @@ public class ProposalRatingTypeLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil} to access the proposal rating type local service.
      */
+    public List<ProposalRatingType> getRatingTypesForJudges() throws SystemException {
+        return this.getRatingTypesForJudgeType(ProposalJudgeType.JUDGE.getId());
+    }
+    public List<ProposalRatingType> getRatingTypesForFellows() throws SystemException {
+        return this.getRatingTypesForJudgeType(ProposalJudgeType.FELLOW.getId());
+    }
+
+    protected List<ProposalRatingType> getRatingTypesForJudgeType(int judgeType) throws SystemException {
+        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRatingType.class)
+                .add(PropertyFactoryUtil.forName("judgeType").eq(judgeType));
+        query.addOrder(OrderFactoryUtil.asc("id"));
+        return dynamicQuery(query);
+    }
 }

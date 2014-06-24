@@ -1,6 +1,14 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ProposalRatingValue;
 import com.ext.portlet.service.base.ProposalRatingValueLocalServiceBaseImpl;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal rating value local service.
@@ -23,4 +31,11 @@ public class ProposalRatingValueLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingValueLocalServiceUtil} to access the proposal rating value local service.
      */
+
+    public List<ProposalRatingValue> getRatingValuesForRatingTypeId(long proposalRatingTypeId) throws SystemException {
+        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRatingValue.class)
+                .add(PropertyFactoryUtil.forName("ratingTypeId").eq(proposalRatingTypeId));
+        query.addOrder(OrderFactoryUtil.asc("value"));
+        return dynamicQuery(query);
+    }
 }

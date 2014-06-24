@@ -133,10 +133,10 @@
                             <p>
                                 This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
                             </p>
-                            <proposalsPortlet:proposalRating path="fellowScreeningRating"/>
+                            <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
                             <h4>Rating comment:</h4>
-                            <form:textarea id="fellowRatingComment" cssClass="commentbox" path="fellowScreeningRatingComment" style="width:100%;"/>
+                            <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
                             <div class="blue-button" style="display:block; float:right;">
                                 <a href="javascript:;" class="requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save</a>

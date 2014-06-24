@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
@@ -14,9 +15,7 @@ import java.util.List;
 /**
  * Created by kmang on 25/05/14.
  */
-public class FellowProposalScreeningBean implements Serializable {
-    private Long fellowScreeningRating;
-    private String fellowScreeningRatingComment;
+public class FellowProposalScreeningBean extends RatingBean implements Serializable {
     private JudgingSystemActions.FellowAction fellowScreeningAction;
 
     private String fellowScreeningActionCommentBody;
@@ -27,9 +26,9 @@ public class FellowProposalScreeningBean implements Serializable {
     private String[] fellowCommentHeaders = {"", "", "", ""};
 
     public FellowProposalScreeningBean(ProposalFellowWrapper wrapper, ProposalsPreferencesWrapper preferencesWrapper) throws PortalException, SystemException {
-        fellowScreeningRating = wrapper.getFellowRating();
+        super(wrapper, ProposalRatingTypeLocalServiceUtil.getRatingTypesForFellows());
+
         fellowScreeningAction = wrapper.getFellowAction();
-        fellowScreeningRatingComment = wrapper.getFellowRatingComment();
         selectedJudges = wrapper.getSelectedJudges();
 
         // Initialize comment headers and footers
@@ -46,19 +45,10 @@ public class FellowProposalScreeningBean implements Serializable {
                 //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(preferencesWrapper.getScreeningOfftopicText())),
                 ""
         };
-        // Extract comment body from whole comment
         fellowScreeningActionCommentBody = wrapper.getFellowActionComment();
     }
 
     public FellowProposalScreeningBean() {
-    }
-
-    public Long getFellowScreeningRating() {
-        return fellowScreeningRating;
-    }
-
-    public void setFellowScreeningRating(Long fellowScreeningRating) {
-        this.fellowScreeningRating = fellowScreeningRating;
     }
 
     public int getFellowScreeningAction() {
@@ -83,14 +73,6 @@ public class FellowProposalScreeningBean implements Serializable {
 
     public void setFellowScreeningActionCommentBody(String fellowActionCommentBody) {
         this.fellowScreeningActionCommentBody = fellowActionCommentBody;
-    }
-
-    public String getFellowScreeningRatingComment() {
-        return fellowScreeningRatingComment;
-    }
-
-    public void setFellowScreeningRatingComment(String fellowScreeningRatingComment) {
-        this.fellowScreeningRatingComment = fellowScreeningRatingComment;
     }
 
     public String[] getFellowCommentHeaders() {
