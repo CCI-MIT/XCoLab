@@ -44,18 +44,18 @@ public interface ProposalRatingTypeModel extends BaseModel<ProposalRatingType> {
     public void setPrimaryKey(long primaryKey);
 
     /**
-     * Returns the rating type ID of this proposal rating type.
+     * Returns the ID of this proposal rating type.
      *
-     * @return the rating type ID of this proposal rating type
+     * @return the ID of this proposal rating type
      */
-    public long getRatingTypeId();
+    public long getId();
 
     /**
-     * Sets the rating type ID of this proposal rating type.
+     * Sets the ID of this proposal rating type.
      *
-     * @param ratingTypeId the rating type ID of this proposal rating type
+     * @param id the ID of this proposal rating type
      */
-    public void setRatingTypeId(long ratingTypeId);
+    public void setId(long id);
 
     /**
      * Returns the label of this proposal rating type.
@@ -71,6 +71,20 @@ public interface ProposalRatingTypeModel extends BaseModel<ProposalRatingType> {
      * @param label the label of this proposal rating type
      */
     public void setLabel(String label);
+
+    /**
+     * Returns the judge type of this proposal rating type.
+     *
+     * @return the judge type of this proposal rating type
+     */
+    public int getJudgeType();
+
+    /**
+     * Sets the judge type of this proposal rating type.
+     *
+     * @param judgeType the judge type of this proposal rating type
+     */
+    public void setJudgeType(int judgeType);
 
     @Override
     public boolean isNew();

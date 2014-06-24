@@ -55,12 +55,12 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
             { "proposalId", Types.BIGINT },
             { "contestPhaseId", Types.BIGINT },
             { "userId", Types.BIGINT },
-            { "ratingType", Types.INTEGER },
-            { "rating", Types.BIGINT },
+            { "ratingValueId", Types.BIGINT },
             { "comment_", Types.VARCHAR },
+            { "commentEnabled", Types.BOOLEAN },
             { "otherDataString", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingType INTEGER,rating LONG,comment_ VARCHAR(75) null,otherDataString VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingValueId LONG,comment_ VARCHAR(75) null,commentEnabled BOOLEAN,otherDataString VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRating";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalRating.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRating.id_ ASC";
@@ -85,9 +85,9 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
     private long _contestPhaseId;
     private long _userId;
     private String _userUuid;
-    private int _ratingType;
-    private long _rating;
+    private long _ratingValueId;
     private String _comment;
+    private boolean _commentEnabled;
     private String _otherDataString;
     private ProposalRating _escapedModel;
 
@@ -111,9 +111,9 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         model.setProposalId(soapModel.getProposalId());
         model.setContestPhaseId(soapModel.getContestPhaseId());
         model.setUserId(soapModel.getUserId());
-        model.setRatingType(soapModel.getRatingType());
-        model.setRating(soapModel.getRating());
+        model.setRatingValueId(soapModel.getRatingValueId());
         model.setComment(soapModel.getComment());
+        model.setCommentEnabled(soapModel.getCommentEnabled());
         model.setOtherDataString(soapModel.getOtherDataString());
 
         return model;
@@ -177,9 +177,9 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         attributes.put("proposalId", getProposalId());
         attributes.put("contestPhaseId", getContestPhaseId());
         attributes.put("userId", getUserId());
-        attributes.put("ratingType", getRatingType());
-        attributes.put("rating", getRating());
+        attributes.put("ratingValueId", getRatingValueId());
         attributes.put("comment", getComment());
+        attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
 
         return attributes;
@@ -211,22 +211,22 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
             setUserId(userId);
         }
 
-        Integer ratingType = (Integer) attributes.get("ratingType");
+        Long ratingValueId = (Long) attributes.get("ratingValueId");
 
-        if (ratingType != null) {
-            setRatingType(ratingType);
-        }
-
-        Long rating = (Long) attributes.get("rating");
-
-        if (rating != null) {
-            setRating(rating);
+        if (ratingValueId != null) {
+            setRatingValueId(ratingValueId);
         }
 
         String comment = (String) attributes.get("comment");
 
         if (comment != null) {
             setComment(comment);
+        }
+
+        Boolean commentEnabled = (Boolean) attributes.get("commentEnabled");
+
+        if (commentEnabled != null) {
+            setCommentEnabled(commentEnabled);
         }
 
         String otherDataString = (String) attributes.get("otherDataString");
@@ -292,24 +292,13 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
 
     @JSON
     @Override
-    public int getRatingType() {
-        return _ratingType;
+    public long getRatingValueId() {
+        return _ratingValueId;
     }
 
     @Override
-    public void setRatingType(int ratingType) {
-        _ratingType = ratingType;
-    }
-
-    @JSON
-    @Override
-    public long getRating() {
-        return _rating;
-    }
-
-    @Override
-    public void setRating(long rating) {
-        _rating = rating;
+    public void setRatingValueId(long ratingValueId) {
+        _ratingValueId = ratingValueId;
     }
 
     @JSON
@@ -325,6 +314,22 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
     @Override
     public void setComment(String comment) {
         _comment = comment;
+    }
+
+    @JSON
+    @Override
+    public boolean getCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    @Override
+    public boolean isCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    @Override
+    public void setCommentEnabled(boolean commentEnabled) {
+        _commentEnabled = commentEnabled;
     }
 
     @JSON
@@ -373,9 +378,9 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         proposalRatingImpl.setProposalId(getProposalId());
         proposalRatingImpl.setContestPhaseId(getContestPhaseId());
         proposalRatingImpl.setUserId(getUserId());
-        proposalRatingImpl.setRatingType(getRatingType());
-        proposalRatingImpl.setRating(getRating());
+        proposalRatingImpl.setRatingValueId(getRatingValueId());
         proposalRatingImpl.setComment(getComment());
+        proposalRatingImpl.setCommentEnabled(getCommentEnabled());
         proposalRatingImpl.setOtherDataString(getOtherDataString());
 
         proposalRatingImpl.resetOriginalValues();
@@ -438,9 +443,7 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
 
         proposalRatingCacheModel.userId = getUserId();
 
-        proposalRatingCacheModel.ratingType = getRatingType();
-
-        proposalRatingCacheModel.rating = getRating();
+        proposalRatingCacheModel.ratingValueId = getRatingValueId();
 
         proposalRatingCacheModel.comment = getComment();
 
@@ -449,6 +452,8 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         if ((comment != null) && (comment.length() == 0)) {
             proposalRatingCacheModel.comment = null;
         }
+
+        proposalRatingCacheModel.commentEnabled = getCommentEnabled();
 
         proposalRatingCacheModel.otherDataString = getOtherDataString();
 
@@ -473,12 +478,12 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         sb.append(getContestPhaseId());
         sb.append(", userId=");
         sb.append(getUserId());
-        sb.append(", ratingType=");
-        sb.append(getRatingType());
-        sb.append(", rating=");
-        sb.append(getRating());
+        sb.append(", ratingValueId=");
+        sb.append(getRatingValueId());
         sb.append(", comment=");
         sb.append(getComment());
+        sb.append(", commentEnabled=");
+        sb.append(getCommentEnabled());
         sb.append(", otherDataString=");
         sb.append(getOtherDataString());
         sb.append("}");
@@ -511,16 +516,16 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
         sb.append(getUserId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>ratingType</column-name><column-value><![CDATA[");
-        sb.append(getRatingType());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>rating</column-name><column-value><![CDATA[");
-        sb.append(getRating());
+            "<column><column-name>ratingValueId</column-name><column-value><![CDATA[");
+        sb.append(getRatingValueId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>comment</column-name><column-value><![CDATA[");
         sb.append(getComment());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>commentEnabled</column-name><column-value><![CDATA[");
+        sb.append(getCommentEnabled());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>otherDataString</column-name><column-value><![CDATA[");

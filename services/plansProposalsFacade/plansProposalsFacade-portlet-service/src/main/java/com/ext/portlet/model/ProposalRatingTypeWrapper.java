@@ -37,24 +37,31 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
-        attributes.put("ratingTypeId", getRatingTypeId());
+        attributes.put("id", getId());
         attributes.put("label", getLabel());
+        attributes.put("judgeType", getJudgeType());
 
         return attributes;
     }
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
-        Long ratingTypeId = (Long) attributes.get("ratingTypeId");
+        Long id = (Long) attributes.get("id");
 
-        if (ratingTypeId != null) {
-            setRatingTypeId(ratingTypeId);
+        if (id != null) {
+            setId(id);
         }
 
         String label = (String) attributes.get("label");
 
         if (label != null) {
             setLabel(label);
+        }
+
+        Integer judgeType = (Integer) attributes.get("judgeType");
+
+        if (judgeType != null) {
+            setJudgeType(judgeType);
         }
     }
 
@@ -79,23 +86,23 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     }
 
     /**
-    * Returns the rating type ID of this proposal rating type.
+    * Returns the ID of this proposal rating type.
     *
-    * @return the rating type ID of this proposal rating type
+    * @return the ID of this proposal rating type
     */
     @Override
-    public long getRatingTypeId() {
-        return _proposalRatingType.getRatingTypeId();
+    public long getId() {
+        return _proposalRatingType.getId();
     }
 
     /**
-    * Sets the rating type ID of this proposal rating type.
+    * Sets the ID of this proposal rating type.
     *
-    * @param ratingTypeId the rating type ID of this proposal rating type
+    * @param id the ID of this proposal rating type
     */
     @Override
-    public void setRatingTypeId(long ratingTypeId) {
-        _proposalRatingType.setRatingTypeId(ratingTypeId);
+    public void setId(long id) {
+        _proposalRatingType.setId(id);
     }
 
     /**
@@ -116,6 +123,26 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     @Override
     public void setLabel(java.lang.String label) {
         _proposalRatingType.setLabel(label);
+    }
+
+    /**
+    * Returns the judge type of this proposal rating type.
+    *
+    * @return the judge type of this proposal rating type
+    */
+    @Override
+    public int getJudgeType() {
+        return _proposalRatingType.getJudgeType();
+    }
+
+    /**
+    * Sets the judge type of this proposal rating type.
+    *
+    * @param judgeType the judge type of this proposal rating type
+    */
+    @Override
+    public void setJudgeType(int judgeType) {
+        _proposalRatingType.setJudgeType(judgeType);
     }
 
     @Override
@@ -220,6 +247,12 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _proposalRatingType.persist();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValues()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalRatingType.getRatingValues();
     }
 
     @Override

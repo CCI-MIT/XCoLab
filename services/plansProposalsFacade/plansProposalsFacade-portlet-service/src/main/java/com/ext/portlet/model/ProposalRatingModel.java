@@ -116,32 +116,18 @@ public interface ProposalRatingModel extends BaseModel<ProposalRating> {
     public void setUserUuid(String userUuid);
 
     /**
-     * Returns the rating type of this proposal rating.
+     * Returns the rating value ID of this proposal rating.
      *
-     * @return the rating type of this proposal rating
+     * @return the rating value ID of this proposal rating
      */
-    public int getRatingType();
+    public long getRatingValueId();
 
     /**
-     * Sets the rating type of this proposal rating.
+     * Sets the rating value ID of this proposal rating.
      *
-     * @param ratingType the rating type of this proposal rating
+     * @param ratingValueId the rating value ID of this proposal rating
      */
-    public void setRatingType(int ratingType);
-
-    /**
-     * Returns the rating of this proposal rating.
-     *
-     * @return the rating of this proposal rating
-     */
-    public long getRating();
-
-    /**
-     * Sets the rating of this proposal rating.
-     *
-     * @param rating the rating of this proposal rating
-     */
-    public void setRating(long rating);
+    public void setRatingValueId(long ratingValueId);
 
     /**
      * Returns the comment of this proposal rating.
@@ -157,6 +143,27 @@ public interface ProposalRatingModel extends BaseModel<ProposalRating> {
      * @param comment the comment of this proposal rating
      */
     public void setComment(String comment);
+
+    /**
+     * Returns the comment enabled of this proposal rating.
+     *
+     * @return the comment enabled of this proposal rating
+     */
+    public boolean getCommentEnabled();
+
+    /**
+     * Returns <code>true</code> if this proposal rating is comment enabled.
+     *
+     * @return <code>true</code> if this proposal rating is comment enabled; <code>false</code> otherwise
+     */
+    public boolean isCommentEnabled();
+
+    /**
+     * Sets whether this proposal rating is comment enabled.
+     *
+     * @param commentEnabled the comment enabled of this proposal rating
+     */
+    public void setCommentEnabled(boolean commentEnabled);
 
     /**
      * Returns the other data string of this proposal rating.

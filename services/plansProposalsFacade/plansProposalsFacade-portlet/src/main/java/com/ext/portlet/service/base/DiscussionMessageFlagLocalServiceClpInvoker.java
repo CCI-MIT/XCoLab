@@ -41,14 +41,14 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName526;
-    private String[] _methodParameterTypes526;
-    private String _methodName527;
-    private String[] _methodParameterTypes527;
-    private String _methodName532;
-    private String[] _methodParameterTypes532;
-    private String _methodName533;
-    private String[] _methodParameterTypes533;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
+    private String _methodName541;
+    private String[] _methodParameterTypes541;
 
     public DiscussionMessageFlagLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionMessageFlag";
@@ -133,21 +133,21 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
                 "com.ext.portlet.model.DiscussionMessageFlag"
             };
 
-        _methodName526 = "getBeanIdentifier";
+        _methodName534 = "getBeanIdentifier";
 
-        _methodParameterTypes526 = new String[] {  };
+        _methodParameterTypes534 = new String[] {  };
 
-        _methodName527 = "setBeanIdentifier";
+        _methodName535 = "setBeanIdentifier";
 
-        _methodParameterTypes527 = new String[] { "java.lang.String" };
+        _methodParameterTypes535 = new String[] { "java.lang.String" };
 
-        _methodName532 = "findMessageFlags";
+        _methodName540 = "findMessageFlags";
 
-        _methodParameterTypes532 = new String[] { "java.lang.Long" };
+        _methodParameterTypes540 = new String[] { "java.lang.Long" };
 
-        _methodName533 = "createFlag";
+        _methodName541 = "createFlag";
 
-        _methodParameterTypes533 = new String[] {
+        _methodParameterTypes541 = new String[] {
                 "java.lang.Long", "java.lang.String", "java.lang.String",
                 "java.lang.Long"
             };
@@ -242,25 +242,25 @@ public class DiscussionMessageFlagLocalServiceClpInvoker {
             return DiscussionMessageFlagLocalServiceUtil.updateDiscussionMessageFlag((com.ext.portlet.model.DiscussionMessageFlag) arguments[0]);
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             DiscussionMessageFlagLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName532.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.findMessageFlags((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName533.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             return DiscussionMessageFlagLocalServiceUtil.createFlag((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1],
                 (java.lang.String) arguments[2], (java.lang.Long) arguments[3]);

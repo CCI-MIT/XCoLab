@@ -243,30 +243,29 @@ public interface ProposalRatingLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(
-        long judgeId, long proposalId, long contestPhaseId)
+    public java.util.List<com.ext.portlet.model.ProposalRating> getJudgeRatingsForProposalAndUser(
+        long userId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ProposalRating getFellowRatingForProposal(
-        long judgeId, long proposalId, long contestPhaseId)
+    public java.util.List<com.ext.portlet.model.ProposalRating> getFellowRatingForProposalAndUser(
+        long userId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public com.ext.portlet.model.ProposalRating addJudgeRating(
-        long proposalId, long contestPhaseId, long judgeId, long rating,
-        java.lang.String comment, java.lang.String otherDataString)
+    public com.ext.portlet.model.ProposalRating updateRating(
+        long proposalRatingId, long ratingValueId, java.lang.String comment,
+        java.lang.String otherDataString)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public com.ext.portlet.model.ProposalRating addFellowRating(
-        long proposalId, long contestPhaseId, long fellowId, long rating,
+    public com.ext.portlet.model.ProposalRating addRating(long proposalId,
+        long contestPhaseId, long userId, long ratingValueId,
         java.lang.String comment, java.lang.String otherDataString)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.ProposalRating updateRating(
-        long proposalRatingId, long rating, java.lang.String comment,
-        java.lang.String otherDataString)
+        com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException;
 }

@@ -42,22 +42,20 @@ public interface ProposalRatingValuePersistence extends BasePersistence<Proposal
     /**
     * Creates a new proposal rating value with the primary key. Does not add the proposal rating value to the database.
     *
-    * @param proposalRatingValuePK the primary key for the new proposal rating value
+    * @param id the primary key for the new proposal rating value
     * @return the new proposal rating value
     */
-    public com.ext.portlet.model.ProposalRatingValue create(
-        ProposalRatingValuePK proposalRatingValuePK);
+    public com.ext.portlet.model.ProposalRatingValue create(long id);
 
     /**
     * Removes the proposal rating value with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value that was removed
     * @throws com.ext.portlet.NoSuchProposalRatingValueException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ProposalRatingValue remove(
-        ProposalRatingValuePK proposalRatingValuePK)
+    public com.ext.portlet.model.ProposalRatingValue remove(long id)
         throws com.ext.portlet.NoSuchProposalRatingValueException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -68,25 +66,23 @@ public interface ProposalRatingValuePersistence extends BasePersistence<Proposal
     /**
     * Returns the proposal rating value with the primary key or throws a {@link com.ext.portlet.NoSuchProposalRatingValueException} if it could not be found.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value
     * @throws com.ext.portlet.NoSuchProposalRatingValueException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ProposalRatingValue findByPrimaryKey(
-        ProposalRatingValuePK proposalRatingValuePK)
+    public com.ext.portlet.model.ProposalRatingValue findByPrimaryKey(long id)
         throws com.ext.portlet.NoSuchProposalRatingValueException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the proposal rating value with the primary key or returns <code>null</code> if it could not be found.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value, or <code>null</code> if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.ProposalRatingValue fetchByPrimaryKey(
-        ProposalRatingValuePK proposalRatingValuePK)
+    public com.ext.portlet.model.ProposalRatingValue fetchByPrimaryKey(long id)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

@@ -46,22 +46,22 @@ public interface ProposalRatingTypeLocalService extends BaseLocalService,
     /**
     * Creates a new proposal rating type with the primary key. Does not add the proposal rating type to the database.
     *
-    * @param ratingTypeId the primary key for the new proposal rating type
+    * @param id the primary key for the new proposal rating type
     * @return the new proposal rating type
     */
     public com.ext.portlet.model.ProposalRatingType createProposalRatingType(
-        long ratingTypeId);
+        long id);
 
     /**
     * Deletes the proposal rating type with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type that was removed
     * @throws PortalException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalRatingType deleteProposalRatingType(
-        long ratingTypeId)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -155,20 +155,19 @@ public interface ProposalRatingTypeLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalRatingType fetchProposalRatingType(
-        long ratingTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the proposal rating type with the primary key.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type
     * @throws PortalException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalRatingType getProposalRatingType(
-        long ratingTypeId)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -235,4 +234,12 @@ public interface ProposalRatingTypeLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges()
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows()
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

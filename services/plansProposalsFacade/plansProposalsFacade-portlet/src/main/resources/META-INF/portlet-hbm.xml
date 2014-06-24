@@ -10,6 +10,7 @@
 	<import class="com.ext.portlet.model.BalloonUserTracking" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
+	<import class="com.ext.portlet.model.ContestEmailTemplate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
 	<import class="com.ext.portlet.model.ContestPhaseColumn" />
 	<import class="com.ext.portlet.model.ContestPhaseRibbonType" />
@@ -216,6 +217,14 @@
 		</id>
 		<property name="debateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ContestEmailTemplateImpl" table="xcolab_ContestEmailTemplate">
+		<cache usage="read-write" />
+		<id name="type" column="type_" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="header" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="footer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestPhaseImpl" table="xcolab_ContestPhase">
 		<cache usage="read-write" />
@@ -978,24 +987,26 @@
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ratingType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="rating" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ratingValueId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="comment" type="com.liferay.portal.dao.orm.hibernate.StringType" column="comment_" />
+		<property name="commentEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="otherDataString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingTypeImpl" table="xcolab_ProposalRatingType">
 		<cache usage="read-write" />
-		<id name="ratingTypeId" type="long">
+		<id name="id" column="id_" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="judgeType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingValueImpl" table="xcolab_ProposalRatingValue">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalRatingValuePK">
-			<key-property name="ratingTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="value" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="ratingTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>

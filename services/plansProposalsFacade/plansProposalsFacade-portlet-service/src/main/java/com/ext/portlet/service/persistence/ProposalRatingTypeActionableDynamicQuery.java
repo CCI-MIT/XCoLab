@@ -18,6 +18,6 @@ public abstract class ProposalRatingTypeActionableDynamicQuery
 
         setClassLoader(com.ext.portlet.service.ClpSerializer.class.getClassLoader());
 
-        setPrimaryKeyPropertyName("ratingTypeId");
+        setPrimaryKeyPropertyName("id");
     }
 }

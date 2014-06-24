@@ -24,9 +24,9 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
     public long proposalId;
     public long contestPhaseId;
     public long userId;
-    public int ratingType;
-    public long rating;
+    public long ratingValueId;
     public String comment;
+    public boolean commentEnabled;
     public String otherDataString;
 
     @Override
@@ -41,12 +41,12 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         sb.append(contestPhaseId);
         sb.append(", userId=");
         sb.append(userId);
-        sb.append(", ratingType=");
-        sb.append(ratingType);
-        sb.append(", rating=");
-        sb.append(rating);
+        sb.append(", ratingValueId=");
+        sb.append(ratingValueId);
         sb.append(", comment=");
         sb.append(comment);
+        sb.append(", commentEnabled=");
+        sb.append(commentEnabled);
         sb.append(", otherDataString=");
         sb.append(otherDataString);
         sb.append("}");
@@ -62,14 +62,15 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         proposalRatingImpl.setProposalId(proposalId);
         proposalRatingImpl.setContestPhaseId(contestPhaseId);
         proposalRatingImpl.setUserId(userId);
-        proposalRatingImpl.setRatingType(ratingType);
-        proposalRatingImpl.setRating(rating);
+        proposalRatingImpl.setRatingValueId(ratingValueId);
 
         if (comment == null) {
             proposalRatingImpl.setComment(StringPool.BLANK);
         } else {
             proposalRatingImpl.setComment(comment);
         }
+
+        proposalRatingImpl.setCommentEnabled(commentEnabled);
 
         if (otherDataString == null) {
             proposalRatingImpl.setOtherDataString(StringPool.BLANK);
@@ -88,9 +89,9 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         proposalId = objectInput.readLong();
         contestPhaseId = objectInput.readLong();
         userId = objectInput.readLong();
-        ratingType = objectInput.readInt();
-        rating = objectInput.readLong();
+        ratingValueId = objectInput.readLong();
         comment = objectInput.readUTF();
+        commentEnabled = objectInput.readBoolean();
         otherDataString = objectInput.readUTF();
     }
 
@@ -101,14 +102,15 @@ public class ProposalRatingCacheModel implements CacheModel<ProposalRating>,
         objectOutput.writeLong(proposalId);
         objectOutput.writeLong(contestPhaseId);
         objectOutput.writeLong(userId);
-        objectOutput.writeInt(ratingType);
-        objectOutput.writeLong(rating);
+        objectOutput.writeLong(ratingValueId);
 
         if (comment == null) {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(comment);
         }
+
+        objectOutput.writeBoolean(commentEnabled);
 
         if (otherDataString == null) {
             objectOutput.writeUTF(StringPool.BLANK);

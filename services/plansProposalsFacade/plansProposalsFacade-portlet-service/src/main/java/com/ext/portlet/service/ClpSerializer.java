@@ -8,6 +8,7 @@ import com.ext.portlet.model.BalloonTextClp;
 import com.ext.portlet.model.BalloonUserTrackingClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
+import com.ext.portlet.model.ContestEmailTemplateClp;
 import com.ext.portlet.model.ContestPhaseClp;
 import com.ext.portlet.model.ContestPhaseColumnClp;
 import com.ext.portlet.model.ContestPhaseRibbonTypeClp;
@@ -199,6 +200,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ContestDebateClp.class.getName())) {
             return translateInputContestDebate(oldModel);
+        }
+
+        if (oldModelClassName.equals(ContestEmailTemplateClp.class.getName())) {
+            return translateInputContestEmailTemplate(oldModel);
         }
 
         if (oldModelClassName.equals(ContestPhaseClp.class.getName())) {
@@ -595,6 +600,17 @@ public class ClpSerializer {
         ContestDebateClp oldClpModel = (ContestDebateClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getContestDebateRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestEmailTemplate(
+        BaseModel<?> oldModel) {
+        ContestEmailTemplateClp oldClpModel = (ContestEmailTemplateClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestEmailTemplateRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1417,6 +1433,11 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestEmailTemplateImpl")) {
+            return translateOutputContestEmailTemplate(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ContestPhaseImpl")) {
             return translateOutputContestPhase(oldModel);
         }
@@ -2032,6 +2053,11 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchContestDebateException();
         }
 
+        if (className.equals(
+                    "com.ext.portlet.NoSuchContestEmailTemplateException")) {
+            return new com.ext.portlet.NoSuchContestEmailTemplateException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchContestPhaseException")) {
             return new com.ext.portlet.NoSuchContestPhaseException();
         }
@@ -2438,6 +2464,17 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setContestDebateRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestEmailTemplate(
+        BaseModel<?> oldModel) {
+        ContestEmailTemplateClp newModel = new ContestEmailTemplateClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestEmailTemplateRemoteModel(oldModel);
 
         return newModel;
     }

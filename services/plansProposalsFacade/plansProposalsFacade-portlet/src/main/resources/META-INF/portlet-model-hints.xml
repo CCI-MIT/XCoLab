@@ -165,6 +165,11 @@
 		<field name="debateId" type="long" />
 		<field name="ContestPK" type="long" />
 	</model>
+	<model name="com.ext.portlet.model.ContestEmailTemplate">
+		<field name="type" type="String" />
+		<field name="header" type="String" />
+		<field name="footer" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.ContestPhase">
 		<field name="ContestPhasePK" type="long" />
 		<field name="ContestPK" type="long" />
@@ -855,16 +860,18 @@
 		<field name="proposalId" type="long" />
 		<field name="contestPhaseId" type="long" />
 		<field name="userId" type="long" />
-		<field name="ratingType" type="int" />
-		<field name="rating" type="long" />
+		<field name="ratingValueId" type="long" />
 		<field name="comment" type="String" />
+		<field name="commentEnabled" type="boolean" />
 		<field name="otherDataString" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingType">
-		<field name="ratingTypeId" type="long" />
+		<field name="id" type="long" />
 		<field name="label" type="String" />
+		<field name="judgeType" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingValue">
+		<field name="id" type="long" />
 		<field name="ratingTypeId" type="long" />
 		<field name="value" type="long" />
 		<field name="name" type="String" />

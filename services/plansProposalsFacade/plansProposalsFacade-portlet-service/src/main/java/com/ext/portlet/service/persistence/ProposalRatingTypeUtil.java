@@ -122,27 +122,25 @@ public class ProposalRatingTypeUtil {
     /**
     * Creates a new proposal rating type with the primary key. Does not add the proposal rating type to the database.
     *
-    * @param ratingTypeId the primary key for the new proposal rating type
+    * @param id the primary key for the new proposal rating type
     * @return the new proposal rating type
     */
-    public static com.ext.portlet.model.ProposalRatingType create(
-        long ratingTypeId) {
-        return getPersistence().create(ratingTypeId);
+    public static com.ext.portlet.model.ProposalRatingType create(long id) {
+        return getPersistence().create(id);
     }
 
     /**
     * Removes the proposal rating type with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type that was removed
     * @throws com.ext.portlet.NoSuchProposalRatingTypeException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public static com.ext.portlet.model.ProposalRatingType remove(
-        long ratingTypeId)
+    public static com.ext.portlet.model.ProposalRatingType remove(long id)
         throws com.ext.portlet.NoSuchProposalRatingTypeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().remove(ratingTypeId);
+        return getPersistence().remove(id);
     }
 
     public static com.ext.portlet.model.ProposalRatingType updateImpl(
@@ -154,29 +152,28 @@ public class ProposalRatingTypeUtil {
     /**
     * Returns the proposal rating type with the primary key or throws a {@link com.ext.portlet.NoSuchProposalRatingTypeException} if it could not be found.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type
     * @throws com.ext.portlet.NoSuchProposalRatingTypeException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalRatingType findByPrimaryKey(
-        long ratingTypeId)
+        long id)
         throws com.ext.portlet.NoSuchProposalRatingTypeException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().findByPrimaryKey(ratingTypeId);
+        return getPersistence().findByPrimaryKey(id);
     }
 
     /**
     * Returns the proposal rating type with the primary key or returns <code>null</code> if it could not be found.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type, or <code>null</code> if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalRatingType fetchByPrimaryKey(
-        long ratingTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getPersistence().fetchByPrimaryKey(ratingTypeId);
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return getPersistence().fetchByPrimaryKey(id);
     }
 
     /**

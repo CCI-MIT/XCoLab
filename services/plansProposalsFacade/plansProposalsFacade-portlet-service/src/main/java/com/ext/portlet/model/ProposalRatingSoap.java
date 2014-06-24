@@ -17,9 +17,9 @@ public class ProposalRatingSoap implements Serializable {
     private long _proposalId;
     private long _contestPhaseId;
     private long _userId;
-    private int _ratingType;
-    private long _rating;
+    private long _ratingValueId;
     private String _comment;
+    private boolean _commentEnabled;
     private String _otherDataString;
 
     public ProposalRatingSoap() {
@@ -32,9 +32,9 @@ public class ProposalRatingSoap implements Serializable {
         soapModel.setProposalId(model.getProposalId());
         soapModel.setContestPhaseId(model.getContestPhaseId());
         soapModel.setUserId(model.getUserId());
-        soapModel.setRatingType(model.getRatingType());
-        soapModel.setRating(model.getRating());
+        soapModel.setRatingValueId(model.getRatingValueId());
         soapModel.setComment(model.getComment());
+        soapModel.setCommentEnabled(model.getCommentEnabled());
         soapModel.setOtherDataString(model.getOtherDataString());
 
         return soapModel;
@@ -116,20 +116,12 @@ public class ProposalRatingSoap implements Serializable {
         _userId = userId;
     }
 
-    public int getRatingType() {
-        return _ratingType;
+    public long getRatingValueId() {
+        return _ratingValueId;
     }
 
-    public void setRatingType(int ratingType) {
-        _ratingType = ratingType;
-    }
-
-    public long getRating() {
-        return _rating;
-    }
-
-    public void setRating(long rating) {
-        _rating = rating;
+    public void setRatingValueId(long ratingValueId) {
+        _ratingValueId = ratingValueId;
     }
 
     public String getComment() {
@@ -138,6 +130,18 @@ public class ProposalRatingSoap implements Serializable {
 
     public void setComment(String comment) {
         _comment = comment;
+    }
+
+    public boolean getCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    public boolean isCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    public void setCommentEnabled(boolean commentEnabled) {
+        _commentEnabled = commentEnabled;
     }
 
     public String getOtherDataString() {

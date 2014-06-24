@@ -20,6 +20,7 @@ import java.io.ObjectOutput;
  */
 public class ProposalRatingValueCacheModel implements CacheModel<ProposalRatingValue>,
     Externalizable {
+    public long id;
     public long ratingTypeId;
     public long value;
     public String name;
@@ -27,9 +28,11 @@ public class ProposalRatingValueCacheModel implements CacheModel<ProposalRatingV
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ratingTypeId=");
+        sb.append("{id=");
+        sb.append(id);
+        sb.append(", ratingTypeId=");
         sb.append(ratingTypeId);
         sb.append(", value=");
         sb.append(value);
@@ -46,6 +49,7 @@ public class ProposalRatingValueCacheModel implements CacheModel<ProposalRatingV
     public ProposalRatingValue toEntityModel() {
         ProposalRatingValueImpl proposalRatingValueImpl = new ProposalRatingValueImpl();
 
+        proposalRatingValueImpl.setId(id);
         proposalRatingValueImpl.setRatingTypeId(ratingTypeId);
         proposalRatingValueImpl.setValue(value);
 
@@ -68,6 +72,7 @@ public class ProposalRatingValueCacheModel implements CacheModel<ProposalRatingV
 
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
+        id = objectInput.readLong();
         ratingTypeId = objectInput.readLong();
         value = objectInput.readLong();
         name = objectInput.readUTF();
@@ -77,6 +82,7 @@ public class ProposalRatingValueCacheModel implements CacheModel<ProposalRatingV
     @Override
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
+        objectOutput.writeLong(id);
         objectOutput.writeLong(ratingTypeId);
         objectOutput.writeLong(value);
 

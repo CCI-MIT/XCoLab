@@ -2,7 +2,6 @@ package com.ext.portlet.model;
 
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
-import com.ext.portlet.service.persistence.ProposalRatingValuePK;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -21,6 +20,7 @@ import java.util.Map;
 
 public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
     implements ProposalRatingValue {
+    private long _id;
     private long _ratingTypeId;
     private long _value;
     private String _name;
@@ -41,30 +41,30 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
     }
 
     @Override
-    public ProposalRatingValuePK getPrimaryKey() {
-        return new ProposalRatingValuePK(_ratingTypeId, _value);
+    public long getPrimaryKey() {
+        return _id;
     }
 
     @Override
-    public void setPrimaryKey(ProposalRatingValuePK primaryKey) {
-        setRatingTypeId(primaryKey.ratingTypeId);
-        setValue(primaryKey.value);
+    public void setPrimaryKey(long primaryKey) {
+        setId(primaryKey);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return new ProposalRatingValuePK(_ratingTypeId, _value);
+        return _id;
     }
 
     @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-        setPrimaryKey((ProposalRatingValuePK) primaryKeyObj);
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
     @Override
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
+        attributes.put("id", getId());
         attributes.put("ratingTypeId", getRatingTypeId());
         attributes.put("value", getValue());
         attributes.put("name", getName());
@@ -75,6 +75,12 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
         Long ratingTypeId = (Long) attributes.get("ratingTypeId");
 
         if (ratingTypeId != null) {
@@ -97,6 +103,28 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
         if (description != null) {
             setDescription(description);
+        }
+    }
+
+    @Override
+    public long getId() {
+        return _id;
+    }
+
+    @Override
+    public void setId(long id) {
+        _id = id;
+
+        if (_proposalRatingValueRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingValueRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setId", long.class);
+
+                method.invoke(_proposalRatingValueRemoteModel, id);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
         }
     }
 
@@ -257,6 +285,7 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
     public Object clone() {
         ProposalRatingValueClp clone = new ProposalRatingValueClp();
 
+        clone.setId(getId());
         clone.setRatingTypeId(getRatingTypeId());
         clone.setValue(getValue());
         clone.setName(getName());
@@ -267,9 +296,15 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
     @Override
     public int compareTo(ProposalRatingValue proposalRatingValue) {
-        ProposalRatingValuePK primaryKey = proposalRatingValue.getPrimaryKey();
+        long primaryKey = proposalRatingValue.getPrimaryKey();
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -284,9 +319,9 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
         ProposalRatingValueClp proposalRatingValue = (ProposalRatingValueClp) obj;
 
-        ProposalRatingValuePK primaryKey = proposalRatingValue.getPrimaryKey();
+        long primaryKey = proposalRatingValue.getPrimaryKey();
 
-        if (getPrimaryKey().equals(primaryKey)) {
+        if (getPrimaryKey() == primaryKey) {
             return true;
         } else {
             return false;
@@ -295,14 +330,16 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ratingTypeId=");
+        sb.append("{id=");
+        sb.append(getId());
+        sb.append(", ratingTypeId=");
         sb.append(getRatingTypeId());
         sb.append(", value=");
         sb.append(getValue());
@@ -317,12 +354,16 @@ public class ProposalRatingValueClp extends BaseModelImpl<ProposalRatingValue>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingValue");
         sb.append("</model-name>");
 
+        sb.append(
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
+        sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ratingTypeId</column-name><column-value><![CDATA[");
         sb.append(getRatingTypeId());

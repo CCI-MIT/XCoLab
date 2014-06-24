@@ -36,29 +36,29 @@ public class ProposalRatingValueLocalServiceWrapper
     /**
     * Creates a new proposal rating value with the primary key. Does not add the proposal rating value to the database.
     *
-    * @param proposalRatingValuePK the primary key for the new proposal rating value
+    * @param id the primary key for the new proposal rating value
     * @return the new proposal rating value
     */
     @Override
     public com.ext.portlet.model.ProposalRatingValue createProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK) {
-        return _proposalRatingValueLocalService.createProposalRatingValue(proposalRatingValuePK);
+        long id) {
+        return _proposalRatingValueLocalService.createProposalRatingValue(id);
     }
 
     /**
     * Deletes the proposal rating value with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value that was removed
     * @throws PortalException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Override
     public com.ext.portlet.model.ProposalRatingValue deleteProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalRatingValueLocalService.deleteProposalRatingValue(proposalRatingValuePK);
+        return _proposalRatingValueLocalService.deleteProposalRatingValue(id);
     }
 
     /**
@@ -175,25 +175,24 @@ public class ProposalRatingValueLocalServiceWrapper
 
     @Override
     public com.ext.portlet.model.ProposalRatingValue fetchProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalRatingValueLocalService.fetchProposalRatingValue(proposalRatingValuePK);
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalRatingValueLocalService.fetchProposalRatingValue(id);
     }
 
     /**
     * Returns the proposal rating value with the primary key.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value
     * @throws PortalException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Override
     public com.ext.portlet.model.ProposalRatingValue getProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalRatingValueLocalService.getProposalRatingValue(proposalRatingValuePK);
+        return _proposalRatingValueLocalService.getProposalRatingValue(id);
     }
 
     @Override
@@ -276,6 +275,13 @@ public class ProposalRatingValueLocalServiceWrapper
         throws java.lang.Throwable {
         return _proposalRatingValueLocalService.invokeMethod(name,
             parameterTypes, arguments);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValuesForRatingTypeId(
+        long proposalRatingTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _proposalRatingValueLocalService.getRatingValuesForRatingTypeId(proposalRatingTypeId);
     }
 
     /**

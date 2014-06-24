@@ -161,22 +161,21 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
         _methodParameterTypes20 = new String[] { "long" };
 
-        _methodName21 = "getJudgeRatingForProposal";
+        _methodName21 = "getJudgeRatingsForProposalAndUser";
 
         _methodParameterTypes21 = new String[] { "long", "long", "long" };
 
-        _methodName22 = "getFellowRatingForProposal";
+        _methodName22 = "getFellowRatingForProposalAndUser";
 
         _methodParameterTypes22 = new String[] { "long", "long", "long" };
 
-        _methodName23 = "addJudgeRating";
+        _methodName23 = "updateRating";
 
         _methodParameterTypes23 = new String[] {
-                "long", "long", "long", "long", "java.lang.String",
-                "java.lang.String"
+                "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName24 = "addFellowRating";
+        _methodName24 = "addRating";
 
         _methodParameterTypes24 = new String[] {
                 "long", "long", "long", "long", "java.lang.String",
@@ -186,7 +185,7 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         _methodName25 = "updateRating";
 
         _methodParameterTypes25 = new String[] {
-                "long", "long", "java.lang.String", "java.lang.String"
+                "com.ext.portlet.model.ProposalRating"
             };
     }
 
@@ -755,15 +754,15 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRating getJudgeRatingForProposal(
-        long judgeId, long proposalId, long contestPhaseId)
+    public java.util.List<com.ext.portlet.model.ProposalRating> getJudgeRatingsForProposalAndUser(
+        long userId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName21,
                     _methodParameterTypes21,
-                    new Object[] { judgeId, proposalId, contestPhaseId });
+                    new Object[] { userId, proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -779,19 +778,19 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
             }
         }
 
-        return (com.ext.portlet.model.ProposalRating) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<com.ext.portlet.model.ProposalRating>) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRating getFellowRatingForProposal(
-        long judgeId, long proposalId, long contestPhaseId)
+    public java.util.List<com.ext.portlet.model.ProposalRating> getFellowRatingForProposalAndUser(
+        long userId, long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName22,
                     _methodParameterTypes22,
-                    new Object[] { judgeId, proposalId, contestPhaseId });
+                    new Object[] { userId, proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -807,13 +806,13 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
             }
         }
 
-        return (com.ext.portlet.model.ProposalRating) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<com.ext.portlet.model.ProposalRating>) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRating addJudgeRating(
-        long proposalId, long contestPhaseId, long judgeId, long rating,
-        java.lang.String comment, java.lang.String otherDataString)
+    public com.ext.portlet.model.ProposalRating updateRating(
+        long proposalRatingId, long ratingValueId, java.lang.String comment,
+        java.lang.String otherDataString)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -822,13 +821,9 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
             returnObj = _invokableLocalService.invokeMethod(_methodName23,
                     _methodParameterTypes23,
                     new Object[] {
-                        proposalId,
+                        proposalRatingId,
                         
-                    contestPhaseId,
-                        
-                    judgeId,
-                        
-                    rating,
+                    ratingValueId,
                         
                     ClpSerializer.translateInput(comment),
                         
@@ -857,8 +852,8 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRating addFellowRating(
-        long proposalId, long contestPhaseId, long fellowId, long rating,
+    public com.ext.portlet.model.ProposalRating addRating(long proposalId,
+        long contestPhaseId, long userId, long ratingValueId,
         java.lang.String comment, java.lang.String otherDataString)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -872,9 +867,9 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
                         
                     contestPhaseId,
                         
-                    fellowId,
+                    userId,
                         
-                    rating,
+                    ratingValueId,
                         
                     ClpSerializer.translateInput(comment),
                         
@@ -904,8 +899,7 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
     @Override
     public com.ext.portlet.model.ProposalRating updateRating(
-        long proposalRatingId, long rating, java.lang.String comment,
-        java.lang.String otherDataString)
+        com.ext.portlet.model.ProposalRating proposalRating)
         throws com.liferay.portal.NoSuchUserException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -913,15 +907,7 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName25,
                     _methodParameterTypes25,
-                    new Object[] {
-                        proposalRatingId,
-                        
-                    rating,
-                        
-                    ClpSerializer.translateInput(comment),
-                        
-                    ClpSerializer.translateInput(otherDataString)
-                    });
+                    new Object[] { ClpSerializer.translateInput(proposalRating) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

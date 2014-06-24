@@ -13,8 +13,9 @@ import java.util.List;
  * @generated
  */
 public class ProposalRatingTypeSoap implements Serializable {
-    private long _ratingTypeId;
+    private long _id;
     private String _label;
+    private int _judgeType;
 
     public ProposalRatingTypeSoap() {
     }
@@ -22,8 +23,9 @@ public class ProposalRatingTypeSoap implements Serializable {
     public static ProposalRatingTypeSoap toSoapModel(ProposalRatingType model) {
         ProposalRatingTypeSoap soapModel = new ProposalRatingTypeSoap();
 
-        soapModel.setRatingTypeId(model.getRatingTypeId());
+        soapModel.setId(model.getId());
         soapModel.setLabel(model.getLabel());
+        soapModel.setJudgeType(model.getJudgeType());
 
         return soapModel;
     }
@@ -68,19 +70,19 @@ public class ProposalRatingTypeSoap implements Serializable {
     }
 
     public long getPrimaryKey() {
-        return _ratingTypeId;
+        return _id;
     }
 
     public void setPrimaryKey(long pk) {
-        setRatingTypeId(pk);
+        setId(pk);
     }
 
-    public long getRatingTypeId() {
-        return _ratingTypeId;
+    public long getId() {
+        return _id;
     }
 
-    public void setRatingTypeId(long ratingTypeId) {
-        _ratingTypeId = ratingTypeId;
+    public void setId(long id) {
+        _id = id;
     }
 
     public String getLabel() {
@@ -89,5 +91,13 @@ public class ProposalRatingTypeSoap implements Serializable {
 
     public void setLabel(String label) {
         _label = label;
+    }
+
+    public int getJudgeType() {
+        return _judgeType;
+    }
+
+    public void setJudgeType(int judgeType) {
+        _judgeType = judgeType;
     }
 }

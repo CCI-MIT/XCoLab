@@ -20,17 +20,20 @@ import java.io.ObjectOutput;
  */
 public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingType>,
     Externalizable {
-    public long ratingTypeId;
+    public long id;
     public String label;
+    public int judgeType;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
-        sb.append("{ratingTypeId=");
-        sb.append(ratingTypeId);
+        sb.append("{id=");
+        sb.append(id);
         sb.append(", label=");
         sb.append(label);
+        sb.append(", judgeType=");
+        sb.append(judgeType);
         sb.append("}");
 
         return sb.toString();
@@ -40,13 +43,15 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
     public ProposalRatingType toEntityModel() {
         ProposalRatingTypeImpl proposalRatingTypeImpl = new ProposalRatingTypeImpl();
 
-        proposalRatingTypeImpl.setRatingTypeId(ratingTypeId);
+        proposalRatingTypeImpl.setId(id);
 
         if (label == null) {
             proposalRatingTypeImpl.setLabel(StringPool.BLANK);
         } else {
             proposalRatingTypeImpl.setLabel(label);
         }
+
+        proposalRatingTypeImpl.setJudgeType(judgeType);
 
         proposalRatingTypeImpl.resetOriginalValues();
 
@@ -55,19 +60,22 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
 
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
-        ratingTypeId = objectInput.readLong();
+        id = objectInput.readLong();
         label = objectInput.readUTF();
+        judgeType = objectInput.readInt();
     }
 
     @Override
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
-        objectOutput.writeLong(ratingTypeId);
+        objectOutput.writeLong(id);
 
         if (label == null) {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(label);
         }
+
+        objectOutput.writeInt(judgeType);
     }
 }

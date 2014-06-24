@@ -20,8 +20,9 @@ import java.util.Map;
 
 public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     implements ProposalRatingType {
-    private long _ratingTypeId;
+    private long _id;
     private String _label;
+    private int _judgeType;
     private BaseModel<?> _proposalRatingTypeRemoteModel;
 
     public ProposalRatingTypeClp() {
@@ -39,17 +40,17 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public long getPrimaryKey() {
-        return _ratingTypeId;
+        return _id;
     }
 
     @Override
     public void setPrimaryKey(long primaryKey) {
-        setRatingTypeId(primaryKey);
+        setId(primaryKey);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return _ratingTypeId;
+        return _id;
     }
 
     @Override
@@ -61,18 +62,19 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
-        attributes.put("ratingTypeId", getRatingTypeId());
+        attributes.put("id", getId());
         attributes.put("label", getLabel());
+        attributes.put("judgeType", getJudgeType());
 
         return attributes;
     }
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
-        Long ratingTypeId = (Long) attributes.get("ratingTypeId");
+        Long id = (Long) attributes.get("id");
 
-        if (ratingTypeId != null) {
-            setRatingTypeId(ratingTypeId);
+        if (id != null) {
+            setId(id);
         }
 
         String label = (String) attributes.get("label");
@@ -80,24 +82,30 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         if (label != null) {
             setLabel(label);
         }
+
+        Integer judgeType = (Integer) attributes.get("judgeType");
+
+        if (judgeType != null) {
+            setJudgeType(judgeType);
+        }
     }
 
     @Override
-    public long getRatingTypeId() {
-        return _ratingTypeId;
+    public long getId() {
+        return _id;
     }
 
     @Override
-    public void setRatingTypeId(long ratingTypeId) {
-        _ratingTypeId = ratingTypeId;
+    public void setId(long id) {
+        _id = id;
 
         if (_proposalRatingTypeRemoteModel != null) {
             try {
                 Class<?> clazz = _proposalRatingTypeRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setRatingTypeId", long.class);
+                Method method = clazz.getMethod("setId", long.class);
 
-                method.invoke(_proposalRatingTypeRemoteModel, ratingTypeId);
+                method.invoke(_proposalRatingTypeRemoteModel, id);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -123,6 +131,46 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
+        }
+    }
+
+    @Override
+    public int getJudgeType() {
+        return _judgeType;
+    }
+
+    @Override
+    public void setJudgeType(int judgeType) {
+        _judgeType = judgeType;
+
+        if (_proposalRatingTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setJudgeType", int.class);
+
+                method.invoke(_proposalRatingTypeRemoteModel, judgeType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValues() {
+        try {
+            String methodName = "getRatingValues";
+
+            Class<?>[] parameterTypes = new Class<?>[] {  };
+
+            Object[] parameterValues = new Object[] {  };
+
+            java.util.List<com.ext.portlet.model.ProposalRatingValue> returnObj = (java.util.List<com.ext.portlet.model.ProposalRatingValue>) invokeOnRemoteModel(methodName,
+                    parameterTypes, parameterValues);
+
+            return returnObj;
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
         }
     }
 
@@ -195,8 +243,9 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     public Object clone() {
         ProposalRatingTypeClp clone = new ProposalRatingTypeClp();
 
-        clone.setRatingTypeId(getRatingTypeId());
+        clone.setId(getId());
         clone.setLabel(getLabel());
+        clone.setJudgeType(getJudgeType());
 
         return clone;
     }
@@ -242,12 +291,14 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(5);
+        StringBundler sb = new StringBundler(7);
 
-        sb.append("{ratingTypeId=");
-        sb.append(getRatingTypeId());
+        sb.append("{id=");
+        sb.append(getId());
         sb.append(", label=");
         sb.append(getLabel());
+        sb.append(", judgeType=");
+        sb.append(getJudgeType());
         sb.append("}");
 
         return sb.toString();
@@ -255,19 +306,23 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(10);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingType");
         sb.append("</model-name>");
 
         sb.append(
-            "<column><column-name>ratingTypeId</column-name><column-value><![CDATA[");
-        sb.append(getRatingTypeId());
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>label</column-name><column-value><![CDATA[");
         sb.append(getLabel());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>judgeType</column-name><column-value><![CDATA[");
+        sb.append(getJudgeType());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

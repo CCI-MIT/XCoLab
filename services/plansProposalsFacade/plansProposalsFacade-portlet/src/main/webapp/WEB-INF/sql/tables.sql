@@ -115,6 +115,12 @@ create table xcolab_ContestDebate (
 	ContestPK LONG
 );
 
+create table xcolab_ContestEmailTemplate (
+	type_ VARCHAR(75) not null primary key,
+	header VARCHAR(75) null,
+	footer VARCHAR(75) null
+);
+
 create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
@@ -747,23 +753,24 @@ create table xcolab_ProposalRating (
 	proposalId LONG,
 	contestPhaseId LONG,
 	userId LONG,
-	ratingType INTEGER,
-	rating LONG,
+	ratingValueId LONG,
 	comment_ VARCHAR(75) null,
+	commentEnabled BOOLEAN,
 	otherDataString VARCHAR(75) null
 );
 
 create table xcolab_ProposalRatingType (
-	ratingTypeId LONG not null primary key,
-	label VARCHAR(75) null
+	id_ LONG not null primary key,
+	label VARCHAR(75) null,
+	judgeType INTEGER
 );
 
 create table xcolab_ProposalRatingValue (
-	ratingTypeId LONG not null,
-	value LONG not null,
+	id_ LONG not null primary key,
+	ratingTypeId LONG,
+	value LONG,
 	name VARCHAR(75) null,
-	description VARCHAR(75) null,
-	primary key (ratingTypeId, value)
+	description VARCHAR(75) null
 );
 
 create table xcolab_ProposalSupporter (

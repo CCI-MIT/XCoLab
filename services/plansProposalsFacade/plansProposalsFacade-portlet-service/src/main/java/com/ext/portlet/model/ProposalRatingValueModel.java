@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import com.ext.portlet.service.persistence.ProposalRatingValuePK;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
@@ -36,14 +34,28 @@ public interface ProposalRatingValueModel extends BaseModel<ProposalRatingValue>
      *
      * @return the primary key of this proposal rating value
      */
-    public ProposalRatingValuePK getPrimaryKey();
+    public long getPrimaryKey();
 
     /**
      * Sets the primary key of this proposal rating value.
      *
      * @param primaryKey the primary key of this proposal rating value
      */
-    public void setPrimaryKey(ProposalRatingValuePK primaryKey);
+    public void setPrimaryKey(long primaryKey);
+
+    /**
+     * Returns the ID of this proposal rating value.
+     *
+     * @return the ID of this proposal rating value
+     */
+    public long getId();
+
+    /**
+     * Sets the ID of this proposal rating value.
+     *
+     * @param id the ID of this proposal rating value
+     */
+    public void setId(long id);
 
     /**
      * Returns the rating type ID of this proposal rating value.

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnmodifiableList;
@@ -33,6 +34,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistence implementation for the proposal rating value service.
@@ -76,6 +78,9 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
     private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
                 PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
     private static Log _log = LogFactoryUtil.getLog(ProposalRatingValuePersistenceImpl.class);
+    private static Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
+                "id"
+            });
     private static ProposalRatingValue _nullProposalRatingValue = new ProposalRatingValueImpl() {
             @Override
             public Object clone() {
@@ -184,16 +189,15 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
     /**
      * Creates a new proposal rating value with the primary key. Does not add the proposal rating value to the database.
      *
-     * @param proposalRatingValuePK the primary key for the new proposal rating value
+     * @param id the primary key for the new proposal rating value
      * @return the new proposal rating value
      */
     @Override
-    public ProposalRatingValue create(
-        ProposalRatingValuePK proposalRatingValuePK) {
+    public ProposalRatingValue create(long id) {
         ProposalRatingValue proposalRatingValue = new ProposalRatingValueImpl();
 
         proposalRatingValue.setNew(true);
-        proposalRatingValue.setPrimaryKey(proposalRatingValuePK);
+        proposalRatingValue.setPrimaryKey(id);
 
         return proposalRatingValue;
     }
@@ -201,16 +205,15 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
     /**
      * Removes the proposal rating value with the primary key from the database. Also notifies the appropriate model listeners.
      *
-     * @param proposalRatingValuePK the primary key of the proposal rating value
+     * @param id the primary key of the proposal rating value
      * @return the proposal rating value that was removed
      * @throws com.ext.portlet.NoSuchProposalRatingValueException if a proposal rating value with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ProposalRatingValue remove(
-        ProposalRatingValuePK proposalRatingValuePK)
+    public ProposalRatingValue remove(long id)
         throws NoSuchProposalRatingValueException, SystemException {
-        return remove((Serializable) proposalRatingValuePK);
+        return remove((Serializable) id);
     }
 
     /**
@@ -332,6 +335,7 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
         proposalRatingValueImpl.setNew(proposalRatingValue.isNew());
         proposalRatingValueImpl.setPrimaryKey(proposalRatingValue.getPrimaryKey());
 
+        proposalRatingValueImpl.setId(proposalRatingValue.getId());
         proposalRatingValueImpl.setRatingTypeId(proposalRatingValue.getRatingTypeId());
         proposalRatingValueImpl.setValue(proposalRatingValue.getValue());
         proposalRatingValueImpl.setName(proposalRatingValue.getName());
@@ -368,16 +372,15 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
     /**
      * Returns the proposal rating value with the primary key or throws a {@link com.ext.portlet.NoSuchProposalRatingValueException} if it could not be found.
      *
-     * @param proposalRatingValuePK the primary key of the proposal rating value
+     * @param id the primary key of the proposal rating value
      * @return the proposal rating value
      * @throws com.ext.portlet.NoSuchProposalRatingValueException if a proposal rating value with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ProposalRatingValue findByPrimaryKey(
-        ProposalRatingValuePK proposalRatingValuePK)
+    public ProposalRatingValue findByPrimaryKey(long id)
         throws NoSuchProposalRatingValueException, SystemException {
-        return findByPrimaryKey((Serializable) proposalRatingValuePK);
+        return findByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -429,14 +432,14 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
     /**
      * Returns the proposal rating value with the primary key or returns <code>null</code> if it could not be found.
      *
-     * @param proposalRatingValuePK the primary key of the proposal rating value
+     * @param id the primary key of the proposal rating value
      * @return the proposal rating value, or <code>null</code> if a proposal rating value with the primary key could not be found
      * @throws SystemException if a system exception occurred
      */
     @Override
-    public ProposalRatingValue fetchByPrimaryKey(
-        ProposalRatingValuePK proposalRatingValuePK) throws SystemException {
-        return fetchByPrimaryKey((Serializable) proposalRatingValuePK);
+    public ProposalRatingValue fetchByPrimaryKey(long id)
+        throws SystemException {
+        return fetchByPrimaryKey((Serializable) id);
     }
 
     /**
@@ -603,6 +606,11 @@ public class ProposalRatingValuePersistenceImpl extends BasePersistenceImpl<Prop
         }
 
         return count.intValue();
+    }
+
+    @Override
+    protected Set<String> getBadColumnNames() {
+        return _badColumnNames;
     }
 
     /**

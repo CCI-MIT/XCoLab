@@ -1,7 +1,5 @@
 package com.ext.portlet.model;
 
-import com.ext.portlet.service.persistence.ProposalRatingValuePK;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.List;
  * @generated
  */
 public class ProposalRatingValueSoap implements Serializable {
+    private long _id;
     private long _ratingTypeId;
     private long _value;
     private String _name;
@@ -26,6 +25,7 @@ public class ProposalRatingValueSoap implements Serializable {
     public static ProposalRatingValueSoap toSoapModel(ProposalRatingValue model) {
         ProposalRatingValueSoap soapModel = new ProposalRatingValueSoap();
 
+        soapModel.setId(model.getId());
         soapModel.setRatingTypeId(model.getRatingTypeId());
         soapModel.setValue(model.getValue());
         soapModel.setName(model.getName());
@@ -73,13 +73,20 @@ public class ProposalRatingValueSoap implements Serializable {
         return soapModels.toArray(new ProposalRatingValueSoap[soapModels.size()]);
     }
 
-    public ProposalRatingValuePK getPrimaryKey() {
-        return new ProposalRatingValuePK(_ratingTypeId, _value);
+    public long getPrimaryKey() {
+        return _id;
     }
 
-    public void setPrimaryKey(ProposalRatingValuePK pk) {
-        setRatingTypeId(pk.ratingTypeId);
-        setValue(pk.value);
+    public void setPrimaryKey(long pk) {
+        setId(pk);
+    }
+
+    public long getId() {
+        return _id;
+    }
+
+    public void setId(long id) {
+        _id = id;
     }
 
     public long getRatingTypeId() {

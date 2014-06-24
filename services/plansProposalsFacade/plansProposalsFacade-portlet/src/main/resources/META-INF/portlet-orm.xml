@@ -191,6 +191,18 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.ContestEmailTemplateModelImpl">
+		<attributes>
+			<id name="type">
+				<column name="TYPE_" />
+			</id>
+			<basic name="header" />
+			<basic name="footer" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestPhaseModelImpl">
 		<attributes>
 			<id name="ContestPhasePK" />
@@ -1245,11 +1257,11 @@
 			<basic name="proposalId" />
 			<basic name="contestPhaseId" />
 			<basic name="userId" />
-			<basic name="ratingType" />
-			<basic name="rating" />
+			<basic name="ratingValueId" />
 			<basic name="comment">
 				<column name="COMMENT_" />
 			</basic>
+			<basic name="commentEnabled" />
 			<basic name="otherDataString" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
@@ -1259,18 +1271,23 @@
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalRatingTypeModelImpl">
 		<attributes>
-			<id name="ratingTypeId" />
+			<id name="id">
+				<column name="ID_" />
+			</id>
 			<basic name="label" />
+			<basic name="judgeType" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalRatingValueModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.ProposalRatingValuePK" />
 		<attributes>
-			<id name="ratingTypeId" />
-			<id name="value" />
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="ratingTypeId" />
+			<basic name="value" />
 			<basic name="name" />
 			<basic name="description" />
 			<transient name="modelAttributes" />
@@ -1353,6 +1370,10 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestDebateImpl" name="ContestDebate">
 		<table name="xcolab_ContestDebate" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.ContestEmailTemplateImpl" name="ContestEmailTemplate">
+		<table name="xcolab_ContestEmailTemplate" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestPhaseImpl" name="ContestPhase">

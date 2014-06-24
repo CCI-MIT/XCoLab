@@ -204,21 +204,31 @@
         <column name="proposalId" type="long" />
         <column name="contestPhaseId" type="long" />
         <column name="userId" type="long" />
-        <column name="ratingType" type="int" />
-        <column name="rating" type="long" />
+        <column name="ratingValueId" type="long" />
         <column name="comment" type="String" />
+        <column name="commentEnabled" type="boolean" />
         <column name="otherDataString" type="String" />
     </entity>
 
     <entity name="ProposalRatingType" local-service="true">
-        <column name="ratingTypeId" type="long" primary="true" />
+        <column name="id" type="long" primary="true" />
         <column name="label" type="String" />
+        <column name="judgeType" type="int" />
+        <column name="proposalRatingValues" type="Collection" entity="ProposalRatingValue" mapping-key="ratingTypeId"/>
     </entity>
     <entity name="ProposalRatingValue" local-service="true">
-        <column name="ratingTypeId" type="long" primary="true" />
-        <column name="value" type="long" primary="true" />
+        <column name="id" type="long" primary="true" />
+        <column name="ratingTypeId" type="long"/>
+        <column name="value" type="long" />
         <column name="name" type="String" />
         <column name="description" type="String" />
+
+        <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
+    </entity>
+    <entity name="ContestEmailTemplate" local-service="true">
+        <column name="type" type="String" primary="true" />
+        <column name="header" type="String" />
+        <column name="footer" type="String" />
     </entity>
 
 

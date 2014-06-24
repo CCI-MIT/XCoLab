@@ -15,6 +15,8 @@ import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
+import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
+import com.ext.portlet.service.ContestEmailTemplateServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnServiceUtil;
@@ -208,6 +210,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestDebateLocalServiceUtil.clearService();
 
             ContestDebateServiceUtil.clearService();
+            ContestEmailTemplateLocalServiceUtil.clearService();
+
+            ContestEmailTemplateServiceUtil.clearService();
             ContestPhaseLocalServiceUtil.clearService();
 
             ContestPhaseServiceUtil.clearService();

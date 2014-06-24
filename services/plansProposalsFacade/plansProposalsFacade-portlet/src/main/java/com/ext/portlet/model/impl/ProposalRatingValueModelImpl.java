@@ -3,7 +3,6 @@ package com.ext.portlet.model.impl;
 import com.ext.portlet.model.ProposalRatingValue;
 import com.ext.portlet.model.ProposalRatingValueModel;
 import com.ext.portlet.model.ProposalRatingValueSoap;
-import com.ext.portlet.service.persistence.ProposalRatingValuePK;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
@@ -13,6 +12,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.service.ServiceContext;
+
+import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import java.io.Serializable;
 
@@ -46,15 +49,16 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
      */
     public static final String TABLE_NAME = "xcolab_ProposalRatingValue";
     public static final Object[][] TABLE_COLUMNS = {
+            { "id_", Types.BIGINT },
             { "ratingTypeId", Types.BIGINT },
             { "value", Types.BIGINT },
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingValue (ratingTypeId LONG not null,value LONG not null,name VARCHAR(75) null,description VARCHAR(75) null,primary key (ratingTypeId, value))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingValue (id_ LONG not null primary key,ratingTypeId LONG,value LONG,name VARCHAR(75) null,description VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRatingValue";
-    public static final String ORDER_BY_JPQL = " ORDER BY proposalRatingValue.id.ratingTypeId ASC, proposalRatingValue.id.value ASC";
-    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRatingValue.ratingTypeId ASC, xcolab_ProposalRatingValue.value ASC";
+    public static final String ORDER_BY_JPQL = " ORDER BY proposalRatingValue.id ASC";
+    public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRatingValue.id_ ASC";
     public static final String DATA_SOURCE = "liferayDataSource";
     public static final String SESSION_FACTORY = "liferaySessionFactory";
     public static final String TX_MANAGER = "liferayTransactionManager";
@@ -71,6 +75,7 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProposalRatingValue.class
         };
+    private long _id;
     private long _ratingTypeId;
     private long _value;
     private String _name;
@@ -93,6 +98,7 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
         ProposalRatingValue model = new ProposalRatingValueImpl();
 
+        model.setId(soapModel.getId());
         model.setRatingTypeId(soapModel.getRatingTypeId());
         model.setValue(soapModel.getValue());
         model.setName(soapModel.getName());
@@ -123,24 +129,23 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     }
 
     @Override
-    public ProposalRatingValuePK getPrimaryKey() {
-        return new ProposalRatingValuePK(_ratingTypeId, _value);
+    public long getPrimaryKey() {
+        return _id;
     }
 
     @Override
-    public void setPrimaryKey(ProposalRatingValuePK primaryKey) {
-        setRatingTypeId(primaryKey.ratingTypeId);
-        setValue(primaryKey.value);
+    public void setPrimaryKey(long primaryKey) {
+        setId(primaryKey);
     }
 
     @Override
     public Serializable getPrimaryKeyObj() {
-        return new ProposalRatingValuePK(_ratingTypeId, _value);
+        return _id;
     }
 
     @Override
     public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-        setPrimaryKey((ProposalRatingValuePK) primaryKeyObj);
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
     }
 
     @Override
@@ -157,6 +162,7 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
+        attributes.put("id", getId());
         attributes.put("ratingTypeId", getRatingTypeId());
         attributes.put("value", getValue());
         attributes.put("name", getName());
@@ -167,6 +173,12 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
         Long ratingTypeId = (Long) attributes.get("ratingTypeId");
 
         if (ratingTypeId != null) {
@@ -190,6 +202,17 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
         if (description != null) {
             setDescription(description);
         }
+    }
+
+    @JSON
+    @Override
+    public long getId() {
+        return _id;
+    }
+
+    @Override
+    public void setId(long id) {
+        _id = id;
     }
 
     @JSON
@@ -245,6 +268,19 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     }
 
     @Override
+    public ExpandoBridge getExpandoBridge() {
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            ProposalRatingValue.class.getName(), getPrimaryKey());
+    }
+
+    @Override
+    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+        ExpandoBridge expandoBridge = getExpandoBridge();
+
+        expandoBridge.setAttributes(serviceContext);
+    }
+
+    @Override
     public ProposalRatingValue toEscapedModel() {
         if (_escapedModel == null) {
             _escapedModel = (ProposalRatingValue) ProxyUtil.newProxyInstance(_classLoader,
@@ -258,6 +294,7 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     public Object clone() {
         ProposalRatingValueImpl proposalRatingValueImpl = new ProposalRatingValueImpl();
 
+        proposalRatingValueImpl.setId(getId());
         proposalRatingValueImpl.setRatingTypeId(getRatingTypeId());
         proposalRatingValueImpl.setValue(getValue());
         proposalRatingValueImpl.setName(getName());
@@ -270,9 +307,15 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
     @Override
     public int compareTo(ProposalRatingValue proposalRatingValue) {
-        ProposalRatingValuePK primaryKey = proposalRatingValue.getPrimaryKey();
+        long primaryKey = proposalRatingValue.getPrimaryKey();
 
-        return getPrimaryKey().compareTo(primaryKey);
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -287,9 +330,9 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
         ProposalRatingValue proposalRatingValue = (ProposalRatingValue) obj;
 
-        ProposalRatingValuePK primaryKey = proposalRatingValue.getPrimaryKey();
+        long primaryKey = proposalRatingValue.getPrimaryKey();
 
-        if (getPrimaryKey().equals(primaryKey)) {
+        if (getPrimaryKey() == primaryKey) {
             return true;
         } else {
             return false;
@@ -298,7 +341,7 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
     @Override
     public int hashCode() {
-        return getPrimaryKey().hashCode();
+        return (int) getPrimaryKey();
     }
 
     @Override
@@ -308,6 +351,8 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
     @Override
     public CacheModel<ProposalRatingValue> toCacheModel() {
         ProposalRatingValueCacheModel proposalRatingValueCacheModel = new ProposalRatingValueCacheModel();
+
+        proposalRatingValueCacheModel.id = getId();
 
         proposalRatingValueCacheModel.ratingTypeId = getRatingTypeId();
 
@@ -334,9 +379,11 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(11);
 
-        sb.append("{ratingTypeId=");
+        sb.append("{id=");
+        sb.append(getId());
+        sb.append(", ratingTypeId=");
         sb.append(getRatingTypeId());
         sb.append(", value=");
         sb.append(getValue());
@@ -351,12 +398,16 @@ public class ProposalRatingValueModelImpl extends BaseModelImpl<ProposalRatingVa
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingValue");
         sb.append("</model-name>");
 
+        sb.append(
+            "<column><column-name>id</column-name><column-value><![CDATA[");
+        sb.append(getId());
+        sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ratingTypeId</column-name><column-value><![CDATA[");
         sb.append(getRatingTypeId());

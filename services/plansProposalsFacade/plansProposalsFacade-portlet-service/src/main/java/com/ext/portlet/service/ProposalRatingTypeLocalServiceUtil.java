@@ -43,27 +43,27 @@ public class ProposalRatingTypeLocalServiceUtil {
     /**
     * Creates a new proposal rating type with the primary key. Does not add the proposal rating type to the database.
     *
-    * @param ratingTypeId the primary key for the new proposal rating type
+    * @param id the primary key for the new proposal rating type
     * @return the new proposal rating type
     */
     public static com.ext.portlet.model.ProposalRatingType createProposalRatingType(
-        long ratingTypeId) {
-        return getService().createProposalRatingType(ratingTypeId);
+        long id) {
+        return getService().createProposalRatingType(id);
     }
 
     /**
     * Deletes the proposal rating type with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type that was removed
     * @throws PortalException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalRatingType deleteProposalRatingType(
-        long ratingTypeId)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().deleteProposalRatingType(ratingTypeId);
+        return getService().deleteProposalRatingType(id);
     }
 
     /**
@@ -170,24 +170,23 @@ public class ProposalRatingTypeLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.ProposalRatingType fetchProposalRatingType(
-        long ratingTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().fetchProposalRatingType(ratingTypeId);
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().fetchProposalRatingType(id);
     }
 
     /**
     * Returns the proposal rating type with the primary key.
     *
-    * @param ratingTypeId the primary key of the proposal rating type
+    * @param id the primary key of the proposal rating type
     * @return the proposal rating type
     * @throws PortalException if a proposal rating type with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalRatingType getProposalRatingType(
-        long ratingTypeId)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().getProposalRatingType(ratingTypeId);
+        return getService().getProposalRatingType(id);
     }
 
     public static com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -261,6 +260,16 @@ public class ProposalRatingTypeLocalServiceUtil {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         return getService().invokeMethod(name, parameterTypes, arguments);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRatingTypesForJudges();
+    }
+
+    public static java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRatingTypesForFellows();
     }
 
     public static void clearService() {

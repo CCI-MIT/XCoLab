@@ -45,6 +45,8 @@ public class ProposalRatingValueLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
 
     public ProposalRatingValueLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -58,15 +60,11 @@ public class ProposalRatingValueLocalServiceClp
 
         _methodName1 = "createProposalRatingValue";
 
-        _methodParameterTypes1 = new String[] {
-                "com.ext.portlet.service.persistence.ProposalRatingValuePK"
-            };
+        _methodParameterTypes1 = new String[] { "long" };
 
         _methodName2 = "deleteProposalRatingValue";
 
-        _methodParameterTypes2 = new String[] {
-                "com.ext.portlet.service.persistence.ProposalRatingValuePK"
-            };
+        _methodParameterTypes2 = new String[] { "long" };
 
         _methodName3 = "deleteProposalRatingValue";
 
@@ -112,15 +110,11 @@ public class ProposalRatingValueLocalServiceClp
 
         _methodName10 = "fetchProposalRatingValue";
 
-        _methodParameterTypes10 = new String[] {
-                "com.ext.portlet.service.persistence.ProposalRatingValuePK"
-            };
+        _methodParameterTypes10 = new String[] { "long" };
 
         _methodName11 = "getProposalRatingValue";
 
-        _methodParameterTypes11 = new String[] {
-                "com.ext.portlet.service.persistence.ProposalRatingValuePK"
-            };
+        _methodParameterTypes11 = new String[] { "long" };
 
         _methodName12 = "getPersistedModel";
 
@@ -147,6 +141,10 @@ public class ProposalRatingValueLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "getRatingValuesForRatingTypeId";
+
+        _methodParameterTypes19 = new String[] { "long" };
     }
 
     @Override
@@ -181,15 +179,12 @@ public class ProposalRatingValueLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ProposalRatingValue createProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK) {
+        long id) {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName1,
-                    _methodParameterTypes1,
-                    new Object[] {
-                        ClpSerializer.translateInput(proposalRatingValuePK)
-                    });
+                    _methodParameterTypes1, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -206,17 +201,14 @@ public class ProposalRatingValueLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ProposalRatingValue deleteProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName2,
-                    _methodParameterTypes2,
-                    new Object[] {
-                        ClpSerializer.translateInput(proposalRatingValuePK)
-                    });
+                    _methodParameterTypes2, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -456,16 +448,12 @@ public class ProposalRatingValueLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ProposalRatingValue fetchProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        long id) throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName10,
-                    _methodParameterTypes10,
-                    new Object[] {
-                        ClpSerializer.translateInput(proposalRatingValuePK)
-                    });
+                    _methodParameterTypes10, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -486,17 +474,14 @@ public class ProposalRatingValueLocalServiceClp
 
     @Override
     public com.ext.portlet.model.ProposalRatingValue getProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName11,
-                    _methodParameterTypes11,
-                    new Object[] {
-                        ClpSerializer.translateInput(proposalRatingValuePK)
-                    });
+                    _methodParameterTypes11, new Object[] { id });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -679,5 +664,33 @@ public class ProposalRatingValueLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValuesForRatingTypeId(
+        long proposalRatingTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] { proposalRatingTypeId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.ProposalRatingValue>) ClpSerializer.translateOutput(returnObj);
     }
 }

@@ -26,9 +26,9 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
     private long _contestPhaseId;
     private long _userId;
     private String _userUuid;
-    private int _ratingType;
-    private long _rating;
+    private long _ratingValueId;
     private String _comment;
+    private boolean _commentEnabled;
     private String _otherDataString;
     private BaseModel<?> _proposalRatingRemoteModel;
 
@@ -73,9 +73,9 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         attributes.put("proposalId", getProposalId());
         attributes.put("contestPhaseId", getContestPhaseId());
         attributes.put("userId", getUserId());
-        attributes.put("ratingType", getRatingType());
-        attributes.put("rating", getRating());
+        attributes.put("ratingValueId", getRatingValueId());
         attributes.put("comment", getComment());
+        attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
 
         return attributes;
@@ -107,22 +107,22 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
             setUserId(userId);
         }
 
-        Integer ratingType = (Integer) attributes.get("ratingType");
+        Long ratingValueId = (Long) attributes.get("ratingValueId");
 
-        if (ratingType != null) {
-            setRatingType(ratingType);
-        }
-
-        Long rating = (Long) attributes.get("rating");
-
-        if (rating != null) {
-            setRating(rating);
+        if (ratingValueId != null) {
+            setRatingValueId(ratingValueId);
         }
 
         String comment = (String) attributes.get("comment");
 
         if (comment != null) {
             setComment(comment);
+        }
+
+        Boolean commentEnabled = (Boolean) attributes.get("commentEnabled");
+
+        if (commentEnabled != null) {
+            setCommentEnabled(commentEnabled);
         }
 
         String otherDataString = (String) attributes.get("otherDataString");
@@ -231,43 +231,21 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
     }
 
     @Override
-    public int getRatingType() {
-        return _ratingType;
+    public long getRatingValueId() {
+        return _ratingValueId;
     }
 
     @Override
-    public void setRatingType(int ratingType) {
-        _ratingType = ratingType;
+    public void setRatingValueId(long ratingValueId) {
+        _ratingValueId = ratingValueId;
 
         if (_proposalRatingRemoteModel != null) {
             try {
                 Class<?> clazz = _proposalRatingRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setRatingType", int.class);
+                Method method = clazz.getMethod("setRatingValueId", long.class);
 
-                method.invoke(_proposalRatingRemoteModel, ratingType);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public long getRating() {
-        return _rating;
-    }
-
-    @Override
-    public void setRating(long rating) {
-        _rating = rating;
-
-        if (_proposalRatingRemoteModel != null) {
-            try {
-                Class<?> clazz = _proposalRatingRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setRating", long.class);
-
-                method.invoke(_proposalRatingRemoteModel, rating);
+                method.invoke(_proposalRatingRemoteModel, ratingValueId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -290,6 +268,34 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
                 Method method = clazz.getMethod("setComment", String.class);
 
                 method.invoke(_proposalRatingRemoteModel, comment);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    @Override
+    public boolean isCommentEnabled() {
+        return _commentEnabled;
+    }
+
+    @Override
+    public void setCommentEnabled(boolean commentEnabled) {
+        _commentEnabled = commentEnabled;
+
+        if (_proposalRatingRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setCommentEnabled",
+                        boolean.class);
+
+                method.invoke(_proposalRatingRemoteModel, commentEnabled);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -410,9 +416,9 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         clone.setProposalId(getProposalId());
         clone.setContestPhaseId(getContestPhaseId());
         clone.setUserId(getUserId());
-        clone.setRatingType(getRatingType());
-        clone.setRating(getRating());
+        clone.setRatingValueId(getRatingValueId());
         clone.setComment(getComment());
+        clone.setCommentEnabled(getCommentEnabled());
         clone.setOtherDataString(getOtherDataString());
 
         return clone;
@@ -469,12 +475,12 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         sb.append(getContestPhaseId());
         sb.append(", userId=");
         sb.append(getUserId());
-        sb.append(", ratingType=");
-        sb.append(getRatingType());
-        sb.append(", rating=");
-        sb.append(getRating());
+        sb.append(", ratingValueId=");
+        sb.append(getRatingValueId());
         sb.append(", comment=");
         sb.append(getComment());
+        sb.append(", commentEnabled=");
+        sb.append(getCommentEnabled());
         sb.append(", otherDataString=");
         sb.append(getOtherDataString());
         sb.append("}");
@@ -507,16 +513,16 @@ public class ProposalRatingClp extends BaseModelImpl<ProposalRating>
         sb.append(getUserId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>ratingType</column-name><column-value><![CDATA[");
-        sb.append(getRatingType());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>rating</column-name><column-value><![CDATA[");
-        sb.append(getRating());
+            "<column><column-name>ratingValueId</column-name><column-value><![CDATA[");
+        sb.append(getRatingValueId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>comment</column-name><column-value><![CDATA[");
         sb.append(getComment());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>commentEnabled</column-name><column-value><![CDATA[");
+        sb.append(getCommentEnabled());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>otherDataString</column-name><column-value><![CDATA[");

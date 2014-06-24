@@ -41,9 +41,9 @@ public class ProposalRatingWrapper implements ProposalRating,
         attributes.put("proposalId", getProposalId());
         attributes.put("contestPhaseId", getContestPhaseId());
         attributes.put("userId", getUserId());
-        attributes.put("ratingType", getRatingType());
-        attributes.put("rating", getRating());
+        attributes.put("ratingValueId", getRatingValueId());
         attributes.put("comment", getComment());
+        attributes.put("commentEnabled", getCommentEnabled());
         attributes.put("otherDataString", getOtherDataString());
 
         return attributes;
@@ -75,22 +75,22 @@ public class ProposalRatingWrapper implements ProposalRating,
             setUserId(userId);
         }
 
-        Integer ratingType = (Integer) attributes.get("ratingType");
+        Long ratingValueId = (Long) attributes.get("ratingValueId");
 
-        if (ratingType != null) {
-            setRatingType(ratingType);
-        }
-
-        Long rating = (Long) attributes.get("rating");
-
-        if (rating != null) {
-            setRating(rating);
+        if (ratingValueId != null) {
+            setRatingValueId(ratingValueId);
         }
 
         String comment = (String) attributes.get("comment");
 
         if (comment != null) {
             setComment(comment);
+        }
+
+        Boolean commentEnabled = (Boolean) attributes.get("commentEnabled");
+
+        if (commentEnabled != null) {
+            setCommentEnabled(commentEnabled);
         }
 
         String otherDataString = (String) attributes.get("otherDataString");
@@ -223,43 +223,23 @@ public class ProposalRatingWrapper implements ProposalRating,
     }
 
     /**
-    * Returns the rating type of this proposal rating.
+    * Returns the rating value ID of this proposal rating.
     *
-    * @return the rating type of this proposal rating
+    * @return the rating value ID of this proposal rating
     */
     @Override
-    public int getRatingType() {
-        return _proposalRating.getRatingType();
+    public long getRatingValueId() {
+        return _proposalRating.getRatingValueId();
     }
 
     /**
-    * Sets the rating type of this proposal rating.
+    * Sets the rating value ID of this proposal rating.
     *
-    * @param ratingType the rating type of this proposal rating
+    * @param ratingValueId the rating value ID of this proposal rating
     */
     @Override
-    public void setRatingType(int ratingType) {
-        _proposalRating.setRatingType(ratingType);
-    }
-
-    /**
-    * Returns the rating of this proposal rating.
-    *
-    * @return the rating of this proposal rating
-    */
-    @Override
-    public long getRating() {
-        return _proposalRating.getRating();
-    }
-
-    /**
-    * Sets the rating of this proposal rating.
-    *
-    * @param rating the rating of this proposal rating
-    */
-    @Override
-    public void setRating(long rating) {
-        _proposalRating.setRating(rating);
+    public void setRatingValueId(long ratingValueId) {
+        _proposalRating.setRatingValueId(ratingValueId);
     }
 
     /**
@@ -280,6 +260,36 @@ public class ProposalRatingWrapper implements ProposalRating,
     @Override
     public void setComment(java.lang.String comment) {
         _proposalRating.setComment(comment);
+    }
+
+    /**
+    * Returns the comment enabled of this proposal rating.
+    *
+    * @return the comment enabled of this proposal rating
+    */
+    @Override
+    public boolean getCommentEnabled() {
+        return _proposalRating.getCommentEnabled();
+    }
+
+    /**
+    * Returns <code>true</code> if this proposal rating is comment enabled.
+    *
+    * @return <code>true</code> if this proposal rating is comment enabled; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isCommentEnabled() {
+        return _proposalRating.isCommentEnabled();
+    }
+
+    /**
+    * Sets whether this proposal rating is comment enabled.
+    *
+    * @param commentEnabled the comment enabled of this proposal rating
+    */
+    @Override
+    public void setCommentEnabled(boolean commentEnabled) {
+        _proposalRating.setCommentEnabled(commentEnabled);
     }
 
     /**

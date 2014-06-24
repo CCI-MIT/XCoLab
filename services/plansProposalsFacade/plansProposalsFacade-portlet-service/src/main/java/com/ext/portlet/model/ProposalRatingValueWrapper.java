@@ -37,6 +37,7 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
     public Map<String, Object> getModelAttributes() {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
+        attributes.put("id", getId());
         attributes.put("ratingTypeId", getRatingTypeId());
         attributes.put("value", getValue());
         attributes.put("name", getName());
@@ -47,6 +48,12 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
 
     @Override
     public void setModelAttributes(Map<String, Object> attributes) {
+        Long id = (Long) attributes.get("id");
+
+        if (id != null) {
+            setId(id);
+        }
+
         Long ratingTypeId = (Long) attributes.get("ratingTypeId");
 
         if (ratingTypeId != null) {
@@ -78,7 +85,7 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
     * @return the primary key of this proposal rating value
     */
     @Override
-    public com.ext.portlet.service.persistence.ProposalRatingValuePK getPrimaryKey() {
+    public long getPrimaryKey() {
         return _proposalRatingValue.getPrimaryKey();
     }
 
@@ -88,9 +95,28 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
     * @param primaryKey the primary key of this proposal rating value
     */
     @Override
-    public void setPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK primaryKey) {
+    public void setPrimaryKey(long primaryKey) {
         _proposalRatingValue.setPrimaryKey(primaryKey);
+    }
+
+    /**
+    * Returns the ID of this proposal rating value.
+    *
+    * @return the ID of this proposal rating value
+    */
+    @Override
+    public long getId() {
+        return _proposalRatingValue.getId();
+    }
+
+    /**
+    * Sets the ID of this proposal rating value.
+    *
+    * @param id the ID of this proposal rating value
+    */
+    @Override
+    public void setId(long id) {
+        _proposalRatingValue.setId(id);
     }
 
     /**

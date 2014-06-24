@@ -76,7 +76,7 @@ public class ProposalRatingLocalServiceImpl
         return proposalRating;
     }
 
-    public ProposalRating addProposalRating(
+    public ProposalRating addRating(
             long proposalId, long contestPhaseId, long userId, long ratingValueId, String comment, String otherDataString
     ) throws SystemException, NoSuchUserException {
 
@@ -89,10 +89,18 @@ public class ProposalRatingLocalServiceImpl
         proposalRating.setUserId(userId);
         proposalRating.setRatingValueId(ratingValueId);
         proposalRating.setComment(comment);
+        if (comment != null && !comment.isEmpty()) {
+            proposalRating.setCommentEnabled(true);
+        }
         proposalRating.setOtherDataString(otherDataString);
 
         super.addProposalRating(proposalRating);
 
+        return proposalRating;
+    }
+
+    public ProposalRating updateRating(ProposalRating proposalRating) throws SystemException, NoSuchUserException {
+        super.updateProposalRating(proposalRating);
         return proposalRating;
     }
 

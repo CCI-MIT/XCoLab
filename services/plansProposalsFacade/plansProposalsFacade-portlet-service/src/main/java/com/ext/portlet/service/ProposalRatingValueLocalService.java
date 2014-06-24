@@ -46,22 +46,22 @@ public interface ProposalRatingValueLocalService extends BaseLocalService,
     /**
     * Creates a new proposal rating value with the primary key. Does not add the proposal rating value to the database.
     *
-    * @param proposalRatingValuePK the primary key for the new proposal rating value
+    * @param id the primary key for the new proposal rating value
     * @return the new proposal rating value
     */
     public com.ext.portlet.model.ProposalRatingValue createProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK);
+        long id);
 
     /**
     * Deletes the proposal rating value with the primary key from the database. Also notifies the appropriate model listeners.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value that was removed
     * @throws PortalException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalRatingValue deleteProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -155,20 +155,19 @@ public interface ProposalRatingValueLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalRatingValue fetchProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
-        throws com.liferay.portal.kernel.exception.SystemException;
+        long id) throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * Returns the proposal rating value with the primary key.
     *
-    * @param proposalRatingValuePK the primary key of the proposal rating value
+    * @param id the primary key of the proposal rating value
     * @return the proposal rating value
     * @throws PortalException if a proposal rating value with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.ProposalRatingValue getProposalRatingValue(
-        com.ext.portlet.service.persistence.ProposalRatingValuePK proposalRatingValuePK)
+        long id)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -235,4 +234,9 @@ public interface ProposalRatingValueLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValuesForRatingTypeId(
+        long proposalRatingTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

@@ -41,12 +41,12 @@ public class PlanAttributeFilterLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName526;
-    private String[] _methodParameterTypes526;
-    private String _methodName527;
-    private String[] _methodParameterTypes527;
-    private String _methodName532;
-    private String[] _methodParameterTypes532;
+    private String _methodName534;
+    private String[] _methodParameterTypes534;
+    private String _methodName535;
+    private String[] _methodParameterTypes535;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
 
     public PlanAttributeFilterLocalServiceClpInvoker() {
         _methodName0 = "addPlanAttributeFilter";
@@ -131,17 +131,17 @@ public class PlanAttributeFilterLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanAttributeFilter"
             };
 
-        _methodName526 = "getBeanIdentifier";
+        _methodName534 = "getBeanIdentifier";
 
-        _methodParameterTypes526 = new String[] {  };
+        _methodParameterTypes534 = new String[] {  };
 
-        _methodName527 = "setBeanIdentifier";
+        _methodName535 = "setBeanIdentifier";
 
-        _methodParameterTypes527 = new String[] { "java.lang.String" };
+        _methodParameterTypes535 = new String[] { "java.lang.String" };
 
-        _methodName532 = "getByPlansUserSettingsIdAttributeName";
+        _methodName540 = "getByPlansUserSettingsIdAttributeName";
 
-        _methodParameterTypes532 = new String[] {
+        _methodParameterTypes540 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
     }
@@ -235,20 +235,20 @@ public class PlanAttributeFilterLocalServiceClpInvoker {
             return PlanAttributeFilterLocalServiceUtil.updatePlanAttributeFilter((com.ext.portlet.model.PlanAttributeFilter) arguments[0]);
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName534.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
             return PlanAttributeFilterLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName535.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
             PlanAttributeFilterLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName532.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return PlanAttributeFilterLocalServiceUtil.getByPlansUserSettingsIdAttributeName((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }

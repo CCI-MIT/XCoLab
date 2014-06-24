@@ -9,6 +9,7 @@ import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.BalloonTextPersistence;
 import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
+import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
@@ -79,6 +80,7 @@ import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalRatingFinder;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingTypePersistence;
 import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
@@ -172,6 +174,12 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestDebateService contestDebateService;
     @BeanReference(type = ContestDebatePersistence.class)
     protected ContestDebatePersistence contestDebatePersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateLocalService.class)
+    protected com.ext.portlet.service.ContestEmailTemplateLocalService contestEmailTemplateLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateService.class)
+    protected com.ext.portlet.service.ContestEmailTemplateService contestEmailTemplateService;
+    @BeanReference(type = ContestEmailTemplatePersistence.class)
+    protected ContestEmailTemplatePersistence contestEmailTemplatePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestPhaseLocalService.class)
     protected com.ext.portlet.service.ContestPhaseLocalService contestPhaseLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestPhaseService.class)
@@ -592,6 +600,8 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalRatingService proposalRatingService;
     @BeanReference(type = ProposalRatingPersistence.class)
     protected ProposalRatingPersistence proposalRatingPersistence;
+    @BeanReference(type = ProposalRatingFinder.class)
+    protected ProposalRatingFinder proposalRatingFinder;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeLocalService.class)
     protected com.ext.portlet.service.ProposalRatingTypeLocalService proposalRatingTypeLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeService.class)
@@ -1313,6 +1323,63 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
     public void setContestDebatePersistence(
         ContestDebatePersistence contestDebatePersistence) {
         this.contestDebatePersistence = contestDebatePersistence;
+    }
+
+    /**
+     * Returns the contest email template local service.
+     *
+     * @return the contest email template local service
+     */
+    public com.ext.portlet.service.ContestEmailTemplateLocalService getContestEmailTemplateLocalService() {
+        return contestEmailTemplateLocalService;
+    }
+
+    /**
+     * Sets the contest email template local service.
+     *
+     * @param contestEmailTemplateLocalService the contest email template local service
+     */
+    public void setContestEmailTemplateLocalService(
+        com.ext.portlet.service.ContestEmailTemplateLocalService contestEmailTemplateLocalService) {
+        this.contestEmailTemplateLocalService = contestEmailTemplateLocalService;
+    }
+
+    /**
+     * Returns the contest email template remote service.
+     *
+     * @return the contest email template remote service
+     */
+    public com.ext.portlet.service.ContestEmailTemplateService getContestEmailTemplateService() {
+        return contestEmailTemplateService;
+    }
+
+    /**
+     * Sets the contest email template remote service.
+     *
+     * @param contestEmailTemplateService the contest email template remote service
+     */
+    public void setContestEmailTemplateService(
+        com.ext.portlet.service.ContestEmailTemplateService contestEmailTemplateService) {
+        this.contestEmailTemplateService = contestEmailTemplateService;
+    }
+
+    /**
+     * Returns the contest email template persistence.
+     *
+     * @return the contest email template persistence
+     */
+    public ContestEmailTemplatePersistence getContestEmailTemplatePersistence() {
+        return contestEmailTemplatePersistence;
+    }
+
+    /**
+     * Sets the contest email template persistence.
+     *
+     * @param contestEmailTemplatePersistence the contest email template persistence
+     */
+    public void setContestEmailTemplatePersistence(
+        ContestEmailTemplatePersistence contestEmailTemplatePersistence) {
+        this.contestEmailTemplatePersistence = contestEmailTemplatePersistence;
     }
 
     /**
@@ -5294,6 +5361,25 @@ public abstract class ModelOutputItemLocalServiceBaseImpl
     public void setProposalRatingPersistence(
         ProposalRatingPersistence proposalRatingPersistence) {
         this.proposalRatingPersistence = proposalRatingPersistence;
+    }
+
+    /**
+     * Returns the proposal rating finder.
+     *
+     * @return the proposal rating finder
+     */
+    public ProposalRatingFinder getProposalRatingFinder() {
+        return proposalRatingFinder;
+    }
+
+    /**
+     * Sets the proposal rating finder.
+     *
+     * @param proposalRatingFinder the proposal rating finder
+     */
+    public void setProposalRatingFinder(
+        ProposalRatingFinder proposalRatingFinder) {
+        this.proposalRatingFinder = proposalRatingFinder;
     }
 
     /**

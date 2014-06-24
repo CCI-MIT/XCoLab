@@ -335,9 +335,9 @@ public class ProposalRatingPersistenceImpl extends BasePersistenceImpl<ProposalR
         proposalRatingImpl.setProposalId(proposalRating.getProposalId());
         proposalRatingImpl.setContestPhaseId(proposalRating.getContestPhaseId());
         proposalRatingImpl.setUserId(proposalRating.getUserId());
-        proposalRatingImpl.setRatingType(proposalRating.getRatingType());
-        proposalRatingImpl.setRating(proposalRating.getRating());
+        proposalRatingImpl.setRatingValueId(proposalRating.getRatingValueId());
         proposalRatingImpl.setComment(proposalRating.getComment());
+        proposalRatingImpl.setCommentEnabled(proposalRating.isCommentEnabled());
         proposalRatingImpl.setOtherDataString(proposalRating.getOtherDataString());
 
         return proposalRatingImpl;
