@@ -244,7 +244,7 @@ fieldset { border: 0; padding: 0; margin: 0}
 
 
 .addcomment { font-size:14px; margin-top:25px;}
-.addcomment #add { float:left; width:188px; padding:10px 0 0 6px;}
+.addcomment #add { float:left; width:188px; padding:10px 6px 0 0;}
 .addcomment strong { font-weight:600;}
 
 
