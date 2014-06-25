@@ -14,18 +14,20 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		
 		jQuery(modelingWidget).on('scenarioRendered', function(event) {
-			that.updateSelectedOptionsInfo(true);
-			if (! that.wasModelRun) {
-				// user is viewing an existing scenario, we should recreate wiew
-				that.restoreWidgetState();
-			}
+			if ( this.rendered ) {
+				that.updateSelectedOptionsInfo(true);
+				if (! that.wasModelRun) {
+					// user is viewing an existing scenario, we should recreate wiew
+					that.restoreWidgetState();
+				}
 			
-			// this is bad bad way of doing this, yet I don't see any better place to put it, it shouldn't be hardcoded (janusz)
-			// get column count in the legend
-			var legendElem = jQuery("table.jqplot-table-legend");
-			var columnCount = legendElem.find("tr:first td").length;
-			jQuery("table.jqplot-table-legend").prepend("<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" + 
-					"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs'>EMF27 model runs for more details</a></td></tr>");
+				// this is bad bad way of doing this, yet I don't see any better place to put it, it shouldn't be hardcoded (janusz)
+				// get column count in the legend
+				var legendElem = jQuery("table.jqplot-table-legend");
+				var columnCount = legendElem.find("tr:first td").length;
+				jQuery("table.jqplot-table-legend").prepend("<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" + 
+						"Results shown for the following models. See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs'>EMF27 model runs for more details</a></td></tr>");
+			}
 		});
 		
 		

@@ -2,18 +2,25 @@ package org.xcolab.portlets.modelsadmin.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
 
-import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
+import com.ext.portlet.models.ui.ModelInputDisplayItem;
+import com.ext.portlet.models.ui.ModelInputGroupDisplayItem;
 import com.ext.portlet.models.ui.ModelInputWidgetType;
 import com.ext.portlet.models.ui.ModelOutputChartType;
 import com.ext.portlet.models.ui.ModelOutputDisplayItem;
@@ -31,7 +38,16 @@ public class ModelsAdminController {
 	
 	@RequestMapping
 	public String showAvailableModels(Model model) throws SystemException {
-		model.addAttribute("models", CollaboratoriumModelingService.repository().getAllSimulations());
+		List<Simulation> simulationsSorted = new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getAllSimulations());
+		Collections.sort(simulationsSorted, new Comparator<Simulation>() {
+
+			@Override
+			public int compare(Simulation o1, Simulation o2) {
+				return (int) (o2.getId() - o1.getId());
+			}
+				
+		});
+		model.addAttribute("models", simulationsSorted);
 		System.out.println("CollaboratoriumModelingService.repository().getAllSimulations()");
 		return "modelsIndex";
 	}
@@ -77,6 +93,57 @@ public class ModelsAdminController {
 		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
 		
 		return "modelDetails/modelOutputWidgets";
+	}
+	
+	@RequestMapping(params={"modelId", "tab=inputTabs"})
+	public String showModelInputTabsEditWidget(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
+		
+		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
+		
+		Map<Long, String> individualInputsById = new HashMap<Long, String>();
+		individualInputsById.put(0L, "-- none --");
+		for (ModelInputDisplayItem item: modelDisplay.getAllIndividualInputs()) {
+			individualInputsById.put(item.getMetaData().getId(), item.getName());
+		}
+
+		List<ModelInputGroupDisplayItem> groupsAndTabs = new ArrayList<ModelInputGroupDisplayItem>();
+		//groupsAndTabs.addAll(modelDisplay.getTabs());
+		
+		for (ModelInputGroupDisplayItem tab: modelDisplay.getTabs()) {
+			groupsAndTabs.addAll(getSubGroups(tab));
+		}
+		
+		groupsAndTabs.addAll(modelDisplay.getGroups());
+		
+		Map<Long, String> groupInputsById = new HashMap<Long, String>();
+		groupInputsById.put(0L, "-- none --");
+		for (ModelInputGroupDisplayItem item: groupsAndTabs) {
+			groupInputsById.put(item.getGroupId(), item.getName());
+		}
+		 
+		model.addAttribute("model", simulation);
+		model.addAttribute("modelDisplay", modelDisplay);
+		model.addAttribute("tab", "inputTabs");
+		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
+		model.addAttribute("updateModelInputGroupBean", new UpdateModelInputGroupBean());
+		model.addAttribute("udateIndividualInputGroupBean", new UpdateIndividualInputGroupBean());
+		model.addAttribute("individualInputsById", individualInputsById);
+		model.addAttribute("groupsAndTabs", groupsAndTabs);
+		model.addAttribute("groupInputsById", groupInputsById);
+		
+		return "modelDetails/modelInputTabs";
+	}
+	
+	private List<ModelInputGroupDisplayItem> getSubGroups(ModelInputGroupDisplayItem parent) {
+		System.out.println("getting sub groups for parent: " + parent.getGroupId() + " " + parent.getName());
+		List<ModelInputGroupDisplayItem> ret = new ArrayList<ModelInputGroupDisplayItem>();
+		ret.add(parent);
+		
+		for (ModelInputGroupDisplayItem child: parent.getChildGroups()) {
+			ret.addAll(getSubGroups(child));
+		}
+		return ret;
 	}
 
     private List<ModelOutputDisplayItem> getAllOutputsFromDisplay(ModelDisplay display) {
