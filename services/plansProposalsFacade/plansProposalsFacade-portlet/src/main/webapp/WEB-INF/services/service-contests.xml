@@ -183,6 +183,12 @@
         </finder>
       
       </entity>
+    <entity name="ContestEmailTemplate" local-service="true">
+        <column name="type" type="String" primary="true" />
+        <column name="subject" type="String" />
+        <column name="header" type="String" />
+        <column name="footer" type="String" />
+    </entity>
     
     <exceptions>
 

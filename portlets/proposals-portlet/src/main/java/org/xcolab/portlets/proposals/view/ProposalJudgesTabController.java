@@ -42,8 +42,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         User currentUser = proposalsContext.getUser(request);
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper, contestPhase,
-                proposalsContext.getProposalsPreferences(request)));
+        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper));
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId()));
@@ -119,8 +118,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
-        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper,
-                proposalsContext.getProposalsPreferences(request)));
+        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper));
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
         model.addAttribute("discussionId", proposal.getFellowDiscussionId());
 

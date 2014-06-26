@@ -15,8 +15,11 @@ import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
  */
 public class ProposalAdvancingBean {
 
-    private String[] advanceCommentHeaders = {"", "", ""};
-    private String[] advanceCommentFooters = {"", "", ""};
+    private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
+            "ADVANCING_ADVANCE_TO_SEMIFINALIST",
+            "ADVANCING_DO_NOT_ADVANCE"
+    };
+    private ContestEmailTemplateBean emailTemplateBean;
 
     private JudgingSystemActions.AdvanceDecision advanceDecision;
 
@@ -26,20 +29,12 @@ public class ProposalAdvancingBean {
     public ProposalAdvancingBean() {
     }
 
-    public ProposalAdvancingBean(ProposalWrapper wrapper, ContestPhase contestPhase, ProposalsPreferencesWrapper proposalsPreferencesWrapper) throws PortalException, SystemException {
+    public ProposalAdvancingBean(ProposalWrapper wrapper) throws PortalException, SystemException {
         advanceDecision = wrapper.getJudgeDecision();
         advanceComment = wrapper.getProposalReview();
-        //TODO: decide if the header and footer should still be visible here since the text is quite lengthy now
-        advanceCommentHeaders = new String[] {
-                "","",""
-                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
-                //ProposalJudgingCommentHelper.getCommentHeader(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
-        };
-        advanceCommentFooters = new String[] {
-                "","",""
-                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceRejectionText(contestPhase.getContestPhaseType()))),
-                //ProposalJudgingCommentHelper.getCommentFooter(removeLineBreaks(proposalsPreferencesWrapper.getAdvanceAcceptanceText(contestPhase.getContestPhaseType())))
-        };
+
+        //initialize email templates
+        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, wrapper.getName(), wrapper.getContest().getContestName());
     }
 
     public int getAdvanceDecision() {
@@ -56,17 +51,5 @@ public class ProposalAdvancingBean {
 
     public void setAdvanceComment(String advanceComment) {
         this.advanceComment = advanceComment;
-    }
-
-    public String[] getAdvanceCommentHeaders() {
-        return advanceCommentHeaders;
-    }
-
-    public String[] getAdvanceCommentFooters() {
-        return advanceCommentFooters;
-    }
-
-    private String removeLineBreaks(String html) {
-        return StringUtils.replace(html, "\n", "");
     }
 }

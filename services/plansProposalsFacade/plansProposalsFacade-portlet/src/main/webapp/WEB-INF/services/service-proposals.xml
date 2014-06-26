@@ -225,11 +225,7 @@
 
         <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
     </entity>
-    <entity name="ContestEmailTemplate" local-service="true">
-        <column name="type" type="String" primary="true" />
-        <column name="header" type="String" />
-        <column name="footer" type="String" />
-    </entity>
+
 
 
 </service-builder>
