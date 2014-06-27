@@ -12,7 +12,7 @@
 	<h1>Input widgets</h1>
 	<portlet:actionURL var="updateInputsUrl">
 		<portlet:param name="action" value="updateOutputs"/>
-		<portlet:param name="tab" value="inputWidgets" />
+		<portlet:param name="tab" value="outputWidgets" />
 		<portlet:param name="modelId" value="${model.id }" />
 	</portlet:actionURL>
 	<form:form commandName="updateWidgetsBean" action="${updateInputsUrl }">
@@ -27,11 +27,29 @@
 			</tr>
 			<c:forEach var="output" items="${allOutputs }">
 				<tr >
-					<td>${output.name }</td>
+					<td>
+						<c:if test="${output.displayItemType == 'SERIES'}">${output.metaData.id}</c:if>
+						${output.name }</td>
 					<td>${output }</td>
 					<td>${output.displayItemType }</td>
-					<td>${output.chartType }</td>
-					<td>${output.order }</td>
+					<td>
+						<c:if test="${output.displayItemType == 'SERIES'}">
+							<form:select path="serieTypes[${output.metaData.id}]" items="${availableOutputSeriesTypes}" value="${output.seriesType }"  />
+							associated meta data:
+							<form:input path="associatedMetaDatas[${output.metaData.id}]" val="${output.associatedMetaDataId }" />
+						</c:if>	
+					</td>
+					<td>
+						<c:choose>
+							<c:when test="${output.displayItemType == 'SERIES'}">
+								<form:input path="ordersById[${output.metaData.id}]" value="${output.order }" />
+							</c:when>
+							<c:otherwise>
+								<form:input path='ordersByName[\"${output.name}\"]' value="${output.order }" />
+							</c:otherwise>
+							
+						</c:choose>
+					</td>
 					</tr>
 			</c:forEach>
 		</table>

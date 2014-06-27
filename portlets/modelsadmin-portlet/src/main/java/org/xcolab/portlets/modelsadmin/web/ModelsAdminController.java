@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelOutputWidgetsBean;
 
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
@@ -27,6 +28,7 @@ import com.ext.portlet.models.ui.ModelOutputChartType;
 import com.ext.portlet.models.ui.ModelOutputDisplayItem;
 import com.ext.portlet.models.ui.ModelOutputDisplayItemType;
 import com.ext.portlet.models.ui.ModelOutputIndexedDisplayItem;
+import com.ext.portlet.models.ui.ModelOutputSeriesType;
 import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -105,8 +107,9 @@ public class ModelsAdminController {
 		model.addAttribute("tab", "outputWidgets");
 		model.addAttribute("availableChartTypes", ModelOutputChartType.values());
 		model.addAttribute("availableOutputWidgets", ModelOutputDisplayItemType.values());
+		model.addAttribute("availableOutputSeriesTypes", ModelOutputSeriesType.values());
 		model.addAttribute("allOutputs", getAllOutputsFromDisplay(modelDisplay));
-		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay, modelId));
+		model.addAttribute("updateWidgetsBean", new UpdateModelOutputWidgetsBean(modelDisplay, modelId));
 		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
 		
 		return "modelDetails/modelOutputWidgets";
@@ -163,7 +166,7 @@ public class ModelsAdminController {
 		return ret;
 	}
 
-    private List<ModelOutputDisplayItem> getAllOutputsFromDisplay(ModelDisplay display) {
+    public static List<ModelOutputDisplayItem> getAllOutputsFromDisplay(ModelDisplay display) {
         List<ModelOutputDisplayItem> outputs = new ArrayList<ModelOutputDisplayItem>();
         for (ModelOutputDisplayItem output : display.getOutputs()) {
             outputs.add(output);
