@@ -113,6 +113,8 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         jsonObject.put("scenarioId", scenario.getId());
         jsonObject.put("modelId", scenario.getSimulation().getId());
+        jsonObject.put("modelName", scenario.getSimulation().getName());
+        jsonObject.put("modelDescription", scenario.getSimulation().getDescription());
 
         JSONArray outputsArray = JSONFactoryUtil.createJSONArray();
         for (ModelOutputDisplayItem item : display.getOutputs()) {
@@ -143,6 +145,8 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         
         jsonObject.put("modelId", simulation.getId());
+        jsonObject.put("modelName", simulation.getName());
+        jsonObject.put("modelDescription", simulation.getDescription());
 
         JSONArray outputsArray = JSONFactoryUtil.createJSONArray();
         for (ModelOutputDisplayItem item : display.getOutputs()) {
