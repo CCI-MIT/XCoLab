@@ -14,7 +14,7 @@ function initActTooltips(container) {
             var actInputDef = jQuery(this).parent();
             var self = $(this);
             var tooltip = actInputDef.find(".act_tooltip");
-            tooltip.css('left', self.position().left + self.width() + 5);
+            tooltip.css('left', self.position().left + self.width() -2);
             tooltip.css('top', -16);
             tooltip.show();
     });
@@ -136,7 +136,7 @@ ModelingWidget.prototype.formatInputValue = function(input, value) {
 	
 	if (unit.toLowerCase().indexOf("percent") >= 0 || unit.toLowerCase().indexOf("%") >= 0) {
 
-		return (value * 1).toFixed(0) + "%";
+		return (value * 1) + "%";
 	}
     else if (dataType != null) {
     	if (this.isInteger(dataType)) 
