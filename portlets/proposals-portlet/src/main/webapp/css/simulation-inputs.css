@@ -427,3 +427,20 @@ have a fixed width and height (but it's not required).
 .wizardControls {
   	text-align: right;
 }
+
+.tooltipTrigger {
+	display: inline;
+}
+.tooltipTrigger .qmark {
+	background: #19ABB3;
+	color: white;
+	font-weight: bold;
+	display: inline;
+	padding: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-left: 10px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}

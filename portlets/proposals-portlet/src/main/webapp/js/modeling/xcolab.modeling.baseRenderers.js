@@ -73,11 +73,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype.renderHeaderEdit = function(container, input, modelingWidget, idx, parent) {
 		if (!(input.groupType == 'TAB') && (typeof(parent) == 'undefined' || parent.groupType == 'TAB')) {
 			// this input has no parent or its parent is a tab, it should display it's name as an input section header
+			var addTooltip = input.description && jQuery.trim(input.description).length > 0; 
 			container.append("<tr><td colspan='2'><div class='actInputDef control_title'><span>" + 
-					(idx+1) + ".</span> " + input.name +
+					(idx+1) + ".</span> " + input.name + (addTooltip ? "<div class='tooltipTrigger'><div class='qmark'>?</div>" + 
 					"<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>" +
 					input.description + 
-					"</div></div><div class='act_tt-bot'></div></div>" +
+					"</div></div><div class='act_tt-bot'></div></div></div>" : "") +
 					"</div></td></tr>");
 		}
 		
@@ -89,11 +90,13 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype.renderHeader = function(container, input, modelingWidget, idx, parent) {
 		if (!(input.groupType == 'TAB') && (typeof(parent) == 'undefined' || parent.groupType == 'TAB' )) {
 			// this input has no parent or its parent is a tab, it should display it's name as an input section header
-			container.append("<div><span class='input_def_header'>" + input.name + "</span></div>");
-
-			container.append("<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>"
-					+ input.description + 
-					"</div></div><div class='act_tt-bot'></div></div>");
+			var addTooltip = input.description && jQuery.trim(input.description).length > 0; 
+			container.append("<div><span class='input_def_header'>" + input.name + (addTooltip ? "<div class='tooltipTrigger qmark'>?</div>" : "") + "</span></div>");
+			if (addTooltip) {
+				container.append("<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>"
+						+ input.description + 
+						"</div></div><div class='act_tt-bot'></div></div>");
+			}
 		}
 	};
 	
