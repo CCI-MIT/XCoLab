@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,12 +68,28 @@ public class ModelsAdminController {
 		
 		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
+
+		List<ModelInputGroupDisplayItem> groupsAndTabs = new ArrayList<ModelInputGroupDisplayItem>();
+		for (ModelInputGroupDisplayItem tab: modelDisplay.getTabs()) {
+			groupsAndTabs.addAll(getSubGroups(tab));
+		}
+		
+		groupsAndTabs.addAll(modelDisplay.getGroups());
+		
+		Map<Long, String> groupInputsById = new TreeMap<Long, String>();
+		groupInputsById.put(0L, "-- none --");
+		for (ModelInputGroupDisplayItem item: groupsAndTabs) {
+			groupInputsById.put(item.getGroupId(), item.getName());
+		}
+		 
 		model.addAttribute("model", simulation);
 		model.addAttribute("modelDisplay", modelDisplay);
 		model.addAttribute("tab", "inputWidgets");
 		model.addAttribute("availableInputWidgets", ModelInputWidgetType.values());
 		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay, modelId));
 		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
+		model.addAttribute("groupsAndTabs", groupsAndTabs);
+		model.addAttribute("groupInputsById", groupInputsById);
 		
 		return "modelDetails/modelInputWidgets";
 	}

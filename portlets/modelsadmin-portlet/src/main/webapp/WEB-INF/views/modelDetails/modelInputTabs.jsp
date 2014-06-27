@@ -32,32 +32,7 @@
     		</tr>
     	</thead>
     	<tbody>
-    	<c:forEach var="inputGroup" items="${groupsAndTabs}">
-    		<tr>
-    			<td class='id'>${inputGroup.groupId }</td>
-    			<td class="nameDescriptionMetaDataId">    				<!--  -->
-    			</td>
-    			<td class="name">
-    				${inputGroup.name }
-    			</td>
-    			<td class="description">
-    				${inputGroup.description }
-    			</td>
-    			<td class="parentGroup">
-    				${inputGroup.parentGroupId }
-    			</td>
-    			<td class="type">
-    				${inputGroup.groupType }
-    			</td>
-    			<td class="order">
-    				${inputGroup.order }
-				</td>
-				<td>
-					<button class="btn btn-info editGroupTrigger">Edit</button>
-					<button class="btn btn-info deleteGroupTrigger">Delete</button>
-				</td>
-			</tr>
-    	</c:forEach>
+    	
     		<tr id="addEditGroupInputs">
     			<td class="id"><form:input type="text" value="0" class="hidden input" path="id"/><!--  --></td>
     			<td>    				
@@ -87,7 +62,34 @@
 				</td>
     			
     		</tr>
-    	</tbody>
+    	
+    	<c:forEach var="inputGroup" items="${groupsAndTabs}">
+    		<tr>
+    			<td class='id'>${inputGroup.groupId }</td>
+    			<td class="nameDescriptionMetaDataId">    				<!--  -->
+    			</td>
+    			<td class="name">
+    				${inputGroup.name }
+    			</td>
+    			<td class="description">
+    				${inputGroup.description }
+    			</td>
+    			<td class="parentGroup">
+    				${inputGroup.parentGroupId }
+    			</td>
+    			<td class="type">
+    				${inputGroup.groupType }
+    			</td>
+    			<td class="order">
+    				${inputGroup.order }
+				</td>
+				<td>
+					<button class="btn btn-info editGroupTrigger">Edit</button>
+					<button class="btn btn-info deleteGroupTrigger">Delete</button>
+				</td>
+			</tr>
+    	</c:forEach>
+      </tbody>
     </table>
     </form:form>
     

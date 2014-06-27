@@ -15,6 +15,7 @@ import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
+import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -42,6 +43,15 @@ public class UpdateModelInputWidgetsAction {
 				if (updateModelWidgetsBean.getWidgets().containsKey(item.getMetaData().getId())) {
 					item.setType(updateModelWidgetsBean.getWidgets().get(item.getMetaData().getId()));
 					//ModelInputItemLocalServiceUtil.updateModelInputItem(item);
+				}
+
+				if (updateModelWidgetsBean.getGroups().containsKey(item.getMetaData().getId())) {
+					((ModelInputIndividualDisplayItem) item).setGroupId(updateModelWidgetsBean.getGroups().get(item.getMetaData().getId()));
+				}
+				
+
+				if (updateModelWidgetsBean.getOrders().containsKey(item.getMetaData().getId())) {
+					((ModelInputIndividualDisplayItem) item).setOrder(updateModelWidgetsBean.getOrders().get(item.getMetaData().getId()));
 				}
 			}
 		}
