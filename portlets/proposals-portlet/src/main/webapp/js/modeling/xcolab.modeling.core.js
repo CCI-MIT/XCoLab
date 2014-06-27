@@ -12,7 +12,10 @@ if (typeof (XCoLab) == 'undefined')
 function initActTooltips(container) {
     container.on('mouseover', '.tooltipTrigger', function() {
             var actInputDef = jQuery(this).parent();
+            var self = $(this);
             var tooltip = actInputDef.find(".act_tooltip");
+            tooltip.css('left', self.position().left + self.width() + 5);
+            tooltip.css('top', -16);
             tooltip.show();
     });
     container.on('mouseout', '.tooltipTrigger', function() {
