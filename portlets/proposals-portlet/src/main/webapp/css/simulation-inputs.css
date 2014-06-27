@@ -92,6 +92,10 @@ table.inputDefTable {
 table.innerLayout td.label {
     text-align:right;
     vertical-align: middle;
+    font-weight: normal;
+    font-size: inherit;
+    color: #000;
+    display: table-cell;
 
 }
 

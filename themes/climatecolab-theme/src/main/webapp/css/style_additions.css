@@ -60,7 +60,7 @@
 .act-edit_left { float:left; width:495px;}
 .act-edit_right { float:left; width:489px; color:#464646;}
 
-.act-edit_left-top { width:450px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
+.act-edit_left-top { width:480px; padding:15px; background:url(../images/actions_charttop-bg.gif);}
 
 
 .actions-edit_chart-head { width:489px; min-height:40px; }
