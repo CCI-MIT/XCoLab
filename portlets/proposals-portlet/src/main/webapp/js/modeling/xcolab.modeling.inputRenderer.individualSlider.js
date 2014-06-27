@@ -90,7 +90,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		slider.slider("option", "value", sliderVal);
 		
 		valueField.change(function(eventObject) {
-			
 			if (!modeling.isInputValueValid(input, valueField.val())) {
 				// value is invalid
 				valueField.val(modeling.formatInputValue(input, currentValue));
@@ -101,10 +100,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var sliderVal = currentValue;
 			valueField.val(modeling.formatInputValue(input, currentValue));
 
-			if (modeling.isDouble(dataType)) {
+			//if (modeling.isDouble(dataType)) {
 				sliderVal = ((sliderVal - min) / (max-min)) * (sliderMax - sliderMin);
-			}
-
+			//}
 			slider.slider("option", "value", sliderVal);
 			bindingInput.val(currentValue);
 			
