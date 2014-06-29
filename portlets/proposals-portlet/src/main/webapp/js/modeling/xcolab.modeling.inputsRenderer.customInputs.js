@@ -38,9 +38,11 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
+			var prevModel = that.model;
+			that.model = event.model;
 			if (event.model.usesCustomInputs) {
-				that.model = event.model;
-				if (! this.rendered ) {
+				var modelChanged = (prevModel && prevModel.modelId != event.model.modelId); 
+				if (modelChanged || ! this.rendered ) {
 					// if widget is in edit mode then there is no need to rerender 
 					this.rendered = true;
 					that.render(modelingWidget.container, event.model);

@@ -269,7 +269,7 @@ ModelingWidget.prototype.runTheModel = function() {
  * 
  */
 ModelingWidget.prototype.loadModel = function(modelId) {
-	console.debug('loading scenario', modelId);
+	console.debug('loading model', modelId);
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingModel");
