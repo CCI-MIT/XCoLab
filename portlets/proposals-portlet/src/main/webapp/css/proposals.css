@@ -402,3 +402,9 @@ div.sponsorLogo img {
 .wizardSelectedOptionsInfo li  {
 	font-weight: normal !important;
 }
+
+.modelSelector {
+	background: #e8e7dc;
+	padding: 10px;
+}
+#e8e7dc

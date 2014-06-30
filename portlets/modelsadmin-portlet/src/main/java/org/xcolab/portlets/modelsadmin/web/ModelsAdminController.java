@@ -40,7 +40,10 @@ import edu.mit.cci.roma.client.Simulation;
 public class ModelsAdminController {
 	
 	@RequestMapping
-	public String showAvailableModels(Model model) throws SystemException {
+	public String showAvailableModels(Model model, @RequestParam(value ="refresh", required=false) boolean refresh) throws SystemException {
+		if (refresh) {
+			CollaboratoriumModelingService.repository().getManager().clearCache();
+		}
 		List<Simulation> simulationsSorted = new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getAllSimulations());
 		Collections.sort(simulationsSorted, new Comparator<Simulation>() {
 
