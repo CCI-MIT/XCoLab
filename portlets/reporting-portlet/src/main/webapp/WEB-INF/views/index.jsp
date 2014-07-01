@@ -13,6 +13,12 @@
         <portlet:param name="report" value="proposalSupporterReport" />
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="userActivitiesByContestReport">
+        <portlet:param name="report" value="userActivitiesByContestReport" />
+    </portlet:resourceURL>
+
+
+
 
     <h1>Reports generator</h1>
 
@@ -21,5 +27,7 @@
     <a class='btn btn-primary' href="${authorAttractionReportURL }">Author attraction report</a>
     <br/>
     <a class='btn btn-primary' href="${proposalSupporterReport }">Proposal supporter report</a>
+    <br />
+    <a class='btn btn-primary' href="${userActivitiesByContestReport}">User activities by contest report</a>
 
 </jsp:root>

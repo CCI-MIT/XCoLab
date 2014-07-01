@@ -69,16 +69,20 @@ public class AuthorAttractionBean {
         List<ProposalSupporterPair> ret = new LinkedList<>();
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
         for (Contest contest : contests) {
-            ContestPhase votingPhase = getVotingPhase(contest);
-            if(votingPhase!=null) {
-
+            ContestPhase revisionPhase = getRevisionPhase(contest);
+            if(revisionPhase!=null) {
                 List<Proposal> proposalsInContest = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
 
                 for (Proposal proposal : proposalsInContest) {
                     for (ProposalSupporter proposalSupporter : getProposalSupporters(proposal)) {
-                        if(proposalSupporter.getCreateDate().before(votingPhase.getPhaseStartDate())) {
-                            User user = UserLocalServiceUtil.getUser(proposalSupporter.getUserId());
-                            ret.add(new ProposalSupporterPair(proposal, user));
+                        if(proposalSupporter.getCreateDate().before(revisionPhase.getPhaseStartDate())) {
+                            try {
+                                User user = UserLocalServiceUtil.getUser(proposalSupporter.getUserId());
+                                if(user.getCreateDate().before(revisionPhase.getCreated()))
+                                    ret.add(new ProposalSupporterPair(proposal, user));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -89,11 +93,11 @@ public class AuthorAttractionBean {
         return ret;
     }
 
-    private ContestPhase getVotingPhase(Contest contest) throws SystemException {
+    private ContestPhase getRevisionPhase(Contest contest) throws SystemException {
         List<ContestPhase> phases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
         for (ContestPhase phase : phases) {
             long type = phase.getContestPhaseType();
-            if(type == 13L || type==3) {
+            if(type == 9L || type==12L) {
                 return phase;
             }
         }
