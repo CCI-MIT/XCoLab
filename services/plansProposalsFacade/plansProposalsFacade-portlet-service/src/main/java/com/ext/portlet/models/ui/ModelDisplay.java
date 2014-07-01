@@ -103,6 +103,11 @@ public class ModelDisplay implements Serializable {
        Collections.sort(nonTabs);
         return nonTabs;
     }
+    
+    public List<ModelInputGroupDisplayItem> getGroups() {
+    	Collections.sort(groups);
+    	return groups;
+    }
 
     public List<ModelInputDisplayItem> getAllIndividualInputs() {
         List<ModelInputDisplayItem> result = new ArrayList<ModelInputDisplayItem>();

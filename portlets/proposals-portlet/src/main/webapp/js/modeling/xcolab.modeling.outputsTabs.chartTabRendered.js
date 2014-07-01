@@ -228,7 +228,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		    		location :'s',
 		    		placement: 'outside',
 		    		marginTop : '300px',
-		    		rendererOptions: {numberColumns: 5}
+		    		rendererOptions: {numberColumns: 4}
 		    	}
 		};
 		

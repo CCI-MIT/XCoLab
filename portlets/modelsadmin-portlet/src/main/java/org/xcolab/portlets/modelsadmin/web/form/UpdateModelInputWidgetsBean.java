@@ -5,12 +5,15 @@ import java.util.Map;
 
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
+import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
 import com.ext.portlet.models.ui.ModelInputWidgetType;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class UpdateModelInputWidgetsBean {
 	private Map<Long, ModelInputWidgetType> widgets = new HashMap<>();
+	private Map<Long, Long> groups = new HashMap<>();
+	private Map<Long, Integer> orders = new HashMap<>();
 	private String customInputWidgets;
 	
 	public UpdateModelInputWidgetsBean() {
@@ -19,6 +22,8 @@ public class UpdateModelInputWidgetsBean {
 	public UpdateModelInputWidgetsBean(ModelDisplay display, long modelId) throws SystemException {
 		for (ModelInputDisplayItem item: display.getAllIndividualInputs()) {
 			widgets.put(item.getMetaData().getId(), item.getType());
+			orders.put(item.getMetaData().getId(), item.getOrder());
+			groups.put(item.getMetaData().getId(), ((ModelInputIndividualDisplayItem) item).getGroupId());
 		}
 		customInputWidgets = ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId).getCustomInputsDefinition();
 	}
@@ -29,6 +34,22 @@ public class UpdateModelInputWidgetsBean {
 
 	public void setWidgets(Map<Long, ModelInputWidgetType> widgets) {
 		this.widgets = widgets;
+	}
+
+	public Map<Long, Long> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Map<Long, Long> groups) {
+		this.groups = groups;
+	}
+
+	public Map<Long, Integer> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Map<Long, Integer> orders) {
+		this.orders = orders;
 	}
 
 	public String getCustomInputWidgets() {

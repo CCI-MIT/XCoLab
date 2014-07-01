@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
 	<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css"></link>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
+	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"><!-- --></script>
 	
 	<div class="breadcrumb">
 		<portlet:renderURL var="modelsIndexUrl" />
@@ -37,6 +38,11 @@
 			<portlet:param name="tab" value="outputWidgets"/>
 		</portlet:renderURL>
 		<li class="${tab == 'outputWidgets' ? 'active' : ''}"><a href='${outputWidgetsUrl }'>Output widgets</a></li>
+		<portlet:renderURL var="inputTabsUrl">
+			<portlet:param name="modelId" value="${model.id }"/>
+			<portlet:param name="tab" value="inputTabs"/>
+		</portlet:renderURL>
+		<li class="${tab == 'inputTabs' ? 'active' : ''}"><a href='${inputTabsUrl }'>Input tabs</a></li>
 	</ul>
 
 </jsp:root>

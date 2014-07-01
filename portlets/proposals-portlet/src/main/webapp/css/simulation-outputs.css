@@ -285,7 +285,7 @@ td.jqplot-table-legend {vertical-align: top;}
 
 td.jqplot-table-legend > div {border: 0;}
 
-.rounded_button.blugrid.outputTabTrigger a {
+.rounded_button.blugrid.inputTabTrigger a, .rounded_button.blugrid.outputTabTrigger a {
 	padding-bottom: 20px;
 }
 

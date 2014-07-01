@@ -14,12 +14,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			if (! event.scenario.usesCustomInputs) {
 				that.render(modelingWidget.container, event.scenario);
 			}
+			that.modelId = event.scenario.modelId;
 		});
 		
 		jQuery(modelingWidget).on('modelFetched', function(event) {
 			if (! event.model.usesCustomInputs) {
 				that.render(modelingWidget.container, event.model);
 			}
+			that.modelId = event.model.modelId;
 		});
 	}
 	

@@ -10,13 +10,16 @@ if (typeof (XCoLab) == 'undefined')
 	XCoLab = {};
 
 function initActTooltips(container) {
-    container.on('mouseover', '.actInputDef', function() {
-            var actInputDef = jQuery(this);
+    container.on('mouseover', '.tooltipTrigger', function() {
+            var actInputDef = jQuery(this).parent();
+            var self = $(this);
             var tooltip = actInputDef.find(".act_tooltip");
+            tooltip.css('left', self.position().left + self.width() -2);
+            tooltip.css('top', -16);
             tooltip.show();
     });
-    container.on('mouseout', '.actInputDef', function() {
-        var actInputDef = jQuery(this);
+    container.on('mouseout', '.tooltipTrigger', function() {
+        var actInputDef = jQuery(this).parent();
         var tooltip = actInputDef.find(".act_tooltip");
         tooltip.hide();
     });
@@ -133,7 +136,7 @@ ModelingWidget.prototype.formatInputValue = function(input, value) {
 	
 	if (unit.toLowerCase().indexOf("percent") >= 0 || unit.toLowerCase().indexOf("%") >= 0) {
 
-		return (value * 1).toFixed(0) + "%";
+		return (value * 1) + "%";
 	}
     else if (dataType != null) {
     	if (this.isInteger(dataType)) 
@@ -266,7 +269,7 @@ ModelingWidget.prototype.runTheModel = function() {
  * 
  */
 ModelingWidget.prototype.loadModel = function(modelId) {
-	console.debug('loading scenario', modelId);
+	console.debug('loading model', modelId);
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingModel");

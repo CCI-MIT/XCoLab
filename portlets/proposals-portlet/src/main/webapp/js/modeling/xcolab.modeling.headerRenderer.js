@@ -15,6 +15,14 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		jQuery(modelingWidget).on("valueChanged", function() {
 			that.container.find(".runSimulationButtonHighlight").effect("highlight", {}, 2000);
 		});
+
+		jQuery(modelingWidget).on('scenarioFetched', function(event) {
+			that.updateNameDescription(event.scenario);
+		});
+		
+		jQuery(modelingWidget).on('modelFetched', function(event) {
+			that.updateNameDescription(event.model);
+		});
 	}
 	
 	
@@ -27,7 +35,8 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		
 		var that = this;
 		this.container = container;
-		container.append('<div class="act_left">' + 
+		
+		container.append('<div class="model_name_description"><h2 class="model_name"></h2><p class="model_description"></p></div><div class="act_left">' + 
 			'<div class="acthead-l">Actions</div>' + 
 			'</div> <!-- /act_left -->' +
 			'<div class="act_right">' + 
@@ -50,6 +59,12 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			"<div class='clearfix'></div>" + 
 			"<div class='actions_wrap'><div class='act_charts-top2'></div></div>");
 	};
+	
+	DefaultHeaderRenderer.prototype.updateNameDescription = function(model) {
+		this.container.find('.model_name').text(model.modelName);
+		this.container.find('.model_description').text(model.modelDescription);
+		
+	}
 	
 	XCoLab.modeling.headerRenderers.push(function (modelingWidget) {
 		return new DefaultHeaderRenderer(modelingWidget);

@@ -48,13 +48,16 @@
 						<th>Description</th>
 						<th>Widget</th>
 					</tr>
-					<c:forEach var="input" items="${modelDisplay.inputs }">
+					<c:forEach var="input" items="${modelDisplay.allIndividualInputs }">
 						<c:if test="${input.displayItemType == 'INDIVIDUAL' }">
 							<tr>
 								<td>${input.name }</td>
 								<td>${input.description }</td>
 								<td><form:select path="widgets[${input.metaData.id }]"
 										items="${availableInputWidgets}" /></td>
+								<td><form:input path="orders[${input.metaData.id }]" /></td>
+								<td><form:select path="groups[${input.metaData.id }]"
+										items="${groupInputsById}" /></td>
 							</tr>
 						</c:if>
 					</c:forEach>

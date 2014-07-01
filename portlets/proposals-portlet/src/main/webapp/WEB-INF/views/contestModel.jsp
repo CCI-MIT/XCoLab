@@ -9,6 +9,8 @@
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 	<jsp:directive.include file="./init.jspx" />
+	
+	
 	<div class="proposal-head">
 		<div class="inner">
 			<div class='headline'>
@@ -24,39 +26,47 @@
 	</div>
 	<!-- /proposal-head -->	
 	<div id="content">
-			<modeling:simulationEdit  modelId="${modelId }" />
-	</div>
 	<c:if test="${not empty availableModels }">
-	<div>
-			<div class="clear"></div>
-			<br />
-        
-            <div class="act-edit-box_left" style="height: 80px;">
-            
-                <p>Select varying levels of geographic disaggregation for the actions</p>
+	<div class='modelSelector'>
+            <div>
+                <p>Select your model:</p>
                 <div class="">
-                	<select class='selectbox1'>
+                	<select class='selectbox1 modelsSelectBox'>
                 	<c:forEach var="model" items="${availableModels }">
                 		<option value="${model.key }">${model.value }</option>
                 	</c:forEach>
                 	</select>
                 </div>
             </div>
-	        <div class="act-edit-box_right" style="height: 80px;">
-    	        <p>You can also upload your own disaggregation mode</p>
-        	    <div class="butt_wrap">
-            	    <div class="button"><a href="/web/guest/resources/-/wiki/Main/Upload+model+help"><span>CONTRIBUTE</span> model</a></div>
-            	</div>
-        	</div>
-        <div class="clear"></div>
 	</div>
 	<script>
+		var preferredModelsCookie = "cc_contests_preferredModels";
+		var preferredModelsStr = $.cookie(preferredModelsCookie);
+		var preferredModelsMap = {};
+		// try to parse preferred models
+		try {
+			preferredModelsMap = JSON.parse(preferredModelsStr);
+			if ("${contest.contestPK}" in preferredModelsMap) {
+				// there is a preferred model, select it in models select box
+				$(".modelsSelectBox").val(preferredModelsMap["${contest.contestPK}"]);
+			}
+			
+			
+		} catch (e) {
+			// ignore
+		}
 		jQuery(".selectbox1").change(function() {
 			modeling.loadModel($(this).val());
 			jQuery(".act-edit_left").html("");
 			jQuery(".act-edit_right").html("");
+			preferredModelsMap["${contest.contestPK}"] = $(this).val();
+			
+			$.cookie("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
 		});
 	</script>
 	</c:if>
+	
+			<modeling:simulationEdit  modelId="${modelId }" />
+	</div>
 	
 </jsp:root>

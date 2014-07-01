@@ -279,4 +279,12 @@ public class ContestWrapper {
     public void setDefaultModelId(long modelId) {
     	contest.setDefaultModelId(modelId);
     }
+    
+    public String getOtherModels() {
+    	return contest.getOtherModels();
+    }
+    
+    public void setOtherModels(String otherModels) {
+    	contest.setOtherModels(otherModels);
+    }
 }
