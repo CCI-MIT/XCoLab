@@ -83,7 +83,7 @@ table.simulation .leftContent, table.simulation .right-content {
 	margin-top: -50px;
 }
 
-.model_description .brand.EMF27 {
+.model_description .brand.EMF27, .model_description .brand.EMF  {
 	background: url(https://emf.stanford.edu/sites/default/files/EMF-Logo_v2.1.png) no-repeat !important;
 	width: 154px;
 	height: 50px;
