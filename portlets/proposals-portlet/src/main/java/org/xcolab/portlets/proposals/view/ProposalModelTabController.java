@@ -1,5 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
+import java.util.Map;
+
 import javax.portlet.PortletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -28,6 +31,13 @@ public class ProposalModelTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
         
         if (edit) {
+        	Contest c = proposalsContext.getContest(request);
+
+        	Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+        	if (modelIdsWithNames.size() > 1) {
+        		model.addAttribute("availableModels", modelIdsWithNames);
+        	}
+        	
             return "proposalModel_edit";
         }
         return "proposalModel";

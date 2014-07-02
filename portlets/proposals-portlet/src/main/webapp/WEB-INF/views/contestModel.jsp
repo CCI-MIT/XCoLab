@@ -27,43 +27,7 @@
 	<!-- /proposal-head -->	
 	<div id="content">
 	<c:if test="${not empty availableModels }">
-	<div class='modelSelector'>
-            <div>
-                <p>Select your model:</p>
-                <div class="">
-                	<select class='selectbox1 modelsSelectBox'>
-                	<c:forEach var="model" items="${availableModels }">
-                		<option value="${model.key }">${model.value }</option>
-                	</c:forEach>
-                	</select>
-                </div>
-            </div>
-	</div>
-	<script>
-		var preferredModelsCookie = "cc_contests_preferredModels";
-		var preferredModelsStr = $.cookie(preferredModelsCookie);
-		var preferredModelsMap = {};
-		// try to parse preferred models
-		try {
-			preferredModelsMap = JSON.parse(preferredModelsStr);
-			if ("${contest.contestPK}" in preferredModelsMap) {
-				// there is a preferred model, select it in models select box
-				$(".modelsSelectBox").val(preferredModelsMap["${contest.contestPK}"]);
-			}
-			
-			
-		} catch (e) {
-			// ignore
-		}
-		jQuery(".selectbox1").change(function() {
-			modeling.loadModel($(this).val());
-			jQuery(".act-edit_left").html("");
-			jQuery(".act-edit_right").html("");
-			preferredModelsMap["${contest.contestPK}"] = $(this).val();
-			
-			$.cookie("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
-		});
-	</script>
+		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
 	</c:if>
 	
 			<modeling:simulationEdit  modelId="${modelId }" />

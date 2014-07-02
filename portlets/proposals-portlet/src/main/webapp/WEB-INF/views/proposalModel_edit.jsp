@@ -12,6 +12,10 @@
 
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 	<div id="content">
+	
+	<c:if test="${not empty availableModels }">
+		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
+	</c:if>
 		<modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
 	
 	<portlet:actionURL var="updateProposalScenarioURL">
