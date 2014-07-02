@@ -76,15 +76,15 @@ table.simulation .leftContent, table.simulation .right-content {
 }
 
 .model_description .brand.EnROADS {
-	background: url(http://www.thinktankmap.org/VisualizzaAnteprima.aspx?format=bmp&quality=100&mode=0&height=&width=200&path=ImmaginiCaricate/2008010821417676.jpg) no-repeat !important;
-	width: 200px;
-	height: 82px;
+	background: url(../img/climate_interactive_logo.png) no-repeat !important;
+	width: 150px;
+	height: 67px;
 	float: right;
 	margin-top: -50px;
 }
 
 .model_description .brand.EMF27, .model_description .brand.EMF  {
-	background: url(https://emf.stanford.edu/sites/default/files/EMF-Logo_v2.1.png) no-repeat !important;
+	background: url(../img/emf_logo.png) no-repeat !important;
 	width: 154px;
 	height: 50px;
 	float: right;
