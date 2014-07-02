@@ -2,17 +2,21 @@ package org.xcolab.utils.judging;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest phases
@@ -97,7 +101,10 @@ public class ProposalJudgingCommentHelper {
      * @throws NoSuchProposalContestPhaseAttributeException
      * @throws SystemException
      */
-    public String getPromotionComment() throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    public String getPromotionComment() throws NoSuchProposalContestPhaseAttributeException, SystemException, PortalException {
+        String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String contestName = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getContestShortName();
+
         //get fellow decision
         JudgingSystemActions.FellowAction fellowAction;
         try {
@@ -118,9 +125,15 @@ public class ProposalJudgingCommentHelper {
                         getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
                 JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
-                if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
-                    //TODO: implement the wrapping email functionality
-                    return reviewText;
+                if (advanceDecision == JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                    String templateToLoad = (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) ? "ADVANCING_ADVANCE_TO_SEMIFINALIST" : "ADVANCING_DO_NOT_ADVANCE";
+
+                    ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
+                            ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                            proposalName,
+                            contestName
+                    );
+                    return wrapper.getCompleteMessage(reviewText);
                 }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 _log.error("Could not extract contest phase promotion body for proposal " + proposal.getProposalId() + " in contestPhase " + contestPhase.getContestPhasePK(), e);
@@ -134,8 +147,14 @@ public class ProposalJudgingCommentHelper {
                     0
             ).getStringValue();
 
-            //TODO: implement the wrapping email functionality
-            return fellowReviewText;
+            String templateToLoad = (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) ? "SCREENING_INCOMPLETE" : "SCREENING_OFF_TOPIC";
+
+            ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
+                    ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                    proposalName,
+                    contestName
+            );
+            return wrapper.getCompleteMessage(fellowReviewText);
         }
 
         return StringPool.BLANK;

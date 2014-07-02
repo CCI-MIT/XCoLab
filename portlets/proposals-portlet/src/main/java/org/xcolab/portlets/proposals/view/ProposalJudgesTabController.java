@@ -40,9 +40,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         User currentUser = proposalsContext.getUser(request);
+        ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", new ProposalAdvancingBean(proposalWrapper));
+        model.addAttribute("proposalAdvancingBean", bean);
+        model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(proposal.getProposalId()));
@@ -96,7 +98,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
-    public String showFellowsPanel(PortletRequest request,Model model) 
+    public String showFellowsPanel(PortletRequest request, Model model)
             throws PortalException, SystemException {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
@@ -115,10 +117,12 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
                 0
         );
+        FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
 
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
-        model.addAttribute("fellowProposalScreeningBean", new FellowProposalScreeningBean(proposalFellowWrapper));
+        model.addAttribute("fellowProposalScreeningBean", bean);
+        model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
         model.addAttribute("discussionId", proposal.getFellowDiscussionId());
 

@@ -1,6 +1,12 @@
-package org.xcolab.portlets.proposals.wrappers;
+package org.xcolab.utils.judging;
 
 import com.ext.portlet.model.ContestEmailTemplate;
+import com.ext.portlet.model.ProposalRatingType;
+import com.ext.portlet.model.ProposalRatingValue;
+import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * Created by Manuel Thurner
@@ -36,8 +42,7 @@ public class ContestEmailTemplateWrapper {
 
     private String replaceVariables(String subject) {
         String result = subject.replaceAll("<contest-title/>", this.contestName)
-            .replaceAll("<proposal-title/>", this.proposalName)
-            .replaceAll("\n", "\n<br/>");
+                .replaceAll("<proposal-title/>", this.proposalName);
         return result;
     }
 }

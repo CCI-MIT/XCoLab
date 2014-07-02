@@ -87,15 +87,23 @@
                         <i style="font-size:10pt;">The message below will be used as a template as the response message to the author.</i>
                         <br/>
                         <br/>
-                        <div id="comment-header">
-                            <!-- -->
+                        <div id="comment-headers">
+                            <c:forEach var="template" items="${emailTemplates}">
+                                <div class="${template.key}">
+                                    ${template.value.getHeader()}
+                                </div>
+                            </c:forEach>
                         </div>
                         <div class="form-errors"><!--  -->
                             <form:errors cssClass="alert alert-error" path="fellowScreeningActionCommentBody" />
                         </div>
                         <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningActionCommentBody" style="width:100%;"/>
-                        <div id="comment-footer">
-                            <!-- -->
+                        <div id="comment-footers">
+                            <c:forEach var="template" items="${emailTemplates}">
+                                <div class="${template.key}">
+                                        ${template.value.getFooter()}
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                     <c:choose>
@@ -182,27 +190,22 @@
 
     <script type="text/javascript">
         var fellowScreeningActions = {};
-        var screeningCommentHeaders = new Array();
-        var screeningCommentFooters = new Array();
 
         <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
                 fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
             description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
             commentEnabled: ${fellowScreeningActions.commentEnabled}};
         </c:forEach>
-        <c:forEach var="commentHeader" items="${fellowProposalScreeningBean.fellowCommentHeaders}">
-                screeningCommentHeaders.push("${commentHeader}");
-        </c:forEach>
-        <c:forEach var="commentFooter" items="${fellowProposalScreeningBean.fellowCommentFooters}">
-                screeningCommentFooters.push("${commentFooter}");
-        </c:forEach>
+
 
         jQuery( document ).ready(function() {
             jQuery('#fellowScreeningAction').change(function() {
                 refreshCommentFieldVisibility();
+                refreshEmailTemplates();
             });
 
             refreshCommentFieldVisibility();
+            refreshEmailTemplates();
         });
 
         function refreshCommentFieldVisibility() {
@@ -218,9 +221,22 @@
             } else {
                 jQuery('#fellowSelectJudgesContainer').slideUp();
             }
+        }
 
-            $('#comment-header').html(screeningCommentHeaders[fellowActionSelectIdx]);
-            $('#comment-footer').html(screeningCommentFooters[fellowActionSelectIdx]);
+        function refreshEmailTemplates() {
+            jQuery("#comment-footers > div").hide();
+            jQuery("#comment-headers > div").hide();
+
+            var fellowAction = $("#fellowScreeningAction").val();
+            var classToBeShown = "";
+            if (fellowAction == "1") {
+                classToBeShown = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
+            } else if (fellowAction == "2") {
+                classToBeShown = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
+            }
+            if (classToBeShown != "") {
+                jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+            }
         }
 
     </script>

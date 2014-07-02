@@ -394,7 +394,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
         // Decide about the promotion
         if (didJudgeDecideToPromote(p, phase)) {
-            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
         }
 
         proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);

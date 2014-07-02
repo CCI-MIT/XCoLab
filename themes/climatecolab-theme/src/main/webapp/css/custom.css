@@ -675,3 +675,8 @@ $dockbarOpenGradientStart: #0EA6F9;
 .ltr .column, .rtl .column-last {
 	float: none;
 }
+#comment-headers, #comment-footers {
+    color: #666;
+    font-size: 0.9em;
+    padding: 1em 0;
+}

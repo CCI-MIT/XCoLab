@@ -1,6 +1,13 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.service.base.ContestEmailTemplateLocalServiceBaseImpl;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the contest email template local service.
@@ -23,4 +30,14 @@ public class ContestEmailTemplateLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil} to access the contest email template local service.
      */
+    public ContestEmailTemplate getEmailTemplateByType(String type) throws SystemException {
+        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ContestEmailTemplate.class)
+                .add(PropertyFactoryUtil.forName("type").eq(type));
+        List<ContestEmailTemplate> results = dynamicQuery(query);
+        if (results.size() > 0) {
+            return results.get(0);
+        } else {
+            return null;
+        }
+    }
 }

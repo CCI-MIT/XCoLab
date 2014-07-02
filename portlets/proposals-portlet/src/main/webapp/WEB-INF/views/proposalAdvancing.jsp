@@ -58,15 +58,23 @@
                                 </i>
                                 <br/>
                                 <br/>
-                                <div id="comment-header">
-                                    <!-- -->
+                                <div id="comment-headers">
+                                    <c:forEach var="template" items="${emailTemplates}">
+                                        <div class="${template.key}">
+                                                ${template.value.getHeader()}
+                                        </div>
+                                    </c:forEach>
                                 </div>
                                 <div class="form-errors"><!--  -->
                                     <form:errors cssClass="alert alert-error" path="advanceComment" />
                                 </div>
                                 <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
-                                <div id="comment-footer">
-                                    <!-- -->
+                                <div id="comment-footers">
+                                    <c:forEach var="template" items="${emailTemplates}">
+                                        <div class="${template.key}">
+                                                ${template.value.getFooter()}
+                                        </div>
+                                    </c:forEach>
                                 </div>
                                 <c:if test="proposalsPermissions.canAdminAll">
                                     <div class="blue-button" style="display:block; float:left;">
@@ -167,22 +175,14 @@
     </div>
 
     <script>
-        var advanceCommentHeaders = new Array();
-        var advanceCommentFooters = new Array();
-
-        <c:forEach var="commentHeader" items="${proposalAdvancingBean.advanceCommentHeaders}">
-                advanceCommentHeaders.push("${commentHeader}");
-        </c:forEach>
-        <c:forEach var="commentFooter" items="${proposalAdvancingBean.advanceCommentFooters}">
-                advanceCommentFooters.push("${commentFooter}");
-        </c:forEach>
-
         jQuery( document ).ready(function() {
             jQuery('#advanceDecision').change(function() {
                 refreshCommentHeader();
+                refreshEmailTemplates();
             });
 
             refreshCommentHeader();
+            refreshEmailTemplates();
         });
 
         function refreshCommentHeader() {
@@ -192,9 +192,22 @@
             } else {
                 $('#comment-container').slideUp();
             }
+        }
 
-            $('#comment-header').html(advanceCommentHeaders[advanceDecisionIdx]);
-            $('#comment-footer').html(advanceCommentFooters[advanceDecisionIdx]);
+        function refreshEmailTemplates() {
+            jQuery("#comment-footers > div").hide();
+            jQuery("#comment-headers > div").hide();
+
+            var action = $("#advanceDecision").val();
+            var classToBeShown = "";
+            if (action == "1") {
+                classToBeShown = "ADVANCING_DO_NOT_ADVANCE";
+            } else if (action == "2") {
+                classToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+            }
+            if (classToBeShown != "") {
+                jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+            }
         }
     </script>
     <c:if test="${hasNoWritePermission or (isFrozen and not isAdmin)}">

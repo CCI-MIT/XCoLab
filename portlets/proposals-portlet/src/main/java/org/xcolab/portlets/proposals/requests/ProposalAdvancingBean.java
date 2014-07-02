@@ -34,7 +34,11 @@ public class ProposalAdvancingBean {
         advanceComment = wrapper.getProposalReview();
 
         //initialize email templates
-        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, wrapper.getName(), wrapper.getContest().getContestName());
+        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, wrapper.getName(), wrapper.getContest().getContestShortName());
+    }
+
+    public ContestEmailTemplateBean getEmailTemplateBean() {
+        return this.emailTemplateBean;
     }
 
     public int getAdvanceDecision() {

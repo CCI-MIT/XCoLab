@@ -1,23 +1,13 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.service.ContestEmailTemplateLocalService;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.apache.commons.lang.StringUtils;
-import org.xcolab.portlets.proposals.wrappers.ContestEmailTemplateWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.ext.portlet.model.ContestEmailTemplate;
 
 /**
  * Created by kmang on 25/05/14.
@@ -42,12 +32,16 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
         selectedJudges = proposalWrapper.getSelectedJudges();
 
         //initialize email templates
-        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, proposalWrapper.getName(), proposalWrapper.getContest().getContestName());
+        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, proposalWrapper.getName(), proposalWrapper.getContest().getContestShortName());
 
         fellowScreeningActionCommentBody = proposalWrapper.getFellowActionComment();
     }
 
     public FellowProposalScreeningBean() {
+    }
+
+    public ContestEmailTemplateBean getEmailTemplateBean() {
+        return this.emailTemplateBean;
     }
 
     public int getFellowScreeningAction() {
