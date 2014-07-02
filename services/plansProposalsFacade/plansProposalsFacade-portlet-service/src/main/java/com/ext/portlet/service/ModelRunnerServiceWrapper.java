@@ -70,6 +70,13 @@ public class ModelRunnerServiceWrapper implements ModelRunnerService,
         return _modelRunnerService.runModel(modelId, inputs);
     }
 
+    @Override
+    public void refreshModels()
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        _modelRunnerService.refreshModels();
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

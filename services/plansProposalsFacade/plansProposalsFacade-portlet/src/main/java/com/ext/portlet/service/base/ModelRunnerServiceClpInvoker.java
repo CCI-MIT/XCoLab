@@ -19,6 +19,8 @@ public class ModelRunnerServiceClpInvoker {
     private String[] _methodParameterTypes498;
     private String _methodName499;
     private String[] _methodParameterTypes499;
+    private String _methodName500;
+    private String[] _methodParameterTypes500;
 
     public ModelRunnerServiceClpInvoker() {
         _methodName492 = "getBeanIdentifier";
@@ -40,6 +42,10 @@ public class ModelRunnerServiceClpInvoker {
         _methodName499 = "runModel";
 
         _methodParameterTypes499 = new String[] { "long", "java.lang.String" };
+
+        _methodName500 = "refreshModels";
+
+        _methodParameterTypes500 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -70,6 +76,13 @@ public class ModelRunnerServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
             return ModelRunnerServiceUtil.runModel(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1]);
+        }
+
+        if (_methodName500.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
+            ModelRunnerServiceUtil.refreshModels();
+
+            return null;
         }
 
         throw new UnsupportedOperationException();

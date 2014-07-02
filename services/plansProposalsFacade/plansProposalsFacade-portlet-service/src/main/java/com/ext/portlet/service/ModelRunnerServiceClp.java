@@ -18,6 +18,8 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
     private String[] _methodParameterTypes4;
     private String _methodName5;
     private String[] _methodParameterTypes5;
+    private String _methodName6;
+    private String[] _methodParameterTypes6;
 
     public ModelRunnerServiceClp(InvokableService invokableService) {
         _invokableService = invokableService;
@@ -41,6 +43,10 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
         _methodName5 = "runModel";
 
         _methodParameterTypes5 = new String[] { "long", "java.lang.String" };
+
+        _methodName6 = "refreshModels";
+
+        _methodParameterTypes6 = new String[] {  };
     }
 
     @Override
@@ -198,5 +204,32 @@ public class ModelRunnerServiceClp implements ModelRunnerService {
         }
 
         return (com.liferay.portal.kernel.json.JSONObject) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void refreshModels()
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        try {
+            _invokableService.invokeMethod(_methodName6,
+                _methodParameterTypes6, new Object[] {  });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof java.io.IOException) {
+                throw (java.io.IOException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 }

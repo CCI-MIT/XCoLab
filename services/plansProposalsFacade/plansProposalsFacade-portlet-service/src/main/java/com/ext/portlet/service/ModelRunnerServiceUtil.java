@@ -75,6 +75,12 @@ public class ModelRunnerServiceUtil {
         return getService().runModel(modelId, inputs);
     }
 
+    public static void refreshModels()
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException {
+        getService().refreshModels();
+    }
+
     public static void clearService() {
         _service = null;
     }
