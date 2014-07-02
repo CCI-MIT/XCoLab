@@ -30,6 +30,8 @@ import org.xcolab.portlets.reporting.beans.UserActivityReportBean;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.ActivitiesByContestBean;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.ContestActivity;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.UserActivityByContest;
+import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
+import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.ResourceRequest;
@@ -53,6 +55,31 @@ public class ReportingController {
     @RequestMapping
     public String showHomePage(RenderRequest request) {
         return "index";
+    }
+
+    @RequestMapping(params="report=generateProposalTexts2013")
+    public void generateProposalTexts2013(ResourceRequest request, ResourceResponse response) throws Exception {
+        ProposalTextExtraction pte = new ProposalTextExtraction();
+
+        Writer w = response.getWriter();
+        CSVWriter csvWriter = new CSVWriter(w);
+
+        csvWriter.writeNext(new String[]{"id", "url", "is_finalist", "num_elements", "content"});
+
+        for (ProposalTextEntity e : pte.get()) {
+            csvWriter.writeNext(new String[]{
+                    ""+e.getId(),
+                    e.getUrl(),
+                    e.isFinalist() ? "1" : "0",
+                    e.getHtmlElementCount()+"",
+                    e.getContent()
+            });
+        }
+
+        response.setContentType("text/csv");
+        response.addProperty("Content-Disposition", "attachment;filename=proposalTexts.csv");
+
+        w.close();
     }
 
     @RequestMapping(params="report=proposalSupporterReport")
