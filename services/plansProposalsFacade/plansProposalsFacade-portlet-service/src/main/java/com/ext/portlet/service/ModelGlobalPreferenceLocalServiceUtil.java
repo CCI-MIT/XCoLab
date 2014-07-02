@@ -268,6 +268,12 @@ public class ModelGlobalPreferenceLocalServiceUtil {
         return getService().isVisible(s);
     }
 
+    public static com.ext.portlet.model.ModelGlobalPreference getByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByModelId(modelId);
+    }
+
     public static void setVisible(edu.mit.cci.roma.client.Simulation s,
         boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException {

@@ -28,6 +28,7 @@
         <module>search-portlet</module>
         <module>feeds-portlet</module>
         <module>messaging-portlet</module>
+        <module>modelsadmin-portlet</module>
         <module>ontology-portlet</module>
         <module>redballoon-portlet</module>
         <module>models-portlet</module>

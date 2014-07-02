@@ -309,6 +309,7 @@ div.sponsorLogo img {
     float:left;
 }
 
+
 div.review-status-container {
     position: relative;
     display: inline-block;
@@ -383,4 +384,97 @@ table.judgingForm {
     width: 100%;
     font-size: 14px;
     color: black;
+}
+
+#proposalPickerSearchContainer {
+	text-align: left;
+	padding: 10px;
+}
+
+#proposalPickerSearchContainer .blue-button {
+	display: inline-block;
+}
+
+#proposalPicker_proposalsContainer h4 {
+	font-size: 15px;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+#proposalPicker_proposalsContainer .propbox ul {
+	margin-left: 0;
+	padding-left: 0;
+	list-style: none;
+}
+#proposalPicker_proposalsContainer .propbox li {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+	background: none;
+}
+
+/*
+#proposalPicker_proposalsContainer .propbox .row1 {
+	overflow: hidden;
+}
+*/
+
+#proposalPicker_proposalsContainer .propbox .row2 {
+	width: 650px;
+}
+
+#popup_proposalPicker {
+	top: 30px;
+}
+#popup_proposalPicker .popup {
+	padding: 10px;
+}
+
+.pickerButtons .btn {
+	float: right;
+}
+
+#proposalPicker_proposalsContainer .higlightText1,
+#proposalPicker_contestsContainer .higlightText1 {
+	background: #fdff62;
+	font-style: italic;
+}
+
+#proposalPicker_proposalsContainer .tooltip .higlightText1,
+#proposalPicker_contestsContainer .tooltip .higlightText1 {
+	background: none;
+	text-decoration: none;
+	font-style: normal;
+}
+
+#popup_proposalPicker .contestlist td{
+	height: 45px;
+}
+
+#popup_proposalPicker .propbox {
+	height: auto;
+}
+
+#popup_proposalPicker h4 {
+	margin-bottom: 10px;
+}
+
+.proposalPicker_contestsScrollContainer {
+	height: 300px;
+	overflow-y: scroll;
+}
+
+.addpropbox.PROPOSAL_LIST_REFERENCE,
+.addpropbox.PROPOSAL_REFERENCE,
+.addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
+	background: #e7f1f5;
+}
+
+.removeProposalFromList a {
+	display: inline-block;
+	background: #fffff7;
+	padding: 3px 10px;
+}
+
+.wizardSelectedOptionsInfo li  {
+	font-weight: normal !important;
 }

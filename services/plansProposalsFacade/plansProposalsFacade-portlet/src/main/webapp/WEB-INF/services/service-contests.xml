@@ -42,6 +42,8 @@
         <column name="resourcesUrl" type="String" />
         <column name="contestPrivate" type="boolean" />
         <column name="usePermissions" type="boolean" />
+        <column name="defaultModelId" type="long" />
+        <column name="otherModels" type="String" />
         
         <order by="asc">
             <order-column name="weight" />

@@ -159,6 +159,8 @@
 		</field>
 		<field name="contestPrivate" type="boolean" />
 		<field name="usePermissions" type="boolean" />
+		<field name="defaultModelId" type="long" />
+		<field name="otherModels" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
@@ -442,6 +444,10 @@
 		<field name="weight" type="int" />
 		<field name="expertEvaluationPageId" type="long" />
 		<field name="modelCategoryId" type="long" />
+		<field name="usesCustomInputs" type="boolean" />
+		<field name="customInputsDefinition" type="String">
+			<hint name="max-length">2000000</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.ModelInputGroup">
 		<field name="modelInputGroupPK" type="long" />
@@ -896,5 +902,17 @@
 		<field name="contestPhaseId" type="long" />
 		<field name="userId" type="long" />
 		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.StaffMember">
+		<field name="id" type="long" />
+		<field name="userId" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="firstNames" type="String" />
+		<field name="lastName" type="String" />
+		<field name="url" type="String" />
+		<field name="photoUrl" type="String" />
+		<field name="role" type="String" />
+		<field name="organization" type="String" />
+		<field name="sort" type="int" />
 	</model>
 </model-hints>

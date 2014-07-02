@@ -268,6 +268,9 @@
 	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.StaffMemberLocalService" class="com.ext.portlet.service.impl.StaffMemberLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.StaffMemberService" class="com.ext.portlet.service.impl.StaffMemberServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.StaffMemberPersistence" class="com.ext.portlet.service.persistence.StaffMemberPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
 		<property name="policyFile">
 			<value>antisamy-policy.xml</value>

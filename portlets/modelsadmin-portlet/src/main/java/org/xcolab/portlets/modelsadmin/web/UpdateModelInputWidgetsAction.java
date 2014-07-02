@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
 
+import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
 import com.ext.portlet.models.ui.ModelUIFactory;
+import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.Simulation;
@@ -27,13 +29,20 @@ public class UpdateModelInputWidgetsAction {
 	public void update(ActionRequest request, ActionResponse response, UpdateModelInputWidgetsBean updateModelWidgetsBean, 
 			@RequestParam Long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
 
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
-		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
+		ModelGlobalPreference modelPreferences = ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId);
+		if (modelPreferences.getUsesCustomInputs()) {
+			modelPreferences.setCustomInputsDefinition(updateModelWidgetsBean.getCustomInputWidgets());
+			ModelGlobalPreferenceLocalServiceUtil.updateModelGlobalPreference(modelPreferences);
+		}
+		else {
+			Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+			ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
-		for (ModelInputDisplayItem item: modelDisplay.getAllIndividualInputs()) {
-			if (updateModelWidgetsBean.getWidgets().containsKey(item.getMetaData().getId())) {
-				item.setType(updateModelWidgetsBean.getWidgets().get(item.getMetaData().getId()));
-				//ModelInputItemLocalServiceUtil.updateModelInputItem(item);
+			for (ModelInputDisplayItem item: modelDisplay.getAllIndividualInputs()) {
+				if (updateModelWidgetsBean.getWidgets().containsKey(item.getMetaData().getId())) {
+					item.setType(updateModelWidgetsBean.getWidgets().get(item.getMetaData().getId()));
+					//ModelInputItemLocalServiceUtil.updateModelInputItem(item);
+				}
 			}
 		}
 		

@@ -67,6 +67,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
         attributes.put("usePermissions", getUsePermissions());
+        attributes.put("defaultModelId", getDefaultModelId());
+        attributes.put("otherModels", getOtherModels());
 
         return attributes;
     }
@@ -250,6 +252,18 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (usePermissions != null) {
             setUsePermissions(usePermissions);
+        }
+
+        Long defaultModelId = (Long) attributes.get("defaultModelId");
+
+        if (defaultModelId != null) {
+            setDefaultModelId(defaultModelId);
+        }
+
+        String otherModels = (String) attributes.get("otherModels");
+
+        if (otherModels != null) {
+            setOtherModels(otherModels);
         }
     }
 
@@ -904,6 +918,46 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setUsePermissions(boolean usePermissions) {
         _contest.setUsePermissions(usePermissions);
+    }
+
+    /**
+    * Returns the default model ID of this contest.
+    *
+    * @return the default model ID of this contest
+    */
+    @Override
+    public long getDefaultModelId() {
+        return _contest.getDefaultModelId();
+    }
+
+    /**
+    * Sets the default model ID of this contest.
+    *
+    * @param defaultModelId the default model ID of this contest
+    */
+    @Override
+    public void setDefaultModelId(long defaultModelId) {
+        _contest.setDefaultModelId(defaultModelId);
+    }
+
+    /**
+    * Returns the other models of this contest.
+    *
+    * @return the other models of this contest
+    */
+    @Override
+    public java.lang.String getOtherModels() {
+        return _contest.getOtherModels();
+    }
+
+    /**
+    * Sets the other models of this contest.
+    *
+    * @param otherModels the other models of this contest
+    */
+    @Override
+    public void setOtherModels(java.lang.String otherModels) {
+        _contest.setOtherModels(otherModels);
     }
 
     @Override

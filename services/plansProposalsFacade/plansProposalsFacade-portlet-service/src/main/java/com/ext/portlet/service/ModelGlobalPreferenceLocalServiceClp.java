@@ -63,6 +63,8 @@ public class ModelGlobalPreferenceLocalServiceClp
     private String[] _methodParameterTypes26;
     private String _methodName27;
     private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
 
     public ModelGlobalPreferenceLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -164,51 +166,55 @@ public class ModelGlobalPreferenceLocalServiceClp
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName20 = "setVisible";
+        _methodName20 = "getByModelId";
 
-        _methodParameterTypes20 = new String[] {
+        _methodParameterTypes20 = new String[] { "long" };
+
+        _methodName21 = "setVisible";
+
+        _methodParameterTypes21 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "boolean"
             };
 
-        _methodName21 = "getWeight";
+        _methodName22 = "getWeight";
 
-        _methodParameterTypes21 = new String[] {
+        _methodParameterTypes22 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName22 = "setWeight";
+        _methodName23 = "setWeight";
 
-        _methodParameterTypes22 = new String[] {
+        _methodParameterTypes23 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "int"
             };
 
-        _methodName23 = "getExpertEvaluationPageId";
+        _methodName24 = "getExpertEvaluationPageId";
 
-        _methodParameterTypes23 = new String[] {
+        _methodParameterTypes24 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName24 = "setExpertEvaluationPageId";
+        _methodName25 = "setExpertEvaluationPageId";
 
-        _methodParameterTypes24 = new String[] {
+        _methodParameterTypes25 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "java.lang.Long"
             };
 
-        _methodName25 = "findByCategory";
+        _methodName26 = "findByCategory";
 
-        _methodParameterTypes25 = new String[] {
+        _methodParameterTypes26 = new String[] {
                 "com.ext.portlet.model.ModelCategory"
             };
 
-        _methodName26 = "getCategory";
+        _methodName27 = "getCategory";
 
-        _methodParameterTypes26 = new String[] {
+        _methodParameterTypes27 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName27 = "updateModelCategory";
+        _methodName28 = "updateModelCategory";
 
-        _methodParameterTypes27 = new String[] {
+        _methodParameterTypes28 = new String[] {
                 "com.ext.portlet.model.ModelCategory",
                 "edu.mit.cci.roma.client.Simulation"
             };
@@ -766,11 +772,38 @@ public class ModelGlobalPreferenceLocalServiceClp
     }
 
     @Override
+    public com.ext.portlet.model.ModelGlobalPreference getByModelId(
+        long modelId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20, new Object[] { modelId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ModelGlobalPreference) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
     public void setVisible(edu.mit.cci.roma.client.Simulation s, boolean visible)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName20,
-                _methodParameterTypes20,
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21,
                 new Object[] { ClpSerializer.translateInput(s), visible });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -794,8 +827,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22,
                     new Object[] { ClpSerializer.translateInput(s) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -819,8 +852,8 @@ public class ModelGlobalPreferenceLocalServiceClp
     public void setWeight(edu.mit.cci.roma.client.Simulation s, int weight)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22,
+            _invokableLocalService.invokeMethod(_methodName23,
+                _methodParameterTypes23,
                 new Object[] { ClpSerializer.translateInput(s), weight });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -845,8 +878,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName23,
-                    _methodParameterTypes23,
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
                     new Object[] { ClpSerializer.translateInput(s) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -871,8 +904,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         edu.mit.cci.roma.client.Simulation s, java.lang.Long pageId)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName24,
-                _methodParameterTypes24,
+            _invokableLocalService.invokeMethod(_methodName25,
+                _methodParameterTypes25,
                 new Object[] {
                     ClpSerializer.translateInput(s),
                     
@@ -901,8 +934,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName25,
-                    _methodParameterTypes25,
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
                     new Object[] { ClpSerializer.translateInput(category) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -930,8 +963,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName26,
-                    _methodParameterTypes26,
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
                     new Object[] { ClpSerializer.translateInput(sim) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -960,8 +993,8 @@ public class ModelGlobalPreferenceLocalServiceClp
         edu.mit.cci.roma.client.Simulation sim)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName27,
-                _methodParameterTypes27,
+            _invokableLocalService.invokeMethod(_methodName28,
+                _methodParameterTypes28,
                 new Object[] {
                     ClpSerializer.translateInput(cat),
                     

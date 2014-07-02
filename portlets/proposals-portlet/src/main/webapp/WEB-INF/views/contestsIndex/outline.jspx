@@ -264,7 +264,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						return orderArrayA[i] - orderArrayB[i];
 					}
 				}
-				// contests have the same "prefix" in ontolog terms tree, check if the prefixes differ in length, if they do, 
+				// contests have the same "prefix" in ontology terms tree, check if the prefixes differ in length, if they do,
 				// contest with shorter prefix should be shown first
 				if (orderArrayA.length != orderArrayB.length) {
 					return orderArrayA.length - orderArrayB.length;

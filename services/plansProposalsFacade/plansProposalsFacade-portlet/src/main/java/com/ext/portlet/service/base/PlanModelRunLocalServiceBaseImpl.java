@@ -87,6 +87,7 @@ import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
+import com.ext.portlet.service.persistence.StaffMemberPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
@@ -632,6 +633,12 @@ public abstract class PlanModelRunLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
+    @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
+    protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
+    @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
+    protected com.ext.portlet.service.StaffMemberService staffMemberService;
+    @BeanReference(type = StaffMemberPersistence.class)
+    protected StaffMemberPersistence staffMemberPersistence;
     @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
     protected com.liferay.counter.service.CounterLocalService counterLocalService;
     @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
@@ -5664,6 +5671,63 @@ public abstract class PlanModelRunLocalServiceBaseImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
+    }
+
+    /**
+     * Returns the staff member local service.
+     *
+     * @return the staff member local service
+     */
+    public com.ext.portlet.service.StaffMemberLocalService getStaffMemberLocalService() {
+        return staffMemberLocalService;
+    }
+
+    /**
+     * Sets the staff member local service.
+     *
+     * @param staffMemberLocalService the staff member local service
+     */
+    public void setStaffMemberLocalService(
+        com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService) {
+        this.staffMemberLocalService = staffMemberLocalService;
+    }
+
+    /**
+     * Returns the staff member remote service.
+     *
+     * @return the staff member remote service
+     */
+    public com.ext.portlet.service.StaffMemberService getStaffMemberService() {
+        return staffMemberService;
+    }
+
+    /**
+     * Sets the staff member remote service.
+     *
+     * @param staffMemberService the staff member remote service
+     */
+    public void setStaffMemberService(
+        com.ext.portlet.service.StaffMemberService staffMemberService) {
+        this.staffMemberService = staffMemberService;
+    }
+
+    /**
+     * Returns the staff member persistence.
+     *
+     * @return the staff member persistence
+     */
+    public StaffMemberPersistence getStaffMemberPersistence() {
+        return staffMemberPersistence;
+    }
+
+    /**
+     * Sets the staff member persistence.
+     *
+     * @param staffMemberPersistence the staff member persistence
+     */
+    public void setStaffMemberPersistence(
+        StaffMemberPersistence staffMemberPersistence) {
+        this.staffMemberPersistence = staffMemberPersistence;
     }
 
     /**

@@ -106,7 +106,9 @@ create table xcolab_Contest (
 	weight INTEGER,
 	resourcesUrl VARCHAR(1024) null,
 	contestPrivate BOOLEAN,
-	usePermissions BOOLEAN
+	usePermissions BOOLEAN,
+	defaultModelId LONG,
+	otherModels VARCHAR(75) null
 );
 
 create table xcolab_ContestDebate (
@@ -352,7 +354,9 @@ create table xcolab_ModelGlobalPreference (
 	visible BOOLEAN,
 	weight INTEGER,
 	expertEvaluationPageId LONG,
-	modelCategoryId LONG
+	modelCategoryId LONG,
+	usesCustomInputs BOOLEAN,
+	customInputsDefinition TEXT null
 );
 
 create table xcolab_ModelInputGroup (
@@ -797,4 +801,17 @@ create table xcolab_ProposalVote (
 	userId LONG not null,
 	createDate DATE null,
 	primary key (contestPhaseId, userId)
+);
+
+create table xcolab_StaffMember (
+	id_ LONG not null primary key,
+	userId LONG,
+	categoryId LONG,
+	firstNames VARCHAR(75) null,
+	lastName VARCHAR(75) null,
+	url VARCHAR(75) null,
+	photoUrl VARCHAR(75) null,
+	role VARCHAR(75) null,
+	organization VARCHAR(75) null,
+	sort INTEGER
 );

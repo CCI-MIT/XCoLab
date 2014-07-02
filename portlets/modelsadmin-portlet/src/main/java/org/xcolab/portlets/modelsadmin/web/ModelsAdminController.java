@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
 
+import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
@@ -19,6 +20,7 @@ import com.ext.portlet.models.ui.ModelOutputDisplayItem;
 import com.ext.portlet.models.ui.ModelOutputDisplayItemType;
 import com.ext.portlet.models.ui.ModelOutputIndexedDisplayItem;
 import com.ext.portlet.models.ui.ModelUIFactory;
+import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import edu.mit.cci.roma.client.Simulation;
@@ -30,6 +32,7 @@ public class ModelsAdminController {
 	@RequestMapping
 	public String showAvailableModels(Model model) throws SystemException {
 		model.addAttribute("models", CollaboratoriumModelingService.repository().getAllSimulations());
+		System.out.println("CollaboratoriumModelingService.repository().getAllSimulations()");
 		return "modelsIndex";
 	}
 	
@@ -37,7 +40,9 @@ public class ModelsAdminController {
 	public String showModelDetails(Model model, @RequestParam Long modelId) throws SystemException, IOException {
 		
 		model.addAttribute("model", CollaboratoriumModelingService.repository().getSimulation(modelId));
+		
 		model.addAttribute("tab", "details");
+		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
 		return "modelDetails/modelDetails";
 	}
 	
@@ -50,7 +55,8 @@ public class ModelsAdminController {
 		model.addAttribute("modelDisplay", modelDisplay);
 		model.addAttribute("tab", "inputWidgets");
 		model.addAttribute("availableInputWidgets", ModelInputWidgetType.values());
-		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay));
+		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay, modelId));
+		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
 		
 		return "modelDetails/modelInputWidgets";
 	}
@@ -67,7 +73,8 @@ public class ModelsAdminController {
 		model.addAttribute("availableChartTypes", ModelOutputChartType.values());
 		model.addAttribute("availableOutputWidgets", ModelOutputDisplayItemType.values());
 		model.addAttribute("allOutputs", getAllOutputsFromDisplay(modelDisplay));
-		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay));
+		model.addAttribute("updateWidgetsBean", new UpdateModelInputWidgetsBean(modelDisplay, modelId));
+		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
 		
 		return "modelDetails/modelOutputWidgets";
 	}

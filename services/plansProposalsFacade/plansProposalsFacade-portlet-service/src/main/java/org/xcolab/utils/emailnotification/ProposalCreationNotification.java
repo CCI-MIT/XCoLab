@@ -7,12 +7,12 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 import org.xcolab.enums.ContestPhaseType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +52,9 @@ public class ProposalCreationNotification extends EmailNotification {
     private static final String PROPOSAL_SHARE_TEXT = "I just created a new proposal at the Climate CoLab. Check it out!";
     private static final String PROPOSAL_SHARE_TITLE = "New proposal at @ClimateCoLab";
 
+    private static final String YEAR_FALLBACK = "2014";
+    private static final String DATE_FALLBACK = "July 20, 11:59:59 PM";
+
     // Placeholder strings
     private static final String FIRSTNAME_PLACEHOLDER = "FIRSTNAME_PLACEHOLDER";
     private static final String PROPOSAL_PLACEHOLDER = "PROPOSAL_PLACEHOLDER";
@@ -76,10 +79,7 @@ public class ProposalCreationNotification extends EmailNotification {
     public void sendEmailNotification() throws PortalException, SystemException {
         String subject = PROPOSAL_CREATION_SUCCESS_NOTIFICATION_SUBJECT;
         String body = populateBodyString();
-
-        List<Long> recipientIds = new ArrayList<Long>();
-        recipientIds.add(getProposalAuthor(createdProposal).getUserId());
-        sendMessage(subject, body, recipientIds);
+        sendMessage(subject, body, getProposalAuthor(createdProposal));
 
     }
 
@@ -93,10 +93,21 @@ public class ProposalCreationNotification extends EmailNotification {
         body = StringUtil.replace(body, LINKEDIN_PLACEHOLDER, getProposalLinkedInShareLink(contest, createdProposal, PROPOSAL_SHARE_TITLE, PROPOSAL_SHARE_TEXT));
 
         DateFormat yearFormat = new SimpleDateFormat("yyyy");
-        body = StringUtil.replace(body, YEAR_PLACEHOLDER, yearFormat.format(contest.getCreated()));
+        // This should never happen when contests are properly set up
+        if (Validator.isNull(contest.getCreated())) {
+            body = StringUtil.replace(body, YEAR_PLACEHOLDER, YEAR_FALLBACK);
+        } else {
+            body = StringUtil.replace(body, YEAR_PLACEHOLDER, yearFormat.format(contest.getCreated()));
+        }
 
         DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, HH:mm:ss a", Locale.US);
-        body = StringUtil.replace(body, DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+        // This should never happen when the contest phases are set up properly
+        if (Validator.isNull(getProposalCreationDeadline())) {
+            body = StringUtil.replace(body, DEADLINE_PLACEHOLDER, DATE_FALLBACK + " EDT");
+
+        } else {
+            body = StringUtil.replace(body, DEADLINE_PLACEHOLDER, customDateFormat.format(getProposalCreationDeadline()) + " EDT");
+        }
         return body;
     }
 

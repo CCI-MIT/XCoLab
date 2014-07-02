@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
@@ -53,9 +54,11 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
             { "visible", Types.BOOLEAN },
             { "weight", Types.INTEGER },
             { "expertEvaluationPageId", Types.BIGINT },
-            { "modelCategoryId", Types.BIGINT }
+            { "modelCategoryId", Types.BIGINT },
+            { "usesCustomInputs", Types.BOOLEAN },
+            { "customInputsDefinition", Types.CLOB }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelGlobalPreference (modelGlobalPreferencePK LONG not null primary key,modelId LONG,visible BOOLEAN,weight INTEGER,expertEvaluationPageId LONG,modelCategoryId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelGlobalPreference (modelGlobalPreferencePK LONG not null primary key,modelId LONG,visible BOOLEAN,weight INTEGER,expertEvaluationPageId LONG,modelCategoryId LONG,usesCustomInputs BOOLEAN,customInputsDefinition TEXT null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelGlobalPreference";
     public static final String ORDER_BY_JPQL = " ORDER BY modelGlobalPreference.modelGlobalPreferencePK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelGlobalPreference.modelGlobalPreferencePK ASC";
@@ -90,6 +93,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
     private long _modelCategoryId;
     private long _originalModelCategoryId;
     private boolean _setOriginalModelCategoryId;
+    private boolean _usesCustomInputs;
+    private String _customInputsDefinition;
     private long _columnBitmask;
     private ModelGlobalPreference _escapedModel;
 
@@ -116,6 +121,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         model.setWeight(soapModel.getWeight());
         model.setExpertEvaluationPageId(soapModel.getExpertEvaluationPageId());
         model.setModelCategoryId(soapModel.getModelCategoryId());
+        model.setUsesCustomInputs(soapModel.getUsesCustomInputs());
+        model.setCustomInputsDefinition(soapModel.getCustomInputsDefinition());
 
         return model;
     }
@@ -181,6 +188,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         attributes.put("weight", getWeight());
         attributes.put("expertEvaluationPageId", getExpertEvaluationPageId());
         attributes.put("modelCategoryId", getModelCategoryId());
+        attributes.put("usesCustomInputs", getUsesCustomInputs());
+        attributes.put("customInputsDefinition", getCustomInputsDefinition());
 
         return attributes;
     }
@@ -223,6 +232,19 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
 
         if (modelCategoryId != null) {
             setModelCategoryId(modelCategoryId);
+        }
+
+        Boolean usesCustomInputs = (Boolean) attributes.get("usesCustomInputs");
+
+        if (usesCustomInputs != null) {
+            setUsesCustomInputs(usesCustomInputs);
+        }
+
+        String customInputsDefinition = (String) attributes.get(
+                "customInputsDefinition");
+
+        if (customInputsDefinition != null) {
+            setCustomInputsDefinition(customInputsDefinition);
         }
     }
 
@@ -321,6 +343,37 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         return _originalModelCategoryId;
     }
 
+    @JSON
+    @Override
+    public boolean getUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    @Override
+    public boolean isUsesCustomInputs() {
+        return _usesCustomInputs;
+    }
+
+    @Override
+    public void setUsesCustomInputs(boolean usesCustomInputs) {
+        _usesCustomInputs = usesCustomInputs;
+    }
+
+    @JSON
+    @Override
+    public String getCustomInputsDefinition() {
+        if (_customInputsDefinition == null) {
+            return StringPool.BLANK;
+        } else {
+            return _customInputsDefinition;
+        }
+    }
+
+    @Override
+    public void setCustomInputsDefinition(String customInputsDefinition) {
+        _customInputsDefinition = customInputsDefinition;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -358,6 +411,8 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         modelGlobalPreferenceImpl.setWeight(getWeight());
         modelGlobalPreferenceImpl.setExpertEvaluationPageId(getExpertEvaluationPageId());
         modelGlobalPreferenceImpl.setModelCategoryId(getModelCategoryId());
+        modelGlobalPreferenceImpl.setUsesCustomInputs(getUsesCustomInputs());
+        modelGlobalPreferenceImpl.setCustomInputsDefinition(getCustomInputsDefinition());
 
         modelGlobalPreferenceImpl.resetOriginalValues();
 
@@ -434,12 +489,23 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
 
         modelGlobalPreferenceCacheModel.modelCategoryId = getModelCategoryId();
 
+        modelGlobalPreferenceCacheModel.usesCustomInputs = getUsesCustomInputs();
+
+        modelGlobalPreferenceCacheModel.customInputsDefinition = getCustomInputsDefinition();
+
+        String customInputsDefinition = modelGlobalPreferenceCacheModel.customInputsDefinition;
+
+        if ((customInputsDefinition != null) &&
+                (customInputsDefinition.length() == 0)) {
+            modelGlobalPreferenceCacheModel.customInputsDefinition = null;
+        }
+
         return modelGlobalPreferenceCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{modelGlobalPreferencePK=");
         sb.append(getModelGlobalPreferencePK());
@@ -453,6 +519,10 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         sb.append(getExpertEvaluationPageId());
         sb.append(", modelCategoryId=");
         sb.append(getModelCategoryId());
+        sb.append(", usesCustomInputs=");
+        sb.append(getUsesCustomInputs());
+        sb.append(", customInputsDefinition=");
+        sb.append(getCustomInputsDefinition());
         sb.append("}");
 
         return sb.toString();
@@ -460,7 +530,7 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ModelGlobalPreference");
@@ -489,6 +559,14 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
         sb.append(
             "<column><column-name>modelCategoryId</column-name><column-value><![CDATA[");
         sb.append(getModelCategoryId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>usesCustomInputs</column-name><column-value><![CDATA[");
+        sb.append(getUsesCustomInputs());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>customInputsDefinition</column-name><column-value><![CDATA[");
+        sb.append(getCustomInputsDefinition());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

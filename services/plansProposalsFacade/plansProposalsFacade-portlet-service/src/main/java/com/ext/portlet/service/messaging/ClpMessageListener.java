@@ -169,6 +169,8 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
+import com.ext.portlet.service.StaffMemberLocalServiceUtil;
+import com.ext.portlet.service.StaffMemberServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -438,6 +440,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
+            StaffMemberLocalServiceUtil.clearService();
+
+            StaffMemberServiceUtil.clearService();
         }
     }
 }

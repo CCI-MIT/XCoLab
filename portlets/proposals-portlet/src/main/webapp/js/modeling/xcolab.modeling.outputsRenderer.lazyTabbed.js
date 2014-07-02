@@ -12,6 +12,10 @@ if (typeof(XCoLab.modeling) == 'undefined')
 		jQuery(modelingWidget).on('scenarioFetched', function(event) {
 			modelingWidget.container.find(".outputsContainer").remove();
 			that.render(modelingWidget.container, event.scenario);
+			var event = jQuery.Event( "scenarioRendered" );
+			event.scenario = event.scenario;
+			jQuery(modelingWidget).trigger(event);
+			
 		});
 
 		jQuery(modelingWidget).on('modelFetched', function(event) {
@@ -42,6 +46,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 						"</div>" +
 					"</div>" +
 				"</div>");	
+			jQuery(this.modelingWidget).trigger('runTheModelMessageRendered');
 			return;
 		}
 		

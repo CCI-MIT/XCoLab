@@ -86,6 +86,7 @@
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
+	<import class="com.ext.portlet.model.StaffMember" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -209,6 +210,8 @@
 		<property name="resourcesUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="contestPrivate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="usePermissions" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="defaultModelId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="otherModels" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />
@@ -510,6 +513,8 @@
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="expertEvaluationPageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modelCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="usesCustomInputs" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="customInputsDefinition" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ModelInputGroupImpl" table="xcolab_ModelInputGroup">
 		<cache usage="read-write" />
@@ -1038,5 +1043,20 @@
 		</composite-id>
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="firstNames" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="lastName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="photoUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="organization" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 </hibernate-mapping>

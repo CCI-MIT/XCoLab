@@ -10,6 +10,7 @@ import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -144,7 +145,7 @@ public class LoginController {
         SessionMessages.clear(request);
 
         BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
-        if (StringUtils.isNotBlank(bc.getUuid())) {
+        if (StringUtils.isNotBlank(bc.getUuid()) && Validator.isNotNull(user)) {
         	// cookie is present, get BalloonUserTracking if it exists and update association to the current user
         	try {
         		BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
@@ -155,7 +156,7 @@ public class LoginController {
         			}
         		}
         		
-        		if (but != null && but.getUserId() != user.getUserId()) {
+        		if (but != null && user != null && but.getUserId() != user.getUserId()) {
         			but.setUserId(user.getUserId());
         			BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
         		}

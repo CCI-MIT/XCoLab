@@ -13,9 +13,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
 import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -34,7 +36,6 @@ public abstract class EmailNotification {
     protected static final String PINTEREST_PROPOSAL_SHARE_LINK = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
 
     protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
-
 
     protected ServiceContext serviceContext;
 
@@ -73,12 +74,12 @@ public abstract class EmailNotification {
         return UserLocalServiceUtil.getUserById(proposal.getAuthorId());
     }
 
-    protected void sendMessage(String subject, String body, List<Long> recipientIds) {
+    protected void sendMessage(String subject, String body, User recipient) {
         try {
-            MessageUtil.sendMessage(subject, body, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipientIds, null);
-        } catch (MailEngineException | AddressException e) {
-            _log.error("Could not send vote message", e);
-        } catch (PortalException | SystemException e) {
+            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
+            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
+            MailEngine.send(fromEmail, toEmail, subject, body, true);
+        } catch (MailEngineException | UnsupportedEncodingException e) {
             _log.error("Could not send vote message", e);
         }
     }

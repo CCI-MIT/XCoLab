@@ -9,9 +9,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by kmang on 21/05/14.
  */
@@ -41,9 +38,6 @@ public class ContestVoteNotification extends EmailNotification {
 
     @Override
     public void sendEmailNotification() throws SystemException, PortalException {
-        List<Long> recipientIds = new ArrayList<Long>();
-        recipientIds.add(recipient.getUserId());
-
         final String proposalName = ProposalLocalServiceUtil.getAttribute(votedProposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
         final String shareMessage = String.format(PROPOSAL_SHARE_MESSAGE_FORMAT_STRING, proposalName);
 
@@ -56,6 +50,6 @@ public class ContestVoteNotification extends EmailNotification {
                 getContestLink(contest),
                 getProposalLink(contest, votedProposal));
 
-        sendMessage(subject,body, recipientIds);
+        sendMessage(subject,body, recipient);
     }
 }
