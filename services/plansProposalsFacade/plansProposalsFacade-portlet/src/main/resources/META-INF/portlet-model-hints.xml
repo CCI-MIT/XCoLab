@@ -167,6 +167,7 @@
 	</model>
 	<model name="com.ext.portlet.model.ContestEmailTemplate">
 		<field name="type" type="String" />
+		<field name="subject" type="String" />
 		<field name="header" type="String" />
 		<field name="footer" type="String" />
 	</model>

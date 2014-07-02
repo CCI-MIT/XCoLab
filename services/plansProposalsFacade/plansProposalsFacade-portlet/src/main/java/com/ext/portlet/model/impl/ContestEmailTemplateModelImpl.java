@@ -46,10 +46,11 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
     public static final String TABLE_NAME = "xcolab_ContestEmailTemplate";
     public static final Object[][] TABLE_COLUMNS = {
             { "type_", Types.VARCHAR },
+            { "subject", Types.VARCHAR },
             { "header", Types.VARCHAR },
             { "footer", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestEmailTemplate (type_ VARCHAR(75) not null primary key,header VARCHAR(75) null,footer VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestEmailTemplate (type_ VARCHAR(75) not null primary key,subject VARCHAR(75) null,header VARCHAR(75) null,footer VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestEmailTemplate";
     public static final String ORDER_BY_JPQL = " ORDER BY contestEmailTemplate.type ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestEmailTemplate.type_ ASC";
@@ -70,6 +71,7 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
             ContestEmailTemplate.class
         };
     private String _type;
+    private String _subject;
     private String _header;
     private String _footer;
     private ContestEmailTemplate _escapedModel;
@@ -92,6 +94,7 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
         ContestEmailTemplate model = new ContestEmailTemplateImpl();
 
         model.setType(soapModel.getType());
+        model.setSubject(soapModel.getSubject());
         model.setHeader(soapModel.getHeader());
         model.setFooter(soapModel.getFooter());
 
@@ -154,6 +157,7 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("type", getType());
+        attributes.put("subject", getSubject());
         attributes.put("header", getHeader());
         attributes.put("footer", getFooter());
 
@@ -166,6 +170,12 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
 
         if (type != null) {
             setType(type);
+        }
+
+        String subject = (String) attributes.get("subject");
+
+        if (subject != null) {
+            setSubject(subject);
         }
 
         String header = (String) attributes.get("header");
@@ -194,6 +204,21 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
     @Override
     public void setType(String type) {
         _type = type;
+    }
+
+    @JSON
+    @Override
+    public String getSubject() {
+        if (_subject == null) {
+            return StringPool.BLANK;
+        } else {
+            return _subject;
+        }
+    }
+
+    @Override
+    public void setSubject(String subject) {
+        _subject = subject;
     }
 
     @JSON
@@ -241,6 +266,7 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
         ContestEmailTemplateImpl contestEmailTemplateImpl = new ContestEmailTemplateImpl();
 
         contestEmailTemplateImpl.setType(getType());
+        contestEmailTemplateImpl.setSubject(getSubject());
         contestEmailTemplateImpl.setHeader(getHeader());
         contestEmailTemplateImpl.setFooter(getFooter());
 
@@ -298,6 +324,14 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
             contestEmailTemplateCacheModel.type = null;
         }
 
+        contestEmailTemplateCacheModel.subject = getSubject();
+
+        String subject = contestEmailTemplateCacheModel.subject;
+
+        if ((subject != null) && (subject.length() == 0)) {
+            contestEmailTemplateCacheModel.subject = null;
+        }
+
         contestEmailTemplateCacheModel.header = getHeader();
 
         String header = contestEmailTemplateCacheModel.header;
@@ -319,10 +353,12 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{type=");
         sb.append(getType());
+        sb.append(", subject=");
+        sb.append(getSubject());
         sb.append(", header=");
         sb.append(getHeader());
         sb.append(", footer=");
@@ -334,7 +370,7 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestEmailTemplate");
@@ -343,6 +379,10 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
         sb.append(
             "<column><column-name>type</column-name><column-value><![CDATA[");
         sb.append(getType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>subject</column-name><column-value><![CDATA[");
+        sb.append(getSubject());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>header</column-name><column-value><![CDATA[");

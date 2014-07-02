@@ -196,6 +196,7 @@
 			<id name="type">
 				<column name="TYPE_" />
 			</id>
+			<basic name="subject" />
 			<basic name="header" />
 			<basic name="footer" />
 			<transient name="modelAttributes" />

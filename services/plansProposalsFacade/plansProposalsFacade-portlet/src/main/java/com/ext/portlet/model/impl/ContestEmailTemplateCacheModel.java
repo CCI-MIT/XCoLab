@@ -21,15 +21,18 @@ import java.io.ObjectOutput;
 public class ContestEmailTemplateCacheModel implements CacheModel<ContestEmailTemplate>,
     Externalizable {
     public String type;
+    public String subject;
     public String header;
     public String footer;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{type=");
         sb.append(type);
+        sb.append(", subject=");
+        sb.append(subject);
         sb.append(", header=");
         sb.append(header);
         sb.append(", footer=");
@@ -47,6 +50,12 @@ public class ContestEmailTemplateCacheModel implements CacheModel<ContestEmailTe
             contestEmailTemplateImpl.setType(StringPool.BLANK);
         } else {
             contestEmailTemplateImpl.setType(type);
+        }
+
+        if (subject == null) {
+            contestEmailTemplateImpl.setSubject(StringPool.BLANK);
+        } else {
+            contestEmailTemplateImpl.setSubject(subject);
         }
 
         if (header == null) {
@@ -69,6 +78,7 @@ public class ContestEmailTemplateCacheModel implements CacheModel<ContestEmailTe
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
         type = objectInput.readUTF();
+        subject = objectInput.readUTF();
         header = objectInput.readUTF();
         footer = objectInput.readUTF();
     }
@@ -80,6 +90,12 @@ public class ContestEmailTemplateCacheModel implements CacheModel<ContestEmailTe
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(type);
+        }
+
+        if (subject == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(subject);
         }
 
         if (header == null) {

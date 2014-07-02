@@ -223,6 +223,7 @@
 		<id name="type" column="type_" type="java.lang.String">
 			<generator class="assigned" />
 		</id>
+		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="header" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="footer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>

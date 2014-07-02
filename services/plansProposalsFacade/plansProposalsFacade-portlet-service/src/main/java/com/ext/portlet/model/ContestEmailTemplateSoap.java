@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class ContestEmailTemplateSoap implements Serializable {
     private String _type;
+    private String _subject;
     private String _header;
     private String _footer;
 
@@ -25,6 +26,7 @@ public class ContestEmailTemplateSoap implements Serializable {
         ContestEmailTemplateSoap soapModel = new ContestEmailTemplateSoap();
 
         soapModel.setType(model.getType());
+        soapModel.setSubject(model.getSubject());
         soapModel.setHeader(model.getHeader());
         soapModel.setFooter(model.getFooter());
 
@@ -84,6 +86,14 @@ public class ContestEmailTemplateSoap implements Serializable {
 
     public void setType(String type) {
         _type = type;
+    }
+
+    public String getSubject() {
+        return _subject;
+    }
+
+    public void setSubject(String subject) {
+        _subject = subject;
     }
 
     public String getHeader() {

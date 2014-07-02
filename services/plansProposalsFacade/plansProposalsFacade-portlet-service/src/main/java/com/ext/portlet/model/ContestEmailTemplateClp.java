@@ -21,6 +21,7 @@ import java.util.Map;
 public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
     implements ContestEmailTemplate {
     private String _type;
+    private String _subject;
     private String _header;
     private String _footer;
     private BaseModel<?> _contestEmailTemplateRemoteModel;
@@ -63,6 +64,7 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("type", getType());
+        attributes.put("subject", getSubject());
         attributes.put("header", getHeader());
         attributes.put("footer", getFooter());
 
@@ -75,6 +77,12 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
 
         if (type != null) {
             setType(type);
+        }
+
+        String subject = (String) attributes.get("subject");
+
+        if (subject != null) {
+            setSubject(subject);
         }
 
         String header = (String) attributes.get("header");
@@ -106,6 +114,28 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
                 Method method = clazz.getMethod("setType", String.class);
 
                 method.invoke(_contestEmailTemplateRemoteModel, type);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getSubject() {
+        return _subject;
+    }
+
+    @Override
+    public void setSubject(String subject) {
+        _subject = subject;
+
+        if (_contestEmailTemplateRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestEmailTemplateRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSubject", String.class);
+
+                method.invoke(_contestEmailTemplateRemoteModel, subject);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -226,6 +256,7 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
         ContestEmailTemplateClp clone = new ContestEmailTemplateClp();
 
         clone.setType(getType());
+        clone.setSubject(getSubject());
         clone.setHeader(getHeader());
         clone.setFooter(getFooter());
 
@@ -267,10 +298,12 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{type=");
         sb.append(getType());
+        sb.append(", subject=");
+        sb.append(getSubject());
         sb.append(", header=");
         sb.append(getHeader());
         sb.append(", footer=");
@@ -282,7 +315,7 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestEmailTemplate");
@@ -291,6 +324,10 @@ public class ContestEmailTemplateClp extends BaseModelImpl<ContestEmailTemplate>
         sb.append(
             "<column><column-name>type</column-name><column-value><![CDATA[");
         sb.append(getType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>subject</column-name><column-value><![CDATA[");
+        sb.append(getSubject());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>header</column-name><column-value><![CDATA[");

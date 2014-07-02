@@ -39,6 +39,7 @@ public class ContestEmailTemplateWrapper implements ContestEmailTemplate,
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("type", getType());
+        attributes.put("subject", getSubject());
         attributes.put("header", getHeader());
         attributes.put("footer", getFooter());
 
@@ -51,6 +52,12 @@ public class ContestEmailTemplateWrapper implements ContestEmailTemplate,
 
         if (type != null) {
             setType(type);
+        }
+
+        String subject = (String) attributes.get("subject");
+
+        if (subject != null) {
+            setSubject(subject);
         }
 
         String header = (String) attributes.get("header");
@@ -104,6 +111,26 @@ public class ContestEmailTemplateWrapper implements ContestEmailTemplate,
     @Override
     public void setType(java.lang.String type) {
         _contestEmailTemplate.setType(type);
+    }
+
+    /**
+    * Returns the subject of this contest email template.
+    *
+    * @return the subject of this contest email template
+    */
+    @Override
+    public java.lang.String getSubject() {
+        return _contestEmailTemplate.getSubject();
+    }
+
+    /**
+    * Sets the subject of this contest email template.
+    *
+    * @param subject the subject of this contest email template
+    */
+    @Override
+    public void setSubject(java.lang.String subject) {
+        _contestEmailTemplate.setSubject(subject);
     }
 
     /**

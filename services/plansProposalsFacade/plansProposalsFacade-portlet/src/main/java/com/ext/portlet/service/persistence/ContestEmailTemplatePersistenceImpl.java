@@ -336,6 +336,7 @@ public class ContestEmailTemplatePersistenceImpl extends BasePersistenceImpl<Con
         contestEmailTemplateImpl.setPrimaryKey(contestEmailTemplate.getPrimaryKey());
 
         contestEmailTemplateImpl.setType(contestEmailTemplate.getType());
+        contestEmailTemplateImpl.setSubject(contestEmailTemplate.getSubject());
         contestEmailTemplateImpl.setHeader(contestEmailTemplate.getHeader());
         contestEmailTemplateImpl.setFooter(contestEmailTemplate.getFooter());
 

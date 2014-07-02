@@ -59,6 +59,21 @@ public interface ContestEmailTemplateModel extends BaseModel<ContestEmailTemplat
     public void setType(String type);
 
     /**
+     * Returns the subject of this contest email template.
+     *
+     * @return the subject of this contest email template
+     */
+    @AutoEscape
+    public String getSubject();
+
+    /**
+     * Sets the subject of this contest email template.
+     *
+     * @param subject the subject of this contest email template
+     */
+    public void setSubject(String subject);
+
+    /**
      * Returns the header of this contest email template.
      *
      * @return the header of this contest email template
