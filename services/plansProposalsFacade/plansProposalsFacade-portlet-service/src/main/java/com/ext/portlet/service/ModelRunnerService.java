@@ -70,4 +70,8 @@ public interface ModelRunnerService extends BaseService, InvokableService {
             edu.mit.cci.roma.client.comm.ModelNotFoundException,
             edu.mit.cci.roma.client.comm.ScenarioNotFoundException,
             java.io.IOException;
+
+    public void refreshModels()
+        throws com.liferay.portal.kernel.exception.SystemException,
+            java.io.IOException;
 }

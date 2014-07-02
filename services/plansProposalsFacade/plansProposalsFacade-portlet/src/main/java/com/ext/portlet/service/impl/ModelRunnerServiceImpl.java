@@ -107,6 +107,11 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         return convertScenario(scenario); 
     }
     
+    public void refreshModels() throws SystemException, IOException {
+    	CollaboratoriumModelingService.repository().getManager().clearCache();
+    	CollaboratoriumModelingService.repository().getManager().refreshSimulations();
+    }
+    
     private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
     	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);

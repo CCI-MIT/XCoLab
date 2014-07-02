@@ -137,6 +137,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 					confidenceIntervalsByDescribedId[singleSerie.associatedMetaDataId].push(val);
 				}
 				else {
+					var dataLabel = singleSerie.name;
+					var dataUnit = singleSerie.variable.metaData.units[1];
+					var labelFormatString = singleSerie.labelFormatString;
 					if (singleSerie.variable.metaData.id in confidenceIntervalsByDescribedId && confidenceIntervalsByDescribedId[singleSerie.variable.metaData.id].length == 2) {
 						// we have a serie that has confidence interval defined
 						var valConf1 = confidenceIntervalsByDescribedId[singleSerie.variable.metaData.id][0];
@@ -151,13 +154,11 @@ if (typeof(XCoLab.modeling) == 'undefined')
 
 						valuesCombined.push(intervalVal);
 
-						plotSeries.push({showMarker: false, showLabel: false, 
+						plotSeries.push({showMarker: false, showLabel: false, label: dataLabel + " (low-high estimate)",
 							renderer: jQuery.jqplot.OHLCRenderer, color: "rgb(125, 228, 247)"});
+						//plotSeries.push({showMarker: true, label: 'abcdefg'});
 					}
 					valuesCombined.push(val);
-					var dataLabel = singleSerie.name;
-					var dataUnit = singleSerie.variable.metaData.units[1];
-					var labelFormatString = singleSerie.labelFormatString;
 
 					if (!(!labelFormatString || jQuery.trim(labelFormatString) == "")) {
 						dataLabel = labelFormatString.replace(/%label/g, dataLabel).replace(/%unit/g, dataUnit);

@@ -43,6 +43,11 @@
 			<portlet:param name="tab" value="inputTabs"/>
 		</portlet:renderURL>
 		<li class="${tab == 'inputTabs' ? 'active' : ''}"><a href='${inputTabsUrl }'>Input tabs</a></li>
+		<portlet:renderURL var="modelDisplayByJSONUrl">
+			<portlet:param name="modelId" value="${model.id }"/>
+			<portlet:param name="tab" value="modelDisplayByJSON"/>
+		</portlet:renderURL>
+		<li class="${tab == 'modelDisplayByJSON' ? 'active' : ''}"><a href='${modelDisplayByJSONUrl }'>Configure Model by json</a></li>
 	</ul>
 
 </jsp:root>

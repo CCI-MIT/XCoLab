@@ -70,3 +70,25 @@ table.simulation .leftContent, table.simulation .right-content {
     position: absolute;
     font-size: 12px;
 }
+
+.model_name_description {
+	position: relative;
+}
+
+.model_description .brand.EnROADS {
+	background: url(http://www.thinktankmap.org/VisualizzaAnteprima.aspx?format=bmp&quality=100&mode=0&height=&width=200&path=ImmaginiCaricate/2008010821417676.jpg) no-repeat !important;
+	width: 200px;
+	height: 82px;
+	float: right;
+	margin-top: -50px;
+}
+
+.model_description .brand.EMF27, .model_description .brand.EMF  {
+	background: url(https://emf.stanford.edu/sites/default/files/EMF-Logo_v2.1.png) no-repeat !important;
+	width: 154px;
+	height: 50px;
+	float: right;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}

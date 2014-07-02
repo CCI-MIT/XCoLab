@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelOutputWidgetsBean;
@@ -158,6 +159,20 @@ public class ModelsAdminController {
 		return "modelDetails/modelInputTabs";
 	}
 	
+
+	@RequestMapping(params={"modelId", "tab=modelDisplayByJSON"})
+	public String modelDisplayByJSON(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
+		
+		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
+		model.addAttribute("command", new UpdateModelDisplayFromJSONBean());
+		model.addAttribute("model", simulation);
+		model.addAttribute("tab", "modelDisplayByJSON");
+		
+		
+		return "modelDetails/modelDisplayByJSON";
+	}
+	
 	private List<ModelInputGroupDisplayItem> getSubGroups(ModelInputGroupDisplayItem parent) {
 		System.out.println("getting sub groups for parent: " + parent.getGroupId() + " " + parent.getName());
 		List<ModelInputGroupDisplayItem> ret = new ArrayList<ModelInputGroupDisplayItem>();
@@ -181,4 +196,5 @@ public class ModelsAdminController {
         }
         return outputs;
     }
+    
 }

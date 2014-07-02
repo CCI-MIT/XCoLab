@@ -78,4 +78,14 @@ public class ModelRunnerServiceSoap {
             throw new RemoteException(e.getMessage());
         }
     }
+
+    public static void refreshModels() throws RemoteException {
+        try {
+            ModelRunnerServiceUtil.refreshModels();
+        } catch (Exception e) {
+            _log.error(e, e);
+
+            throw new RemoteException(e.getMessage());
+        }
+    }
 }
