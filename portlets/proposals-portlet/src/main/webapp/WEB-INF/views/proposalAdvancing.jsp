@@ -33,119 +33,121 @@
     <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
     </portlet:resourceURL>
 
-    <div id="content">
+    <div id="content" class="${isJudgeReadOnly ? 'judgeReadOnly' : ''}">
         This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
         <br/>
         <h1 style="margin-top:15px;">Rating</h1>
 
-        <div class="judging_left">
-            <c:choose>
-                <c:when test="${not proposal.allJudgesReviewFinished}">
-                    Not all judges have completed the review yet or this proposal was not forwarded to any judges.
-                </c:when>
-                <c:otherwise>
-                    <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
-                               commandName="proposalAdvancingBean">
-                        <div class="addpropbox">
-                            <h3>Advance Proposal to Semi-Finalist Round?</h3>
-                            <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
+        <c:if test="${not isJudgeReadOnly}">
+            <div class="judging_left">
+                <c:choose>
+                    <c:when test="${not proposal.allJudgesReviewFinished}">
+                        Not all judges have completed the review yet or this proposal was not forwarded to any judges.
+                    </c:when>
+                    <c:otherwise>
+                        <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
+                                   commandName="proposalAdvancingBean">
+                            <div class="addpropbox">
+                                <h3>Advance Proposal to Semi-Finalist Round?</h3>
+                                <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
-                            <div id="comment-container">
-                                <h3>Comment to send to author</h3>
-                                <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
-                                    will be replacing the marked section in the text below.<br />
-                                    When writing this message, please consider the comments and ratings of judges in the Fellows &amp; Judges Comments tab.
-                                </i>
-                                <br/>
-                                <br/>
-                                <div id="comment-headers">
-                                    <c:forEach var="template" items="${emailTemplates}">
-                                        <div class="${template.key}">
-                                                ${template.value.getHeader()}
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                                <div class="form-errors"><!--  -->
-                                    <form:errors cssClass="alert alert-error" path="advanceComment" />
-                                </div>
-                                <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
-                                <div id="comment-footers">
-                                    <c:forEach var="template" items="${emailTemplates}">
-                                        <div class="${template.key}">
-                                                ${template.value.getFooter()}
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                                <c:if test="proposalsPermissions.canAdminAll">
-                                    <div class="blue-button" style="display:block; float:left;">
-                                        <a href="${sendEmailURL}">Send e-Mails</a>
+                                <div id="comment-container">
+                                    <h3>Comment to send to author</h3>
+                                    <i style="font-size:10pt;">The following message will be used as a template as the response message to the author. Your comment
+                                        will be replacing the marked section in the text below.<br />
+                                        When writing this message, please consider the comments and ratings of judges in the Fellows &amp; Judges Comments tab.
+                                    </i>
+                                    <br/>
+                                    <br/>
+                                    <div id="comment-headers">
+                                        <c:forEach var="template" items="${emailTemplates}">
+                                            <div class="${template.key}">
+                                                    ${template.value.getHeader()}
+                                            </div>
+                                        </c:forEach>
                                     </div>
-                                </c:if>
-                            </div>
-                            <div id="advance-save-buttons">
-                                <c:choose>
-                                    <c:when test="${hasNoWritePermission}">
-                                        <p class="submitStatus error">
-                                            <strong>You have no permission to change the advancement this proposal.</strong>
-                                        </p>
-                                    </c:when>
-                                    <c:when test="${isFrozen}">
-                                        <p class="submitStatus">
-                                            <strong>The advancement is finalized and may not be changed anymore.</strong>
-                                        </p>
-                                        <c:if test="${isAdmin}">
+                                    <div class="form-errors"><!--  -->
+                                        <form:errors cssClass="alert alert-error" path="advanceComment" />
+                                    </div>
+                                    <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
+                                    <div id="comment-footers">
+                                        <c:forEach var="template" items="${emailTemplates}">
+                                            <div class="${template.key}">
+                                                    ${template.value.getFooter()}
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                    <c:if test="proposalsPermissions.canAdminAll">
+                                        <div class="blue-button" style="display:block; float:left;">
+                                            <a href="${sendEmailURL}">Send e-Mails</a>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <div id="advance-save-buttons">
+                                    <c:choose>
+                                        <c:when test="${hasNoWritePermission}">
+                                            <p class="submitStatus error">
+                                                <strong>You have no permission to change the advancement this proposal.</strong>
+                                            </p>
+                                        </c:when>
+                                        <c:when test="${isFrozen}">
+                                            <p class="submitStatus">
+                                                <strong>The advancement is finalized and may not be changed anymore.</strong>
+                                            </p>
+                                            <c:if test="${isAdmin}">
+                                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                    <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                                        Save
+                                                    </a>
+                                                </div>
+                                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                    <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
+                                                    <a href="javascript:;" onclick="$('#submit-unfreeze').click();">
+                                                        Unfreeze
+                                                    </a>
+                                                </div>
+                                            </c:if>
+                                        </c:when>
+                                        <c:otherwise>
                                             <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
                                                 <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                                     Save
                                                 </a>
                                             </div>
+                                            <div id="advancement-freeze-button">
+                                                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                    <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
+                                                    <a href="javascript:;" onclick="$('#submit-freeze').click();">
+                                                        Freeze
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div id="advancement-force-button">
+                                        <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
                                             <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                                <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                <a href="javascript:;" onclick="$('#submit-unfreeze').click();">
-                                                    Unfreeze
+                                                <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                                <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                    Execute judging decision
                                                 </a>
                                             </div>
                                         </c:if>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                            <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">
-                                                Save
-                                            </a>
-                                        </div>
-                                        <div id="advancement-freeze-button">
-                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                                <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                                <a href="javascript:;" onclick="$('#submit-freeze').click();">
-                                                    Freeze
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                                <div id="advancement-force-button">
-                                    <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
-                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                            <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                            <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
-                                                Execute judging decision
-                                            </a>
-                                        </div>
+                                    </div>
+                                    <c:if test="${hasAlreadyBeenPromoted}">
+                                        <p class="submitStatus error">
+                                            <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                                        </p>
                                     </c:if>
+
                                 </div>
-                                <c:if test="${hasAlreadyBeenPromoted}">
-                                    <p class="submitStatus error">
-                                        <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
-                                    </p>
-                                </c:if>
 
                             </div>
-
-                        </div>
-                    </form:form>
-                </c:otherwise>
-            </c:choose>
-        </div>
+                        </form:form>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
         <div class="judging_right">
             <div class="addpropbox">
                 <h2>Evaluation criteria</h2>
