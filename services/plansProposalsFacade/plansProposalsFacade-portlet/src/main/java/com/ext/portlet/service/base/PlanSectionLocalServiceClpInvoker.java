@@ -41,22 +41,10 @@ public class PlanSectionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName534;
-    private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
     private String _methodName540;
     private String[] _methodParameterTypes540;
     private String _methodName541;
     private String[] _methodParameterTypes541;
-    private String _methodName542;
-    private String[] _methodParameterTypes542;
-    private String _methodName543;
-    private String[] _methodParameterTypes543;
-    private String _methodName544;
-    private String[] _methodParameterTypes544;
-    private String _methodName545;
-    private String[] _methodParameterTypes545;
     private String _methodName546;
     private String[] _methodParameterTypes546;
     private String _methodName547;
@@ -69,6 +57,18 @@ public class PlanSectionLocalServiceClpInvoker {
     private String[] _methodParameterTypes550;
     private String _methodName551;
     private String[] _methodParameterTypes551;
+    private String _methodName552;
+    private String[] _methodParameterTypes552;
+    private String _methodName553;
+    private String[] _methodParameterTypes553;
+    private String _methodName554;
+    private String[] _methodParameterTypes554;
+    private String _methodName555;
+    private String[] _methodParameterTypes555;
+    private String _methodName556;
+    private String[] _methodParameterTypes556;
+    private String _methodName557;
+    private String[] _methodParameterTypes557;
 
     public PlanSectionLocalServiceClpInvoker() {
         _methodName0 = "addPlanSection";
@@ -153,92 +153,92 @@ public class PlanSectionLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanSection"
             };
 
-        _methodName534 = "getBeanIdentifier";
+        _methodName540 = "getBeanIdentifier";
 
-        _methodParameterTypes534 = new String[] {  };
+        _methodParameterTypes540 = new String[] {  };
 
-        _methodName535 = "setBeanIdentifier";
+        _methodName541 = "setBeanIdentifier";
 
-        _methodParameterTypes535 = new String[] { "java.lang.String" };
+        _methodParameterTypes541 = new String[] { "java.lang.String" };
 
-        _methodName540 = "getCurrentForPlanSectionDef";
+        _methodName546 = "getCurrentForPlanSectionDef";
 
-        _methodParameterTypes540 = new String[] {
+        _methodParameterTypes546 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName541 = "getCurrentForPlanSectionDef";
+        _methodName547 = "getCurrentForPlanSectionDef";
 
-        _methodParameterTypes541 = new String[] {
+        _methodParameterTypes547 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition", "boolean"
             };
 
-        _methodName542 = "getForPlanSectionDef";
+        _methodName548 = "getForPlanSectionDef";
 
-        _methodParameterTypes542 = new String[] {
+        _methodParameterTypes548 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName543 = "getForPlanSectionDef";
+        _methodName549 = "getForPlanSectionDef";
 
-        _methodParameterTypes543 = new String[] {
+        _methodParameterTypes549 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition", "boolean",
                 "boolean"
             };
 
-        _methodName544 = "createForPlanFrom";
+        _methodName550 = "createForPlanFrom";
 
-        _methodParameterTypes544 = new String[] {
+        _methodParameterTypes550 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSection", "boolean"
             };
 
-        _methodName545 = "createNewVersionForPlanSectionDefinition";
+        _methodName551 = "createNewVersionForPlanSectionDefinition";
 
-        _methodParameterTypes545 = new String[] {
+        _methodParameterTypes551 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName546 = "createNewVersionForPlanSectionDefinition";
+        _methodName552 = "createNewVersionForPlanSectionDefinition";
 
-        _methodParameterTypes546 = new String[] {
+        _methodParameterTypes552 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition", "boolean"
             };
 
-        _methodName547 = "getAllForPlanDefinition";
+        _methodName553 = "getAllForPlanDefinition";
 
-        _methodParameterTypes547 = new String[] {
+        _methodParameterTypes553 = new String[] {
                 "com.ext.portlet.model.PlanItem",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName548 = "store";
+        _methodName554 = "store";
 
-        _methodParameterTypes548 = new String[] {
+        _methodParameterTypes554 = new String[] {
                 "com.ext.portlet.model.PlanSection"
             };
 
-        _methodName549 = "getDefinition";
+        _methodName555 = "getDefinition";
 
-        _methodParameterTypes549 = new String[] {
+        _methodParameterTypes555 = new String[] {
                 "com.ext.portlet.model.PlanSection"
             };
 
-        _methodName550 = "addPlanReference";
+        _methodName556 = "addPlanReference";
 
-        _methodParameterTypes550 = new String[] {
+        _methodParameterTypes556 = new String[] {
                 "com.ext.portlet.model.PlanSection", "java.lang.Long"
             };
 
-        _methodName551 = "getReferencedPlans";
+        _methodName557 = "getReferencedPlans";
 
-        _methodParameterTypes551 = new String[] {
+        _methodParameterTypes557 = new String[] {
                 "com.ext.portlet.model.PlanSection"
             };
     }
@@ -332,93 +332,93 @@ public class PlanSectionLocalServiceClpInvoker {
             return PlanSectionLocalServiceUtil.updatePlanSection((com.ext.portlet.model.PlanSection) arguments[0]);
         }
 
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             PlanSectionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName546.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getCurrentForPlanSectionDef((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
         }
 
-        if (_methodName541.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
+        if (_methodName547.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes547, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getCurrentForPlanSectionDef((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName542.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
+        if (_methodName548.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes548, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getForPlanSectionDef((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
         }
 
-        if (_methodName543.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
+        if (_methodName549.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes549, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getForPlanSectionDef((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1],
                 ((Boolean) arguments[2]).booleanValue(),
                 ((Boolean) arguments[3]).booleanValue());
         }
 
-        if (_methodName544.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes544, parameterTypes)) {
+        if (_methodName550.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes550, parameterTypes)) {
             return PlanSectionLocalServiceUtil.createForPlanFrom((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSection) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName545.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes545, parameterTypes)) {
+        if (_methodName551.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes551, parameterTypes)) {
             return PlanSectionLocalServiceUtil.createNewVersionForPlanSectionDefinition((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
         }
 
-        if (_methodName546.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
+        if (_methodName552.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes552, parameterTypes)) {
             return PlanSectionLocalServiceUtil.createNewVersionForPlanSectionDefinition((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
         }
 
-        if (_methodName547.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes547, parameterTypes)) {
+        if (_methodName553.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes553, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getAllForPlanDefinition((com.ext.portlet.model.PlanItem) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
         }
 
-        if (_methodName548.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes548, parameterTypes)) {
+        if (_methodName554.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes554, parameterTypes)) {
             PlanSectionLocalServiceUtil.store((com.ext.portlet.model.PlanSection) arguments[0]);
 
             return null;
         }
 
-        if (_methodName549.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes549, parameterTypes)) {
+        if (_methodName555.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes555, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getDefinition((com.ext.portlet.model.PlanSection) arguments[0]);
         }
 
-        if (_methodName550.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes550, parameterTypes)) {
+        if (_methodName556.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes556, parameterTypes)) {
             PlanSectionLocalServiceUtil.addPlanReference((com.ext.portlet.model.PlanSection) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName551.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes551, parameterTypes)) {
+        if (_methodName557.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes557, parameterTypes)) {
             return PlanSectionLocalServiceUtil.getReferencedPlans((com.ext.portlet.model.PlanSection) arguments[0]);
         }
 

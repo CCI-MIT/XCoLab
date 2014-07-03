@@ -41,12 +41,12 @@ public class LoginLogLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName534;
-    private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
     private String _methodName540;
     private String[] _methodParameterTypes540;
+    private String _methodName541;
+    private String[] _methodParameterTypes541;
+    private String _methodName546;
+    private String[] _methodParameterTypes546;
 
     public LoginLogLocalServiceClpInvoker() {
         _methodName0 = "addLoginLog";
@@ -125,17 +125,17 @@ public class LoginLogLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.LoginLog" };
 
-        _methodName534 = "getBeanIdentifier";
+        _methodName540 = "getBeanIdentifier";
 
-        _methodParameterTypes534 = new String[] {  };
+        _methodParameterTypes540 = new String[] {  };
 
-        _methodName535 = "setBeanIdentifier";
+        _methodName541 = "setBeanIdentifier";
 
-        _methodParameterTypes535 = new String[] { "java.lang.String" };
+        _methodParameterTypes541 = new String[] { "java.lang.String" };
 
-        _methodName540 = "createLoginLog";
+        _methodName546 = "createLoginLog";
 
-        _methodParameterTypes540 = new String[] {
+        _methodParameterTypes546 = new String[] {
                 "com.liferay.portal.model.User", "java.lang.String",
                 "java.lang.String"
             };
@@ -230,20 +230,20 @@ public class LoginLogLocalServiceClpInvoker {
             return LoginLogLocalServiceUtil.updateLoginLog((com.ext.portlet.model.LoginLog) arguments[0]);
         }
 
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return LoginLogLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             LoginLogLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName546.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
             return LoginLogLocalServiceUtil.createLoginLog((com.liferay.portal.model.User) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }

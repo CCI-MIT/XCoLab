@@ -41,22 +41,22 @@ public class PlanTeamHistoryLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName534;
-    private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
     private String _methodName540;
     private String[] _methodParameterTypes540;
     private String _methodName541;
     private String[] _methodParameterTypes541;
-    private String _methodName542;
-    private String[] _methodParameterTypes542;
-    private String _methodName543;
-    private String[] _methodParameterTypes543;
-    private String _methodName544;
-    private String[] _methodParameterTypes544;
-    private String _methodName545;
-    private String[] _methodParameterTypes545;
+    private String _methodName546;
+    private String[] _methodParameterTypes546;
+    private String _methodName547;
+    private String[] _methodParameterTypes547;
+    private String _methodName548;
+    private String[] _methodParameterTypes548;
+    private String _methodName549;
+    private String[] _methodParameterTypes549;
+    private String _methodName550;
+    private String[] _methodParameterTypes550;
+    private String _methodName551;
+    private String[] _methodParameterTypes551;
 
     public PlanTeamHistoryLocalServiceClpInvoker() {
         _methodName0 = "addPlanTeamHistory";
@@ -141,49 +141,49 @@ public class PlanTeamHistoryLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanTeamHistory"
             };
 
-        _methodName534 = "getBeanIdentifier";
+        _methodName540 = "getBeanIdentifier";
 
-        _methodParameterTypes534 = new String[] {  };
+        _methodParameterTypes540 = new String[] {  };
 
-        _methodName535 = "setBeanIdentifier";
+        _methodName541 = "setBeanIdentifier";
 
-        _methodParameterTypes535 = new String[] { "java.lang.String" };
+        _methodParameterTypes541 = new String[] { "java.lang.String" };
 
-        _methodName540 = "newHistoryItem";
+        _methodName546 = "newHistoryItem";
 
-        _methodParameterTypes540 = new String[] {
+        _methodParameterTypes546 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.String",
                 "java.lang.Long"
             };
 
-        _methodName541 = "newHistoryItem";
+        _methodName547 = "newHistoryItem";
 
-        _methodParameterTypes541 = new String[] {
+        _methodParameterTypes547 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.String",
                 "java.lang.String", "java.lang.Long"
             };
 
-        _methodName542 = "getLastUserActionInPlan";
+        _methodName548 = "getLastUserActionInPlan";
 
-        _methodParameterTypes542 = new String[] {
+        _methodParameterTypes548 = new String[] {
                 "java.lang.Long", "java.lang.Long"
             };
 
-        _methodName543 = "store";
+        _methodName549 = "store";
 
-        _methodParameterTypes543 = new String[] {
+        _methodParameterTypes549 = new String[] {
                 "com.ext.portlet.model.PlanTeamHistory"
             };
 
-        _methodName544 = "getUser";
+        _methodName550 = "getUser";
 
-        _methodParameterTypes544 = new String[] {
+        _methodParameterTypes550 = new String[] {
                 "com.ext.portlet.model.PlanTeamHistory"
             };
 
-        _methodName545 = "getPlan";
+        _methodName551 = "getPlan";
 
-        _methodParameterTypes545 = new String[] {
+        _methodParameterTypes551 = new String[] {
                 "com.ext.portlet.model.PlanTeamHistory"
             };
     }
@@ -277,52 +277,52 @@ public class PlanTeamHistoryLocalServiceClpInvoker {
             return PlanTeamHistoryLocalServiceUtil.updatePlanTeamHistory((com.ext.portlet.model.PlanTeamHistory) arguments[0]);
         }
 
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             PlanTeamHistoryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName546.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.newHistoryItem((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.String) arguments[2],
                 (java.lang.Long) arguments[3]);
         }
 
-        if (_methodName541.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
+        if (_methodName547.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes547, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.newHistoryItem((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.String) arguments[2],
                 (java.lang.String) arguments[3], (java.lang.Long) arguments[4]);
         }
 
-        if (_methodName542.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
+        if (_methodName548.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes548, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.getLastUserActionInPlan((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1]);
         }
 
-        if (_methodName543.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
+        if (_methodName549.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes549, parameterTypes)) {
             PlanTeamHistoryLocalServiceUtil.store((com.ext.portlet.model.PlanTeamHistory) arguments[0]);
 
             return null;
         }
 
-        if (_methodName544.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes544, parameterTypes)) {
+        if (_methodName550.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes550, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.getUser((com.ext.portlet.model.PlanTeamHistory) arguments[0]);
         }
 
-        if (_methodName545.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes545, parameterTypes)) {
+        if (_methodName551.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes551, parameterTypes)) {
             return PlanTeamHistoryLocalServiceUtil.getPlan((com.ext.portlet.model.PlanTeamHistory) arguments[0]);
         }
 

@@ -41,10 +41,10 @@ public class PlansFilterPositionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName534;
-    private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
+    private String _methodName541;
+    private String[] _methodParameterTypes541;
 
     public PlansFilterPositionLocalServiceClpInvoker() {
         _methodName0 = "addPlansFilterPosition";
@@ -137,13 +137,13 @@ public class PlansFilterPositionLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlansFilterPosition"
             };
 
-        _methodName534 = "getBeanIdentifier";
+        _methodName540 = "getBeanIdentifier";
 
-        _methodParameterTypes534 = new String[] {  };
+        _methodParameterTypes540 = new String[] {  };
 
-        _methodName535 = "setBeanIdentifier";
+        _methodName541 = "setBeanIdentifier";
 
-        _methodParameterTypes535 = new String[] { "java.lang.String" };
+        _methodParameterTypes541 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -235,13 +235,13 @@ public class PlansFilterPositionLocalServiceClpInvoker {
             return PlansFilterPositionLocalServiceUtil.updatePlansFilterPosition((com.ext.portlet.model.PlansFilterPosition) arguments[0]);
         }
 
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return PlansFilterPositionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             PlansFilterPositionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

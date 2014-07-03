@@ -41,12 +41,12 @@ public class StaffMemberLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName514;
-    private String[] _methodParameterTypes514;
-    private String _methodName515;
-    private String[] _methodParameterTypes515;
-    private String _methodName520;
-    private String[] _methodParameterTypes520;
+    private String _methodName540;
+    private String[] _methodParameterTypes540;
+    private String _methodName541;
+    private String[] _methodParameterTypes541;
+    private String _methodName546;
+    private String[] _methodParameterTypes546;
 
     public StaffMemberLocalServiceClpInvoker() {
         _methodName0 = "addStaffMember";
@@ -131,17 +131,17 @@ public class StaffMemberLocalServiceClpInvoker {
                 "com.ext.portlet.model.StaffMember"
             };
 
-        _methodName514 = "getBeanIdentifier";
+        _methodName540 = "getBeanIdentifier";
 
-        _methodParameterTypes514 = new String[] {  };
+        _methodParameterTypes540 = new String[] {  };
 
-        _methodName515 = "setBeanIdentifier";
+        _methodName541 = "setBeanIdentifier";
 
-        _methodParameterTypes515 = new String[] { "java.lang.String" };
+        _methodParameterTypes541 = new String[] { "java.lang.String" };
 
-        _methodName520 = "getStaffMembersByCategoryId";
+        _methodName546 = "getStaffMembersByCategoryId";
 
-        _methodParameterTypes520 = new String[] { "long" };
+        _methodParameterTypes546 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class StaffMemberLocalServiceClpInvoker {
             return StaffMemberLocalServiceUtil.updateStaffMember((com.ext.portlet.model.StaffMember) arguments[0]);
         }
 
-        if (_methodName514.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
+        if (_methodName540.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
             return StaffMemberLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName515.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes515, parameterTypes)) {
+        if (_methodName541.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
             StaffMemberLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName520.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes520, parameterTypes)) {
+        if (_methodName546.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
             return StaffMemberLocalServiceUtil.getStaffMembersByCategoryId(((Long) arguments[0]).longValue());
         }
 
