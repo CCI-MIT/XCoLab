@@ -147,7 +147,7 @@ public class ProposalJudgingCommentHelper {
                     0
             ).getStringValue();
 
-            String templateToLoad = (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) ? "SCREENING_INCOMPLETE" : "SCREENING_OFF_TOPIC";
+            String templateToLoad = (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) ? "SCREENING_DO_NOT_ADVANCE_INCOMPLETE" : "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
 
             ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
                     ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),

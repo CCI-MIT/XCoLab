@@ -93,31 +93,31 @@ public class JudgeProposalActionController {
                 0
         );
 
-        //disallow saving for non-admins
+        boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue());
+
+        //disallow saving when frozen for non-admins
         if (isFrozen && !permissions.getCanAdminAll()) {
             return;
         }
 
         // save judge decision
-        if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
-                    0,
-                    proposalAdvancingBean.getAdvanceDecision()
-            );
-        }
+        ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                proposalId,
+                contestPhase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
+                0,
+                proposalAdvancingBean.getAdvanceDecision()
+        );
 
         // save judge comment
-        if (proposalAdvancingBean.getAdvanceDecision() != JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue()) {
+        if (!isUndecided) {
             ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
 
             commentHelper.setAdvancingComment(proposalAdvancingBean.getAdvanceComment());
         }
 
         //freeze the advancement
-        if (request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
+        if (!isUndecided && request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
             ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
                     proposalId,
                     contestPhase.getContestPhasePK(),
@@ -139,7 +139,7 @@ public class JudgeProposalActionController {
         }
 
         //forcefully promote the advancement
-        if (permissions.getCanAdminAll() && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
+        if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
 
@@ -260,38 +260,40 @@ public class JudgeProposalActionController {
         Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();
         //now update the values and save or create a new rating of not existent yet
         boolean commentAdded = false;
-        for (Long typeId: ratingsFromForm.keySet()) {
-            ProposalRating existingRating = typeToRatingMap.get(typeId);
-            long newRatingValueId = Long.parseLong(ratingsFromForm.get(typeId));
+        if (ratingsFromForm != null) {
+            for (Long typeId : ratingsFromForm.keySet()) {
+                ProposalRating existingRating = typeToRatingMap.get(typeId);
+                long newRatingValueId = Long.parseLong(ratingsFromForm.get(typeId));
 
-            if (existingRating != null) {
-                //rating exists. update and save
-                existingRating.setRatingValueId(newRatingValueId);
-                //convention: save comment in first type
-                if (!commentAdded) {
-                    existingRating.setComment(ratingBean.getComment());
-                    existingRating.setCommentEnabled(true);
-                    commentAdded = true;
+                if (existingRating != null) {
+                    //rating exists. update and save
+                    existingRating.setRatingValueId(newRatingValueId);
+                    //convention: save comment in first type
+                    if (!commentAdded) {
+                        existingRating.setComment(ratingBean.getComment());
+                        existingRating.setCommentEnabled(true);
+                        commentAdded = true;
+                    } else {
+                        existingRating.setComment(null);
+                        existingRating.setCommentEnabled(false);
+                    }
+                    ProposalRatingLocalServiceUtil.updateRating(existingRating);
                 } else {
-                    existingRating.setComment(null);
-                    existingRating.setCommentEnabled(false);
+                    String comment = null;
+                    if (!commentAdded) {
+                        comment = ratingBean.getComment();
+                        commentAdded = true;
+                    }
+                    //create a new rating
+                    ProposalRatingLocalServiceUtil.addRating(
+                            proposalId,
+                            contestPhaseId,
+                            currentUserId,
+                            newRatingValueId,
+                            comment,
+                            ""
+                    );
                 }
-                ProposalRatingLocalServiceUtil.updateRating(existingRating);
-            } else {
-                String comment = null;
-                if (!commentAdded) {
-                    comment = ratingBean.getComment();
-                    commentAdded = true;
-                }
-                //create a new rating
-                ProposalRatingLocalServiceUtil.addRating(
-                        proposalId,
-                        contestPhaseId,
-                        currentUserId,
-                        newRatingValueId,
-                        comment,
-                        ""
-                );
             }
         }
     }

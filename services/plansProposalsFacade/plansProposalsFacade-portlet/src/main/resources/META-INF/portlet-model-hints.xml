@@ -168,10 +168,18 @@
 		<field name="ContestPK" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.ContestEmailTemplate">
-		<field name="type" type="String" />
-		<field name="subject" type="String" />
-		<field name="header" type="String" />
-		<field name="footer" type="String" />
+		<field name="type" type="String">
+            <hint name="max-length">2000000</hint>
+        </field>
+		<field name="subject" type="String">
+            <hint name="max-length">2000000</hint>
+        </field>
+		<field name="header" type="String">
+            <hint name="max-length">2000000</hint>
+        </field>
+		<field name="footer" type="String">
+            <hint name="max-length">2000000</hint>
+        </field>
 	</model>
 	<model name="com.ext.portlet.model.ContestPhase">
 		<field name="ContestPhasePK" type="long" />

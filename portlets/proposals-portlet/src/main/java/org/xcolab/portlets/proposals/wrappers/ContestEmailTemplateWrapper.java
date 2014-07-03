@@ -19,15 +19,15 @@ public class ContestEmailTemplateWrapper {
     }
 
     public String getHeader() {
-        return this.replaceVariables(this.template.getHeader());
+        return this.template == null ? "" : this.replaceVariables(this.template.getHeader());
     }
 
     public String getFooter() {
-        return this.replaceVariables(this.template.getFooter());
+        return this.template == null ? "" :  this.replaceVariables(this.template.getFooter());
     }
 
     public String getSubject() {
-        return this.replaceVariables(this.template.getSubject());
+        return this.template == null ? "" :  this.replaceVariables(this.template.getSubject());
     }
 
     public String getCompleteMessage(String body) {

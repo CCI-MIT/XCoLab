@@ -119,6 +119,8 @@
                     </c:if>
                 </c:forEach>
             </c:if>
+
+            <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
         </div>
         <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>

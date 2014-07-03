@@ -37,7 +37,7 @@ public class ContestEmailTemplateWrapper {
     }
 
     public String getCompleteMessage(String body) {
-        return this.getHeader()+body+this.getFooter();
+        return this.getHeader()+"\n"+body+"\n\n"+this.getFooter();
     }
 
     private String replaceVariables(String subject) {

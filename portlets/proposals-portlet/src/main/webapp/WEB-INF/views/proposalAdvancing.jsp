@@ -81,10 +81,12 @@
                                         <a href="${sendEmailURL}">Send e-Mails</a>
                                     </div>
                                 </c:if>
+                            </div>
+                            <div id="advance-save-buttons">
                                 <c:choose>
                                     <c:when test="${hasNoWritePermission}">
                                         <p class="submitStatus error">
-                                            <strong>You have no permission to advance this proposal.</strong>
+                                            <strong>You have no permission to change the advancement this proposal.</strong>
                                         </p>
                                     </c:when>
                                     <c:when test="${isFrozen}">
@@ -111,28 +113,31 @@
                                                 Save
                                             </a>
                                         </div>
-                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                            <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                            <a href="javascript:;" onclick="$('#submit-freeze').click();">
-                                                Freeze
-                                            </a>
+                                        <div id="advancement-freeze-button">
+                                            <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                                <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
+                                                <a href="javascript:;" onclick="$('#submit-freeze').click();">
+                                                    Freeze
+                                                </a>
+                                            </div>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
-                                    <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                                        <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                        <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
-                                            Execute judging decision
-                                        </a>
-                                    </div>
-                                </c:if>
+                                <div id="advancement-force-button">
+                                    <c:if test="${isAdmin and not hasAlreadyBeenPromoted}">
+                                        <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                                            <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                            <a href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                Execute judging decision
+                                            </a>
+                                        </div>
+                                    </c:if>
+                                </div>
                                 <c:if test="${hasAlreadyBeenPromoted}">
                                     <p class="submitStatus error">
                                         <strong>This proposal has already been promoted to the next phase. Thus, changes have no effect.</strong>
                                     </p>
                                 </c:if>
-
 
                             </div>
 
@@ -188,8 +193,12 @@
         function refreshCommentHeader() {
             var advanceDecisionIdx = document.getElementById("advanceDecision").selectedIndex;
             if (advanceDecisionIdx > 0) {
+                $("#advancement-force-button").show();
+                $("#advancement-freeze-button").show();
                 $('#comment-container').slideDown();
             } else {
+                $("#advancement-force-button").hide();
+                $("#advancement-freeze-button").hide();
                 $('#comment-container').slideUp();
             }
         }
