@@ -36,7 +36,11 @@
     <div id="content" class="${isJudgeReadOnly ? 'judgeReadOnly' : ''}">
         This page is shared by contest Fellows only.  Advisors and Judges will not be able to view this page.
         <br/>
+        <div style="display: inline-block;	float:right; margin-top: 20px;">
+            <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+        </div>
         <h1 style="margin-top:15px;">Rating</h1>
+
 
         <c:if test="${not isJudgeReadOnly}">
             <div class="judging_left">
@@ -69,6 +73,7 @@
                                     <div class="form-errors"><!--  -->
                                         <form:errors cssClass="alert alert-error" path="advanceComment" />
                                     </div>
+                                    <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
                                     <form:textarea id="advanceComment" cssClass="commentbox" path="advanceComment" style="width:100%;"/>
                                     <div id="comment-footers">
                                         <c:forEach var="template" items="${emailTemplates}">
@@ -219,6 +224,12 @@
             if (classToBeShown != "") {
                 jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
             }
+        }
+
+        function copyCommentsToTextArea(element) {
+            var text = "";
+            $(".comment-wrapper", $(element).closest(".comments")).each(function() {text+="\n\n"+$(this).text()});
+            $("#advanceComment").val($("#advanceComment").val()+text);
         }
     </script>
     <c:if test="${hasNoWritePermission or (isFrozen and not isAdmin)}">

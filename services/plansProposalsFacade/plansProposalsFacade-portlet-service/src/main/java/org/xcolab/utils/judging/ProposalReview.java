@@ -2,10 +2,14 @@ package org.xcolab.utils.judging;
 
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalRatingType;
 import com.liferay.portal.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * Created by kmang on 25/05/14.
@@ -14,27 +18,50 @@ public class ProposalReview {
     private Proposal proposal;
     ContestPhase contestPhase;
     private String proposalUrl;
-    private List<IndividualReview> reviews;
+
+
+
+    private Map<ProposalRatingType, Double> ratingAverages;
+
+    private Map<User, String> reviews;
 
     public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
-        this.reviews = new ArrayList<>();
+        this.reviews = new HashMap<User, String>();
+        this.ratingAverages = new HashMap<ProposalRatingType, Double>();
     }
 
-    public void addIndividualReview(User judge, int rating, String comment) {
-        IndividualReview review = new IndividualReview(judge, rating, comment);
-        this.reviews.add(review);
+    public void addReview(User judge, String comment) {
+        this.reviews.put(judge, comment);
+    }
+    public String getReview(User user) {
+        return reviews.get(user);
     }
 
-    public double getAverageRating() {
-        int sum = 0;
-        for (IndividualReview individualReview : reviews) {
-            sum += individualReview.getRating();
-        }
+    public void addRatingAverage(ProposalRatingType ratingType, double average) {
+        this.ratingAverages.put(ratingType, average);
+    }
 
-        return (double)sum / ((double)reviews.size());
+    public Double getRatingAverage(ProposalRatingType type) {
+        return ratingAverages.get(type);
+    }
+
+    public Map<ProposalRatingType, Double> getRatingAverages() {
+        return ratingAverages;
+    }
+
+    public void setRatingAverages(Map<ProposalRatingType, Double> ratingAverages) {
+        this.ratingAverages = ratingAverages;
+    }
+
+    public Map<User, String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Map<User, String> reviews) {
+        this.reviews = reviews;
     }
 
     public Proposal getProposal() {
@@ -59,53 +86,5 @@ public class ProposalReview {
 
     public void setProposalUrl(String proposalUrl) {
         this.proposalUrl = proposalUrl;
-    }
-
-    public List<IndividualReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<IndividualReview> reviews) {
-        this.reviews = reviews;
-    }
-
-    public boolean isEmpty() {
-        return reviews.size() == 0;
-    }
-
-    public class IndividualReview {
-       private int rating;
-        private User reviewer;
-        private String comment;
-
-        public IndividualReview(User reviewer, int rating, String comment) {
-            this.rating = rating;
-            this.reviewer = reviewer;
-            this.comment = comment;
-        }
-
-        public int getRating() {
-            return rating;
-        }
-
-        public void setRating(int rating) {
-            this.rating = rating;
-        }
-
-        public User getReviewer() {
-            return reviewer;
-        }
-
-        public void setReviewer(User reviewer) {
-            this.reviewer = reviewer;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
     }
 }

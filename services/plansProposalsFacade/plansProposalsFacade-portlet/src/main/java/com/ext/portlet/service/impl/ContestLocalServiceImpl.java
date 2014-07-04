@@ -32,6 +32,9 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.model.ProposalRatingType;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -91,10 +94,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 import org.xcolab.utils.emailnotification.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
+
 
 /**
  * The implementation of the contest local service.
@@ -695,6 +700,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
         List<Proposal> stillActiveProposals = proposalLocalService.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
+        Set<ProposalRatingType> occurringRatingTypes = new HashSet<ProposalRatingType>();
+        Set<User> occurringJudges = new HashSet<User>();
+
 
         for (ContestPhase judgingPhase : getAllPhases(contest)) {
             for (Proposal proposal : stillActiveProposals) {
@@ -719,33 +727,45 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
 
-                for (User judge : getProposalReviewingJudges(proposal, judgingPhase)) {
-                    // Judge rating
-                    try {
-                        int judgeRating = (int) getProposalContestPhaseAttributeLocalService().
-                                getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
-                                        ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_RATING, judge.getUserId()).getNumericValue();
-                        String judgeComment = getProposalContestPhaseAttributeLocalService().
-                                getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
-                                        ProposalContestPhaseAttributeKeys.JUDGE_REVIEW_COMMENT, judge.getUserId()).getStringValue();
-                        proposalReview.addIndividualReview(judge, judgeRating, judgeComment);
-                    } catch (NoSuchProposalContestPhaseAttributeException e) {
-                        _log.info("Judge with ID " + judge.getUserId() + " has not yet reviewed proposal with ID " + proposal.getProposalId());
-                        continue;   // just ignore this review since it's not yet finished
+                List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId());
+                Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<ProposalRatingType, List<Long>>();
+                for (ProposalRating rating: ratings) {
+                    ProposalRatingWrapper wrapper = new ProposalRatingWrapper(rating);
+                    if (ratingsPerType.get(wrapper.getRatingType()) == null) {
+                        ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
+                    }
+                    ratingsPerType.get(wrapper.getRatingType()).add(wrapper.getRatingValue().getValue());
+                    occurringRatingTypes.add(wrapper.getRatingType());
+                    if (rating.isCommentEnabled()) {
+                        proposalReview.addReview(wrapper.getUser(), rating.getComment());
+                        occurringJudges.add(wrapper.getUser());
                     }
                 }
+
+                //take the average for each type
+                for (ProposalRatingType key : ratingsPerType.keySet()) {
+                    long sum = 0;
+                    int count = 0;
+                    for (Long val: ratingsPerType.get(key)) {
+                        sum += val;
+                        count++;
+                    }
+                    double avg = sum/count;
+                    proposalReview.addRatingAverage(key, avg);
+                }
+
 
                 if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
                     proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                 }
 
-                if (!proposalReview.isEmpty()) {
+                if (ratings.size() > 0) {
                     proposalToProposalReviewsMap.get(proposal).add(proposalReview);
                 }
             }
         }
 
-        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, getJudgesForContest(contest));
+        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList(occurringJudges), new ArrayList(occurringRatingTypes));
         return csvExporter.getCsvString();
     }
 

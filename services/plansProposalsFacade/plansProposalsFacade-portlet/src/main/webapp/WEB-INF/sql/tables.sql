@@ -119,9 +119,9 @@ create table xcolab_ContestDebate (
 
 create table xcolab_ContestEmailTemplate (
 	type_ VARCHAR(75) not null primary key,
-	subject VARCHAR(75) null,
-	header VARCHAR(75) null,
-	footer VARCHAR(75) null
+	subject TEXT null,
+	header TEXT null,
+	footer TEXT null
 );
 
 create table xcolab_ContestPhase (

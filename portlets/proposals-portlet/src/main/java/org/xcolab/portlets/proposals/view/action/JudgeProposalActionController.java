@@ -6,7 +6,10 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -40,6 +43,54 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.util.mail.MailEngineException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
+import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
+import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.*;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -144,6 +195,41 @@ public class JudgeProposalActionController {
         }
 
         response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposalId+"/tab/ADVANCING");
+    }
+
+    @ResourceMapping("getJudgingCsv")
+    public void getJudgingCsv(ResourceRequest request, ResourceResponse response)
+            throws PortalException, SystemException {
+
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        User currentUser = proposalsContext.getUser(request);
+        // Security handling
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+                !permissions.getCanAdminAll() && !permissions.getCanJudgeActions()) {
+            return;
+        }
+
+        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(themeDisplay.getPortalURL());
+
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            String csvPayload = ContestLocalServiceUtil.getProposalJudgeReviewCsv(proposalsContext.getContest(request),
+                    proposalsContext.getContestPhase(request), serviceContext);
+            outputStream.write(csvPayload.getBytes());
+            response.setContentType("text/csv");
+            response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
+            response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=export.csv");
+
+            response.setContentLength(outputStream.size());
+            OutputStream out = response.getPortletOutputStream();
+            outputStream.writeTo(out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(params = {"action=saveJudgingFeedback"})

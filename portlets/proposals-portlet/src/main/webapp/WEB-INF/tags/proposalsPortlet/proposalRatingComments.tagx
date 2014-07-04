@@ -48,12 +48,18 @@
                             </c:if>
                             <p>
                                 <strong>Comment:</strong><br/>
-                                ${wrapper.comment}
+                                <span class="comment-wrapper">${wrapper.comment}</span>
                             </p>
                         </div>
                     </div>
                 </div>
             </discussions:getRoleName>
         </c:forEach>
+        <c:if test="${not isJudgeReadOnly}">
+        <br class="clear"/>
+        <div class="blue-button"><a href="#advanceCommentAnchor"
+                onclick="copyCommentsToTextArea(this);"
+                >Copy comments to text area</a></div>
+        </c:if>
     </div>
 </jsp:root>
