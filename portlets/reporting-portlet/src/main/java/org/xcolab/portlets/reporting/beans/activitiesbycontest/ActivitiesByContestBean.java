@@ -138,9 +138,13 @@ public class ActivitiesByContestBean {
         Map<Long, Contest> proposalContestMap = new HashMap<>();
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
         for (Contest contest : contests) {
-            List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
-            for (Proposal proposal : proposals) {
-                proposalContestMap.put(proposal.getProposalId(), contest);
+            try {
+                List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContest(contest.getContestPK());
+                for (Proposal proposal : proposals) {
+                    proposalContestMap.put(proposal.getProposalId(), contest);
+                }
+            } catch (Exception e) {
+                System.out.println("no proposals in contest "+contest.getContestPK());
             }
         }
         return proposalContestMap;

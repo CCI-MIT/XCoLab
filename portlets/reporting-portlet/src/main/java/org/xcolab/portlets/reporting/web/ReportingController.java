@@ -82,30 +82,6 @@ public class ReportingController {
         w.close();
     }
 
-    @RequestMapping(params="report=proposalSupporterReport")
-    public void generateProposalSupporterReport(ResourceRequest request, ResourceResponse response) throws Exception {
-        AuthorAttractionBean aab = new AuthorAttractionBean();
-
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
-
-        csvWriter.writeNext(new String[]{"proposalName", "voterScreenname"});
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-
-        for (AuthorAttractionBean.ProposalSupporterPair pair : aab.getSupportersRegisteredBeforeVoting()) {
-            csvWriter.writeNext(new String[]{
-                    pair.getProposal().getProposalId()+"",
-                    pair.getSupporter().getScreenName()
-            });
-        }
-
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=proposalSupporterReport.csv");
-
-
-        w.close();
-    }
-
     @RequestMapping(params="report=authorAttractionReport")
     public void generateAuthorAttractionReport(ResourceRequest request, ResourceResponse response) throws Exception {
         AuthorAttractionBean aab = new AuthorAttractionBean();

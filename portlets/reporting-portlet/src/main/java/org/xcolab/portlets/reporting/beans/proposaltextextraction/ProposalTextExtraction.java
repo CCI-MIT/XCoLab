@@ -62,7 +62,7 @@ public class ProposalTextExtraction {
                             if (content == null || content.equals(""))
                                 content = htmlValue;
                             pte.setHtmlElementCount(document.getAllElements().size());
-                            pte.setContent(pte.getContent()+"\n"+content);
+                            pte.setContent(pte.getContent()+"\n"+htmlValue);
                         }
                     }
                 }
