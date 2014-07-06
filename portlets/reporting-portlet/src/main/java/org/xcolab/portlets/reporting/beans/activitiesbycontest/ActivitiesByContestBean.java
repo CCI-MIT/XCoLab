@@ -10,11 +10,8 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.hibernate.validator.internal.constraintvalidators.MaxValidatorForCharSequence;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,7 +36,7 @@ public class ActivitiesByContestBean {
         Map<Long, Contest> proposalContestMap = getProposalContestMap();
 
         for (User user : users) {
-                Map<Long, ContestActivity> contestActivityMap = new HashMap<>();
+            Map<Long, ContestActivity> contestActivityMap = new HashMap<>();
 
             try {
                 calculateProposalCount(proposalContestMap, user, contestActivityMap);
@@ -70,70 +67,6 @@ public class ActivitiesByContestBean {
         return ret;
     }
 
-    private void calculateProposalCount(Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
-        List<Proposal> userProposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        for (Proposal proposal : userProposals) {
-            Contest contest = proposalContestMap.get(proposal.getProposalId());
-            if(contest == null) continue;
-            ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
-            target.setAuthoredProposalCount(target.getAuthoredProposalCount()+1);
-        }
-    }
-
-    private void calculateCommentCount(List<Proposal> proposals, List<DiscussionMessage> discussionMessages, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
-        List<DiscussionMessage> targetMessages = new LinkedList<>();
-        for (DiscussionMessage discussionMessage : discussionMessages) {
-            if(discussionMessage.getAuthorId() == user.getUserId()) {
-                targetMessages.add(discussionMessage);
-            }
-        }
-
-        //comments on proposals
-        for (Proposal proposal : proposals) {
-            for (DiscussionMessage targetMessage : targetMessages) {
-                if(proposal.getDiscussionId() == targetMessage.getCategoryGroupId()) {
-                    Contest contest = proposalContestMap.get(proposal.getProposalId());
-                    if(contest == null) continue;
-                    ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
-                    target.setCommentCount(target.getCommentCount()+1);
-                }
-            }
-        }
-    }
-
-    private void calculateSupportCount(List<ProposalSupporter> proposalSupporters, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
-        for (ProposalSupporter proposalSupporter : proposalSupporters) {
-            if(proposalSupporter.getUserId() == user.getUserId()) {
-                Contest contest = proposalContestMap.get(proposalSupporter.getProposalId());
-                if(contest == null) continue;
-                ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
-                target.setSupportedProposalCount(target.getSupportedProposalCount()+1);
-            }
-        }
-    }
-
-    private void calculateContestVotes(List<ProposalVote> proposalVotes, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
-        for (ProposalVote proposalVote : proposalVotes) {
-            if(proposalVote.getUserId() == user.getUserId()) {
-                Contest contest = proposalContestMap.get(proposalVote.getProposalId());
-                if(contest == null) continue;
-                ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
-                target.setVotedProposalCount(target.getVotedProposalCount()+1);
-            }
-        }
-    }
-
-    private ContestActivity getOrAddContestActivity(Map<Long, ContestActivity> contestActivityMap, Contest contest) {
-        if(contestActivityMap.containsKey(contest.getContestPK())) {
-            return contestActivityMap.get(contest.getContestPK());
-        }else {
-            ContestActivity target = new ContestActivity(contest);
-            contestActivityMap.put(contest.getContestPK(),target);
-            return target;
-        }
-    }
-
-
     private Map<Long, Contest> getProposalContestMap() throws com.liferay.portal.kernel.exception.SystemException, com.liferay.portal.kernel.exception.PortalException {
         Map<Long, Contest> proposalContestMap = new HashMap<>();
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
@@ -144,9 +77,72 @@ public class ActivitiesByContestBean {
                     proposalContestMap.put(proposal.getProposalId(), contest);
                 }
             } catch (Exception e) {
-                System.out.println("no proposals in contest "+contest.getContestPK());
+                System.out.println("no proposals in contest " + contest.getContestPK());
             }
         }
         return proposalContestMap;
+    }
+
+    private void calculateProposalCount(Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
+        List<Proposal> userProposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+        for (Proposal proposal : userProposals) {
+            Contest contest = proposalContestMap.get(proposal.getProposalId());
+            if (contest == null) continue;
+            ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
+            target.setAuthoredProposalCount(target.getAuthoredProposalCount() + 1);
+        }
+    }
+
+    private void calculateCommentCount(List<Proposal> proposals, List<DiscussionMessage> discussionMessages, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
+        List<DiscussionMessage> targetMessages = new LinkedList<>();
+        for (DiscussionMessage discussionMessage : discussionMessages) {
+            if (discussionMessage.getAuthorId() == user.getUserId()) {
+                targetMessages.add(discussionMessage);
+            }
+        }
+
+        //comments on proposals
+        for (Proposal proposal : proposals) {
+            for (DiscussionMessage targetMessage : targetMessages) {
+                if (proposal.getDiscussionId() == targetMessage.getCategoryGroupId()) {
+                    Contest contest = proposalContestMap.get(proposal.getProposalId());
+                    if (contest == null) continue;
+                    ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
+                    target.setCommentCount(target.getCommentCount() + 1);
+                }
+            }
+        }
+    }
+
+    private void calculateSupportCount(List<ProposalSupporter> proposalSupporters, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
+        for (ProposalSupporter proposalSupporter : proposalSupporters) {
+            if (proposalSupporter.getUserId() == user.getUserId()) {
+                Contest contest = proposalContestMap.get(proposalSupporter.getProposalId());
+                if (contest == null) continue;
+                ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
+                target.setSupportedProposalCount(target.getSupportedProposalCount() + 1);
+            }
+        }
+    }
+
+    private void calculateContestVotes(List<ProposalVote> proposalVotes, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
+        for (ProposalVote proposalVote : proposalVotes) {
+            if (proposalVote.getUserId() == user.getUserId()) {
+                Contest contest = proposalContestMap.get(proposalVote.getProposalId());
+                if (contest == null) continue;
+                ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);
+                target.setVotedProposalCount(target.getVotedProposalCount() + 1);
+            }
+        }
+    }
+
+    private ContestActivity getOrAddContestActivity(Map<Long, ContestActivity> contestActivityMap, Contest contest) {
+        if (contestActivityMap.containsKey(contest.getContestPK())) {
+            return contestActivityMap.get(contest.getContestPK());
+        } else {
+            ContestActivity target = new ContestActivity(contest);
+            contestActivityMap.put(contest.getContestPK(), target);
+            return target;
+        }
     }
 }

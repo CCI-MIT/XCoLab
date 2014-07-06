@@ -39,7 +39,6 @@ import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +49,7 @@ import java.util.Set;
 @Controller
 public class ReportingController {
 
-    public static final int NUM_FIELDS_TO_INCLUDE = 4;
+    public static final int FIELDS_PER_CONTEST = 4;
 
     @RequestMapping
     public String showHomePage(RenderRequest request) {
@@ -116,13 +115,13 @@ public class ReportingController {
 
         String[] initialCells = {"user ID", "user screenname"};
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-        String[] contestNames = new String[contests.size()* NUM_FIELDS_TO_INCLUDE];
+        String[] contestNames = new String[contests.size()* FIELDS_PER_CONTEST];
         for (int i = 0; i < contests.size(); i++) {
             Contest contest = contests.get(i);
-            contestNames[i* NUM_FIELDS_TO_INCLUDE] = contest.getContestShortName()+" / proposal count";
-            contestNames[i* NUM_FIELDS_TO_INCLUDE +1] = contest.getContestShortName()+" / proposal-comments count";
-            contestNames[i* NUM_FIELDS_TO_INCLUDE +2] = contest.getContestShortName()+" / votes count";
-            contestNames[i* NUM_FIELDS_TO_INCLUDE +3] = contest.getContestShortName()+" / supports count";
+            contestNames[i* FIELDS_PER_CONTEST] = contest.getContestShortName()+" / proposal count";
+            contestNames[i* FIELDS_PER_CONTEST +1] = contest.getContestShortName()+" / proposal-comments count";
+            contestNames[i* FIELDS_PER_CONTEST +2] = contest.getContestShortName()+" / votes count";
+            contestNames[i* FIELDS_PER_CONTEST +3] = contest.getContestShortName()+" / supports count";
         }
         String[] csvHeader = new String[contestNames.length+initialCells.length];
         for (int i = 0; i < csvHeader.length; i++) {
@@ -147,15 +146,14 @@ public class ReportingController {
                 Contest contest = contests.get(i);
                 ContestActivity ca= null;
                 for (ContestActivity contestActivity : activityByContest.getContestActivities()) {
-                    if(contestActivity.getContest() == contest) {
+                    if(contestActivity.getContest().getContestPK() == contest.getContestPK()) {
                         ca = contestActivity;
                     }
                 }
-                dataArray[i*NUM_FIELDS_TO_INCLUDE+initialCells.length] = ca == null ? "0" : ca.getAuthoredProposalCount()+"";
-                dataArray[i*NUM_FIELDS_TO_INCLUDE+initialCells.length+1] = ca == null ? "0" :ca.getCommentCount()+"";
-                dataArray[i*NUM_FIELDS_TO_INCLUDE+initialCells.length+2] = ca == null ? "0" :ca.getVotedProposalCount()+"";
-                dataArray[i*NUM_FIELDS_TO_INCLUDE+initialCells.length+3] = ca == null ? "0" :ca.getSupportedProposalCount()+"";
-
+                dataArray[i* FIELDS_PER_CONTEST +initialCells.length] = ca == null ? "0" : ca.getAuthoredProposalCount()+"";
+                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+1] = ca == null ? "0" :ca.getCommentCount()+"";
+                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+2] = ca == null ? "0" :ca.getVotedProposalCount()+"";
+                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+3] = ca == null ? "0" :ca.getSupportedProposalCount()+"";
             }
 
             csvWriter.writeNext(dataArray);
