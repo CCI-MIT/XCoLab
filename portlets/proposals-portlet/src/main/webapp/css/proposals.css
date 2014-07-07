@@ -340,28 +340,27 @@ table.judgingForm {
     margin-bottom: 0.75em;
 }
 .judging_comments {
-    clear:both;
-    .comment {
-        width: 49%;
-        display: inline-block;
-
-        .commentor, .the-comment {
-            box-sizing:border-box;
-            -moz-box-sizing:border-box;
-            -webkit-box-sizing:border-box;
-            display: inline-block;
-            vertical-align: top;
-        }
-        .commentor {
-            width: 30%;
-        }
-        .the-comment {
-            width: 70%;
-        }
-    }
-    h2 {
-        margin: 0.5em 0;
-    }
+    clear: both;
+}
+.judging_comments .comment {
+    width: 49%;
+    display: inline-block;
+}
+.judging_comments .comment .commentor, .judging_comments .comment .the-comment {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    display: inline-block;
+    vertical-align: top;
+}
+.judging_comments .comment .commentor {
+    width: 30%;
+}
+.judging_comments .comment .the-comment {
+    width: 70%;
+}
+.judging_comments h2 {
+    margin: 0.5em 0;
 }
 .submitStatus {
     margin-top: 1em;
