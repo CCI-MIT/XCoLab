@@ -124,10 +124,10 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 
 /* top menus */
 #menu {float:left; width:400px; height:67px;}
-#menu li {float:left; list-style:none; border-left:1px solid #bebeb8; box-sizing: content-box;}
+#menu li {float:left; list-style:none; border-left:1px solid #bebeb8;}
 #menu li:hover {color:#454545;}
 #menu li.c {background:#fff; border-left:1px solid #888782;}
-#menu li a {height:41px; padding:26px 16px 0 15px; color:#0090ff; font-weight:700; display:inline-block; box-sizing: content-box;}
+#menu li a {height:41px; padding:26px 16px 0 15px; color:#0090ff; font-weight:700; display:inline-block;}
 #menu li a:hover, #menu li.c a {color:#454545; height:42px;}
 #menu li:hover + li, #menu li.c + li {border-left:1px solid #888782;}
 #menu li a.search {background:url(../images/icon-menu-search.png) no-repeat 24px 18px; height:22px; padding-top:45px; font-size:10px; color:#5e5e5e; text-transform:uppercase; font-family:Arial, Helvetica, sans-serif;}
@@ -270,44 +270,43 @@ ul li {list-style: none; background:url(../images/bullet.jpg) no-repeat left 10p
 
 /* list page */
 .blueheaderbar .contest {float:left; width:357px; height:37px; padding-left:9px;}
-.blueheaderbar .contest a, .blueheaderbar .contest .text {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .contest a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .proposal {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .proposal .sort-arrow {position: absolute; top: 15px;}
-.blueheaderbar .proposal a, .blueheaderbar .proposal .text {background:url(../images/icon-list-proposals.png) no-repeat 9px 7px; width:33px; height:37px; display:inline-block;}
+.blueheaderbar .proposal a {background:url(../images/icon-list-proposals.png) no-repeat 9px 7px; width:33px; height:37px; display:inline-block;}
 .blueheaderbar .comment {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .comment .sort-arrow {position: absolute; top: 15px;}
-.blueheaderbar .comment a, .blueheaderbar .comment .text {background:url(../images/icon-list-comment.png) no-repeat 9px 8px; width:33px; height:37px; display:inline-block;}
+.blueheaderbar .comment a {background:url(../images/icon-list-comment.png) no-repeat 9px 8px; width:33px; height:37px; display:inline-block;}
 .blueheaderbar .voteslist {float:left; width:55px; height:37px; position: relative;}
 .blueheaderbar .voteslist .sort-arrow {position: absolute; top: 15px;}
-
-.blueheaderbar .voteslist a, .blueheaderbar .voteslist .text {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .what {float:left; width:168px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
-.blueheaderbar .what a, .blueheaderbar .what .text {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .where {float:left;  width:160px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
-.blueheaderbar .where a, .blueheaderbar .where .text {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
-.blueheaderbar .who {float:left; width:155px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
-.blueheaderbar .who a, .blueheaderbar .who .text {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
+.blueheaderbar .voteslist a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
+.blueheaderbar .what {float:left; width:133px; height:37px;background:url(../images/icon-list-what.png) no-repeat 10px 6px; }
+.blueheaderbar .what a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
+.blueheaderbar .where {float:left;  width:125px; height:37px;background:url(../images/icon-list-where.png) no-repeat 10px 6px; }
+.blueheaderbar .where a {height:27px; padding-top:10px; margin-left:41px; display:inline-block;}
+.blueheaderbar .who {float:left; width:120px; height:37px;background:url(../images/icon-list-who.png) no-repeat 10px 6px; }
+.blueheaderbar .who a {height:27px; padding-top:10px; margin-left:33px; display:inline-block;}
 .blueheaderbar .how {float:left; padding: 0;  width:105px; height:37px;background:url(../images/contest-icon-how.png) no-repeat 10px 6px; }
-.blueheaderbar .how a, .blueheaderbar .how .text {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
+.blueheaderbar .how a {height:27px;padding-top:10px; margin-left:33px; display:inline-block;}
 
 /* proposal page */
 .blueheaderbar .proposalname {float:left; width:645px; height:37px; padding-left:9px;}
-.blueheaderbar .proposalname a, .blueheaderbar .proposalname .text {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .thumbs {float:left; width:67px; height:37px; position: relative;}
+.blueheaderbar .proposalname a {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .thumbs {float:left; width:67px; height:37px; position: relative;text-align: center;}
 .blueheaderbar .thumbs .sort-arrow {position: absolute; top: 15px;}
-.blueheaderbar .thumbs a, .blueheaderbar .thumbs .text {background:url(../images/icon-proposal-thumb.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .votes {float:left; width:67px; height:37px; position: relative;}
+.blueheaderbar .thumbs a {background:url(../images/icon-proposal-thumb.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
+.blueheaderbar .votes {float:left; width:67px; height:37px; position: relative;text-align:center;}
 .blueheaderbar .votes .sort-arrow {position: absolute; top: 15px;}
-.blueheaderbar .votes a, .blueheaderbar .votes .text {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
-.blueheaderbar .propcomm {float:left; width:65px; height:37px; position: relative;}
+.blueheaderbar .votes a {background:url(../images/icon-proposal-vote.png) no-repeat 0 7px; width:20px; height:37px; display:inline-block;}
+.blueheaderbar .propcomm {float:left; width:65px; height:37px; position: relative;text-align:center;}
 .blueheaderbar .propcomm .sort-arrow {position: absolute; top: 15px;}
-.blueheaderbar .propcomm a, .blueheaderbar .propcomm .text {background:url(../images/icon-list-comment.png) no-repeat 0 8px; width:24px; height:37px; display:inline-block;}
-.blueheaderbar .modified {float:left; width:85px; height:37px;}
-.blueheaderbar .modified a, .blueheaderbar .modified .text {padding-top:10px; height:27px; display:inline-block;}
-.blueheaderbar .contributor {float:left; width:106px; height:37px;}
-.blueheaderbar .contributor a, .blueheaderbar .contributor .text {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .propcomm a {background:url(../images/icon-list-comment.png) no-repeat 0 8px; width:24px; height:37px; display:inline-block;}
+.blueheaderbar .modified {float:left; width:85px; height:37px;text-align: center;}
+.blueheaderbar .modified a {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .contributor {float:left; width:106px; height:37px;text-align: center;}
+.blueheaderbar .contributor a {padding-top:10px; height:27px; display:inline-block;}
 .blueheaderbar .judgefellow {float:left; height:37px; width: 159px; position: relative; text-align: center;}
-.blueheaderbar .judgefellow a, .blueheaderbar .judgefellow .text {padding-top:10px; height:27px; display:inline-block;}
+.blueheaderbar .judgefellow a {font-size: 0.9em}
 
 /* contest page */
 .blueheaderbar .contestbar {padding:11px 0 0 14px; position: relative;}
@@ -670,7 +669,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .prop-tabs ul {height:37px;}
 .prop-tabs li {float:left; list-style:none; height:37px; margin-right:6px;}
 .prop-tabs li a {height:24px; padding:13px 12px 0; display:inline-block; font-size:13px; color:#fff; background:#30a3fb; text-transform:uppercase; font-weight:700;
--moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px; box-sizing: content-box;}
+-moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px;}
 .prop-tabs li a:hover {height:24px; padding:12px 11px 1px; background:#0f558a; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li.c a {height:25px; padding:12px 11px 0; color:#30a3fb; background:#fff; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li a div {display:inline; text-align:center; font:12px Arial, Helvetica, sans-serif; color:#fff; background:#0f558a; padding:0 5px; margin-left:5px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px;}
@@ -703,7 +702,6 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 /*  the Table-like rows of proposals */
 .propbox {clear:both; height:78px; padding:0 0 0 14px; border-bottom:1px solid #d2d1d0;}
-.propbox.selected {background: #ddffdd; }
 .propbox.featured {background:#f2f1e9;}
 .propbox.top {margin-top:-4px;}
 .propbox .row1 {height:38px; padding-top:7px;}

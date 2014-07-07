@@ -1,14 +1,14 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalContestPhaseAttributeType;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBaseImpl;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal contest phase attribute local service.
@@ -31,6 +31,90 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil} to access the proposal contest phase attribute local service.
      */
+
+    public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId, String attributeName, long additionalId) throws SystemException {
+        boolean isTrue = false;
+        try {
+            ProposalContestPhaseAttribute boolAttr = getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+            if (boolAttr.getStringValue().equals("true")) {
+                isTrue = true;
+            }
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            //isTrue stays false
+        }
+        return isTrue;
+    }
+
+    public boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, long numericValue) {
+        ProposalContestPhaseAttribute attribute = getOrCreateAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+
+        attribute.setAdditionalId(additionalId);
+        attribute.setNumericValue(numericValue);
+
+        try {
+            updateProposalContestPhaseAttribute(attribute);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean persistAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId, String stringValue) {
+        ProposalContestPhaseAttribute attribute = getOrCreateAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+
+        attribute.setAdditionalId(additionalId);
+        attribute.setStringValue(stringValue);
+
+        try {
+            updateProposalContestPhaseAttribute(attribute);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean persistSelectedJudgesAttribute(long proposalId, long contestPhaseId, List<Long> selectedJudges) {
+        ProposalContestPhaseAttribute judges = getOrCreateAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0);
+
+
+        String attributeValue = "";
+        if (selectedJudges != null) {
+            for (Long userId : selectedJudges) attributeValue += userId + ";";
+        }
+        judges.setStringValue(attributeValue.replaceAll(";$", ""));
+
+        try {
+            updateProposalContestPhaseAttribute(judges);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ProposalContestPhaseAttribute getOrCreateAttribute(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
+        try {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            try {
+                ProposalContestPhaseAttribute attribute = createProposalContestPhaseAttribute(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
+                attribute.setProposalId(proposalId);
+                attribute.setContestPhaseId(contestPhaseId);
+                attribute.setName(attributeName);
+                addProposalContestPhaseAttribute(attribute);
+                return attribute;
+            } catch (Exception e2) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     /**
      * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
@@ -129,7 +213,6 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param proposalId id of a proposal
      * @param contestPhaseId id of a contest phase
      * @param attributeName name of an attribute
-     * @param value value to be set 
      * @throws SystemException in case of LR error
      */
     public void setProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName, 
@@ -162,7 +245,6 @@ public class ProposalContestPhaseAttributeLocalServiceImpl
      * @param proposalId id of a proposal
      * @param contestPhaseId id of a contest phase
      * @param attributeName name of an attribute
-     * @param value value to be set 
      * @throws SystemException in case of LR error
      */
     public void deleteProposalContestPhaseAttribute(long proposalId, long contestPhaseId, String attributeName) throws SystemException {

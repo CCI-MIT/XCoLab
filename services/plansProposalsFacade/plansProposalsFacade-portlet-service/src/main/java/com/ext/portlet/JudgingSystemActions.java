@@ -5,19 +5,21 @@ package com.ext.portlet;
  *         First created on 10/7/13 at 7:37 PM
  */
 public class JudgingSystemActions {
-    public enum JudgeAction {
-        NO_DECISION(0, "no decision"), DONT_MOVE_ON(1, "don't move on"), MOVE_ON(2, "move on");
+    public enum AdvanceDecision {
+        NO_DECISION(0, "No decision made yet"),
+        DONT_MOVE_ON(1, "Do Not Advance"),
+        MOVE_ON(2, "Advance");
 
         int attributeValue;
         String description;
 
-        private JudgeAction(int attributeValue, String description) {
+        private AdvanceDecision(int attributeValue, String description) {
             this.attributeValue = attributeValue;
             this.description = description;
         }
 
-        public static JudgeAction fromInt(Integer value) {
-            for(JudgeAction a : values()) {
+        public static AdvanceDecision fromInt(Integer value) {
+            for(AdvanceDecision a : values()) {
                 if(a.attributeValue == value) return a;
             }
 
@@ -34,14 +36,21 @@ public class JudgingSystemActions {
     }
 
     public enum FellowAction {
-        NO_DECISION(0, "No decision"), INCOMPLETE(1, "Incomplete"), OFFTOPIC(2, "Off-topic"), PASSTOJUDGES(3, "Advance to judges");
+        NO_DECISION(0, "No decision made yet", false, false),
+        INCOMPLETE(1, "Do Not Advance: incomplete", true, false),
+        OFFTOPIC(2, "Do Not Advance: off-topic", true, false),
+        PASS_TO_JUDGES(3, "Advance", false, true);
 
         int attributeValue;
         String description;
+        boolean commentEnabled;
+        boolean selectJudgesEnabled;
 
-        private FellowAction(int attributeValue, String description) {
+        private FellowAction(int attributeValue, String description, boolean commentEnabled, boolean selectJudgesEnabled) {
             this.attributeValue = attributeValue;
             this.description = description;
+            this.commentEnabled = commentEnabled;
+            this.selectJudgesEnabled = selectJudgesEnabled;
         }
 
         public static FellowAction fromInt(Integer value) {
@@ -58,6 +67,40 @@ public class JudgingSystemActions {
 
         public String getDescription(){
             return description;
+        }
+
+        public boolean getCommentEnabled() {
+            return commentEnabled;
+        }
+
+        public boolean getSelectJudgesEnabled() {
+            return selectJudgesEnabled;
+        }
+
+        public boolean isActionProhibitingAdvancing() {
+        return this != FellowAction.PASS_TO_JUDGES;
+        }
+    }
+
+    public enum JudgeReviewStatus {
+        NOT_RESPONSIBLE(0, "Judge is not responsible for reviewing"),
+        NOT_DONE(1, "Judge is responsible but has not finished yet"),
+        DONE(2, "Judge has finished the review");
+
+        private int statusValue;
+        private String statusDescription;
+
+        JudgeReviewStatus(int status, String statusDescription) {
+            this.statusValue = status;
+            this.statusDescription = statusDescription;
+        }
+
+        public int getStatusValue() {
+            return statusValue;
+        }
+
+        public String getStatusDescription() {
+            return statusDescription;
         }
     }
 }

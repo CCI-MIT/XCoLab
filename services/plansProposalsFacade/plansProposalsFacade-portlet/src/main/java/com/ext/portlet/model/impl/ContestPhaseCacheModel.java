@@ -25,6 +25,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
     public long ContestPhasePK;
     public long ContestPK;
     public long ContestPhaseType;
+    public boolean fellowScreeningActive;
     public String contestPhaseAutopromote;
     public String ContestPhaseDescriptionOverride;
     public boolean phaseActiveOverride;
@@ -38,7 +39,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{ContestPhasePK=");
         sb.append(ContestPhasePK);
@@ -46,6 +47,8 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         sb.append(ContestPK);
         sb.append(", ContestPhaseType=");
         sb.append(ContestPhaseType);
+        sb.append(", fellowScreeningActive=");
+        sb.append(fellowScreeningActive);
         sb.append(", contestPhaseAutopromote=");
         sb.append(contestPhaseAutopromote);
         sb.append(", ContestPhaseDescriptionOverride=");
@@ -78,6 +81,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         contestPhaseImpl.setContestPhasePK(ContestPhasePK);
         contestPhaseImpl.setContestPK(ContestPK);
         contestPhaseImpl.setContestPhaseType(ContestPhaseType);
+        contestPhaseImpl.setFellowScreeningActive(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {
             contestPhaseImpl.setContestPhaseAutopromote(StringPool.BLANK);
@@ -136,6 +140,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         ContestPhasePK = objectInput.readLong();
         ContestPK = objectInput.readLong();
         ContestPhaseType = objectInput.readLong();
+        fellowScreeningActive = objectInput.readBoolean();
         contestPhaseAutopromote = objectInput.readUTF();
         ContestPhaseDescriptionOverride = objectInput.readUTF();
         phaseActiveOverride = objectInput.readBoolean();
@@ -154,6 +159,7 @@ public class ContestPhaseCacheModel implements CacheModel<ContestPhase>,
         objectOutput.writeLong(ContestPhasePK);
         objectOutput.writeLong(ContestPK);
         objectOutput.writeLong(ContestPhaseType);
+        objectOutput.writeBoolean(fellowScreeningActive);
 
         if (contestPhaseAutopromote == null) {
             objectOutput.writeUTF(StringPool.BLANK);

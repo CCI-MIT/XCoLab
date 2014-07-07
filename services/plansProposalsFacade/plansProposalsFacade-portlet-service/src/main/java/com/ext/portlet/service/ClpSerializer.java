@@ -8,6 +8,7 @@ import com.ext.portlet.model.BalloonTextClp;
 import com.ext.portlet.model.BalloonUserTrackingClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
+import com.ext.portlet.model.ContestEmailTemplateClp;
 import com.ext.portlet.model.ContestPhaseClp;
 import com.ext.portlet.model.ContestPhaseColumnClp;
 import com.ext.portlet.model.ContestPhaseRibbonTypeClp;
@@ -76,9 +77,13 @@ import com.ext.portlet.model.ProposalAttributeTypeClp;
 import com.ext.portlet.model.ProposalClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeTypeClp;
+import com.ext.portlet.model.ProposalRatingClp;
+import com.ext.portlet.model.ProposalRatingTypeClp;
+import com.ext.portlet.model.ProposalRatingValueClp;
 import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
+import com.ext.portlet.model.StaffMemberClp;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -196,6 +201,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ContestDebateClp.class.getName())) {
             return translateInputContestDebate(oldModel);
+        }
+
+        if (oldModelClassName.equals(ContestEmailTemplateClp.class.getName())) {
+            return translateInputContestEmailTemplate(oldModel);
         }
 
         if (oldModelClassName.equals(ContestPhaseClp.class.getName())) {
@@ -477,6 +486,18 @@ public class ClpSerializer {
             return translateInputProposalContestPhaseAttributeType(oldModel);
         }
 
+        if (oldModelClassName.equals(ProposalRatingClp.class.getName())) {
+            return translateInputProposalRating(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalRatingTypeClp.class.getName())) {
+            return translateInputProposalRatingType(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalRatingValueClp.class.getName())) {
+            return translateInputProposalRatingValue(oldModel);
+        }
+
         if (oldModelClassName.equals(ProposalSupporterClp.class.getName())) {
             return translateInputProposalSupporter(oldModel);
         }
@@ -487,6 +508,10 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(ProposalVoteClp.class.getName())) {
             return translateInputProposalVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
+            return translateInputStaffMember(oldModel);
         }
 
         return oldModel;
@@ -580,6 +605,17 @@ public class ClpSerializer {
         ContestDebateClp oldClpModel = (ContestDebateClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getContestDebateRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputContestEmailTemplate(
+        BaseModel<?> oldModel) {
+        ContestEmailTemplateClp oldClpModel = (ContestEmailTemplateClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getContestEmailTemplateRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1286,6 +1322,37 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputProposalRating(BaseModel<?> oldModel) {
+        ProposalRatingClp oldClpModel = (ProposalRatingClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalRatingType(BaseModel<?> oldModel) {
+        ProposalRatingTypeClp oldClpModel = (ProposalRatingTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalRatingValue(
+        BaseModel<?> oldModel) {
+        ProposalRatingValueClp oldClpModel = (ProposalRatingValueClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalRatingValueRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputProposalSupporter(BaseModel<?> oldModel) {
         ProposalSupporterClp oldClpModel = (ProposalSupporterClp) oldModel;
 
@@ -1310,6 +1377,16 @@ public class ClpSerializer {
         ProposalVoteClp oldClpModel = (ProposalVoteClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getProposalVoteRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputStaffMember(BaseModel<?> oldModel) {
+        StaffMemberClp oldClpModel = (StaffMemberClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getStaffMemberRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1368,6 +1445,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ContestDebateImpl")) {
             return translateOutputContestDebate(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ContestEmailTemplateImpl")) {
+            return translateOutputContestEmailTemplate(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -1701,6 +1783,21 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingImpl")) {
+            return translateOutputProposalRating(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingTypeImpl")) {
+            return translateOutputProposalRatingType(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalRatingValueImpl")) {
+            return translateOutputProposalRatingValue(oldModel);
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalSupporterImpl")) {
             return translateOutputProposalSupporter(oldModel);
         }
@@ -1713,6 +1810,11 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalVoteImpl")) {
             return translateOutputProposalVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.StaffMemberImpl")) {
+            return translateOutputStaffMember(oldModel);
         }
 
         return oldModel;
@@ -1969,6 +2071,11 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchContestDebateException")) {
             return new com.ext.portlet.NoSuchContestDebateException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchContestEmailTemplateException")) {
+            return new com.ext.portlet.NoSuchContestEmailTemplateException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchContestPhaseException")) {
@@ -2269,6 +2376,20 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchProposalContestPhaseAttributeTypeException();
         }
 
+        if (className.equals("com.ext.portlet.NoSuchProposalRatingException")) {
+            return new com.ext.portlet.NoSuchProposalRatingException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalRatingTypeException")) {
+            return new com.ext.portlet.NoSuchProposalRatingTypeException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalRatingValueException")) {
+            return new com.ext.portlet.NoSuchProposalRatingValueException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchProposalSupporterException")) {
             return new com.ext.portlet.NoSuchProposalSupporterException();
         }
@@ -2279,6 +2400,10 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchProposalVoteException")) {
             return new com.ext.portlet.NoSuchProposalVoteException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
+            return new com.ext.portlet.NoSuchStaffMemberException();
         }
 
         return throwable;
@@ -2363,6 +2488,17 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setContestDebateRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputContestEmailTemplate(
+        BaseModel<?> oldModel) {
+        ContestEmailTemplateClp newModel = new ContestEmailTemplateClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setContestEmailTemplateRemoteModel(oldModel);
 
         return newModel;
     }
@@ -3073,6 +3209,38 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateOutputProposalRating(BaseModel<?> oldModel) {
+        ProposalRatingClp newModel = new ProposalRatingClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalRatingType(
+        BaseModel<?> oldModel) {
+        ProposalRatingTypeClp newModel = new ProposalRatingTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingTypeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalRatingValue(
+        BaseModel<?> oldModel) {
+        ProposalRatingValueClp newModel = new ProposalRatingValueClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalRatingValueRemoteModel(oldModel);
+
+        return newModel;
+    }
+
     public static Object translateOutputProposalSupporter(BaseModel<?> oldModel) {
         ProposalSupporterClp newModel = new ProposalSupporterClp();
 
@@ -3099,6 +3267,16 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalVoteRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputStaffMember(BaseModel<?> oldModel) {
+        StaffMemberClp newModel = new StaffMemberClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setStaffMemberRemoteModel(oldModel);
 
         return newModel;
     }

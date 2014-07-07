@@ -5,26 +5,36 @@ package org.xcolab.enums;
  */
 public enum ContestPhaseType {
 
-    PROPOSAL_CREATION(1, "Proposal creation phase"),
-    FINALIST_SELECTION(11, "Finalist selection phase"),
-    PROPOSAL_REVISION(12, "Proposal revision phase"),
+    PROPOSAL_CREATION(1, "Proposal creation"),
+    FINALIST_SELECTION(11, "Finalist selection"),
+    PROPOSAL_REVISION(12, "Proposal revision"),
     SELECTION_OF_WINNERS(13, "Selection of winners"),
-    COMPLETED(14, "Contest completed");
+    COMPLETED(14, "Complete");
 
-    private int type;
+    private long typeId;
 
-    private String description;
+    private String name;
 
-    ContestPhaseType(int type, String description) {
-        this.type = type;
-        this.description = description;
+    ContestPhaseType(long typeId, String name) {
+        this.typeId = typeId;
+        this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public int getType() {
-        return type;
+    public long getTypeId() {
+        return typeId;
+    }
+
+    public static ContestPhaseType getContestPhaseTypeByTypeId(long typeId) {
+        for (ContestPhaseType phaseType : ContestPhaseType.values()) {
+            if (phaseType.getTypeId() == typeId) {
+                return phaseType;
+            }
+        }
+
+        return null;
     }
 }

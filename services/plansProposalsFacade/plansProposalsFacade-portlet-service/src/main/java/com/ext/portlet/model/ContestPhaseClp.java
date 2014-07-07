@@ -25,6 +25,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
     private long _ContestPhasePK;
     private long _ContestPK;
     private long _ContestPhaseType;
+    private boolean _fellowScreeningActive;
     private String _contestPhaseAutopromote;
     private String _ContestPhaseDescriptionOverride;
     private boolean _phaseActiveOverride;
@@ -77,6 +78,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         attributes.put("ContestPhasePK", getContestPhasePK());
         attributes.put("ContestPK", getContestPK());
         attributes.put("ContestPhaseType", getContestPhaseType());
+        attributes.put("fellowScreeningActive", getFellowScreeningActive());
         attributes.put("contestPhaseAutopromote", getContestPhaseAutopromote());
         attributes.put("ContestPhaseDescriptionOverride",
             getContestPhaseDescriptionOverride());
@@ -110,6 +112,13 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
         if (ContestPhaseType != null) {
             setContestPhaseType(ContestPhaseType);
+        }
+
+        Boolean fellowScreeningActive = (Boolean) attributes.get(
+                "fellowScreeningActive");
+
+        if (fellowScreeningActive != null) {
+            setFellowScreeningActive(fellowScreeningActive);
         }
 
         String contestPhaseAutopromote = (String) attributes.get(
@@ -238,6 +247,34 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
                         long.class);
 
                 method.invoke(_contestPhaseRemoteModel, ContestPhaseType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public boolean getFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    @Override
+    public boolean isFellowScreeningActive() {
+        return _fellowScreeningActive;
+    }
+
+    @Override
+    public void setFellowScreeningActive(boolean fellowScreeningActive) {
+        _fellowScreeningActive = fellowScreeningActive;
+
+        if (_contestPhaseRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setFellowScreeningActive",
+                        boolean.class);
+
+                method.invoke(_contestPhaseRemoteModel, fellowScreeningActive);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -550,6 +587,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         clone.setContestPhasePK(getContestPhasePK());
         clone.setContestPK(getContestPK());
         clone.setContestPhaseType(getContestPhaseType());
+        clone.setFellowScreeningActive(getFellowScreeningActive());
         clone.setContestPhaseAutopromote(getContestPhaseAutopromote());
         clone.setContestPhaseDescriptionOverride(getContestPhaseDescriptionOverride());
         clone.setPhaseActiveOverride(getPhaseActiveOverride());
@@ -606,7 +644,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{ContestPhasePK=");
         sb.append(getContestPhasePK());
@@ -614,6 +652,8 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(getContestPK());
         sb.append(", ContestPhaseType=");
         sb.append(getContestPhaseType());
+        sb.append(", fellowScreeningActive=");
+        sb.append(getFellowScreeningActive());
         sb.append(", contestPhaseAutopromote=");
         sb.append(getContestPhaseAutopromote());
         sb.append(", ContestPhaseDescriptionOverride=");
@@ -641,7 +681,7 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(43);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhase");
@@ -658,6 +698,10 @@ public class ContestPhaseClp extends BaseModelImpl<ContestPhase>
         sb.append(
             "<column><column-name>ContestPhaseType</column-name><column-value><![CDATA[");
         sb.append(getContestPhaseType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>fellowScreeningActive</column-name><column-value><![CDATA[");
+        sb.append(getFellowScreeningActive());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>contestPhaseAutopromote</column-name><column-value><![CDATA[");

@@ -9,6 +9,7 @@ import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
 import com.ext.portlet.service.persistence.BalloonTextPersistence;
 import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
+import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
 import com.ext.portlet.service.persistence.ContestPersistence;
 import com.ext.portlet.service.persistence.ContestPhaseColumnPersistence;
 import com.ext.portlet.service.persistence.ContestPhasePersistence;
@@ -79,9 +80,14 @@ import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributeTypePersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
+import com.ext.portlet.service.persistence.ProposalRatingFinder;
+import com.ext.portlet.service.persistence.ProposalRatingPersistence;
+import com.ext.portlet.service.persistence.ProposalRatingTypePersistence;
+import com.ext.portlet.service.persistence.ProposalRatingValuePersistence;
 import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
+import com.ext.portlet.service.persistence.StaffMemberPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
@@ -155,6 +161,12 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ContestDebateService contestDebateService;
     @BeanReference(type = ContestDebatePersistence.class)
     protected ContestDebatePersistence contestDebatePersistence;
+    @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateLocalService.class)
+    protected com.ext.portlet.service.ContestEmailTemplateLocalService contestEmailTemplateLocalService;
+    @BeanReference(type = com.ext.portlet.service.ContestEmailTemplateService.class)
+    protected com.ext.portlet.service.ContestEmailTemplateService contestEmailTemplateService;
+    @BeanReference(type = ContestEmailTemplatePersistence.class)
+    protected ContestEmailTemplatePersistence contestEmailTemplatePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestPhaseLocalService.class)
     protected com.ext.portlet.service.ContestPhaseLocalService contestPhaseLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestPhaseService.class)
@@ -569,6 +581,26 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalContestPhaseAttributeTypeService proposalContestPhaseAttributeTypeService;
     @BeanReference(type = ProposalContestPhaseAttributeTypePersistence.class)
     protected ProposalContestPhaseAttributeTypePersistence proposalContestPhaseAttributeTypePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingService.class)
+    protected com.ext.portlet.service.ProposalRatingService proposalRatingService;
+    @BeanReference(type = ProposalRatingPersistence.class)
+    protected ProposalRatingPersistence proposalRatingPersistence;
+    @BeanReference(type = ProposalRatingFinder.class)
+    protected ProposalRatingFinder proposalRatingFinder;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingTypeLocalService proposalRatingTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingTypeService.class)
+    protected com.ext.portlet.service.ProposalRatingTypeService proposalRatingTypeService;
+    @BeanReference(type = ProposalRatingTypePersistence.class)
+    protected ProposalRatingTypePersistence proposalRatingTypePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingValueLocalService.class)
+    protected com.ext.portlet.service.ProposalRatingValueLocalService proposalRatingValueLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalRatingValueService.class)
+    protected com.ext.portlet.service.ProposalRatingValueService proposalRatingValueService;
+    @BeanReference(type = ProposalRatingValuePersistence.class)
+    protected ProposalRatingValuePersistence proposalRatingValuePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterLocalService.class)
     protected com.ext.portlet.service.ProposalSupporterLocalService proposalSupporterLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalSupporterService.class)
@@ -587,6 +619,12 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
+    @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
+    protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
+    @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
+    protected com.ext.portlet.service.StaffMemberService staffMemberService;
+    @BeanReference(type = StaffMemberPersistence.class)
+    protected StaffMemberPersistence staffMemberPersistence;
     @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
     protected com.liferay.counter.service.CounterLocalService counterLocalService;
     @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
@@ -1060,6 +1098,63 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     public void setContestDebatePersistence(
         ContestDebatePersistence contestDebatePersistence) {
         this.contestDebatePersistence = contestDebatePersistence;
+    }
+
+    /**
+     * Returns the contest email template local service.
+     *
+     * @return the contest email template local service
+     */
+    public com.ext.portlet.service.ContestEmailTemplateLocalService getContestEmailTemplateLocalService() {
+        return contestEmailTemplateLocalService;
+    }
+
+    /**
+     * Sets the contest email template local service.
+     *
+     * @param contestEmailTemplateLocalService the contest email template local service
+     */
+    public void setContestEmailTemplateLocalService(
+        com.ext.portlet.service.ContestEmailTemplateLocalService contestEmailTemplateLocalService) {
+        this.contestEmailTemplateLocalService = contestEmailTemplateLocalService;
+    }
+
+    /**
+     * Returns the contest email template remote service.
+     *
+     * @return the contest email template remote service
+     */
+    public com.ext.portlet.service.ContestEmailTemplateService getContestEmailTemplateService() {
+        return contestEmailTemplateService;
+    }
+
+    /**
+     * Sets the contest email template remote service.
+     *
+     * @param contestEmailTemplateService the contest email template remote service
+     */
+    public void setContestEmailTemplateService(
+        com.ext.portlet.service.ContestEmailTemplateService contestEmailTemplateService) {
+        this.contestEmailTemplateService = contestEmailTemplateService;
+    }
+
+    /**
+     * Returns the contest email template persistence.
+     *
+     * @return the contest email template persistence
+     */
+    public ContestEmailTemplatePersistence getContestEmailTemplatePersistence() {
+        return contestEmailTemplatePersistence;
+    }
+
+    /**
+     * Sets the contest email template persistence.
+     *
+     * @param contestEmailTemplatePersistence the contest email template persistence
+     */
+    public void setContestEmailTemplatePersistence(
+        ContestEmailTemplatePersistence contestEmailTemplatePersistence) {
+        this.contestEmailTemplatePersistence = contestEmailTemplatePersistence;
     }
 
     /**
@@ -4987,6 +5082,196 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     }
 
     /**
+     * Returns the proposal rating local service.
+     *
+     * @return the proposal rating local service
+     */
+    public com.ext.portlet.service.ProposalRatingLocalService getProposalRatingLocalService() {
+        return proposalRatingLocalService;
+    }
+
+    /**
+     * Sets the proposal rating local service.
+     *
+     * @param proposalRatingLocalService the proposal rating local service
+     */
+    public void setProposalRatingLocalService(
+        com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService) {
+        this.proposalRatingLocalService = proposalRatingLocalService;
+    }
+
+    /**
+     * Returns the proposal rating remote service.
+     *
+     * @return the proposal rating remote service
+     */
+    public com.ext.portlet.service.ProposalRatingService getProposalRatingService() {
+        return proposalRatingService;
+    }
+
+    /**
+     * Sets the proposal rating remote service.
+     *
+     * @param proposalRatingService the proposal rating remote service
+     */
+    public void setProposalRatingService(
+        com.ext.portlet.service.ProposalRatingService proposalRatingService) {
+        this.proposalRatingService = proposalRatingService;
+    }
+
+    /**
+     * Returns the proposal rating persistence.
+     *
+     * @return the proposal rating persistence
+     */
+    public ProposalRatingPersistence getProposalRatingPersistence() {
+        return proposalRatingPersistence;
+    }
+
+    /**
+     * Sets the proposal rating persistence.
+     *
+     * @param proposalRatingPersistence the proposal rating persistence
+     */
+    public void setProposalRatingPersistence(
+        ProposalRatingPersistence proposalRatingPersistence) {
+        this.proposalRatingPersistence = proposalRatingPersistence;
+    }
+
+    /**
+     * Returns the proposal rating finder.
+     *
+     * @return the proposal rating finder
+     */
+    public ProposalRatingFinder getProposalRatingFinder() {
+        return proposalRatingFinder;
+    }
+
+    /**
+     * Sets the proposal rating finder.
+     *
+     * @param proposalRatingFinder the proposal rating finder
+     */
+    public void setProposalRatingFinder(
+        ProposalRatingFinder proposalRatingFinder) {
+        this.proposalRatingFinder = proposalRatingFinder;
+    }
+
+    /**
+     * Returns the proposal rating type local service.
+     *
+     * @return the proposal rating type local service
+     */
+    public com.ext.portlet.service.ProposalRatingTypeLocalService getProposalRatingTypeLocalService() {
+        return proposalRatingTypeLocalService;
+    }
+
+    /**
+     * Sets the proposal rating type local service.
+     *
+     * @param proposalRatingTypeLocalService the proposal rating type local service
+     */
+    public void setProposalRatingTypeLocalService(
+        com.ext.portlet.service.ProposalRatingTypeLocalService proposalRatingTypeLocalService) {
+        this.proposalRatingTypeLocalService = proposalRatingTypeLocalService;
+    }
+
+    /**
+     * Returns the proposal rating type remote service.
+     *
+     * @return the proposal rating type remote service
+     */
+    public com.ext.portlet.service.ProposalRatingTypeService getProposalRatingTypeService() {
+        return proposalRatingTypeService;
+    }
+
+    /**
+     * Sets the proposal rating type remote service.
+     *
+     * @param proposalRatingTypeService the proposal rating type remote service
+     */
+    public void setProposalRatingTypeService(
+        com.ext.portlet.service.ProposalRatingTypeService proposalRatingTypeService) {
+        this.proposalRatingTypeService = proposalRatingTypeService;
+    }
+
+    /**
+     * Returns the proposal rating type persistence.
+     *
+     * @return the proposal rating type persistence
+     */
+    public ProposalRatingTypePersistence getProposalRatingTypePersistence() {
+        return proposalRatingTypePersistence;
+    }
+
+    /**
+     * Sets the proposal rating type persistence.
+     *
+     * @param proposalRatingTypePersistence the proposal rating type persistence
+     */
+    public void setProposalRatingTypePersistence(
+        ProposalRatingTypePersistence proposalRatingTypePersistence) {
+        this.proposalRatingTypePersistence = proposalRatingTypePersistence;
+    }
+
+    /**
+     * Returns the proposal rating value local service.
+     *
+     * @return the proposal rating value local service
+     */
+    public com.ext.portlet.service.ProposalRatingValueLocalService getProposalRatingValueLocalService() {
+        return proposalRatingValueLocalService;
+    }
+
+    /**
+     * Sets the proposal rating value local service.
+     *
+     * @param proposalRatingValueLocalService the proposal rating value local service
+     */
+    public void setProposalRatingValueLocalService(
+        com.ext.portlet.service.ProposalRatingValueLocalService proposalRatingValueLocalService) {
+        this.proposalRatingValueLocalService = proposalRatingValueLocalService;
+    }
+
+    /**
+     * Returns the proposal rating value remote service.
+     *
+     * @return the proposal rating value remote service
+     */
+    public com.ext.portlet.service.ProposalRatingValueService getProposalRatingValueService() {
+        return proposalRatingValueService;
+    }
+
+    /**
+     * Sets the proposal rating value remote service.
+     *
+     * @param proposalRatingValueService the proposal rating value remote service
+     */
+    public void setProposalRatingValueService(
+        com.ext.portlet.service.ProposalRatingValueService proposalRatingValueService) {
+        this.proposalRatingValueService = proposalRatingValueService;
+    }
+
+    /**
+     * Returns the proposal rating value persistence.
+     *
+     * @return the proposal rating value persistence
+     */
+    public ProposalRatingValuePersistence getProposalRatingValuePersistence() {
+        return proposalRatingValuePersistence;
+    }
+
+    /**
+     * Sets the proposal rating value persistence.
+     *
+     * @param proposalRatingValuePersistence the proposal rating value persistence
+     */
+    public void setProposalRatingValuePersistence(
+        ProposalRatingValuePersistence proposalRatingValuePersistence) {
+        this.proposalRatingValuePersistence = proposalRatingValuePersistence;
+    }
+
+    /**
      * Returns the proposal supporter local service.
      *
      * @return the proposal supporter local service
@@ -5155,6 +5440,63 @@ public abstract class PlanTeamHistoryServiceBaseImpl extends BaseServiceImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
+    }
+
+    /**
+     * Returns the staff member local service.
+     *
+     * @return the staff member local service
+     */
+    public com.ext.portlet.service.StaffMemberLocalService getStaffMemberLocalService() {
+        return staffMemberLocalService;
+    }
+
+    /**
+     * Sets the staff member local service.
+     *
+     * @param staffMemberLocalService the staff member local service
+     */
+    public void setStaffMemberLocalService(
+        com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService) {
+        this.staffMemberLocalService = staffMemberLocalService;
+    }
+
+    /**
+     * Returns the staff member remote service.
+     *
+     * @return the staff member remote service
+     */
+    public com.ext.portlet.service.StaffMemberService getStaffMemberService() {
+        return staffMemberService;
+    }
+
+    /**
+     * Sets the staff member remote service.
+     *
+     * @param staffMemberService the staff member remote service
+     */
+    public void setStaffMemberService(
+        com.ext.portlet.service.StaffMemberService staffMemberService) {
+        this.staffMemberService = staffMemberService;
+    }
+
+    /**
+     * Returns the staff member persistence.
+     *
+     * @return the staff member persistence
+     */
+    public StaffMemberPersistence getStaffMemberPersistence() {
+        return staffMemberPersistence;
+    }
+
+    /**
+     * Sets the staff member persistence.
+     *
+     * @param staffMemberPersistence the staff member persistence
+     */
+    public void setStaffMemberPersistence(
+        StaffMemberPersistence staffMemberPersistence) {
+        this.staffMemberPersistence = staffMemberPersistence;
     }
 
     /**

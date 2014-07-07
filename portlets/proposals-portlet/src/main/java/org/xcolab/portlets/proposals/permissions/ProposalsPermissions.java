@@ -205,9 +205,13 @@ public class ProposalsPermissions {
     private boolean isProposalOpen() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0 ? ProposalLocalServiceUtil.isOpen(proposal.getProposalId()) : false;
     }
-    
 
-    private boolean getCanAdminAll() {
+
+    /**
+     * Returns true if user is admin (not only proposal contributor)
+     * @return
+     */
+    public boolean getCanAdminAll() {
         return permissionChecker.hasPermission(scopeGroupId, portletId, primKey, ProposalsActions.CAN_ADMIN_ALL);
     }
     

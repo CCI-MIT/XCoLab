@@ -306,9 +306,16 @@ public class ContestLocalServiceUtil {
     /**
     * Methods from ContestImpl *
     */
-    public static java.util.List<com.ext.portlet.model.ContestPhase> getPhases(
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getAllPhases(
         com.ext.portlet.model.Contest contest) {
-        return getService().getPhases(contest);
+        return getService().getAllPhases(contest);
+    }
+
+    public static java.util.List<com.ext.portlet.model.ContestPhase> getVisiblePhases(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getVisiblePhases(contest);
     }
 
     public static com.ext.portlet.model.PlanType getPlanType(
@@ -327,13 +334,15 @@ public class ContestLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhase(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getActivePhase(contest);
     }
 
     public static com.ext.portlet.model.ContestPhase getActiveOrLastPhase(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getActiveOrLastPhase(contest);
     }
 
@@ -536,13 +545,6 @@ public class ContestLocalServiceUtil {
         return getService().getDefaultModelId(contestPK);
     }
 
-    public static int getNumberOfProposalsForJudge(
-        com.liferay.portal.model.User u, com.ext.portlet.model.Contest c)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getNumberOfProposalsForJudge(u, c);
-    }
-
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
         boolean active, boolean privateContest)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -573,6 +575,43 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().transferSupportsToVote(contest, serviceContext);
+    }
+
+    /**
+    * This method generates a CSV string of all judge Reviews of all previous contestPhases of a contest.
+    * By using the currentPhase parameter, the output is filtered to only include proposals that are in
+    * currentPhase.
+    *
+    * @param contest           The contest for which the review should be created
+    * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
+    * @param serviceContext    A serviceContext which must include the Portal's base URL
+    * @return
+    * @throws SystemException
+    * @throws PortalException
+    */
+    public static java.lang.String getProposalJudgeReviewCsv(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.ContestPhase currentPhase,
+        com.liferay.portal.service.ServiceContext serviceContext)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getProposalJudgeReviewCsv(contest, currentPhase,
+            serviceContext);
+    }
+
+    public static java.util.List<com.liferay.portal.model.User> getJudgesForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getJudgesForContest(contest);
+    }
+
+    public static java.util.List<com.liferay.portal.model.User> getFellowsForContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFellowsForContest(contest);
     }
 
     /**

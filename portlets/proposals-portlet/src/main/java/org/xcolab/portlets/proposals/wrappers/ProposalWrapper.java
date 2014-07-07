@@ -1,15 +1,16 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.MembershipRequest;
@@ -17,12 +18,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portal.model.MembershipRequest;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.apache.commons.lang3.StringUtils;
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.utils.ProposalAttributeUtil;
 
 import java.util.ArrayList;
@@ -30,6 +27,10 @@ import java.util.Date;
 import java.util.List;
 
 public class ProposalWrapper {
+
+    protected static final Long LONG_DEFAULT_VAL = -1L;
+    protected static final String STRING_DEFAULT_VAL = "";
+
     private final Proposal proposal;
     private final int version;
     private final Contest contest;
@@ -44,6 +45,8 @@ public class ProposalWrapper {
     private List<ProposalContestPhaseAttribute> contestPhaseAttributes;
 
     private ProposalAttributeUtil proposalAttributeUtil;
+
+    protected ProposalRatingsWrapper proposalRatings;
 
     public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
@@ -61,6 +64,23 @@ public class ProposalWrapper {
         this.proposal2Phase = proposal2Phase;
 
         proposalAttributeUtil = new ProposalAttributeUtil(proposal, version);
+        initializeContestPhaseAttributes();
+    }
+
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+        this(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
+    }
+
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws SystemException, PortalException {
+        this(proposal, proposal.getCurrentVersion(), null, contestPhase, Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK()));
+    }
+
+    public ProposalWrapper(ProposalWrapper proposalWrapper) {
+        this(proposalWrapper.getWrapped(),
+                proposalWrapper.getCurrentVersion(),
+                proposalWrapper.getContest(),
+                proposalWrapper.contestPhase,
+                proposalWrapper.proposal2Phase);
     }
 
     public Class<?> getModelClass() {
@@ -190,50 +210,84 @@ public class ProposalWrapper {
         return null;
     }
 
-    public Long getJudgeRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGE_RATING, 0, 0);
-    }
-
-    public Boolean getJudgingStatus() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGING_STATUS, 0, 0) == 1L;
-    }
-
-    public Long getFellowRating() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.FELLOW_RATING, 0, 0);
-    }
-
-    public JudgingSystemActions.JudgeAction getJudgeAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.JUDGE_ACTION, 0, 0);
-        return JudgingSystemActions.JudgeAction.fromInt(action.intValue());
+    public JudgingSystemActions.AdvanceDecision getJudgeDecision() throws SystemException, PortalException {
+        long judgingDecision = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, LONG_DEFAULT_VAL);
+        return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
     public JudgingSystemActions.FellowAction getFellowAction() throws SystemException, PortalException {
-        Long action = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, 0);
+        Long action = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
-    public String getJudgeComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.JUDGE_COMMENT, 0, "");
+    public String getFellowActionComment() throws SystemException, PortalException {
+        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0, STRING_DEFAULT_VAL);
     }
 
-    public String getFellowComment() throws SystemException, PortalException {
-        return getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.FELLOW_COMMENT, 0, "");
-    }
-    
 
-    public List<Long> getSelectedJudges() {
+    public String getProposalReview() throws SystemException, PortalException {
+        return getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
+    }
+
+    public List<Long> getSelectedJudges() throws SystemException, PortalException {
         List<Long> selectedJudges = new ArrayList<Long>();
-        String s;
-        try {
-            s = getContestPhaseAttributeValueString(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, null);
-        } catch (Exception e) {
-            return selectedJudges;
+
+        // All judges are selected when screening is disabled
+        if (!contestPhase.getFellowScreeningActive()) {
+            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                selectedJudges.add(judge.getUserId());
+            }
         }
-        if (s == null || s.length() == 0) return selectedJudges;
-        for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
+        else {
+            String s;
+            try {
+                s = getContestPhaseAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
+            } catch (Exception e) {
+                return selectedJudges;
+            }
+            if (s == null || s.length() == 0) return selectedJudges;
+            for (String element : s.split(";")) selectedJudges.add(Long.parseLong(element));
+        }
+
         return selectedJudges;
     }
 
+    public boolean isUserAmongSelectedJudge(User user) throws PortalException, SystemException {
+        if (!getFellowScreeningNeccessary()) {
+            return isUserAmongJudges(user);
+        }
+
+        for (Long userId : getSelectedJudges()) {
+            if (userId == user.getUserId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUserAmongFellows(User userInQuestion) throws SystemException, PortalException {
+        for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
+            if (fellow.getUserId() == userInQuestion.getUserId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isUserAmongJudges(User userInQuestion) throws SystemException, PortalException {
+        for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+            if (judge.getUserId() == userInQuestion.getUserId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isJudgingContestPhase() {
+        return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote()) == ContestPhasePromoteType.PROMOTE_JUDGED;
+    }
 
 
     public String getTeam() throws PortalException, SystemException {
@@ -324,15 +378,40 @@ public class ProposalWrapper {
         return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
     }
 
+    protected boolean getFellowScreeningNeccessary() {
+        return contestPhase.getFellowScreeningActive();
+    }
 
-    private String getContestPhaseAttributeValueString(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
+    protected String getContestPhaseAttributeStringValue(String attributeName, long additionalId, String defaultVal) throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getStringValue();
     }
 
-    private long getContestPhaseAttributeValueLong(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
+    protected long getContestPhaseAttributeLongValue(String attributeName, long additionalId, long defaultVal) throws PortalException, SystemException {
         ProposalContestPhaseAttribute pa = getContestPhaseAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getNumericValue();
+    }
+
+    private void initializeContestPhaseAttributes() {
+        if (Validator.isNull(contestPhase)) {
+            return;
+        }
+        try {
+            List<ProposalContestPhaseAttribute> phaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(contestPhase.getContestPhasePK());
+
+            // set phase attributes
+            List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
+            for (ProposalContestPhaseAttribute attribute: phaseAttributes) {
+                if (attribute.getProposalId() == proposal.getProposalId()) {
+                    attributes.add(attribute);
+                }
+            }
+            setContestPhaseAttributes(attributes);
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            e.printStackTrace();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
     }
 
     private double getContestPhaseAttributeValueReal(String attributeName, long additionalId, double defaultVal) throws PortalException, SystemException {
@@ -368,7 +447,7 @@ public class ProposalWrapper {
 
     private ContestPhaseRibbonType getRibbonType() throws PortalException, SystemException {
         if (contestPhaseRibbonType == null) {
-        	long typeId = getContestPhaseAttributeValueLong(ProposalContestPhaseAttributeKeys.RIBBON, 0, -1);
+        	long typeId = getContestPhaseAttributeLongValue(ProposalContestPhaseAttributeKeys.RIBBON, 0, -1);
         	if (typeId >= 0) {
         		contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
         	}
@@ -406,56 +485,77 @@ public class ProposalWrapper {
 
     /**
      * Determine if fellow are done with proposal
-     *
-     * @return 0 if fellow action is incomplete, 1 if incomplete/offtopic, 2 pass to judges
      */
-    public int getFellowStatus() {
+    public GenericJudgingStatus getScreeningStatus() {
         try {
-            if (getFellowAction() == JudgingSystemActions.FellowAction.NO_DECISION) return 0;
-            if (getFellowRating() == 0) return 0;
-            if (getSelectedJudges() == null || getSelectedJudges().isEmpty()) return 0;
-            if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC)
-                return 1;
-            if (getFellowAction() == JudgingSystemActions.FellowAction.PASSTOJUDGES) return 2;
-        } catch (Exception e) {
-            return 0;
-        }
-        return 0;
-    }
+            switch (getFellowAction()) {
+                case INCOMPLETE: case OFFTOPIC:
+                    return GenericJudgingStatus.STATUS_REJECTED;
+                case PASS_TO_JUDGES:
+                    return GenericJudgingStatus.STATUS_ACCEPTED;
+                default:
+                    if (!contestPhase.getFellowScreeningActive()) {
+                        return GenericJudgingStatus.STATUS_ACCEPTED;
+                    }
+                    return GenericJudgingStatus.STATUS_UNKNOWN;
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  GenericJudgingStatus.STATUS_UNKNOWN;
+    }
 
     /**
      * Determine if judges are done with proposal
      *
-     * @return 0 if judge action is incomplete, 1 if don't move on (or fellows decided offtopic/incomplete), 2 move on
      */
-    public int getJudgeStatus() {
+    public GenericJudgingStatus getJudgeStatus() {
         try {
             if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC)
-                return 1; // don't move on if fellows disregarded proposal
-            if (getJudgeAction() == JudgingSystemActions.JudgeAction.NO_DECISION) return 0;
-            if (getJudgeRating() == 0) return 0;
-            if (getJudgeComment() == null || getJudgeComment().length() == 0) return 0;
-            if (getJudgeAction() == JudgingSystemActions.JudgeAction.DONT_MOVE_ON) return 1;
-            if (getJudgeAction() == JudgingSystemActions.JudgeAction.MOVE_ON) return 2;
+                return GenericJudgingStatus.STATUS_REJECTED;
+            if (getSelectedJudges().size() > 0 && getAllJudgesReviewFinished()) {
+                return GenericJudgingStatus.STATUS_ACCEPTED;
+            }
         } catch (Exception e) {
-            return 0;
+            e.printStackTrace();
         }
-        return 0;
+        return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
-    public int getOverallStatus() {
+    /**
+     * Determines whether the screening/advance decision of the proposal is done
+     * @return
+     */
+    public GenericJudgingStatus getOverallStatus() {
         try {
-            boolean emailsSent = getJudgingStatus();
-            if(!emailsSent) {
-                if(getFellowStatus() == 0 || getJudgeStatus() == 0) return 0;
-                else return 1;
-            }else return 2;
+            if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
+                return GenericJudgingStatus.STATUS_ACCEPTED;
+            } else if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON && Validator.isNotNull(getProposalReview()) ||
+                    getScreeningStatus() == GenericJudgingStatus.STATUS_REJECTED) {
+                return GenericJudgingStatus.STATUS_REJECTED;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return GenericJudgingStatus.STATUS_UNKNOWN;
+    }
+
+    public enum GenericJudgingStatus {
+        STATUS_UNKNOWN(0),
+        STATUS_REJECTED(1),
+        STATUS_ACCEPTED(2);
+
+        private int statusValue;
+
+        GenericJudgingStatus(int statusValue) {
+            this.statusValue = statusValue;
+        }
+
+        public int getStatusValue() {
+            return statusValue;
+        }
     }
 
     public boolean getIsLatestVersion() {
@@ -483,6 +583,24 @@ public class ProposalWrapper {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public boolean getAllJudgesReviewFinished() throws SystemException, PortalException {
+        if (getSelectedJudges().size() > 0) {
+            for (long userId : getSelectedJudges()) {
+                List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
+                        userId,
+                        this.proposal.getProposalId(),
+                        this.contestPhase.getContestPhasePK());
+                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
+                if (!wrapper.isReviewComplete()) {
+                    return false;
+                }
+
+            }
+        }
+
+        return true;
     }
 
     public ProposalAttributeUtil getProposalAttributeUtil() {
@@ -520,5 +638,43 @@ public class ProposalWrapper {
 
     public Proposal getWrapped() {
         return proposal;
+    }
+
+    protected ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(long proposalId, long contestPhaseId, String attributeName, long additionalId) {
+        try {
+            return ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposalId, contestPhaseId, attributeName, additionalId);
+        } catch (NoSuchProposalContestPhaseAttributeException e) {
+            try {
+                ProposalContestPhaseAttribute attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
+                        CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
+                attribute.setProposalId(proposalId);
+                attribute.setContestPhaseId(contestPhaseId);
+                attribute.setName(attributeName);
+                ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
+                return attribute;
+            } catch (Exception e2) {
+                e.printStackTrace();
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProposalRatingWrapper> getRatings() throws SystemException, PortalException {
+        if (this.proposalRatings != null) {
+            return this.proposalRatings.getRatings();
+        } else {
+            return new ArrayList<ProposalRatingWrapper>();
+        }
+    }
+
+    public String getRatingComment() throws SystemException, PortalException {
+        if (this.proposalRatings != null) {
+            return this.proposalRatings.getComment();
+        } else {
+            return "";
+        }
     }
 }

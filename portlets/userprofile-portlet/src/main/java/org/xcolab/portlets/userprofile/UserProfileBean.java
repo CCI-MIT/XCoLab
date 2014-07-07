@@ -184,7 +184,8 @@ public class UserProfileBean implements Serializable {
             
             List<Long> recipients = new ArrayList<Long>();
             recipients.add(wrappedUser.getUserId());
-            
+
+
             MessageUtil.sendMessage(messageSubject, messageText, Helper.getLiferayUser().getUserId(), 
                     Helper.getLiferayUser().getUserId(),recipients, null);
             messageSent = true;

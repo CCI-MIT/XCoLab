@@ -2,6 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.ContestPhase;
+import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -38,26 +40,52 @@ interface ProposalTabCanAccessAlgorithm {
         }
     };
     
-    public final static ProposalTabCanAccessAlgorithm judgeAccess = new ProposalTabCanAccessAlgorithm() {
+    public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
         
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-            if(!fellowAccess.canAccess(permissions, context, request)) return false;
             try {
-                ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(context.getProposal(request), context.getUser(request));
-                return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
-            } catch (Throwable e) {
+                if (!(permissions.getCanJudgeActions() || permissions.getCanFellowActions() || permissions.getCanAdminAll())) {
+                    return false;
+                }
 
+                ContestPhase contestPhase = context.getContestPhase(request);
+                ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
+                if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.isFellowScreeningActive()) {
+                    return true;
+                }
+
+                ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+                ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getUser(request));
+                return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
+
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
             }
+
             return false;
         }
     };
     
-    public final static ProposalTabCanAccessAlgorithm fellowAccess = new ProposalTabCanAccessAlgorithm() {
+    public final static ProposalTabCanAccessAlgorithm screeningAccess = new ProposalTabCanAccessAlgorithm() {
         
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-            return permissions.getCanFellowActions();
+            try {
+                ContestPhase contestPhase = context.getContestPhase(request);
+                if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()) ||
+                        !contestPhase.isFellowScreeningActive()) {
+                    return false;
+                }
+
+                ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
+                return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
+                        permissions.getCanAdminAll();
+            } catch (PortalException | SystemException e) {
+                e.printStackTrace();
+            }
+
+            return false;
         }
     };
     

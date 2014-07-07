@@ -15,12 +15,12 @@
 </c:if>
 <c:forEach var="proposal" items="${proposals }">
 
-    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}">
+    <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
         <c:choose>
-            <c:when test="${proposal.isJudgeAssignedAndIncomplete == 1}">
+            <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
             </c:when>
-            <c:when test="${proposal.isJudgeAssignedAndIncomplete == 2}">
+            <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
                 <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
             </c:when>
             <c:otherwise>
@@ -29,7 +29,7 @@
         </c:choose>
     </c:if>
 
-<div class="propbox ${proposal.featured ? 'featured' : ''} ${additionalCSSClasses}">
+<div class="propbox ${proposal.featured ? 'featured' : ''}${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? ' judgement-actions' : ''} ${additionalCSSClasses}">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
@@ -42,7 +42,7 @@
             </div>
             </c:if>
             <div class="row1">
-                <div class="title-author" style="${proposalsPermissions.canJudgeActions ? (proposal.featured ? 'width:503px;' : 'width:532px;')  : ''}">
+                <div class="title-author">
                     <h4>
                     	<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.name}" phaseId="${viewContestPhaseId  }" escape="false" />
                         /&#160;
@@ -87,93 +87,52 @@
                 </div>
 
 
-                <c:if test="${proposalsPermissions.canJudgeActions}">
+                <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
                     <div class="fellow-judge-action">
-                        <span class="fieldWithTooltip">
-                        <c:choose>
-                            <c:when test="${proposal.overallStatus == 0}">
-                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
-                            </c:when>
-                            <c:when test="${proposal.overallStatus == 1}">
-                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                            </c:when>
-                            <c:otherwise>
-                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                            </c:otherwise>
-                        </c:choose>
-                        </span>
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
                         <div class="tooltip">
                             <c:choose>
-                                <c:when test="${proposal.overallStatus == 0}">
-                                    No decision yet.
+                                <c:when test="${proposal.overallStatus.statusValue == 0}">
+                                    The proposal review has not been done yet.
                                 </c:when>
-                                <c:when test="${proposal.overallStatus == 1}">
-                                    E-Mails have not been sent out yet.
+                                <c:when test="${proposal.overallStatus.statusValue == 1}">
+                                    Proposal review has been prepared and proposal will not advance.
                                 </c:when>
                                 <c:otherwise>
-                                    E-Mails have been sent out.
+                                    Proposal review has been prepared and proposal will advance.
                                 </c:otherwise>
                             </c:choose>
                         </div>
 
-                        <span class="fieldWithTooltip">
-                        <c:choose>
-                            <c:when test="${proposal.judgeStatus == 0}">
-                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
-                            </c:when>
-                            <c:when test="${proposal.judgeStatus == 1}">
-                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                            </c:when>
-                            <c:otherwise>
-                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                            </c:otherwise>
-                        </c:choose>
-                        </span>
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
                         <div class="tooltip">
                             <c:choose>
-                                <c:when test="${proposal.judgeStatus == 0}">
-                                    No decision yet.
+                                <c:when test="${proposal.judgeStatus.statusValue == 0}">
+                                    The judges have not rated this proposal yet.
                                 </c:when>
-                                <c:when test="${proposal.judgeStatus == 1}">
-                                    <c:if test="${proposal.fellowStatus lt 2}">
-                                        Fellows decided that proposal will not proceed to next round.
-                                    </c:if>
-                                    <c:if test="${proposal.fellowStatus eq 2}">
-                                        Proposal will not proceed to next round.
-                                    </c:if>
+                                <c:when test="${proposal.judgeStatus.statusValue == 1}">
+                                    Fellows decided that proposal will not proceed to next round.
                                 </c:when>
                                 <c:otherwise>
-                                    Proposal will proceed to next round.
+                                    All judges have completed the reviewing process.
                                 </c:otherwise>
                             </c:choose>
                         </div>
                         <c:if test="${proposalsPermissions.canFellowActions}">
-                        <span class="fieldWithTooltip" style="margin-left: 15px;">
-                        <c:choose>
-                            <c:when test="${proposal.fellowStatus == 0}">
-                                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
-                            </c:when>
-                            <c:when test="${proposal.fellowStatus == 1}">
-                                <img src="/climatecolab-theme/images/icon_question-x.png"/>
-                            </c:when>
-                            <c:otherwise>
-                                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
-                            </c:otherwise>
-                        </c:choose>
-                        </span>
-                        <div class="tooltip">
-                            <c:choose>
-                                <c:when test="${proposal.fellowStatus == 0}">
-                                    No decision yet.
-                                </c:when>
-                                <c:when test="${proposal.fellowStatus == 1}">
-                                    Proposal will not proceed to next round.
-                                </c:when>
-                                <c:otherwise>
-                                    Proposal will proceed to next round.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                            <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
+                            <div class="tooltip">
+                                <c:choose>
+                                    <c:when test="${proposal.screeningStatus.statusValue == 0}">
+                                        Fellows have not decided yet if the proposal will be forwarded to judges.
+                                    </c:when>
+                                    <c:when test="${proposal.screeningStatus.statusValue == 1}">
+                                        Fellows decided that proposal will not proceed to next round.
+                                    </c:when>
+                                    <c:otherwise>
+                                        Fellows decided that the proposal should be forwarded to judges.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </c:if>
                     </div>
                 </c:if>

@@ -235,6 +235,26 @@ public interface ProposalContestPhaseAttributeLocalService
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isAttributeSetAndTrue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public boolean persistAttribute(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId, long numericValue);
+
+    public boolean persistAttribute(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId,
+        java.lang.String stringValue);
+
+    public boolean persistSelectedJudgesAttribute(long proposalId,
+        long contestPhaseId, java.util.List<java.lang.Long> selectedJudges);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getOrCreateAttribute(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId);
+
     /**
     * <p>Returns list of proposal phase attributes associated with given proposal in context of a phase</p>
     *
@@ -341,7 +361,6 @@ public interface ProposalContestPhaseAttributeLocalService
     * @param proposalId id of a proposal
     * @param contestPhaseId id of a contest phase
     * @param attributeName name of an attribute
-    * @param value value to be set
     * @throws SystemException in case of LR error
     */
     public void setProposalContestPhaseAttribute(long proposalId,
@@ -355,7 +374,6 @@ public interface ProposalContestPhaseAttributeLocalService
     * @param proposalId id of a proposal
     * @param contestPhaseId id of a contest phase
     * @param attributeName name of an attribute
-    * @param value value to be set
     * @throws SystemException in case of LR error
     */
     public void deleteProposalContestPhaseAttribute(long proposalId,

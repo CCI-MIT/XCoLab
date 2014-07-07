@@ -675,3 +675,16 @@ $dockbarOpenGradientStart: #0EA6F9;
 .ltr .column, .rtl .column-last {
 	float: none;
 }
+#comment-headers, #comment-footers {
+    color: #666;
+    font-size: 0.9em;
+    padding: 1em 0;
+}
+#fellowRatingForm {
+    margin-top: 3.5em;
+}
+.judgeReadOnly .judging_right {
+    float: none;
+    width: auto;
+    margin: 1.5em 0;
+}

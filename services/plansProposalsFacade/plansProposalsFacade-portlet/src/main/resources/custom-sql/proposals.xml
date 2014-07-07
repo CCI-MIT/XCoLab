@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010. M.I.T. All Rights Reserved
+  ~ Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
+  ~ or the license.txt file included in this distribution for the full text of the license.
+  -->
+
+<custom-sql>
+    <sql id="com.ext.portlet.service.persistence.ProposalRatingFinder.findByProposalIdJudgeType">
+		<![CDATA[
+			SELECT
+                pr.*
+            FROM
+                xcolab_ProposalRating pr,
+                xcolab_ProposalRatingValue prv,
+                xcolab_ProposalRatingType prt
+            WHERE
+                pr.proposalId = ? AND
+                pr.ratingValueId = prv.id_ AND
+                prv.ratingTypeId = prt.id_ AND
+                prt.judgeType = ?
+            ORDER BY userId ASC
+		]]>
+	</sql>
+
+    <sql id="com.ext.portlet.service.persistence.ProposalRatingFinder.findByProposalIdJudgeTypeJudgeIdContestPhaseId">
+        <![CDATA[
+			SELECT
+                pr.*
+            FROM
+                xcolab_ProposalRating pr,
+                xcolab_ProposalRatingValue prv,
+                xcolab_ProposalRatingType prt
+            WHERE
+                pr.proposalId = ? AND
+                pr.ratingValueId = prv.id_ AND
+                prv.ratingTypeId = prt.id_ AND
+                prt.judgeType = ? AND
+                pr.userId = ? AND
+                pr.contestPhaseId = ?
+            ORDER BY userId ASC
+		]]>
+    </sql>
+
+</custom-sql>

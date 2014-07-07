@@ -156,6 +156,12 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes73;
     private String _methodName74;
     private String[] _methodParameterTypes74;
+    private String _methodName75;
+    private String[] _methodParameterTypes75;
+    private String _methodName76;
+    private String[] _methodParameterTypes76;
+    private String _methodName77;
+    private String[] _methodParameterTypes77;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -501,11 +507,34 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodParameterTypes73 = new String[] { "java.util.Date" };
 
-        _methodName74 = "getProposalLinkUrl";
+        _methodName74 = "contestPhasePromotionEmailNotifyProposalContributors";
 
         _methodParameterTypes74 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase",
+                "javax.portlet.PortletRequest"
+            };
+
+        _methodName75 = "contestPhasePromotionCommentNotifyProposalContributors";
+
+        _methodParameterTypes75 = new String[] {
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase"
+            };
+
+        _methodName76 = "getProposalLinkUrl";
+
+        _methodParameterTypes76 = new String[] {
                 "com.ext.portlet.model.Contest",
                 "com.ext.portlet.model.Proposal"
+            };
+
+        _methodName77 = "getProposalLinkUrl";
+
+        _methodParameterTypes77 = new String[] {
+                "com.ext.portlet.model.Contest",
+                "com.ext.portlet.model.Proposal",
+                "com.ext.portlet.model.ContestPhase"
             };
     }
 
@@ -2876,18 +2905,130 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
+    public void contestPhasePromotionEmailNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase,
+        javax.portlet.PortletRequest request)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName74,
+                _methodParameterTypes74,
+                new Object[] {
+                    ClpSerializer.translateInput(proposal),
+                    
+                ClpSerializer.translateInput(contestPhase),
+                    
+                ClpSerializer.translateInput(request)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof com.liferay.util.mail.MailEngineException) {
+                throw (com.liferay.util.mail.MailEngineException) t;
+            }
+
+            if (t instanceof javax.mail.internet.AddressException) {
+                throw (javax.mail.internet.AddressException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void contestPhasePromotionCommentNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName75,
+                _methodParameterTypes75,
+                new Object[] {
+                    ClpSerializer.translateInput(proposal),
+                    
+                ClpSerializer.translateInput(contestPhase)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
     public java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal) {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName74,
-                    _methodParameterTypes74,
+            returnObj = _invokableLocalService.invokeMethod(_methodName76,
+                    _methodParameterTypes76,
                     new Object[] {
                         ClpSerializer.translateInput(contest),
                         
                     ClpSerializer.translateInput(proposal)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName77,
+                    _methodParameterTypes77,
+                    new Object[] {
+                        ClpSerializer.translateInput(contest),
+                        
+                    ClpSerializer.translateInput(proposal),
+                        
+                    ClpSerializer.translateInput(contestPhase)
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

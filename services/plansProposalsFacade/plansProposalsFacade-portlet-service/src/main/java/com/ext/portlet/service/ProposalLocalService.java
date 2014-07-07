@@ -628,7 +628,7 @@ public interface ProposalLocalService extends BaseLocalService,
     /**
     * Retrieves all proposals for which a user is either the author or member of the author group (proposals to which a user has contributed)
     *
-    * @param userId    The userId of the user
+    * @param userId The userId of the user
     * @return A list of proposals the user has contributed to
     * @throws SystemException
     */
@@ -1056,14 +1056,56 @@ public interface ProposalLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Sends out the judges' review about the proposal's advance decision as a CoLab message notification to all proposal
+    * contributers
+    *
+    * @param proposal      The proposal for which the notification should be sent
+    * @param contestPhase  The contestPhase in which the proposal is in
+    * @param request       A PortletRequest object to extract the Portal's base URL (may be null - choose default portal URL in that case)
+    */
+    public void contestPhasePromotionEmailNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase,
+        javax.portlet.PortletRequest request)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException,
+            com.liferay.util.mail.MailEngineException,
+            javax.mail.internet.AddressException;
+
+    /**
+    * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
+    *
+    * @param proposal  The proposal for which the notification should be sent
+    */
+    public void contestPhasePromotionCommentNotifyProposalContributors(
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns the URL link address for the passed proposal and contest
     *
-    * @param contest   The contest object in which the proposal was written
-    * @param proposal  The proposal object (must not be null)
+    * @param contest  The contest object in which the proposal was written
+    * @param proposal The proposal object (must not be null)
     * @return Proposal URL as String
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getProposalLinkUrl(
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal);
+
+    /**
+    * Returns the URL link address for the passed proposal, contest and contestPhase
+    *
+    * @param contest       The contest object in which the proposal was written
+    * @param proposal      The proposal object
+    * @param contestPhase  The associated contestPhase of the proposal
+    * @return Proposal URL as String
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getProposalLinkUrl(
+        com.ext.portlet.model.Contest contest,
+        com.ext.portlet.model.Proposal proposal,
+        com.ext.portlet.model.ContestPhase contestPhase);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestPhaseWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
@@ -44,10 +45,6 @@ public class ContestProposalsController extends BaseProposalsController {
 
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
-        List<ProposalContestPhaseAttribute> phaseAttributes = 
-        		ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseAttributes(contestPhase.getContestPhasePK());
-
-        ContestPhaseWrapper contestPhaseWrapper = new ContestPhaseWrapper(contestPhase);
 
         User u = request.getRemoteUser() != null ? UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<ProposalWrapper>();
@@ -56,22 +53,14 @@ public class ContestProposalsController extends BaseProposalsController {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalWrapper proposalWrapper;
 
-            if (u != null && UserLocalServiceUtil.hasRoleUser(1251483, u.getUserId())) {  // judge
+            if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGES.getRoleId(), u.getUserId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
+
             } else {
                 proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
             }
 
             proposals.add(proposalWrapper);
-
-            // set phase attributes
-            List<ProposalContestPhaseAttribute> attributes = new ArrayList<>();
-            for (ProposalContestPhaseAttribute attribute: phaseAttributes) {
-            	if (attribute.getProposalId() == proposal.getProposalId()) {
-            		attributes.add(attribute);
-            	}
-            }
-            proposalWrapper.setContestPhaseAttributes(attributes);
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);

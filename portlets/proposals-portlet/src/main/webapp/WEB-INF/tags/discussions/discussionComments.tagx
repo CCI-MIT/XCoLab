@@ -124,6 +124,8 @@
         		<div class="addcomment">
         			<div id="add">
            				<strong>ADD YOUR COMMENT</strong>
+                        <br />
+                        (You must be logged into your account to post a comment.)
         			</div>
         			<div id="thecomment">
         				<portlet:actionURL var="addCommentURL">

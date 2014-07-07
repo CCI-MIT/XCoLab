@@ -10,6 +10,7 @@
 	<import class="com.ext.portlet.model.BalloonUserTracking" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
+	<import class="com.ext.portlet.model.ContestEmailTemplate" />
 	<import class="com.ext.portlet.model.ContestPhase" />
 	<import class="com.ext.portlet.model.ContestPhaseColumn" />
 	<import class="com.ext.portlet.model.ContestPhaseRibbonType" />
@@ -79,9 +80,13 @@
 	<import class="com.ext.portlet.model.ProposalAttributeType" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttributeType" />
+	<import class="com.ext.portlet.model.ProposalRating" />
+	<import class="com.ext.portlet.model.ProposalRatingType" />
+	<import class="com.ext.portlet.model.ProposalRatingValue" />
 	<import class="com.ext.portlet.model.ProposalSupporter" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
+	<import class="com.ext.portlet.model.StaffMember" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -216,6 +221,15 @@
 		<property name="debateId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.ContestEmailTemplateImpl" table="xcolab_ContestEmailTemplate">
+		<cache usage="read-write" />
+		<id name="type" column="type_" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="header" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="footer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.ContestPhaseImpl" table="xcolab_ContestPhase">
 		<cache usage="read-write" />
 		<id name="ContestPhasePK" type="long">
@@ -223,6 +237,7 @@
 		</id>
 		<property name="ContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ContestPhaseType" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="fellowScreeningActive" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="contestPhaseAutopromote" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ContestPhaseDescriptionOverride" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="phaseActiveOverride" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -262,6 +277,7 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />
@@ -969,6 +985,37 @@
 		</id>
 		<property name="copyOnPromote" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
+	<class name="com.ext.portlet.model.impl.ProposalRatingImpl" table="xcolab_ProposalRating">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="contestPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="ratingValueId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="comment" type="com.liferay.portal.dao.orm.hibernate.StringType" column="comment_" />
+		<property name="commentEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="otherDataString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalRatingTypeImpl" table="xcolab_ProposalRatingType">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="judgeType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalRatingValueImpl" table="xcolab_ProposalRatingValue">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="ratingTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="value" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
 	<class name="com.ext.portlet.model.impl.ProposalSupporterImpl" table="xcolab_ProposalSupporter">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.ProposalSupporterPK">
@@ -996,5 +1043,20 @@
 		</composite-id>
 		<property name="proposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="firstNames" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="lastName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="photoUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="organization" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 </hibernate-mapping>

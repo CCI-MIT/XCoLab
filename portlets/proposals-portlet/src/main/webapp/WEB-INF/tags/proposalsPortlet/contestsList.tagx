@@ -81,7 +81,7 @@
                         <c:if test="${proposalsPermissions.canFellowActions}">
                         <span class="fieldWithTooltip">
                             <c:choose>
-                                <c:when test="${not contest.fellowStatus}">
+                                <c:when test="${not contest.screeningStatus.statusValue}">
                                     <img src="/climatecolab-theme/images/icon_question-x.png"/>
                                 </c:when>
                                 <c:otherwise>
@@ -91,11 +91,11 @@
                         </span>
                         <div class="tooltip">
                             <c:choose>
-                                <c:when test="${not contest.fellowStatus}">
-                                    Fellow decision incomplete.
+                                <c:when test="${not contest.screeningStatus.statusValue}">
+                                    Fellow screening incomplete.
                                 </c:when>
                                 <c:otherwise>
-                                    Fellow decision completed.
+                                    Fellow screening completed.
                                 </c:otherwise>
                             </c:choose>
                         </div>

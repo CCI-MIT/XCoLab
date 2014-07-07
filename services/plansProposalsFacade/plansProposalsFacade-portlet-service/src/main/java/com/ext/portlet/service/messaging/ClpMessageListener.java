@@ -15,6 +15,8 @@ import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
+import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
+import com.ext.portlet.service.ContestEmailTemplateServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnServiceUtil;
@@ -154,6 +156,12 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingServiceUtil;
+import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingTypeServiceUtil;
+import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
+import com.ext.portlet.service.ProposalRatingValueServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
@@ -161,6 +169,8 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
+import com.ext.portlet.service.StaffMemberLocalServiceUtil;
+import com.ext.portlet.service.StaffMemberServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -202,6 +212,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestDebateLocalServiceUtil.clearService();
 
             ContestDebateServiceUtil.clearService();
+            ContestEmailTemplateLocalServiceUtil.clearService();
+
+            ContestEmailTemplateServiceUtil.clearService();
             ContestPhaseLocalServiceUtil.clearService();
 
             ContestPhaseServiceUtil.clearService();
@@ -409,6 +422,15 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalContestPhaseAttributeTypeLocalServiceUtil.clearService();
 
             ProposalContestPhaseAttributeTypeServiceUtil.clearService();
+            ProposalRatingLocalServiceUtil.clearService();
+
+            ProposalRatingServiceUtil.clearService();
+            ProposalRatingTypeLocalServiceUtil.clearService();
+
+            ProposalRatingTypeServiceUtil.clearService();
+            ProposalRatingValueLocalServiceUtil.clearService();
+
+            ProposalRatingValueServiceUtil.clearService();
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();
@@ -418,6 +440,9 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
+            StaffMemberLocalServiceUtil.clearService();
+
+            StaffMemberServiceUtil.clearService();
         }
     }
 }

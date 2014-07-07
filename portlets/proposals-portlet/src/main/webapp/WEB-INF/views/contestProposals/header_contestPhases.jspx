@@ -11,7 +11,7 @@
 <span>
 	<c:choose>
 		<c:when test="${not empty contest.phases}">
-			<c:forEach var="phase" items="${contest.phases }" varStatus="status">
+			<c:forEach var="phase" items="${contest.visiblePhases }" varStatus="status">
 				<div class="phaseLinkContainer">
 					<span class="fieldWithTooltip">
 						<span class="${phase.ended ? 'phasePast' : ''} ${phase.active ? 'phaseActive' : ''} ${not phase.alreadyStarted ? 'phaseFuture' : ''} ${phase.contestPhasePK eq contestPhase.contestPhasePK ? 'phaseSelected' : ''}">

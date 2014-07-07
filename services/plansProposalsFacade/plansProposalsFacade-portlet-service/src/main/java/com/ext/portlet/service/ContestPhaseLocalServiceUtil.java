@@ -329,7 +329,8 @@ public class ContestPhaseLocalServiceUtil {
 
     public static com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService().getActivePhaseForContest(contest);
     }
 
@@ -356,6 +357,13 @@ public class ContestPhaseLocalServiceUtil {
         getService().promoteProposal(proposalId, nextPhaseId);
     }
 
+    public static void promoteProposal(long proposalId, long nextPhaseId,
+        long currentPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().promoteProposal(proposalId, nextPhaseId, currentPhaseId);
+    }
+
     /**
     * Method responsible for autopromotion of proposals between phases.
     *
@@ -366,6 +374,22 @@ public class ContestPhaseLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         getService().autoPromoteProposals();
+    }
+
+    public static void forcePromotionOfProposalInPhase(
+        com.ext.portlet.model.Proposal p,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().forcePromotionOfProposalInPhase(p, phase);
+    }
+
+    public static int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User judge,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getNumberOfProposalsForJudge(judge, phase);
     }
 
     public static void clearService() {

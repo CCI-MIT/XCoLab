@@ -1,13 +1,8 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
@@ -19,7 +14,6 @@ import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalService;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanItemLocalServiceUtil;
@@ -33,6 +27,18 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.model.User;
+import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.enums.ContestPhasePromoteType;
+
+import javax.mail.internet.AddressException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 /**
  * The implementation of the contest phase local service.
@@ -105,8 +111,17 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws SystemException, PortalException {
+        // First sort by contest phase type (the list has to be initialized as modifiable..)
+        List<ContestPhase> contestPhases = new ArrayList(ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase)));
+        Collections.sort(contestPhases, new Comparator<ContestPhase>() {
+            @Override
+            public int compare(ContestPhase o1, ContestPhase o2) {
+                return o1.getPhaseStartDate().compareTo(o2.getPhaseStartDate());
+            }
+        });
+
         boolean currentFound = false;
-        for (ContestPhase phase : ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase))) {
+        for (ContestPhase phase : contestPhases) {
             if (currentFound) {
                 return phase;
             }
@@ -144,7 +159,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
-    public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException {
+    public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {
         Date now = new Date();
         try {
             return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
@@ -176,7 +191,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             // Check whether the contestPhase with the latest start date is open (no endDate)
             ContestPhase latestOpenPhase = null;
             long latestStartTime = 0;
-            for (ContestPhase phase : contestLocalService.getPhases(contest)) {
+            for (ContestPhase phase : contestLocalService.getVisiblePhases(contest)) {
                 if (phase.getPhaseStartDate().getTime() > latestStartTime) {
                     if (phase.getPhaseEndDate() != null) {
                         latestOpenPhase = null;
@@ -209,6 +224,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public void promoteProposal(long proposalId, long nextPhaseId) throws SystemException, PortalException {
+        _log.info("WARNING: promoteProposal(long, long) is deprecated. Use promoteProposal(long, long, long) instead.");
+        promoteProposal(proposalId, nextPhaseId, 0);
+
+    }
+
+    public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
         if (currentProposalVersion == null || currentProposalVersion < 0)
             throw new SystemException("Proposal not found");
@@ -250,6 +271,17 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         p2p.setVersionFrom(currentProposalVersion.intValue());
         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+
+        //save the information that the promotion has been done.
+        if (currentPhaseId != 0) {
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                    proposalId,
+                    currentPhaseId,
+                    ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                    0,
+                    "true"
+            );
+        }
     }
 
     /**
@@ -260,13 +292,18 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      */
     public void autoPromoteProposals() throws SystemException, PortalException {
         Date now = new Date();
-        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE")) {
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
                     _log.info("promoting phase " + phase.getContestPhasePK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                        //skip already promoted proposal
+                        if (hasProposalAlreadyBeenPromoted(p, phase)) {
+                            continue;
+                        }
+
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
 
@@ -281,25 +318,124 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
-
         //Judging-based promotion
-        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote("PROMOTE_JUDGED")) {
+        for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
-                ContestPhase nextPhase = getNextContestPhase(phase);
-                for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                    ProposalContestPhaseAttribute data = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_ACTION);
-                    Long intData = (data == null) ? JudgingSystemActions.JudgeAction.NO_DECISION.getAttributeValue() : data.getNumericValue();
 
-                    if (JudgingSystemActions.JudgeAction.fromInt(intData.intValue()) == JudgingSystemActions.JudgeAction.MOVE_ON) {
-                        promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                // Only do the promotion if all proposals have been successfully reviewed
+                if (allProposalsReviewed(phase)) {
+                    ContestPhase nextPhase = getNextContestPhase(phase);
+                    for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                        //skip already promoted proposal
+                        if (hasProposalAlreadyBeenPromoted(p, phase)) {
+                            continue;
+                        }
+
+                        // Decide about the promotion
+                        if (didJudgeDecideToPromote(p, phase)) {
+                            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
+                        }
+
+                        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+                        try {
+                            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+                        } catch (MailEngineException | AddressException e) {
+                            _log.error("Could not send proposal promotion colab messaging notification", e);
+                        }
                     }
+
+                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
+                    updateContestPhase(phase);
+                    _log.info("done promoting phase " + phase.getContestPhasePK());
+                } else {
+                    _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
                 }
-                phase.setContestPhaseAutopromote("PROMOTE_DONE");
-                updateContestPhase(phase);
-                _log.info("done promoting phase " + phase.getContestPhasePK());
             }
         }
+    }
+
+    private boolean didJudgeDecideToPromote(Proposal p, ContestPhase phase) {
+        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+        Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
+
+        if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.MOVE_ON) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean hasProposalAlreadyBeenPromoted(Proposal p, ContestPhase phase) throws SystemException {
+        boolean hasProposalAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+                p.getProposalId(),
+                phase.getContestPhasePK(),
+                ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                0
+        );
+
+        if (hasProposalAlreadyBeenPromoted) {
+            _log.info("proposal "+ p.getProposalId() +" in phase " + phase.getContestPhasePK() + " has already been promoted.");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void forcePromotionOfProposalInPhase(Proposal p, ContestPhase phase) throws SystemException, PortalException {
+        Date now = new Date();
+        ContestPhase nextPhase = getNextContestPhase(phase);
+
+        //skip already promoted proposal
+        if (hasProposalAlreadyBeenPromoted(p, phase)) {
+            return;
+        }
+
+        // Decide about the promotion
+        if (didJudgeDecideToPromote(p, phase)) {
+            promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+        }
+
+        proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+        try {
+            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+        } catch (MailEngineException | AddressException e) {
+            _log.error("Could not send proposal promotion colab messaging notification", e);
+        }
+
+        _log.info("done forcefully promoting proposal "+ p.getProposalId() +" from phase " + phase.getContestPhasePK());
+    }
+
+
+    public int getNumberOfProposalsForJudge(User judge, ContestPhase phase) throws PortalException, SystemException{
+        List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK());
+        int counter=0;
+        for (Proposal p : proposals){
+            String judges = "";
+            try{
+                judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+            } catch (NoSuchProposalContestPhaseAttributeException e) {  }
+            if (StringUtils.containsIgnoreCase(judges, judge.getUserId() + "")) counter++;
+        }
+        return counter;
+    }
+
+    private boolean allProposalsReviewed(ContestPhase phase) throws SystemException, PortalException {
+        boolean allProposalsReviewed = true;
+        for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+            ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+            Long judgeDecisionValue = (judgeDecision == null) ? JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue() : judgeDecision.getNumericValue();
+            ProposalContestPhaseAttribute fellowAction = getAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+            Long fellowActionValue = (fellowAction == null) ? JudgingSystemActions.FellowAction.NO_DECISION.getAttributeValue() : fellowAction.getNumericValue();
+
+            if (JudgingSystemActions.AdvanceDecision.fromInt(judgeDecisionValue.intValue()) == JudgingSystemActions.AdvanceDecision.NO_DECISION &&
+                    !JudgingSystemActions.FellowAction.fromInt(fellowActionValue.intValue()).isActionProhibitingAdvancing()) {
+                allProposalsReviewed = false;
+            }
+        }
+
+        return allProposalsReviewed;
     }
 
     private ProposalContestPhaseAttribute getAttribute(long proposalId, long phaseId, String key) {
@@ -309,4 +445,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             return null;
         }
     }
+
+
 }

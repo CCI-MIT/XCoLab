@@ -117,10 +117,18 @@ create table xcolab_ContestDebate (
 	ContestPK LONG
 );
 
+create table xcolab_ContestEmailTemplate (
+	type_ VARCHAR(75) not null primary key,
+	subject TEXT null,
+	header TEXT null,
+	footer TEXT null
+);
+
 create table xcolab_ContestPhase (
 	ContestPhasePK LONG not null primary key,
 	ContestPK LONG,
 	ContestPhaseType LONG,
+	fellowScreeningActive BOOLEAN,
 	contestPhaseAutopromote VARCHAR(75) null,
 	ContestPhaseDescriptionOverride TEXT null,
 	phaseActiveOverride BOOLEAN,
@@ -153,7 +161,8 @@ create table xcolab_ContestPhaseType (
 	id_ LONG not null primary key,
 	name VARCHAR(1024) null,
 	description TEXT null,
-	status VARCHAR(75) null
+	status VARCHAR(75) null,
+	invisible BOOLEAN
 );
 
 create table xcolab_ContestTeamMember (
@@ -735,13 +744,38 @@ create table xcolab_ProposalContestPhaseAttribute (
 	name VARCHAR(75) null,
 	additionalId LONG,
 	numericValue LONG,
-	stringValue VARCHAR(75) null,
+	stringValue TEXT null,
 	realValue DOUBLE
 );
 
 create table xcolab_ProposalContestPhaseAttributeType (
 	name VARCHAR(75) not null primary key,
 	copyOnPromote BOOLEAN
+);
+
+create table xcolab_ProposalRating (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	contestPhaseId LONG,
+	userId LONG,
+	ratingValueId LONG,
+	comment_ VARCHAR(75) null,
+	commentEnabled BOOLEAN,
+	otherDataString VARCHAR(75) null
+);
+
+create table xcolab_ProposalRatingType (
+	id_ LONG not null primary key,
+	label VARCHAR(75) null,
+	judgeType INTEGER
+);
+
+create table xcolab_ProposalRatingValue (
+	id_ LONG not null primary key,
+	ratingTypeId LONG,
+	value LONG,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null
 );
 
 create table xcolab_ProposalSupporter (
@@ -767,4 +801,17 @@ create table xcolab_ProposalVote (
 	userId LONG not null,
 	createDate DATE null,
 	primary key (contestPhaseId, userId)
+);
+
+create table xcolab_StaffMember (
+	id_ LONG not null primary key,
+	userId LONG,
+	categoryId LONG,
+	firstNames VARCHAR(75) null,
+	lastName VARCHAR(75) null,
+	url VARCHAR(75) null,
+	photoUrl VARCHAR(75) null,
+	role VARCHAR(75) null,
+	organization VARCHAR(75) null,
+	sort INTEGER
 );

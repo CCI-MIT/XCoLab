@@ -73,21 +73,21 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            return (o1.getJudgeStatus() - o2.getJudgeStatus());
+            return (o1.getJudgeStatus().getStatusValue() - o2.getJudgeStatus().getStatusValue());
         }
     }),
     OVERALLSTATUS(new Comparator<ProposalWrapper>() {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            return (o1.getOverallStatus() - o2.getOverallStatus());
+            return (o1.getOverallStatus().getStatusValue() - o2.getOverallStatus().getStatusValue());
         }
     }),
-    FELLOWSTATUS(new Comparator<ProposalWrapper>() {
+    SCREENINGSTATUS(new Comparator<ProposalWrapper>() {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            return (o1.getFellowStatus() - o2.getFellowStatus());
+            return (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue());
         }
     }),
     MODIFIED(new Comparator<ProposalWrapper>() {

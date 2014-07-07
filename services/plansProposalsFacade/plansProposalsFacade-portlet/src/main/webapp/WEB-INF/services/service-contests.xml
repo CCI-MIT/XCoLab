@@ -107,6 +107,7 @@
         <column name="ContestPhasePK" type="long" primary="true" />
         <column name="ContestPK" type="long"/>
         <column name="ContestPhaseType" type="long" />
+        <column name="fellowScreeningActive" type="boolean" />
         <column name="contestPhaseAutopromote" type="String" />
         <column name="ContestPhaseDescriptionOverride" type="String"/>
         <column name="phaseActiveOverride" type="boolean" />
@@ -149,6 +150,7 @@
         <column name="name" type="String" />
         <column name="description" type="String" />
         <column name="status" type="String" />
+        <column name="invisible" type="boolean" />
       </entity>
       
       <entity name="ContestPhaseColumn" local-service="true">
@@ -183,6 +185,12 @@
         </finder>
       
       </entity>
+    <entity name="ContestEmailTemplate" local-service="true">
+        <column name="type" type="String" primary="true" />
+        <column name="subject" type="String" />
+        <column name="header" type="String" />
+        <column name="footer" type="String" />
+    </entity>
     
     <exceptions>
 

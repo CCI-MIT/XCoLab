@@ -1,0 +1,28 @@
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+        xmlns:form="http://www.springframework.org/tags/form"
+        version="2.0">
+    <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingType" />
+    <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
+
+    <c:forEach var="type" items="${ratingTypes}">
+        <h5>${type.label}</h5>
+        <table class="judgingForm">
+            <tbody>
+            <tr>
+                <c:forEach var="value" items="${type.ratingValues}">
+                    <td><label for="rating${value.id}">${value.name}</label></td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <c:forEach var="value" items="${type.ratingValues}">
+                    <td><form:radiobutton id="rating${value.id}" path="${ratingValuesPath}[${type.id}]" value="${value.id}"/></td>
+                </c:forEach>
+            </tr>
+            </tbody>
+        </table>
+    </c:forEach>
+</jsp:root>

@@ -17,6 +17,7 @@ public class ContestPhaseTypeSoap implements Serializable {
     private String _name;
     private String _description;
     private String _status;
+    private boolean _invisible;
 
     public ContestPhaseTypeSoap() {
     }
@@ -28,6 +29,7 @@ public class ContestPhaseTypeSoap implements Serializable {
         soapModel.setName(model.getName());
         soapModel.setDescription(model.getDescription());
         soapModel.setStatus(model.getStatus());
+        soapModel.setInvisible(model.getInvisible());
 
         return soapModel;
     }
@@ -108,5 +110,17 @@ public class ContestPhaseTypeSoap implements Serializable {
 
     public void setStatus(String status) {
         _status = status;
+    }
+
+    public boolean getInvisible() {
+        return _invisible;
+    }
+
+    public boolean isInvisible() {
+        return _invisible;
+    }
+
+    public void setInvisible(boolean invisible) {
+        _invisible = invisible;
     }
 }

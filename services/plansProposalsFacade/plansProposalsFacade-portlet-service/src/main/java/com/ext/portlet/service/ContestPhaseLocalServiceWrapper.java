@@ -352,7 +352,8 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     @Override
     public com.ext.portlet.model.ContestPhase getActivePhaseForContest(
         com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getActivePhaseForContest(contest);
     }
 
@@ -382,6 +383,15 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         _contestPhaseLocalService.promoteProposal(proposalId, nextPhaseId);
     }
 
+    @Override
+    public void promoteProposal(long proposalId, long nextPhaseId,
+        long currentPhaseId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestPhaseLocalService.promoteProposal(proposalId, nextPhaseId,
+            currentPhaseId);
+    }
+
     /**
     * Method responsible for autopromotion of proposals between phases.
     *
@@ -393,6 +403,25 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _contestPhaseLocalService.autoPromoteProposals();
+    }
+
+    @Override
+    public void forcePromotionOfProposalInPhase(
+        com.ext.portlet.model.Proposal p,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _contestPhaseLocalService.forcePromotionOfProposalInPhase(p, phase);
+    }
+
+    @Override
+    public int getNumberOfProposalsForJudge(
+        com.liferay.portal.model.User judge,
+        com.ext.portlet.model.ContestPhase phase)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestPhaseLocalService.getNumberOfProposalsForJudge(judge,
+            phase);
     }
 
     /**
