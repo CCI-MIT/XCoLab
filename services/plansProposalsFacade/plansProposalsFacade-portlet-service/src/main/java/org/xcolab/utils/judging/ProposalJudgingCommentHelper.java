@@ -125,7 +125,7 @@ public class ProposalJudgingCommentHelper {
                         getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0);
                 JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
-                if (advanceDecision == JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
                     String templateToLoad = (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) ? "ADVANCING_ADVANCE_TO_SEMIFINALIST" : "ADVANCING_DO_NOT_ADVANCE";
 
                     ContestEmailTemplateWrapper wrapper = new ContestEmailTemplateWrapper(
