@@ -19,7 +19,7 @@ public class ProposalRatingImpl extends ProposalRatingBaseImpl {
     }
 
     public boolean isRatingComplete() {
-        return (this.getRatingValueId() > 0 && this.getComment() != null && this.getComment() != "");
+        return (this.getRatingValueId() > 0 && (!this.isCommentEnabled() || (this.getComment() != null && this.getComment() != "")));
     }
 
 }
