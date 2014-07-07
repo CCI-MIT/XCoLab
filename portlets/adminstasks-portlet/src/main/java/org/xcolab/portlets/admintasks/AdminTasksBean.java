@@ -206,6 +206,12 @@ public class AdminTasksBean {
 		return null;
 	}
 
+    public String autopromoteProposals() throws PortalException,
+            SystemException {
+        ContestPhaseLocalServiceUtil.autoPromoteProposals();
+        return null;
+    }
+
 	public String copyProposalsToCompletedPhase() throws PortalException,
 			SystemException {
 		long[] contestsToWorkWith = { 30, 14, 25, 11, 23, 24, 26, 19, 7, 18,
