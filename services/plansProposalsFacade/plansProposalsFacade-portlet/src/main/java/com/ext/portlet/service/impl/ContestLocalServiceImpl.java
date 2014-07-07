@@ -727,7 +727,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
 
-                List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId());
+                List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<ProposalRatingType, List<Long>>();
                 for (ProposalRating rating: ratings) {
                     ProposalRatingWrapper wrapper = new ProposalRatingWrapper(rating);

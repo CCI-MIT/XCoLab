@@ -7,7 +7,7 @@
   -->
 
 <custom-sql>
-    <sql id="com.ext.portlet.service.persistence.ProposalRatingFinder.findByProposalIdJudgeType">
+    <sql id="com.ext.portlet.service.persistence.ProposalRatingFinder.findByProposalIdJudgeTypeContestPhaseId">
 		<![CDATA[
 			SELECT
                 pr.*
@@ -19,7 +19,8 @@
                 pr.proposalId = ? AND
                 pr.ratingValueId = prv.id_ AND
                 prv.ratingTypeId = prt.id_ AND
-                prt.judgeType = ?
+                prt.judgeType = ? AND
+                pr.contestPhaseId = ?
             ORDER BY userId ASC
 		]]>
 	</sql>

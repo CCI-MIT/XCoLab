@@ -37,15 +37,15 @@ public class ProposalRatingLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingLocalServiceUtil} to access the proposal rating local service.
      */
 
-    public List<ProposalRating> getFellowRatingsForProposal(long proposalId) throws SystemException {
-        return getRatingsForProposal(proposalId, ProposalJudgeType.FELLOW.getId());
+    public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
+        return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
     }
-    public List<ProposalRating> getJudgeRatingsForProposal(long proposalId) throws SystemException {
-        return getRatingsForProposal(proposalId, ProposalJudgeType.JUDGE.getId());
+    public List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) throws SystemException {
+        return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.JUDGE.getId());
     }
 
-    protected List<ProposalRating> getRatingsForProposal(long proposalId, int judgeType) throws SystemException {
-        return ProposalRatingFinderUtil.findByProposalIdJudgeType(proposalId, judgeType, 0, Integer.MAX_VALUE);
+    protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId, int judgeType) throws SystemException {
+        return ProposalRatingFinderUtil.findByProposalIdJudgeTypeContestPhaseId(proposalId, judgeType, contestPhaseId, 0, Integer.MAX_VALUE);
     }
 
 

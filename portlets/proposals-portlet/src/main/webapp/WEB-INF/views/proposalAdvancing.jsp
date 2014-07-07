@@ -247,5 +247,10 @@
             $("#fellowRatingForm select").add($("#fellowRatingForm input")).add($("#fellowRatingForm textarea")).attr("disabled", "disabled");
         </script>
     </c:if>
+    <c:if test="${not proposal.allJudgesReviewFinished}">
+        <script>
+            $(".judging_comments .blue-button").hide();
+        </script>
+    </c:if>
 
 </jsp:root>

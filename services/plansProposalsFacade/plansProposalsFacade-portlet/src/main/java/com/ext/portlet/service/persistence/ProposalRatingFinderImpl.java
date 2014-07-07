@@ -39,12 +39,12 @@ import com.liferay.util.dao.orm.CustomSQLUtil;
 
 public class ProposalRatingFinderImpl extends BasePersistenceImpl<ProposalRating> implements ProposalRatingFinder {
 
-    public List<ProposalRating> findByProposalIdJudgeType(long proposalId, int judgeType, int start, int end) throws SystemException {
+    public List<ProposalRating> findByProposalIdJudgeTypeContestPhaseId(long proposalId, int judgeType, long contestPhaseId, int start, int end) throws SystemException {
         Session session = null;
         try {
             session = openSession();
 
-            String sql = CustomSQLUtil.get(FIND_BY_PROPOSAL_ID_JUDGE_TYPE);
+            String sql = CustomSQLUtil.get(FIND_BY_PROPOSAL_ID_JUDGE_TYPE_CONTEST_PHASE_ID);
 
             SQLQuery q = session.createSQLQuery(sql);
             q.setCacheable(false);
@@ -53,6 +53,7 @@ public class ProposalRatingFinderImpl extends BasePersistenceImpl<ProposalRating
             QueryPos qPos = QueryPos.getInstance(q);
             qPos.add(proposalId);
             qPos.add(judgeType);
+            qPos.add(contestPhaseId);
 
             return (List<ProposalRating>) QueryUtil.list(q, getDialect(), start, end);
         } catch (Exception e) {
@@ -99,9 +100,9 @@ public class ProposalRatingFinderImpl extends BasePersistenceImpl<ProposalRating
         return null;
     }
 
-    public static final String FIND_BY_PROPOSAL_ID_JUDGE_TYPE =
+    public static final String FIND_BY_PROPOSAL_ID_JUDGE_TYPE_CONTEST_PHASE_ID =
             ProposalRatingFinder.class.getName() +
-                    ".findByProposalIdJudgeType";
+                    ".findByProposalIdJudgeTypeContestPhaseId";
     public static final String FIND_BY_PROPOSAL_ID_JUDGE_TYPE_JUDGE_ID_CONTEST_PHASE_ID =
             ProposalRatingFinder.class.getName() +
                     ".findByProposalIdJudgeTypeJudgeIdContestPhaseId";
