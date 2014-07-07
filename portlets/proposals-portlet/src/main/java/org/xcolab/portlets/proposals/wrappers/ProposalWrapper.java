@@ -494,9 +494,6 @@ public class ProposalWrapper {
                 case PASS_TO_JUDGES:
                     return GenericJudgingStatus.STATUS_ACCEPTED;
                 default:
-                    if (!contestPhase.getFellowScreeningActive()) {
-                        return GenericJudgingStatus.STATUS_ACCEPTED;
-                    }
                     return GenericJudgingStatus.STATUS_UNKNOWN;
             }
 
