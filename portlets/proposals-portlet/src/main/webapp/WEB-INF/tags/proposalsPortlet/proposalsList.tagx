@@ -111,7 +111,7 @@
                                     The judges have not rated this proposal yet.
                                 </c:when>
                                 <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                    Fellows decided that proposal will not proceed to next round.
+                                    Fellows decided that the ‡proposal will not proceed to next round.
                                 </c:when>
                                 <c:otherwise>
                                     All judges have completed the reviewing process.
@@ -126,7 +126,7 @@
                                         Fellows have not decided yet if the proposal will be forwarded to judges.
                                     </c:when>
                                     <c:when test="${proposal.screeningStatus.statusValue == 1}">
-                                        Fellows decided that proposal will not proceed to next round.
+                                        Fellows decided that the proposal will not proceed to next round.
                                     </c:when>
                                     <c:otherwise>
                                         Fellows decided that the proposal should be forwarded to judges.

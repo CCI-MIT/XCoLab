@@ -180,7 +180,7 @@
                     Judges
                 </a>
                 <div class="tooltip">
-                    All assigned judges have finished the proposal review
+                    Status of the judges' ratings
                     <div class="tt-arrow"><!-- --></div>
                 </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
@@ -196,7 +196,7 @@
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
                 </c:if>
                 <div class="tooltip">
-                    Fellows' screening decision
+                    Status of the fellows' screening decision
                     <div class="tt-arrow"><!-- --></div>
                 </div>
             </div>
