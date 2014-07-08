@@ -1,8 +1,8 @@
 package com.ext.portlet.service.persistence;
 
 public interface ProposalRatingFinder {
-    public java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeType(
-        long proposalId, int judgeType, int start, int end)
+    public java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeTypeContestPhaseId(
+        long proposalId, int judgeType, long contestPhaseId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(

@@ -153,11 +153,11 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         _methodName546 = "getFellowRatingsForProposal";
 
-        _methodParameterTypes546 = new String[] { "long" };
+        _methodParameterTypes546 = new String[] { "long", "long" };
 
         _methodName547 = "getJudgeRatingsForProposal";
 
-        _methodParameterTypes547 = new String[] { "long" };
+        _methodParameterTypes547 = new String[] { "long", "long" };
 
         _methodName549 = "getJudgeRatingsForProposalAndUser";
 
@@ -290,12 +290,14 @@ public class ProposalRatingLocalServiceClpInvoker {
 
         if (_methodName546.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes546, parameterTypes)) {
-            return ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(((Long) arguments[0]).longValue());
+            return ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         if (_methodName547.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes547, parameterTypes)) {
-            return ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(((Long) arguments[0]).longValue());
+            return ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
         }
 
         if (_methodName549.equals(name) &&
