@@ -35,13 +35,13 @@
 					<ice:panelGrid columns="3" columnClasses="labels,inputs,messages" rowClasses="odd,even">
 						<ice:panelGroup>
 							<ice:outputText style="color: red;" value="*" />
-							<ice:outputLabel for="receipients" value="Comma separated list of email addresses to which contact message will be sent" />
+							<ice:outputLabel for="recipients" value="Comma separated list of email addresses to which contact message will be sent" />
 						</ice:panelGroup>
                         
-						<ice:inputText id="receipients" partialSubmit="true" required="true" size="40" value="#{preferences.receipients}">
+						<ice:inputText id="recipients" partialSubmit="true" required="true" size="40" value="#{preferences.recipients}">
                             <f:validator validatorId="emailListValidator" />
                         </ice:inputText>
-						<ice:message for="receipients" />
+						<ice:message for="recipients" />
                         
                         
                         <ice:panelGroup>

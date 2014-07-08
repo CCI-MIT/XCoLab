@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.faces.event.ActionEvent;
@@ -27,7 +25,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.SendMessagePermissionChecker;
 
 public class SendMessageBean implements Serializable {
@@ -36,7 +33,7 @@ public class SendMessageBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<User> users;
-    private String receipients;
+    private String recipients;
     private String subject;
     private String content;
     private MessagingBean messagingBean;
@@ -88,7 +85,7 @@ public class SendMessageBean implements Serializable {
     public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
         List<Long> recipientIds = new ArrayList<Long>();
 
-        for (String recipientId: receipients.split(",")) {
+        for (String recipientId: recipients.split(",")) {
             if (!recipientId.trim().equals("")) {
                 if (permissionChecker.canSendToUser(UserLocalServiceUtil.getUserById(Long.parseLong(recipientId)))) {
                     recipientIds.add(Long.parseLong(recipientId));
@@ -113,23 +110,23 @@ public class SendMessageBean implements Serializable {
     public void init() {
         content = "";
         subject = "";
-        receipients = "";
+        recipients = "";
     }
     
     public void init(MessageBean replyMessage) throws PortalException, SystemException {
-        receipients = String.valueOf(replyMessage.getFrom().getUserId());
+        recipients = String.valueOf(replyMessage.getFrom().getUserId());
         
         subject = "RE: " + replyMessage.getSubject();
         content = "\n\n-- original message begin --\n\n" + replyMessage.getContent() + "\n\n-- original message end --\n";
         this.replyMessage = replyMessage;
     }
 
-    public void setReceipients(String receipients) {
-        this.receipients = receipients;
+    public void setRecipients(String recipients) {
+        this.recipients = recipients;
     }
 
-    public String getReceipients() {
-        return receipients;
+    public String getRecipients() {
+        return recipients;
     }
 
     public void setSubject(String subject) {
