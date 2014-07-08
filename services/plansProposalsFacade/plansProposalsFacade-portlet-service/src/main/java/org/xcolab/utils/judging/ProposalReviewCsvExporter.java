@@ -101,7 +101,13 @@ public class ProposalReviewCsvExporter {
 
         StringBuilder commentSubHeader = new StringBuilder(TQF);
         for (User reviewer : reviewers) {
-            String judgeInitials = reviewer.getFirstName().substring(0, 1).toUpperCase() + reviewer.getLastName().substring(0, 1).toUpperCase();
+            String judgeInitials = "";
+            if (!reviewer.getFirstName().isEmpty()) {
+                judgeInitials += reviewer.getFirstName().substring(0, 1).toUpperCase();
+            }
+            if (!reviewer.getLastName().isEmpty()) {
+                judgeInitials += reviewer.getLastName().substring(0, 1).toUpperCase();
+            }
             commentSubHeader.append(delimiter + "\"" + judgeInitials + " comment\"");
         }
 
