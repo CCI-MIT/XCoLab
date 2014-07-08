@@ -86,40 +86,20 @@ public class SendMessageBean implements Serializable {
     }
     
     public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
-        
-        Map<Long, User> usersMap = new HashMap<Long, User>();
         List<Long> recipientIds = new ArrayList<Long>();
-        Long userId = Helper.getLiferayUser().getUserId();
-        Long mutex = MessageLimitManager.getMutex(userId);
-        synchronized (mutex) {
-			// Send a validation problem mail to patrick if the daily limit is reached for a user
-            if (!MessageLimitManager.canSendMessages(recipientIds.size(), Helper.getLiferayUser())) {
-                System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+userId);
 
-				// Only send the email once in 24h!
-				if (MessageLimitManager.shouldSendValidationErrorMessage(Helper.getLiferayUser())) {
-					recipientIds.clear();
-					recipientIds.add(1011659L); //patrick
-					MessageUtil.sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, userId,
-							Helper.getLiferayUser().getUserId(), recipientIds, null);
-				}
-
-                return;
-            }
-        
-            for (String recipientId: receipients.split(",")) {
-                if (! recipientId.trim().equals("")) {
-                    if (permissionChecker.canSendToUser(UserLocalServiceUtil.getUserById(Long.parseLong(recipientId)))) {
-                        recipientIds.add(Long.parseLong(recipientId));
-                    }
+        for (String recipientId: receipients.split(",")) {
+            if (!recipientId.trim().equals("")) {
+                if (permissionChecker.canSendToUser(UserLocalServiceUtil.getUserById(Long.parseLong(recipientId)))) {
+                    recipientIds.add(Long.parseLong(recipientId));
                 }
             }
-            MessageUtil.sendMessage(subject, content, userId, 
-                    Helper.getLiferayUser().getUserId(), recipientIds, null);
-        
+        }
+
+        boolean success = MessageUtil.checkLimitAndSendMessage(subject, content, Helper.getLiferayUser(), recipientIds);
+        if (success) {
             messagingBean.messageSent();
         }
-        
     }
     
     public void cancel(ActionEvent e) throws PortalException, SystemException {
