@@ -7,11 +7,12 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 public class ProposalRatingFinderUtil {
     private static ProposalRatingFinder _finder;
 
-    public static java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeType(
-        long proposalId, int judgeType, int start, int end)
+    public static java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeTypeContestPhaseId(
+        long proposalId, int judgeType, long contestPhaseId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getFinder()
-                   .findByProposalIdJudgeType(proposalId, judgeType, start, end);
+                   .findByProposalIdJudgeTypeContestPhaseId(proposalId,
+            judgeType, contestPhaseId, start, end);
     }
 
     public static java.util.List<com.ext.portlet.model.ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(

@@ -155,11 +155,11 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
         _methodName19 = "getFellowRatingsForProposal";
 
-        _methodParameterTypes19 = new String[] { "long" };
+        _methodParameterTypes19 = new String[] { "long", "long" };
 
         _methodName20 = "getJudgeRatingsForProposal";
 
-        _methodParameterTypes20 = new String[] { "long" };
+        _methodParameterTypes20 = new String[] { "long", "long" };
 
         _methodName21 = "getJudgeRatingsForProposalAndUser";
 
@@ -701,13 +701,14 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
     @Override
     public java.util.List<com.ext.portlet.model.ProposalRating> getFellowRatingsForProposal(
-        long proposalId)
+        long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { proposalId });
+                    _methodParameterTypes19,
+                    new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
@@ -728,13 +729,14 @@ public class ProposalRatingLocalServiceClp implements ProposalRatingLocalService
 
     @Override
     public java.util.List<com.ext.portlet.model.ProposalRating> getJudgeRatingsForProposal(
-        long proposalId)
+        long proposalId, long contestPhaseId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20, new Object[] { proposalId });
+                    _methodParameterTypes20,
+                    new Object[] { proposalId, contestPhaseId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

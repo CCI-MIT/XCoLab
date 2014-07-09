@@ -31,6 +31,8 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
+import org.xcolab.utils.MessageLimitManager;
+
 /**
  * @author jintrone
  * @date 01/19/2010
@@ -80,19 +82,42 @@ public class MessageUtil {
 
     }
 
-    public static void sendMessage(String subject, String content, Long fromId, Long repliesTo, Collection<Long> tousers, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException {
-        long nextid = CounterLocalServiceUtil.increment(Message.class.getName());
-        Message m = MessageLocalServiceUtil.createMessage(nextid);
+    public static boolean checkLimitAndSendMessage(String subject, String content, User fromUser, Collection<Long> recipientIds) throws AddressException, PortalException, MailEngineException, SystemException {
+        Long fromId = fromUser.getUserId();
+        Long mutex = MessageLimitManager.getMutex(fromId);
+        synchronized (mutex) {
+            // Send a validation problem mail to patrick if the daily limit is reached for a user
+            if (!MessageLimitManager.canSendMessages(recipientIds.size(), fromUser)) {
+                System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. "+fromId);
+
+                // Only send the email once in 24h!
+                if (MessageLimitManager.shouldSendValidationErrorMessage(fromUser)) {
+                    recipientIds.clear();
+                    recipientIds.add(1011659L); //patrick
+                    sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, fromId, fromId, recipientIds, null);
+                }
+
+                return false;
+            }
+
+            sendMessage(subject, content, fromId, fromId, recipientIds, null);
+            return true;
+        }
+    }
+
+    public static void sendMessage(String subject, String content, Long fromId, Long replyToId, Collection<Long> recipientIds, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException {
+        long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
+        Message m = MessageLocalServiceUtil.createMessage(nextId);
         m.setSubject(subject);
         m.setContent(content);
         m.setFromId(fromId);
         m.setCreateDate(new Date());
-        m.setRepliesTo(repliesTo);
+        m.setRepliesTo(replyToId);
         MessageLocalServiceUtil.updateMessage(m);
-        for (long user:tousers) {
-            createRecipient(nextid,user);
+        for (long user : recipientIds) {
+            createRecipient(nextId, user);
             if (getMessagingPreferences(user).getEmailOnReceipt()) {
-                copyRecipient(user,m, request);
+                copyRecipient(user, m, request);
             }
         }
         if (getMessagingPreferences(fromId).getEmailOnSend()) copySender(m, request);

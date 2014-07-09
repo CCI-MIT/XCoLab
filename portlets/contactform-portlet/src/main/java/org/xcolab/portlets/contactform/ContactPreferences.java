@@ -18,17 +18,17 @@ public class ContactPreferences implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String receipients;
+	private String recipients;
     private String messageFormat;
     private String messageSubject;
     private String expandLinkText;
 
-    private final static String RECEIPIENTS_PREF = "RECEIPIENTS";
+    private final static String RECIPIENTS_PREF = "RECIPIENTS";
     private final static String MESSAGE_FORMAT_PREF = "MESSAGE_FORMAT";
     private final static String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
     private final static String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
     
-    private final static String defaultReceipients = "rjl@mit.edu,janusz.parfieniuk@gmail.com,pdeboer@mit.edu,lfi@mit.edu,thurner@mit.edu";
+    private final static String defaultRecipients = "rjl@mit.edu,janusz.parfieniuk@gmail.com,pdeboer@mit.edu,lfi@mit.edu,thurner@mit.edu";
     private final static String defaultMessageFormat = "USER_NAME (USER_EMAIL) has sent message using contact form\nUSER_MESSAGE";
     private final static String defaultMessageSubject = "[CoLab] USER_NAME sent a message using contact form";
     private final static String defaultExpandLinkText = "Send feedback message";    
@@ -46,22 +46,22 @@ public class ContactPreferences implements Serializable {
         messageFormat = defaultMessageFormat;
         messageSubject = defaultMessageSubject;
         expandLinkText = defaultExpandLinkText;
-        receipients = defaultReceipients;
+        recipients = defaultRecipients;
         
     }
 
 
-    public String getReceipients() {
-        return receipients;
+    public String getRecipients() {
+        return recipients;
     }
     
-    public String[] getReceipientsArray() {
-        return receipients.split(",");
+    public String[] getRecipientsArray() {
+        return recipients.split(",");
     }
 
 
-    public void setReceipients(String receipients) {
-        this.receipients = receipients;
+    public void setRecipients(String recipients) {
+        this.recipients = recipients;
     }
 
 
@@ -95,8 +95,8 @@ public class ContactPreferences implements Serializable {
     }
 
 
-    public static String getReceipientsPref() {
-        return RECEIPIENTS_PREF;
+    public static String getRecipientsPref() {
+        return RECIPIENTS_PREF;
     }
 
 
@@ -121,7 +121,7 @@ public class ContactPreferences implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
         fc.addMessage(null, fm);ssageSubject);
         prefs.setValue(EXPAND_LINK_TEXT_PREF, expandLinkText);
-        prefs.setValue(RECEIPIENTS_PREF, receipients);
+        prefs.setValue(RECIPIENTS_PREF, recipients);
 
         prefs.store();
             

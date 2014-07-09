@@ -149,10 +149,10 @@ public class ContactController {
 
                 InternetAddress addressFrom = new InternetAddress(fromAddress);
 
-                String[] receipients = contactPreferences.getReceipientsArray();
-                InternetAddress[] addressTo = new InternetAddress[receipients.length];
-                for (int i = 0; i < receipients.length; i++) {
-                    addressTo[i] = new InternetAddress(receipients[i]);
+                String[] recipients = contactPreferences.getRecipientsArray();
+                InternetAddress[] addressTo = new InternetAddress[recipients.length];
+                for (int i = 0; i < recipients.length; i++) {
+                    addressTo[i] = new InternetAddress(recipients[i]);
                 }
 
                 InternetAddress replyTo[] = { new InternetAddress(contactBean.getEmail()) };

@@ -180,15 +180,11 @@ public class UserProfileBean implements Serializable {
     
     public void sendMessage(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
         if (messageText != null && messageText.trim().length() > 0 && wrappedUser != null && Helper.isUserLoggedIn()) {
-            //MessageUtil.sendMessage(subject, content, fromId, repliesTo, tousers, request)
-            
+
             List<Long> recipients = new ArrayList<Long>();
             recipients.add(wrappedUser.getUserId());
 
-
-            MessageUtil.sendMessage(messageSubject, messageText, Helper.getLiferayUser().getUserId(), 
-                    Helper.getLiferayUser().getUserId(),recipients, null);
-            messageSent = true;
+            messageSent = MessageUtil.checkLimitAndSendMessage(messageSubject, messageText, Helper.getLiferayUser(),recipients);
         }
     }
     
