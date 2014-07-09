@@ -32,7 +32,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 		String clientIp = request.getRemoteAddr();
 		if (!(clientIp.equals(LOCAL_IPv4_ADDRESS) || clientIp.equals(LOCAL_IPv6_ADDRESS))) {
 			_log.warn(String.format("Denied request from address %s!", clientIp));
-			throw new RuntimeException("Originating host invalid!");
+			return null;
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
@@ -42,9 +42,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 		try {
 			ActivitySubscriptionLocalServiceUtil.sendEmailNotifications(serviceContext);
 		}
-		catch (SystemException e) {
-			throw new MessageListenerException("Could not process email notification of proposal subscription feature", e);
-		} catch (PortalException e) {
+		catch (Exception e) {
 			throw new MessageListenerException("Could not process email notification of proposal subscription feature", e);
 		}
 
