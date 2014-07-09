@@ -1,15 +1,21 @@
 package org.xcolab.portlets.reporting.beans.proposaltextextraction;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 /**
 * @author pdeboer
 *         First created on 01/07/14 at 10:46
 */
 public class ProposalTextEntity {
+
     private String url;
     private Long id;
     private String content = "";
     private int htmlElementCount;
-    private boolean isFinalist;
+
+    private ProposalRank rank;
+    private String htmlContent ="";
 
     public int getHtmlElementCount() {
         return htmlElementCount;
@@ -43,11 +49,25 @@ public class ProposalTextEntity {
         this.content = content;
     }
 
-    public boolean isFinalist() {
-        return isFinalist;
+    public ProposalRank getRank() {
+        return rank;
     }
 
-    public void setFinalist(boolean isFinalist) {
-        this.isFinalist = isFinalist;
+    public void setRank(ProposalRank rank) {
+        this.rank = rank;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void appendHtml(String html) {
+        Document document = Jsoup.parse(html);
+        String tmpContent = document.text();
+        if (tmpContent == null || tmpContent.equals(""))
+            tmpContent = htmlContent;
+        content += tmpContent+"\n";
+
+        htmlContent += html+"\n<br/>\n";
     }
 }

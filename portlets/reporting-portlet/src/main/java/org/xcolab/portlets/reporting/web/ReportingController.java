@@ -63,15 +63,15 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "url", "is_finalist", "num_elements", "content"});
+        csvWriter.writeNext(new String[]{"id", "url", "rank","text", "htmlcontent"});
 
         for (ProposalTextEntity e : pte.get()) {
             csvWriter.writeNext(new String[]{
                     ""+e.getId(),
                     e.getUrl(),
-                    e.isFinalist() ? "1" : "0",
-                    e.getHtmlElementCount()+"",
-                    e.getContent()
+                    e.getRank().fileNum+"",
+                    e.getContent(),
+                    e.getHtmlContent(),
             });
         }
 
@@ -113,7 +113,7 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        String[] initialCells = {"user ID", "user screenname"};
+        String[] initialCells = {"user ID", "user screenname", "user email"};
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
         String[] contestNames = new String[contests.size()* FIELDS_PER_CONTEST];
         for (int i = 0; i < contests.size(); i++) {
@@ -140,6 +140,7 @@ public class ReportingController {
             //initial cells
             dataArray[0] = activityByContest.getUser().getPrimaryKey()+"";
             dataArray[1] = activityByContest.getUser().getScreenName();
+            dataArray[2] = activityByContest.getUser().getDisplayEmailAddress();
 
             //contest cells
             for (int i = 0; i < contests.size(); i++) {

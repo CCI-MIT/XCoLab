@@ -4,11 +4,14 @@ import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,25 +29,34 @@ import java.util.Set;
  *         First created on 20/06/14 at 15:50
  */
 public class ProposalTextExtraction {
+    List<ContestPhaseRibbonType> ribbons;
+
+    public ProposalTextExtraction() {
+        try {
+            ribbons = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE);
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<ProposalTextEntity> get() throws Exception {
         List<ProposalTextEntity> ret = new LinkedList<>();
         List<Contest> targetContests = getContestsIn2013();
         for (Contest contest : targetContests) {
             List<ContestPhase> phasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
 
-            ContestPhase creationPhase = null; //type=1
-            ContestPhase finalistPhase = null; //type=12
+            ContestPhase completedPhase = null;
 
             for (ContestPhase contestPhase : phasesForContest) {
-                if (contestPhase.getContestPhaseType() == 1) creationPhase = contestPhase;
-                if (contestPhase.getContestPhaseType() == 12) finalistPhase = contestPhase;
+                if (contestPhase.getPhaseEndDate() == null) completedPhase = contestPhase;
             }
 
-            if (finalistPhase == null || creationPhase == null) continue; //invalid contest
-            List<Proposal> visibleProposals = getVisibleProposals(creationPhase,
-                    ProposalLocalServiceUtil.getProposalsInContestPhase(creationPhase.getContestPhasePK()));
+            if (completedPhase == null) {
+                 continue; //invalid contest
+            }
+            List<Proposal> visibleProposals = getVisibleProposals(completedPhase,
+                    ProposalLocalServiceUtil.getProposalsInContestPhase(completedPhase.getContestPhasePK()));
 
-            List<Proposal> finalistProposals = ProposalLocalServiceUtil.getProposalsInContestPhase(finalistPhase.getContestPhasePK());
 
             for (Proposal visibleProposal : visibleProposals) {
                 ProposalTextEntity pte = new ProposalTextEntity();
@@ -56,23 +68,34 @@ public class ProposalTextExtraction {
                     if (attributeTypeAllowed(attribute)) {
                         String htmlValue = attribute.getStringValue();
                         if (htmlValue != null && !htmlValue.equals("")) {
-                            Document document = Jsoup.parse(htmlValue);
-                            String content = document.text();
-
-                            if (content == null || content.equals(""))
-                                content = htmlValue;
-                            pte.setHtmlElementCount(document.getAllElements().size());
-                            pte.setContent(pte.getContent()+"\n"+htmlValue);
+                            pte.appendHtml(htmlValue);
                         }
                     }
                 }
 
-                pte.setFinalist(proposalIsFinalist(finalistProposals, visibleProposal));
+                pte.setRank(getProposalRank(visibleProposal, completedPhase));
                 //if(!pte.getContent().equals(""))
                 ret.add(pte);
             }
         }
         return ret;
+    }
+
+    private ProposalRank getProposalRank(Proposal proposal, ContestPhase phase) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
+        try {
+            proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON);
+
+            for (ContestPhaseRibbonType ribbon : ribbons) {
+                if(ribbon.getId() == proposalContestPhaseAttribute.getNumericValue()) {
+                    ProposalRank proposalRank = ProposalRank.fromRibbonType(ribbon.getRibbon());
+                    if(proposalRank != null) return proposalRank;
+                }
+            }
+        } catch (Exception e) {
+            return ProposalRank.NON_FINALIST;
+        }
+        return ProposalRank.NON_FINALIST;
     }
 
     private boolean attributeTypeAllowed(ProposalAttribute attribute) {
@@ -110,16 +133,5 @@ public class ProposalTextExtraction {
             targetProposals.add(proposal);
         }
         return targetProposals;
-    }
-
-    private boolean proposalIsFinalist(List<Proposal> finalists, Proposal targetProposal) {
-        boolean isFinalist = false;
-        for (Proposal finalistProposal : finalists) {
-            if (finalistProposal.getProposalId() == targetProposal.getProposalId()) {
-                isFinalist = true;
-                break;
-            }
-        }
-        return isFinalist;
     }
 }
