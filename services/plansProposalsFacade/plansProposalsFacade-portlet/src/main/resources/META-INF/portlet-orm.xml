@@ -1280,6 +1280,7 @@
 				<column name="ID_" />
 			</id>
 			<basic name="label" />
+			<basic name="description" />
 			<basic name="judgeType" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

@@ -51,9 +51,10 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
     public static final Object[][] TABLE_COLUMNS = {
             { "id_", Types.BIGINT },
             { "label", Types.VARCHAR },
+            { "description", Types.VARCHAR },
             { "judgeType", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingType (id_ LONG not null primary key,label VARCHAR(75) null,judgeType INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingType (id_ LONG not null primary key,label VARCHAR(75) null,description TEXT null,judgeType INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRatingType";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalRatingType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRatingType.id_ ASC";
@@ -75,6 +76,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
         };
     private long _id;
     private String _label;
+    private String _description;
     private int _judgeType;
     private ProposalRatingType _escapedModel;
 
@@ -96,6 +98,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
         model.setId(soapModel.getId());
         model.setLabel(soapModel.getLabel());
+        model.setDescription(soapModel.getDescription());
         model.setJudgeType(soapModel.getJudgeType());
 
         return model;
@@ -158,6 +161,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
         attributes.put("id", getId());
         attributes.put("label", getLabel());
+        attributes.put("description", getDescription());
         attributes.put("judgeType", getJudgeType());
 
         return attributes;
@@ -175,6 +179,12 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
         if (label != null) {
             setLabel(label);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
 
         Integer judgeType = (Integer) attributes.get("judgeType");
@@ -208,6 +218,21 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
     @Override
     public void setLabel(String label) {
         _label = label;
+    }
+
+    @JSON
+    @Override
+    public String getDescription() {
+        if (_description == null) {
+            return StringPool.BLANK;
+        } else {
+            return _description;
+        }
+    }
+
+    @Override
+    public void setDescription(String description) {
+        _description = description;
     }
 
     @JSON
@@ -250,6 +275,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
         proposalRatingTypeImpl.setId(getId());
         proposalRatingTypeImpl.setLabel(getLabel());
+        proposalRatingTypeImpl.setDescription(getDescription());
         proposalRatingTypeImpl.setJudgeType(getJudgeType());
 
         proposalRatingTypeImpl.resetOriginalValues();
@@ -314,6 +340,14 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
             proposalRatingTypeCacheModel.label = null;
         }
 
+        proposalRatingTypeCacheModel.description = getDescription();
+
+        String description = proposalRatingTypeCacheModel.description;
+
+        if ((description != null) && (description.length() == 0)) {
+            proposalRatingTypeCacheModel.description = null;
+        }
+
         proposalRatingTypeCacheModel.judgeType = getJudgeType();
 
         return proposalRatingTypeCacheModel;
@@ -321,12 +355,14 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", label=");
         sb.append(getLabel());
+        sb.append(", description=");
+        sb.append(getDescription());
         sb.append(", judgeType=");
         sb.append(getJudgeType());
         sb.append("}");
@@ -336,7 +372,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingType");
@@ -349,6 +385,10 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
         sb.append(
             "<column><column-name>label</column-name><column-value><![CDATA[");
         sb.append(getLabel());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>description</column-name><column-value><![CDATA[");
+        sb.append(getDescription());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>judgeType</column-name><column-value><![CDATA[");

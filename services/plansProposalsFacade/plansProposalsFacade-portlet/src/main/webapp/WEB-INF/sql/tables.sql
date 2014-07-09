@@ -767,6 +767,7 @@ create table xcolab_ProposalRating (
 create table xcolab_ProposalRatingType (
 	id_ LONG not null primary key,
 	label VARCHAR(75) null,
+	description TEXT null,
 	judgeType INTEGER
 );
 
@@ -775,7 +776,7 @@ create table xcolab_ProposalRatingValue (
 	ratingTypeId LONG,
 	value LONG,
 	name VARCHAR(75) null,
-	description VARCHAR(75) null
+	description TEXT null
 );
 
 create table xcolab_ProposalSupporter (

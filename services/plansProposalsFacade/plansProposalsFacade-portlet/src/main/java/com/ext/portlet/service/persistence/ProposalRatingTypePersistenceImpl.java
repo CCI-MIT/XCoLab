@@ -336,6 +336,7 @@ public class ProposalRatingTypePersistenceImpl extends BasePersistenceImpl<Propo
 
         proposalRatingTypeImpl.setId(proposalRatingType.getId());
         proposalRatingTypeImpl.setLabel(proposalRatingType.getLabel());
+        proposalRatingTypeImpl.setDescription(proposalRatingType.getDescription());
         proposalRatingTypeImpl.setJudgeType(proposalRatingType.getJudgeType());
 
         return proposalRatingTypeImpl;

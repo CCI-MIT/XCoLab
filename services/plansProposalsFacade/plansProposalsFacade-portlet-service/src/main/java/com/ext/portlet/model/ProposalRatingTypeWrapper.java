@@ -39,6 +39,7 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
 
         attributes.put("id", getId());
         attributes.put("label", getLabel());
+        attributes.put("description", getDescription());
         attributes.put("judgeType", getJudgeType());
 
         return attributes;
@@ -56,6 +57,12 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
 
         if (label != null) {
             setLabel(label);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
 
         Integer judgeType = (Integer) attributes.get("judgeType");
@@ -123,6 +130,26 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     @Override
     public void setLabel(java.lang.String label) {
         _proposalRatingType.setLabel(label);
+    }
+
+    /**
+    * Returns the description of this proposal rating type.
+    *
+    * @return the description of this proposal rating type
+    */
+    @Override
+    public java.lang.String getDescription() {
+        return _proposalRatingType.getDescription();
+    }
+
+    /**
+    * Sets the description of this proposal rating type.
+    *
+    * @param description the description of this proposal rating type
+    */
+    @Override
+    public void setDescription(java.lang.String description) {
+        _proposalRatingType.setDescription(description);
     }
 
     /**
