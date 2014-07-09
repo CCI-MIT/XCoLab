@@ -52,6 +52,7 @@ public class UserProfileBean implements Serializable {
     private UserSubscriptionsBean subscriptionsBean;
     private String messagingPortletId;
     private boolean messageSent;
+    private boolean limitExceeded;
     private BadgeBean badges;
     private SendMessagePermissionChecker messagePermissionChecker;
 
@@ -184,14 +185,22 @@ public class UserProfileBean implements Serializable {
             List<Long> recipients = new ArrayList<Long>();
             recipients.add(wrappedUser.getUserId());
 
-            messageSent = MessageUtil.checkLimitAndSendMessage(messageSubject, messageText, Helper.getLiferayUser(),recipients);
+            boolean success = MessageUtil.checkLimitAndSendMessage(messageSubject, messageText, Helper.getLiferayUser(),recipients);
+            if (success) {
+                messageSent = true;
+            } else {
+                limitExceeded = true;
+            }
         }
     }
     
     public boolean getMessageSent() {
         return messageSent;
     }
-    
+    public boolean getLimitExceeded() {
+        return limitExceeded;
+    }
+
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
             messages = new ArrayList<MessageBean>();

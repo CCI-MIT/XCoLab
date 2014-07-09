@@ -170,7 +170,6 @@ function sendMessage() {
 function receipientsValid() {
     updateReceipients();
     jQuery(".messageReceipientsError").remove();
-    //alert(jQuery(".messageReceipientsInput").val());
     if (jQuery.trim(jQuery(".messageReceipientsInput").val()) == '') {
         jQuery(".messageReceipientsInput").after("<label class='error messageReceipientsError'>This field is required.</label>");
         return false;
