@@ -5,7 +5,7 @@
         xmlns:collab="http://climatecolab.org/tags/collab_1.0"
         xmlns:form="http://www.springframework.org/tags/form"
         version="2.0">
-    <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingType" />
+    <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingTypeWrapper" />
     <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
     <c:forEach var="type" items="${ratingTypes}">
@@ -18,6 +18,9 @@
                 </div>
         </div>
         <table class="judgingForm">
+            <c:forEach var="value" items="${type.ratingValues}">
+                <col width="${fn:substringBefore(100 / type.ratingValues.size(), '.')}%" />
+            </c:forEach>
             <tbody>
             <tr>
                 <c:forEach var="value" items="${type.ratingValues}">
