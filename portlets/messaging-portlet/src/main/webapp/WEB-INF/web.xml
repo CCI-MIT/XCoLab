@@ -36,8 +36,13 @@
 	<!-- MyFaces will not initialize unless a servlet-mapping to the Faces Servlet is present. -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/icefaces/*</url-pattern>
+    </servlet-mapping>
 	<!-- Prevent direct access to Facelet view XHTML by the userAgent (browser). -->
 	<security-constraint>
 		<web-resource-collection>
