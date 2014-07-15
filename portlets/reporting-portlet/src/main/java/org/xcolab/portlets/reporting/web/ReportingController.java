@@ -63,13 +63,15 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "url", "rank","text", "htmlcontent"});
+        csvWriter.writeNext(new String[]{"id", "url", "rank","winsjudges", "winspopular","text", "htmlcontent"});
 
         for (ProposalTextEntity e : pte.get()) {
             csvWriter.writeNext(new String[]{
                     ""+e.getId(),
                     e.getUrl(),
                     e.getRank().fileNum+"",
+                    e.isProposalWinsJudgesChoice() ? "1" : "0",
+                    e.isProposalWinsPopularChoice() ? "1" : "0",
                     e.getContent(),
                     e.getHtmlContent(),
             });

@@ -16,6 +16,8 @@ public class ProposalTextEntity {
 
     private ProposalRank rank;
     private String htmlContent ="";
+    private boolean proposalWinsJudgesChoice = false;
+    private boolean proposalWinsPopularChoice = false;
 
     public int getHtmlElementCount() {
         return htmlElementCount;
@@ -55,6 +57,22 @@ public class ProposalTextEntity {
 
     public void setRank(ProposalRank rank) {
         this.rank = rank;
+    }
+
+    public boolean isProposalWinsJudgesChoice() {
+        return proposalWinsJudgesChoice;
+    }
+
+    public void setProposalWinsJudgesChoice(boolean proposalWinsJudgesChoice) {
+        this.proposalWinsJudgesChoice = proposalWinsJudgesChoice;
+    }
+
+    public boolean isProposalWinsPopularChoice() {
+        return proposalWinsPopularChoice;
+    }
+
+    public void setProposalWinsPopularChoice(boolean proposalWinsPopularChoice) {
+        this.proposalWinsPopularChoice = proposalWinsPopularChoice;
     }
 
     public String getHtmlContent() {
