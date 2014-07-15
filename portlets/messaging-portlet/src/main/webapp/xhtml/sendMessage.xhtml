@@ -16,7 +16,7 @@
         	</div>
           <table border="0" cellpadding="0" cellspacing="0" class="colab">
               <c:if test="#{sendMessageBean.messageHoneypotPosition eq 0}">
-                  <tr>
+                  <tr class="tr">
                       <td class="b">Leave blank:</td>
                       <td>
                           <ice:inputText styleClass="required profile_input subject" value="#{sendMessageBean.messageHoneypot}" />
@@ -45,7 +45,7 @@
                     </td>
                 </tr>
              <c:if test="#{sendMessageBean.messageHoneypotPosition eq 1}">
-                 <tr>
+                 <tr class="tr">
                     <td class="b">Leave blank:</td>
                     <td>
                         <ice:inputText styleClass="required profile_input subject" value="#{sendMessageBean.mesageHoneypot}" />

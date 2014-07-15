@@ -99,3 +99,7 @@ h2.feedTitle {
 	list-style: none;
 	background: none;
 }
+/* honeypot */
+#ComposeMessage tr.tr {
+    display: none;
+}
