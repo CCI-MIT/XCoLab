@@ -185,37 +185,38 @@ CONTENT_FILTER = {
 						text = text.replace(reg, "<" + tagName + ">");
 					}
 				} else if ("object" === typeof (rules)) {
-                    //TODO: this code does not work as intended, because it replaces all attributes of the tag with the attribute values of the first tag.
-                    /*reg = new RegExp("<" + tagName + "(\\s[^>]+)?/?>", "gmi");
-                    found = reg.exec(text);
-                    attrs = "";
+                    reg = new RegExp("<" + tagName + "(\\s[^>]+)?/?>", "gmi");
 
-                    //TODO: this is the problematic line
+                    //loop over all tags found and remove attributes according to the rules
+                    while (found = reg.exec(text)) {
+                        attrs = "";
 
-                    if (found && found[1]) {
-                        attrs = found[1];
-                    }
+                        if (found && found[1]) {
+                            attrs = found[1];
+                        }
 
-                    if (rules.rmAttr) {
-                        if ("all" === rules.rmAttr) {
-                            attrs = "";
-                        } else if ("object" === typeof (rules.rmAttr) && attrs) {
-                            for (attrName in rules.rmAttr) {
-                                regAttr = new RegExp(attrName + '="[^"]*"', "mi");
-                                attrs = attrs.replace(regAttr, "");
+                        if (rules.rmAttr) {
+                            if ("all" === rules.rmAttr) {
+                                attrs = "";
+                            } else if ("object" === typeof (rules.rmAttr) && attrs) {
+                                for (attrName in rules.rmAttr) {
+                                    regAttr = new RegExp(attrName + '="[^"]*"', "mi");
+                                    attrs = attrs.replace(regAttr, "");
+                                }
                             }
                         }
-                    }
 
-                    if (attrs) {
-                        attrs = attrs.replace(/[\s\n]+/gm, " ");
+                        if (attrs) {
+                            attrs = attrs.replace(/[\s\n]+/gm, " ");
 
-                        if (" " === attrs) {
-                            attrs = "";
+                            if (" " === attrs) {
+                                attrs = "";
+                            }
+                        }
+                        if (found && found[0]) {
+                            text = text.replace(found[0], "<" + tagName + attrs + ">");
                         }
                     }
-
-                    text = text.replace(reg, "<" + tagName + attrs + ">");*/
 				}
 			}
 
