@@ -96,6 +96,8 @@ public class SendMessageBean implements Serializable {
         boolean success = MessageUtil.checkLimitAndSendMessage(subject, content, Helper.getLiferayUser(), recipientIds);
         if (success) {
             messagingBean.messageSent();
+        } else {
+
         }
     }
     

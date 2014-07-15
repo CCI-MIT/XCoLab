@@ -22,16 +22,19 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
     Externalizable {
     public long id;
     public String label;
+    public String description;
     public int judgeType;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(id);
         sb.append(", label=");
         sb.append(label);
+        sb.append(", description=");
+        sb.append(description);
         sb.append(", judgeType=");
         sb.append(judgeType);
         sb.append("}");
@@ -51,6 +54,12 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
             proposalRatingTypeImpl.setLabel(label);
         }
 
+        if (description == null) {
+            proposalRatingTypeImpl.setDescription(StringPool.BLANK);
+        } else {
+            proposalRatingTypeImpl.setDescription(description);
+        }
+
         proposalRatingTypeImpl.setJudgeType(judgeType);
 
         proposalRatingTypeImpl.resetOriginalValues();
@@ -62,6 +71,7 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
     public void readExternal(ObjectInput objectInput) throws IOException {
         id = objectInput.readLong();
         label = objectInput.readUTF();
+        description = objectInput.readUTF();
         judgeType = objectInput.readInt();
     }
 
@@ -74,6 +84,12 @@ public class ProposalRatingTypeCacheModel implements CacheModel<ProposalRatingTy
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(label);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
         }
 
         objectOutput.writeInt(judgeType);

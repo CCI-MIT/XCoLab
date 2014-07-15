@@ -22,6 +22,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
     implements ProposalRatingType {
     private long _id;
     private String _label;
+    private String _description;
     private int _judgeType;
     private BaseModel<?> _proposalRatingTypeRemoteModel;
 
@@ -64,6 +65,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
         attributes.put("id", getId());
         attributes.put("label", getLabel());
+        attributes.put("description", getDescription());
         attributes.put("judgeType", getJudgeType());
 
         return attributes;
@@ -81,6 +83,12 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
         if (label != null) {
             setLabel(label);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
 
         Integer judgeType = (Integer) attributes.get("judgeType");
@@ -128,6 +136,28 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
                 Method method = clazz.getMethod("setLabel", String.class);
 
                 method.invoke(_proposalRatingTypeRemoteModel, label);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return _description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        _description = description;
+
+        if (_proposalRatingTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _proposalRatingTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDescription", String.class);
+
+                method.invoke(_proposalRatingTypeRemoteModel, description);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -245,6 +275,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
         clone.setId(getId());
         clone.setLabel(getLabel());
+        clone.setDescription(getDescription());
         clone.setJudgeType(getJudgeType());
 
         return clone;
@@ -291,12 +322,14 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(7);
+        StringBundler sb = new StringBundler(9);
 
         sb.append("{id=");
         sb.append(getId());
         sb.append(", label=");
         sb.append(getLabel());
+        sb.append(", description=");
+        sb.append(getDescription());
         sb.append(", judgeType=");
         sb.append(getJudgeType());
         sb.append("}");
@@ -306,7 +339,7 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(16);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalRatingType");
@@ -319,6 +352,10 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         sb.append(
             "<column><column-name>label</column-name><column-value><![CDATA[");
         sb.append(getLabel());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>description</column-name><column-value><![CDATA[");
+        sb.append(getDescription());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>judgeType</column-name><column-value><![CDATA[");

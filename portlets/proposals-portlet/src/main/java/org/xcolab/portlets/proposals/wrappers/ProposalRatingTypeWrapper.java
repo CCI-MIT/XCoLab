@@ -31,5 +31,8 @@ public class ProposalRatingTypeWrapper {
     public String getLabel() {
         return this.proposalRatingType.getLabel();
     }
+    public String getDescription() {
+        return this.proposalRatingType.getDescription();
+    }
 
 }

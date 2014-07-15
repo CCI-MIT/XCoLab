@@ -104,6 +104,16 @@
 						</div>
                     </td>
 				</tr>
+                <tr>
+                    <th nowrap="nowrap">Retype email <img
+                            src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
+                            align="texttop" /></th>
+                    <td><form:input cssClass="popupreg_input" path="retypeEmail" />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="alert alert-error" path="retypeEmail" />
+                        </div>
+                    </td>
+                </tr>
 
 				<tr>
 					<th nowrap="nowrap">First name <img
@@ -137,7 +147,7 @@
 
 
 				<tr>
-					<th nowrap="nowrap">Retype Password <img
+					<th nowrap="nowrap">Retype password <img
 						src="/climatecolab-theme/images/reg-star.png" width="8" height="7"
 						align="texttop" /></th>
 					<td><form:password cssClass="popupreg_input"
@@ -154,7 +164,7 @@
 				</tr>
 
 				<tr>
-					<th>Short Bio</th>
+					<th>Short bio</th>
 					<td colspan="3"><form:textarea
 							cssClass="ckeditor_placeholder shortBioContent" path="shortBio" />
                         <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">

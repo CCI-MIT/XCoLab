@@ -15,6 +15,7 @@ import java.util.List;
 public class ProposalRatingTypeSoap implements Serializable {
     private long _id;
     private String _label;
+    private String _description;
     private int _judgeType;
 
     public ProposalRatingTypeSoap() {
@@ -25,6 +26,7 @@ public class ProposalRatingTypeSoap implements Serializable {
 
         soapModel.setId(model.getId());
         soapModel.setLabel(model.getLabel());
+        soapModel.setDescription(model.getDescription());
         soapModel.setJudgeType(model.getJudgeType());
 
         return soapModel;
@@ -91,6 +93,14 @@ public class ProposalRatingTypeSoap implements Serializable {
 
     public void setLabel(String label) {
         _label = label;
+    }
+
+    public String getDescription() {
+        return _description;
+    }
+
+    public void setDescription(String description) {
+        _description = description;
     }
 
     public int getJudgeType() {

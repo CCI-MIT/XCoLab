@@ -22,10 +22,16 @@
 		function messageSent() {
 			jQuery.growlUI('Message has been sent', '');
 		}
+        function limitExceeded() {
+            jQuery.growlUI('The daily message limit has been reached. Please try again tomorrow.', '');
+        }
 
 		<f:subview rendered="#{userprofileBean.messageSent}">
-		messageSent();
-		</f:subview>
+                messageSent();
+        </f:subview>
+        <f:subview rendered="#{userprofileBean.limitExceeded}">
+                limitExceeded();
+        </f:subview>
 
 		function hideSendMessagForm() {
 			jQuery(".sendMessagePopup").hide();

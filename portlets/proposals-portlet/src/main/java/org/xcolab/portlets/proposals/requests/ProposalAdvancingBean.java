@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +14,7 @@ import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 /**
  * Created by kmang on 25/05/14.
  */
-public class ProposalAdvancingBean {
+public class ProposalAdvancingBean extends RatingBean {
 
     private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
             "ADVANCING_ADVANCE_TO_SEMIFINALIST",
@@ -30,6 +31,8 @@ public class ProposalAdvancingBean {
     }
 
     public ProposalAdvancingBean(ProposalWrapper wrapper) throws PortalException, SystemException {
+        super(wrapper, ProposalRatingTypeLocalServiceUtil.getRatingTypesForJudges());
+
         advanceDecision = wrapper.getJudgeDecision();
         advanceComment = wrapper.getProposalReview();
 

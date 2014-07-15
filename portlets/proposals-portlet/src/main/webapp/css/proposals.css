@@ -64,7 +64,7 @@ div.sponsorLogo table {
 }
 
 .heading-sponsor-logo {
-    max-width: 200px;
+    max-width: 300px;
     min-height: 30px;
     max-height: 60px;
     float: right;
@@ -482,4 +482,3 @@ table.judgingForm {
 	background: #e8e7dc;
 	padding: 10px;
 }
-#e8e7dc

@@ -669,7 +669,7 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .prop-tabs ul {height:37px;}
 .prop-tabs li {float:left; list-style:none; height:37px; margin-right:6px;}
 .prop-tabs li a {height:24px; padding:13px 12px 0; display:inline-block; font-size:13px; color:#fff; background:#30a3fb; text-transform:uppercase; font-weight:700;
--moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px;}
+-moz-border-radius-topleft: 5px; -moz-border-radius-topright:5px; -webkit-border-top-left-radius:5px; -webkit-border-top-right-radius:5px; border-top-left-radius:5px; border-top-right-radius:5px; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box;}
 .prop-tabs li a:hover {height:24px; padding:12px 11px 1px; background:#0f558a; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li.c a {height:25px; padding:12px 11px 0; color:#30a3fb; background:#fff; border-top:1px solid #8e8d8a; border-left:1px solid #8e8d8a; border-right:1px solid #8e8d8a;}
 .prop-tabs li a div {display:inline; text-align:center; font:12px Arial, Helvetica, sans-serif; color:#fff; background:#0f558a; padding:0 5px; margin-left:5px; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px;}
