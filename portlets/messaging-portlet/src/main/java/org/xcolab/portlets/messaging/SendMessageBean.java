@@ -94,7 +94,7 @@ public class SendMessageBean implements Serializable {
     
     public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
         if (messageHoneypot != null && messageHoneypot.length() > 0) {
-            _log.info("Message was not sent because honeypot was filled - text: " +messageText + " honeypot: " + messageHoneypot);
+            _log.info("Message was not sent because honeypot was filled - text: " +content + " honeypot: " + messageHoneypot);
             //trick bot into thinking message was sent
             messagingBean.messageSent();
             return;
