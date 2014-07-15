@@ -24,10 +24,7 @@ import javax.faces.event.ActionEvent;
 import javax.mail.internet.AddressException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserProfileBean implements Serializable {
     /**
@@ -46,6 +43,10 @@ public class UserProfileBean implements Serializable {
     private boolean editing = false;
     private String messageText;
     private String messageSubject;
+    //honeypot is a field supposed to be left blank by humans, and to be filled in by bots, in order to protect from spam.
+    private String messageHoneypot;
+    private int messageHoneypotPosition;
+
     private List<MessageBean> messages;
     private ArrayList<UserActivityBean> subscribedActivities;
     private PageType pageType = PageType.PROFILE_NOT_INITIALIZED;
@@ -57,8 +58,11 @@ public class UserProfileBean implements Serializable {
     private SendMessagePermissionChecker messagePermissionChecker;
 
     private boolean displayEMailErrorMessage = false;
+
     
     public UserProfileBean() {
+        this.messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
+
         Map<String, String> parameters = Helper.getUrlParametersMap();
         long companyId = CompanyThreadLocal.getCompanyId(); 
         if (companyId == 0) {
@@ -180,6 +184,13 @@ public class UserProfileBean implements Serializable {
     
     
     public void sendMessage(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
+        if (messageHoneypot != null && messageHoneypot.length() > 0) {
+            _log.info("Message was not sent because honeypot was filled - text: " +messageText + " honeypot: " + messageHoneypot);
+            //trick bot into thinking message was sent
+            messageSent = true;
+            return;
+        }
+
         if (messageText != null && messageText.trim().length() > 0 && wrappedUser != null && Helper.isUserLoggedIn()) {
 
             List<Long> recipients = new ArrayList<Long>();
@@ -312,4 +323,15 @@ public class UserProfileBean implements Serializable {
         return false;
     }
 
+    public String getMessageHoneypot() {
+        return messageHoneypot;
+    }
+
+    public void setMessageHoneypot(String messageHoneypot) {
+        this.messageHoneypot = messageHoneypot;
+    }
+
+    public int getMessageHoneypotPosition() {
+        return messageHoneypotPosition;
+    }
 }

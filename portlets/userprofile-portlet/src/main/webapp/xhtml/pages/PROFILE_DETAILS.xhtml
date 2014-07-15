@@ -4,7 +4,8 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:collab="http://climatecollaboratorium.org/facelets"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
-        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<script type="text/javascript">
 		function clearSendMessageForm() {
@@ -339,13 +340,28 @@
 								<ice:inputText styleClass="popuplogin_input sendMessage_subject"
 									value="#{userprofileBean.messageSubject}" />
 							</p>
+                            <c:if test="#{userprofileBean.messageHoneypotPosition eq 0}">
+                                <p class="p">
+                                    <strong>Leave this blank:</strong> &#160; <span class="error hidden">
+									* value required</span><br />
+                                    <ice:inputText value="#{userprofileBean.messageHoneypot}"
+                                                   styleClass="popuplogin_input sendMessage_subject" />
+                                </p>
+                            </c:if>
 							<p>
 								<strong>Message:</strong> &#160; <span class="error hidden">
 									* value required</span><br />
 								<ice:inputTextarea value="#{userprofileBean.messageText}"
 									styleClass="sendMessage_message" />
 							</p>
-
+                            <c:if test="#{userprofileBean.messageHoneypotPosition eq 1}">
+                                <p class="p">
+                                    <strong>Leave this blank:</strong> &#160; <span class="error hidden">
+									* value required</span><br />
+                                    <ice:inputText value="#{userprofileBean.messageHoneypot}"
+                                                   styleClass="popuplogin_input sendMessage_subject" />
+                                </p>
+                            </c:if>
 						</ice:panelGroup>
 						<ice:panelGroup styleClass="btns">
 							<div class="blue-button">

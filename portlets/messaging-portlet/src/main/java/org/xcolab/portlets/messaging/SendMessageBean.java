@@ -27,10 +27,14 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.xcolab.utils.SendMessagePermissionChecker;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 public class SendMessageBean implements Serializable {
     /**
 	 * 
 	 */
+    private final static Log _log = LogFactoryUtil.getLog(SendMessageBean.class);
 	private static final long serialVersionUID = 1L;
 	private List<User> users;
     private String recipients;
@@ -39,9 +43,15 @@ public class SendMessageBean implements Serializable {
     private MessagingBean messagingBean;
     private MessageBean replyMessage;
     private SendMessagePermissionChecker permissionChecker;
+
+    //honeypot is a field supposed to be left blank by humans, and to be filled in by bots, in order to protect from spam.
+    private String messageHoneypot;
+    private int messageHoneypotPosition;
     
     
     public SendMessageBean() throws SystemException {
+        this.messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
+
         users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
 
         permissionChecker = new SendMessagePermissionChecker(Helper.getLiferayUser());
@@ -83,6 +93,13 @@ public class SendMessageBean implements Serializable {
     }
     
     public void send(ActionEvent e) throws AddressException, SystemException, PortalException, MailEngineException {
+        if (messageHoneypot != null && messageHoneypot.length() > 0) {
+            _log.info("Message was not sent because honeypot was filled - text: " +messageText + " honeypot: " + messageHoneypot);
+            //trick bot into thinking message was sent
+            messagingBean.messageSent();
+            return;
+        }
+
         List<Long> recipientIds = new ArrayList<Long>();
 
         for (String recipientId: recipients.split(",")) {
@@ -163,6 +180,18 @@ public class SendMessageBean implements Serializable {
     // to force screen unblocking
     public int getUnblockScreen() {
         return new Random().nextInt();
+    }
+
+    public String getMessageHoneypot() {
+        return messageHoneypot;
+    }
+
+    public void setMessageHoneypot(String messageHoneypot) {
+        this.messageHoneypot = messageHoneypot;
+    }
+
+    public int getMessageHoneypotPosition() {
+        return messageHoneypotPosition;
     }
 
 }

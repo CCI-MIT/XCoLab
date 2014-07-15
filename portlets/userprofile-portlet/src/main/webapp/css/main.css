@@ -58,4 +58,7 @@ a.attendingConference {
     border: 1px solid #bdbcb7;
     position: relative;
 }
-
+/* honeypot */
+#sendMessageOverlay p.p {
+    display: none;
+}
