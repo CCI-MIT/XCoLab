@@ -11,12 +11,9 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseRibbonTypeServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -52,7 +49,7 @@ public class ProposalTextExtraction {
             }
 
             if (completedPhase == null) {
-                 continue; //invalid contest
+                continue; //invalid contest
             }
             List<Proposal> visibleProposals = getVisibleProposals(completedPhase,
                     ProposalLocalServiceUtil.getProposalsInContestPhase(completedPhase.getContestPhasePK()));
@@ -74,36 +71,19 @@ public class ProposalTextExtraction {
                 }
 
                 pte.setRank(getProposalRank(visibleProposal, completedPhase));
+                if (pte.getRank() == ProposalRank.WINNER) {
+                    ProposalContestPhaseAttribute ribbonAttribute = getRibbonAttribute(visibleProposal, completedPhase);
+                    final int[] judgesChoiceTypes = new int[]{4,5,8,9};
+                    final int[] popularChoiceTypes = new int[]{2,5,7,8,9};
+
+                    pte.setProposalWinsJudgesChoice(Arrays.binarySearch(judgesChoiceTypes, (int)ribbonAttribute.getNumericValue()) > -1);
+                    pte.setProposalWinsPopularChoice(Arrays.binarySearch(popularChoiceTypes, (int)ribbonAttribute.getNumericValue()) > -1);
+                }
                 //if(!pte.getContent().equals(""))
                 ret.add(pte);
             }
         }
         return ret;
-    }
-
-    private ProposalRank getProposalRank(Proposal proposal, ContestPhase phase) {
-        ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
-        try {
-            proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON);
-
-            for (ContestPhaseRibbonType ribbon : ribbons) {
-                if(ribbon.getId() == proposalContestPhaseAttribute.getNumericValue()) {
-                    ProposalRank proposalRank = ProposalRank.fromRibbonType(ribbon.getRibbon());
-                    if(proposalRank != null) return proposalRank;
-                }
-            }
-        } catch (Exception e) {
-            return ProposalRank.NON_FINALIST;
-        }
-        return ProposalRank.NON_FINALIST;
-    }
-
-    private boolean attributeTypeAllowed(ProposalAttribute attribute) {
-        Set<String> allowedTypes = new HashSet<>();
-        for (String s : new String[]{"SECTION", "NAME", "PITCH", "DESCRIPTION"}) {
-            allowedTypes.add(s);
-        }
-        return allowedTypes.contains(attribute.getName());
     }
 
     private List<Contest> getContestsIn2013() throws SystemException {
@@ -133,5 +113,50 @@ public class ProposalTextExtraction {
             targetProposals.add(proposal);
         }
         return targetProposals;
+    }
+
+    private boolean attributeTypeAllowed(ProposalAttribute attribute) {
+        Set<String> allowedTypes = new HashSet<>();
+        for (String s : new String[]{"SECTION", "NAME", "PITCH", "DESCRIPTION"}) {
+            allowedTypes.add(s);
+        }
+        return allowedTypes.contains(attribute.getName());
+    }
+
+    private ProposalRank getProposalRank(Proposal proposal, ContestPhase phase) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
+        try {
+            proposalContestPhaseAttribute = getRibbonAttribute(proposal, phase);
+
+            ContestPhaseRibbonType contestPhaseRibbonType = getRibbonType(proposalContestPhaseAttribute);
+
+            ProposalRank proposalRank = ProposalRank.fromRibbonType(contestPhaseRibbonType.getRibbon());
+            if (proposalRank != null) return proposalRank;
+
+        } catch (Exception e) {
+            return ProposalRank.NON_FINALIST;
+        }
+        return ProposalRank.NON_FINALIST;
+    }
+
+    private ProposalContestPhaseAttribute getRibbonAttribute(Proposal proposal, ContestPhase phase) {
+        try {
+            ProposalContestPhaseAttribute proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.RIBBON);
+            return proposalContestPhaseAttribute;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private ContestPhaseRibbonType getRibbonType(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+        try {
+            for (ContestPhaseRibbonType ribbon : ribbons) {
+                if (ribbon.getId() == proposalContestPhaseAttribute.getNumericValue()) {
+                    return ribbon;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
