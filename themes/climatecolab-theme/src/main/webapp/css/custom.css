@@ -680,9 +680,6 @@ $dockbarOpenGradientStart: #0EA6F9;
     font-size: 0.9em;
     padding: 1em 0;
 }
-#fellowRatingForm {
-    margin-top: 3.5em;
-}
 .judgeReadOnly .judging_right {
     float: none;
     width: auto;

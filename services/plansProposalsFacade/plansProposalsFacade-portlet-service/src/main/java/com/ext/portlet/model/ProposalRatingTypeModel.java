@@ -73,6 +73,21 @@ public interface ProposalRatingTypeModel extends BaseModel<ProposalRatingType> {
     public void setLabel(String label);
 
     /**
+     * Returns the description of this proposal rating type.
+     *
+     * @return the description of this proposal rating type
+     */
+    @AutoEscape
+    public String getDescription();
+
+    /**
+     * Sets the description of this proposal rating type.
+     *
+     * @param description the description of this proposal rating type
+     */
+    public void setDescription(String description);
+
+    /**
      * Returns the judge type of this proposal rating type.
      *
      * @return the judge type of this proposal rating type

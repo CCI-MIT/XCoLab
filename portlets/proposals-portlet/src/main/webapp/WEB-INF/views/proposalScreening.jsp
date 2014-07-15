@@ -36,7 +36,7 @@
         </portlet:actionURL>
 
         <div class="judging_left">
-            <form:form id="fellowRatingForm" action="${saveScreeningURL }" method="post"
+            <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                        commandName="fellowProposalScreeningBean">
                 <div class="addpropbox">
                     <h3>Advance Proposal to Judges for Review?</h3>
@@ -50,10 +50,10 @@
                         <table class="judgingForm">
                             <tbody>
                             <tr>
-                                <c:forEach var="judge" items="${contest.contestJudges }">
+                                <c:forEach var="judge" items="${contest.contestJudges}">
                                     <td>
                                         <div class="review-status-container">
-                                            <proposalsPortlet:userPortrait screenName="${judge.screenName }"
+                                            <proposalsPortlet:userPortrait screenName="${judge.screenName}"
                                                                            portraitId="${judge.portraitId}" width="30"
                                                                            height="30"/>
                                             <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
@@ -165,20 +165,8 @@
 
         <div class="judging_right">
             <div class="addpropbox">
-
                 <h2>Evaluation Criteria</h2>
-
-                <h3>Feasibility of the actions proposed</h3>
-                <span>Technical, economic, social, and political feasibility of the proposals.</span>
-
-                <h3>Novelty of the proposal's ideas</h3>
-                <span>Innovative thinking and originality is to be valued more than strict encyclopedic knowledge.  Judges may consider selecting a roster of finalists that represent a diverse range of approaches rather than proposals that are very similar.</span>
-
-                <h3>Likely impact on climate change and desirability of other impacts</h3>
-                <span>The extent to which the actions will fulfill on the stated mission.  For example, for mitigation actions, the impact should be based on the amount of greenhouse gas emission reductions; for adaptation actions, the extent to which the actions counteract the effects of climate change; etc.  Some proposals mention other impacts outside of the initial intention, and the potential of these should be taken into consideration.</span>
-
-                <h3>Presentation quality</h3>
-                <span>Proposals that are well-presented will be favored over those that aren't. Presentation quality includes how well written a proposal is, how well it uses graphics or other visual elements, and how compelling are its artistic representations of possible future worlds (if any).</span>
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}"/>
             </div>
         </div>
 

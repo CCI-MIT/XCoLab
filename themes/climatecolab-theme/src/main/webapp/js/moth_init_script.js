@@ -460,10 +460,12 @@ function initTooltips() {
         var self = jQuery(this);
         self.addClass('tooltipInitialized');
         var tooltip = findTooltip(self);
-        
-        tooltip.parent().css("position", "relative"); 
-        tooltip.show();
-        
+
+        tooltip.parent().css("position", "relative");
+        if (tooltip.text().trim() != "") {
+            tooltip.show();
+        }
+
         var offsets = {top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2};
         if (self.hasClass('fieldWithTooltip') && ! self.hasClass('tooltipAbove')) {
         	delete offsets.top;

@@ -883,6 +883,9 @@
 	<model name="com.ext.portlet.model.ProposalRatingType">
 		<field name="id" type="long" />
 		<field name="label" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
 		<field name="judgeType" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.ProposalRatingValue">
@@ -890,7 +893,9 @@
 		<field name="ratingTypeId" type="long" />
 		<field name="value" type="long" />
 		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
 	</model>
 	<model name="com.ext.portlet.model.ProposalSupporter">
 		<field name="proposalId" type="long" />

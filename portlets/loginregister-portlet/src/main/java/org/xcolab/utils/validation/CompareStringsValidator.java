@@ -23,28 +23,41 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
     @Override
     public boolean isValid(Object target, ConstraintValidatorContext context) {
         boolean isValid = true;
-        List<String> propertyValues = new ArrayList<String> (propertyNames.length);
+        int validationFailedAtIndex = -1;
         for(int i=0; i<propertyNames.length; i++) {
-            String propertyValue = ConstraintValidatorHelper.getPropertyValue(String.class, propertyNames[i], target);
-            if(propertyValue == null) {
-                if(!allowNull) {
-                    isValid = false;
-                    break;
+            //explode
+            List<String> propertyValues = new ArrayList<String> (propertyNames.length);
+            String[] valueIdentifiers = propertyNames[i].split(",");
+            for (int j=0; j<valueIdentifiers.length; j++) {
+                String propertyValue = ConstraintValidatorHelper.getPropertyValue(String.class, valueIdentifiers[j], target);
+                if (propertyValue == null) {
+                    if (!allowNull) {
+                        isValid = false;
+                        validationFailedAtIndex = i;
+                        break;
+                    }
+                } else {
+                    propertyValues.add(propertyValue);
+                }
+            }
+
+            if(isValid) {
+                isValid = ConstraintValidatorHelper.isValid(propertyValues, comparisonMode);
+                if (!isValid) {
+                    validationFailedAtIndex = i;
                 }
             } else {
-                propertyValues.add(propertyValue);
+                break;
             }
         }
 
-        if(isValid) {
-            isValid = ConstraintValidatorHelper.isValid(propertyValues, comparisonMode);
-        }
+
 
         if(!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
             /* if custom message was provided, don't touch it, otherwise build the default message */
             if(isDefaultMessage) {
-                String resolvedMessage = ConstraintValidatorHelper.resolveMessage(propertyNames, comparisonMode);
+                String resolvedMessage = ConstraintValidatorHelper.resolveMessage(propertyNames[validationFailedAtIndex].split(","), comparisonMode);
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(resolvedMessage);
                 violationBuilder.addConstraintViolation();

@@ -213,6 +213,7 @@
     <entity name="ProposalRatingType" local-service="true">
         <column name="id" type="long" primary="true" />
         <column name="label" type="String" />
+        <column name="description" type="String" />
         <column name="judgeType" type="int" />
         <column name="proposalRatingValues" type="Collection" entity="ProposalRatingValue" mapping-key="ratingTypeId"/>
     </entity>
