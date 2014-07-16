@@ -179,6 +179,7 @@ public class MessageUtil {
             prefs.setEmailOnSend(false);
             prefs.setUserId(userId);
             prefs.setEmailOnActivity(true);
+            prefs.setEmailActivityDailyDigest(true);
             MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
         }
         
