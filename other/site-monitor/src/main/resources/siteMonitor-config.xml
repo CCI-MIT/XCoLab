@@ -4,7 +4,7 @@
 		<checker>
 			<name>errorNotificationChecker</name>
 			<class>org.xcolab.utils.sitemonitor.checkers.RegexMatchingChecker</class>
-			<configuration>alert\-error</configuration>
+			<configuration>(alert\-error|Internal\s*error)</configuration>
 			<message>Error notification found on a page</message>
 		</checker>
 		<checker>
