@@ -10,13 +10,21 @@
 	
 	<jsp:directive.attribute name="availableModels" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
 	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
+	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
 	<div class='modelSelector'>
             <div>
                 <p>Select your model:</p>
                 <div class="">
                 	<select class='selectbox1 modelsSelectBox'>
                 	<c:forEach var="model" items="${availableModels }">
-                		<option value="${model.key }">${model.value }</option>
+				<c:choose>
+					<c:when test="${model.key == modelId}">
+                				<option value="${model.key }" selected='selected'>${model.value }</option>
+					</c:when>
+					<c:otherwise>
+                				<option value="${model.key }">${model.value }</option>
+					</c:otherwise>
+				</c:choose>
                 	</c:forEach>
                 	</select>
                 </div>
