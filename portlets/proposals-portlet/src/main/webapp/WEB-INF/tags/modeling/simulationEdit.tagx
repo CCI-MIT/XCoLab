@@ -24,7 +24,8 @@
 				modeling.loadModel(${modelId});
 			</c:otherwise>
 		</c:choose>
-		
+                $(".modelsSelectBox").val(${modelId});
+
 
 		jQuery(modeling).on("scenarioFetched", function(event) {
 			jQuery("#modelingScenarioId").val(event.scenario.scenarioId).addClass("editorDirty");
