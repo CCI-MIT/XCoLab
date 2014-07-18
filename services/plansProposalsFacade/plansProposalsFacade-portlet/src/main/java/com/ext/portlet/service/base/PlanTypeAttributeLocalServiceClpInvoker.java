@@ -41,10 +41,10 @@ public class PlanTypeAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName540;
-    private String[] _methodParameterTypes540;
-    private String _methodName541;
-    private String[] _methodParameterTypes541;
+    private String _methodName564;
+    private String[] _methodParameterTypes564;
+    private String _methodName565;
+    private String[] _methodParameterTypes565;
 
     public PlanTypeAttributeLocalServiceClpInvoker() {
         _methodName0 = "addPlanTypeAttribute";
@@ -129,13 +129,13 @@ public class PlanTypeAttributeLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanTypeAttribute"
             };
 
-        _methodName540 = "getBeanIdentifier";
+        _methodName564 = "getBeanIdentifier";
 
-        _methodParameterTypes540 = new String[] {  };
+        _methodParameterTypes564 = new String[] {  };
 
-        _methodName541 = "setBeanIdentifier";
+        _methodName565 = "setBeanIdentifier";
 
-        _methodParameterTypes541 = new String[] { "java.lang.String" };
+        _methodParameterTypes565 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class PlanTypeAttributeLocalServiceClpInvoker {
             return PlanTypeAttributeLocalServiceUtil.updatePlanTypeAttribute((com.ext.portlet.model.PlanTypeAttribute) arguments[0]);
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName564.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes564, parameterTypes)) {
             return PlanTypeAttributeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName541.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
+        if (_methodName565.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
             PlanTypeAttributeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

@@ -1,17 +1,46 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.Activity.DiscussionActivityKeys;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
+import org.xcolab.proposals.events.ProposalMemberAddedEvent;
+import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
+import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
+import org.xcolab.proposals.events.ProposalVotedOnEvent;
+import org.xcolab.services.EventBusService;
+import org.xcolab.utils.UrlBuilder;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
+import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
@@ -60,26 +89,6 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.ProposalMemberAddedEvent;
-import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
-import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
-import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
-import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
-import org.xcolab.proposals.events.ProposalVotedOnEvent;
-import org.xcolab.services.EventBusService;
-import org.xcolab.utils.UrlBuilder;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The implementation of the proposal local service.
@@ -1438,5 +1447,60 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public String getProposalLinkUrl(Contest contest, Proposal proposal, ContestPhase contestPhase) {
         String link = "/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d";
         return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
+    }
+    
+    /**
+     * Returns list of proposals referenced by given proposal
+     * @param proposalId      The proposal for which subproposals should be returned
+     * @return collection of referenced proposals
+     */
+    public Collection<Proposal> getSubproposals(long proposalId) throws SystemException, PortalException {
+    	Set<Proposal> ret = new HashSet<Proposal>();
+    	
+    	for (ProposalAttribute attribute: getAttributes(proposalId)) {
+    		
+    		if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
+    			PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
+    			PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
+    			switch (type) {
+    			case PROPOSAL_REFERENCE:
+        			ret.add(getProposal(attribute.getNumericValue()));
+        			break;
+    			case PROPOSAL_LIST_REFERENCE:
+                    String[] referencedProposals = attribute.getStringValue().split(",");
+                    for (int i = 0; i < referencedProposals.length; i++) {
+                    	ret.add(getProposal(Long.parseLong(referencedProposals[i])));
+                    }
+                    break;
+    			case PROPOSAL_LIST_TEXT_REFERENCE:
+    				Pattern proposalLinkPattern = Pattern.compile("href=.*/plans/-/plans/contestId/(\\d*)/planId/(\\d*).*");
+    				Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
+    				while (m.find()) {
+    					ret.add(getProposal(Long.parseLong(m.group(2))));
+    				}
+    				break;
+    			}
+    		}
+    	}
+    	return ret;
+    }
+    
+    /**
+     * Returns latest contest to which proposal was submited
+     * 
+     * @param proposalId id of a proposal
+     * @return last contest to which proposal was submited
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public Contest getLatestProposalContest(long proposalId) throws PortalException, SystemException {
+    	Proposal2Phase latestP2p = null;
+    	for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
+    		if (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo()) {
+    			latestP2p = p2p;
+    		}
+    	}
+    	
+    	return contestLocalService.getContest(contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId()).getContestPK());
     }
 }

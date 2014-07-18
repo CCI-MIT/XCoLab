@@ -677,6 +677,27 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         return _contestLocalService.getContestLinkUrl(contest);
     }
 
+    @Override
+    public boolean hasContestEnded(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.hasContestEnded(contestPK);
+    }
+
+    @Override
+    public boolean hasContestEnded(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.hasContestEnded(contest);
+    }
+
+    @Override
+    public com.ext.portlet.model.Proposal getWinnerProposal(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _contestLocalService.getWinnerProposal(contestPK);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

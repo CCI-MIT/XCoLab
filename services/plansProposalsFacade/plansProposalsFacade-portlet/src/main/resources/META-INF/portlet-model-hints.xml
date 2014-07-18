@@ -161,6 +161,9 @@
 		<field name="usePermissions" type="boolean" />
 		<field name="defaultModelId" type="long" />
 		<field name="otherModels" type="String" />
+		<field name="points" type="double" />
+		<field name="defaultParentPointType" type="long" />
+		<field name="pointDistributionStrategy" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />
@@ -814,6 +817,40 @@
 		<field name="contestId" type="long" />
 		<field name="planId" type="long" />
 		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PointDistributionTarget">
+		<field name="id" type="long" />
+		<field name="contestId" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="numberOfPoints" type="double" />
+		<field name="pointTypeOverride" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.Points">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="userId" type="long" />
+		<field name="materializedPoints" type="double" />
+		<field name="hypotheticalPoints" type="double" />
+		<field name="pointsSourceId" type="long" />
+		<field name="originatingContestPK" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.PointsDistributionConfiguration">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="pointTypeId" type="long" />
+		<field name="targetUserId" type="long" />
+		<field name="targetSubProposalId" type="long" />
+		<field name="percentage" type="double" />
+		<field name="creator" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PointType">
+		<field name="id" type="long" />
+		<field name="parentPointTypeId" type="long" />
+		<field name="percentageOfParent" type="double" />
+		<field name="distributionStrategy" type="String" />
+		<field name="receiverLimitationStrategy" type="String" />
+		<field name="name" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.Proposal">
 		<field name="proposalId" type="long" />

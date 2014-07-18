@@ -71,6 +71,10 @@ import com.ext.portlet.model.PlanVoteClp;
 import com.ext.portlet.model.PlansFilterClp;
 import com.ext.portlet.model.PlansFilterPositionClp;
 import com.ext.portlet.model.PlansUserSettingsClp;
+import com.ext.portlet.model.PointDistributionTargetClp;
+import com.ext.portlet.model.PointTypeClp;
+import com.ext.portlet.model.PointsClp;
+import com.ext.portlet.model.PointsDistributionConfigurationClp;
 import com.ext.portlet.model.Proposal2PhaseClp;
 import com.ext.portlet.model.ProposalAttributeClp;
 import com.ext.portlet.model.ProposalAttributeTypeClp;
@@ -458,6 +462,23 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(PlanVoteClp.class.getName())) {
             return translateInputPlanVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(PointDistributionTargetClp.class.getName())) {
+            return translateInputPointDistributionTarget(oldModel);
+        }
+
+        if (oldModelClassName.equals(PointsClp.class.getName())) {
+            return translateInputPoints(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    PointsDistributionConfigurationClp.class.getName())) {
+            return translateInputPointsDistributionConfiguration(oldModel);
+        }
+
+        if (oldModelClassName.equals(PointTypeClp.class.getName())) {
+            return translateInputPointType(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalClp.class.getName())) {
@@ -1259,6 +1280,48 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputPointDistributionTarget(
+        BaseModel<?> oldModel) {
+        PointDistributionTargetClp oldClpModel = (PointDistributionTargetClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPointDistributionTargetRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPoints(BaseModel<?> oldModel) {
+        PointsClp oldClpModel = (PointsClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPointsRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPointsDistributionConfiguration(
+        BaseModel<?> oldModel) {
+        PointsDistributionConfigurationClp oldClpModel = (PointsDistributionConfigurationClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPointsDistributionConfigurationRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputPointType(BaseModel<?> oldModel) {
+        PointTypeClp oldClpModel = (PointTypeClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getPointTypeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInputProposal(BaseModel<?> oldModel) {
         ProposalClp oldClpModel = (ProposalClp) oldModel;
 
@@ -1751,6 +1814,24 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.PlanVoteImpl")) {
             return translateOutputPlanVote(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PointDistributionTargetImpl")) {
+            return translateOutputPointDistributionTarget(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PointsImpl")) {
+            return translateOutputPoints(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.PointsDistributionConfigurationImpl")) {
+            return translateOutputPointsDistributionConfiguration(oldModel);
+        }
+
+        if (oldModelClassName.equals("com.ext.portlet.model.impl.PointTypeImpl")) {
+            return translateOutputPointType(oldModel);
         }
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.ProposalImpl")) {
@@ -2347,6 +2428,24 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchPlanVoteException")) {
             return new com.ext.portlet.NoSuchPlanVoteException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPointDistributionTargetException")) {
+            return new com.ext.portlet.NoSuchPointDistributionTargetException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPointsException")) {
+            return new com.ext.portlet.NoSuchPointsException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchPointsDistributionConfigurationException")) {
+            return new com.ext.portlet.NoSuchPointsDistributionConfigurationException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchPointTypeException")) {
+            return new com.ext.portlet.NoSuchPointTypeException();
         }
 
         if (className.equals("com.ext.portlet.NoSuchProposalException")) {
@@ -3142,6 +3241,48 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setPlanVoteRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPointDistributionTarget(
+        BaseModel<?> oldModel) {
+        PointDistributionTargetClp newModel = new PointDistributionTargetClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPointDistributionTargetRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPoints(BaseModel<?> oldModel) {
+        PointsClp newModel = new PointsClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPointsRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPointsDistributionConfiguration(
+        BaseModel<?> oldModel) {
+        PointsDistributionConfigurationClp newModel = new PointsDistributionConfigurationClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPointsDistributionConfigurationRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputPointType(BaseModel<?> oldModel) {
+        PointTypeClp newModel = new PointTypeClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setPointTypeRemoteModel(oldModel);
 
         return newModel;
     }

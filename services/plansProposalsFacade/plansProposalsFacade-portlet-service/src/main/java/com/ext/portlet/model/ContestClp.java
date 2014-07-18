@@ -52,6 +52,9 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _usePermissions;
     private long _defaultModelId;
     private String _otherModels;
+    private double _points;
+    private long _defaultParentPointType;
+    private String _pointDistributionStrategy;
     private BaseModel<?> _contestRemoteModel;
 
     public ContestClp() {
@@ -123,6 +126,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("usePermissions", getUsePermissions());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
+        attributes.put("points", getPoints());
+        attributes.put("defaultParentPointType", getDefaultParentPointType());
+        attributes.put("pointDistributionStrategy",
+            getPointDistributionStrategy());
 
         return attributes;
     }
@@ -318,6 +325,26 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (otherModels != null) {
             setOtherModels(otherModels);
+        }
+
+        Double points = (Double) attributes.get("points");
+
+        if (points != null) {
+            setPoints(points);
+        }
+
+        Long defaultParentPointType = (Long) attributes.get(
+                "defaultParentPointType");
+
+        if (defaultParentPointType != null) {
+            setDefaultParentPointType(defaultParentPointType);
+        }
+
+        String pointDistributionStrategy = (String) attributes.get(
+                "pointDistributionStrategy");
+
+        if (pointDistributionStrategy != null) {
+            setPointDistributionStrategy(pointDistributionStrategy);
         }
     }
 
@@ -1039,6 +1066,74 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public double getPoints() {
+        return _points;
+    }
+
+    @Override
+    public void setPoints(double points) {
+        _points = points;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPoints", double.class);
+
+                method.invoke(_contestRemoteModel, points);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getDefaultParentPointType() {
+        return _defaultParentPointType;
+    }
+
+    @Override
+    public void setDefaultParentPointType(long defaultParentPointType) {
+        _defaultParentPointType = defaultParentPointType;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDefaultParentPointType",
+                        long.class);
+
+                method.invoke(_contestRemoteModel, defaultParentPointType);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getPointDistributionStrategy() {
+        return _pointDistributionStrategy;
+    }
+
+    @Override
+    public void setPointDistributionStrategy(String pointDistributionStrategy) {
+        _pointDistributionStrategy = pointDistributionStrategy;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPointDistributionStrategy",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, pointDistributionStrategy);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1137,6 +1232,9 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setUsePermissions(getUsePermissions());
         clone.setDefaultModelId(getDefaultModelId());
         clone.setOtherModels(getOtherModels());
+        clone.setPoints(getPoints());
+        clone.setDefaultParentPointType(getDefaultParentPointType());
+        clone.setPointDistributionStrategy(getPointDistributionStrategy());
 
         return clone;
     }
@@ -1194,7 +1292,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(63);
+        StringBundler sb = new StringBundler(69);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1258,6 +1356,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getDefaultModelId());
         sb.append(", otherModels=");
         sb.append(getOtherModels());
+        sb.append(", points=");
+        sb.append(getPoints());
+        sb.append(", defaultParentPointType=");
+        sb.append(getDefaultParentPointType());
+        sb.append(", pointDistributionStrategy=");
+        sb.append(getPointDistributionStrategy());
         sb.append("}");
 
         return sb.toString();
@@ -1265,7 +1369,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(106);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1394,6 +1498,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>otherModels</column-name><column-value><![CDATA[");
         sb.append(getOtherModels());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>points</column-name><column-value><![CDATA[");
+        sb.append(getPoints());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultParentPointType</column-name><column-value><![CDATA[");
+        sb.append(getDefaultParentPointType());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>pointDistributionStrategy</column-name><column-value><![CDATA[");
+        sb.append(getPointDistributionStrategy());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

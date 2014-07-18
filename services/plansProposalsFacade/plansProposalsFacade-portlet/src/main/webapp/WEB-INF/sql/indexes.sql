@@ -165,6 +165,21 @@ create index IX_C1242E47 on xcolab_PlansFilterPosition (userId, planTypeId);
 
 create index IX_95AABD4 on xcolab_PlansUserSettings (userId, planTypeId);
 
+create index IX_4A67416A on xcolab_PointDistributionTarget (contestId);
+create index IX_B8AD9816 on xcolab_PointDistributionTarget (proposalId);
+
+create index IX_8DD75651 on xcolab_PointType (parentPointTypeId);
+
+create index IX_AD696139 on xcolab_Points (originatingContestPK);
+create index IX_6EC5952C on xcolab_Points (pointsSourceId);
+create index IX_5A8893C0 on xcolab_Points (proposalId);
+create index IX_AF313899 on xcolab_Points (userId);
+
+create index IX_7113A2E0 on xcolab_PointsDistributionConfiguration (proposalId);
+create index IX_1FDF3BB5 on xcolab_PointsDistributionConfiguration (proposalId, pointTypeId);
+create index IX_7D0AD60D on xcolab_PointsDistributionConfiguration (targetSubProposalId);
+create index IX_D44477AA on xcolab_PointsDistributionConfiguration (targetUserId);
+
 create index IX_BBC99B8B on xcolab_Proposal (updatedDate);
 
 create index IX_DBA8038D on xcolab_Proposal2Phase (contestPhaseId);
@@ -191,3 +206,7 @@ create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, use
 create index IX_497348F2 on xcolab_ProposalVote (userId);
 
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
+
+create index IX_A4591136 on xcolab_xcolab_PointsDistributionConfiguration (proposalId);
+create index IX_C6AD2877 on xcolab_xcolab_PointsDistributionConfiguration (targetSubProposalId);
+create index IX_4BE7A880 on xcolab_xcolab_PointsDistributionConfiguration (targetUserId);

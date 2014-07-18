@@ -625,6 +625,25 @@ public class ContestLocalServiceUtil {
         return getService().getContestLinkUrl(contest);
     }
 
+    public static boolean hasContestEnded(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasContestEnded(contestPK);
+    }
+
+    public static boolean hasContestEnded(com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasContestEnded(contest);
+    }
+
+    public static com.ext.portlet.model.Proposal getWinnerProposal(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getWinnerProposal(contestPK);
+    }
+
     public static void clearService() {
         _service = null;
     }

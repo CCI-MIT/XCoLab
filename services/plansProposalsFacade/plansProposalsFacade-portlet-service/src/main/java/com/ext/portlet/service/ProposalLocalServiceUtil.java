@@ -1262,6 +1262,34 @@ public class ProposalLocalServiceUtil {
         return getService().getProposalLinkUrl(contest, proposal, contestPhase);
     }
 
+    /**
+    * Returns list of proposals referenced by given proposal
+    *
+    * @param proposalId      The proposal for which subproposals should be returned
+    * @return collection of referenced proposals
+    */
+    public static java.util.Collection<com.ext.portlet.model.Proposal> getSubproposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getSubproposals(proposalId);
+    }
+
+    /**
+    * Returns latest contest to which proposal was submited
+    *
+    * @param proposalId id of a proposal
+    * @return last contest to which proposal was submited
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static com.ext.portlet.model.Contest getLatestProposalContest(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getLatestProposalContest(proposalId);
+    }
+
     public static void clearService() {
         _service = null;
     }
