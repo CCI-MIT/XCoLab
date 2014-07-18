@@ -14,7 +14,7 @@
 	<div id="content">
 	
 	<c:if test="${not empty availableModels }">
-		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
+		<proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" modelId="${proposal.modelId}" />
 	</c:if>
 		<modeling:simulationEdit scenarioId="${proposal.scenarioId }" modelId="${proposal.modelId }" />
 	
