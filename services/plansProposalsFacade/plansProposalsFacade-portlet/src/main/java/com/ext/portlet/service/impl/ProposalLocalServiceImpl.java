@@ -1461,6 +1461,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     		
     		if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
     			PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
+    			
+    			if (StringUtils.isBlank(psd.getType())) {
+    				continue;
+    			}
+    		
     			PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
     			switch (type) {
     			case PROPOSAL_REFERENCE:

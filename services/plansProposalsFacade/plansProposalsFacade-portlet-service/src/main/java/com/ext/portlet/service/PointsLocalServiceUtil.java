@@ -290,10 +290,10 @@ public class PointsLocalServiceUtil {
     * @throws SystemException
     * @throws PortalException
     */
-    public static void distributePoints(long contestPK, long pointsSourceId)
+    public static void distributePoints(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        getService().distributePoints(contestPK, pointsSourceId);
+        getService().distributePoints(contestPK);
     }
 
     public static void clearService() {

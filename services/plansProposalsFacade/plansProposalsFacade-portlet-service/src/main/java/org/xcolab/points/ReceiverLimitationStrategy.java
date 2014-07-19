@@ -74,6 +74,17 @@ public enum ReceiverLimitationStrategy {
 						targets.add(target);
 					}
 				}
+				if (targets.isEmpty()) {
+					// there is no configuration for specific users, distribute equally
+
+					List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
+					for (User u: members) {
+						PointsTarget target = new PointsTarget();
+						target.setUserId(u.getUserId());
+						target.setPercentage(1.0d / members.size());
+						targets.add(target);
+					}
+				}
 			}
 			else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
 				List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());

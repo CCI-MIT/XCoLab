@@ -148,7 +148,7 @@ public class PointsLocalServiceClp implements PointsLocalService {
 
         _methodName21 = "distributePoints";
 
-        _methodParameterTypes21 = new String[] { "long", "long" };
+        _methodParameterTypes21 = new String[] { "long" };
     }
 
     @Override
@@ -713,13 +713,12 @@ public class PointsLocalServiceClp implements PointsLocalService {
     }
 
     @Override
-    public void distributePoints(long contestPK, long pointsSourceId)
+    public void distributePoints(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
             _invokableLocalService.invokeMethod(_methodName21,
-                _methodParameterTypes21,
-                new Object[] { contestPK, pointsSourceId });
+                _methodParameterTypes21, new Object[] { contestPK });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

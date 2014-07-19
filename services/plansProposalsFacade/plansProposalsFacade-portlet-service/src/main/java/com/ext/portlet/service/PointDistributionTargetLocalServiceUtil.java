@@ -265,7 +265,8 @@ public class PointDistributionTargetLocalServiceUtil {
     }
 
     public static java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId) {
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().findByContestId(contestId);
     }
 

@@ -236,5 +236,6 @@ public interface PointDistributionTargetLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     public java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId);
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }

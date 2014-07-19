@@ -8,6 +8,7 @@ import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.Points;
@@ -15,6 +16,8 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.base.PointsLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 /**
  * The implementation of the points local service.
@@ -31,6 +34,8 @@ import com.liferay.portal.kernel.exception.SystemException;
  * @see com.ext.portlet.service.PointsLocalServiceUtil
  */
 public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
+	
+	private final static Log _log = LogFactoryUtil.getLog(PointsLocalServiceImpl.class);
 	
 	/**
 	 * Returns number of materialized points for given user.
@@ -69,11 +74,16 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 * @throws SystemException 
 	 * @throws PortalException 
 	 */
-	public void distributePoints(long contestPK, long pointsSourceId) throws PortalException, SystemException {
+	public void distributePoints(long contestPK) throws PortalException, SystemException {
 		Contest contest = contestLocalService.getContest(contestPK);
+		ContestPhase latestPhase = contestLocalService.getActiveOrLastPhase(contest);
 		
 		// clean up old data
 		pointsPersistence.removeByOriginatingContestPK(contestPK);
+		
+		for (Points points: pointsPersistence.findByOriginatingContestPK(contestPK)) {
+			deletePoints(points);
+		}
 		
 		PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
 		
@@ -88,6 +98,9 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			else {
 				for (PointDistributionTarget pdt: distributionTargets) {
 					Proposal proposal = proposalLocalService.getProposal(pdt.getProposalId());
+					if (! proposal.isVisible()) {
+						continue;
+					}
 					PointType pointTypeToUse = pointType;
 					if (pdt.getPointTypeOverride() > 0) {
 						pointTypeToUse = pointTypeLocalService.getPointType(pdt.getPointTypeOverride());
@@ -113,11 +126,27 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			PointType pointType, 
 			double materializedPoints,
 			double hypotheticalPoints) throws SystemException, PortalException {
-
-		DistributionStrategy defaultDistributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
+		
+		_log.info("Distributing points to proposal: " + proposal.getProposalId() + ". originatingContest: " + originatingContest.getContestPK() + 
+				" pointsSourceId: " + pointsSourceId + " pointType: " + pointType + " materializedPoints: " + materializedPoints + 
+				" hypotheticalPoints: " + hypotheticalPoints);
+		
+		DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
 		ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 		
-		List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, defaultDistributionStrategy);
+		if (distributionStrategy == DistributionStrategy.DEFINED_BY_CHILDREN_PERCENTAGES) {
+			for (PointType subPointType: pointTypePersistence.findByParentPointTypeId(pointType.getId())) {
+				distributePointsToProposal(proposal, 
+						originatingContest, 
+						pointsSourceId, 
+						subPointType, 
+						materializedPoints * subPointType.getPercentageOfParent(), 
+						hypotheticalPoints * subPointType.getPercentageOfParent());
+			}
+			return;
+		}
+		
+		List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
 		
 		for (PointsTarget target: targets) {
 			Points points = createPoints(counterLocalService.increment(Points.class.getName()));
@@ -128,14 +157,21 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			points.setHypotheticalPoints(hypotheticalPoints * target.getPercentage());
 			points.setMaterializedPoints(materializedPoints * target.getPercentage());
 			if (target.isUser()) {
+				_log.info("Adding points to a user: " + target.getUserId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
+						", materializedPoints: " + points.getMaterializedPoints());
 				points.setUserId(target.getUserId());
 			}
 			
 			addPoints(points);
 			if (target.isProposal()) {
+				_log.info("Passing points to a proposal: " + target.getProposalId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
+						", materializedPoints: " + points.getMaterializedPoints());
 				Proposal subProposal = proposalLocalService.getProposal(target.getProposalId());
 				Contest subProposalContest = proposalLocalService.getLatestProposalContest(target.getProposalId());
-				PointType subProposalPointType = pointTypeLocalService.getPointType(subProposalContest.getDefaultParentPointType());
+				PointType subProposalPointType = pointType;
+				if (subProposalContest.getDefaultParentPointType() > 0) {
+					subProposalPointType = pointTypeLocalService.getPointType(subProposalContest.getDefaultParentPointType());
+				}
 				
 				distributePointsToProposal(subProposal, originatingContest, points.getId(), 
 						subProposalPointType, points.getMaterializedPoints(), points.getHypotheticalPoints());

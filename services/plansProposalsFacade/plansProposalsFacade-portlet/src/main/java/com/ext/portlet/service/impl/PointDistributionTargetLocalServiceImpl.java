@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.ext.portlet.model.PointDistributionTarget;
 import com.ext.portlet.service.base.PointDistributionTargetLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the point distribution target local service.
@@ -22,8 +23,7 @@ import com.ext.portlet.service.base.PointDistributionTargetLocalServiceBaseImpl;
 public class PointDistributionTargetLocalServiceImpl
     extends PointDistributionTargetLocalServiceBaseImpl {
 	
-	public Collection<PointDistributionTarget> findByContestId(long contestId) {
-		//return pointDistributionTargetPersistence.findByContestId(contestId);
-		return null;
+	public Collection<PointDistributionTarget> findByContestId(long contestId) throws SystemException {
+		return pointDistributionTargetPersistence.findByContestId(contestId);
 	}
 }

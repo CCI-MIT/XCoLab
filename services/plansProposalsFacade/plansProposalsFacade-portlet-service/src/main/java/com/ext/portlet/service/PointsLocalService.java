@@ -260,7 +260,7 @@ public interface PointsLocalService extends BaseLocalService,
     * @throws SystemException
     * @throws PortalException
     */
-    public void distributePoints(long contestPK, long pointsSourceId)
+    public void distributePoints(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

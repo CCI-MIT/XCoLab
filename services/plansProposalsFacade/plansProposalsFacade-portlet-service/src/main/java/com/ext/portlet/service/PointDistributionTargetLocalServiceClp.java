@@ -668,7 +668,8 @@ public class PointDistributionTargetLocalServiceClp
 
     @Override
     public java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId) {
+        long contestId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -676,6 +677,10 @@ public class PointDistributionTargetLocalServiceClp
                     _methodParameterTypes19, new Object[] { contestId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

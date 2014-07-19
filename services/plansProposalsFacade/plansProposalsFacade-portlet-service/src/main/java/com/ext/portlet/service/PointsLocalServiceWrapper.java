@@ -301,10 +301,10 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     * @throws PortalException
     */
     @Override
-    public void distributePoints(long contestPK, long pointsSourceId)
+    public void distributePoints(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        _pointsLocalService.distributePoints(contestPK, pointsSourceId);
+        _pointsLocalService.distributePoints(contestPK);
     }
 
     /**

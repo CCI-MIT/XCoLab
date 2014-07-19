@@ -147,7 +147,7 @@ public class PointsLocalServiceClpInvoker {
 
         _methodName572 = "distributePoints";
 
-        _methodParameterTypes572 = new String[] { "long", "long" };
+        _methodParameterTypes572 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -263,8 +263,7 @@ public class PointsLocalServiceClpInvoker {
 
         if (_methodName572.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes572, parameterTypes)) {
-            PointsLocalServiceUtil.distributePoints(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
+            PointsLocalServiceUtil.distributePoints(((Long) arguments[0]).longValue());
 
             return null;
         }
