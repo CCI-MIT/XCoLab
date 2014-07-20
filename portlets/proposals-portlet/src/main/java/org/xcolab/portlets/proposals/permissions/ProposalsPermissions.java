@@ -85,7 +85,8 @@ public class ProposalsPermissions {
         if (getCanAdminAll()) 
             return true;
 
-        return planIsEditable && (isProposalOpen() || isProposalMember());         
+        return planIsEditable &&
+                (isProposalOpen() || isProposalMember());
     }
     
     public boolean getCanDelete() throws SystemException {
