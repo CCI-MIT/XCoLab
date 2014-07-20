@@ -12,10 +12,13 @@
         </ace:fileEntry><br />
     </h:form>
 </div>
-<ice:form>
+<ice:form autocomplete="off">
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
     <div id="main">
+        <!-- use these fields to prevent chrome from wrongly filling in country and current password automatically -->
+        <input type="text" style="display:none" />
+        <input type="password" style="display:none" />
         <ice:panelGroup>
             <div class="comm_member">
                 <div class="comm_member-photo">
@@ -96,7 +99,7 @@
                 <tr>
                     <td class="b m">Country</td>
                     <td>
-                        <ice:inputText  id="country" styleClass="profile_input" value="#{currentUser.country}" partialSubmit="true">
+                        <ice:inputText autocomplete="off" id="country" styleClass="profile_input" value="#{currentUser.country}" partialSubmit="true">
                             <f:attribute name="currentUser" value="#{currentUser}"/>
                         </ice:inputText><br />
                         <ice:message for="country" styleClass="form_error_message alert alert-error" errorClass="alert alert-error"/>
@@ -105,7 +108,7 @@
                 <tr>
                     <td class="b m">Current password</td>
                     <td>
-                        <ice:inputSecret id="currentPasswordInput" styleClass="profile_input" value="#{currentUser.currentPassword}">
+                        <ice:inputSecret autocomplete="off" id="currentPasswordInput" styleClass="profile_input" value="#{currentUser.currentPassword}">
                             <f:attribute name="currentUser" value="#{currentUser}"/>
                             <f:validator validatorId="userPasswordValidator"/>
                             <f:attribute name="type" value="current" />
@@ -116,7 +119,7 @@
                 <tr>
                     <td class="b m">New password</td>
                     <td>
-                        <ice:inputSecret  id="newPasswordInput" styleClass="profile_input" value="#{currentUser.newPassword}" >
+                        <ice:inputSecret autocomplete="off"  id="newPasswordInput" styleClass="profile_input" value="#{currentUser.newPassword}" >
                             <f:attribute name="currentUser" value="#{currentUser}"/>
                             <f:validator validatorId="userPasswordValidator"/>
                             <f:attribute name="type" value="new" />
@@ -127,7 +130,7 @@
                 <tr>
                     <td class="b m">New password retype</td>
                     <td>
-                        <ice:inputSecret  id="newPasswordRetypeInput" styleClass="profile_input" value="#{currentUser.newPasswordRetype}" >
+                        <ice:inputSecret autocomplete="off"  id="newPasswordRetypeInput" styleClass="profile_input" value="#{currentUser.newPasswordRetype}" >
                             <f:attribute name="currentUser" value="#{currentUser}"/>
                             <f:attribute name="type" value="newRetype" />
                             <f:validator validatorId="userPasswordValidator"/>

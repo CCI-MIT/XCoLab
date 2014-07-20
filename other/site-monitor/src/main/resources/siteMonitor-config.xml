@@ -4,7 +4,7 @@
 		<checker>
 			<name>errorNotificationChecker</name>
 			<class>org.xcolab.utils.sitemonitor.checkers.RegexMatchingChecker</class>
-			<configuration>alert\-error</configuration>
+			<configuration>(alert\-error|Internal\s*error)</configuration>
 			<message>Error notification found on a page</message>
 		</checker>
 		<checker>
@@ -29,34 +29,35 @@
 	
 	<checkerMappings>
 		<checkerMapping checker="noUnavailablePortletsChecker">
-			<url>**</url>
+			<url>/**</url>
 		</checkerMapping>
 		<checkerMapping checker="noErrorNotificationChecker">
-			<url>**</url>
+			<url>/**</url>
 		</checkerMapping>
 	</checkerMappings>
 	
 	<crawlerConfig>
 		<crawlConfig>
-			<!-- traverse proposals portlet -->
-			<url>http://localhost:9082</url>
+			<!-- traverse the whole web application -->
+			<url>http://climatecolab.org/</url>
 			<recursionLevel>5</recursionLevel>
 			<linkPatterns>
-				<linkPattern>/web/guest/plans/**</linkPattern>
+				<linkPattern>/**</linkPattern>
 			</linkPatterns>
 		</crawlConfig>
 	
 	</crawlerConfig>
 	
 	<emailNotification>
-		<to>janusz.parfieniuk@gmail.com</to>
-		<to>exter@o2.pl</to>
-		<from>exter@o2.pl</from>
-		<smtphost>poczta.o2.pl</smtphost>
+		<to>thurner@mit.edu</to>
+		<!--<to>pdeboer@mit.edu</to>-->
+		<!--<to>janusz.parfieniuk@gmail.com</to>-->
+		<from>cognosismailer@gmail.com</from>
+		<smtphost>smtp.gmail.com</smtphost>
 		<smtpport>465</smtpport>
 		<smtpusetsl>true</smtpusetsl>
-		<smtpuser>exter@o2.pl</smtpuser>
-		<smtppassword>sdihajno</smtppassword>
+		<smtpuser>cognosismailer@gmail.com</smtpuser>
+		<smtppassword>Testtest1+</smtppassword>
 		<subject>Site Monitor has detected errors in climatecolab.org</subject>
 	</emailNotification>
 

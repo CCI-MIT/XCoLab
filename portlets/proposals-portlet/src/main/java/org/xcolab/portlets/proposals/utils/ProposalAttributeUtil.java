@@ -72,4 +72,23 @@ public class ProposalAttributeUtil {
         }
         return null;
     }
+
+    public ProposalAttribute getLatestAttributeOrNull(String attributeName) throws PortalException, SystemException {
+        try {
+        	if (attributes == null) {
+        		attributes = ProposalLocalServiceUtil.getAttributes(proposal.getProposalId(), version);
+        	}
+        	ProposalAttribute retAttr = null;
+        	for (ProposalAttribute attr: attributes) {
+        		if (attr.getName().equals(attributeName)) { 
+        			if (retAttr == null || retAttr.getVersionWhenCreated() < attr.getVersionWhenCreated()) 
+        				retAttr = attr;
+        		}
+        	}
+        	return retAttr;
+        }
+        catch (NoSuchProposalAttributeException e) {
+        }
+        return null;
+    }    
 }
