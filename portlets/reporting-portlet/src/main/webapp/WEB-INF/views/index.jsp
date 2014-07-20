@@ -21,12 +21,19 @@
         <portlet:param name="report" value="generateProposalTexts2013" />
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="getProposalActivity2013">
+        <portlet:param name="report" value="getProposalActivity2013" />
+    </portlet:resourceURL>
+
 
 
 
     <h1>Reports generator</h1>
 
     <a class='btn btn-primary' href="${downloadCsv }">Download user activities report</a>
+    <br/>
+
+    <a class='btn btn-primary' href="${getProposalActivity2013 }">Download proposal activitiy for 2013 contests</a>
     <br/>
     <a class='btn btn-primary' href="${generateProposalTexts2013 }">Download proposal texts for 2013 contests</a>
     <br/>
