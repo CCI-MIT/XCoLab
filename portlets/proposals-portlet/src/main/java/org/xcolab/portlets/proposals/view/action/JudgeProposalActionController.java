@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
@@ -39,10 +40,8 @@ import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 
 import com.ext.portlet.JudgingSystemActions;
@@ -87,9 +86,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 @Controller
@@ -268,70 +265,81 @@ public class JudgeProposalActionController {
     public void saveScreening(ActionRequest request, Model model,
                                  ActionResponse response,
                                  @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
-                                 BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-        if (result.hasErrors()) {
-            SessionErrors.clear(request);
-            SessionMessages.clear(request);
-            return;
-        }
-
-        long contestId = proposalsContext.getContest(request).getContestPK();
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        User currentUser = proposalsContext.getUser(request);
-
-        // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll()) {
-            return;
-        }
-
-        // save selection of judges
-        if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
-                    proposalId,
-                    contestPhaseId,
-                    fellowProposalScreeningBean.getSelectedJudges()
-            );
-        } else {
-            //clear selected judges attribute since the decision is not to pass the proposal.
-            ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
-                    proposalId,
-                    contestPhaseId,
-                    null
-            );
-        }
-
-        // save fellow action
-        if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhaseId,
-                    ProposalContestPhaseAttributeKeys.FELLOW_ACTION,
-                    0,
-                    fellowProposalScreeningBean.getFellowScreeningAction()
-            );
-
-            //save fellow action comment
-            ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
-
-            if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
-                commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
-            } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
-                commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                                 BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException, IOException, AddressException, MailEngineException {
+        try {
+            if (result.hasErrors()) {
+                SessionErrors.clear(request);
+                SessionMessages.clear(request);
+                return;
             }
+
+            long contestId = proposalsContext.getContest(request).getContestPK();
+            long proposalId = proposalsContext.getProposal(request).getProposalId();
+            long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+            ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+            User currentUser = proposalsContext.getUser(request);
+
+            // Security handling
+            if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+                    !permissions.getCanAdminAll()) {
+                return;
+            }
+
+            // save selection of judges
+            if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
+                ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
+                        proposalId,
+                        contestPhaseId,
+                        fellowProposalScreeningBean.getSelectedJudges()
+                );
+            } else {
+                //clear selected judges attribute since the decision is not to pass the proposal.
+                ProposalContestPhaseAttributeLocalServiceUtil.persistSelectedJudgesAttribute(
+                        proposalId,
+                        contestPhaseId,
+                        null
+                );
+            }
+
+            // save fellow action
+            if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
+                ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
+                        proposalId,
+                        contestPhaseId,
+                        ProposalContestPhaseAttributeKeys.FELLOW_ACTION,
+                        0,
+                        fellowProposalScreeningBean.getFellowScreeningAction()
+                );
+
+                //save fellow action comment
+                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+
+                if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
+                    commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()) {
+                    commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
+                }
+            }
+
+            // save fellow comment and rating
+            //find existing ratings
+            List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(
+                    currentUser.getUserId(),
+                    proposalId,
+                    contestPhaseId);
+
+            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId());
+            response.sendRedirect("/web/guest/plans/-/plans/contestId/" + contestId + "/phaseId/" + contestPhaseId + "/planId/" + proposalId + "/tab/SCREENING");
+        } catch (Exception e) {
+            List<Long> recipientIds = new ArrayList<Long>();
+            recipientIds.add(1451771L); //Manuel
+            recipientIds.add(1011659L); //Patrick
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+            MessageUtil.sendMessage("Exception thrown when fellow rated proposal", e.getMessage()+"\n\n"+exceptionAsString, 1010458L, 1010458L, recipientIds, null);
+            throw e;
         }
-
-        // save fellow comment and rating
-        //find existing ratings
-        List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(
-                currentUser.getUserId(),
-                proposalId,
-                contestPhaseId);
-
-        this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId());
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/SCREENING");
     }
 
 
