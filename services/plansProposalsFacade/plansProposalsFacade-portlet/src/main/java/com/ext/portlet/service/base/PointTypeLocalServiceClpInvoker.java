@@ -45,6 +45,8 @@ public class PointTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes564;
     private String _methodName565;
     private String[] _methodParameterTypes565;
+    private String _methodName570;
+    private String[] _methodParameterTypes570;
 
     public PointTypeLocalServiceClpInvoker() {
         _methodName0 = "addPointType";
@@ -130,6 +132,10 @@ public class PointTypeLocalServiceClpInvoker {
         _methodName565 = "setBeanIdentifier";
 
         _methodParameterTypes565 = new String[] { "java.lang.String" };
+
+        _methodName570 = "getChildrenOfPointType";
+
+        _methodParameterTypes570 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -231,6 +237,11 @@ public class PointTypeLocalServiceClpInvoker {
             PointTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName570.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes570, parameterTypes)) {
+            return PointTypeLocalServiceUtil.getChildrenOfPointType(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

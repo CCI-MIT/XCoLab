@@ -270,6 +270,13 @@ public class PointTypeLocalServiceWrapper implements PointTypeLocalService,
             arguments);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.PointType> getChildrenOfPointType(
+        long parentPointTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _pointTypeLocalService.getChildrenOfPointType(parentPointTypeId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

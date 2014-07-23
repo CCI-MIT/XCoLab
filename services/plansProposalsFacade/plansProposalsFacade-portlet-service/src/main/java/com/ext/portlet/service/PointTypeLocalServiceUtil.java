@@ -259,6 +259,12 @@ public class PointTypeLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static java.util.List<com.ext.portlet.model.PointType> getChildrenOfPointType(
+        long parentPointTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getChildrenOfPointType(parentPointTypeId);
+    }
+
     public static void clearService() {
         _service = null;
     }
