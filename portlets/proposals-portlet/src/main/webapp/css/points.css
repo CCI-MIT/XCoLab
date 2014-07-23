@@ -1,0 +1,82 @@
+.points-container {
+    margin: 0 auto;
+    width: 135px;
+    height: 135px;
+    position: relative;
+
+    .fill, .globe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .fill {
+        background-color: #0072ff;
+        transition: background-color 2s ease;
+    }
+
+    .globe {
+        background: url(../img/globus.png) no-repeat;
+        background-size: cover;
+        height: 105px;
+        padding-top: 30px;
+        text-align: center;
+        font-size: 2em;
+        color: white;
+        text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+}
+
+.pointType {
+    p.percentage {
+        text-align: center;
+        position: relative;
+        top: -150px;
+        font-size: 2em;
+    }
+
+    td.left {
+        background-image: url(../img/arrow-left.png);
+        background-position: 80% 0;
+    }
+    td.left.large {
+        background-position: 62.5% 0;
+    }
+    td.right.large  {
+        background-position: 37.5% 0;
+    }
+    td.right.small {
+        background-position: 0% 0%;
+    }
+    td.right {
+        background-image: url(../img/arrow-right.png);
+        background-position: 20% 0;
+    }
+    td.left, td.right {
+        background-repeat: no-repeat;
+        position: relative;
+        top: -50px;
+        padding-top: 100px;
+
+        td.left, td.right {
+            top: -30px;
+            padding-top: 70px;
+            background-position: 50% 0;
+            background-size: 35%;
+
+            p.percentage {
+                top: -120px;
+            }
+
+        }
+    }
+
+    .highlighted {
+        
+    }
+}

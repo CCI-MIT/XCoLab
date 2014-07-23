@@ -36,10 +36,11 @@ public enum ProposalTab {
     COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
     ADVANCING("Judging Results",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero);
-    
+    ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
+    POINTS("Points", ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
 
-    
+
+
     private final String displayName;
     private final ProposalTabCanAccessAlgorithm canAccessTabAlgorithm;
     private final ProposalTabCanAccessAlgorithm canEditAlgorithm;

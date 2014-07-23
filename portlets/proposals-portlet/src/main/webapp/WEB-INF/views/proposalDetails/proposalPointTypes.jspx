@@ -1,0 +1,95 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:addthis="http://www.addthis.com/help/api-spec"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+    <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
+    <c:set var="parentPercentageOfTotalPoints"><c:out value="${percentageOfTotalPoints}"/></c:set>
+    <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
+    <!-- set column definitons -->
+    <c:remove var="smallColumnExists" />
+    <c:set var="pointsContainerOffset" value="0"/>
+    <c:forEach var="child" varStatus="status" items="${pointType.children}">
+        <c:if test="${child.children.size() == 0}">
+            <c:set var="smallColumnExists" value="true"/>
+            <c:set var="pointsContainerOffset" value="${pointsContainerOffset + (status.count > childrenSize/2 ? 7.5 : -7.5)}"/>
+        </c:if>
+    </c:forEach>
+    <c:choose>
+        <c:when test="${childrenSize > 0}">
+            <div class="points-container" style="left:${pointsContainerOffset}%">
+                <p class="fill" style="height: ${parentPercentageOfTotalPoints * 100}%;top: ${(1-parentPercentageOfTotalPoints) * 100}%">
+
+                </p>
+                <p class="globe">
+                    ${fn:substringBefore(parentPointsToDistribute, ".")}<br/>
+                    Points
+                </p>
+            </div>
+            <table class="pointType">
+                <c:forEach var="child" varStatus="status" items="${pointType.children}">
+                    <col width="${fn:substringBefore((100 / childrenSize)/(child.children.size() == 0 ? 2 : 1), '.')}%" />
+                </c:forEach>
+                <tbody>
+                <tr>
+                    <c:forEach var="pointType" varStatus="status" items="${pointType.children}">
+                        <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
+                            <p class="percentage">
+                                ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
+                            </p>
+                            <!-- Recursion -->
+                            <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
+                            <c:set var="pointType" value="${pointType}" scope="request"/>
+                            <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
+                            <jsp:include page="proposalPointTypes.jspx"/>
+                        </td>
+                    </c:forEach>
+                </tr>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            <p class="highlighted">
+                ${fn:substringBefore(parentPointsToDistribute, ".")} Points
+            </p>
+            <c:choose>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS'}">
+                    <p class="info">
+                        Equally distributed among all proposals you have referenced.
+                    </p>
+                    20% Proposal 1<br/>
+                    20% Proposal 2<br/>
+                    20% Proposal 3
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_USER' or pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
+                    <p class="info">
+                        Can be distributed to any Climate CoLab member (start typing the member's
+                        screen name, and auto-complete will help you). If you do not complete this
+                        section, these points will not be allocated
+                    </p>
+                    <input type="text"/>
+
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
+                    <p class="info">
+                        Distributed among your team members by assigning a percentage to each person
+                    </p>
+                    <input type="text" size="3"/> Manu Neuer<br />
+                    <input type="text" size="3"/> Manu Thurner
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
+                    <p class="info">
+                        Distributed among your team members by assigning a percentage to each person
+                    </p>
+                    <input type="text" size="3"/> Manu Neuer<br />
+                    <input type="text" size="3"/> Manu Thurner
+                </c:when>
+            </c:choose>
+        </c:otherwise>
+    </c:choose>
+</jsp:root>
