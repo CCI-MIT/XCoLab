@@ -135,8 +135,11 @@ ModelingWidget.prototype.formatInputValue = function(input, value) {
 	var dataType = input.metaData.profiles[0];
 	
 	if (unit.toLowerCase().indexOf("percent") >= 0 || unit.toLowerCase().indexOf("%") >= 0) {
-
-		return (value * 1) + "%";
+		var numVal = value * 1;
+    		if (this.isInteger(dataType)) 
+    			return numVal + "%";
+	    	else 
+    			return numVal.toFixed(1) + "%";
 	}
     else if (dataType != null) {
     	if (this.isInteger(dataType)) 
