@@ -32,6 +32,8 @@ import org.xcolab.portlets.reporting.beans.activitiesbycontest.ContestActivity;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.UserActivityByContest;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivities;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivityExport;
+import org.xcolab.portlets.reporting.beans.proposals2013.Proposal2013;
+import org.xcolab.portlets.reporting.beans.proposals2013.ProposalsIn2013Contests;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
 
@@ -65,14 +67,15 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalst", "numUpdatesOnDifferentDaysBeforeFinalist"});
+        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorId"});
 
         for (ProposalActivities a : pae.get()) {
             csvWriter.writeNext(new String[]{
                     ""+a.getProposal().getProposalId(),
                     ""+a.getNumDaysCreationIsBeforeFinalistSelection(),
                     ""+a.getNumUpdates(),
-                    ""+a.getNumDifferentDaysProposalUpdates()
+                    ""+a.getNumDifferentDaysProposalUpdates(),
+                    ""+a.getProposal().getAuthorId()
             });
         }
 
@@ -108,6 +111,36 @@ public class ReportingController {
 
         w.close();
     }
+
+
+    @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
+    public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+        ProposalsIn2013Contests pic = new ProposalsIn2013Contests();
+
+        Writer w = response.getWriter();
+        CSVWriter csvWriter = new CSVWriter(w);
+
+        csvWriter.writeNext(new String[]{"id","proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed", "content", "content_with_section_titles"});
+
+        for (Proposal2013 e : pic.get()) {
+            csvWriter.writeNext(new String[]{
+                    ""+e.getId(),
+                    e.getProposalName(),
+                    e.getUrl(),
+                    e.getContestName(),
+                    ""+e.getUsedVersion(),
+                    ""+e.getProposalRibbon(),
+                    e.getContent(),
+                    e.getContentWithSectionTitles()
+            });
+        }
+
+        response.setContentType("text/csv");
+        response.addProperty("Content-Disposition", "attachment;filename=proposals2013creation.csv");
+
+        w.close();
+    }
+
 
     @RequestMapping(params="report=authorAttractionReport")
     public void generateAuthorAttractionReport(ResourceRequest request, ResourceResponse response) throws Exception {

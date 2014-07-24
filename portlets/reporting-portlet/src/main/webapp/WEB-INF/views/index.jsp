@@ -25,6 +25,12 @@
         <portlet:param name="report" value="getProposalActivity2013" />
     </portlet:resourceURL>
 
+    <portlet:resourceURL var="generateProposalTexts2013CreationPhase">
+        <portlet:param name="report" value="generateProposalTexts2013CreationPhase" />
+    </portlet:resourceURL>
+
+
+
 
 
 
@@ -36,6 +42,8 @@
     <a class='btn btn-primary' href="${getProposalActivity2013 }">Download proposal activitiy for 2013 contests</a>
     <br/>
     <a class='btn btn-primary' href="${generateProposalTexts2013 }">Download proposal texts for 2013 contests</a>
+    <br/>
+    <a class='btn btn-primary' href="${generateProposalTexts2013CreationPhase }">Download proposal texts for 2013 contests from creation phase</a>
     <br/>
     <a class='btn btn-primary' href="${authorAttractionReportURL }">Author attraction report</a>
     <br/>
