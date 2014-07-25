@@ -286,6 +286,22 @@ public class PointsDistributionConfigurationLocalServiceWrapper
             pointType);
     }
 
+    @Override
+    public void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _pointsDistributionConfigurationLocalService.removeByProposalId(proposalId);
+    }
+
+    @Override
+    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
+        long proposalId, long pointTypeId, java.lang.Long targetUserId,
+        java.lang.Long targetSubProposalId, double percentage, long creator)
+        throws com.liferay.portal.NoSuchUserException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsDistributionConfigurationLocalService.addDistributionConfiguration(proposalId,
+            pointTypeId, targetUserId, targetSubProposalId, percentage, creator);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

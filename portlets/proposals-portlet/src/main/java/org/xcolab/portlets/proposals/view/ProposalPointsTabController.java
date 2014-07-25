@@ -85,23 +85,25 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
     private void initializeAssignPointsBean(PointTypeWrapper pointType) throws SystemException {
         if (DistributionStrategy.USER_DEFINED.name().equals(pointType.getDistributionStrategy())) {
+            List<String> userStrategies = new ArrayList<String>();
+            userStrategies.add(ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name());
+            userStrategies.add(ReceiverLimitationStrategy.ANY_NON_TEAM_MEMBER.name());
+            userStrategies.add(ReceiverLimitationStrategy.ANY_USER.name());
             List<PointsDistributionConfiguration> existingConfiguration = PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType.getPointType());
             //Team members
-            if (ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name().equals(pointType.getReceiverLimitationStrategy())) {
+            if (userStrategies.contains(pointType.getReceiverLimitationStrategy())) {
+                List<User> presetUsers = null;
+                if (ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name().equals(pointType.getReceiverLimitationStrategy())) {
+                    presetUsers = members;
+                }
+
                 assignPointsBean.addAssignment(
                         pointType.getPointType().getId(),
-                        members,
+                        presetUsers,
                         existingConfiguration
                 );
-            //any user
-            } else if (ReceiverLimitationStrategy.ANY_NON_TEAM_MEMBER.name().equals(pointType.getReceiverLimitationStrategy()) ||
-                    ReceiverLimitationStrategy.ANY_USER.name().equals(pointType.getReceiverLimitationStrategy())) {
-                assignPointsBean.addSingleUserAssignment(
-                        pointType.getPointType().getId(),
-                        existingConfiguration.size() > 0 ? existingConfiguration.get(0) : null
-                );
             }
-            //TODO: user-defined subProposals
+            //TODO: subProposals
         }
         //follow down the pointType tree
         for (PointTypeWrapper p: pointType.getChildren()) {

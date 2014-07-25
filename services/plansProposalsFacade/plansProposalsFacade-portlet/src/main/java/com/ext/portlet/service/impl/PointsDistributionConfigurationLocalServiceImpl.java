@@ -1,11 +1,13 @@
 package com.ext.portlet.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ext.portlet.model.PointType;
 import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.base.PointsDistributionConfigurationLocalServiceBaseImpl;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 /**
@@ -32,4 +34,34 @@ public class PointsDistributionConfigurationLocalServiceImpl
 	public List<PointsDistributionConfiguration> findByProposalPointType(Proposal proposal, PointType pointType) throws SystemException {
 		return pointsDistributionConfigurationPersistence.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId());
 	}
+
+    public void removeByProposalId(long proposalId) throws SystemException {
+        pointsDistributionConfigurationPersistence.removeByProposalId(proposalId);
+    }
+
+    public PointsDistributionConfiguration addDistributionConfiguration(
+            long proposalId, long pointTypeId, Long targetUserId, Long targetSubProposalId, double percentage, long creator
+    ) throws SystemException, NoSuchUserException
+    {
+
+        long id = counterLocalService.increment(PointsDistributionConfiguration.class.getName());
+
+        PointsDistributionConfiguration model = pointsDistributionConfigurationPersistence.create(id);
+
+        model.setProposalId(proposalId);
+        model.setPointTypeId(pointTypeId);
+        if (targetUserId != null) {
+            model.setTargetSubProposalId(targetUserId);
+        }
+        if (targetSubProposalId != null) {
+            model.setTargetSubProposalId(targetSubProposalId);
+        }
+        model.setPercentage(percentage);
+        model.setCreator(creator);
+        model.setCreateDate(new Date());
+
+        super.addPointsDistributionConfiguration(model);
+
+        return model;
+    }
 }

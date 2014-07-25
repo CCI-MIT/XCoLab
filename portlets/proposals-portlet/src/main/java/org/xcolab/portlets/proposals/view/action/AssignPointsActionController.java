@@ -4,6 +4,7 @@ package org.xcolab.portlets.proposals.view.action;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.*;
@@ -59,84 +60,49 @@ public class AssignPointsActionController {
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-
-        /*if (result.hasErrors()) {
+        if (result.hasErrors()) {
             return;
         }
 
         Proposal proposal = proposalsContext.getProposal(request);
-        long contestId = proposalsContext.getContest(request).getContestPK();
-        long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         User currentUser = proposalsContext.getUser(request);
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        long contestId = proposalsContext.getContest(request).getContestPK();
+        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
-        // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                !permissions.getCanAdminAll()) {
-            return;
+        //first, delete the existing configuration
+        PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
+
+        try {
+            //custom user assignments
+            for (Long pointTypeId : assignPointsBean.getAssignments().keySet()) {
+                Map<Long, Integer> assignments = assignPointsBean.get(pointTypeId);
+
+                double sum = 0.0;
+                for (Long targetUserId : assignments.keySet()) {
+                    double percentage = new Double(assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0) / 100.0;
+                    sum += percentage;
+                    PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
+                            proposal.getProposalId(),
+                            pointTypeId,
+                            targetUserId,
+                            null,
+                            percentage,
+                            currentUser.getUserId()
+                    );
+                }
+                if (sum != 1.0) {
+                    throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
+                }
+            }
+        } catch (Exception e) {
+            //in case a (validation) error occurs, we simply delete all created configurations.
+            //since we do client-side validations, this state will not be reached by regular uses of the UI.
+            PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
+            throw e;
         }
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposal.getProposalId()+"/tab/POINTS");
+    }
 
-        //check if advancement was frozen
-        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
-                proposalId,
-                contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                0
-        );
-
-        boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue());
-
-        //disallow saving when frozen for non-admins
-        if (isFrozen && !permissions.getCanAdminAll()) {
-            return;
-        }
-
-        // save judge decision
-        ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                proposalId,
-                contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
-                0,
-                proposalAdvancingBean.getAdvanceDecision()
-        );
-
-        // save judge comment
-        if (!isUndecided) {
-            ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-
-            commentHelper.setAdvancingComment(proposalAdvancingBean.getAdvanceComment());
-        }
-
-        //freeze the advancement
-        if (!isUndecided && request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                    0,
-                    "true"
-            );
-        }
-
-        //unfreeze the advancement
-        if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null && request.getParameter("isUnfreeze").equals("true")) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                    0,
-                    "false"
-            );
-        }
-
-        //forcefully promote the advancement
-        if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
-            ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
-        }
-
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhase.getContestPhasePK()+"/planId/"+proposalId+"/tab/ADVANCING");
-    */}
 
 
 

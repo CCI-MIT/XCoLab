@@ -47,6 +47,10 @@ public class PointsDistributionConfigurationLocalServiceClp
     private String[] _methodParameterTypes17;
     private String _methodName19;
     private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
 
     public PointsDistributionConfigurationLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -147,6 +151,17 @@ public class PointsDistributionConfigurationLocalServiceClp
         _methodParameterTypes19 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.PointType"
+            };
+
+        _methodName20 = "removeByProposalId";
+
+        _methodParameterTypes20 = new String[] { "long" };
+
+        _methodName21 = "addDistributionConfiguration";
+
+        _methodParameterTypes21 = new String[] {
+                "long", "long", "java.lang.Long", "java.lang.Long", "double",
+                "long"
             };
     }
 
@@ -703,5 +718,73 @@ public class PointsDistributionConfigurationLocalServiceClp
         }
 
         return (java.util.List<com.ext.portlet.model.PointsDistributionConfiguration>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName20,
+                _methodParameterTypes20, new Object[] { proposalId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
+        long proposalId, long pointTypeId, java.lang.Long targetUserId,
+        java.lang.Long targetSubProposalId, double percentage, long creator)
+        throws com.liferay.portal.NoSuchUserException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName21,
+                    _methodParameterTypes21,
+                    new Object[] {
+                        proposalId,
+                        
+                    pointTypeId,
+                        
+                    ClpSerializer.translateInput(targetUserId),
+                        
+                    ClpSerializer.translateInput(targetSubProposalId),
+                        
+                    percentage,
+                        
+                    creator
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.NoSuchUserException) {
+                throw (com.liferay.portal.NoSuchUserException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.PointsDistributionConfiguration) ClpSerializer.translateOutput(returnObj);
     }
 }

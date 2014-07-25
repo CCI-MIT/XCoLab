@@ -239,4 +239,13 @@ public interface PointsDistributionConfigurationLocalService
         com.ext.portlet.model.Proposal proposal,
         com.ext.portlet.model.PointType pointType)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void removeByProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
+        long proposalId, long pointTypeId, java.lang.Long targetUserId,
+        java.lang.Long targetSubProposalId, double percentage, long creator)
+        throws com.liferay.portal.NoSuchUserException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

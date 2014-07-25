@@ -47,6 +47,10 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
     private String[] _methodParameterTypes565;
     private String _methodName570;
     private String[] _methodParameterTypes570;
+    private String _methodName571;
+    private String[] _methodParameterTypes571;
+    private String _methodName572;
+    private String[] _methodParameterTypes572;
 
     public PointsDistributionConfigurationLocalServiceClpInvoker() {
         _methodName0 = "addPointsDistributionConfiguration";
@@ -144,6 +148,17 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
         _methodParameterTypes570 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.PointType"
+            };
+
+        _methodName571 = "removeByProposalId";
+
+        _methodParameterTypes571 = new String[] { "long" };
+
+        _methodName572 = "addDistributionConfiguration";
+
+        _methodParameterTypes572 = new String[] {
+                "long", "long", "java.lang.Long", "java.lang.Long", "double",
+                "long"
             };
     }
 
@@ -252,6 +267,22 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes570, parameterTypes)) {
             return PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.PointType) arguments[1]);
+        }
+
+        if (_methodName571.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes571, parameterTypes)) {
+            PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(((Long) arguments[0]).longValue());
+
+            return null;
+        }
+
+        if (_methodName572.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes572, parameterTypes)) {
+            return PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.Long) arguments[2], (java.lang.Long) arguments[3],
+                ((Double) arguments[4]).doubleValue(),
+                ((Long) arguments[5]).longValue());
         }
 
         throw new UnsupportedOperationException();
