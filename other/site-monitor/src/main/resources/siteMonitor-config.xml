@@ -38,9 +38,9 @@
 	
 	<crawlerConfig>
 		<crawlConfig>
-			<!-- traverse proposals portlet -->
-			<url>http://localhost:9082</url>
-			<recursionLevel>5</recursionLevel>
+			<!-- traverse the whole web application -->
+			<url>http://climatecolab.org/</url>
+			<recursionLevel>4</recursionLevel>
 			<linkPatterns>
 				<linkPattern>/web/guest/plans/**</linkPattern>
 			</linkPatterns>
@@ -49,10 +49,6 @@
 	</crawlerConfig>
 	
 	<emailNotification>
-		<to>janusz.parfieniuk@gmail.com</to>
-		<to>exter@o2.pl</to>
-		<from>exter@o2.pl</from>
-		<smtphost>poczta.o2.pl</smtphost>
 		<smtpport>465</smtpport>
 		<smtpusetsl>true</smtpusetsl>
 		<smtpuser>exter@o2.pl</smtpuser>
