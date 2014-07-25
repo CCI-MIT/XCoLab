@@ -8,7 +8,7 @@ import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalRank;
 * @author pdeboer
 *         First created on 01/07/14 at 10:46
 */
-public class Proposal2013 {
+public class ProposalWithFinalistAndContent {
     private String url;
     private Long id;
     private String content = "";

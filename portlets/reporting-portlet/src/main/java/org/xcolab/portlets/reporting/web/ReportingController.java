@@ -30,10 +30,11 @@ import org.xcolab.portlets.reporting.beans.UserActivityReportBean;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.ActivitiesByContestBean;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.ContestActivity;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.UserActivityByContest;
+import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivities;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivityExport;
-import org.xcolab.portlets.reporting.beans.proposals2013.Proposal2013;
-import org.xcolab.portlets.reporting.beans.proposals2013.ProposalsIn2013Contests;
+import org.xcolab.portlets.reporting.beans.proposals2013.ProposalWithFinalistAndContent;
+import org.xcolab.portlets.reporting.beans.proposals2013.ProposalsInSpecificContests;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
 
@@ -113,16 +114,44 @@ public class ReportingController {
     }
 
 
-    @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
-    public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
-        ProposalsIn2013Contests pic = new ProposalsIn2013Contests();
+    @RequestMapping(params="report=generateProposalTexts2014CreationPhase")
+    public void generateProposalTexts2014CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+        ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
 
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
         csvWriter.writeNext(new String[]{"id","proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed", "content", "content_with_section_titles"});
 
-        for (Proposal2013 e : pic.get()) {
+        for (ProposalWithFinalistAndContent e : pic.get(ContestFetcher.getContestsIn2014(), true)) {
+            csvWriter.writeNext(new String[]{
+                    ""+e.getId(),
+                    e.getProposalName(),
+                    e.getUrl(),
+                    e.getContestName(),
+                    ""+e.getUsedVersion(),
+                    ""+e.getProposalRibbon(),
+                    e.getContent(),
+                    e.getContentWithSectionTitles()
+            });
+        }
+
+        response.setContentType("text/csv");
+        response.addProperty("Content-Disposition", "attachment;filename=proposals2013creation.csv");
+
+        w.close();
+    }
+
+    @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
+    public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+        ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+
+        Writer w = response.getWriter();
+        CSVWriter csvWriter = new CSVWriter(w);
+
+        csvWriter.writeNext(new String[]{"id","proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed", "content", "content_with_section_titles"});
+
+        for (ProposalWithFinalistAndContent e : pic.get()) {
             csvWriter.writeNext(new String[]{
                     ""+e.getId(),
                     e.getProposalName(),

@@ -10,7 +10,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
@@ -19,6 +18,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,10 +31,10 @@ import java.util.Set;
  * @author pdeboer
  *         First created on 20/06/14 at 15:50
  */
-public class ProposalsIn2013Contests {
+public class ProposalsInSpecificContests {
     List<ContestPhaseRibbonType> ribbons;
 
-    public ProposalsIn2013Contests() {
+    public ProposalsInSpecificContests() {
         try {
             ribbons = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE);
         } catch (SystemException e) {
@@ -42,9 +42,12 @@ public class ProposalsIn2013Contests {
         }
     }
 
-    public List<Proposal2013> get() throws Exception {
-        List<Proposal2013> ret = new LinkedList<>();
-        List<Contest> targetContests = getContestsIn2013();
+    public List<ProposalWithFinalistAndContent> get() throws Exception {
+        return get(ContestFetcher.getContestsIn2013(), false);
+    }
+
+    public List<ProposalWithFinalistAndContent> get(List<Contest> targetContests, boolean takeAllProposalsFromCreationPhase) throws Exception {
+        List<ProposalWithFinalistAndContent> ret = new LinkedList<>();
         Map<Integer, String> sections = getSectionTypeIDToTextMap();
 
         for (Contest contest : targetContests) {
@@ -63,19 +66,17 @@ public class ProposalsIn2013Contests {
                 System.out.println("skipped " + contest);
                 continue; //invalid contest
             }
-            List<Proposal> visibleProposals = getVisibleProposals(completedPhase,
-                    ProposalLocalServiceUtil.getProposalsInContestPhase(completedPhase.getContestPhasePK()));
+            ContestPhase proposalSourcePhase = takeAllProposalsFromCreationPhase ? creationPhase : completedPhase;
+            List<Proposal> visibleProposals = getVisibleProposals(
+                    proposalSourcePhase,
+                    ProposalLocalServiceUtil.getProposalsInContestPhase(
+                            proposalSourcePhase.getContestPhasePK()));
 
             for (Proposal visibleProposal : visibleProposals) {
-                Proposal2013 pte = new Proposal2013();
+                ProposalWithFinalistAndContent pte = new ProposalWithFinalistAndContent();
 
 
                 int targetVersion = getEndVersionOfCreationPhase(creationPhase, visibleProposal);
-                /*
-                if(targetVersion < -1) {
-                    targetVersion = visibleProposal.getCurrentVersion();
-                    pte.setUsedVersionInProposalCreation(false);
-                }*/
 
                 pte.setId(visibleProposal.getProposalId());
                 pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
@@ -107,16 +108,6 @@ public class ProposalsIn2013Contests {
         return ret;
     }
 
-    public List<Contest> getContestsIn2013() throws SystemException {
-        List<Contest> targetContests = new LinkedList<>();
-        for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
-            if (contest.getContestShortName().endsWith("2013")) {
-                targetContests.add(contest);
-            }
-        }
-        return targetContests;
-    }
-
     private Map<Integer, String> getSectionTypeIDToTextMap() throws SystemException {
         Map<Integer, String> sections = new HashMap<>();
         List<PlanSectionDefinition> planSectionDefinitions = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinitions(0, Integer.MAX_VALUE);
@@ -127,14 +118,14 @@ public class ProposalsIn2013Contests {
         return sections;
     }
 
-    private List<Proposal> getVisibleProposals(ContestPhase creationPhase, List<Proposal> proposals) {
+    private List<Proposal> getVisibleProposals(ContestPhase phase, List<Proposal> proposals) {
         List<Proposal> targetProposals = new LinkedList<>();
         for (Proposal proposal : proposals) {
             if (!proposal.getVisible()) continue;
 
             ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
             try {
-                proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), creationPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+                proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
                 if (proposalContestPhaseAttribute.getNumericValue() == 0) continue;
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 //it's visible then
