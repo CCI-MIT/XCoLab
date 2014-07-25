@@ -59,9 +59,9 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
             Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
             List<ProposalWrapper> subProposalsWrapped = new ArrayList<ProposalWrapper>();
-            /*for (Proposal p: subProposals) {
+            for (Proposal p: subProposals) {
                 subProposalsWrapped.add(new ProposalWrapper(p));
-            }*/
+            }
 
             members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
 
@@ -73,7 +73,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             model.addAttribute("pointsToDistribute", contest.getPoints());
             model.addAttribute("pointType", parentPointType);
             model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
-            model.addAttribute("subProposals", subProposals/*Wrapped*/);
+            model.addAttribute("subProposals", subProposalsWrapped);
             model.addAttribute("members", members);
             model.addAttribute("proposal", proposal);
             model.addAttribute("contest", contest);
