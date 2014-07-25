@@ -18,7 +18,7 @@
 	]
 },
 {
-	"name": "Subsides for Low Carbon Energy"
+	"name": "Subsides for Low Carbon Energy",
 	"type": "TAB", 
 	"children": [
 		{
@@ -53,7 +53,7 @@
 			"type":"HORIZONTAL", 
 			"children": [
 				{"name": "Carbon Capture/Storage subsidy $/GJ", "type": "INDIVIDUAL", "widget": "SLIDER"},
-				{"name": "Start year", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"},
+				{"name": "Start year", "description": "Year subsidy/tax begins", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"},
 				{"name": "Stop year", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"}
 			]
 		},
@@ -61,7 +61,7 @@
 	]
 },
 {
-	"name": "Breakthroughs in Low Carbon Energy"
+	"name": "Breakthroughs in Low Carbon Energy",
 	"type": "TAB", 
 	"children": [
 		{
@@ -100,7 +100,7 @@
 	]
 },
 {
-	"name": "Climate policy"
+	"name": "Climate policy",
 	"type": "TAB", 
 	"children": [
 		{
@@ -117,7 +117,7 @@
 	]
 },
 {
-	"name": "Land use and other GHGs"
+	"name": "Land use and other GHGs",
 	"type": "TAB", 
 	"children": [
 		{"name": "Land use emissions reduction %", "type": "INDIVIDUAL", "widget": "SLIDER"},
@@ -126,7 +126,7 @@
 			"name": "Start and target years", 
 			"type":"HORIZONTAL", 
 			"children": [
-				{"name": "Start year", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"},
+				{"name": "Start year", "description": "Year to start the LULUCF and other GHG reductions.", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"},
 				{"name": "Year reduction targets achieved", "type": "INDIVIDUAL", "widget": "TEXT_FIELD"}
 			]
 		},
@@ -148,6 +148,7 @@
 	{"name": "Temperature increase 4.5C", "chartType": "CONF_INTERVAL_95", "associatedOutput": "Temperature increase"},
 	{"name": "Temperature increase 2C", "chartType": "CONF_INTERVAL_5", "associatedOutput": "Temperature increase"},
 	{"name": "Reduction in per capital income vs. baseline"}
+	{"name": "GDP vs. baseline"}
 
 ]
 }

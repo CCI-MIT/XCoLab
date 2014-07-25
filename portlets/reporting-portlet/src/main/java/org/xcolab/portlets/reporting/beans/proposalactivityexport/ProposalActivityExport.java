@@ -49,7 +49,7 @@ public class ProposalActivityExport {
             for (Proposal proposal : proposals) {
                 ProposalActivities pa = new ProposalActivities();
 
-                pa.setNumDaysCreationIsBeforeFinalistSelection(getNumDaysBetweenProposalCreationAndPhaseStart(finalistSelection, proposal));
+                pa.setNumDaysCreationIsBeforeFinalistSelection(getNumDaysBetweenProposalCreationAndPhaseStart(versions, finalistSelection, proposal));
                 pa.setNumUpdates(getNumVersionsBeforePhaseStart(versions, finalistSelection, proposal));
                 pa.setNumDifferentDaysProposalUpdates(getNumChangesOnDifferentDaysBeforePhaseStart(versions, finalistSelection, proposal));
 
@@ -83,8 +83,15 @@ public class ProposalActivityExport {
         return count;
     }
 
-    private int getNumDaysBetweenProposalCreationAndPhaseStart(ContestPhase finalistSelection, Proposal proposal) {
-        long diff = finalistSelection.getPhaseStartDate().getTime() - proposal.getCreateDate().getTime();
+    private int getNumDaysBetweenProposalCreationAndPhaseStart(List<ProposalVersion> versions, ContestPhase finalistSelection, Proposal proposal) {
+        Date earliest = new Date();
+        for (ProposalVersion proposalVersion : versions) {
+            if(proposalVersion.getProposalId() == proposal.getProposalId())
+                if(proposalVersion.getCreateDate().before(earliest))
+                    earliest = proposalVersion.getCreateDate();
+        }
+
+        long diff = finalistSelection.getPhaseStartDate().getTime() - earliest.getTime();
         return (int) (diff / (24 * 60 * 60 * 1000));
     }
 }
