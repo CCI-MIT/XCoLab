@@ -25,6 +25,9 @@ public class PointTypeWrapper {
         return children;
     }
 
+    public Long getId() {
+        return pointType.getId();
+    }
 
     public PointType getPointType() {
         return pointType;

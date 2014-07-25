@@ -17,7 +17,7 @@
                     <portlet:param name="planId" value="${proposal.proposalId }"/>
                     <portlet:param name="action" value="saveJudgingFeedback"/>
                 </portlet:actionURL>
-                <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL }" method="post" commandName="judgeProposalBean">
+                <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
                     <h3 style="margin-top: 20px;">Judge Rating</h3>
                     <i style="font-size:10pt;">Please rate this proposal and write your comments in the box below. All your responses
                         are saved when clicking on save.</i>

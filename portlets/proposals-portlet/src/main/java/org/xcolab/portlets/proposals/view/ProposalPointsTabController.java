@@ -2,21 +2,29 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PointType;
+import com.ext.portlet.model.PointsDistributionConfiguration;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.points.DistributionStrategy;
+import org.xcolab.points.ReceiverLimitationStrategy;
+import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -26,24 +34,79 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
     @Autowired
     private ProposalsContext context;
+
+    private AssignPointsBean assignPointsBean;
+    private List<User> members;
+    private Proposal proposal;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_POINTS"})
     public String showProposalDetails(Model model, PortletRequest request) 
             throws PortalException, SystemException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);
+        try {
+            proposal = proposalsContext.getProposal(request);
+            Contest contest = proposalsContext.getContest(request);
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        Contest contest = proposalsContext.getContest(request);
+            PointType contestParentPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
 
-        PointType contestParentPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
-        PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
+            if (contestParentPointType == null) {
+                //there is no point scheme set for this contest, forward to description tab
+                return "";
+            }
 
-        model.addAttribute("pointsToDistribute", contest.getPoints());
-        model.addAttribute("pointType", parentPointType);
-        model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
+            PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
 
+            Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
+            List<ProposalWrapper> subProposalsWrapped = new ArrayList<ProposalWrapper>();
+            /*for (Proposal p: subProposals) {
+                subProposalsWrapped.add(new ProposalWrapper(p));
+            }*/
+
+            members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
+
+            //this bean will be filled with the user input
+            assignPointsBean = new AssignPointsBean();
+            this.initializeAssignPointsBean(parentPointType);
+            assignPointsBean.setupUsers(members);
+            model.addAttribute("assignPointsBean", assignPointsBean);
+            model.addAttribute("pointsToDistribute", contest.getPoints());
+            model.addAttribute("pointType", parentPointType);
+            model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
+            model.addAttribute("subProposals", subProposals/*Wrapped*/);
+            model.addAttribute("members", members);
+            model.addAttribute("proposal", proposal);
+            model.addAttribute("contest", contest);
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
         return "proposalPoints";
+    }
+
+    private void initializeAssignPointsBean(PointTypeWrapper pointType) throws SystemException {
+        if (DistributionStrategy.USER_DEFINED.name().equals(pointType.getDistributionStrategy())) {
+            List<PointsDistributionConfiguration> existingConfiguration = PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType.getPointType());
+            //Team members
+            if (ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name().equals(pointType.getReceiverLimitationStrategy())) {
+                assignPointsBean.addAssignment(
+                        pointType.getPointType().getId(),
+                        members,
+                        existingConfiguration
+                );
+            //any user
+            } else if (ReceiverLimitationStrategy.ANY_NON_TEAM_MEMBER.name().equals(pointType.getReceiverLimitationStrategy()) ||
+                    ReceiverLimitationStrategy.ANY_USER.name().equals(pointType.getReceiverLimitationStrategy())) {
+                assignPointsBean.addSingleUserAssignment(
+                        pointType.getPointType().getId(),
+                        existingConfiguration.size() > 0 ? existingConfiguration.get(0) : null
+                );
+            }
+            //TODO: user-defined subProposals
+        }
+        //follow down the pointType tree
+        for (PointTypeWrapper p: pointType.getChildren()) {
+            this.initializeAssignPointsBean(p);
+        }
     }
     
     

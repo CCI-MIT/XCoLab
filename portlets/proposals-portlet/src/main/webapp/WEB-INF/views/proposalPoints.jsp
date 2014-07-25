@@ -11,8 +11,20 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
     <div id="content">
         <h1>Points Distribution</h1>
-        <jsp:include page="./proposalDetails/proposalPointTypes.jspx"/>
+        <portlet:actionURL var="savePointsAssignmentsURL">
+            <portlet:param name="action_forwardToPage" value="proposalDetails"/>
+            <portlet:param name="contestId" value="${contest.contestPK }"/>
+            <portlet:param name="planId" value="${proposal.proposalId}"/>
+            <portlet:param name="action" value="savePointAssignments"/>
+        </portlet:actionURL>
+        <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
+            <jsp:include page="./proposalDetails/proposalPointTypes.jspx"/>
+
+            <div class="clearfix" style="width: 100%;">
+                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
+                    <a href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+                </div>
+            </div>
+        </form:form>
 	</div>
-
-
 </jsp:root>

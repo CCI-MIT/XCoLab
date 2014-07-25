@@ -13,12 +13,18 @@
     <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
     <!-- set column definitons -->
     <c:remove var="smallColumnExists" />
+    <c:remove var="largeColumnExists" />
     <c:set var="pointsContainerOffset" value="0"/>
     <c:forEach var="child" varStatus="status" items="${pointType.children}">
-        <c:if test="${child.children.size() == 0}">
-            <c:set var="smallColumnExists" value="true"/>
-            <c:set var="pointsContainerOffset" value="${pointsContainerOffset + (status.count > childrenSize/2 ? 7.5 : -7.5)}"/>
-        </c:if>
+        <c:choose>
+            <c:when test="${child.children.size() == 0}">
+                <c:set var="smallColumnExists" value="true"/>
+                <c:set var="pointsContainerOffset" value="${pointsContainerOffset + (status.count > childrenSize/2 ? 7.5 : -7.5)}"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="largeColumnExists" value="true"/>
+            </c:otherwise>
+        </c:choose>
     </c:forEach>
     <c:choose>
         <c:when test="${childrenSize > 0}">
@@ -27,18 +33,17 @@
 
                 </p>
                 <p class="globe">
-                    ${fn:substringBefore(parentPointsToDistribute, ".")}<br/>
-                    Points
+
                 </p>
             </div>
             <table class="pointType">
                 <c:forEach var="child" varStatus="status" items="${pointType.children}">
-                    <col width="${fn:substringBefore((100 / childrenSize)/(child.children.size() == 0 ? 2 : 1), '.')}%" />
+                    <col width="${fn:substringBefore((100 / childrenSize)/((largeColumnExists and child.children.size() == 0) ? 2 : 1), '.')}%" />
                 </c:forEach>
                 <tbody>
                 <tr>
                     <c:forEach var="pointType" varStatus="status" items="${pointType.children}">
-                        <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
+                        <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
                             <p class="percentage">
                                 ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
                             </p>
@@ -54,41 +59,78 @@
             </table>
         </c:when>
         <c:otherwise>
-            <p class="highlighted">
-                ${fn:substringBefore(parentPointsToDistribute, ".")} Points
-            </p>
             <c:choose>
-                <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS'}">
+                <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'EQUAL_DIVISION'}">
                     <p class="info">
                         Equally distributed among all proposals you have referenced.
                     </p>
-                    20% Proposal 1<br/>
-                    20% Proposal 2<br/>
-                    20% Proposal 3
+                    <ul>
+                        <c:forEach var="proposal" items="${subProposals}">
+                            <li>
+                                <span class="highlighted">
+                                    <fmt:formatNumber type="percent" value="${1/subProposals.size()}"/>
+                                </span>
+                                <c:out value="${proposal.proposalId}"/>
+                            </li>
+                        </c:forEach>
+
+                    </ul>
+                </c:when>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
+                    <!--TODO-->
                 </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_USER' or pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
                     <p class="info">
-                        Can be distributed to any Climate CoLab member (start typing the member's
-                        screen name, and auto-complete will help you). If you do not complete this
-                        section, these points will not be allocated
+                        Can be distributed to any Climate CoLab member
+                        <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
+                            who is not in your team
+                        </c:if>
+                        (start typing the member's screen name, and auto-complete will help you).
+                        If you do not complete this section, these points will not be allocated.
                     </p>
-                    <input type="text"/>
+
+                    <input id="userSelectorInput" type="text" class="popupreg_input messageRecipients" />
+                    <input type="hidden" class="messageRecipientsInput" />
+                    <form:input
+                            path="singleUserAssignments[${pointType.id}]"
+                            class="hidden"
+                            value="${assignPointsBean.singleUserAssignments[pointType.id]}"
+                            />
+
+                    <!-- <input type="hidden" class="required profile_input"  />-->
+                    <div id="please_choose_from_list" style="display: none; color: red; ">Please choose a user from the list</div>
+                    <div id="unknownUsersContainer"  style="display: none; color: red; ">Unknown user: <p></p></div>
+                    <script type="text/javascript">
+                        var usersMap = {};
+                        var preFill = null;
+
+                        usersMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.screenName}"/>':'<c:out value="${user.userId}"/>',</c:forEach>};
+                        jQuery(document).ready(function() {
+                            initUserAutocomplete(usersMap, preFill);
+                        });
+                    </script>
 
                 </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
                     <p class="info">
                         Distributed among your team members by assigning a percentage to each person
                     </p>
-                    <input type="text" size="3"/> Manu Neuer<br />
-                    <input type="text" size="3"/> Manu Thurner
+                    <ul>
+                        <c:forEach var="member" items="${members}">
+                            <li>
+                                <label class="percentageInput">
+                                    <form:input
+                                            path="assignments[${pointType.id}][${member.userId}]"
+                                            class="popupreg_input"
+                                            value="${assignPointsBean.assignments[pointType.id][member.userId]}"
+                                            />%
+                                    <span><c:out value="${member.fullName}"/></span>
+                                </label>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </c:when>
-                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
-                    <p class="info">
-                        Distributed among your team members by assigning a percentage to each person
-                    </p>
-                    <input type="text" size="3"/> Manu Neuer<br />
-                    <input type="text" size="3"/> Manu Thurner
-                </c:when>
+
             </c:choose>
         </c:otherwise>
     </c:choose>
