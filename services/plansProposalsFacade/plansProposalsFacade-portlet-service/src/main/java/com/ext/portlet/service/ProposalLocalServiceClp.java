@@ -3057,7 +3057,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public java.util.Collection<com.ext.portlet.model.Proposal> getSubproposals(
+    public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -3085,7 +3085,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
             }
         }
 
-        return (java.util.Collection<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
+        return (java.util.List<com.ext.portlet.model.Proposal>) ClpSerializer.translateOutput(returnObj);
     }
 
     @Override

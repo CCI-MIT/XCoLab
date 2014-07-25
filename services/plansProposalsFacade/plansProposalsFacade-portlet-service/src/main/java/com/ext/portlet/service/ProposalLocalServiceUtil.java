@@ -1268,7 +1268,7 @@ public class ProposalLocalServiceUtil {
     * @param proposalId      The proposal for which subproposals should be returned
     * @return collection of referenced proposals
     */
-    public static java.util.Collection<com.ext.portlet.model.Proposal> getSubproposals(
+    public static java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
