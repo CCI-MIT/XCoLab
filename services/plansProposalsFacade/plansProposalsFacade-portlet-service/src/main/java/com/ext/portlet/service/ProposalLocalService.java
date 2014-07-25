@@ -1116,7 +1116,7 @@ public interface ProposalLocalService extends BaseLocalService,
     * @return collection of referenced proposals
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.Collection<com.ext.portlet.model.Proposal> getSubproposals(
+    public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

@@ -1454,8 +1454,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId      The proposal for which subproposals should be returned
      * @return collection of referenced proposals
      */
-    public Collection<Proposal> getSubproposals(long proposalId) throws SystemException, PortalException {
-    	Set<Proposal> ret = new HashSet<Proposal>();
+    public List<Proposal> getSubproposals(long proposalId) throws SystemException, PortalException {
+    	Set<Long> detectedIds = new HashSet<Long>();
+    	
     	
     	for (ProposalAttribute attribute: getAttributes(proposalId)) {
     		
@@ -1469,25 +1470,30 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     			PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
     			switch (type) {
     			case PROPOSAL_REFERENCE:
-        			ret.add(getProposal(attribute.getNumericValue()));
+        			detectedIds.add(attribute.getNumericValue());
         			break;
     			case PROPOSAL_LIST_REFERENCE:
                     String[] referencedProposals = attribute.getStringValue().split(",");
                     for (int i = 0; i < referencedProposals.length; i++) {
-                    	ret.add(getProposal(Long.parseLong(referencedProposals[i])));
+                    	detectedIds.add(Long.parseLong(referencedProposals[i]));
                     }
                     break;
     			case PROPOSAL_LIST_TEXT_REFERENCE:
     				Pattern proposalLinkPattern = Pattern.compile("href=.*/plans/-/plans/contestId/(\\d*)/planId/(\\d*).*");
     				Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
     				while (m.find()) {
-    					ret.add(getProposal(Long.parseLong(m.group(2))));
+    					detectedIds.add(Long.parseLong(m.group(2)));
     				}
     				break;
     			}
     		}
     	}
-    	return ret;
+
+    	List<Proposal> proposals = new ArrayList<Proposal>();
+    	for (Long subProposalId: detectedIds) {
+    		proposals.add(getProposal(subProposalId));
+    	}
+    	return proposals;
     }
     
     /**
