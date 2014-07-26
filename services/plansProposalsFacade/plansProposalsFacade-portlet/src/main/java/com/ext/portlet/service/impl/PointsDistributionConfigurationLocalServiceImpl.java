@@ -51,7 +51,7 @@ public class PointsDistributionConfigurationLocalServiceImpl
         model.setProposalId(proposalId);
         model.setPointTypeId(pointTypeId);
         if (targetUserId != null) {
-            model.setTargetSubProposalId(targetUserId);
+            model.setTargetUserId(targetUserId);
         }
         if (targetSubProposalId != null) {
             model.setTargetSubProposalId(targetSubProposalId);
