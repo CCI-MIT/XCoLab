@@ -20,9 +20,9 @@
         <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
             <jsp:include page="./proposalDetails/proposalPointTypes.jspx"/>
 
-            <div class="clearfix" style="width: 100%;">
-                <div class="blue-button" style="display:block; float:right; margin-top: 10px;">
-                    <a id="submitPointsForm" style="cursor:pointer">Save</a>
+            <div style="width: 229px; margin:0 auto;" class="clearfix">
+                <div class="blue-button">
+                    <a style="cursor:pointer;width:200px;text-align:center" id="submitPointsForm">Save</a>
                 </div>
             </div>
         </form:form>

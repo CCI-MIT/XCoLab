@@ -44,16 +44,16 @@
                 <tr>
                     <c:forEach var="pointType" varStatus="status" items="${pointType.children}">
                         <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
-                            <div class="arrow">
+                            <div class="content">
                                 <p class="percentage">
                                     ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
                                 </p>
+                                <!-- Recursion -->
+                                <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
+                                <c:set var="pointType" value="${pointType}" scope="request"/>
+                                <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
+                                <jsp:include page="proposalPointTypes.jspx"/>
                             </div>
-                            <!-- Recursion -->
-                            <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
-                            <c:set var="pointType" value="${pointType}" scope="request"/>
-                            <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
-                            <jsp:include page="proposalPointTypes.jspx"/>
                         </td>
                     </c:forEach>
                 </tr>
@@ -72,7 +72,7 @@
                                 <span class="highlighted">
                                     <fmt:formatNumber type="percent" value="${1/subProposals.size()}"/>
                                 </span>
-                                <c:out value="${proposal.shortName}"/>
+                                <c:out value="${proposal.name}"/>
                             </li>
                         </c:forEach>
 
@@ -127,6 +127,7 @@
                                         <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
                                     </c:if>
                                 </label>
+
                             </li>
                         </c:forEach>
                     </ul>

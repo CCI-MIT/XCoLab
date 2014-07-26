@@ -40,11 +40,11 @@
         font-size: 2em;
     }
 
-    td.left .arrow {
+    td.left {
         background-image: url(../img/arrow-left.png);
-        //background-position: 80% 0;
+        background-position: 80% 0;
     }
-    /*td.left.large {
+    td.left.large {
         background-position: 62.5% 0;
     }
     td.right.large  {
@@ -55,40 +55,51 @@
     }
     td.left.small {
         background-position: 100% 0%;
-    }*/
-    td.right .arrow {
+    }
+    td.right {
         background-image: url(../img/arrow-right.png);
-        //background-position: 20% 0;
+        background-position: 20% 0;
     }
-    td {
-        position: relative;
-        top: -50px;
-        td {
-            top: -30px;
-        }
-    }
-    td .arrow {
-        width: 180px;
-        height: 120px;
+    td.left, td.right {
         background-repeat: no-repeat;
         position: relative;
-        left: 50%;
+        top: -50px;
+        padding-top: 100px;
+
+        td.left, td.right {
+            padding-left: 10px;
+            padding-right: 10px;
+            top: -30px;
+            padding-top: 50px;
+            background-size: 35%;
+
+            p.percentage {
+                top: -120px;
+            }
+        }
+        td.left {
+            background-position: 60% 0;
+        }
+        td.right {
+            background-position: 40% 0;
+        }
     }
-    ul {
+    ul li {
+        padding: 5px 10px;
+    }
+
+    ul.userDistributionInputs {
       list-style-type: none;
         li {
             padding: 0;
+            margin: 0;
             background: none;
         }
     }
 
-    .info {
-        padding: 10px;
-    }
     .highlighted {
         color: #66b035;
         font-weight: 700;
-        font-size: 24px;
         text-align: center;
     }
     span.highlighted {
