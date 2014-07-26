@@ -44,14 +44,16 @@
                 <tr>
                     <c:forEach var="pointType" varStatus="status" items="${pointType.children}">
                         <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
-                            <p class="percentage">
-                                ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
-                            </p>
-                            <!-- Recursion -->
-                            <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
-                            <c:set var="pointType" value="${pointType}" scope="request"/>
-                            <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
-                            <jsp:include page="proposalPointTypes.jspx"/>
+                            <div class="content">
+                                <p class="percentage">
+                                    ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
+                                </p>
+                                <!-- Recursion -->
+                                <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
+                                <c:set var="pointType" value="${pointType}" scope="request"/>
+                                <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
+                                <jsp:include page="proposalPointTypes.jspx"/>
+                            </div>
                         </td>
                     </c:forEach>
                 </tr>
@@ -70,7 +72,7 @@
                                 <span class="highlighted">
                                     <fmt:formatNumber type="percent" value="${1/subProposals.size()}"/>
                                 </span>
-                                <c:out value="${proposal.proposalId}"/>
+                                <c:out value="${proposal.name}"/>
                             </li>
                         </c:forEach>
 
@@ -79,58 +81,57 @@
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
                     <!--TODO-->
                 </c:when>
-                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_USER' or pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
-                    <p class="info">
-                        Can be distributed to any Climate CoLab member
-                        <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
-                            who is not in your team
-                        </c:if>
-                        (start typing the member's screen name, and auto-complete will help you).
-                        If you do not complete this section, these points will not be allocated.
-                    </p>
+                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_USER' or pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER' or pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
+                    <c:choose>
+                        <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
+                            <p class="info">
+                                Distributed among your team members by assigning a percentage to each person
+                            </p>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="info">
+                                Can be distributed to any Climate CoLab member
+                                <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
+                                    who is not in your team
+                                </c:if>
+                                (start typing the member's screen name, and auto-complete will help you).
+                                If you do not complete this section, these points will not be allocated.
+                            </p>
+                            <label>
+                                Username:<br />
+                                <input id="userSelectorInput${pointType.id}" type="text" class="popupreg_input messageRecipients${pointType.id}" />
+                                <input type="hidden" class="messageRecipientsInput${pointType.id}" />
+                            </label>
 
-                    <input id="userSelectorInput" type="text" class="popupreg_input messageRecipients" />
-                    <input type="hidden" class="messageRecipientsInput" />
-                    <form:input
-                            path="singleUserAssignments[${pointType.id}]"
-                            class="hidden"
-                            value="${assignPointsBean.singleUserAssignments[pointType.id]}"
-                            />
-
-                    <!-- <input type="hidden" class="required profile_input"  />-->
-                    <div id="please_choose_from_list" style="display: none; color: red; ">Please choose a user from the list</div>
-                    <div id="unknownUsersContainer"  style="display: none; color: red; ">Unknown user: <p></p></div>
-                    <script type="text/javascript">
-                        var usersMap = {};
-                        var preFill = null;
-
-                        usersMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.screenName}"/>':'<c:out value="${user.userId}"/>',</c:forEach>};
-                        jQuery(document).ready(function() {
-                            initUserAutocomplete(usersMap, preFill);
-                        });
-                    </script>
-
-                </c:when>
-                <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
-                    <p class="info">
-                        Distributed among your team members by assigning a percentage to each person
-                    </p>
-                    <ul>
-                        <c:forEach var="member" items="${members}">
-                            <li>
+                            <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
+                            <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p></p></div>
+                            <script type="text/javascript">
+                                jQuery(document).ready(function() {
+                                    initUserAutocomplete(${pointType.id});
+                                });
+                            </script>
+                        </c:otherwise>
+                    </c:choose>
+                    <ul class="userDistributionInputs" id="userDistributionInputs${pointType.id}">
+                        <li class="error"></li>
+                        <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
+                            <li class="listItem${pointType.id}-${userId}">
                                 <label class="percentageInput">
                                     <form:input
-                                            path="assignments[${pointType.id}][${member.userId}]"
+                                            path="assignments[${pointType.id}][${userId}]"
                                             class="popupreg_input"
-                                            value="${assignPointsBean.assignments[pointType.id][member.userId]}"
+                                            value="${assignPointsBean.assignments[pointType.id][userId]}"
                                             />%
-                                    <span><c:out value="${member.fullName}"/></span>
+                                    <span class="replaceUserId">${userId}</span>
+                                    <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
+                                        <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
+                                    </c:if>
                                 </label>
+
                             </li>
                         </c:forEach>
                     </ul>
                 </c:when>
-
             </c:choose>
         </c:otherwise>
     </c:choose>

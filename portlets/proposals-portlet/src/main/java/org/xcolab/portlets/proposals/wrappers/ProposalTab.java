@@ -37,7 +37,7 @@ public enum ProposalTab {
     ADVANCING("Judging Results",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    POINTS("Points", ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
+    POINTS("Points", ProposalTabCanAccessAlgorithm.pointsAccess, ProposalTabCanAccessAlgorithm.pointsAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
 
 
 

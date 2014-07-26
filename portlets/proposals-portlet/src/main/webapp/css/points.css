@@ -67,8 +67,10 @@
         padding-top: 100px;
 
         td.left, td.right {
+            padding-left: 10px;
+            padding-right: 10px;
             top: -30px;
-            padding-top: 70px;
+            padding-top: 50px;
             background-size: 35%;
 
             p.percentage {
@@ -82,21 +84,22 @@
             background-position: 40% 0;
         }
     }
-    ul {
+    ul li {
+        padding: 5px 10px;
+    }
+
+    ul.userDistributionInputs {
       list-style-type: none;
         li {
             padding: 0;
+            margin: 0;
             background: none;
         }
     }
 
-    .info {
-        padding: 10px;
-    }
     .highlighted {
         color: #66b035;
         font-weight: 700;
-        font-size: 24px;
         text-align: center;
     }
     span.highlighted {
@@ -112,5 +115,18 @@
           display: inline-block;
           vertical-align: baseline;
         }
+    }
+    .deleteListItem {
+        float: right;
+        margin: 8px 18px 0px 10px;
+        padding: 2px 6px;
+        background: #30a3fb;
+        border-radius: 3px;
+        color: white;
+        cursor: pointer;
+    }
+    .error {
+        font-weight: bold;
+        color: #c00;
     }
 }

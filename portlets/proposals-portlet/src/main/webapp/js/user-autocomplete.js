@@ -1,20 +1,19 @@
 
 var usersMap;
+var userNamesMap;
 
 
 
-function initUserAutocomplete(usersMapParam, preFill) {
-    usersMap = usersMapParam;
-    
-    jQuery('#userSelectorInput').focus(function() {
-        jQuery("#please_choose_from_list").hide();
+function initUserAutocomplete(idPostfix) {
+    jQuery('#userSelectorInput'+idPostfix).focus(function() {
+        jQuery("#please_choose_from_list"+idPostfix).hide();
     });
         
-    jQuery('#userSelectorInput').blur(function() {
+    jQuery('#userSelectorInput'+idPostfix).blur(function() {
     	setTimeout(function() {
     		var recipient = null;
     		var unknownUser = null;
-            var screenName = jQuery.trim(jQuery("#userSelectorInput").val());
+            var screenName = jQuery.trim(jQuery("#userSelectorInput"+idPostfix).val());
             if (screenName in usersMap) {
                 recipient = usersMap[screenName];
             }
@@ -22,21 +21,21 @@ function initUserAutocomplete(usersMapParam, preFill) {
                 unknownUser = screenName;
             }
     		if (recipient == null) {
-    			jQuery("#please_choose_from_list").show();
+    			jQuery("#please_choose_from_list"+idPostfix).show();
     		}
     		if (unknownUser != null) {
-    			jQuery("#unknownUsersContainer p").html(unknownUser);
-    			jQuery("#unknownUsersContainer").show();
+    			jQuery("#unknownUsersContainer"+idPostfix+" p").html(unknownUser);
+    			jQuery("#unknownUsersContainer"+idPostfix).show();
     		}
     		else {
-    			jQuery("#unknownUsersContainer").hide();
+    			jQuery("#unknownUsersContainer"+idPostfix).hide();
     		}
     		
     	}, 200);
     });
 
     try {
-       $( "#userSelectorInput" )
+       $("#userSelectorInput"+idPostfix)
          // don't navigate away from the field on tab when selecting an item
          .bind( "keydown", function( event ) {
            if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -48,26 +47,36 @@ function initUserAutocomplete(usersMapParam, preFill) {
            minLength: 0,
            source: function( request, response ) {
              // delegate back to autocomplete
-             response($.ui.autocomplete.filter(Object.keys(usersMapParam), request.term));
+             response($.ui.autocomplete.filter(Object.keys(usersMap), request.term));
            },
            focus: function() {
              // prevent value inserted on focus
              return false;
            },
            select: function( event, ui ) {
-             this.value = ui.item.value;
+             var userName = ui.item.value;
+               if (!jQuery('.listItem'+idPostfix+'-'+usersMap[userName]).length) {
+                   jQuery("#userDistributionInputs" + idPostfix).append(
+                           '<li class="listItem' + idPostfix + '-' + usersMap[userName] + '">'
+                           + '<label class="percentageInput"><input type="text" name="assignments[' + idPostfix + ']['
+                           + usersMap[userName] +
+                           ']" class="popupreg_input" />% <span class="userId">'
+                           + userNamesMap[usersMap[userName]] +
+                           '</span>' +
+                           '<span class="deleteListItem" data-item-id="' + idPostfix + '-' + usersMap[userName] + '">x</span>' +
+                           '</label></li>'
+                   );
+               };
+               this.value = "";
+               initUserAssignmentInputs();
              return false;
            }
          });
-
-       if (preFill) {
-           jQuery("#userSelectorInput").val(preFill);
-       }
     }
     catch (e) {
     	alert(e);
     }
-    jQuery('.messageRecipients').keypress(function(e) {
+    jQuery('.messageRecipients'+idPostfix).keypress(function(e) {
     	 var code = (e.keyCode ? e.keyCode : e.which);
     	 if (code == 13) {
     		 // enter pressed ignore
@@ -75,24 +84,53 @@ function initUserAutocomplete(usersMapParam, preFill) {
     	 }
     	 
     });
-    
 }
 
-function updateRecipient() {
-    var userName = jQuery.trim(jQuery("#userSelectorInput").val());
-    if (userName.length > 0 && userName in usersMap) {
-        recipient = usersMap[userName];
-    }
-    jQuery(".messageRecipientsInput").val(recipient);
+function initUserAssignmentInputs() {
+    //delete nodes
+    jQuery(".deleteListItem").off('click');
+    jQuery(".deleteListItem").on('click', function() {
+        var id = jQuery(this).attr("data-item-id");
+        jQuery(".listItem"+id).remove();
+    });
+
+    jQuery(".userDistributionInputs input").off('input');
+    jQuery(".userDistributionInputs input").off('focus');
+    jQuery(".userDistributionInputs input").on('focus', function() {
+        if (this.value == 0) {
+            this.value = "";
+        }
+    });
+    jQuery(".userDistributionInputs input").on('input', function() {
+        jQuery(".error", jQuery(this).closest(".userDistributionInputs")).html("");
+        //filter non-numeric values
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+}
+function areAllInputsValid() {
+    var valid = true;
+    jQuery(".userDistributionInputs").each(function() {
+        var ul = jQuery(this);
+        jQuery(".error", ul).html("");
+        var sum = 0;
+        var atLeastEntry = false;
+        jQuery("input", ul).each(function() {
+            sum += new Number(this.value);
+            atLeastEntry = true;
+        });
+        if (atLeastEntry && sum != 100) {
+            jQuery(".error", ul).html("Please make sure that the percentages sum up to exactly 100% (currently assigned: "+sum+"%).");
+            valid = false;
+        }
+    });
+    return valid;
 }
 
-
-function recipientValid() {
-    updateRecipient();
-    jQuery(".messageRecipientsError").remove();
-    if (jQuery.trim(jQuery(".messageRecipientsInput").val()) == '') {
-        jQuery(".messageRecipientsInput").after("<label class='error messageRecipientsError'>This field is required.</label>");
-        return false;
-    }
-    return true;
-}
+jQuery(function() {
+   jQuery("#submitPointsForm").click(function() {
+       if (areAllInputsValid()) {
+        jQuery(this).closest('form').submit();
+       }
+   })
+});

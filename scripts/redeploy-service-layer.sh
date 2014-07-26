@@ -1,10 +1,7 @@
 XCOLAB_HOME=$(pwd)"/../"
 
-cd $XCOLAB_HOME/services/plansProposalsFacade
-mvn install -N
-
 cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet-service
-mvn compile package install
+mvn clean compile package install
 
 cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet
-mvn compile package liferay:deploy -DskipTests=true
+mvn clean compile package liferay:deploy -DskipTests=true
