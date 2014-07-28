@@ -66,13 +66,15 @@
                     <p class="info">
                         Equally distributed among all proposals you have referenced.
                     </p>
-                    <ul>
+                    <ul class="subproposals">
                         <c:forEach var="proposal" items="${subProposals}">
                             <li>
                                 <span class="highlighted">
                                     <fmt:formatNumber type="percent" value="${1/subProposals.size()}"/>
                                 </span>
-                                <c:out value="${proposal.name}"/>
+                                <a href="${proposal.proposalURL}">
+                                    <c:out value="${proposal.name}"/>
+                                </a>
                             </li>
                         </c:forEach>
 
@@ -85,7 +87,7 @@
                     <c:choose>
                         <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
                             <p class="info">
-                                Distributed among your team members by assigning a percentage to each person
+                                Distributed among your team members by assigning a percentage to each person.
                             </p>
                         </c:when>
                         <c:otherwise>
@@ -97,7 +99,7 @@
                                 (start typing the member's screen name, and auto-complete will help you).
                                 If you do not complete this section, these points will not be allocated.
                             </p>
-                            <label>
+                            <label class="username-picker">
                                 Username:<br />
                                 <input id="userSelectorInput${pointType.id}" type="text" class="popupreg_input messageRecipients${pointType.id}" />
                                 <input type="hidden" class="messageRecipientsInput${pointType.id}" />
@@ -114,6 +116,10 @@
                     </c:choose>
                     <ul class="userDistributionInputs" id="userDistributionInputs${pointType.id}">
                         <li class="error"></li>
+                        <li class="header">
+                            <strong class="percentage">% received</strong>
+                            <strong class="name">Name of receiver</strong>
+                        </li>
                         <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
                             <li class="listItem${pointType.id}-${userId}">
                                 <label class="percentageInput">
@@ -121,8 +127,10 @@
                                             path="assignments[${pointType.id}][${userId}]"
                                             class="popupreg_input"
                                             value="${assignPointsBean.assignments[pointType.id][userId]}"
-                                            />%
-                                    <span class="replaceUserId">${userId}</span>
+                                            />
+                                    <a href="/web/guest/member/-/member/userId/${userId}">
+                                        <span class="replaceUserId">${userId}</span>
+                                    </a>
                                     <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
                                         <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
                                     </c:if>

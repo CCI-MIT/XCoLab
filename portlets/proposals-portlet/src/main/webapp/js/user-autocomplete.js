@@ -60,9 +60,11 @@ function initUserAutocomplete(idPostfix) {
                            '<li class="listItem' + idPostfix + '-' + usersMap[userName] + '">'
                            + '<label class="percentageInput"><input type="text" name="assignments[' + idPostfix + ']['
                            + usersMap[userName] +
-                           ']" class="popupreg_input" />% <span class="userId">'
+                           ']" class="popupreg_input" /> '+
+                               '<a href="/web/guest/member/-/member/userId/'+usersMap[userName]+'">'
+                               +'<span class="userId">'
                            + userNamesMap[usersMap[userName]] +
-                           '</span>' +
+                           '</a></span>' +
                            '<span class="deleteListItem" data-item-id="' + idPostfix + '-' + usersMap[userName] + '">x</span>' +
                            '</label></li>'
                    );
