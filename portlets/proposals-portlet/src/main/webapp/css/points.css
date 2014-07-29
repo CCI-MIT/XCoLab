@@ -158,8 +158,12 @@
         color: #c00;
     }
 
+    .header .percentage {
+        padding-left: 30px;
+    }
     .header .name {
         float: right;
-        margin-right: 75px;
+        position: relative;
+        right: 125px;
     }
 }

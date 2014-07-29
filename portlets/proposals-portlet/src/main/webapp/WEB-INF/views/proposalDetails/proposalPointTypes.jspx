@@ -117,8 +117,8 @@
                     <ul class="userDistributionInputs" id="userDistributionInputs${pointType.id}">
                         <li class="error"></li>
                         <li class="header">
-                            <strong class="percentage">% received</strong>
-                            <strong class="name">Name of receiver</strong>
+                            <strong class="percentage">%</strong>
+                            <strong class="name">Name</strong>
                         </li>
                         <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
                             <li class="listItem${pointType.id}-${userId}">
