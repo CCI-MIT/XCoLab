@@ -34,7 +34,7 @@ public class PointTypeLocalServiceImpl extends PointTypeLocalServiceBaseImpl {
     public List<PointType> getChildrenOfPointType(long parentPointTypeId) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(PointType.class)
                 .add(PropertyFactoryUtil.forName("parentPointTypeId").eq(parentPointTypeId));
-        query.addOrder(OrderFactoryUtil.desc("id"));
+        query.addOrder(OrderFactoryUtil.asc("sort"));
         return dynamicQuery(query);
     }
 }

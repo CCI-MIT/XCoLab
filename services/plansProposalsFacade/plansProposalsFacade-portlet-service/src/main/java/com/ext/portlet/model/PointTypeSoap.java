@@ -19,6 +19,7 @@ public class PointTypeSoap implements Serializable {
     private String _distributionStrategy;
     private String _receiverLimitationStrategy;
     private String _name;
+    private long _sort;
 
     public PointTypeSoap() {
     }
@@ -32,6 +33,7 @@ public class PointTypeSoap implements Serializable {
         soapModel.setDistributionStrategy(model.getDistributionStrategy());
         soapModel.setReceiverLimitationStrategy(model.getReceiverLimitationStrategy());
         soapModel.setName(model.getName());
+        soapModel.setSort(model.getSort());
 
         return soapModel;
     }
@@ -126,5 +128,13 @@ public class PointTypeSoap implements Serializable {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public long getSort() {
+        return _sort;
+    }
+
+    public void setSort(long sort) {
+        _sort = sort;
     }
 }

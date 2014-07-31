@@ -43,6 +43,7 @@ public class PointTypeWrapper implements PointType, ModelWrapper<PointType> {
         attributes.put("receiverLimitationStrategy",
             getReceiverLimitationStrategy());
         attributes.put("name", getName());
+        attributes.put("sort", getSort());
 
         return attributes;
     }
@@ -86,6 +87,12 @@ public class PointTypeWrapper implements PointType, ModelWrapper<PointType> {
 
         if (name != null) {
             setName(name);
+        }
+
+        Long sort = (Long) attributes.get("sort");
+
+        if (sort != null) {
+            setSort(sort);
         }
     }
 
@@ -228,6 +235,26 @@ public class PointTypeWrapper implements PointType, ModelWrapper<PointType> {
     @Override
     public void setName(java.lang.String name) {
         _pointType.setName(name);
+    }
+
+    /**
+    * Returns the sort of this point type.
+    *
+    * @return the sort of this point type
+    */
+    @Override
+    public long getSort() {
+        return _pointType.getSort();
+    }
+
+    /**
+    * Sets the sort of this point type.
+    *
+    * @param sort the sort of this point type
+    */
+    @Override
+    public void setSort(long sort) {
+        _pointType.setSort(sort);
     }
 
     @Override

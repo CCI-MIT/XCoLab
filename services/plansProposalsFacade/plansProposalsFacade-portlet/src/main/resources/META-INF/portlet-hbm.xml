@@ -968,6 +968,7 @@
 		<property name="distributionStrategy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="receiverLimitationStrategy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalImpl" table="xcolab_Proposal">
 		<cache usage="read-write" />

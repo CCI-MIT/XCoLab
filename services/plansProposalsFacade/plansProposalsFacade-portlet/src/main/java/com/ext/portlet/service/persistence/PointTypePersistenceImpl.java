@@ -839,6 +839,7 @@ public class PointTypePersistenceImpl extends BasePersistenceImpl<PointType>
         pointTypeImpl.setDistributionStrategy(pointType.getDistributionStrategy());
         pointTypeImpl.setReceiverLimitationStrategy(pointType.getReceiverLimitationStrategy());
         pointTypeImpl.setName(pointType.getName());
+        pointTypeImpl.setSort(pointType.getSort());
 
         return pointTypeImpl;
     }

@@ -1228,6 +1228,7 @@
 			<basic name="distributionStrategy" />
 			<basic name="receiverLimitationStrategy" />
 			<basic name="name" />
+			<basic name="sort" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

@@ -25,6 +25,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
     private String _distributionStrategy;
     private String _receiverLimitationStrategy;
     private String _name;
+    private long _sort;
     private BaseModel<?> _pointTypeRemoteModel;
 
     public PointTypeClp() {
@@ -71,6 +72,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         attributes.put("receiverLimitationStrategy",
             getReceiverLimitationStrategy());
         attributes.put("name", getName());
+        attributes.put("sort", getSort());
 
         return attributes;
     }
@@ -114,6 +116,12 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
 
         if (name != null) {
             setName(name);
+        }
+
+        Long sort = (Long) attributes.get("sort");
+
+        if (sort != null) {
+            setSort(sort);
         }
     }
 
@@ -253,6 +261,28 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         }
     }
 
+    @Override
+    public long getSort() {
+        return _sort;
+    }
+
+    @Override
+    public void setSort(long sort) {
+        _sort = sort;
+
+        if (_pointTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _pointTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSort", long.class);
+
+                method.invoke(_pointTypeRemoteModel, sort);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getPointTypeRemoteModel() {
         return _pointTypeRemoteModel;
     }
@@ -326,6 +356,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         clone.setDistributionStrategy(getDistributionStrategy());
         clone.setReceiverLimitationStrategy(getReceiverLimitationStrategy());
         clone.setName(getName());
+        clone.setSort(getSort());
 
         return clone;
     }
@@ -371,7 +402,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(getId());
@@ -385,6 +416,8 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         sb.append(getReceiverLimitationStrategy());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", sort=");
+        sb.append(getSort());
         sb.append("}");
 
         return sb.toString();
@@ -392,7 +425,7 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PointType");
@@ -421,6 +454,10 @@ public class PointTypeClp extends BaseModelImpl<PointType> implements PointType 
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sort</column-name><column-value><![CDATA[");
+        sb.append(getSort());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

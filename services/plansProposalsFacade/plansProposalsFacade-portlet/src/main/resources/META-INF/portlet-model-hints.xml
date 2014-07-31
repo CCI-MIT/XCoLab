@@ -851,6 +851,7 @@
 		<field name="distributionStrategy" type="String" />
 		<field name="receiverLimitationStrategy" type="String" />
 		<field name="name" type="String" />
+		<field name="sort" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.Proposal">
 		<field name="proposalId" type="long" />

@@ -712,7 +712,8 @@ create table xcolab_PointType (
 	percentageOfParent DOUBLE,
 	distributionStrategy VARCHAR(75) null,
 	receiverLimitationStrategy VARCHAR(75) null,
-	name VARCHAR(75) null
+	name VARCHAR(75) null,
+	sort LONG
 );
 
 create table xcolab_Points (
