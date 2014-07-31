@@ -877,8 +877,8 @@
 		<field name="userId" type="long" />
 		<field name="ratingValueId" type="long" />
 		<field name="comment" type="String">
-            <hint name="max-length">2000000</hint>
-        </field>
+			<hint name="max-length">2000000</hint>
+		</field>
 		<field name="commentEnabled" type="boolean" />
 		<field name="otherDataString" type="String" />
 	</model>

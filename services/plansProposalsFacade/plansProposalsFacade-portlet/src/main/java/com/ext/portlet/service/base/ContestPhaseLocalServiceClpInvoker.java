@@ -77,10 +77,10 @@ public class ContestPhaseLocalServiceClpInvoker {
     private String[] _methodParameterTypes560;
     private String _methodName561;
     private String[] _methodParameterTypes561;
-    private String _methodName564;
-    private String[] _methodParameterTypes564;
     private String _methodName565;
     private String[] _methodParameterTypes565;
+    private String _methodName566;
+    private String[] _methodParameterTypes566;
 
     public ContestPhaseLocalServiceClpInvoker() {
         _methodName0 = "addContestPhase";
@@ -257,16 +257,16 @@ public class ContestPhaseLocalServiceClpInvoker {
 
         _methodParameterTypes561 = new String[] {  };
 
-        _methodName564 = "forcePromotionOfProposalInPhase";
+        _methodName565 = "forcePromotionOfProposalInPhase";
 
-        _methodParameterTypes564 = new String[] {
+        _methodParameterTypes565 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.ContestPhase"
             };
 
-        _methodName565 = "getNumberOfProposalsForJudge";
+        _methodName566 = "getNumberOfProposalsForJudge";
 
-        _methodParameterTypes565 = new String[] {
+        _methodParameterTypes566 = new String[] {
                 "com.liferay.portal.model.User",
                 "com.ext.portlet.model.ContestPhase"
             };
@@ -462,16 +462,16 @@ public class ContestPhaseLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName564.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes564, parameterTypes)) {
+        if (_methodName565.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
 
             return null;
         }
 
-        if (_methodName565.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
+        if (_methodName566.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes566, parameterTypes)) {
             return ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge((com.liferay.portal.model.User) arguments[0],
                 (com.ext.portlet.model.ContestPhase) arguments[1]);
         }

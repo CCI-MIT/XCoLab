@@ -744,7 +744,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
                 //take the average for each type
                 for (ProposalRatingType key : ratingsPerType.keySet()) {
-                    long sum = 0;
+                    double sum = 0;
                     int count = 0;
                     for (Long val: ratingsPerType.get(key)) {
                         sum += val;
