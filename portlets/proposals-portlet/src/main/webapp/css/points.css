@@ -74,7 +74,7 @@ td.left.small .points-container, td.left.small .arrow-down {
 
     td.left {
         background-image: url(../img/arrow-left.png);
-        background-position: 80% 0;
+        background-position: 69.5% 0;
     }
     td.left.large {
         background-position: 62.5% 0;
@@ -90,7 +90,7 @@ td.left.small .points-container, td.left.small .arrow-down {
     }
     td.right {
         background-image: url(../img/arrow-right.png);
-        background-position: 20% 0;
+        background-position: 30.5% 0;
     }
     td.left, td.right {
         background-repeat: no-repeat;
