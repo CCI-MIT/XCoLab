@@ -801,7 +801,7 @@ create table xcolab_ProposalRating (
 	contestPhaseId LONG,
 	userId LONG,
 	ratingValueId LONG,
-	comment_ VARCHAR(75) null,
+	comment_ TEXT null,
 	commentEnabled BOOLEAN,
 	otherDataString VARCHAR(75) null
 );

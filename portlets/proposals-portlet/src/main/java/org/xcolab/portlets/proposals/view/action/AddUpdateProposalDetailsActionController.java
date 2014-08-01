@@ -298,7 +298,10 @@ public class AddUpdateProposalDetailsActionController {
     	baseUrl.substring(0, baseUrl.indexOf("/", 9));
         //http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
         Whitelist w = Whitelist.relaxed().preserveRelativeLinks(true);
-        w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
+        //allow internal anchors
+        w.addAttributes("a", "name");
+        //Do not add _blank because it would break internal anchors
+        // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
 
     	Document doc = Jsoup.parse(sectionData, baseUrl);

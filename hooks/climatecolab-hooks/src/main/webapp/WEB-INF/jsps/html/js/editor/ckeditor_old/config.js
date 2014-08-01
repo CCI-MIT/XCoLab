@@ -12,7 +12,7 @@ CKEDITOR.editorConfig = function( config )
      
     config.toolbar_Colab =
     [
-        { name: 'controls', items : [ 'Bold', 'Italic', 'Underline','NumberedList', 'BulletedList', 'Link', 'Image', 'ProposalLink'] }
+        { name: 'controls', items : [ 'Bold', 'Italic', 'Underline','NumberedList', 'BulletedList', 'Anchor', 'Link', 'Image', 'ProposalLink'] }
     ];
     config.toolbar = 'Colab';
     config.skin = "colab";

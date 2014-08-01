@@ -12,8 +12,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
+import java.text.DecimalFormat;
 import java.text.Normalizer;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -44,7 +44,9 @@ public class ProposalReviewCsvExporter {
         if (proposalToProposalReviewsMap.size() == 0) {
             return StringPool.BLANK;
         }
-        
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
         StringBuilder tableBody = new StringBuilder();
         for (Proposal proposal : proposalToProposalReviewsMap.keySet()) {
             String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(),
@@ -63,14 +65,13 @@ public class ProposalReviewCsvExporter {
                 String contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
                 tableBody.append("\"" + escapeQuote(contestPhaseName) + "\"");
 
-                StringBuilder ratingString = new StringBuilder();
                 StringBuilder commentString = new StringBuilder();
                 for (ProposalRatingType ratingType : ratingTypes) {
                     Double average = proposalReview.getRatingAverage(ratingType);
                     if (Validator.isNull(average)) {
                         commentString.append(delimiter + "\"\"");
                     } else {
-                        commentString.append(delimiter + "\"" + average + TQF + "\"");
+                        commentString.append(delimiter + "\"" + df.format(average) + TQF + "\"");
                     }
                 }
                 for (User reviewer : reviewers) {
@@ -81,7 +82,7 @@ public class ProposalReviewCsvExporter {
                         commentString.append(delimiter + "\"" + escapeQuote(review) + TQF + "\"");
                     }
                 }
-                tableBody.append(ratingString).append(commentString).append("\n");
+                tableBody.append(commentString).append("\n");
                 isFirstLine = false;
             }
         }
@@ -126,6 +127,13 @@ public class ProposalReviewCsvExporter {
     }
 
     private String escapeQuote(String input) {
-        return StringUtil.replace(input, "\"", "\"\"\"");
+        //replace double quotes with single quotes (safer than 3 quotes)
+        input = StringUtil.replace(input, "\"", "'");
+        //delete new lines
+        input = StringUtil.replace(input, "\r\n", " ");
+        input = StringUtil.replace(input, "\n", " ");
+        input = StringUtil.replace(input, "\r", " ");
+
+        return input;
     }
 }

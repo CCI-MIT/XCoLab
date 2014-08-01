@@ -1172,6 +1172,7 @@ input.selectbox span {font-size:13px; font-style:normal; font-weight:600; color:
 .phaseLinkContainer {
 	display: inline-block;
 	position: relative;
+    font-size: 13px;
 }
 
 .tooltip {

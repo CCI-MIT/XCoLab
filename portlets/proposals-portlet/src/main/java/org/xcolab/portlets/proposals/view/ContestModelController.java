@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,15 @@ public class ContestModelController extends BaseProposalsController {
     	}
     	Long contestPK = proposalsContext.getContest(request).getContestPK();
     	Long modelId = ContestLocalServiceUtil.getDefaultModelId(contestPK);
+    	Map<Long, String> modelIdsWithNames = null;
+    	if (modelId != null) {
+        	modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+        	
+        	model.addAttribute("availableModels", modelIdsWithNames);
+    	}    
+    	else {
+    		modelIdsWithNames = new HashMap<Long, String>();
+    	}
     	
 
         for (Cookie cookie: request.getCookies()) {
@@ -50,7 +60,12 @@ public class ContestModelController extends BaseProposalsController {
             		JsonElement element = new JsonParser().parse(URLDecoder.decode(cookie.getValue()));
             		JsonObject object = element.getAsJsonObject();
             		if (object.has(String.valueOf(proposalsContext.getContest(request).getContestPK()))) {
-            			modelId = object.get(String.valueOf(contestPK)).getAsLong();
+            			
+            			long preferredModelId = object.get(String.valueOf(contestPK)).getAsLong();
+            			if (modelIdsWithNames.containsKey(preferredModelId)) {
+            				modelId = preferredModelId;
+            			}
+            			
             		}
             				
             	}
@@ -62,12 +77,6 @@ public class ContestModelController extends BaseProposalsController {
     	
     	
     	model.addAttribute("modelId", modelId);
-    	if (modelId != null) {
-        	Map<Long, String> modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-        	
-        	model.addAttribute("availableModels", modelIdsWithNames);
-    		
-    	}        
         return "contestModel";
         
     }

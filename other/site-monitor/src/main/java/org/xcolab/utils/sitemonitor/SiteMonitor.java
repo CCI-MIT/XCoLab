@@ -70,11 +70,13 @@ public class SiteMonitor {
 			pageCheckers.put(checkerConfig.getName(), checker);
 		}
 		for (CheckerMapping mapping: config.getCheckerMappings()) {
+            _log.info("using checker: "+mapping.getChecker());
 			if (! pageCheckers.containsKey(mapping.getChecker())) {
 				throw new RuntimeException("Can't find page checker for name (in mapping) " + mapping.getChecker());
 			}
 		}
 		checkerMappings.addAll(config.getCheckerMappings());
+
 
 		if (oldErrorsFile.exists()) {
 			BufferedReader bis = new BufferedReader(new FileReader(
@@ -102,6 +104,7 @@ public class SiteMonitor {
 
 				StringBuilder emailNewUrlErrors = new StringBuilder();
 				for (DetectedError error : entry.getValue()) {
+                    _log.info("FOUND ERROR: "+error.getMessage());
 
 					if (!oldErrors.contains(getUrlCheckerErrorKey(entry.getKey(), error.getChecker()))) {
 
@@ -153,6 +156,7 @@ public class SiteMonitor {
 						config.getEmailNotificationConfig().getSmtppassword());
 			}
 			email.send();
+            _log.info("Sent email.");
 			
 		}
 	}
@@ -178,6 +182,8 @@ public class SiteMonitor {
 				url.indexOf("/", 9));
 		String currentPath = slashPos < 0 ? "" : url
 				.substring(siteUrl.length());
+        //urlencode whitespace in urls
+        url = url.replaceAll(" ", "%20");
 		_log.info("Crawling url " + url + "\tlevel: " + level + " of " + crawlConfig.getRecursionLevel());
 		HttpResponse response = client.execute(new HttpGet(url));
 		String pageContent = IOUtils
