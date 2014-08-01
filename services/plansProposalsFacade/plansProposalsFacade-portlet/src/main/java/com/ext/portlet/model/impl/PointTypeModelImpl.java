@@ -54,9 +54,10 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
             { "percentageOfParent", Types.DOUBLE },
             { "distributionStrategy", Types.VARCHAR },
             { "receiverLimitationStrategy", Types.VARCHAR },
-            { "name", Types.VARCHAR }
+            { "name", Types.VARCHAR },
+            { "sort", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PointType (id_ LONG not null primary key,parentPointTypeId LONG,percentageOfParent DOUBLE,distributionStrategy VARCHAR(75) null,receiverLimitationStrategy VARCHAR(75) null,name VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PointType (id_ LONG not null primary key,parentPointTypeId LONG,percentageOfParent DOUBLE,distributionStrategy VARCHAR(75) null,receiverLimitationStrategy VARCHAR(75) null,name VARCHAR(75) null,sort LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PointType";
     public static final String ORDER_BY_JPQL = " ORDER BY pointType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PointType.id_ ASC";
@@ -88,6 +89,7 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
     private String _distributionStrategy;
     private String _receiverLimitationStrategy;
     private String _name;
+    private long _sort;
     private long _columnBitmask;
     private PointType _escapedModel;
 
@@ -113,6 +115,7 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         model.setDistributionStrategy(soapModel.getDistributionStrategy());
         model.setReceiverLimitationStrategy(soapModel.getReceiverLimitationStrategy());
         model.setName(soapModel.getName());
+        model.setSort(soapModel.getSort());
 
         return model;
     }
@@ -178,6 +181,7 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         attributes.put("receiverLimitationStrategy",
             getReceiverLimitationStrategy());
         attributes.put("name", getName());
+        attributes.put("sort", getSort());
 
         return attributes;
     }
@@ -221,6 +225,12 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
 
         if (name != null) {
             setName(name);
+        }
+
+        Long sort = (Long) attributes.get("sort");
+
+        if (sort != null) {
+            setSort(sort);
         }
     }
 
@@ -314,6 +324,17 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         _name = name;
     }
 
+    @JSON
+    @Override
+    public long getSort() {
+        return _sort;
+    }
+
+    @Override
+    public void setSort(long sort) {
+        _sort = sort;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -351,6 +372,7 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         pointTypeImpl.setDistributionStrategy(getDistributionStrategy());
         pointTypeImpl.setReceiverLimitationStrategy(getReceiverLimitationStrategy());
         pointTypeImpl.setName(getName());
+        pointTypeImpl.setSort(getSort());
 
         pointTypeImpl.resetOriginalValues();
 
@@ -443,12 +465,14 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
             pointTypeCacheModel.name = null;
         }
 
+        pointTypeCacheModel.sort = getSort();
+
         return pointTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(getId());
@@ -462,6 +486,8 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         sb.append(getReceiverLimitationStrategy());
         sb.append(", name=");
         sb.append(getName());
+        sb.append(", sort=");
+        sb.append(getSort());
         sb.append("}");
 
         return sb.toString();
@@ -469,7 +495,7 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.PointType");
@@ -498,6 +524,10 @@ public class PointTypeModelImpl extends BaseModelImpl<PointType>
         sb.append(
             "<column><column-name>name</column-name><column-value><![CDATA[");
         sb.append(getName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>sort</column-name><column-value><![CDATA[");
+        sb.append(getSort());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

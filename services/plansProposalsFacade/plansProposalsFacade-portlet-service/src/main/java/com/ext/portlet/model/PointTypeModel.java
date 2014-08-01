@@ -130,6 +130,20 @@ public interface PointTypeModel extends BaseModel<PointType> {
      */
     public void setName(String name);
 
+    /**
+     * Returns the sort of this point type.
+     *
+     * @return the sort of this point type
+     */
+    public long getSort();
+
+    /**
+     * Sets the sort of this point type.
+     *
+     * @param sort the sort of this point type
+     */
+    public void setSort(long sort);
+
     @Override
     public boolean isNew();
 

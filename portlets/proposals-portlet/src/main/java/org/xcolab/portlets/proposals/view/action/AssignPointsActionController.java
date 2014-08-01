@@ -1,25 +1,11 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRating;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,17 +17,11 @@ import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.*;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 
-import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -55,6 +35,15 @@ public class AssignPointsActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
+    private Map<Long, Double> pointTypePercentageModifiers = new HashMap<Long, Double>();
+
+    private void initializePercentageModifiers(PointTypeWrapper pointType) {
+        this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());
+        for (PointTypeWrapper p: pointType.getChildren()) {
+            this.initializePercentageModifiers(p);
+        }
+    }
+
     @RequestMapping(params = {"action=savePointAssignments"})
     public void savePointAssignments(ActionRequest request, Model model,
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
@@ -66,20 +55,28 @@ public class AssignPointsActionController {
 
         Proposal proposal = proposalsContext.getProposal(request);
         User currentUser = proposalsContext.getUser(request);
-        long contestId = proposalsContext.getContest(request).getContestPK();
+        Contest contest = proposalsContext.getContest(request);
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
 
         //first, delete the existing configuration
         PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
 
         try {
+            PointType contestRootPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
+
+            //calculate the percentage multiplicator for each pointtype
+            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
+
             //custom user assignments
             for (Long pointTypeId : assignPointsBean.getAssignments().keySet()) {
-                Map<Long, Integer> assignments = assignPointsBean.get(pointTypeId);
+                Map<Long, Double> assignments = assignPointsBean.get(pointTypeId);
 
                 double sum = 0.0;
                 for (Long targetUserId : assignments.keySet()) {
-                    double percentage = new Double(assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0) / 100.0;
+                    double percentage = new Double(assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0);
+                    //calculate relative percentage
+                    percentage = percentage * (1.0/(this.pointTypePercentageModifiers.get(pointTypeId)*100.0));
+                    //round to two decimals
                     sum += percentage;
                     PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
                             proposal.getProposalId(),
@@ -90,6 +87,7 @@ public class AssignPointsActionController {
                             currentUser.getUserId()
                     );
                 }
+                sum = Math.round(sum*100)/100.0d;
                 if (sum != 1.0) {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
@@ -100,7 +98,7 @@ public class AssignPointsActionController {
             PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
             throw e;
         }
-        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposal.getProposalId()+"/tab/POINTS");
+        response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contest.getContestPK()+"/phaseId/"+contestPhaseId+"/planId/"+proposal.getProposalId()+"/tab/POINTS");
     }
 
 

@@ -166,7 +166,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public void setScenario(Scenario s) throws IncompatibleScenarioException {
         super.setScenario(s);
-        for (ModelInputDisplayItem item : getDisplayItems()) {
+        for (ModelInputDisplayItem item : getAllItems()) {
             item.setScenario(s);
         }
     }

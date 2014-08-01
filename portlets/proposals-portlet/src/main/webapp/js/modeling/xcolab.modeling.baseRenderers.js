@@ -88,14 +88,17 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	 * Renders a header line (in view mode) for an input if it has no parent or its direct parent is a tab.
 	 */
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype.renderHeader = function(container, input, modelingWidget, idx, parent) {
-		if (!(input.groupType == 'TAB') && (typeof(parent) == 'undefined' || parent.groupType == 'TAB' )) {
+		// FIXME - headers disabled as per Rob's request
+		if (false && !(input.groupType == 'TAB') && (typeof(parent) == 'undefined' || parent.groupType == 'TAB' )) {
 			// this input has no parent or its parent is a tab, it should display it's name as an input section header
-			var addTooltip = input.description && jQuery.trim(input.description).length > 0; 
-			container.append("<div><span class='input_def_header'>" + input.name + (addTooltip ? "<div class='tooltipTrigger qmark'>?</div>" : "") + "</span></div>");
+			//var addTooltip = input.description && jQuery.trim(input.description).length > 0;
+			var addTooltip = false;
+			container.append("<div><span class='input_def_header'>" + input.name + (addTooltip ? "<div class='tooltipTrigger'><div class='qmark'>?</div>" : "</span></div>"));
 			if (addTooltip) {
 				container.append("<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>"
 						+ input.description + 
-						"</div></div><div class='act_tt-bot'></div></div>");
+						"</div></div><div class='act_tt-bot'></div></div>"
+						+ "</span></div>");
 			}
 		}
 	};

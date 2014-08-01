@@ -480,7 +480,9 @@ public class ProposalWrapper {
     
 
     public Long getScenarioId() throws PortalException, SystemException {
-        return proposalAttributeUtil.getAttributeValueLong(ProposalAttributeKeys.SCENARIO_ID, getModelId(), 0);
+        ProposalAttribute attr = proposalAttributeUtil.getLatestAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
+	if (attr == null) return 0L;
+        return attr.getNumericValue();
     }
 
     /**

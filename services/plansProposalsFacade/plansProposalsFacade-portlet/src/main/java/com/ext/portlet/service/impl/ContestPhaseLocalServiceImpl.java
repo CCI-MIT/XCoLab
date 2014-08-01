@@ -304,6 +304,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             continue;
                         }
 
+                        if(!proposalIsVisible(p, phase)) {
+                            continue;
+                        }
+
                         promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                     }
 
@@ -353,6 +357,18 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 }
             }
         }
+    }
+
+    private boolean proposalIsVisible(Proposal p, ContestPhase phase) {
+        if(!p.getVisible()) return false;
+
+        try {
+            ProposalContestPhaseAttribute attr = getProposalContestPhaseAttributeLocalService().getProposalContestPhaseAttribute(p.getProposalId(), phase.getContestPhasePK(), "VISIBLE");
+            if(attr.getNumericValue() == 0) return false;
+        } catch (Exception e) {
+        }
+
+        return true;
     }
 
     private boolean didJudgeDecideToPromote(Proposal p, ContestPhase phase) {

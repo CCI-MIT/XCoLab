@@ -86,7 +86,7 @@ public class ProposalTextExtraction {
         return ret;
     }
 
-    private List<Contest> getContestsIn2013() throws SystemException {
+    public List<Contest> getContestsIn2013() throws SystemException {
         List<Contest> targetContests = new LinkedList<>();
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
             if (contest.getContestShortName().endsWith("2013")) {

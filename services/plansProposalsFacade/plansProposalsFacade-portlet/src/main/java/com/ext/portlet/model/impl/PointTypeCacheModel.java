@@ -26,10 +26,11 @@ public class PointTypeCacheModel implements CacheModel<PointType>,
     public String distributionStrategy;
     public String receiverLimitationStrategy;
     public String name;
+    public long sort;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{id=");
         sb.append(id);
@@ -43,6 +44,8 @@ public class PointTypeCacheModel implements CacheModel<PointType>,
         sb.append(receiverLimitationStrategy);
         sb.append(", name=");
         sb.append(name);
+        sb.append(", sort=");
+        sb.append(sort);
         sb.append("}");
 
         return sb.toString();
@@ -74,6 +77,8 @@ public class PointTypeCacheModel implements CacheModel<PointType>,
             pointTypeImpl.setName(name);
         }
 
+        pointTypeImpl.setSort(sort);
+
         pointTypeImpl.resetOriginalValues();
 
         return pointTypeImpl;
@@ -87,6 +92,7 @@ public class PointTypeCacheModel implements CacheModel<PointType>,
         distributionStrategy = objectInput.readUTF();
         receiverLimitationStrategy = objectInput.readUTF();
         name = objectInput.readUTF();
+        sort = objectInput.readLong();
     }
 
     @Override
@@ -113,5 +119,7 @@ public class PointTypeCacheModel implements CacheModel<PointType>,
         } else {
             objectOutput.writeUTF(name);
         }
+
+        objectOutput.writeLong(sort);
     }
 }

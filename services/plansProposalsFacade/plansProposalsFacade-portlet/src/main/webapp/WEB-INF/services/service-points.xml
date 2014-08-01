@@ -44,6 +44,7 @@
         <column name="distributionStrategy" type="String" />
     	<column name="receiverLimitationStrategy" type="String" />
     	<column name="name" type="String" />
+        <column name="sort" type="long" />
 
         <finder return-type="Collection" name="ParentPointTypeId">
             <finder-column name="parentPointTypeId" />

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,6 +57,13 @@ public class ProposalRatingsWrapper {
             }
         }
         return "";
+    }
+
+    public String getCommentEscaped() {
+        String comment = this.getComment();
+        comment = StringEscapeUtils.escapeHtml(comment);
+        comment = comment.replaceAll("\n", "<br>");
+        return comment;
     }
 
     public boolean isReviewComplete() {

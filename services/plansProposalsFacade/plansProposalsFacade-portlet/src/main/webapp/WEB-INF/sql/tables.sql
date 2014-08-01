@@ -712,7 +712,8 @@ create table xcolab_PointType (
 	percentageOfParent DOUBLE,
 	distributionStrategy VARCHAR(75) null,
 	receiverLimitationStrategy VARCHAR(75) null,
-	name VARCHAR(75) null
+	name VARCHAR(75) null,
+	sort LONG
 );
 
 create table xcolab_Points (
@@ -800,7 +801,7 @@ create table xcolab_ProposalRating (
 	contestPhaseId LONG,
 	userId LONG,
 	ratingValueId LONG,
-	comment_ VARCHAR(75) null,
+	comment_ TEXT null,
 	commentEnabled BOOLEAN,
 	otherDataString VARCHAR(75) null
 );

@@ -48,7 +48,7 @@
                             </c:if>
                             <p>
                                 <strong>Comment:</strong><br/>
-                                <span class="comment-wrapper">${wrapper.comment}</span>
+                                <span class="comment-wrapper">${wrapper.commentEscaped}</span>
                             </p>
                         </div>
                     </div>

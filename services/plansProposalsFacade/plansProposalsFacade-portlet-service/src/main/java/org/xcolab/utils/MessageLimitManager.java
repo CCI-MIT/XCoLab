@@ -38,7 +38,7 @@ public class MessageLimitManager {
 
     private static Map<Long, Long> mutexes = new HashMap<>();
 
-	private static final int MESSAGES_DAILY_LIMIT = 10;
+	private static final int MESSAGES_DAILY_LIMIT = 15;
 
 	/**
 	 * Keeps track of the last validation error mail that has been send to a specific user

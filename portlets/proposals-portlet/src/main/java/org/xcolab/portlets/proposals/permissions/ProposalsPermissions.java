@@ -21,6 +21,8 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import java.util.Date;
+
 public class ProposalsPermissions {
     private final PermissionChecker permissionChecker;
     private final String portletId;
@@ -83,7 +85,8 @@ public class ProposalsPermissions {
         if (getCanAdminAll()) 
             return true;
 
-        return planIsEditable && (isProposalOpen() || isProposalMember());         
+        return planIsEditable &&
+                (isProposalOpen() || isProposalMember());
     }
     
     public boolean getCanDelete() throws SystemException {
@@ -105,7 +108,10 @@ public class ProposalsPermissions {
     }
 
     public boolean getIsCreationAllowedByPhase() {
-        return contestStatus.isCanCreate();
+        if (contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().after(new Date()) &&
+                contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseStartDate().before(new Date()))
+            return contestStatus.isCanCreate();
+        else return false;
     }
 
 

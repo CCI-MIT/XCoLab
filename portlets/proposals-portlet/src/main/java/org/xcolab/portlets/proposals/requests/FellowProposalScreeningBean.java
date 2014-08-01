@@ -45,7 +45,11 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
     }
 
     public int getFellowScreeningAction() {
-        return fellowScreeningAction.getAttributeValue();
+        if (fellowScreeningAction == null) {
+            return JudgingSystemActions.FellowAction.NO_DECISION.getAttributeValue();
+        } else {
+            return fellowScreeningAction.getAttributeValue();
+        }
     }
 
     public void setFellowScreeningAction(int fellowActionValue) {
