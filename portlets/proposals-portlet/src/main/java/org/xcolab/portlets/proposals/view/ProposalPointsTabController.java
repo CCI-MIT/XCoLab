@@ -72,6 +72,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             model.addAttribute("assignPointsBean", assignPointsBean);
             model.addAttribute("pointsToDistribute", contest.getPoints());
             model.addAttribute("pointType", parentPointType);
+            model.addAttribute("recursionLevel", 0);
             model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
             model.addAttribute("subProposals", subProposalsWrapped);
             model.addAttribute("members", members);
@@ -98,7 +99,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
                 }
 
                 assignPointsBean.addAssignment(
-                        pointType.getPointType().getId(),
+                        pointType,
                         presetUsers,
                         existingConfiguration
                 );

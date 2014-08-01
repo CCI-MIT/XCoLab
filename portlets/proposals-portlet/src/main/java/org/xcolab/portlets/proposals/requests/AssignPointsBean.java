@@ -9,11 +9,13 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -22,12 +24,12 @@ import java.util.*;
 public class AssignPointsBean {
     //pointTypeId => [UserId -> Percentage]
     //The percentages are from 0 to 100 here, in order to make it easier to display it to the user
-    private Map<Long, Map<Long, Integer>> assignments;
+    private Map<Long, Map<Long, Double>> assignments;
 
     private List<User> usersNotInTeam;
 
     public AssignPointsBean() {
-        this.assignments = new HashMap<Long, Map<Long, Integer>>();
+        this.assignments = new HashMap<Long, Map<Long, Double>>();
     }
 
     public void setupUsers(List<User> teamMembers) throws SystemException {
@@ -47,15 +49,17 @@ public class AssignPointsBean {
         usersNotInTeam = UserLocalServiceUtil.dynamicQuery(userQuery);
     }
 
-    public void addAssignment(long pointTypeId, List<User> users, List<PointsDistributionConfiguration> existingDistribution) {
-        Map<Long, Integer> entityPercentages = new HashMap<Long, Integer>();
+    public void addAssignment(PointTypeWrapper pointType, List<User> users, List<PointsDistributionConfiguration> existingDistribution) {
+        final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;
+
+        Map<Long, Double> entityPercentages = new HashMap<Long, Double>();
         if (users != null) {
             for (User u : users) {
-                Integer percentage = 0;
+                Double percentage = (1.0/users.size()) * percentMultiplicationFactor;
                 PointsDistributionConfiguration foundElement = null;
                 for (PointsDistributionConfiguration distribution : existingDistribution) {
                     if (distribution.getTargetUserId() == u.getUserId()) {
-                        percentage = (int) Math.round(distribution.getPercentage() * 100);
+                        percentage = distribution.getPercentage() * percentMultiplicationFactor;
                         foundElement = distribution;
                         break;
                     }
@@ -63,19 +67,24 @@ public class AssignPointsBean {
                 if (foundElement != null) {
                     existingDistribution.remove(foundElement);
                 }
-                entityPercentages.put(u.getUserId(), percentage);
+                entityPercentages.put(u.getUserId(), roundToTwoDigits(percentage));
             }
         }
 
         //add all remaining distributions that were not in users
         for (PointsDistributionConfiguration distribution: existingDistribution) {
-            entityPercentages.put(distribution.getTargetUserId(), (int)Math.round(distribution.getPercentage()*100));
+            entityPercentages.put(distribution.getTargetUserId(), roundToTwoDigits(distribution.getPercentage() * percentMultiplicationFactor));
         }
 
-        this.assignments.put(pointTypeId, entityPercentages);
+        this.assignments.put(pointType.getId(), entityPercentages);
     }
 
-    public Map<Long, Integer> get(Long pointTypeId) {
+    private static double roundToTwoDigits(double d) {
+        DecimalFormat newFormat = new DecimalFormat("#.##");
+        return Double.valueOf(newFormat.format(d));
+    }
+
+    public Map<Long, Double> get(Long pointTypeId) {
         return this.assignments.get(pointTypeId);
     }
 
@@ -83,11 +92,11 @@ public class AssignPointsBean {
         return this.assignments.get(pointTypeId).keySet();
     }
 
-    public Map<Long, Map<Long, Integer>> getAssignments() {
+    public Map<Long, Map<Long, Double>> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(Map<Long, Map<Long, Integer>> assignments) {
+    public void setAssignments(Map<Long, Map<Long, Double>> assignments) {
         this.assignments = assignments;
     }
 

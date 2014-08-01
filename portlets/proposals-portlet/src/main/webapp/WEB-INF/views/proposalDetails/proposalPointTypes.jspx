@@ -11,6 +11,7 @@
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
     <c:set var="parentPercentageOfTotalPoints"><c:out value="${percentageOfTotalPoints}"/></c:set>
     <c:set var="parentPointsToDistribute"><c:out value="${pointsToDistribute}"/></c:set>
+    <c:set var="parentRecursionLevel"><c:out value="${recursionLevel}"/></c:set>
     <!-- set column definitons -->
     <c:remove var="smallColumnExists" />
     <c:remove var="largeColumnExists" />
@@ -46,12 +47,13 @@
                         <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
                             <div class="content">
                                 <p class="percentage">
-                                    ${fn:substringBefore(pointType.percentageOfParent * 100, '.')}%
+                                    <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}"/>
                                 </p>
                                 <!-- Recursion -->
                                 <c:set var="percentageOfTotalPoints" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" scope="request"/>
                                 <c:set var="pointType" value="${pointType}" scope="request"/>
                                 <c:set var="pointsToDistribute" value="${parentPointsToDistribute * pointType.percentageOfParent}" scope="request"/>
+                                <c:set var="recursionLevel" value="${parentRecursionLevel +1}" scope="request"/>
                                 <jsp:include page="proposalPointTypes.jspx"/>
                             </div>
                         </td>
@@ -61,24 +63,45 @@
             </table>
         </c:when>
         <c:otherwise>
+            <c:if test="${recursionLevel lt 2}">
+                <div class="points-container">
+                    <p class="fill" style="height: ${parentPercentageOfTotalPoints * 100}%;top: ${(1-parentPercentageOfTotalPoints) * 100}%">
+
+                    </p>
+                    <p class="globe">
+
+                    </p>
+                </div>
+                <p class="arrow-down">
+
+                </p>
+            </c:if>
             <c:choose>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'EQUAL_DIVISION'}">
                     <p class="info">
                         Equally distributed among all proposals you have referenced.
                     </p>
-                    <ul class="subproposals">
-                        <c:forEach var="proposal" items="${subProposals}">
-                            <li>
-                                <span class="highlighted">
-                                    <fmt:formatNumber type="percent" value="${1/subProposals.size()}"/>
-                                </span>
-                                <a href="${proposal.proposalURL}">
-                                    <c:out value="${proposal.name}"/>
-                                </a>
-                            </li>
-                        </c:forEach>
-
-                    </ul>
+                    <c:choose>
+                        <c:when test="${subProposals.size() gt 0}">
+                            <ul class="subproposals">
+                                <c:forEach var="proposal" items="${subProposals}">
+                                    <li>
+                                        <span class="highlighted">
+                                            <fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
+                                        </span>
+                                        <a href="${proposal.proposalURL}">
+                                            <c:out value="${proposal.name}"/>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <p style="margin-top: 15px">
+                                <em>You did not reference any proposals.</em>
+                            </p>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
                     <!--TODO-->
@@ -114,31 +137,44 @@
                             </script>
                         </c:otherwise>
                     </c:choose>
-                    <ul class="userDistributionInputs" id="userDistributionInputs${pointType.id}">
-                        <li class="error"></li>
-                        <li class="header">
-                            <strong class="percentage">%</strong>
-                            <strong class="name">Name</strong>
-                        </li>
-                        <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
-                            <li class="listItem${pointType.id}-${userId}">
-                                <label class="percentageInput">
-                                    <form:input
-                                            path="assignments[${pointType.id}][${userId}]"
-                                            class="popupreg_input"
-                                            value="${assignPointsBean.assignments[pointType.id][userId]}"
-                                            />
-                                    <a href="/web/guest/member/-/member/userId/${userId}">
-                                        <span class="replaceUserId">${userId}</span>
-                                    </a>
-                                    <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
-                                        <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
-                                    </c:if>
-                                </label>
+                    <c:set var="percentageToDistribute"><fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/></c:set>
 
+                    <div id="userDistributionTable${pointType.id}" style="${assignPointsBean.getUserIds(pointType.id).size() lt 1 ? 'display:none' : ''}">
+                        <ul class="userDistributionInputs"
+                            data-percentage="${percentageToDistribute}"
+                            data-pointType="${pointType.id}"
+                            id="userDistributionInputs${pointType.id}"
+                                >
+                            <li class="error"></li>
+                            <li class="header">
+                                <strong class="percentage">%</strong>
+                                <strong class="name">Name</strong>
                             </li>
-                        </c:forEach>
-                    </ul>
+                            <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
+                                <li class="listItem${pointType.id}-${userId}">
+                                    <label class="percentageInput">
+                                        <form:input data-changed-by-user="true"
+                                                path="assignments[${pointType.id}][${userId}]"
+                                                class="popupreg_input"
+                                                value="${assignPointsBean.assignments[pointType.id][userId]}"
+                                                />
+                                        <a href="/web/guest/member/-/member/userId/${userId}">
+                                            <span class="replaceUserId">${userId}</span>
+                                        </a>
+                                        <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
+                                            <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
+                                        </c:if>
+                                    </label>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                        <p class="totalRow">
+                            <strong id="userDistributionTotal${pointType.id}" class="percentage">
+                                0%
+                            </strong>
+                            <strong class="name">Total (should be ${percentageToDistribute}%)</strong>
+                        </p>
+                    </div>
                 </c:when>
             </c:choose>
         </c:otherwise>

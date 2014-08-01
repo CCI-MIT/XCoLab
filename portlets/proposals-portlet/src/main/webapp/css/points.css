@@ -1,7 +1,7 @@
 .points-container {
     margin: 0 auto;
-    width: 135px;
-    height: 135px;
+    width: 123px;
+    height: 123px;
     position: relative;
 
     .fill, .globe {
@@ -19,7 +19,7 @@
     .globe {
         background: url(../img/globus.png) no-repeat;
         background-size: cover;
-        height: 105px;
+        height: 94px;
         padding-top: 30px;
         text-align: center;
         font-size: 2em;
@@ -31,12 +31,26 @@
         1px 1px 0 #000;
     }
 }
+p.arrow-down {
+    background: url(../img/arrow-down.png) no-repeat;
+    background-size: cover;
+    width: 35px;
+    height: 52px;
+    margin: 10px auto 13px auto;
+    position: relative;
+}
+td.right.small .points-container, td.right.small .arrow-down {
+    left: -4.15%;
+}
+td.left.small .points-container, td.left.small .arrow-down {
+    left: 4.15%;
+}
 
 .pointType {
     ul.subproposals li {
         > a {
             display: inline-block;
-            width: 90%;
+            width: 85%;
         }
         > span {
             display: inline-block;
@@ -51,7 +65,7 @@
     p.percentage {
         text-align: center;
         position: relative;
-        top: -150px;
+        top: -130px;
         font-size: 2em;
     }
     p.info {
@@ -82,7 +96,7 @@
         background-repeat: no-repeat;
         position: relative;
         top: -50px;
-        padding-top: 100px;
+        padding-top: 80px;
 
         td.left, td.right {
             padding-left: 10px;
@@ -92,7 +106,7 @@
             background-size: 35%;
 
             p.percentage {
-                top: -120px;
+                top: -100px;
             }
         }
         td.left {
@@ -162,8 +176,12 @@
         padding-left: 30px;
     }
     .header .name {
-        float: right;
-        position: relative;
-        right: 125px;
+        padding-left: 41px;
+    }
+    .totalRow .percentage {
+        width: 75px;
+        margin-right: 5px;
+        display: inline-block;
+        text-align: center;
     }
 }
