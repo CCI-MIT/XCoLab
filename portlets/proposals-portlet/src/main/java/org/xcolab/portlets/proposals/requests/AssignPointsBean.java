@@ -16,6 +16,8 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.*;
 
 /**
@@ -81,6 +83,9 @@ public class AssignPointsBean {
 
     private static double roundToTwoDigits(double d) {
         DecimalFormat newFormat = new DecimalFormat("#.##");
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        newFormat.setDecimalFormatSymbols(dfs);
         return Double.valueOf(newFormat.format(d));
     }
 
