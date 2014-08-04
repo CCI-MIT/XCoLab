@@ -89,12 +89,18 @@
                                         <span class="highlighted">
                                             <fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
                                         </span>
-                                        <a href="${proposal.proposalURL}">
+                                        <a href="${proposal.proposalURL}" target="_blank">
                                             <c:out value="${proposal.name}"/>
                                         </a>
                                     </li>
                                 </c:forEach>
                             </ul>
+                            <p class="totalRow">
+                                <strong class="percentage smaller">
+                                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                </strong>
+                                <strong class="name">Total</strong>
+                            </p>
                         </c:when>
                         <c:otherwise>
                             <p style="margin-top: 15px">
@@ -154,11 +160,11 @@
                                 <li class="listItem${pointType.id}-${userId}">
                                     <label class="percentageInput">
                                         <form:input data-changed-by-user="true"
-                                                path="assignments[${pointType.id}][${userId}]"
-                                                class="popupreg_input"
-                                                value="${assignPointsBean.assignments[pointType.id][userId]}"
+                                                    path="assignments[${pointType.id}][${userId}]"
+                                                    class="popupreg_input"
+                                                    value="${assignPointsBean.assignments[pointType.id][userId]}"
                                                 />
-                                        <a href="/web/guest/member/-/member/userId/${userId}">
+                                        <a href="/web/guest/member/-/member/userId/${userId}" target="_blank">
                                             <span class="replaceUserId">${userId}</span>
                                         </a>
                                         <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">

@@ -184,4 +184,8 @@ td.left.small .points-container, td.left.small .arrow-down {
         display: inline-block;
         text-align: center;
     }
+    .totalRow .percentage.smaller {
+        width: 51px;
+        margin-right: 6px;
+    }
 }
