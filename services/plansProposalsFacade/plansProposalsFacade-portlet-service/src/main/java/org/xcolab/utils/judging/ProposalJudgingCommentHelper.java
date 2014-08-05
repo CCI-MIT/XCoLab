@@ -101,7 +101,7 @@ public class ProposalJudgingCommentHelper {
      * @throws NoSuchProposalContestPhaseAttributeException
      * @throws SystemException
      */
-    public String getPromotionComment() throws NoSuchProposalContestPhaseAttributeException, SystemException, PortalException {
+    public String getPromotionComment(boolean isWrapWithTemplate) throws NoSuchProposalContestPhaseAttributeException, SystemException, PortalException {
         String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
         String contestName = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getContestShortName();
 
@@ -133,7 +133,7 @@ public class ProposalJudgingCommentHelper {
                             proposalName,
                             contestName
                     );
-                    return wrapper.getCompleteMessage(reviewText);
+                    return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText) : reviewText;
                 }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 _log.error("Could not extract contest phase promotion body for proposal " + proposal.getProposalId() + " in contestPhase " + contestPhase.getContestPhasePK(), e);
@@ -154,11 +154,13 @@ public class ProposalJudgingCommentHelper {
                     proposalName,
                     contestName
             );
-            return wrapper.getCompleteMessage(fellowReviewText);
+            return isWrapWithTemplate ? wrapper.getCompleteMessage(fellowReviewText) : fellowReviewText;
         }
 
         return StringPool.BLANK;
     }
+
+
 
     private boolean persistAttribute(String attributeName, long numericValue) {
         ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
