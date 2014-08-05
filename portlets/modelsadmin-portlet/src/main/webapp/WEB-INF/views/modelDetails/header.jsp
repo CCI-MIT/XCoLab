@@ -11,10 +11,14 @@
 	<script type="text/javascript" src="/climatecolab-theme/js/jquery.blockUI.js?tt=1393189878000"><!-- --></script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"><!-- --></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
-	<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css"></link>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
-	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"><!-- --></script>
-	
+    <script src="${pageContext.request.contextPath}/js/codemirror/codemirror.js"><!-- --></script>
+    <script src="${pageContext.request.contextPath}/js/codemirror/javascript.js"><!-- --></script>
+    <script src="${pageContext.request.contextPath}/js/codemirror/fullscreen.js"><!-- --></script>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"><!-- --></script>
+	<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css"><!-- --></link>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/codemirror/codemirror.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/codemirror/fullscreen.css"><!-- --></link>
 	<div class="breadcrumb">
 		<portlet:renderURL var="modelsIndexUrl" />
 		<span><a href="${modelsIndexUrl }">Models index</a></span>
