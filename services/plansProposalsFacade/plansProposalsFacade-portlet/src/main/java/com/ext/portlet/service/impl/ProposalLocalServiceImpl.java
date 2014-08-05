@@ -1237,10 +1237,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
             throws PortalException, SystemException, AddressException, MailEngineException {
 
-        String subject = "The judge status on your proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String subject = "Judging Results on your Proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-        String messageBody = reviewContentHelper.getPromotionComment();
+        String messageBody = reviewContentHelper.getPromotionComment(true);
         if (Validator.isNotNull(messageBody)) {
             MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal), request);
         }
@@ -1252,7 +1252,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-        String commentBody = reviewContentHelper.getPromotionComment();
+        String commentBody = reviewContentHelper.getPromotionComment(false);
         DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
         DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
     }
