@@ -76,6 +76,7 @@
 				<form:textarea path="customInputWidgets"
 					style="width: 100%; height: 50%;" rows="20" />
 				<div class="form-group">
+                    <p>Press F1 when cursor is in the editor to toggle full screen editing, Esc to exit.</p>
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" class="btn btn-default">Submit</button>
 					</div>
@@ -83,4 +84,19 @@
 			</form:form>
 		</c:otherwise>
 	</c:choose>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("customInputWidgets"), {
+        lineNumbers: true,
+        mode: "application/json",
+            extraKeys: {
+                "F1": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                },
+                "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                }
+            }
+
+        });</script>
 </jsp:root>

@@ -10,23 +10,39 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 
 /**
- * This scheduler automatically invokes the automatic promotion of proposals from the last contest phase
- * of all contests to the next active contest phase. Promotion of proposals is either done automatically for all
- * proposals of the last active contest phase or based on judging decisions, depending on the
- * {@link com.ext.portlet.model.ContestPhase#getContestPhaseAutopromote()} attribute.
+ * This scheduler automatically invokes the automatic promotion of proposals
+ * from the last contest phase of all contests to the next active contest phase.
+ * Promotion of proposals is either done automatically for all proposals of the
+ * last active contest phase or based on judging decisions, depending on the
+ * {@link com.ext.portlet.model.ContestPhase#getContestPhaseAutopromote()}
+ * attribute.
  *
  * Created by kmang on 27/05/14.
  */
 public class ProposalContestPhaseAutopromoteTask implements MessageListener {
 
-    private Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAutopromoteTask.class);
+	private Log _log = LogFactoryUtil
+			.getLog(ProposalContestPhaseAutopromoteTask.class);
+	private Object mutex = new Object();
+	private boolean isExecuting = false;
 
-    @Override
-    public void receive(Message message) throws MessageListenerException {
-        try {
-            ContestPhaseLocalServiceUtil.autoPromoteProposals();
-        } catch (PortalException | SystemException e) {
-            _log.error("Error while promoting proposals in contest phases", e);
-        }
-    }
+	@Override
+	public void receive(Message message) throws MessageListenerException {
+		// only one thread at at time is allowed to be doing autopromotion tasks
+		synchronized (mutex) {
+			if (isExecuting) {
+				return;
+			}
+			isExecuting = true;
+		}
+		try {
+			ContestPhaseLocalServiceUtil.autoPromoteProposals();
+		} catch (Throwable e) {
+			_log.error("Error while promoting proposals in contest phases", e);
+		}
+
+		synchronized (mutex) {
+			isExecuting = false;
+		}
+	}
 }

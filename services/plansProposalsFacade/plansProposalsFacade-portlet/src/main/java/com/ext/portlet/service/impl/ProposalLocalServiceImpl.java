@@ -1262,8 +1262,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String commentBody = reviewContentHelper.getPromotionComment(false);
-        DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+        //only post comment if it is not empty.
+        if (commentBody != null && !commentBody.trim().equals("")) {
+            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
+            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
+        }
     }
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
