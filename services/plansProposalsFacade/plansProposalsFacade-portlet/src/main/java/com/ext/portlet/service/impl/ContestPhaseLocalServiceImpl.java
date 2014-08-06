@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
@@ -22,6 +23,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,10 +31,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.mail.internet.AddressException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -230,6 +234,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
+    	try {
+        	// check if proposal isn't already associated with requested phase
+    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(proposalId, nextPhaseId)) != null) {
+                _log.warn("Proposal is already associated with given contest phase");
+                return;
+    		}
+        }
+    	catch (NoSuchProposal2PhaseException e) {
+    		// no such proposal2phase, we can safely add association
+    	}
         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
         if (currentProposalVersion == null || currentProposalVersion < 0)
             throw new SystemException("Proposal not found");
@@ -291,6 +305,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * @throws PortalException
      */
     public void autoPromoteProposals() throws SystemException, PortalException {
+    	
         Date now = new Date();
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
@@ -331,6 +346,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 if (allProposalsReviewed(phase)) {
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                    	try {
+                        	// check if proposal isn't already associated with requested phase
+                    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), phase.getContestPhasePK())) != null) {
+                                _log.warn("Proposal is already associated with given contest phase");
+                                continue;
+                    		}
+                        }
+                    	catch (NoSuchProposal2PhaseException e) {
+                    		// no such proposal2phase, we can safely add association
+                    	}
                         //skip already promoted proposal
                         if (hasProposalAlreadyBeenPromoted(p, phase)) {
                             continue;
