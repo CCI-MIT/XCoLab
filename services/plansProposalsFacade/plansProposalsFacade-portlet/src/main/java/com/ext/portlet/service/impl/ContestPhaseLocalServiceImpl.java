@@ -234,6 +234,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
+    	try {
+        	// check if proposal isn't already associated with requested phase
+    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(proposalId, nextPhaseId)) != null) {
+                _log.warn("Proposal is already associated with given contest phase");
+                return;
+    		}
+        }
+    	catch (NoSuchProposal2PhaseException e) {
+    		// no such proposal2phase, we can safely add association
+    	}
         Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
         if (currentProposalVersion == null || currentProposalVersion < 0)
             throw new SystemException("Proposal not found");
@@ -342,15 +352,6 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                         // Decide about the promotion
                         if (didJudgeDecideToPromote(p, phase)) {
-                        	try {
-                            	// check if proposal isn't already associated with requested phase
-                        		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), nextPhase.getContestPhasePK())) != null) {
-                                    _log.warn("Proposal is already associated with given contest phase");
-                        		}
-                            }
-                        	catch (NoSuchProposal2PhaseException e) {
-                        		// no such proposal2phase, we can safely add association
-                        	}
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                         }
 
