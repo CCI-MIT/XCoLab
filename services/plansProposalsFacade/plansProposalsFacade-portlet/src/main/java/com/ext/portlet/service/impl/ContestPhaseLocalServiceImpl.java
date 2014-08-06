@@ -348,7 +348,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     	try {
                         	// check if proposal isn't already associated with requested phase
-                    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), phase.getContestPhasePK())) != null) {
+                    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), nextPhase.getContestPhasePK())) != null) {
                                 _log.warn("Proposal is already associated with given contest phase");
                                 continue;
                     		}
