@@ -18,42 +18,7 @@
 		<form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
 		<form:errors path="termsOfService"/>
 
-        <h2>Judging System</h2>
-        In the following templates, please be sure that the custom comment will be placed within
-        <strong>${prefs.getCommentBeginTag()}${prefs.getCommentEndTag()}</strong>.
 
-        <label for="screeningIncompleteText">Screening Incomplete Text:</label>
-        <form:textarea path="screeningIncompleteText" id="screeningIncompleteText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="screeningIncompleteText" />
-
-        <label for="screeningOfftopicText">Screening Offtopic Text:</label>
-        <form:textarea path="screeningOfftopicText" id="screeningOfftopicText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="screeningOfftopicText" />
-
-        <label for="advanceRejectionSemifinalistSelectionText">Advance Rejection Text (Selection of semi-finalists):</label>
-        <form:textarea path="advanceRejectionSemifinalistSelectionText" id="advanceRejectionSemifinalistSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceRejectionSemifinalistSelectionText" />
-
-        <label for="advanceRejectionFinalistSelectionText">Advance Rejection Text (Selection of finalists):</label>
-        <form:textarea path="advanceRejectionFinalistSelectionText" id="advanceRejectionFinalistSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceRejectionFinalistSelectionText" />
-
-        <label for="advanceRejectionWinnerSelectionText">Advance Rejection Text (Selection of winners):</label>
-        <form:textarea path="advanceRejectionWinnerSelectionText" id="advanceRejectionWinnerSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceRejectionWinnerSelectionText" />
-
-        <label for="advanceAcceptanceSemifinalistSelectionText">Advance Acceptance Text (Selection of semi-finalists):</label>
-        <form:textarea path="advanceAcceptanceSemifinalistSelectionText" id="advanceAcceptanceSemifinalistSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceAcceptanceSemifinalistSelectionText" />
-
-        <label for="advanceAcceptanceFinalistSelectionText">Advance Acceptance Text (Selection of finalists):</label>
-        <form:textarea path="advanceAcceptanceFinalistSelectionText" id="advanceAcceptanceFinalistSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceAcceptanceFinalistSelectionText" />
-
-        <label for="advanceAcceptanceWinnerSelectionText">Advance Acceptance Text (Selection of winners):</label>
-        <form:textarea path="advanceAcceptanceWinnerSelectionText" id="advanceAcceptanceWinnerSelectionText" cssStyle="width:100%; height:300px;" />
-        <form:errors path="advanceAcceptanceWinnerSelectionText" />
-		
 		<input type="submit" value="Save" />
 	</form:form>
 </div>
