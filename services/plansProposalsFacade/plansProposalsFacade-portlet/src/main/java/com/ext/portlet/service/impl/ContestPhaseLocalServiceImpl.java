@@ -305,6 +305,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * @throws PortalException
      */
     public void autoPromoteProposals() throws SystemException, PortalException {
+    	
         Date now = new Date();
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
@@ -345,6 +346,16 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                 if (allProposalsReviewed(phase)) {
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                    	try {
+                        	// check if proposal isn't already associated with requested phase
+                    		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), phase.getContestPhasePK())) != null) {
+                                _log.warn("Proposal is already associated with given contest phase");
+                                continue;
+                    		}
+                        }
+                    	catch (NoSuchProposal2PhaseException e) {
+                    		// no such proposal2phase, we can safely add association
+                    	}
                         //skip already promoted proposal
                         if (hasProposalAlreadyBeenPromoted(p, phase)) {
                             continue;
