@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestPhaseException;
+import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
@@ -22,6 +23,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,10 +31,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.User;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 
 import javax.mail.internet.AddressException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -338,6 +342,15 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                         // Decide about the promotion
                         if (didJudgeDecideToPromote(p, phase)) {
+                        	try {
+                            	// check if proposal isn't already associated with requested phase
+                        		if (proposal2PhaseLocalService.getProposal2Phase(new Proposal2PhasePK(p.getProposalId(), nextPhase.getContestPhasePK())) != null) {
+                                    _log.warn("Proposal is already associated with given contest phase");
+                        		}
+                            }
+                        	catch (NoSuchProposal2PhaseException e) {
+                        		// no such proposal2phase, we can safely add association
+                        	}
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                         }
 
