@@ -840,6 +840,7 @@
 		<field name="pointTypeId" type="long" />
 		<field name="targetUserId" type="long" />
 		<field name="targetSubProposalId" type="long" />
+        <!-- TODO: this field should be DOUBLE(32,30). Unfortunately, this is not supported by Liferay yet. -->
 		<field name="percentage" type="double" />
 		<field name="creator" type="long" />
 		<field name="createDate" type="Date" />

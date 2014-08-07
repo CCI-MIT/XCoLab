@@ -16,17 +16,19 @@
     <c:remove var="smallColumnExists" />
     <c:remove var="largeColumnExists" />
     <c:set var="pointsContainerOffset" value="0"/>
-    <c:forEach var="child" varStatus="status" items="${pointType.children}">
-        <c:choose>
-            <c:when test="${child.children.size() == 0}">
-                <c:set var="smallColumnExists" value="true"/>
-                <c:set var="pointsContainerOffset" value="${pointsContainerOffset + (status.count > childrenSize/2 ? 7.5 : -7.5)}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="largeColumnExists" value="true"/>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
+    <c:if test="${recursionLevel lt 1}">
+        <c:forEach var="child" varStatus="status" items="${pointType.children}">
+            <c:choose>
+                <c:when test="${pointType.children.size() == 2 and child.children.size() == 0}">
+                    <c:set var="smallColumnExists" value="true"/>
+                    <c:set var="pointsContainerOffset" value="${pointsContainerOffset + (status.count > childrenSize/2 ? 7.5 : -7.5)}"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="largeColumnExists" value="true"/>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </c:if>
     <c:choose>
         <c:when test="${childrenSize > 0}">
             <div class="points-container" style="left:${pointsContainerOffset}%">
@@ -39,7 +41,7 @@
             </div>
             <table class="pointType">
                 <c:forEach var="child" varStatus="status" items="${pointType.children}">
-                    <col width="${fn:substringBefore((100 / childrenSize)/((largeColumnExists and child.children.size() == 0) ? 2 : 1), '.')}%" />
+                    <col width="${fn:substringBefore((100 / childrenSize)/((recursionLevel lt 1 and largeColumnExists and child.children.size() == 0) ? 2 : 1), '.')}%" />
                 </c:forEach>
                 <tbody>
                 <tr>

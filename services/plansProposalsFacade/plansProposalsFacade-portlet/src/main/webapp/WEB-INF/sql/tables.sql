@@ -732,7 +732,7 @@ create table xcolab_PointsDistributionConfiguration (
 	pointTypeId LONG,
 	targetUserId LONG,
 	targetSubProposalId LONG,
-	percentage DOUBLE,
+	percentage DOUBLE(32,30),
 	creator LONG,
 	createDate DATE null
 );

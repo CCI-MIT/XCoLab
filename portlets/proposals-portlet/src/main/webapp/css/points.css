@@ -47,6 +47,12 @@ td.left.small .points-container, td.left.small .arrow-down {
 }
 
 .pointType {
+    table-layout: fixed;
+
+    input {
+        max-width: 100%;
+    }
+
     ul.subproposals li {
         > a {
             display: inline-block;
@@ -114,6 +120,14 @@ td.left.small .points-container, td.left.small .arrow-down {
         }
         td.right {
             background-position: 40% 0;
+        }
+        td {
+            td.left {
+                background-position: 30% 0;
+            }
+            td.right {
+                background-position: 70% 0;
+            }
         }
     }
     ul li {
