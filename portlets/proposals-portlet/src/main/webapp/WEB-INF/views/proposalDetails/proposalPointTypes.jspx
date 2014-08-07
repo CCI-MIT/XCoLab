@@ -87,7 +87,7 @@
                                 <c:forEach var="proposal" items="${subProposals}">
                                     <li>
                                         <span class="highlighted">
-                                            <fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
+                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
                                         </span>
                                         <a href="${proposal.proposalURL}" target="_blank">
                                             <c:out value="${proposal.name}"/>
@@ -97,7 +97,7 @@
                             </ul>
                             <p class="totalRow">
                                 <strong class="percentage smaller">
-                                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
+                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/>%
                                 </strong>
                                 <strong class="name">Total</strong>
                             </p>
@@ -176,9 +176,9 @@
                         </ul>
                         <p class="totalRow">
                             <strong id="userDistributionTotal${pointType.id}" class="percentage">
-                                0%
+                                0.00%
                             </strong>
-                            <strong class="name">Total (should be ${percentageToDistribute}%)</strong>
+                            <strong class="name">Total (should be <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${percentageToDistribute}"/>%)</strong>
                         </p>
                     </div>
                 </c:when>

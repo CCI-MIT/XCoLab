@@ -74,6 +74,8 @@ public class AssignPointsActionController {
                 double sum = 0.0;
                 for (Long targetUserId : assignments.keySet()) {
                     double percentage = new Double(assignments.get(targetUserId) != null ? assignments.get(targetUserId) : 0.0);
+                    //round and take absolute value
+                    percentage = Math.round(Math.abs(percentage)*100)/100.0d;
                     //calculate relative percentage
                     percentage = percentage * (1.0/(this.pointTypePercentageModifiers.get(pointTypeId)*100.0));
                     //round to two decimals
@@ -87,6 +89,7 @@ public class AssignPointsActionController {
                             currentUser.getUserId()
                     );
                 }
+                //round to two decimals
                 sum = Math.round(sum*100)/100.0d;
                 if (sum != 1.0) {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);

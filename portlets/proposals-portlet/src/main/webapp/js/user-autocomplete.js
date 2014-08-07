@@ -93,6 +93,17 @@ function initUserAutocomplete(idPostfix) {
     });
 }
 
+function formatInputValue(doNotRound) {
+    //filter non-numeric values
+    this.value = this.value.replace(/[^0-9\.]/g, '');
+    //only allow one decimal separator
+    this.value = this.value.replace(/\.(.*\.)/g, '$1');
+    if (doNotRound !== true) {
+        //round to exactly 2 decimal places
+        this.value = (+this.value).toFixed(2);
+    }
+}
+
 function initUserAssignmentInputs() {
     //delete nodes
     jQuery(".deleteListItem").off('click');
@@ -114,20 +125,16 @@ function initUserAssignmentInputs() {
 
     jQuery(".userDistributionInputs input").off('input');
     jQuery(".userDistributionInputs input").off('focus');
-    jQuery(".userDistributionInputs input").on('focus', function() {
-        if (this.value == 0) {
-            this.value = "";
-        }
-    });
+    jQuery(".userDistributionInputs input").off('blur');
+
+    jQuery(".userDistributionInputs input").each(formatInputValue);
+    jQuery(".userDistributionInputs input").on('blur', formatInputValue);
     jQuery(".userDistributionInputs input").on('input', function() {
         var start = this.selectionStart,
             end = this.selectionEnd;
         var originalLen = this.value.length;
 
-        //filter non-numeric values
-        this.value = this.value.replace(/[^0-9\.]/g, '');
-        //only allow one decimal separator
-        this.value = this.value.replace(/\.(.*\.)/g, '$1');
+        formatInputValue.bind(this, true)();
 
         jQuery(this).attr("data-changed-by-user", "true");
 
@@ -153,7 +160,7 @@ function distributeEvenly(listContainer) {
     if (!containsCustomValue) {
         var avg = ((listContainer.attr("data-percentage")/100)/inputs.length)*100;
             inputs.each(function() {
-                this.value = +avg.toFixed(2);
+                this.value = avg.toFixed(2);
             });
     }
 }
@@ -167,7 +174,7 @@ function recalculateTotalPercentages() {
         jQuery("input", listContainer).each(function() {
             sum += Number(this.value);
         });
-        totalNode.html((+sum.toFixed(2))+"%");
+        totalNode.html(sum.toFixed(2)+"%");
     });
 }
 
@@ -181,13 +188,14 @@ function areAllInputsValid() {
         var sum = 0;
         var atLeastEntry = false;
         jQuery("input", ul).each(function() {
+            formatInputValue.bind(this)();
             sum += Number(this.value);
             atLeastEntry = true;
         });
         //round
         sum = (+sum.toFixed(2));
         if (atLeastEntry && sum != percentage) {
-            jQuery(".error", ul).html("Please make sure that the percentages sum up to exactly "+percentage+"% (currently assigned: "+sum+"%).");
+            jQuery(".error", ul).html("Please make sure that the percentages sum up to exactly "+percentage.toFixed(2)+"% (currently assigned: "+sum.toFixed(2)+"%).");
             valid = false;
         }
     });

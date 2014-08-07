@@ -50,7 +50,7 @@ td.left.small .points-container, td.left.small .arrow-down {
     ul.subproposals li {
         > a {
             display: inline-block;
-            width: 85%;
+            width: 80%;
         }
         > span {
             display: inline-block;
