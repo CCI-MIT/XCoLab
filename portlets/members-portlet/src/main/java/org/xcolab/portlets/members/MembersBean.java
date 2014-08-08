@@ -340,6 +340,10 @@ public class MembersBean extends DataSource implements Serializable {
             return new DataPage(0, 0, new ArrayList<MemberListItemBean>());
         }
     }
+    
+    public boolean isSearchConstrained() {
+    	return (categoryFilter != null && !categoryFilter.equals(MemberCategory.ALL) && !categoryFilter.equals(MemberCategory.DEFAULT)) || StringUtils.isNotBlank(searchPhrase);
+    }
 
     @Override
     protected boolean isDefaultAscending(String sortColumn) {

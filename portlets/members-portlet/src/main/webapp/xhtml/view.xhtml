@@ -87,7 +87,10 @@
 
     <div class="comm_disc-head">
         <div class="comm_info-left members">
-            <span>#{membersBean.data.rowCount}</span> Members
+        	<span>
+        		<f:subview rendered="#{membersBean.searchConstrained}">#{membersBean.data.rowCount}</f:subview>
+        		<f:subview rendered="#{not membersBean.searchConstrained}">#{membersBean.usersCount}</f:subview>
+        	</span> Members
         </div>
         <div class="comm_info-large">
             <f:subview rendered="#{not empty membersBean.searchPhrase}">
