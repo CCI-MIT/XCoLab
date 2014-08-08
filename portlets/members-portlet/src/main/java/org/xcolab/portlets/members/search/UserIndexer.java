@@ -256,6 +256,7 @@ public class UserIndexer extends BaseIndexer {
 		document.addKeyword("teamIds", user.getTeamIds());
 		document.addKeyword("userGroupIds", user.getUserGroupIds());
 		document.addDate("joinDate", user.getCreateDate());
+		System.out.println(user.getScreenName() + "\t" + ActivityUtil.getActivitiesCount(user.getUserId()));
 		document.addNumber("activities", ActivityUtil.getActivitiesCount(user.getUserId()));
 		document.addKeyword("memberCategory", getUserCategories(user));
         document.addKeyword("realName", new DefaultFullNameGenerator().getFullName(

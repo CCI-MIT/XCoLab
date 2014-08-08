@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>members-portlet</portlet-name>
-		<indexer-class>org.xcolab.portlets.members.search.UserIndexer</indexer-class>
 		<instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 		<header-portlet-css>/css/main.css</header-portlet-css>
