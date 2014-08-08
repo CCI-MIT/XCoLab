@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.Country;
@@ -41,12 +42,10 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 
 	private static Map<Long, MemberCategory> roleIdToCategoryMap;
 	private final static long DEFAULT_COMPANY_ID = 10112L;
-
 	public void postProcessDocument(Document document, Object object)
 			throws Exception {
 		
 		User user = (User) object;
-
 		document.addDate("joinDate", user.getCreateDate());
 		document.addNumber("activities",
 				ActivityUtil.getActivitiesCount(user.getUserId()));
@@ -54,6 +53,7 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 		document.addKeyword("realName", new DefaultFullNameGenerator()
 				.getFullName(user.getFirstName(), user.getMiddleName(),
 						user.getLastName()));
+        document.addKeyword(Field.ENTRY_CLASS_NAME, User.class.getName());
 
 		populateAddresses(document, user.getAddresses(), 0, 0);
 	}
