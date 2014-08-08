@@ -6,6 +6,11 @@
 	<portal-properties>additionalProperties.properties</portal-properties>
 	
 	<custom-jsp-dir>/WEB-INF/jsps</custom-jsp-dir>
+	
+    <indexer-post-processor>
+    	<indexer-class-name>com.liferay.portal.model.User</indexer-class-name>
+    	<indexer-post-processor-impl>org.xcolab.hooks.climatecolab.users.UserIndexerPostProcessor</indexer-post-processor-impl>
+	</indexer-post-processor>
 
     <!-- Services -->
     <service>
@@ -104,24 +109,19 @@
     <!-- Structs action for handling the SendActivitySubscriptionNotifications to subscribers -->
     <struts-action>
         <struts-action-path>/portal/schedulerSendEmailNotifications</struts-action-path>
-        <struts-action-impl>
-            org.xcolab.hooks.climatecolab.strutsaction.SchedulerDispatchStrutsAction
-        </struts-action-impl>
+        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.SchedulerDispatchStrutsAction</struts-action-impl>
     </struts-action>
 
     <!-- Override password forget action -->
     <struts-action>
         <struts-action-path>/portal/update_password</struts-action-path>
-        <struts-action-impl>
-            org.xcolab.hooks.climatecolab.strutsaction.UpdatePasswordStrutsAction
-        </struts-action-impl>
+        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.UpdatePasswordStrutsAction</struts-action-impl>
     </struts-action>
 
     <!-- Respond to proposal contribution invitation -->
     <struts-action>
         <struts-action-path>/portal/proposal_invite_response</struts-action-path>
-        <struts-action-impl>
-            org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction
-        </struts-action-impl>
+        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction</struts-action-impl>
     </struts-action>
+    
 </hook>
