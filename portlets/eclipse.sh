@@ -1,3 +1,4 @@
+#!/bin/sh
 parent=`pwd`
 for dir in `ls -1`
 	do
