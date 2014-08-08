@@ -18,13 +18,14 @@ public class MemberListItemBean implements Serializable {
     private int activityCount;
     private Date joinDate;
     private Long userId;
+    private String screenName;
     
     public MemberListItemBean(Document userDoc) throws SystemException, NumberFormatException, PortalException, ParseException {
         userId = Long.parseLong(userDoc.get("userId"));
         //activityCount = SocialActivityLocalServiceUtil.getUserActivitiesCount(userId);
         activityCount = parseInt(userDoc.get("activities"));
         realName = userDoc.get("realName");
-        String screenName = userDoc.get("screenName");
+        screenName = userDoc.get("screenName");
         String firstName = userDoc.get("firstName");
 
         String firstPart = realName.substring(0, realName.length() / 2).trim();
@@ -115,6 +116,10 @@ public class MemberListItemBean implements Serializable {
     
     public Long getUserId() {
         return userId;
+    }
+    
+    public String getScreenName() {
+    	return screenName;
     }
     
 
