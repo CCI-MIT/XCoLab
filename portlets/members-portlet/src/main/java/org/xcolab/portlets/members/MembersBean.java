@@ -14,6 +14,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 
 import com.liferay.portal.model.User;
+
 import org.apache.commons.lang.StringUtils;
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
@@ -40,6 +41,7 @@ import com.liferay.portal.kernel.search.SortFactory;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 public class MembersBean extends DataSource implements Serializable {
     
@@ -255,8 +257,8 @@ public class MembersBean extends DataSource implements Serializable {
         onePageDataModel = null;
     }
     
-    public int getUsersCount() {
-        return searchResults.size();
+    public int getUsersCount() throws SystemException {
+    	return UserLocalServiceUtil.getUsersCount();
     }
     
     public boolean isHasMembers() {
