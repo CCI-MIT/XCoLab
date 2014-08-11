@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -79,7 +81,7 @@ public class RandomProposalsPreferences {
     
     
     public Map<Long,String> getContestPhases() throws SystemException, PortalException{
-    	Map<Long, String> phases = new HashMap<>();
+    	Map<Long, String> phases = new LinkedHashMap<>();
     	
     	 List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
     	 
@@ -93,11 +95,16 @@ public class RandomProposalsPreferences {
     	 
     	 for (Contest c: contests) {
            for (ContestPhase cp: ContestLocalServiceUtil.getVisiblePhases(c)) {
+        	   String prefix = "";
+        	   if (ContestPhaseLocalServiceUtil.getPhaseActive(cp)) {
+        		   prefix = "* ACTIVE *";
+        	   }
         	   phases.put(cp.getContestPhasePK()
-        			   ,c.getContestPK() + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
+        			   ,c.getContestPK() + " " + prefix + " " + c.getContestShortName() + " - " + cp.getContestPhasePK() + " " + ContestPhaseLocalServiceUtil.getContestStatusStr(cp)) ;        	   
         	   
            }
        }
+    	 
     	 
     	return phases;
     }
