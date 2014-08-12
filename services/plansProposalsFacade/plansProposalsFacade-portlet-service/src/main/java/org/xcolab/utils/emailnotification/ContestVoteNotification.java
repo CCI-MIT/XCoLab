@@ -14,7 +14,7 @@ import com.liferay.portal.service.ServiceContext;
  */
 public class ContestVoteNotification extends EmailNotification {
     private static final String SUPPORT_TO_VOTE_SUCCESS_MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
-            "This year's voting period has started!  We have automatically transferred your support for the proposal %s in the %s contest to an official vote." +
+            "This year's voting period has started! We have automatically transferred your support for the proposal %s in the %s contest to an official vote." +
             "<br/><br/>Share this proposal with your friends!  <a href='%s'>Twitter</a>  <a href='%s'>Facebook</a>  Email" +
             "<br/><br/>Please note that you can only vote for one proposal per contest.  To change your vote in this contest, simply vote for another proposal in the %s contest and your vote will transfer. " +
             "To retract your vote in this contest, click \"Retract vote\" on the %s proposal page." +

@@ -41,7 +41,7 @@ public class ContestVoteQuestionNotification extends EmailNotification {
 
         for (Proposal proposal : supportedProposals) {
 
-            messageBody.append(String.format(getProposalLink(contest, proposal) + "<br />"));
+            messageBody.append(String.format(getProposalLinkForDirectVoting(contest, proposal) + "<br />"));
         }
 
         String subject = String.format(SUBJECT_FORMAT_STRING, contest.getContestShortName());

@@ -658,7 +658,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public void transferSupportsToVote(Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
-        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId()) {
+        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId()) {
             return;
         }
 
@@ -671,15 +672,19 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
             List<Proposal> proposals = userToSupportsMap.get(user);
 
+            /*
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
-                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
+                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK()); votes will not be converted automatically anymore
                 new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendEmailNotification();
             }
             // Send a notification to the user
             else {
                 new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
             }
+            */
+            // Always ask the user to upgrade their support to a vote
+            new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
         }
     }
 

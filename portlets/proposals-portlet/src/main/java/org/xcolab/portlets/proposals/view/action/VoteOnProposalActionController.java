@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.view.action;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,15 +31,19 @@ public class VoteOnProposalActionController {
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response) 
                     throws PortalException, SystemException, ProposalsAuthorizationException {
-        
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
             long userId = proposalsContext.getUser(request).getUserId();
             if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, userId)) {
+                // User has voted for this proposal and would like to retract the vote
                 ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
             }
             else {
+                if (ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, userId)) {
+                    // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
+                    ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
+                }
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
                 int analyticsValue = 0;
                 int supportedCount = ProposalLocalServiceUtil.getUserVotedProposalsCount(userId);
@@ -61,7 +66,12 @@ public class VoteOnProposalActionController {
             }
         }
         else {
-            throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
+            if (proposalsContext.getUser(request) == null || proposalsContext.getUser(request).getUserId() == 10115) {
+                /* User is not logged in - don't count vote and let user log in*/
+                request.setAttribute("promptLoginWindow","true");
+            } else {
+                throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
+            }
         }
     }
 
