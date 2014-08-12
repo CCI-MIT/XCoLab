@@ -118,11 +118,21 @@
     </route>
     
     <route>
-        <pattern>/contestId/{contestId}/planId/{planId}/move</pattern>
+        <pattern>/contestId/{contestId}/planId/{planId}/moveAndHide</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="move">true</generated-parameter>
+        <generated-parameter name="hideOnMove">true</generated-parameter>
+    </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/moveAndKeep</pattern>
+        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+        <generated-parameter name="move">true</generated-parameter>
+        <generated-parameter name="hideOnMove">false</generated-parameter>
     </route>
 
     <route>

@@ -2,6 +2,9 @@ package org.xcolab.portlets.proposals.permissions;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.service.*;
+import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.liferay.portal.model.MembershipRequestConstants;
 import org.xcolab.portlets.proposals.utils.ProposalsActions;
 
@@ -9,10 +12,6 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.liferay.portal.model.MembershipRequest;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -22,6 +21,7 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.Date;
+import java.util.List;
 
 public class ProposalsPermissions {
     private final PermissionChecker permissionChecker;
@@ -267,9 +267,31 @@ public class ProposalsPermissions {
     	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
     }
     
-    public boolean getCanMoveProposal() throws SystemException {
-    	return (isOwner() && getIsCreationAllowedByPhase()) || getCanAdminAll();
+    public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException {
+    	return getCanAdminAll(); /* Only allowed for admins */
     }
 
+    public boolean getCanMoveProposalAndKeepInCurrentContest() throws SystemException, PortalException {
+        if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
+            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before)
+            return false;
+        }
+
+
+        Proposal2Phase p2p;
+        try{
+            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(),contestPhase.getContestPhasePK());
+        } catch (Exception e){
+            // no phase found
+            return false;
+        }
+
+        if(p2p == null || p2p.getVersionTo()>=0){
+            // User is not viewing latest version
+            return false;
+        }
+
+        return  isOwner() || getCanAdminAll();
+    }
 
 }

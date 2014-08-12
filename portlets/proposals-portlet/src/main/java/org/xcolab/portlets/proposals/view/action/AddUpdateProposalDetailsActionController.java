@@ -10,7 +10,7 @@ import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
@@ -40,9 +40,6 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -103,24 +100,33 @@ public class AddUpdateProposalDetailsActionController {
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
-            	// make proposal invisible in all contest phases to which it belonged to
-            	for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
-            		ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(), 
-            				ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+            	if (updateProposalSectionsBean.isHideOnMove()){
+                    // make proposal invisible in all contest phases to which it belonged to
+                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+                        ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(),
+                                ProposalContestPhaseAttributeKeys.VISIBLE, 0);
 
-            		if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
-            			Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
-            		}
-            		else if (p2p.getVersionTo() < 0) {
-            			p2p.setVersionTo(proposal.getCurrentVersion()-1);
-            			Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-            		}
-            		
-            		
-            	}
-            	
+                        if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
+                            Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
+                        }
+                        else if (p2p.getVersionTo() < 0) {
+                            p2p.setVersionTo(proposal.getCurrentVersion()-1);
+                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        }
+                    }
+                } else {
+                    // Conclude last P2P mapping to prevent concurrent editing
+                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+                        if (p2p.getVersionTo() < 0) {
+                            p2p.setVersionTo(proposal.getCurrentVersion()-1);
+                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        }
+                    }
+                }
+
+                //FIXME ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
             	// associate proposal with selected contest phase
-            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(), 
+            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
             			proposal.getCurrentVersion(), -1);
                 ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 1);
