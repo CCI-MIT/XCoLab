@@ -124,6 +124,15 @@
         <generated-parameter name="planId">{planId}</generated-parameter>
         <generated-parameter name="move">true</generated-parameter>
     </route>
+
+    <route>
+        <pattern>/contestId/{contestId}/planId/{planId}/vote</pattern>
+        <generated-parameter name="action_forwardToPage">proposalDetails</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="planId">{planId}</generated-parameter>
+        <generated-parameter name="action">voteOnProposalAction</generated-parameter>
+        <generated-parameter name="p_p_lifecycle">1</generated-parameter>
+    </route>
     
     <route>
         <pattern>/contestId/{contestId}/planId/{planId}/tab/{tab}</pattern>

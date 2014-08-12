@@ -30,7 +30,6 @@ public class VoteOnProposalActionController {
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response) 
                     throws PortalException, SystemException, ProposalsAuthorizationException {
-        
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -61,7 +60,12 @@ public class VoteOnProposalActionController {
             }
         }
         else {
-            throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
+            if (proposalsContext.getUser(request) == null || proposalsContext.getUser(request).getUserId() == 10115) {
+                /* User is not logged in - don't count vote and let user log in*/
+                request.setAttribute("promptLoginWindow","true");
+            } else {
+                throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
+            }
         }
     }
 

@@ -88,4 +88,12 @@
 		</div>
 	</c:if>
 
+    <c:if test="${promptLoginWindow == 'true' }">
+        <script>
+            $( document ).ready(function() {
+                deferUntilLogin();
+            });
+        </script>
+    </c:if>
+
 </jsp:root>
