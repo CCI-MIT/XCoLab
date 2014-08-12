@@ -272,12 +272,20 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanMoveProposalAndKeepInCurrentContest() throws SystemException, PortalException {
+        /**
+         * Allow this type of movement if:
+         *   1) Proposal did not make it to the currently active or last phase
+         *   2) User is trying to move this proposal away from the last phase it was advanced to (i.e. the last phase it shows up in)
+         * Do not move if:
+         *   3) Proposal has been moved before and is active in a different contest
+         */
+
         if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
-            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before)
+            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
             return false;
         }
 
-
+        ContestPhase lastPhase = ContestLocalServiceUtil.getActiveOrLastPhase(ContestLocalServiceUtil.getContest(contestPhase.getContestPK()));
         Proposal2Phase p2p;
         try{
             p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(),contestPhase.getContestPhasePK());
@@ -287,7 +295,11 @@ public class ProposalsPermissions {
         }
 
         if(p2p == null || p2p.getVersionTo()>=0){
-            // User is not viewing latest version
+            // User is not viewing latest version/phase this proposal was advanced to (Violation of 2)
+            return false;
+        }
+        if (p2p.getContestPhaseId() == lastPhase.getContestPhasePK()){
+            // This is the last or current active phase (Violation of 1)
             return false;
         }
 

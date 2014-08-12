@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.portlet.ActionRequest;
@@ -9,7 +10,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
-import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
@@ -36,10 +37,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -124,9 +121,19 @@ public class AddUpdateProposalDetailsActionController {
                     }
                 }
 
-                //FIXME ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
-            	// associate proposal with selected contest phase
-            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
+                // Find creation phase for contest
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
+                ContestPhase targetPhase=null;
+                for (ContestPhase c : contestPhases){
+                    if(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(c.getContestPhaseType()).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION")){
+                        targetPhase = c;
+                        break;
+                    }
+                }
+                if (targetPhase == null) throw new SystemException();
+
+            	// associate proposal with creation phase
+            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), targetPhase.getContestPhasePK(),
             			proposal.getCurrentVersion(), -1);
                 ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 1);
