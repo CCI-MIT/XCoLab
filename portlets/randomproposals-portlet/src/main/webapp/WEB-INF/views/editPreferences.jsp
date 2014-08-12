@@ -46,7 +46,7 @@
 				Choose contest phases from which to pick proposals.
 			</td>
 			<td style="padding-right:10px;">		
-				<form:select path="selectedPhases" items="${preferences.contestPhases}" style="width:100%; "/>
+				<form:select path="selectedPhases" items="${preferences.contestPhases}" style="width:100%; height: 600px;"/>
 			</td>
 		</tr>
 	</table>
