@@ -107,7 +107,7 @@ public class AddUpdateProposalDetailsActionController {
                             Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
                         }
                         else if (p2p.getVersionTo() < 0) {
-                            p2p.setVersionTo(proposal.getCurrentVersion()-1);
+                            p2p.setVersionTo(proposal.getCurrentVersion());
                             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
                         }
                     }
