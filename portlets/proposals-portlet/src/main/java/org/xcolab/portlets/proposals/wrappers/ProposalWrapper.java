@@ -564,6 +564,33 @@ public class ProposalWrapper {
             return false;
         }
     }
+     /*
+    public boolean getIsLatestVersionInContest() throws SystemException, PortalException {
+        if (getWasMovedToContest() == null) return getIsLatestVersion();
+         //Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposal.getProposalId());
+        List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId());
+        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
+
+        long maxVersion = proposal.getCurrentVersion();
+        for (Proposal2Phase p2p : proposal2Phases){
+            if (contestPhases.)
+            if (p2p.getVersionTo() <= proposal.getCurrentVersion()) continue;
+            if ()
+        }
+
+        return false;
+    }
+    */
+    public Contest getWasMovedToContest() {
+        try{
+            Contest c = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+            if (c.getContestPK() != contest.getContestPK())
+                return c;
+            return null;
+        } catch (PortalException e) { return null; }
+        catch (SystemException e) { return null; }
+    }
+
 
     public ProposalVersion getSelectedVersion() {
         try {
