@@ -145,7 +145,8 @@
 	<script>
 		var currentProposal = {
 				proposalId: ${proposal.proposalId},
-				version: ${proposal.version}
+				version: ${proposal.version},
+                contestId: ${proposal.contest.getContestPK()}
 		}
 	</script>
 

@@ -82,9 +82,18 @@ public interface ProposalService extends BaseService, InvokableService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    /**
+    * @param contestPhaseId ID of contest phase or -1 for general query
+    * @param proposalId
+    * @param start
+    * @param end
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestPhaseId, long proposalId, int start, int end)
+        long contestId, long contestPhaseId, long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 

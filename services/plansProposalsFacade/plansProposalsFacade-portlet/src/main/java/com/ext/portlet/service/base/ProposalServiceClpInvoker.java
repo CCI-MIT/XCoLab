@@ -43,7 +43,9 @@ public class ProposalServiceClpInvoker {
 
         _methodName532 = "getProposalVersions";
 
-        _methodParameterTypes532 = new String[] { "long", "long", "int", "int" };
+        _methodParameterTypes532 = new String[] {
+                "long", "long", "long", "int", "int"
+            };
 
         _methodName533 = "getProposalVersions";
 
@@ -84,8 +86,9 @@ public class ProposalServiceClpInvoker {
                 Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
             return ProposalServiceUtil.getProposalVersions(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
-                ((Integer) arguments[2]).intValue(),
-                ((Integer) arguments[3]).intValue());
+                ((Long) arguments[2]).longValue(),
+                ((Integer) arguments[3]).intValue(),
+                ((Integer) arguments[4]).intValue());
         }
 
         if (_methodName533.equals(name) &&

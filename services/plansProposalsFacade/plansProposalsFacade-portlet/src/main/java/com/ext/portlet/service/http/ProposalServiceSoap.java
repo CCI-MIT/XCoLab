@@ -96,11 +96,21 @@ public class ProposalServiceSoap {
         }
     }
 
-    public static java.lang.String getProposalVersions(long contestPhaseId,
-        long proposalId, int start, int end) throws RemoteException {
+    /**
+    * @param contestPhaseId ID of contest phase or -1 for general query
+    * @param proposalId
+    * @param start
+    * @param end
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
+    public static java.lang.String getProposalVersions(long contestId,
+        long contestPhaseId, long proposalId, int start, int end)
+        throws RemoteException {
         try {
-            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersions(contestPhaseId,
-                    proposalId, start, end);
+            com.liferay.portal.kernel.json.JSONObject returnValue = ProposalServiceUtil.getProposalVersions(contestId,
+                    contestPhaseId, proposalId, start, end);
 
             return returnValue.toString();
         } catch (Exception e) {

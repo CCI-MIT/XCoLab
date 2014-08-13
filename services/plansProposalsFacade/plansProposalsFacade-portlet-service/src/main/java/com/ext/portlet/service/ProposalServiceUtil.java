@@ -84,12 +84,22 @@ public class ProposalServiceUtil {
         return getService().getProposalVersionIndex(version, proposalId);
     }
 
+    /**
+    * @param contestPhaseId ID of contest phase or -1 for general query
+    * @param proposalId
+    * @param start
+    * @param end
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestPhaseId, long proposalId, int start, int end)
+        long contestId, long contestPhaseId, long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService()
-                   .getProposalVersions(contestPhaseId, proposalId, start, end);
+                   .getProposalVersions(contestId, contestPhaseId, proposalId,
+            start, end);
     }
 
     public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
