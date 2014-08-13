@@ -115,7 +115,7 @@ public class AddUpdateProposalDetailsActionController {
                     // Conclude last P2P mapping to prevent concurrent editing
                     for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
                         if (p2p.getVersionTo() < 0) {
-                            p2p.setVersionTo(proposal.getCurrentVersion()-1);
+                            p2p.setVersionTo(proposal.getCurrentVersion());
                             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
                         }
                     }
@@ -130,7 +130,7 @@ public class AddUpdateProposalDetailsActionController {
                         break;
                     }
                 }
-                if (targetPhase == null) throw new SystemException();
+                if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
 
             	// associate proposal with creation phase
             	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), targetPhase.getContestPhasePK(),
