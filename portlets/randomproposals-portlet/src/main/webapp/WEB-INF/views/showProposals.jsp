@@ -12,7 +12,7 @@
                             <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="${proposal.name}" />
                        	</c:if>
                         <c:if test="${empty proposal.image or proposal.image le 0}">
-                            <img src="/climatecolab-theme/images/blank.gif" width="151" height="151" alt="${proposal.name}" style="border: 1px solid #bbb;"/>
+                            <img src="/climatecolab-theme/images/proposal_default.png" width="151" height="151" alt="${proposal.name}" style="border: 1px solid #bbb;"/>
                         </c:if>
                     </a>
                 </div>

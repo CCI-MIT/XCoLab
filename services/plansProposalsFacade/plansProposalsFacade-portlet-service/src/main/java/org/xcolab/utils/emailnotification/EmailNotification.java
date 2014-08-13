@@ -60,6 +60,19 @@ public abstract class EmailNotification {
     }
 
     /**
+     * Returns the HTML link for the passed proposal and contest
+     *
+     * @param contest   The contest object in which the proposal was written
+     * @param proposal  The proposal object (must not be null)
+     * @return          Proposal URL as String
+     */
+    protected  String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException, PortalException {
+        final String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        final String proposalLinkUrl = serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
+        return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
+    }
+
+    /**
      * Returns the HTML link for the passed contest
      *
      * @param contest   The contest object
@@ -76,7 +89,7 @@ public abstract class EmailNotification {
 
     protected void sendMessage(String subject, String body, User recipient) {
         try {
-            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
+            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
             MailEngine.send(fromEmail, toEmail, subject, body, true);
         } catch (MailEngineException | UnsupportedEncodingException e) {
