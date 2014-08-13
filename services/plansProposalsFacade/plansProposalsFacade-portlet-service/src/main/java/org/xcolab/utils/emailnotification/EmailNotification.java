@@ -89,7 +89,7 @@ public abstract class EmailNotification {
 
     protected void sendMessage(String subject, String body, User recipient) {
         try {
-            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "The Climate CoLab Team");
+            InternetAddress fromEmail = new InternetAddress("no-reply@climatecolab.org", "MIT Climate CoLab");
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
             MailEngine.send(fromEmail, toEmail, subject, body, true);
         } catch (MailEngineException | UnsupportedEncodingException e) {

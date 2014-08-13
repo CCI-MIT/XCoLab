@@ -6,6 +6,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
+
 import java.util.List;
 
 /**
@@ -14,14 +16,15 @@ import java.util.List;
 public class ContestVoteQuestionNotification extends EmailNotification {
 
     private static final String MESSAGE_BODY_FORMAT_STRING = "Hi %s,<br/><br/>" +
-            "This year's voting period has started! Vote now to help your favorite proposals win the Popular Choice award. " +
-            "We have noted that you have supported the following proposals in the contest <b>%s</b>:<br/><br/>" +
-            "%s<br/><br/>" +
-            "Click the links above to visit the proposal page and cast your vote.  Please note that you can only vote for one proposal per contest." +
-            "<br/><br/>Thank you!" +
+            "This year's Climate CoLab voting period has started!  Vote now to help your favorite proposal win the Popular Choice award. " +
+            "<br/><br/>You are currently supporting the following proposal(s) in the <b>%s</b> contest:<br/><br/>" +
+            "%s<br/>" +
+            "<b>To cast your vote, click the link above of the proposal you would like to win.</b>" +
+            "<br/><br/>Please note that you can vote for only one proposal per contest.  You must have a valid email address for your vote to be counted.  See the other proposals in this contest by visiting %s." +
+            "<br/><br/>Thank you! And be sure to stay tuned for the results, announced in late September." +
             "<br/><br/>Sincerely,<br/>The Climate Colab Team";
 
-    private static final String SUBJECT_FORMAT_STRING = "Please vote for your favorite proposal in contest %s";
+    private static final String SUBJECT_FORMAT_STRING = "Vote for your favorite proposal in the %s contest";
 
 
     private User recipient;
@@ -40,12 +43,11 @@ public class ContestVoteQuestionNotification extends EmailNotification {
         StringBuilder messageBody = new StringBuilder();
 
         for (Proposal proposal : supportedProposals) {
-
-            messageBody.append(String.format(getProposalLinkForDirectVoting(contest, proposal) + "<br />"));
+            messageBody.append(String.format(getProposalLinkForDirectVoting(contest, proposal) + " by " +  UserLocalServiceUtil.getUser(proposal.getAuthorId()).getFullName() + "<br />"));
         }
 
         String subject = String.format(SUBJECT_FORMAT_STRING, contest.getContestShortName());
-        String body = String.format(MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestShortName(), messageBody.toString());
+        String body = String.format(MESSAGE_BODY_FORMAT_STRING, recipient.getFullName(), contest.getContestShortName(), messageBody.toString(),getContestLink(contest));
         sendMessage(subject, body, recipient);
     }
 
