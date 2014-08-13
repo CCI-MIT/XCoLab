@@ -88,6 +88,8 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
 import com.ext.portlet.service.persistence.StaffMemberPersistence;
+import com.ext.portlet.service.persistence.TrackedVisitPersistence;
+import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.IdentifiableBean;
@@ -625,6 +627,18 @@ public abstract class PlanTypeAttributeServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.StaffMemberService staffMemberService;
     @BeanReference(type = StaffMemberPersistence.class)
     protected StaffMemberPersistence staffMemberPersistence;
+    @BeanReference(type = com.ext.portlet.service.TrackedVisitLocalService.class)
+    protected com.ext.portlet.service.TrackedVisitLocalService trackedVisitLocalService;
+    @BeanReference(type = com.ext.portlet.service.TrackedVisitService.class)
+    protected com.ext.portlet.service.TrackedVisitService trackedVisitService;
+    @BeanReference(type = TrackedVisitPersistence.class)
+    protected TrackedVisitPersistence trackedVisitPersistence;
+    @BeanReference(type = com.ext.portlet.service.TrackedVisitor2UserLocalService.class)
+    protected com.ext.portlet.service.TrackedVisitor2UserLocalService trackedVisitor2UserLocalService;
+    @BeanReference(type = com.ext.portlet.service.TrackedVisitor2UserService.class)
+    protected com.ext.portlet.service.TrackedVisitor2UserService trackedVisitor2UserService;
+    @BeanReference(type = TrackedVisitor2UserPersistence.class)
+    protected TrackedVisitor2UserPersistence trackedVisitor2UserPersistence;
     @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
     protected com.liferay.counter.service.CounterLocalService counterLocalService;
     @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
@@ -5497,6 +5511,120 @@ public abstract class PlanTypeAttributeServiceBaseImpl extends BaseServiceImpl
     public void setStaffMemberPersistence(
         StaffMemberPersistence staffMemberPersistence) {
         this.staffMemberPersistence = staffMemberPersistence;
+    }
+
+    /**
+     * Returns the tracked visit local service.
+     *
+     * @return the tracked visit local service
+     */
+    public com.ext.portlet.service.TrackedVisitLocalService getTrackedVisitLocalService() {
+        return trackedVisitLocalService;
+    }
+
+    /**
+     * Sets the tracked visit local service.
+     *
+     * @param trackedVisitLocalService the tracked visit local service
+     */
+    public void setTrackedVisitLocalService(
+        com.ext.portlet.service.TrackedVisitLocalService trackedVisitLocalService) {
+        this.trackedVisitLocalService = trackedVisitLocalService;
+    }
+
+    /**
+     * Returns the tracked visit remote service.
+     *
+     * @return the tracked visit remote service
+     */
+    public com.ext.portlet.service.TrackedVisitService getTrackedVisitService() {
+        return trackedVisitService;
+    }
+
+    /**
+     * Sets the tracked visit remote service.
+     *
+     * @param trackedVisitService the tracked visit remote service
+     */
+    public void setTrackedVisitService(
+        com.ext.portlet.service.TrackedVisitService trackedVisitService) {
+        this.trackedVisitService = trackedVisitService;
+    }
+
+    /**
+     * Returns the tracked visit persistence.
+     *
+     * @return the tracked visit persistence
+     */
+    public TrackedVisitPersistence getTrackedVisitPersistence() {
+        return trackedVisitPersistence;
+    }
+
+    /**
+     * Sets the tracked visit persistence.
+     *
+     * @param trackedVisitPersistence the tracked visit persistence
+     */
+    public void setTrackedVisitPersistence(
+        TrackedVisitPersistence trackedVisitPersistence) {
+        this.trackedVisitPersistence = trackedVisitPersistence;
+    }
+
+    /**
+     * Returns the tracked visitor2 user local service.
+     *
+     * @return the tracked visitor2 user local service
+     */
+    public com.ext.portlet.service.TrackedVisitor2UserLocalService getTrackedVisitor2UserLocalService() {
+        return trackedVisitor2UserLocalService;
+    }
+
+    /**
+     * Sets the tracked visitor2 user local service.
+     *
+     * @param trackedVisitor2UserLocalService the tracked visitor2 user local service
+     */
+    public void setTrackedVisitor2UserLocalService(
+        com.ext.portlet.service.TrackedVisitor2UserLocalService trackedVisitor2UserLocalService) {
+        this.trackedVisitor2UserLocalService = trackedVisitor2UserLocalService;
+    }
+
+    /**
+     * Returns the tracked visitor2 user remote service.
+     *
+     * @return the tracked visitor2 user remote service
+     */
+    public com.ext.portlet.service.TrackedVisitor2UserService getTrackedVisitor2UserService() {
+        return trackedVisitor2UserService;
+    }
+
+    /**
+     * Sets the tracked visitor2 user remote service.
+     *
+     * @param trackedVisitor2UserService the tracked visitor2 user remote service
+     */
+    public void setTrackedVisitor2UserService(
+        com.ext.portlet.service.TrackedVisitor2UserService trackedVisitor2UserService) {
+        this.trackedVisitor2UserService = trackedVisitor2UserService;
+    }
+
+    /**
+     * Returns the tracked visitor2 user persistence.
+     *
+     * @return the tracked visitor2 user persistence
+     */
+    public TrackedVisitor2UserPersistence getTrackedVisitor2UserPersistence() {
+        return trackedVisitor2UserPersistence;
+    }
+
+    /**
+     * Sets the tracked visitor2 user persistence.
+     *
+     * @param trackedVisitor2UserPersistence the tracked visitor2 user persistence
+     */
+    public void setTrackedVisitor2UserPersistence(
+        TrackedVisitor2UserPersistence trackedVisitor2UserPersistence) {
+        this.trackedVisitor2UserPersistence = trackedVisitor2UserPersistence;
     }
 
     /**

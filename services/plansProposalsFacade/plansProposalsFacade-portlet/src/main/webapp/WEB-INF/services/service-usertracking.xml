@@ -29,6 +29,7 @@
         <column name="id" type="long" primary="true" />
         <column name="uuid" type="String" />
         <column name="userId" type="long" />
+        <column name="createDate" type="Date" />
     </entity>
 
 </service-builder>

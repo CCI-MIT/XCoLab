@@ -271,6 +271,12 @@
 	<bean id="com.ext.portlet.service.StaffMemberLocalService" class="com.ext.portlet.service.impl.StaffMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.StaffMemberService" class="com.ext.portlet.service.impl.StaffMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.StaffMemberPersistence" class="com.ext.portlet.service.persistence.StaffMemberPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.TrackedVisitLocalService" class="com.ext.portlet.service.impl.TrackedVisitLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.TrackedVisitService" class="com.ext.portlet.service.impl.TrackedVisitServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.TrackedVisitPersistence" class="com.ext.portlet.service.persistence.TrackedVisitPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.TrackedVisitor2UserLocalService" class="com.ext.portlet.service.impl.TrackedVisitor2UserLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.TrackedVisitor2UserService" class="com.ext.portlet.service.impl.TrackedVisitor2UserServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence" class="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
 		<property name="policyFile">
 			<value>antisamy-policy.xml</value>

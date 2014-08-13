@@ -87,6 +87,8 @@
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
 	<import class="com.ext.portlet.model.StaffMember" />
+	<import class="com.ext.portlet.model.TrackedVisit" />
+	<import class="com.ext.portlet.model.TrackedVisitor2User" />
 	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
 		<cache usage="read-write" />
 		<id name="pk" type="long">
@@ -1059,5 +1061,29 @@
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="organization" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.TrackedVisitImpl" table="xcolab_TrackedVisit">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
+		<property name="ip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="browser" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="headers" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="referer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.TrackedVisitor2UserImpl" table="xcolab_TrackedVisitor2User">
+		<cache usage="read-write" />
+		<id name="id" column="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
 </hibernate-mapping>

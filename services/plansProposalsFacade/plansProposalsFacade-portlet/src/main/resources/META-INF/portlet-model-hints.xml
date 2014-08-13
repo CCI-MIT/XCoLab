@@ -930,4 +930,40 @@
 		<field name="organization" type="String" />
 		<field name="sort" type="int" />
 	</model>
+	<model name="com.ext.portlet.model.TrackedVisit">
+		<field name="id" type="long" />
+		<field name="uuid" type="String">
+			<hint name="max-length">36</hint>
+		</field>
+		<field name="ip" type="String">
+			<hint name="max-length">45</hint>
+		</field>
+		<field name="city" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="country" type="String">
+			<hint name="max-length">2</hint>
+		</field>
+		<field name="url" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="browser" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="headers" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="referer" type="String">
+			<hint name="max-length">2048</hint>
+		</field>
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.TrackedVisitor2User">
+		<field name="id" type="long" />
+		<field name="uuid" type="String">
+			<hint name="max-length">36</hint>
+		</field>
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
 </model-hints>
