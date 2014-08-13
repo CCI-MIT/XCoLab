@@ -7,18 +7,32 @@ if (jQuery.cookie("userTrackingUuid")) {
         isTrackedVisitor = jQuery.cookie("userTrackingIsTrackedVisitor");
     }
 } else {
-    jQuery.removeCookie("userTrackingIsTrackedVisitor");
+    jQuery.removeCookie("userTrackingIsTrackedVisitor", { path: '/' });
 }
 
+//10115 is the guest user's id - delete it
+if (usertracking_userId == 10115) {
+    usertracking_userId = null;
+    usertracking_hash = null;
+    isTrackedVisitor = false;
+    jQuery.removeCookie("userTrackingIsTrackedVisitor", { path: '/' });
+}
+
+var url = document.location.href+"";
 var postData = {
     uuid: uuid,
-    userId: usertracking_userId,
-    hash: usertracking_hash,
     //do not send the domain part
-    url: "/"+document.location.href.replace(/^(?:\/\/|[^\/]+)*\//, ""),
-    isTrackedVisitor: isTrackedVisitor ? "true" : null,
+    url: "/"+url.replace(/^(?:\/\/|[^\/]+)*\//, ""),
     referer: document.referrer
 };
+
+if (usertracking_userId) {
+    postData.userId = usertracking_userId;
+    postData.hash = usertracking_hash;
+}
+if (isTrackedVisitor) {
+    postData.isTrackedVisitor = true;
+}
 
 
 jQuery.post("/usertracking-portlet/trackVisitor", postData, function(data) {
