@@ -84,6 +84,8 @@ import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
 import com.ext.portlet.model.StaffMemberClp;
+import com.ext.portlet.model.TrackedVisitClp;
+import com.ext.portlet.model.TrackedVisitor2UserClp;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -512,6 +514,14 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
             return translateInputStaffMember(oldModel);
+        }
+
+        if (oldModelClassName.equals(TrackedVisitClp.class.getName())) {
+            return translateInputTrackedVisit(oldModel);
+        }
+
+        if (oldModelClassName.equals(TrackedVisitor2UserClp.class.getName())) {
+            return translateInputTrackedVisitor2User(oldModel);
         }
 
         return oldModel;
@@ -1393,6 +1403,27 @@ public class ClpSerializer {
         return newModel;
     }
 
+    public static Object translateInputTrackedVisit(BaseModel<?> oldModel) {
+        TrackedVisitClp oldClpModel = (TrackedVisitClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getTrackedVisitRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputTrackedVisitor2User(
+        BaseModel<?> oldModel) {
+        TrackedVisitor2UserClp oldClpModel = (TrackedVisitor2UserClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getTrackedVisitor2UserRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
     public static Object translateInput(Object obj) {
         if (obj instanceof BaseModel<?>) {
             return translateInput((BaseModel<?>) obj);
@@ -1815,6 +1846,16 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.StaffMemberImpl")) {
             return translateOutputStaffMember(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.TrackedVisitImpl")) {
+            return translateOutputTrackedVisit(oldModel);
+        }
+
+        if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.TrackedVisitor2UserImpl")) {
+            return translateOutputTrackedVisitor2User(oldModel);
         }
 
         return oldModel;
@@ -2404,6 +2445,15 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
             return new com.ext.portlet.NoSuchStaffMemberException();
+        }
+
+        if (className.equals("com.ext.portlet.NoSuchTrackedVisitException")) {
+            return new com.ext.portlet.NoSuchTrackedVisitException();
+        }
+
+        if (className.equals(
+                    "com.ext.portlet.NoSuchTrackedVisitor2UserException")) {
+            return new com.ext.portlet.NoSuchTrackedVisitor2UserException();
         }
 
         return throwable;
@@ -3277,6 +3327,27 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setStaffMemberRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputTrackedVisit(BaseModel<?> oldModel) {
+        TrackedVisitClp newModel = new TrackedVisitClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setTrackedVisitRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputTrackedVisitor2User(
+        BaseModel<?> oldModel) {
+        TrackedVisitor2UserClp newModel = new TrackedVisitor2UserClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setTrackedVisitor2UserRemoteModel(oldModel);
 
         return newModel;
     }

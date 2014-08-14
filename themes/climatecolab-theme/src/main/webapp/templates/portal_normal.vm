@@ -300,6 +300,8 @@ $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
 <script src="$javascript_folder/balloon.js?tt=$themeTimestamp"></script>
+<script>var usertracking_userId = $user.userId;var usertracking_hash = $user.uuid.hashCode();</script>
+<script src="$javascript_folder/usertracking.js?tt=$themeTimestamp"></script>
 </body>
 
 </html>

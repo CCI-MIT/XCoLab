@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class PlanAttributeServiceClpInvoker {
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
+    private String _methodName536;
+    private String[] _methodParameterTypes536;
+    private String _methodName537;
+    private String[] _methodParameterTypes537;
 
     public PlanAttributeServiceClpInvoker() {
-        _methodName524 = "getBeanIdentifier";
+        _methodName536 = "getBeanIdentifier";
 
-        _methodParameterTypes524 = new String[] {  };
+        _methodParameterTypes536 = new String[] {  };
 
-        _methodName525 = "setBeanIdentifier";
+        _methodName537 = "setBeanIdentifier";
 
-        _methodParameterTypes525 = new String[] { "java.lang.String" };
+        _methodParameterTypes537 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName536.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
             return PlanAttributeServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName537.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
             PlanAttributeServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

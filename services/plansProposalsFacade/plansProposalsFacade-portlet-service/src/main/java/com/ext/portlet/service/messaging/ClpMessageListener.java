@@ -171,6 +171,10 @@ import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
+import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
+import com.ext.portlet.service.TrackedVisitServiceUtil;
+import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
+import com.ext.portlet.service.TrackedVisitor2UserServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -443,6 +447,12 @@ public class ClpMessageListener extends BaseMessageListener {
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();
+            TrackedVisitLocalServiceUtil.clearService();
+
+            TrackedVisitServiceUtil.clearService();
+            TrackedVisitor2UserLocalServiceUtil.clearService();
+
+            TrackedVisitor2UserServiceUtil.clearService();
         }
     }
 }

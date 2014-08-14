@@ -191,3 +191,5 @@ create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, use
 create index IX_497348F2 on xcolab_ProposalVote (userId);
 
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
+
+create index IX_21569857 on xcolab_TrackedVisit (uuid_);

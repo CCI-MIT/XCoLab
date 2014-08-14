@@ -816,3 +816,23 @@ create table xcolab_StaffMember (
 	organization VARCHAR(75) null,
 	sort INTEGER
 );
+
+create table xcolab_TrackedVisit (
+	id_ LONG not null primary key,
+	uuid_ VARCHAR(36) null,
+	ip VARCHAR(45) null,
+	city VARCHAR(255) null,
+	country VARCHAR(2) null,
+	url VARCHAR(2048) null,
+	browser TEXT null,
+	headers TEXT null,
+	referer VARCHAR(2048) null,
+	createDate DATE null
+);
+
+create table xcolab_TrackedVisitor2User (
+	id_ LONG not null primary key,
+	uuid_ VARCHAR(36) null,
+	userId LONG,
+	createDate DATE null
+);

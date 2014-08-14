@@ -1366,6 +1366,47 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.TrackedVisitModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="uuid">
+				<column name="UUID_" />
+			</basic>
+			<basic name="ip" />
+			<basic name="city" />
+			<basic name="country" />
+			<basic name="url" />
+			<basic name="browser" />
+			<basic name="headers" />
+			<basic name="referer" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.TrackedVisitor2UserModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="uuid">
+				<column name="UUID_" />
+			</basic>
+			<basic name="userId" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
 		<table name="xcolab_ActivitySubscription" />
 		<attributes />
@@ -1700,6 +1741,14 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.StaffMemberImpl" name="StaffMember">
 		<table name="xcolab_StaffMember" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.TrackedVisitImpl" name="TrackedVisit">
+		<table name="xcolab_TrackedVisit" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.TrackedVisitor2UserImpl" name="TrackedVisitor2User">
+		<table name="xcolab_TrackedVisitor2User" />
 		<attributes />
 	</entity>
 </entity-mappings>
