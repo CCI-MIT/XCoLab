@@ -9,6 +9,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang.StringUtils;
@@ -125,9 +126,8 @@ public class LoginController {
                 if(r.getUserId() == 0) {
                     redirect = "/web/guest/member/-/member/userId/" + user.getUserId();
                 }
-            } catch (Exception e) {
-            	_log.error("can't log user in", e);
-            }
+            } catch (NoSuchMessagingIgnoredRecipientsException e) { /* Case is fine, user is not in ignored rec. list */  }
+            catch (SystemException e ) { _log.error("System exception while trying to log user in", e); }
         }
         
         if (!SessionErrors.isEmpty(request)) {
