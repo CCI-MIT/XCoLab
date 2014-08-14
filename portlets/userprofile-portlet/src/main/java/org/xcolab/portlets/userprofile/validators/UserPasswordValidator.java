@@ -37,7 +37,8 @@ public class UserPasswordValidator implements Validator {
         
         if (type.equals("current") && ! StringUtils.isBlank(value.toString())) {
             try {
-                if (! PwdEncryptor.encrypt(value.toString()).equals(currentUser.getPassword())) {
+                if (! PwdEncryptor.encrypt(value.toString()).equals(currentUser.getPassword())&&
+                        ! PwdEncryptor.encrypt(value.toString()).equals(currentUser.getPassword().substring(7))) { // cut out {SHA-1}
                     isError = true;
                     errorMsg.setDetail("Invalid password");
                     errorMsg.setSummary("Invalid password");
