@@ -12,11 +12,8 @@ import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
