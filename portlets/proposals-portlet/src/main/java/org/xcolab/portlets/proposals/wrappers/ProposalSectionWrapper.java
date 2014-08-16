@@ -86,6 +86,11 @@ public class ProposalSectionWrapper {
         	if (!isYoutube) {
         		continue;
         	}
+        	
+        	if (! (e.hasClass("utube") || e.text().toString().toLowerCase().startsWith("embed"))) {
+        		// only links with "embed" text or "utube" class should be replaced by an iframe
+        		continue;
+        	}
         	String videoId = null;
         	if (curURL.indexOf("?") > 0 && curURL.indexOf("v=") > 0) {
         		// legacy url support
