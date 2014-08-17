@@ -84,25 +84,24 @@
         <table class="contributors">
             <c:forEach var="member" items="${proposal.members }" varStatus="status">
 
-
-                <portlet:actionURL var="removeUserFromTeam">
-                    <portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
-                    <portlet:param name="contestId" value="${contest.contestPK }" />
-                    <portlet:param name="planId" value="${proposal.proposalId }" />
-                    <portlet:param name="action" value="removeUserFromTeam" />
-                    <portlet:param name="member" value="${member.userId}" />
-                </portlet:actionURL>
-
-
-
                 <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                     <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
                     <td>${member.memberType }</td>
-                    <td>
-                        <c:if test="${member.memberType != 'Owner'}">
-                            <a href="${removeUserFromTeam }">Remove</a>
-                        </c:if>
-                    </td>
+                    <c:if test="${proposalsPermissions.canManageUsers}">
+                    	<td>
+                    		<c:if test="${member.memberType != 'Owner'}">
+                				<portlet:actionURL var="removeUserFromTeam">
+                    				<portlet:param name="action_forwardToPage" value="proposalDetails_TEAM" />
+	                    			<portlet:param name="contestId" value="${contest.contestPK }" />
+    	                			<portlet:param name="planId" value="${proposal.proposalId }" />
+        	            			<portlet:param name="action" value="removeUserFromTeam" />
+            	        			<portlet:param name="member" value="${member.userId}" />
+                				</portlet:actionURL>
+                			
+                    	        <a href="${removeUserFromTeam }">Remove</a>
+                        	</c:if>
+	                    </td>
+                    </c:if>
                 </tr>
             </c:forEach>
         </table>

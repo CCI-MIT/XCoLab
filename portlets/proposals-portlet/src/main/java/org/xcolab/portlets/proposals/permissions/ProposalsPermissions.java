@@ -131,6 +131,10 @@ public class ProposalsPermissions {
         return user.isDefaultUser() || getCanRequestMembership();
     }
     
+    public boolean getCanManageUsers() throws SystemException, PortalException {
+    	return getCanAdmin();
+    }
+    
     public boolean getCanRequestMembership() throws SystemException, PortalException {
         return !user.isDefaultUser() && ! isProposalMember() && !getRequestedMembership();
     }
