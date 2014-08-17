@@ -73,9 +73,14 @@ public class UserProfileBean implements Serializable {
             try {
                 Long userId = Long.parseLong(parameters.get(USER_ID_PARAM));
                 wrappedUser = UserLocalServiceUtil.getUser(userId);
-                currentUser = new UserWrapper(wrappedUser);
-                pageType = PageType.PROFILE_DETAILS;
-                subscriptionsBean = new UserSubscriptionsBean(wrappedUser);
+                if (wrappedUser.isActive()) {
+                	currentUser = new UserWrapper(wrappedUser);
+                	pageType = PageType.PROFILE_DETAILS;
+                	subscriptionsBean = new UserSubscriptionsBean(wrappedUser);
+                }
+                else {
+                	wrappedUser = null;
+                }
             }
             catch (NumberFormatException e) {
                 _log.error("Can't parse user id: " + parameters.get(USER_ID_PARAM), e);
