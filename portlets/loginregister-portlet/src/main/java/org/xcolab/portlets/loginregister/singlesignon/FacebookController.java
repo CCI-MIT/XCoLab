@@ -107,6 +107,7 @@ public class FacebookController {
 		session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
 		String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        if(Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) redirectUrl =  themeDisplay.getURLHome();
 
         String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
