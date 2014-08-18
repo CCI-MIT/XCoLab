@@ -60,7 +60,7 @@ public class LoginLogModelImpl extends BaseModelImpl<LoginLog>
             { "country", Types.VARCHAR },
             { "entryUrl", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_LoginLog (pk LONG not null primary key,userId LONG,createDate DATE null,ipAddress VARCHAR(75) null,city VARCHAR(75) null,country VARCHAR(75) null,entryUrl VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_LoginLog (pk LONG not null primary key,userId LONG,createDate DATE null,ipAddress VARCHAR(75) null,city VARCHAR(75) null,country VARCHAR(75) null,entryUrl VARCHAR(255) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_LoginLog";
     public static final String ORDER_BY_JPQL = " ORDER BY loginLog.pk ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_LoginLog.pk ASC";

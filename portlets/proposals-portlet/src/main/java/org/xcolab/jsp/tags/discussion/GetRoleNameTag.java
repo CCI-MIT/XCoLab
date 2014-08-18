@@ -1,5 +1,6 @@
 package org.xcolab.jsp.tags.discussion;
 
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -76,13 +77,16 @@ public class GetRoleNameTag extends BodyTagSupport {
 
             // Is the user contributing to the proposal?
             boolean isContributing = false;
-            List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
-            for (User contributor : contributors) {
-                if (contributor.getUserId() == userId) {
-                    isContributing = true;
-                    break;
+            try{
+                List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
+                for (User contributor : contributors) {
+                    if (contributor.getUserId() == userId) {
+                        isContributing = true;
+                        break;
+                    }
                 }
-            }
+            } catch (NoSuchProposalException e){ /*User is not contributing because proposal does not exist, or proposalId = 0 when evaluating this for a contest */  }
+
 
             pageContext.setAttribute("isContributing", isContributing);
 

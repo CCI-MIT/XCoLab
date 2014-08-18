@@ -45,7 +45,7 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
 		newLog.setUserId(user.getUserId());
 		newLog.setCreateDate(new Date());
 		newLog.setIpAddress(ipAddr);
-		newLog.setEntryUrl(entryUrl);
+		newLog.setEntryUrl(entryUrl.substring(0,Math.min(250, entryUrl.length())));
 
         try {
             Location userLocation = IpTranslationServiceUtil.getLocationForIp(ipAddr);

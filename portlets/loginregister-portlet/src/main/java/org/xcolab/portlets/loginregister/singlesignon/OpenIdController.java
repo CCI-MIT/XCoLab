@@ -95,6 +95,7 @@ public class OpenIdController {
 		session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
         String redirectUrl = (String)session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        if(Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) redirectUrl =  themeDisplay.getURLHome();
         session.removeAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
 
         // Check whether the state token matches => CSRF protection

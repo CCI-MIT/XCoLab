@@ -253,7 +253,7 @@ create table xcolab_LoginLog (
 	ipAddress VARCHAR(75) null,
 	city VARCHAR(75) null,
 	country VARCHAR(75) null,
-	entryUrl VARCHAR(75) null
+	entryUrl VARCHAR(255) null
 );
 
 create table xcolab_Message (
