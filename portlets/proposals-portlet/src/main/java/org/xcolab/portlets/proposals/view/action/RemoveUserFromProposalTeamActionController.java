@@ -32,9 +32,11 @@ public class RemoveUserFromProposalTeamActionController {
     public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam("member") long memberUserId)
             throws PortalException, SystemException, ProposalsAuthorizationException {
 
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        if (proposalsContext.getPermissions(request).getCanManageUsers()) {
+        	long proposalId = proposalsContext.getProposal(request).getProposalId();
 
-        ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+        	ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+        }
 
     }
 

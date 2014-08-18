@@ -69,22 +69,24 @@ public class SingleSignOnController {
                 String openId = (String) portletSession.getAttribute("SSO_OPENID_ID",PortletSession.APPLICATION_SCOPE);
                 String profileImageId = (String)portletSession.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, PortletSession.APPLICATION_SCOPE);
 
+                if (Validator.isNotNull(profileImageId) && u.getPortraitId() == 0) {
+                    long id = GetterUtil.getLong(profileImageId);
+                    u.setPortraitId(id);
+                    UserLocalServiceUtil.updateUser(u);
+                }
                 if (Validator.isNotNull(fbIdString)){
                     // update FB credentials
                     long fbId = Long.parseLong(fbIdString);
                     u.setFacebookId(fbId);
                     UserLocalServiceUtil.updateUser(u);
                     response.sendRedirect(themeDisplay.getURLHome());
+                    return;
                 } else if (Validator.isNotNull(openId)){
                     u.setOpenId(openId);
                     UserLocalServiceUtil.updateUser(u);
                     portletSession.setAttribute("OPEN_ID_LOGIN",new Long(u.getUserId()), PortletSession.APPLICATION_SCOPE);
                     response.sendRedirect(themeDisplay.getURLHome());
-                }
-                if (Validator.isNotNull(profileImageId)) {
-                    long id = GetterUtil.getLong(profileImageId);
-                    u.setPortraitId(id);
-                    UserLocalServiceUtil.updateUser(u);
+                    return;
                 }
                 response.setRenderParameter("error", "true");
                 response.setRenderParameter("SSO", "general");

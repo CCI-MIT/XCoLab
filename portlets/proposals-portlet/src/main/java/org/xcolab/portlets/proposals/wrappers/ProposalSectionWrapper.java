@@ -71,15 +71,49 @@ public class ProposalSectionWrapper {
 
         }
         Document d = Jsoup.parse(content.trim());
-        for (Element e : d.select("a.utube")) {
-            String curURL = e.attr("href");
-            List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?") + 1), Charset.defaultCharset());
-            for (NameValuePair nvp : params) {
-                if (nvp.getName().equals("v")) {
-                    e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + nvp.getValue() + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
-                    e.remove();
+        
+        for (Element e : d.select("a")) {
+        	String curURL = e.attr("href");
+        	final String[] youtubeAddresses = {"http://youtu.be", "https://youtu.be", "http://www.youtube.com", 
+        			"https://www.youtube.com", "http://youtube.com", "https://youtube.com"};
+        	boolean isYoutube = false;
+        	for (String youtubePrefix: youtubeAddresses) {
+        		if (curURL.startsWith(youtubePrefix)) {
+        			isYoutube = true;
+        			break;
+        		}
+        	}
+        	if (!isYoutube) {
+        		continue;
+        	}
+        	
+        	if (! (e.hasClass("utube") || e.text().toString().toLowerCase().startsWith("embed"))) {
+        		// only links with "embed" text or "utube" class should be replaced by an iframe
+        		continue;
+        	}
+        	String videoId = null;
+        	if (curURL.indexOf("?") > 0 && curURL.indexOf("v=") > 0) {
+        		// legacy url support
+                List<NameValuePair> params = URLEncodedUtils.parse(curURL.substring(curURL.indexOf("?") + 1), Charset.defaultCharset());
+                for (NameValuePair nvp : params) {
+                    if (nvp.getName().equals("v")) {
+                    	videoId = nvp.getValue();
+                    }
                 }
-            }
+        	}
+        	else {
+        		final Pattern videoIdPattern = Pattern.compile("\\/(\\p{Alnum}{11})");
+        		Matcher m = videoIdPattern.matcher(curURL);
+        		if (m.find()) {
+        			videoId = m.group(1);
+        		}
+        	}
+        	if (videoId != null) {
+
+                e.after("<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe><br/>");
+                e.remove();
+        	}
+        	
         }
 
         // Regex pattern originated from

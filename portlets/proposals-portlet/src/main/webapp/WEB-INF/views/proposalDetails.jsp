@@ -71,7 +71,6 @@
                                 Currently viewing version from
                                 <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format(
                                 		"MM/DD/YYYY hh:mm A"));
-                                    var version = ${proposal.selectedVersion};
                                 </script>
                                 by
                                 <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"

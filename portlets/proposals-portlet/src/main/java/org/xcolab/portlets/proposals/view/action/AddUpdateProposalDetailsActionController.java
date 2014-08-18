@@ -300,6 +300,7 @@ public class AddUpdateProposalDetailsActionController {
         Whitelist w = Whitelist.relaxed().preserveRelativeLinks(true);
         //allow internal anchors
         w.addAttributes("a", "name");
+        w.addAttributes("img", "style");
         //Do not add _blank because it would break internal anchors
         // /w.addEnforcedAttribute("a", "target", "_blank"); //open all links in new windows
         w.addEnforcedAttribute("a", "rel", "nofollow"); //nofollow for search engines
