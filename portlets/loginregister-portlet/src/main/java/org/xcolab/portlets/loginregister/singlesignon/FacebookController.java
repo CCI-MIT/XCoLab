@@ -306,9 +306,9 @@ public class FacebookController {
 
 	private void updateUserAccountInformation(HttpServletRequest req, User user, JSONObject jsonObject) {
 		try {
-			String country = getExpandoValue(user, CommunityConstants.COUNTRY).getString();
+			ExpandoValue country = getExpandoValue(user, CommunityConstants.COUNTRY);
 
-			if (Validator.isNull(country)) {
+			if (Validator.isNull(country) || Validator.isNull(country.getString())) {
 				try {
 					setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(req, jsonObject));
 				} catch (UserLocationNotResolveableException e) {
@@ -316,9 +316,9 @@ public class FacebookController {
 				}
 			}
 
-			String city = getExpandoValue(user, CommunityConstants.CITY).getString();
+			ExpandoValue city = getExpandoValue(user, CommunityConstants.CITY);
 
-			if (Validator.isNull(city)) {
+			if (Validator.isNull(city) || Validator.isNull(city.getString())) {
 				try {
 					setExpandoValue(user, CommunityConstants.CITY, getCountry(req, jsonObject));
 
