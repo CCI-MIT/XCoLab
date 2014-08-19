@@ -7,6 +7,7 @@ import javax.portlet.*;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.*;
@@ -15,6 +16,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 @Controller
@@ -41,23 +43,34 @@ public class ProposalsPreferencesController {
         //get all contests
         List<Contest> contests = ContestLocalServiceUtil.findByActive(true);
 
-        //contest to contestphases
+        //contestId to contestphases
+        Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<Long, ContestPhaseType>();
         Map<Long, List<ContestPhase>> contestPhasesMap = new HashMap<Long, List<ContestPhase>>();
-        //contestphase to proposal
-        Map<Long, List<Proposal>> proposalMap = new HashMap<Long, List<Proposal>>();
+        //contestphaseId to proposal
+        Map<Long, List<ProposalWrapper>> proposalsMap = new HashMap<Long, List<ProposalWrapper>>();
         for (Contest c : contests) {
             List<ContestPhase> contestPhases = getPhasesByContest(c, 1);
 
             contestPhasesMap.put(c.getContestPK(), contestPhases);
 
             for (ContestPhase cp: contestPhases) {
-                proposalMap.put(cp.getContestPhasePK(), ProposalLocalServiceUtil.getProposalsInContestPhase(cp.getContestPhasePK()));
+                if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseType())) {
+                    contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(cp.getContestPhaseType()));
+                }
+                List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(cp.getContestPhasePK());
+                List<ProposalWrapper> wrappers = new ArrayList<ProposalWrapper>();
+                for (Proposal p : proposals) {
+                    wrappers.add(new ProposalWrapper(p));
+                }
+                proposalsMap.put(cp.getContestPhasePK(), wrappers);
             }
         }
 
+
         model.addAttribute("contests", contests);
+        model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
-        model.addAttribute("proposals", proposalMap);
+        model.addAttribute("proposals", proposalsMap);
 
 
         return "preferences";
@@ -76,6 +89,7 @@ public class ProposalsPreferencesController {
         String proposalIdsToBeMovedString = preferences.getProposalIdsToBeMoved();
 
         String[] proposalIdsToBeMoved = proposalIdsToBeMovedString.split(",");
+        String message = "";
 
         //moving parameters are set
         if (proposalIdsToBeMoved.length > 0 && moveToContestPhaseId > 0 && moveFromContestId > 0) {
@@ -107,32 +121,41 @@ public class ProposalsPreferencesController {
                             break;
                         }
                     }
-                    //update the last phase association - set the end version to the current version minus one
-                    Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
-                    if (currentProposalVersion == null || currentProposalVersion < 0) {
-                        throw new SystemException("Proposal not found");
+
+                    //let's make sure that the last phase is before the phase which we move the proposal to!
+                    if (lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
+                             lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate())) {
+                        //skip this
+                        message += "Proposal "+proposal.getProposalId()+" is already in the target phase or in a later phase.<br/>\n";
+                    } else {
+                        //update the last phase association - set the end version to the current version minus one
+                        Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
+                        if (currentProposalVersion == null || currentProposalVersion < 0) {
+                            throw new SystemException("Proposal not found");
+                        }
+
+                        Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
+
+                        assert oldP2p != null;
+
+                        boolean isBoundedVersion = false;
+                        if (oldP2p.getVersionTo() < 0) {
+                            oldP2p.setVersionTo(currentProposalVersion.intValue());
+                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
+                        } else isBoundedVersion = true;
+
+                        Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), moveToContestPhase.getContestPhasePK());
+                        p2p.setVersionFrom(currentProposalVersion.intValue());
+                        p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
+                        Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        message += "Proposal "+proposal.getProposalId()+" moved successfully (version: "+currentProposalVersion+").<br/>\n";
                     }
-
-                    Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
-
-                    assert oldP2p != null;
-
-                    boolean isBoundedVersion = false;
-                    if (oldP2p.getVersionTo() < 0) {
-                        oldP2p.setVersionTo(currentProposalVersion.intValue());
-                        Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
-                    } else isBoundedVersion = true;
-
-                    Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), moveToContestPhase.getContestPhasePK());
-                    p2p.setVersionFrom(currentProposalVersion.intValue());
-                    p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
-                    Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
                 }
 
-                model.addAttribute("message", "All proposals have been moved successfully!");
+                model.addAttribute("message", message += "The operation completed successfully!<br/>\n");
             } catch (SystemException e) {
                 e.printStackTrace();
-                model.addAttribute("message", "There was a problem moving the proposals.");
+                model.addAttribute("message", message += "There was a problem moving the proposals.<br/>\n");
             }
         }
     }

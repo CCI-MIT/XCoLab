@@ -19,7 +19,6 @@ public class ProposalsPreferencesWrapper {
     private String termsOfService;
 
     private String proposalIdsToBeMoved;
-
     private long moveFromContestId;
     private long moveToContestPhaseId;
 
@@ -30,6 +29,9 @@ public class ProposalsPreferencesWrapper {
     public ProposalsPreferencesWrapper(PortletRequest request) {
         this.preferences = request.getPreferences();
         termsOfService = preferences.getValue(TERMS_OF_SERVICE_PREF, "");
+        proposalIdsToBeMoved = "";
+        moveFromContestId = -1;
+        moveToContestPhaseId = -1;
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
