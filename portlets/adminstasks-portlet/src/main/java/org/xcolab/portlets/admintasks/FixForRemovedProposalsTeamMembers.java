@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -13,6 +14,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 public class FixForRemovedProposalsTeamMembers {
@@ -36,9 +38,11 @@ public class FixForRemovedProposalsTeamMembers {
 			}
 			
 			User user = UserLocalServiceUtil.getUser(memberId);
+			Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
 			
-			if (! ProposalLocalServiceUtil.isUserAMember(proposalId, memberId)) {
-				System.out.println(proposalId + "," + memberId + ",\"" + user.getScreenName() + "\",\"" + user.getFullName() + "\",\"" + user.getEmailAddress() + "\"," + isInActiveContest);
+			if (memberId != 10144) {
+				System.out.println("adding user to proposal: " + proposalId + ", user: " + memberId);
+				GroupLocalServiceUtil.setUserGroups(memberId, new long[] {proposal.getGroupId()});
 			}
 		}
 		

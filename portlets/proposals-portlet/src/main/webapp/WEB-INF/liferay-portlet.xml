@@ -29,6 +29,7 @@
         <header-portlet-javascript>/js/findAndReplaceDOMText.js</header-portlet-javascript>
         <footer-portlet-javascript>/js/handlebars.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/proposalPicker.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/admin-portlet-preferences.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

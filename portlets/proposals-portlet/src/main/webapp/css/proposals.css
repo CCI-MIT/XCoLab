@@ -482,3 +482,7 @@ table.judgingForm {
 	background: #e8e7dc;
 	padding: 10px;
 }
+
+#portlet-preferences h2 {
+    margin: 1em 0;
+}
