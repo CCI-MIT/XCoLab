@@ -40,7 +40,7 @@
 		<crawlConfig>
 			<!-- traverse the whole web application -->
 			<url>http://climatecolab.org/</url>
-			<recursionLevel>5</recursionLevel>
+			<recursionLevel>4</recursionLevel>
 			<linkPatterns>
 				<linkPattern>/**</linkPattern>
 			</linkPatterns>
@@ -50,8 +50,8 @@
 	
 	<emailNotification>
 		<to>thurner@mit.edu</to>
-		<!--<to>pdeboer@mit.edu</to>-->
-		<!--<to>janusz.parfieniuk@gmail.com</to>-->
+		<to>pdeboer@mit.edu</to>
+		<to>janusz.parfieniuk@gmail.com</to>
 		<from>cognosismailer@gmail.com</from>
 		<smtphost>smtp.gmail.com</smtphost>
 		<smtpport>465</smtpport>

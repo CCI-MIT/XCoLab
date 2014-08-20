@@ -41,20 +41,20 @@ public class FocusAreaLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName552;
-    private String[] _methodParameterTypes552;
-    private String _methodName553;
-    private String[] _methodParameterTypes553;
-    private String _methodName558;
-    private String[] _methodParameterTypes558;
-    private String _methodName559;
-    private String[] _methodParameterTypes559;
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
-    private String _methodName562;
-    private String[] _methodParameterTypes562;
+    private String _methodName576;
+    private String[] _methodParameterTypes576;
+    private String _methodName577;
+    private String[] _methodParameterTypes577;
+    private String _methodName582;
+    private String[] _methodParameterTypes582;
+    private String _methodName583;
+    private String[] _methodParameterTypes583;
+    private String _methodName584;
+    private String[] _methodParameterTypes584;
+    private String _methodName585;
+    private String[] _methodParameterTypes585;
+    private String _methodName586;
+    private String[] _methodParameterTypes586;
 
     public FocusAreaLocalServiceClpInvoker() {
         _methodName0 = "addFocusArea";
@@ -133,41 +133,41 @@ public class FocusAreaLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.FocusArea" };
 
-        _methodName552 = "getBeanIdentifier";
+        _methodName576 = "getBeanIdentifier";
 
-        _methodParameterTypes552 = new String[] {  };
+        _methodParameterTypes576 = new String[] {  };
 
-        _methodName553 = "setBeanIdentifier";
+        _methodName577 = "setBeanIdentifier";
 
-        _methodParameterTypes553 = new String[] { "java.lang.String" };
+        _methodParameterTypes577 = new String[] { "java.lang.String" };
 
-        _methodName558 = "store";
+        _methodName582 = "store";
 
-        _methodParameterTypes558 = new String[] {
+        _methodParameterTypes582 = new String[] {
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName559 = "getTerms";
+        _methodName583 = "getTerms";
 
-        _methodParameterTypes559 = new String[] {
+        _methodParameterTypes583 = new String[] {
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName560 = "removeTerm";
+        _methodName584 = "removeTerm";
 
-        _methodParameterTypes560 = new String[] {
+        _methodParameterTypes584 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Long"
             };
 
-        _methodName561 = "addTerm";
+        _methodName585 = "addTerm";
 
-        _methodParameterTypes561 = new String[] {
+        _methodParameterTypes585 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Long"
             };
 
-        _methodName562 = "tagClass";
+        _methodName586 = "tagClass";
 
-        _methodParameterTypes562 = new String[] {
+        _methodParameterTypes586 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Class",
                 "java.lang.Long"
             };
@@ -262,48 +262,48 @@ public class FocusAreaLocalServiceClpInvoker {
             return FocusAreaLocalServiceUtil.updateFocusArea((com.ext.portlet.model.FocusArea) arguments[0]);
         }
 
-        if (_methodName552.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes552, parameterTypes)) {
+        if (_methodName576.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName553.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes553, parameterTypes)) {
+        if (_methodName577.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
             FocusAreaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName558.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes558, parameterTypes)) {
+        if (_methodName582.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
             FocusAreaLocalServiceUtil.store((com.ext.portlet.model.FocusArea) arguments[0]);
 
             return null;
         }
 
-        if (_methodName559.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes559, parameterTypes)) {
+        if (_methodName583.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes583, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getTerms((com.ext.portlet.model.FocusArea) arguments[0]);
         }
 
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName584.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes584, parameterTypes)) {
             FocusAreaLocalServiceUtil.removeTerm((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName585.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes585, parameterTypes)) {
             FocusAreaLocalServiceUtil.addTerm((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName562.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes562, parameterTypes)) {
+        if (_methodName586.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes586, parameterTypes)) {
             FocusAreaLocalServiceUtil.tagClass((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2]);
 

@@ -69,6 +69,10 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("usePermissions", getUsePermissions());
         attributes.put("defaultModelId", getDefaultModelId());
         attributes.put("otherModels", getOtherModels());
+        attributes.put("points", getPoints());
+        attributes.put("defaultParentPointType", getDefaultParentPointType());
+        attributes.put("pointDistributionStrategy",
+            getPointDistributionStrategy());
 
         return attributes;
     }
@@ -264,6 +268,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (otherModels != null) {
             setOtherModels(otherModels);
+        }
+
+        Double points = (Double) attributes.get("points");
+
+        if (points != null) {
+            setPoints(points);
+        }
+
+        Long defaultParentPointType = (Long) attributes.get(
+                "defaultParentPointType");
+
+        if (defaultParentPointType != null) {
+            setDefaultParentPointType(defaultParentPointType);
+        }
+
+        String pointDistributionStrategy = (String) attributes.get(
+                "pointDistributionStrategy");
+
+        if (pointDistributionStrategy != null) {
+            setPointDistributionStrategy(pointDistributionStrategy);
         }
     }
 
@@ -958,6 +982,67 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setOtherModels(java.lang.String otherModels) {
         _contest.setOtherModels(otherModels);
+    }
+
+    /**
+    * Returns the points of this contest.
+    *
+    * @return the points of this contest
+    */
+    @Override
+    public double getPoints() {
+        return _contest.getPoints();
+    }
+
+    /**
+    * Sets the points of this contest.
+    *
+    * @param points the points of this contest
+    */
+    @Override
+    public void setPoints(double points) {
+        _contest.setPoints(points);
+    }
+
+    /**
+    * Returns the default parent point type of this contest.
+    *
+    * @return the default parent point type of this contest
+    */
+    @Override
+    public long getDefaultParentPointType() {
+        return _contest.getDefaultParentPointType();
+    }
+
+    /**
+    * Sets the default parent point type of this contest.
+    *
+    * @param defaultParentPointType the default parent point type of this contest
+    */
+    @Override
+    public void setDefaultParentPointType(long defaultParentPointType) {
+        _contest.setDefaultParentPointType(defaultParentPointType);
+    }
+
+    /**
+    * Returns the point distribution strategy of this contest.
+    *
+    * @return the point distribution strategy of this contest
+    */
+    @Override
+    public java.lang.String getPointDistributionStrategy() {
+        return _contest.getPointDistributionStrategy();
+    }
+
+    /**
+    * Sets the point distribution strategy of this contest.
+    *
+    * @param pointDistributionStrategy the point distribution strategy of this contest
+    */
+    @Override
+    public void setPointDistributionStrategy(
+        java.lang.String pointDistributionStrategy) {
+        _contest.setPointDistributionStrategy(pointDistributionStrategy);
     }
 
     @Override

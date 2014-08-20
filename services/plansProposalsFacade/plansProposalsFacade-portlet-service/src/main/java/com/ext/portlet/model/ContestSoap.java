@@ -45,6 +45,9 @@ public class ContestSoap implements Serializable {
     private boolean _usePermissions;
     private long _defaultModelId;
     private String _otherModels;
+    private double _points;
+    private long _defaultParentPointType;
+    private String _pointDistributionStrategy;
 
     public ContestSoap() {
     }
@@ -83,6 +86,9 @@ public class ContestSoap implements Serializable {
         soapModel.setUsePermissions(model.getUsePermissions());
         soapModel.setDefaultModelId(model.getDefaultModelId());
         soapModel.setOtherModels(model.getOtherModels());
+        soapModel.setPoints(model.getPoints());
+        soapModel.setDefaultParentPointType(model.getDefaultParentPointType());
+        soapModel.setPointDistributionStrategy(model.getPointDistributionStrategy());
 
         return soapModel;
     }
@@ -398,5 +404,29 @@ public class ContestSoap implements Serializable {
 
     public void setOtherModels(String otherModels) {
         _otherModels = otherModels;
+    }
+
+    public double getPoints() {
+        return _points;
+    }
+
+    public void setPoints(double points) {
+        _points = points;
+    }
+
+    public long getDefaultParentPointType() {
+        return _defaultParentPointType;
+    }
+
+    public void setDefaultParentPointType(long defaultParentPointType) {
+        _defaultParentPointType = defaultParentPointType;
+    }
+
+    public String getPointDistributionStrategy() {
+        return _pointDistributionStrategy;
+    }
+
+    public void setPointDistributionStrategy(String pointDistributionStrategy) {
+        _pointDistributionStrategy = pointDistributionStrategy;
     }
 }

@@ -145,6 +145,14 @@ import com.ext.portlet.service.PlansFilterPositionServiceUtil;
 import com.ext.portlet.service.PlansFilterServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
 import com.ext.portlet.service.PlansUserSettingsServiceUtil;
+import com.ext.portlet.service.PointDistributionTargetLocalServiceUtil;
+import com.ext.portlet.service.PointDistributionTargetServiceUtil;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.ext.portlet.service.PointTypeServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
+import com.ext.portlet.service.PointsDistributionConfigurationServiceUtil;
+import com.ext.portlet.service.PointsLocalServiceUtil;
+import com.ext.portlet.service.PointsServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -408,6 +416,18 @@ public class ClpMessageListener extends BaseMessageListener {
             PlanVoteLocalServiceUtil.clearService();
 
             PlanVoteServiceUtil.clearService();
+            PointDistributionTargetLocalServiceUtil.clearService();
+
+            PointDistributionTargetServiceUtil.clearService();
+            PointsLocalServiceUtil.clearService();
+
+            PointsServiceUtil.clearService();
+            PointsDistributionConfigurationLocalServiceUtil.clearService();
+
+            PointsDistributionConfigurationServiceUtil.clearService();
+            PointTypeLocalServiceUtil.clearService();
+
+            PointTypeServiceUtil.clearService();
             ProposalLocalServiceUtil.clearService();
 
             ProposalServiceUtil.clearService();

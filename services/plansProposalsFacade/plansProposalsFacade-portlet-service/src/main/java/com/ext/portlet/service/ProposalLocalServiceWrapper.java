@@ -1320,6 +1320,36 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns list of proposals referenced by given proposal
+    *
+    * @param proposalId      The proposal for which subproposals should be returned
+    * @return collection of referenced proposals
+    */
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getSubproposals(proposalId);
+    }
+
+    /**
+    * Returns latest contest to which proposal was submited
+    *
+    * @param proposalId id of a proposal
+    * @return last contest to which proposal was submited
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public com.ext.portlet.model.Contest getLatestProposalContest(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getLatestProposalContest(proposalId);
+    }
+
+    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ProposalLocalService getWrappedProposalLocalService() {

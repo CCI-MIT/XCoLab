@@ -41,30 +41,30 @@ public class ModelGlobalPreferenceLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName552;
-    private String[] _methodParameterTypes552;
-    private String _methodName553;
-    private String[] _methodParameterTypes553;
-    private String _methodName558;
-    private String[] _methodParameterTypes558;
-    private String _methodName559;
-    private String[] _methodParameterTypes559;
-    private String _methodName560;
-    private String[] _methodParameterTypes560;
-    private String _methodName561;
-    private String[] _methodParameterTypes561;
-    private String _methodName562;
-    private String[] _methodParameterTypes562;
-    private String _methodName563;
-    private String[] _methodParameterTypes563;
-    private String _methodName564;
-    private String[] _methodParameterTypes564;
-    private String _methodName565;
-    private String[] _methodParameterTypes565;
-    private String _methodName566;
-    private String[] _methodParameterTypes566;
-    private String _methodName568;
-    private String[] _methodParameterTypes568;
+    private String _methodName576;
+    private String[] _methodParameterTypes576;
+    private String _methodName577;
+    private String[] _methodParameterTypes577;
+    private String _methodName582;
+    private String[] _methodParameterTypes582;
+    private String _methodName583;
+    private String[] _methodParameterTypes583;
+    private String _methodName584;
+    private String[] _methodParameterTypes584;
+    private String _methodName585;
+    private String[] _methodParameterTypes585;
+    private String _methodName586;
+    private String[] _methodParameterTypes586;
+    private String _methodName587;
+    private String[] _methodParameterTypes587;
+    private String _methodName588;
+    private String[] _methodParameterTypes588;
+    private String _methodName589;
+    private String[] _methodParameterTypes589;
+    private String _methodName590;
+    private String[] _methodParameterTypes590;
+    private String _methodName592;
+    private String[] _methodParameterTypes592;
 
     public ModelGlobalPreferenceLocalServiceClpInvoker() {
         _methodName0 = "addModelGlobalPreference";
@@ -149,69 +149,69 @@ public class ModelGlobalPreferenceLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelGlobalPreference"
             };
 
-        _methodName552 = "getBeanIdentifier";
+        _methodName576 = "getBeanIdentifier";
 
-        _methodParameterTypes552 = new String[] {  };
+        _methodParameterTypes576 = new String[] {  };
 
-        _methodName553 = "setBeanIdentifier";
+        _methodName577 = "setBeanIdentifier";
 
-        _methodParameterTypes553 = new String[] { "java.lang.String" };
+        _methodParameterTypes577 = new String[] { "java.lang.String" };
 
-        _methodName558 = "isVisible";
+        _methodName582 = "isVisible";
 
-        _methodParameterTypes558 = new String[] {
+        _methodParameterTypes582 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName559 = "getByModelId";
+        _methodName583 = "getByModelId";
 
-        _methodParameterTypes559 = new String[] { "long" };
+        _methodParameterTypes583 = new String[] { "long" };
 
-        _methodName560 = "setVisible";
+        _methodName584 = "setVisible";
 
-        _methodParameterTypes560 = new String[] {
+        _methodParameterTypes584 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "boolean"
             };
 
-        _methodName561 = "getWeight";
+        _methodName585 = "getWeight";
 
-        _methodParameterTypes561 = new String[] {
+        _methodParameterTypes585 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName562 = "setWeight";
+        _methodName586 = "setWeight";
 
-        _methodParameterTypes562 = new String[] {
+        _methodParameterTypes586 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "int"
             };
 
-        _methodName563 = "getExpertEvaluationPageId";
+        _methodName587 = "getExpertEvaluationPageId";
 
-        _methodParameterTypes563 = new String[] {
+        _methodParameterTypes587 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName564 = "setExpertEvaluationPageId";
+        _methodName588 = "setExpertEvaluationPageId";
 
-        _methodParameterTypes564 = new String[] {
+        _methodParameterTypes588 = new String[] {
                 "edu.mit.cci.roma.client.Simulation", "java.lang.Long"
             };
 
-        _methodName565 = "findByCategory";
+        _methodName589 = "findByCategory";
 
-        _methodParameterTypes565 = new String[] {
+        _methodParameterTypes589 = new String[] {
                 "com.ext.portlet.model.ModelCategory"
             };
 
-        _methodName566 = "getCategory";
+        _methodName590 = "getCategory";
 
-        _methodParameterTypes566 = new String[] {
+        _methodParameterTypes590 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName568 = "updateModelCategory";
+        _methodName592 = "updateModelCategory";
 
-        _methodParameterTypes568 = new String[] {
+        _methodParameterTypes592 = new String[] {
                 "com.ext.portlet.model.ModelCategory",
                 "edu.mit.cci.roma.client.Simulation"
             };
@@ -306,74 +306,74 @@ public class ModelGlobalPreferenceLocalServiceClpInvoker {
             return ModelGlobalPreferenceLocalServiceUtil.updateModelGlobalPreference((com.ext.portlet.model.ModelGlobalPreference) arguments[0]);
         }
 
-        if (_methodName552.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes552, parameterTypes)) {
+        if (_methodName576.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes576, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName553.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes553, parameterTypes)) {
+        if (_methodName577.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes577, parameterTypes)) {
             ModelGlobalPreferenceLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName558.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes558, parameterTypes)) {
+        if (_methodName582.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.isVisible((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
-        if (_methodName559.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes559, parameterTypes)) {
+        if (_methodName583.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes583, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.getByModelId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName560.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes560, parameterTypes)) {
+        if (_methodName584.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes584, parameterTypes)) {
             ModelGlobalPreferenceLocalServiceUtil.setVisible((edu.mit.cci.roma.client.Simulation) arguments[0],
                 ((Boolean) arguments[1]).booleanValue());
 
             return null;
         }
 
-        if (_methodName561.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes561, parameterTypes)) {
+        if (_methodName585.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes585, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.getWeight((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
-        if (_methodName562.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes562, parameterTypes)) {
+        if (_methodName586.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes586, parameterTypes)) {
             ModelGlobalPreferenceLocalServiceUtil.setWeight((edu.mit.cci.roma.client.Simulation) arguments[0],
                 ((Integer) arguments[1]).intValue());
 
             return null;
         }
 
-        if (_methodName563.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes563, parameterTypes)) {
+        if (_methodName587.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes587, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.getExpertEvaluationPageId((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
-        if (_methodName564.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes564, parameterTypes)) {
+        if (_methodName588.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes588, parameterTypes)) {
             ModelGlobalPreferenceLocalServiceUtil.setExpertEvaluationPageId((edu.mit.cci.roma.client.Simulation) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName565.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes565, parameterTypes)) {
+        if (_methodName589.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes589, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.findByCategory((com.ext.portlet.model.ModelCategory) arguments[0]);
         }
 
-        if (_methodName566.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes566, parameterTypes)) {
+        if (_methodName590.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes590, parameterTypes)) {
             return ModelGlobalPreferenceLocalServiceUtil.getCategory((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
-        if (_methodName568.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes568, parameterTypes)) {
+        if (_methodName592.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes592, parameterTypes)) {
             ModelGlobalPreferenceLocalServiceUtil.updateModelCategory((com.ext.portlet.model.ModelCategory) arguments[0],
                 (edu.mit.cci.roma.client.Simulation) arguments[1]);
 

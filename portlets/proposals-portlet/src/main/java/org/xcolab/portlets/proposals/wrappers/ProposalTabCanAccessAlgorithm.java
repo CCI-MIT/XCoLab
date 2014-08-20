@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -99,6 +100,30 @@ interface ProposalTabCanAccessAlgorithm {
                 _log.error("can't check if user is allowed to edit proposal", e);
             } catch (PortalException e) {
                 _log.error("can't check if user is allowed to edit proposal", e);
+            }
+            return false;
+        }
+        private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+    };
+
+    public final static ProposalTabCanAccessAlgorithm pointsAccess = new ProposalTabCanAccessAlgorithm() {
+
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                //check if the contest has
+                Contest contest = context.getContest(request);
+
+                if (contest.getDefaultParentPointType() > 0 && permissions.getCanEdit()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (SystemException e) {
+                _log.error("can't check if user is allowed to access points", e);
+            } catch (PortalException e) {
+                _log.error("can't check if user is allowed to access points", e);
             }
             return false;
         }

@@ -6,10 +6,12 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 
 import com.liferay.portal.kernel.exception.PortalException;
+
 import org.xcolab.portlets.plansadmin.wrappers.ContestWrapper;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 public class ContestsAdmin {
@@ -36,6 +38,13 @@ public class ContestsAdmin {
     
     public String editContest() {
         return "editContest";
+    }
+    
+
+    public String recalculatePoints() throws PortalException, SystemException {
+    	Contest contest = editedContest.getContest();
+    	PointsLocalServiceUtil.distributePoints(contest.getContestPK());
+    	return null;
     }
 
     public void setEditedContest(ContestWrapper editedContest) {

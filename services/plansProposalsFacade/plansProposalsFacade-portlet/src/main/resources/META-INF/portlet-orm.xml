@@ -176,6 +176,9 @@
 			<basic name="usePermissions" />
 			<basic name="defaultModelId" />
 			<basic name="otherModels" />
+			<basic name="points" />
+			<basic name="defaultParentPointType" />
+			<basic name="pointDistributionStrategy" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -1164,6 +1167,73 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.PointDistributionTargetModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="contestId" />
+			<basic name="proposalId" />
+			<basic name="numberOfPoints" />
+			<basic name="pointTypeOverride" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.PointsModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="userId" />
+			<basic name="materializedPoints" />
+			<basic name="hypotheticalPoints" />
+			<basic name="pointsSourceId" />
+			<basic name="originatingContestPK" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.PointsDistributionConfigurationModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="proposalId" />
+			<basic name="pointTypeId" />
+			<basic name="targetUserId" />
+			<basic name="targetSubProposalId" />
+			<basic name="percentage" />
+			<basic name="creator" />
+			<basic name="createDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="targetUserUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.ext.portlet.model.impl.PointTypeModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID_" />
+			</id>
+			<basic name="parentPointTypeId" />
+			<basic name="percentageOfParent" />
+			<basic name="distributionStrategy" />
+			<basic name="receiverLimitationStrategy" />
+			<basic name="name" />
+			<basic name="sort" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ProposalModelImpl">
 		<attributes>
 			<id name="proposalId" />
@@ -1689,6 +1759,22 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.PlanVoteImpl" name="PlanVote">
 		<table name="xcolab_PlanVote" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.PointDistributionTargetImpl" name="PointDistributionTarget">
+		<table name="xcolab_PointDistributionTarget" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.PointsImpl" name="Points">
+		<table name="xcolab_Points" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.PointsDistributionConfigurationImpl" name="PointsDistributionConfiguration">
+		<table name="xcolab_PointsDistributionConfiguration" />
+		<attributes />
+	</entity>
+	<entity class="com.ext.portlet.model.impl.PointTypeImpl" name="PointType">
+		<table name="xcolab_PointType" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalImpl" name="Proposal">

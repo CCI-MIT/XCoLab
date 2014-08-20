@@ -231,6 +231,18 @@
 	<bean id="com.ext.portlet.service.PlanVoteLocalService" class="com.ext.portlet.service.impl.PlanVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.PlanVoteService" class="com.ext.portlet.service.impl.PlanVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.PlanVotePersistence" class="com.ext.portlet.service.persistence.PlanVotePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PointDistributionTargetLocalService" class="com.ext.portlet.service.impl.PointDistributionTargetLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PointDistributionTargetService" class="com.ext.portlet.service.impl.PointDistributionTargetServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.PointDistributionTargetPersistence" class="com.ext.portlet.service.persistence.PointDistributionTargetPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PointsLocalService" class="com.ext.portlet.service.impl.PointsLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PointsService" class="com.ext.portlet.service.impl.PointsServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.PointsPersistence" class="com.ext.portlet.service.persistence.PointsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PointsDistributionConfigurationLocalService" class="com.ext.portlet.service.impl.PointsDistributionConfigurationLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PointsDistributionConfigurationService" class="com.ext.portlet.service.impl.PointsDistributionConfigurationServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistence" class="com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.PointTypeLocalService" class="com.ext.portlet.service.impl.PointTypeLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.PointTypeService" class="com.ext.portlet.service.impl.PointTypeServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.PointTypePersistence" class="com.ext.portlet.service.persistence.PointTypePersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalLocalService" class="com.ext.portlet.service.impl.ProposalLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalService" class="com.ext.portlet.service.impl.ProposalServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalPersistence" class="com.ext.portlet.service.persistence.ProposalPersistenceImpl" parent="basePersistence" />

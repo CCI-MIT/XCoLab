@@ -52,10 +52,13 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean usePermissions;
     public long defaultModelId;
     public String otherModels;
+    public double points;
+    public long defaultParentPointType;
+    public String pointDistributionStrategy;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(63);
+        StringBundler sb = new StringBundler(69);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -119,6 +122,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(defaultModelId);
         sb.append(", otherModels=");
         sb.append(otherModels);
+        sb.append(", points=");
+        sb.append(points);
+        sb.append(", defaultParentPointType=");
+        sb.append(defaultParentPointType);
+        sb.append(", pointDistributionStrategy=");
+        sb.append(pointDistributionStrategy);
         sb.append("}");
 
         return sb.toString();
@@ -235,6 +244,15 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setOtherModels(otherModels);
         }
 
+        contestImpl.setPoints(points);
+        contestImpl.setDefaultParentPointType(defaultParentPointType);
+
+        if (pointDistributionStrategy == null) {
+            contestImpl.setPointDistributionStrategy(StringPool.BLANK);
+        } else {
+            contestImpl.setPointDistributionStrategy(pointDistributionStrategy);
+        }
+
         contestImpl.resetOriginalValues();
 
         return contestImpl;
@@ -273,6 +291,9 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         usePermissions = objectInput.readBoolean();
         defaultModelId = objectInput.readLong();
         otherModels = objectInput.readUTF();
+        points = objectInput.readDouble();
+        defaultParentPointType = objectInput.readLong();
+        pointDistributionStrategy = objectInput.readUTF();
     }
 
     @Override
@@ -372,6 +393,15 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(otherModels);
+        }
+
+        objectOutput.writeDouble(points);
+        objectOutput.writeLong(defaultParentPointType);
+
+        if (pointDistributionStrategy == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(pointDistributionStrategy);
         }
     }
 }

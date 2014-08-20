@@ -1108,4 +1108,30 @@ public interface ProposalLocalService extends BaseLocalService,
         com.ext.portlet.model.Contest contest,
         com.ext.portlet.model.Proposal proposal,
         com.ext.portlet.model.ContestPhase contestPhase);
+
+    /**
+    * Returns list of proposals referenced by given proposal
+    *
+    * @param proposalId      The proposal for which subproposals should be returned
+    * @return collection of referenced proposals
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Proposal> getSubproposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns latest contest to which proposal was submited
+    *
+    * @param proposalId id of a proposal
+    * @return last contest to which proposal was submited
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Contest getLatestProposalContest(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

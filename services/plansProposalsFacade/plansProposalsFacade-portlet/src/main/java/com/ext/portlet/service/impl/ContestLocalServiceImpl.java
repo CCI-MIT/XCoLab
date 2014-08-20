@@ -3,6 +3,7 @@ package com.ext.portlet.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -12,12 +13,21 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseType;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.emailnotification.ContestVoteNotification;
+import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
+import org.xcolab.utils.judging.ProposalRatingWrapper;
+import org.xcolab.utils.judging.ProposalReview;
+import org.xcolab.utils.judging.ProposalReviewCsvExporter;
+
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.model.ContestPhase;
@@ -29,42 +39,37 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
+import com.ext.portlet.model.ProposalSupporter;
+import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTypeLocalServiceUtil;
 import com.ext.portlet.service.PlanVoteLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.models.CollaboratoriumModelingService;
-
+import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -73,32 +78,22 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
-
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+
 import edu.mit.cci.roma.client.Simulation;
-
-import org.xcolab.enums.ContestPhasePromoteType;
-
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.utils.judging.ProposalRatingWrapper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
-import org.xcolab.utils.emailnotification.ContestVoteNotification;
-import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
 
 
 /**
@@ -917,5 +912,47 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     analyticsValue);
         }*/
         }
+    }
+    
+    public boolean hasContestEnded(long contestPK) throws SystemException, PortalException {
+    	return hasContestEnded(getContest(contestPK));
+    }
+
+    public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
+    	ContestPhase activePhase = getActiveOrLastPhase(contest);
+    	if (activePhase.getPhaseEndDate() != null && new Date().after(activePhase.getPhaseEndDate())) {
+    		return true;
+    	}
+    	return false;
+    }
+    
+    
+    public Proposal getWinnerProposal(long contestPK) throws SystemException, PortalException {
+    	Contest contest = getContest(contestPK);
+    	if (hasContestEnded(contest)) {
+    		return null;
+    	}
+    	ContestPhase lastPhase = getActiveOrLastPhase(contest);
+
+        for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {
+            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
+            try {
+            	ProposalContestPhaseAttribute pcpa = 
+            			proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
+            					proposal.getProposalId(), 
+            					lastPhase.getContestPhasePK(), 
+            					ProposalContestPhaseAttributeKeys.RIBBON);
+            	if (pcpa.getNumericValue() == 2) {
+            		// FIXME - this has to be improved to make sure that we select proper ribbon
+            		return proposal;
+            	}
+            }
+            catch (NoSuchProposalContestPhaseAttributeException e) {
+            	// ignore
+            }
+            
+        }
+        return null;
+    	
     }
 }

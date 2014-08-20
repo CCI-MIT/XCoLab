@@ -108,7 +108,10 @@ create table xcolab_Contest (
 	contestPrivate BOOLEAN,
 	usePermissions BOOLEAN,
 	defaultModelId LONG,
-	otherModels VARCHAR(75) null
+	otherModels VARCHAR(75) null,
+	points DOUBLE,
+	defaultParentPointType LONG,
+	pointDistributionStrategy VARCHAR(75) null
 );
 
 create table xcolab_ContestDebate (
@@ -695,6 +698,45 @@ create table xcolab_PlansUserSettings (
 	filterPositionsAll BOOLEAN
 );
 
+create table xcolab_PointDistributionTarget (
+	id_ LONG not null primary key,
+	contestId LONG,
+	proposalId LONG,
+	numberOfPoints DOUBLE,
+	pointTypeOverride LONG
+);
+
+create table xcolab_PointType (
+	id_ LONG not null primary key,
+	parentPointTypeId LONG,
+	percentageOfParent DOUBLE,
+	distributionStrategy VARCHAR(75) null,
+	receiverLimitationStrategy VARCHAR(75) null,
+	name VARCHAR(75) null,
+	sort LONG
+);
+
+create table xcolab_Points (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	userId LONG,
+	materializedPoints DOUBLE,
+	hypotheticalPoints DOUBLE,
+	pointsSourceId LONG,
+	originatingContestPK LONG
+);
+
+create table xcolab_PointsDistributionConfiguration (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	pointTypeId LONG,
+	targetUserId LONG,
+	targetSubProposalId LONG,
+	percentage DOUBLE,
+	creator LONG,
+	createDate DATE null
+);
+
 create table xcolab_Proposal (
 	proposalId LONG not null primary key,
 	createDate DATE null,
@@ -816,6 +858,7 @@ create table xcolab_StaffMember (
 	organization VARCHAR(75) null,
 	sort INTEGER
 );
+
 
 create table xcolab_TrackedVisit (
 	id_ LONG not null primary key,

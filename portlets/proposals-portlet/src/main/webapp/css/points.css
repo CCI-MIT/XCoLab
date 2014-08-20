@@ -1,0 +1,205 @@
+.points-container {
+    margin: 0 auto;
+    width: 123px;
+    height: 123px;
+    position: relative;
+
+    .fill, .globe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .fill {
+        background-color: #30a3fb;
+        transition: background-color 2s ease;
+    }
+
+    .globe {
+        background: url(../img/globus.png) no-repeat;
+        background-size: cover;
+        height: 94px;
+        padding-top: 30px;
+        text-align: center;
+        font-size: 2em;
+        color: white;
+        text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+}
+p.arrow-down {
+    background: url(../img/arrow-down.png) no-repeat;
+    background-size: cover;
+    width: 35px;
+    height: 52px;
+    margin: 10px auto 13px auto;
+    position: relative;
+}
+td.right.small .points-container, td.right.small .arrow-down {
+    left: -4.15%;
+}
+td.left.small .points-container, td.left.small .arrow-down {
+    left: 4.15%;
+}
+
+.pointType {
+    table-layout: fixed;
+
+    input {
+        max-width: 100%;
+    }
+
+    ul.subproposals li {
+        > a {
+            display: inline-block;
+            width: 80%;
+        }
+        > span {
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    label.username-picker {
+        display: block;
+        margin: 1.5em 0;
+    }
+
+    p.percentage {
+        text-align: center;
+        position: relative;
+        top: -130px;
+        font-size: 2em;
+    }
+    p.info {
+        margin-bottom: 0;
+    }
+
+    td.left {
+        background-image: url(../img/arrow-left.png);
+        background-position: 69.5% 0;
+    }
+    td.left.large {
+        background-position: 62.5% 0;
+    }
+    td.right.large  {
+        background-position: 37.5% 0;
+    }
+    td.right.small {
+        background-position: 0% 0%;
+    }
+    td.left.small {
+        background-position: 100% 0%;
+    }
+    td.right {
+        background-image: url(../img/arrow-right.png);
+        background-position: 30.5% 0;
+    }
+    td.left, td.right {
+        background-repeat: no-repeat;
+        position: relative;
+        top: -50px;
+        padding-top: 80px;
+
+        td.left, td.right {
+            padding-left: 10px;
+            padding-right: 10px;
+            top: -30px;
+            padding-top: 50px;
+            background-size: 35%;
+
+            p.percentage {
+                top: -100px;
+            }
+        }
+        td.left {
+            background-position: 60% 0;
+        }
+        td.right {
+            background-position: 40% 0;
+        }
+        td {
+            td.left {
+                background-position: 30% 0;
+            }
+            td.right {
+                background-position: 70% 0;
+            }
+        }
+    }
+    ul li {
+        padding: 5px 0;
+        background: none;
+    }
+
+    ul.userDistributionInputs {
+      list-style-type: none;
+        li {
+            padding: 0;
+            margin: 0;
+            background: none;
+            clear: both;
+        }
+        li.header {
+            padding-bottom: 10px;
+            padding-top: 15px;
+        }
+        li.error {
+            padding-top: 10px;
+        }
+    }
+
+    .highlighted {
+        color: #66b035;
+        font-weight: 700;
+        text-align: center;
+    }
+    span.highlighted {
+        padding-right: 5px;
+    }
+    .percentageInput {
+        input {
+            width: 50px;
+            margin-left: 5px;
+            margin-right: 15px;
+            float: none;
+        }
+        span, input {
+          display: inline-block;
+          vertical-align: baseline;
+        }
+    }
+    .deleteListItem {
+        float: right;
+        margin: 8px 18px 0px 10px;
+        padding: 2px 6px;
+        background: #30a3fb;
+        border-radius: 3px;
+        color: white;
+        cursor: pointer;
+    }
+    .error {
+        font-weight: bold;
+        color: #c00;
+    }
+
+    .header .percentage {
+        padding-left: 30px;
+    }
+    .header .name {
+        padding-left: 41px;
+    }
+    .totalRow .percentage {
+        width: 75px;
+        margin-right: 5px;
+        display: inline-block;
+        text-align: center;
+    }
+    .totalRow .percentage.smaller {
+        width: 51px;
+        margin-right: 6px;
+    }
+}

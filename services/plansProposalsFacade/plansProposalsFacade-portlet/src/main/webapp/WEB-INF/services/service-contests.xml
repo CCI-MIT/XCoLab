@@ -44,6 +44,9 @@
         <column name="usePermissions" type="boolean" />
         <column name="defaultModelId" type="long" />
         <column name="otherModels" type="String" />
+        <column name="points" type="double" />
+        <column name="defaultParentPointType" type="long" />
+        <column name="pointDistributionStrategy" type="String" />
         
         <order by="asc">
             <order-column name="weight" />

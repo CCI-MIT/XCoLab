@@ -49,6 +49,9 @@
                 <ice:commandButton value="edit" action="#{contestsAdmin.editContest}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
+                <ice:commandButton value="recalculate points" action="#{contestsAdmin.recalculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
+                    <f:attribute name="contest" value="#{contest}" />
+                </ice:commandButton>
                 <ice:commandButton value="delete" actionListener="#{contest.delete}" />
             
             </ice:column>

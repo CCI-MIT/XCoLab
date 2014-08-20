@@ -527,6 +527,49 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setOtherModels(String otherModels);
 
+    /**
+     * Returns the points of this contest.
+     *
+     * @return the points of this contest
+     */
+    public double getPoints();
+
+    /**
+     * Sets the points of this contest.
+     *
+     * @param points the points of this contest
+     */
+    public void setPoints(double points);
+
+    /**
+     * Returns the default parent point type of this contest.
+     *
+     * @return the default parent point type of this contest
+     */
+    public long getDefaultParentPointType();
+
+    /**
+     * Sets the default parent point type of this contest.
+     *
+     * @param defaultParentPointType the default parent point type of this contest
+     */
+    public void setDefaultParentPointType(long defaultParentPointType);
+
+    /**
+     * Returns the point distribution strategy of this contest.
+     *
+     * @return the point distribution strategy of this contest
+     */
+    @AutoEscape
+    public String getPointDistributionStrategy();
+
+    /**
+     * Sets the point distribution strategy of this contest.
+     *
+     * @param pointDistributionStrategy the point distribution strategy of this contest
+     */
+    public void setPointDistributionStrategy(String pointDistributionStrategy);
+
     @Override
     public boolean isNew();
 

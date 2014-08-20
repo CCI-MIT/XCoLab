@@ -73,6 +73,10 @@ import com.ext.portlet.service.persistence.PlanVotePersistence;
 import com.ext.portlet.service.persistence.PlansFilterPersistence;
 import com.ext.portlet.service.persistence.PlansFilterPositionPersistence;
 import com.ext.portlet.service.persistence.PlansUserSettingsPersistence;
+import com.ext.portlet.service.persistence.PointDistributionTargetPersistence;
+import com.ext.portlet.service.persistence.PointTypePersistence;
+import com.ext.portlet.service.persistence.PointsDistributionConfigurationPersistence;
+import com.ext.portlet.service.persistence.PointsPersistence;
 import com.ext.portlet.service.persistence.Proposal2PhasePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalAttributeTypePersistence;
@@ -547,6 +551,30 @@ public abstract class ModelRunnerServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.PlanVoteService planVoteService;
     @BeanReference(type = PlanVotePersistence.class)
     protected PlanVotePersistence planVotePersistence;
+    @BeanReference(type = com.ext.portlet.service.PointDistributionTargetLocalService.class)
+    protected com.ext.portlet.service.PointDistributionTargetLocalService pointDistributionTargetLocalService;
+    @BeanReference(type = com.ext.portlet.service.PointDistributionTargetService.class)
+    protected com.ext.portlet.service.PointDistributionTargetService pointDistributionTargetService;
+    @BeanReference(type = PointDistributionTargetPersistence.class)
+    protected PointDistributionTargetPersistence pointDistributionTargetPersistence;
+    @BeanReference(type = com.ext.portlet.service.PointsLocalService.class)
+    protected com.ext.portlet.service.PointsLocalService pointsLocalService;
+    @BeanReference(type = com.ext.portlet.service.PointsService.class)
+    protected com.ext.portlet.service.PointsService pointsService;
+    @BeanReference(type = PointsPersistence.class)
+    protected PointsPersistence pointsPersistence;
+    @BeanReference(type = com.ext.portlet.service.PointsDistributionConfigurationLocalService.class)
+    protected com.ext.portlet.service.PointsDistributionConfigurationLocalService pointsDistributionConfigurationLocalService;
+    @BeanReference(type = com.ext.portlet.service.PointsDistributionConfigurationService.class)
+    protected com.ext.portlet.service.PointsDistributionConfigurationService pointsDistributionConfigurationService;
+    @BeanReference(type = PointsDistributionConfigurationPersistence.class)
+    protected PointsDistributionConfigurationPersistence pointsDistributionConfigurationPersistence;
+    @BeanReference(type = com.ext.portlet.service.PointTypeLocalService.class)
+    protected com.ext.portlet.service.PointTypeLocalService pointTypeLocalService;
+    @BeanReference(type = com.ext.portlet.service.PointTypeService.class)
+    protected com.ext.portlet.service.PointTypeService pointTypeService;
+    @BeanReference(type = PointTypePersistence.class)
+    protected PointTypePersistence pointTypePersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalLocalService.class)
     protected com.ext.portlet.service.ProposalLocalService proposalLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalService.class)
@@ -4752,6 +4780,233 @@ public abstract class ModelRunnerServiceBaseImpl extends BaseServiceImpl
      */
     public void setPlanVotePersistence(PlanVotePersistence planVotePersistence) {
         this.planVotePersistence = planVotePersistence;
+    }
+
+    /**
+     * Returns the point distribution target local service.
+     *
+     * @return the point distribution target local service
+     */
+    public com.ext.portlet.service.PointDistributionTargetLocalService getPointDistributionTargetLocalService() {
+        return pointDistributionTargetLocalService;
+    }
+
+    /**
+     * Sets the point distribution target local service.
+     *
+     * @param pointDistributionTargetLocalService the point distribution target local service
+     */
+    public void setPointDistributionTargetLocalService(
+        com.ext.portlet.service.PointDistributionTargetLocalService pointDistributionTargetLocalService) {
+        this.pointDistributionTargetLocalService = pointDistributionTargetLocalService;
+    }
+
+    /**
+     * Returns the point distribution target remote service.
+     *
+     * @return the point distribution target remote service
+     */
+    public com.ext.portlet.service.PointDistributionTargetService getPointDistributionTargetService() {
+        return pointDistributionTargetService;
+    }
+
+    /**
+     * Sets the point distribution target remote service.
+     *
+     * @param pointDistributionTargetService the point distribution target remote service
+     */
+    public void setPointDistributionTargetService(
+        com.ext.portlet.service.PointDistributionTargetService pointDistributionTargetService) {
+        this.pointDistributionTargetService = pointDistributionTargetService;
+    }
+
+    /**
+     * Returns the point distribution target persistence.
+     *
+     * @return the point distribution target persistence
+     */
+    public PointDistributionTargetPersistence getPointDistributionTargetPersistence() {
+        return pointDistributionTargetPersistence;
+    }
+
+    /**
+     * Sets the point distribution target persistence.
+     *
+     * @param pointDistributionTargetPersistence the point distribution target persistence
+     */
+    public void setPointDistributionTargetPersistence(
+        PointDistributionTargetPersistence pointDistributionTargetPersistence) {
+        this.pointDistributionTargetPersistence = pointDistributionTargetPersistence;
+    }
+
+    /**
+     * Returns the points local service.
+     *
+     * @return the points local service
+     */
+    public com.ext.portlet.service.PointsLocalService getPointsLocalService() {
+        return pointsLocalService;
+    }
+
+    /**
+     * Sets the points local service.
+     *
+     * @param pointsLocalService the points local service
+     */
+    public void setPointsLocalService(
+        com.ext.portlet.service.PointsLocalService pointsLocalService) {
+        this.pointsLocalService = pointsLocalService;
+    }
+
+    /**
+     * Returns the points remote service.
+     *
+     * @return the points remote service
+     */
+    public com.ext.portlet.service.PointsService getPointsService() {
+        return pointsService;
+    }
+
+    /**
+     * Sets the points remote service.
+     *
+     * @param pointsService the points remote service
+     */
+    public void setPointsService(
+        com.ext.portlet.service.PointsService pointsService) {
+        this.pointsService = pointsService;
+    }
+
+    /**
+     * Returns the points persistence.
+     *
+     * @return the points persistence
+     */
+    public PointsPersistence getPointsPersistence() {
+        return pointsPersistence;
+    }
+
+    /**
+     * Sets the points persistence.
+     *
+     * @param pointsPersistence the points persistence
+     */
+    public void setPointsPersistence(PointsPersistence pointsPersistence) {
+        this.pointsPersistence = pointsPersistence;
+    }
+
+    /**
+     * Returns the points distribution configuration local service.
+     *
+     * @return the points distribution configuration local service
+     */
+    public com.ext.portlet.service.PointsDistributionConfigurationLocalService getPointsDistributionConfigurationLocalService() {
+        return pointsDistributionConfigurationLocalService;
+    }
+
+    /**
+     * Sets the points distribution configuration local service.
+     *
+     * @param pointsDistributionConfigurationLocalService the points distribution configuration local service
+     */
+    public void setPointsDistributionConfigurationLocalService(
+        com.ext.portlet.service.PointsDistributionConfigurationLocalService pointsDistributionConfigurationLocalService) {
+        this.pointsDistributionConfigurationLocalService = pointsDistributionConfigurationLocalService;
+    }
+
+    /**
+     * Returns the points distribution configuration remote service.
+     *
+     * @return the points distribution configuration remote service
+     */
+    public com.ext.portlet.service.PointsDistributionConfigurationService getPointsDistributionConfigurationService() {
+        return pointsDistributionConfigurationService;
+    }
+
+    /**
+     * Sets the points distribution configuration remote service.
+     *
+     * @param pointsDistributionConfigurationService the points distribution configuration remote service
+     */
+    public void setPointsDistributionConfigurationService(
+        com.ext.portlet.service.PointsDistributionConfigurationService pointsDistributionConfigurationService) {
+        this.pointsDistributionConfigurationService = pointsDistributionConfigurationService;
+    }
+
+    /**
+     * Returns the points distribution configuration persistence.
+     *
+     * @return the points distribution configuration persistence
+     */
+    public PointsDistributionConfigurationPersistence getPointsDistributionConfigurationPersistence() {
+        return pointsDistributionConfigurationPersistence;
+    }
+
+    /**
+     * Sets the points distribution configuration persistence.
+     *
+     * @param pointsDistributionConfigurationPersistence the points distribution configuration persistence
+     */
+    public void setPointsDistributionConfigurationPersistence(
+        PointsDistributionConfigurationPersistence pointsDistributionConfigurationPersistence) {
+        this.pointsDistributionConfigurationPersistence = pointsDistributionConfigurationPersistence;
+    }
+
+    /**
+     * Returns the point type local service.
+     *
+     * @return the point type local service
+     */
+    public com.ext.portlet.service.PointTypeLocalService getPointTypeLocalService() {
+        return pointTypeLocalService;
+    }
+
+    /**
+     * Sets the point type local service.
+     *
+     * @param pointTypeLocalService the point type local service
+     */
+    public void setPointTypeLocalService(
+        com.ext.portlet.service.PointTypeLocalService pointTypeLocalService) {
+        this.pointTypeLocalService = pointTypeLocalService;
+    }
+
+    /**
+     * Returns the point type remote service.
+     *
+     * @return the point type remote service
+     */
+    public com.ext.portlet.service.PointTypeService getPointTypeService() {
+        return pointTypeService;
+    }
+
+    /**
+     * Sets the point type remote service.
+     *
+     * @param pointTypeService the point type remote service
+     */
+    public void setPointTypeService(
+        com.ext.portlet.service.PointTypeService pointTypeService) {
+        this.pointTypeService = pointTypeService;
+    }
+
+    /**
+     * Returns the point type persistence.
+     *
+     * @return the point type persistence
+     */
+    public PointTypePersistence getPointTypePersistence() {
+        return pointTypePersistence;
+    }
+
+    /**
+     * Sets the point type persistence.
+     *
+     * @param pointTypePersistence the point type persistence
+     */
+    public void setPointTypePersistence(
+        PointTypePersistence pointTypePersistence) {
+        this.pointTypePersistence = pointTypePersistence;
     }
 
     /**
