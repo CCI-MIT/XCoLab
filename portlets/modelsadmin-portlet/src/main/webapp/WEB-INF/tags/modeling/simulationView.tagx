@@ -23,5 +23,8 @@
 			</c:otherwise>
 		</c:choose>
 	</script>
-	
+
+    <script>showModalError=true;</script>
+
+
 </jsp:root>
