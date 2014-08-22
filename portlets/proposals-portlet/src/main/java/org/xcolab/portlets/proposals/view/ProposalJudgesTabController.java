@@ -69,7 +69,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("isAdmin", permissions.getCanAdminAll());
-        model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions() && !permissions.getCanFellowActions());
+        model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions()/* && !permissions.getCanFellowActions()*/);
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("fellowRatings", fellowRatings);
