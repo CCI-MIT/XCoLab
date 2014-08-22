@@ -1482,10 +1482,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                     }
                     break;
     			case PROPOSAL_LIST_TEXT_REFERENCE:
-    				Pattern proposalLinkPattern = Pattern.compile("href=.*/plans/-/plans/contestId/(\\d*)/planId/(\\d*).*");
+    				Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/planId/(\\d*)");
     				Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
     				while (m.find()) {
-    					detectedIds.add(Long.parseLong(m.group(2)));
+    					detectedIds.add(Long.parseLong(m.group(3)));
     				}
     				break;
     			}
