@@ -41,7 +41,7 @@
                 <div class="addpropbox">
                     <h3>Advance Proposal to Judges for Review?</h3>
 
-
+                    <form:hidden path="contestPhaseId" />
                     <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                     <div id="fellowSelectJudgesContainer" style="display: none;">

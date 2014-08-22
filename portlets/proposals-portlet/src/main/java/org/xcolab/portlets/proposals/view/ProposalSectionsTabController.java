@@ -93,7 +93,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getUser(request));
-        model.addAttribute("judgeProposalBean", new JudgeProposalFeedbackBean(proposalJudgeWrapper));
+        JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
+        judgeProposalBean.setContestPhaseId(proposalsContext.getContestPhase(request).getContestPhasePK());
+        model.addAttribute("judgeProposalBean", judgeProposalBean);
 
         return "proposalDetails";
     }

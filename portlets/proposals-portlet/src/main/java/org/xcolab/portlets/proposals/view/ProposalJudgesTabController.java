@@ -41,6 +41,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         User currentUser = proposalsContext.getUser(request);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
+        bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
         model.addAttribute("proposalAdvancingBean", bean);
@@ -69,7 +70,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
         model.addAttribute("isAdmin", permissions.getCanAdminAll());
-        model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions()/* && !permissions.getCanFellowActions()*/);
+        model.addAttribute("isJudgeReadOnly", permissions.getCanJudgeActions() && !permissions.getCanFellowActions());
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("fellowRatings", fellowRatings);
@@ -119,6 +120,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 0
         );
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
+        bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("hasNoWritePermission", hasNoWritePermission);
