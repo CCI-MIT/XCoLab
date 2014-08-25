@@ -53,7 +53,7 @@
                                    commandName="proposalAdvancingBean">
                             <form:hidden path="contestPhaseId" />
                             <div class="addpropbox">
-                                <h3>Advance Proposal to Semi-Finalist Round?</h3>
+                                <h3>Advance Proposal to Next Round?</h3>
                                 <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                                 <div id="comment-container">
