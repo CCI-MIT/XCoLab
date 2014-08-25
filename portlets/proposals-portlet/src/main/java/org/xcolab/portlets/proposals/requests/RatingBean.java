@@ -1,6 +1,8 @@
 package org.xcolab.portlets.proposals.requests;
 
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ProposalRatingType;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
@@ -18,6 +20,8 @@ import java.util.Map;
 public class RatingBean {
     protected List<ProposalRatingTypeWrapper> ratingTypes;
     protected Map<Long, String> ratingValues;
+
+    private Long contestPhaseId;
 
     private String comment;
 
@@ -39,6 +43,14 @@ public class RatingBean {
     }
 
     public RatingBean() {
+    }
+
+    public Long getContestPhaseId() {
+        return contestPhaseId;
+    }
+
+    public void setContestPhaseId(Long contestPhaseId) {
+        this.contestPhaseId = contestPhaseId;
     }
 
     public String getComment() {

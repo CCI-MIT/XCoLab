@@ -114,12 +114,13 @@ interface ProposalTabCanAccessAlgorithm {
                 //check if the contest has
                 Contest contest = context.getContest(request);
 
-                if (contest.getDefaultParentPointType() > 0 && permissions.getCanEdit()) {
+                /*if (contest.getDefaultParentPointType() > 0 && permissions.getCanEdit()) {
                     return true;
                 } else {
                     return false;
-                }
-
+                }*/
+                //for now, allow every proposal author or team member to change the points
+                return (contest.getDefaultParentPointType() > 0 && (permissions.getIsTeamMember() || permissions.getCanAdmin()));
             } catch (SystemException e) {
                 _log.error("can't check if user is allowed to access points", e);
             } catch (PortalException e) {

@@ -123,7 +123,7 @@ public class JudgeProposalActionController {
         Proposal proposal = proposalsContext.getProposal(request);
         long contestId = proposalsContext.getContest(request).getContestPK();
         long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(proposalAdvancingBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -241,7 +241,7 @@ public class JudgeProposalActionController {
 
         long contestId = proposalsContext.getContest(request).getContestPK();
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -275,7 +275,7 @@ public class JudgeProposalActionController {
 
             long contestId = proposalsContext.getContest(request).getContestPK();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
-            long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+            long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
             ProposalsPermissions permissions = proposalsContext.getPermissions(request);
             User currentUser = proposalsContext.getUser(request);
 
@@ -312,7 +312,7 @@ public class JudgeProposalActionController {
                 );
 
                 //save fellow action comment
-                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
+                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestPhaseLocalServiceUtil.fetchContestPhase(contestPhaseId));
 
                 if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
