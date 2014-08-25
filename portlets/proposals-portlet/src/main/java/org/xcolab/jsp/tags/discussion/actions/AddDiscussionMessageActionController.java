@@ -1,9 +1,11 @@
 package org.xcolab.jsp.tags.discussion.actions;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.servlet.http.Cookie;
 
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -65,7 +67,20 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     			COMMENT_ANALYTICS_LABEL, 
     			analyticsValue);
         }
-        
+
+        //delete the cached comment cookie, if it exists
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("proposal-comment-body")) {
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addProperty(cookie);
+                }
+            }
+        }
+
         redirectToReferer(request, response);
         
     }
