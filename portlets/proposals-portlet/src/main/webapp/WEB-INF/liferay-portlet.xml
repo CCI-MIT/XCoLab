@@ -32,6 +32,7 @@
         <footer-portlet-javascript>/js/proposalPicker.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/admin-portlet-preferences.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/user-autocomplete.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/discussionComments.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

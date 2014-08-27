@@ -28,7 +28,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         model.addAttribute("proposalId", proposalsContext.getProposal(request).getProposalId());
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.COMMENTS);
-        
+
         return "proposalComments";
     }
     
