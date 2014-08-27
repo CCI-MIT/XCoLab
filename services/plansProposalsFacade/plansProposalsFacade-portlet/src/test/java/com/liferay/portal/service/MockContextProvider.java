@@ -18,18 +18,24 @@ import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.cache.CacheRegistryImpl;
 import com.liferay.portal.configuration.ConfigurationFactoryImpl;
 import com.liferay.portal.dao.db.DBFactoryImpl;
+import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.dao.jdbc.spring.MappingSqlQueryFactoryImpl;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactoryUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.security.lang.DoPrivilegedUtil;
+import com.liferay.portal.util.PropsImpl;
+import com.sun.syndication.io.XmlReader;
 
 /**
  * <p>Creates and initializes all beans that need to be set up for tests to run, also it initializes database.</p>
@@ -44,6 +50,29 @@ public class MockContextProvider implements ApplicationContextAware {
         DBFactoryUtil.setDBFactory(new DBFactoryImpl());
         CacheRegistryUtil.setCacheRegistry(new CacheRegistryImpl());
         (new MappingSqlQueryFactoryUtil()).setMappingSqlQueryFactory(new MappingSqlQueryFactoryImpl());
+		// Cache registry
+
+		CacheRegistryUtil.setCacheRegistry(
+			DoPrivilegedUtil.wrap(new CacheRegistryImpl()));
+
+		// Configuration factory
+
+		ConfigurationFactoryUtil.setConfigurationFactory(
+			DoPrivilegedUtil.wrap(new ConfigurationFactoryImpl()));
+
+		// Data source factory
+
+		DataSourceFactoryUtil.setDataSourceFactory(
+			DoPrivilegedUtil.wrap(new DataSourceFactoryImpl()));
+
+		// DB factory
+
+		DBFactoryUtil.setDBFactory(DoPrivilegedUtil.wrap(new DBFactoryImpl()));
+
+		// ROME
+
+		XmlReader.setDefaultEncoding(StringPool.UTF8);
+		com.liferay.portal.kernel.util.PropsUtil.setProps(new PropsImpl());
 
     }
 

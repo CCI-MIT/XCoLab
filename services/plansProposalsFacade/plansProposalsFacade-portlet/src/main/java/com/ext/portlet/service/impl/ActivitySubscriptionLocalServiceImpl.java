@@ -299,7 +299,12 @@ public class ActivitySubscriptionLocalServiceImpl
         synchronized (lastEmailNotification) {
             List<SocialActivity> res = getActivitiesAfter(lastEmailNotification);
             for (SocialActivity activity : res) {
-                sendInstantNotifications(activity, serviceContext);
+            	try {
+            		sendInstantNotifications(activity, serviceContext);
+            	}
+            	catch (Throwable e) {
+            		_log.error(String.format("Can't process activity when sending notifications ( %s )", activity), e);
+            	}
             }
             lastEmailNotification = new Date();
         }

@@ -12,23 +12,29 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ProposalLocalService;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.service.MockContextProvider;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.spring.context.ArrayApplicationContext;
+import com.liferay.portal.util.InitUtil;
 
 public class ProposalLocalServiceImplTest {
 	private static ProposalLocalService proposalLocalServiceImpl;
 	private static AbstractApplicationContext ctx;
 	private Random rand = new Random();
-	
+
+    @BeanReference(type = EventBusService.class)
+    private EventBusService eventBus;
 	
 	@BeforeClass
 	public static void beforeTest() throws Exception {
@@ -37,16 +43,28 @@ public class ProposalLocalServiceImplTest {
 	    
 	    new ServiceBeanAutoProxyCreator();
 	    new MockContextProvider();
-	    
-	    
+	    System.out.println("Before init");
+	    //InitUtil.init();
+	    System.out.println("after init with spring before ctx");
 	    ctx = new ArrayApplicationContext(new String[] { 
-	            "META-INF/test-spring.xml",
+	            "META-INF/test-spring.xml", 
+	            "META-INF/util-spring.xml", 
 	            "META-INF/counter-spring.xml",
-	            "META-INF/hibernate-spring.xml", "META-INF/base-spring.xml", "META-INF/ext-spring.xml",
-	            "META-INF/portlet-spring.xml", "META-INF/infrastructure-spring.xml", "META-INF/util-spring.xml", "META-INF/management-spring.xml",
+	            "META-INF/hibernate-spring.xml",
+	            "META-INF/base-spring.xml", "META-INF/ext-spring.xml",
+	            "META-INF/portlet-spring.xml", "META-INF/infrastructure-spring.xml", "META-INF/management-spring.xml",
 	            "META-INF/portlet-spring-override.xml"});
-        
-	    proposalLocalServiceImpl = ctx.getBean(ProposalLocalService.class);
+	    /*
+	    ctx = new ArrayApplicationContext(new String[] {
+	            "META-INF/counter-spring.xml",
+	            "META-INF/hibernate-spring.xml",
+	            "META-INF/infrastructure-spring.xml",
+	            "META-INF/test-spring.xml"
+	    });
+	    */
+	    
+        System.out.println("initialized?");
+	    //proposalLocalServiceImpl = ctx.getBean(ProposalLocalService.class);
 	}
 
     @Test
