@@ -20,33 +20,53 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 
-	private static final Log _log = LogFactoryUtil.getLog(SchedulerDispatchStrutsAction.class);
+	private static final Log _log = LogFactoryUtil
+			.getLog(SchedulerDispatchStrutsAction.class);
 
 	private static final String LOCAL_IPv4_ADDRESS = "127.0.0.1";
 
 	private static final String LOCAL_IPv6_ADDRESS = "0:0:0:0:0:0:0:1";
+	private static Object mutex = new Object();
+	private boolean isRunning = false;
 
-	public String execute(
-			HttpServletRequest request, HttpServletResponse response) throws MessageListenerException {
+	public String execute(HttpServletRequest request,
+			HttpServletResponse response) throws MessageListenerException {
+
+		synchronized (mutex) {
+			if (isRunning) {
+				// if task is already running don't run it again
+				return StringPool.BLANK;
+			}
+			isRunning = true;
+		}
 
 		String clientIp = request.getRemoteAddr();
-		if (!(clientIp.equals(LOCAL_IPv4_ADDRESS) || clientIp.equals(LOCAL_IPv6_ADDRESS))) {
-			_log.warn(String.format("Denied request from address %s!", clientIp));
+		if (!(clientIp.equals(LOCAL_IPv4_ADDRESS) || clientIp
+				.equals(LOCAL_IPv6_ADDRESS))) {
+			_log.warn(String
+					.format("Denied request from address %s!", clientIp));
 			return null;
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
 		serviceContext.setRequest(request);
-        serviceContext.setPortalURL(((ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
+		serviceContext.setPortalURL(((ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
 
 		try {
-			ActivitySubscriptionLocalServiceUtil.sendEmailNotifications(serviceContext);
-		}
-		catch (Exception e) {
-			throw new MessageListenerException("Could not process email notification of proposal subscription feature", e);
+			ActivitySubscriptionLocalServiceUtil
+					.sendEmailNotifications(serviceContext);
+		} catch (Throwable e) {
+			_log.error(
+					"Could not process email notification of proposal subscription feature",
+					e);
 		}
 
+		synchronized (mutex) {
+			isRunning = false;
+		}
 		return StringPool.BLANK;
+
 	}
 
 }

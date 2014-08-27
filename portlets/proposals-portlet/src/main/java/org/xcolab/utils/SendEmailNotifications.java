@@ -36,7 +36,8 @@ public class SendEmailNotifications implements MessageListener {
                 port = PortalUtil.getPortalPort(false);
             }
 
-            String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
+            //String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
+            String baseUrl = "http://localhost:9082";
 
 			URL url = new URL(baseUrl + EXECUTE_SCHEDULER_PATH);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();

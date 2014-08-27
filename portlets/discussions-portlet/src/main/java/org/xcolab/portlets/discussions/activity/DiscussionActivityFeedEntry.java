@@ -6,14 +6,12 @@
 
 package org.xcolab.portlets.discussions.activity;
 
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
 
-import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.BaseFeedEntryWithMailInfo;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
 import com.ext.portlet.community.CommunityUtil;
 import com.ext.portlet.model.DiscussionCategory;
@@ -26,12 +24,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
-import org.apache.commons.lang.StringEscapeUtils;
 
 public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
@@ -157,7 +157,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
         }
 
         catch (Exception e) {
-            e.printStackTrace();
+        	_log.error(String.format("Can't interpret activity (%s)", activity.toString()) , e);
         }
         
         return null;
