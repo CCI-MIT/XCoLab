@@ -46,6 +46,7 @@ public class FixCommentActivities {
 							DiscussionMessage dm = DiscussionMessageLocalServiceUtil.getDiscussionMessage(ids[2]);
 						}
 						catch (NoSuchDiscussionMessageException e){
+							SocialActivityLocalServiceUtil.deleteActivity(sa);
 							System.out.println("Can't find message for activity: " + sa);
 						}
 					}
