@@ -157,10 +157,9 @@
 						</div></td>
 
 					<th class="second">Country</th>
-					<td><form:input cssClass="popupreg_input" path="country" />
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="country" />
-						</div></td>
+					<td>
+                        <jsp:include page="./countrySelect.jspx"/>
+                    </td>
 				</tr>
 
 				<tr>
