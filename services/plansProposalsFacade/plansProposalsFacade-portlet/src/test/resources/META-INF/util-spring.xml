@@ -469,16 +469,18 @@
 			<bean class="com.liferay.portal.util.DateFormatFactoryImpl" />
 		</property>
 	</bean>
+	<!-- 
 	<bean id="com.liferay.portal.kernel.util.DiffHtmlUtil" class="com.liferay.portal.kernel.util.DiffHtmlUtil">
 		<property name="diffHtml">
 			<bean class="com.liferay.portal.util.DiffHtmlImpl" />
 		</property>
 	</bean>
+	
 	<bean id="com.liferay.portal.kernel.util.DiffUtil" class="com.liferay.portal.kernel.util.DiffUtil">
 		<property name="diff">
 			<bean class="com.liferay.portal.util.DiffImpl" />
 		</property>
-	</bean>
+	</bean> -->
 	<bean id="com.liferay.portal.kernel.util.DigesterUtil" class="com.liferay.portal.kernel.util.DigesterUtil">
 		<property name="digester">
 			<bean class="com.liferay.portal.util.DigesterImpl" />

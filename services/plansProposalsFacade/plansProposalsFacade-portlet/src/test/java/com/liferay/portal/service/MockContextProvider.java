@@ -21,6 +21,7 @@ import com.liferay.portal.dao.db.DBFactoryImpl;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.dao.jdbc.spring.MappingSqlQueryFactoryImpl;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -34,6 +35,8 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
+import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsImpl;
 import com.sun.syndication.io.XmlReader;
 
@@ -87,19 +90,30 @@ public class MockContextProvider implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         PortalBeanLocatorUtil.setBeanLocator(new BeanLocatorImpl(getClassLoader(), applicationContext));
+        PortletBeanLocatorUtil.setBeanLocator("plansProposalsFacade-portlet", new BeanLocatorImpl(getClassLoader(), applicationContext));
 
     }
 
     public void afterPropertiesSet() throws FileNotFoundException, IOException, NamingException, SQLException {
+    	
         DB db = DBFactoryUtil.getDB();
         _log.info("Running SQL scripts");
 
-        String tablesSQL = IOUtils.toString(new FileReader(new File(getPathPrefix() + "/src/main/webapp/WEB-INF/sql/tables.sql")));
-        String sequencesSQL = IOUtils.toString(new FileReader(new File(getPathPrefix() + "/src/main/webapp/WEB-INF/sql/sequences.sql")));
-        String indexesSQL = IOUtils.toString(new FileReader(new File(getPathPrefix() + "/src/main/webapp/WEB-INF/sql/indexes.sql")));
-        db.runSQLTemplateString(tablesSQL, true, false);
-        db.runSQLTemplateString(sequencesSQL, true, false);
-        db.runSQLTemplateString(indexesSQL, true, false);
+        String[] dbFiles = {
+        		"/src/test/resources/sql/portal-tables.sql", 
+        		"/src/test/resources/sql/indexes.sql", 
+        		"/src/test/resources/sql/sequences.sql",
+        		"/src/main/webapp/WEB-INF/sql/tables.sql",
+        		"/src/main/webapp/WEB-INF/sql/sequences.sql",
+        		"/src/main/webapp/WEB-INF/sql/indexes.sql",
+        		"/src/test/resources/sql/test-data.sql"
+        };
+        
+        for (String dbFile: dbFiles) {
+        	String sqlStr = IOUtils.toString(new FileReader(new File(getPathPrefix(), dbFile)));
+        	db.runSQLTemplateString(sqlStr, true, false);
+        }
+        PortalInstances.addCompanyId(10112L);
     }
 
     public void setDataSource(DataSource dataSource) {
