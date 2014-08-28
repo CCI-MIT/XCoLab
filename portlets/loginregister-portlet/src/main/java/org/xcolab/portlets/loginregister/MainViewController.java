@@ -438,8 +438,9 @@ public class MainViewController {
 			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
 				return location.getCountryName();
 			}
-		} finally {
-			throw new UserLocationNotResolveableException("Could not retrieve country from IP address");
+		} catch(Exception e) {
+			throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr), e);
 		}
+		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
 	}
 }
