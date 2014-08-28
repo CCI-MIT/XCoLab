@@ -657,7 +657,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId()) {
             return;
         }
-
+        
+        Set<Long> proposalsUserCanVoteOn = new HashSet<Long>();
+        for (Proposal proposal: proposalLocalService.getProposalsInContestPhase(lastOrActivePhase.getContestPhasePK())) {
+        	proposalsUserCanVoteOn.add(proposal.getProposalId());
+        }
         Map<User, List<Proposal>> userToSupportsMap = getContestSupportingUser(contest);
         for (User user : userToSupportsMap.keySet()) {
             // Do nothing if the user has already voted
@@ -665,7 +669,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 continue;
             }
 
-            List<Proposal> proposals = userToSupportsMap.get(user);
+            List<Proposal> proposals = new ArrayList<Proposal>();
+            if (userToSupportsMap.containsKey(user)) {
+            	for (Proposal p: userToSupportsMap.get(user))
+            		if (proposalsUserCanVoteOn.contains(p.getProposalId())) {
+            			proposals.add(p);
+            		}
+            }
+            if (proposals.isEmpty()) {
+            	continue;
+            }
 
             /*
             // Directly transfer the support to a vote
@@ -679,6 +692,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
             */
             // Always ask the user to upgrade their support to a vote
+
+            
             new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendEmailNotification();
         }
     }

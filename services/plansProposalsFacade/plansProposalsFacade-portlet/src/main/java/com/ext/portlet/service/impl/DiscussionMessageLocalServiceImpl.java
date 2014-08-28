@@ -9,6 +9,7 @@ import java.util.Set;
 import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.NoSuchDiscussionMessageFlagException;
+import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
@@ -30,6 +31,8 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.social.model.SocialActivity;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 /**
  * The implementation of the discussion message local service.
@@ -229,6 +232,16 @@ public class DiscussionMessageLocalServiceImpl
        public void delete(DiscussionMessage dMessage) throws SystemException, PortalException {
            dMessage.setDeleted(new Date());
            store(dMessage);
+           String activityExtraData =ActivityUtil.getExtraDataForIds(dMessage.getCategoryId(), 
+        		   dMessage.getThreadId() > 0 ? dMessage.getThreadId() : dMessage.getMessageId(),
+        		   dMessage.getMessageId());
+           
+           // remove social activity for deleted message
+           for (SocialActivity sa: SocialActivityLocalServiceUtil.getActivities(DiscussionCategoryGroup.class.getName(), 0, Integer.MAX_VALUE)) {
+        	   if (activityExtraData.equals(sa.getExtraData())) {
+        		   SocialActivityLocalServiceUtil.deleteActivity(sa);
+        	   }
+           }
            /*
            try {
                Indexer.deleteEntry(10112L, getMessageId());
