@@ -41,9 +41,8 @@ public class ContestEmailTemplateWrapper {
     }
 
     private String replaceVariables(String subject) {
-    	System.out.println("Subject: " + subject + "\t" + this.contestName + "\t" + this.proposalName); 
-        String result = subject.replaceAll("<contest-title/>", this.contestName)
-                .replaceAll("<proposal-title/>", this.proposalName);
+        String result = subject.replace("<contest-title/>", this.contestName)
+                .replace("<proposal-title/>", this.proposalName);
         return result;
     }
 }

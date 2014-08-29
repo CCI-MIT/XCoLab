@@ -129,9 +129,9 @@ public class ActivityIndexer extends BaseIndexer {
                 try {
                     return SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField(ACTIVITY_ID_KEY).getValue()));
                 } catch (SystemException e) {
-                    e.printStackTrace();
+                    _log.warn("Can't get social activity", e);
                 } catch (PortalException e) {
-                    e.printStackTrace();
+                	_log.warn("Can't get social activity", e);
                 }
             }
         } catch (ParseException e) {
