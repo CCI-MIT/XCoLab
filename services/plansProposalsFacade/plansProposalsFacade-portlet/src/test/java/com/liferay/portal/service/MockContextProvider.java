@@ -30,43 +30,53 @@ import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.sender.MessageSender;
+import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
 import com.liferay.portal.util.PortalInstances;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsImpl;
 import com.sun.syndication.io.XmlReader;
 
 /**
- * <p>Creates and initializes all beans that need to be set up for tests to run, also it initializes database.</p>
+ * <p>
+ * Creates and initializes all beans that need to be set up for tests to run,
+ * also it initializes database.
+ * </p>
  *
  * @author janusz
  */
 public class MockContextProvider implements ApplicationContextAware {
-    public MockContextProvider() {
-        PortletClassLoaderUtil.setClassLoader(MockContextProvider.class.getClassLoader());
-        PortalClassLoaderUtil.setClassLoader(MockContextProvider.class.getClassLoader());
-        ConfigurationFactoryUtil.setConfigurationFactory(new ConfigurationFactoryImpl());
-        DBFactoryUtil.setDBFactory(new DBFactoryImpl());
-        CacheRegistryUtil.setCacheRegistry(new CacheRegistryImpl());
-        (new MappingSqlQueryFactoryUtil()).setMappingSqlQueryFactory(new MappingSqlQueryFactoryImpl());
+	public MockContextProvider() {
+		PortletClassLoaderUtil.setClassLoader(MockContextProvider.class
+				.getClassLoader());
+		PortalClassLoaderUtil.setClassLoader(MockContextProvider.class
+				.getClassLoader());
+		ConfigurationFactoryUtil
+				.setConfigurationFactory(new ConfigurationFactoryImpl());
+		DBFactoryUtil.setDBFactory(new DBFactoryImpl());
+		CacheRegistryUtil.setCacheRegistry(new CacheRegistryImpl());
+		(new MappingSqlQueryFactoryUtil())
+				.setMappingSqlQueryFactory(new MappingSqlQueryFactoryImpl());
 		// Cache registry
 
-		CacheRegistryUtil.setCacheRegistry(
-			DoPrivilegedUtil.wrap(new CacheRegistryImpl()));
+		CacheRegistryUtil.setCacheRegistry(DoPrivilegedUtil
+				.wrap(new CacheRegistryImpl()));
 
 		// Configuration factory
 
-		ConfigurationFactoryUtil.setConfigurationFactory(
-			DoPrivilegedUtil.wrap(new ConfigurationFactoryImpl()));
+		ConfigurationFactoryUtil.setConfigurationFactory(DoPrivilegedUtil
+				.wrap(new ConfigurationFactoryImpl()));
 
 		// Data source factory
 
-		DataSourceFactoryUtil.setDataSourceFactory(
-			DoPrivilegedUtil.wrap(new DataSourceFactoryImpl()));
+		DataSourceFactoryUtil.setDataSourceFactory(DoPrivilegedUtil
+				.wrap(new DataSourceFactoryImpl()));
 
 		// DB factory
 
@@ -77,71 +87,90 @@ public class MockContextProvider implements ApplicationContextAware {
 		XmlReader.setDefaultEncoding(StringPool.UTF8);
 		com.liferay.portal.kernel.util.PropsUtil.setProps(new PropsImpl());
 
-    }
+	}
 
-    public static ClassLoader getClassLoader() {
-        return MockContextProvider.class.getClassLoader();
-    }
+	public static ClassLoader getClassLoader() {
+		return MockContextProvider.class.getClassLoader();
+	}
 
-    public static String getServletContextName() {
-        return "mockServletContext";
-    }
+	public static String getServletContextName() {
+		return "mockServletContext";
+	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        PortalBeanLocatorUtil.setBeanLocator(new BeanLocatorImpl(getClassLoader(), applicationContext));
-        PortletBeanLocatorUtil.setBeanLocator("plansProposalsFacade-portlet", new BeanLocatorImpl(getClassLoader(), applicationContext));
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		PortalBeanLocatorUtil.setBeanLocator(new BeanLocatorImpl(
+				getClassLoader(), applicationContext));
+		PortletBeanLocatorUtil.setBeanLocator("plansProposalsFacade-portlet",
+				new BeanLocatorImpl(getClassLoader(), applicationContext));
 
-    }
+	}
 
-    public void afterPropertiesSet() throws FileNotFoundException, IOException, NamingException, SQLException {
-    	
-        DB db = DBFactoryUtil.getDB();
-        _log.info("Running SQL scripts");
+	public void afterPropertiesSet() throws FileNotFoundException, IOException,
+			NamingException, SQLException {
 
-        String[] dbFiles = {
-        		"/src/test/resources/sql/portal-tables.sql", 
-        		"/src/test/resources/sql/indexes.sql", 
-        		"/src/test/resources/sql/sequences.sql",
-        		"/src/main/webapp/WEB-INF/sql/tables.sql",
-        		"/src/main/webapp/WEB-INF/sql/sequences.sql",
-        		"/src/main/webapp/WEB-INF/sql/indexes.sql",
-        		"/src/test/resources/sql/test-data.sql"
-        };
-        
-        for (String dbFile: dbFiles) {
-        	String sqlStr = IOUtils.toString(new FileReader(new File(getPathPrefix(), dbFile)));
-        	db.runSQLTemplateString(sqlStr, true, false);
-        }
-        PortalInstances.addCompanyId(10112L);
-    }
+		DB db = DBFactoryUtil.getDB();
+		_log.info("Running SQL scripts");
 
-    public void setDataSource(DataSource dataSource) {
-        new InfrastructureUtil().setDataSource(dataSource);
-    }
+		String[] dbFiles = { "/src/test/resources/sql/portal-tables.sql",
+				"/src/test/resources/sql/indexes.sql",
+				"/src/test/resources/sql/sequences.sql",
+				"/src/main/webapp/WEB-INF/sql/tables.sql",
+				"/src/main/webapp/WEB-INF/sql/sequences.sql",
+				"/src/main/webapp/WEB-INF/sql/indexes.sql",
+				"/src/test/resources/sql/test-data.sql" };
 
-    /**
-     * When launching the tests directly from IntelliJ IDEA, the base path for files is set to be $xcolab instead of the portlets folder - which is default in mvn test. This function checks which one is the case and returns a prefix that can be used in either case to make the tests work.
-     *
-     * @return
-     */
-    private String getPathPrefix() {
-        //check "." is xcolab base directory
-        String[] xcolabDirs = {"portlets", "conf", "hooks", "layouts", "services"};
-        boolean assumption = true;
-        for (String dir : xcolabDirs) {
-            if (!new File("./" + dir).exists()) {
-                assumption = false;
-                break;
-            }
-        }
+		for (String dbFile : dbFiles) {
+			String sqlStr = IOUtils.toString(new FileReader(new File(
+					getPathPrefix(), dbFile)));
+			db.runSQLTemplateString(sqlStr, true, false);
+		}
+		PortalInstances.addCompanyId(10112L);
 
-        if (assumption) {
-            return "./services/plansProposalsFacade/plansProposalsFacade-portlet";
-        } else {
-            return ".";
-        }
-    }
+		MessageBus messageBus = (MessageBus) PortalBeanLocatorUtil
+				.locate(MessageBus.class.getName());
+		MessageSender messageSender = (MessageSender) PortalBeanLocatorUtil
+				.locate(MessageSender.class.getName());
+		SynchronousMessageSender synchronousMessageSender = (SynchronousMessageSender) PortalBeanLocatorUtil
+				.locate(SynchronousMessageSender.class.getName());
 
-    private final static Log _log = LogFactoryUtil.getLog(MockContextProvider.class);
+		MessageBusUtil
+				.init(messageBus, messageSender, synchronousMessageSender);
+
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		new InfrastructureUtil().setDataSource(dataSource);
+	}
+
+	/**
+	 * When launching the tests directly from IntelliJ IDEA, the base path for
+	 * files is set to be $xcolab instead of the portlets folder - which is
+	 * default in mvn test. This function checks which one is the case and
+	 * returns a prefix that can be used in either case to make the tests work.
+	 *
+	 * @return
+	 */
+	private String getPathPrefix() {
+		// check "." is xcolab base directory
+		String[] xcolabDirs = { "portlets", "conf", "hooks", "layouts",
+				"services" };
+		boolean assumption = true;
+		for (String dir : xcolabDirs) {
+			if (!new File("./" + dir).exists()) {
+				assumption = false;
+				break;
+			}
+		}
+
+		if (assumption) {
+			return "./services/plansProposalsFacade/plansProposalsFacade-portlet";
+		} else {
+			return ".";
+		}
+	}
+
+	private final static Log _log = LogFactoryUtil
+			.getLog(MockContextProvider.class);
 }

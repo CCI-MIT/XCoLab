@@ -44,6 +44,8 @@
  				<version>2.11</version>
  				<configuration>
   					<argLine>-Xms512m -Xmx3024m -XX:MaxPermSize=1024m</argLine>
+  					<!--  has to be disabled due to liferay's analyzer implementation -->
+  					<enableAssertions>false</enableAssertions>
  				</configuration>
 			</plugin> 
 		</plugins>
