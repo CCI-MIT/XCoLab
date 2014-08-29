@@ -62,6 +62,10 @@ public class Location implements Serializable {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+	public String getCountryNameInEnglish() {
+        Locale l = new Locale("en", this.country);
+        return l.getDisplayCountry();
+	}
 	public String getCountryName() {
 		return countryName;
 	}

@@ -436,7 +436,7 @@ public class MainViewController {
 		try {
 			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
 			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
-				return location.getCountry();
+				return location.getCountryNameInEnglish();
 			}
 		} catch(Exception e) {
 			throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr), e);
