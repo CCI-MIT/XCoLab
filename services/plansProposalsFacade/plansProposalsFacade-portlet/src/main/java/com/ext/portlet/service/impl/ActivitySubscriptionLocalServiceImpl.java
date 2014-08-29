@@ -315,9 +315,13 @@ public class ActivitySubscriptionLocalServiceImpl
 			// Send the daily digest at the predefined hour only
 			if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000 &&
 					Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
-
-				List<SocialActivity> res = getActivitiesAfter(lastDailyEmailNotification);
-				sendDailyDigestNotifications(res, serviceContext);
+				try {
+					List<SocialActivity> res = getActivitiesAfter(lastDailyEmailNotification);
+					sendDailyDigestNotifications(res, serviceContext);
+				}
+				catch (Throwable t) {
+					_log.error(String.format("Can't send daily email notofication"), t);
+				}
 
 				lastDailyEmailNotification = now;
 			}

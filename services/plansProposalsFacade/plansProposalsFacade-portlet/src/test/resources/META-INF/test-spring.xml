@@ -17,48 +17,4 @@
 		<property name="dataSource" ref="liferayDataSource" />
 	</bean>
 	
-	<!-- 
-	<bean id="com.liferay.portal.service.PersistedModelLocalServiceRegistry" class="com.liferay.portal.service.PersistedModelLocalServiceRegistryMock" />
-	 -->
-	<bean id="com.liferay.portal.service.PersistedModelLocalServiceRegistry" class="com.liferay.portal.service.PersistedModelLocalServiceRegistryImpl" />
-	 
-	 
-	<bean id="com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil" class="com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil">
-		<property name="persistedModelLocalServiceRegistry" ref="com.liferay.portal.service.PersistedModelLocalServiceRegistry" />
-	
-	</bean>
-	
-	<bean id="com.liferay.portal.service.UserLocalService" class="com.ext.portlet.service.impl.mock.UserLocalServiceMock" />
-	<bean id="com.liferay.portal.service.SocialActivityLocalService" class="com.ext.portlet.service.impl.mock.SocialActivityLocalServiceMock" />
-	
-	<!-- 
-	<bean id="portalClassLoader" class="com.liferay.portal.service.MockContextProvider" factory-method="getClassLoader" />
-	<bean id="portletClassLoader" class="com.liferay.portal.service.MockContextProvider" factory-method="getClassLoader" />
-	<bean id="servletContextName" class="com.liferay.portal.service.MockContextProvider" factory-method="getServletContextName" />
-	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
-    	<property name="driverClassName" value="${database.driverClassName}" />
-    	<property name="url" value="${database.url}" />
-    	<property name="username" value="${database.username}" />
-    	<property name="password" value="${database.password}" />
-  	</bean>
-	<bean id="liferayHibernateSessionFactory" class="com.liferay.portal.spring.hibernate.PortalHibernateConfiguration">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-    <bean id="liferaySessionFactory" class="com.liferay.portal.dao.orm.hibernate.SessionFactoryImpl">
-		<property name="sessionFactoryClassLoader">
-			<bean class="com.liferay.portal.kernel.util.PortalClassLoaderUtil" factory-method="getClassLoader" />
-		</property>
-		<property name="sessionFactoryImplementor" ref="liferayHibernateSessionFactory" />
-	</bean>
-	
-	
-	
-	<bean id="basePersistence" abstract="true">
-		<property name="dataSource" ref="dataSource" />
-		<property name="sessionFactory" ref="liferaySessionFactory" />
-	</bean>
-	 <bean id="com.liferay.portal.service.PersistedModelLocalServiceRegistry" class="com.liferay.portal.service.PersistedModelLocalServiceRegistryImpl" />
-	 
-	-->
 </beans>

@@ -28,9 +28,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
+import com.liferay.util.portlet.PortletProps;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
@@ -71,6 +78,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * contest phase local service.
      */
     private final static Log _log = LogFactoryUtil.getLog(ContestPhaseLocalServiceImpl.class);
+    private static final String SERVER_PORT_PROPS_KEY = "climatecolab.server.port";
 
     public List<PlanItem> getPlans(ContestPhase contestPhase) throws SystemException, PortalException {
         return PlanItemLocalServiceUtil.getPlans(Collections.emptyMap(), Collections.emptyMap(), 0L,
@@ -307,11 +315,24 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     public void autoPromoteProposals() throws SystemException, PortalException {
     	
         Date now = new Date();
+        ServiceContext serviceContext = new ServiceContext();
+        int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
+        if (Validator.isNull(port) || port <= 0) {
+            port = PortalUtil.getPortalPort(false);
+        }
+        if (port <= 0) {
+        	port = 80;
+        }
+
+		Company company = CompanyLocalServiceUtil.getCompany(PortalUtil.getDefaultCompanyId());
+		
+        serviceContext.setPortalURL(PortalUtil.getPortalURL(company.getVirtualHostname(), port, false));
         for (ContestPhase phase : contestPhasePersistence.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !getPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
-                    _log.info("promoting phase " + phase.getContestPhasePK());
+                	_log.info("promoting phase " + phase.getContestPhasePK());
+                	Contest contest = contestLocalService.getContest(phase.getContestPK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                         //skip already promoted proposal
@@ -328,8 +349,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // update phase for which promotion was done (mark it as
                     // "promotion done")
-                    phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
+
+                    // if transition is to voting phase
+                    if (getContestStatus(nextPhase).isCanVote()) {
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
+                    }
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } catch (SystemException | PortalException e) {
                     _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
@@ -344,6 +369,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                 // Only do the promotion if all proposals have been successfully reviewed
                 if (allProposalsReviewed(phase)) {
+                	Contest contest = contestLocalService.getContest(phase.getContestPK());
                     ContestPhase nextPhase = getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     	try {
@@ -374,6 +400,10 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                         }
                     }
 
+                    // if transition is to voting phase
+                    if (getContestStatus(nextPhase).isCanVote()) {
+                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
+                    }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
                     _log.info("done promoting phase " + phase.getContestPhasePK());

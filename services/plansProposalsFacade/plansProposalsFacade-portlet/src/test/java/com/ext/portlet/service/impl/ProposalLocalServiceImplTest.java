@@ -17,16 +17,23 @@ import org.xcolab.services.EventBusService;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalService;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.InfrastructureUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
+import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.MockContextProvider;
+import com.liferay.portal.service.ResourceActionLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
-import com.liferay.portal.spring.context.ArrayApplicationContext;
 import com.liferay.portal.util.InitUtil;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class ProposalLocalServiceImplTest {
 	private static ProposalLocalService proposalLocalServiceImpl;
@@ -44,16 +51,27 @@ public class ProposalLocalServiceImplTest {
 	    new ServiceBeanAutoProxyCreator();
 	    new MockContextProvider();
 	    System.out.println("Before init");
-	    //InitUtil.init();
+	    
+	    InitUtil.initWithSpring();
 	    System.out.println("after init with spring before ctx");
+        ResourceActionLocalServiceUtil.checkResourceActions();
+        CompanyThreadLocal.setCompanyId(10112l);
+	    
+	    /*
 	    ctx = new ArrayApplicationContext(new String[] { 
 	            "META-INF/test-spring.xml", 
 	            "META-INF/util-spring.xml", 
 	            "META-INF/counter-spring.xml",
 	            "META-INF/hibernate-spring.xml",
-	            "META-INF/base-spring.xml", "META-INF/ext-spring.xml",
-	            "META-INF/portlet-spring.xml", "META-INF/infrastructure-spring.xml", "META-INF/management-spring.xml",
+	            "META-INF/base-spring.xml", 
+	            "META-INF/ext-spring.xml",
+	            "META-INF/portlet-spring.xml",
+	            "META-INF/infrastructure-spring.xml", 
+	            "META-INF/management-spring.xml",
+
+	            
 	            "META-INF/portlet-spring-override.xml"});
+	            */
 	    /*
 	    ctx = new ArrayApplicationContext(new String[] {
 	            "META-INF/counter-spring.xml",
@@ -64,13 +82,19 @@ public class ProposalLocalServiceImplTest {
 	    */
 	    
         System.out.println("initialized?");
+        proposalLocalServiceImpl = (ProposalLocalService) PortalBeanLocatorUtil.locate(ProposalLocalService.class.getName());
 	    //proposalLocalServiceImpl = ctx.getBean(ProposalLocalService.class);
 	}
 
     @Test
     public void testProposalCreation() throws SystemException, PortalException {
-        long authorId = 1234L;
-        Proposal p = proposalLocalServiceImpl.create(authorId, 0);
+        long authorId = 10144L;
+        System.out.println(ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE));
+        List<User> users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+        System.out.println(users);
+        
+        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(authorId));
+        Proposal p = proposalLocalServiceImpl.create(authorId, 1);
         assertEquals(authorId, p.getAuthorId());
         
         Proposal rawFromDb = proposalLocalServiceImpl.getProposal(p.getProposalId());
@@ -86,7 +110,9 @@ public class ProposalLocalServiceImplTest {
     
     @Test
     public void testAttributeSetting() throws PortalException, SystemException {
-        long authorId = 1234L;
+    	
+        long authorId = 10144L;
+        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(authorId));
         
         String attributeName = "NAME";
         long attributeAdditionalId = 0;
@@ -94,7 +120,7 @@ public class ProposalLocalServiceImplTest {
         long attributeNumericVal = rand.nextLong();
         double attributeRealVal = rand.nextDouble();
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId, 0);
+        Proposal proposal = proposalLocalServiceImpl.create(authorId, 1);
         
         ProposalAttribute attribute = proposalLocalServiceImpl.setAttribute(
                 authorId, 
@@ -120,18 +146,19 @@ public class ProposalLocalServiceImplTest {
     
     @Test
     public void testProposalVersionHistory() throws PortalException, SystemException {
-        long authorId = 1234L;
+        long authorId = 10144L;
+        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(authorId));
         ProposalAttributeValues[] valuesToSet = new ProposalAttributeValues[] {
-                new ProposalAttributeValues(1, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(2, "DESCRIPTION", 0, "test description" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(3, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(4, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(5, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(6, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
-                new ProposalAttributeValues(7, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble())
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "DESCRIPTION", 0, "test description" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble()),
+                new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble())
         };
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId, 0);
+        Proposal proposal = proposalLocalServiceImpl.create(authorId, 1);
         
         for (ProposalAttributeValues valueToSet: valuesToSet) {
             proposalLocalServiceImpl.setAttribute(valueToSet.authorId, proposal.getProposalId(), 
