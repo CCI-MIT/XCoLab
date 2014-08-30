@@ -10,255 +10,255 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
     <form:select cssClass="popupreg_input" path="country">
         <form:option value="" label="Select country"/>
-        <form:option value="Afghanistan" label="Afghanistan"/>
-        <form:option value="Åland Islands" label="Åland Islands"/>
-        <form:option value="Albania" label="Albania"/>
-        <form:option value="Algeria" label="Algeria"/>
-        <form:option value="American Samoa" label="American Samoa"/>
-        <form:option value="Andorra" label="Andorra"/>
-        <form:option value="Angola" label="Angola"/>
-        <form:option value="Anguilla" label="Anguilla"/>
-        <form:option value="Antarctica" label="Antarctica"/>
-        <form:option value="Antigua and Barbuda" label="Antigua and Barbuda"/>
-        <form:option value="Argentina" label="Argentina"/>
-        <form:option value="Armenia" label="Armenia"/>
-        <form:option value="Aruba" label="Aruba"/>
-        <form:option value="Australia" label="Australia"/>
-        <form:option value="Austria" label="Austria"/>
-        <form:option value="Azerbaijan" label="Azerbaijan"/>
-        <form:option value="Bahamas" label="Bahamas"/>
-        <form:option value="Bahrain" label="Bahrain"/>
-        <form:option value="Bangladesh" label="Bangladesh"/>
-        <form:option value="Barbados" label="Barbados"/>
-        <form:option value="Belarus" label="Belarus"/>
-        <form:option value="Belgium" label="Belgium"/>
-        <form:option value="Belize" label="Belize"/>
-        <form:option value="Benin" label="Benin"/>
-        <form:option value="Bermuda" label="Bermuda"/>
-        <form:option value="Bhutan" label="Bhutan"/>
-        <form:option value="Bolivia, Plurinational State of" label="Bolivia, Plurinational State of"/>
-        <form:option value="Bonaire, Sint Eustatius and Saba" label="Bonaire, Sint Eustatius and Saba"/>
-        <form:option value="Bosnia and Herzegovina" label="Bosnia and Herzegovina"/>
-        <form:option value="Botswana" label="Botswana"/>
-        <form:option value="Bouvet Island" label="Bouvet Island"/>
-        <form:option value="Brazil" label="Brazil"/>
-        <form:option value="British Indian Ocean Territory" label="British Indian Ocean Territory"/>
-        <form:option value="Brunei Darussalam" label="Brunei Darussalam"/>
-        <form:option value="Bulgaria" label="Bulgaria"/>
-        <form:option value="Burkina Faso" label="Burkina Faso"/>
-        <form:option value="Burundi" label="Burundi"/>
-        <form:option value="Cambodia" label="Cambodia"/>
-        <form:option value="Cameroon" label="Cameroon"/>
-        <form:option value="Canada" label="Canada"/>
-        <form:option value="Cape Verde" label="Cape Verde"/>
-        <form:option value="Cayman Islands" label="Cayman Islands"/>
-        <form:option value="Central African Republic" label="Central African Republic"/>
-        <form:option value="Chad" label="Chad"/>
-        <form:option value="Chile" label="Chile"/>
-        <form:option value="China" label="China"/>
-        <form:option value="Christmas Island" label="Christmas Island"/>
-        <form:option value="Cocos (Keeling) Islands" label="Cocos (Keeling) Islands"/>
-        <form:option value="Colombia" label="Colombia"/>
-        <form:option value="Comoros" label="Comoros"/>
-        <form:option value="Congo" label="Congo"/>
-        <form:option value="Congo, the Democratic Republic of the" label="Congo, the Democratic Republic of the"/>
-        <form:option value="Cook Islands" label="Cook Islands"/>
-        <form:option value="Costa Rica" label="Costa Rica"/>
-        <form:option value="Côte d'Ivoire" label="Côte d'Ivoire"/>
-        <form:option value="Croatia" label="Croatia"/>
-        <form:option value="Cuba" label="Cuba"/>
-        <form:option value="Curaçao" label="Curaçao"/>
-        <form:option value="Cyprus" label="Cyprus"/>
-        <form:option value="Czech Republic" label="Czech Republic"/>
-        <form:option value="Denmark" label="Denmark"/>
-        <form:option value="Djibouti" label="Djibouti"/>
-        <form:option value="Dominica" label="Dominica"/>
-        <form:option value="Dominican Republic" label="Dominican Republic"/>
-        <form:option value="Ecuador" label="Ecuador"/>
-        <form:option value="Egypt" label="Egypt"/>
-        <form:option value="El Salvador" label="El Salvador"/>
-        <form:option value="Equatorial Guinea" label="Equatorial Guinea"/>
-        <form:option value="Eritrea" label="Eritrea"/>
-        <form:option value="Estonia" label="Estonia"/>
-        <form:option value="Ethiopia" label="Ethiopia"/>
-        <form:option value="Falkland Islands (Malvinas)" label="Falkland Islands (Malvinas)"/>
-        <form:option value="Faroe Islands" label="Faroe Islands"/>
-        <form:option value="Fiji" label="Fiji"/>
-        <form:option value="Finland" label="Finland"/>
-        <form:option value="France" label="France"/>
-        <form:option value="French Guiana" label="French Guiana"/>
-        <form:option value="French Polynesia" label="French Polynesia"/>
-        <form:option value="French Southern Territories" label="French Southern Territories"/>
-        <form:option value="Gabon" label="Gabon"/>
-        <form:option value="Gambia" label="Gambia"/>
-        <form:option value="Georgia" label="Georgia"/>
-        <form:option value="Germany" label="Germany"/>
-        <form:option value="Ghana" label="Ghana"/>
-        <form:option value="Gibraltar" label="Gibraltar"/>
-        <form:option value="Greece" label="Greece"/>
-        <form:option value="Greenland" label="Greenland"/>
-        <form:option value="Grenada" label="Grenada"/>
-        <form:option value="Guadeloupe" label="Guadeloupe"/>
-        <form:option value="Guam" label="Guam"/>
-        <form:option value="Guatemala" label="Guatemala"/>
-        <form:option value="Guernsey" label="Guernsey"/>
-        <form:option value="Guinea" label="Guinea"/>
-        <form:option value="Guinea-Bissau" label="Guinea-Bissau"/>
-        <form:option value="Guyana" label="Guyana"/>
-        <form:option value="Haiti" label="Haiti"/>
-        <form:option value="Heard Island and McDonald Islands" label="Heard Island and McDonald Islands"/>
-        <form:option value="Holy See (Vatican City State)" label="Holy See (Vatican City State)"/>
-        <form:option value="Honduras" label="Honduras"/>
-        <form:option value="Hong Kong" label="Hong Kong"/>
-        <form:option value="Hungary" label="Hungary"/>
-        <form:option value="Iceland" label="Iceland"/>
-        <form:option value="India" label="India"/>
-        <form:option value="Indonesia" label="Indonesia"/>
-        <form:option value="Iran, Islamic Republic of" label="Iran, Islamic Republic of"/>
-        <form:option value="Iraq" label="Iraq"/>
-        <form:option value="Ireland" label="Ireland"/>
-        <form:option value="Isle of Man" label="Isle of Man"/>
-        <form:option value="Israel" label="Israel"/>
-        <form:option value="Italy" label="Italy"/>
-        <form:option value="Jamaica" label="Jamaica"/>
-        <form:option value="Japan" label="Japan"/>
-        <form:option value="Jersey" label="Jersey"/>
-        <form:option value="Jordan" label="Jordan"/>
-        <form:option value="Kazakhstan" label="Kazakhstan"/>
-        <form:option value="Kenya" label="Kenya"/>
-        <form:option value="Kiribati" label="Kiribati"/>
-        <form:option value="Korea, Democratic People's Republic of" label="Korea, Democratic People's Republic of"/>
-        <form:option value="Korea, Republic of" label="Korea, Republic of"/>
-        <form:option value="Kuwait" label="Kuwait"/>
-        <form:option value="Kyrgyzstan" label="Kyrgyzstan"/>
-        <form:option value="Lao People's Democratic Republic" label="Lao People's Democratic Republic"/>
-        <form:option value="Latvia" label="Latvia"/>
-        <form:option value="Lebanon" label="Lebanon"/>
-        <form:option value="Lesotho" label="Lesotho"/>
-        <form:option value="Liberia" label="Liberia"/>
-        <form:option value="Libya" label="Libya"/>
-        <form:option value="Liechtenstein" label="Liechtenstein"/>
-        <form:option value="Lithuania" label="Lithuania"/>
-        <form:option value="Luxembourg" label="Luxembourg"/>
-        <form:option value="Macao" label="Macao"/>
-        <form:option value="Macedonia, the former Yugoslav Republic of" label="Macedonia, the former Yugoslav Republic of"/>
-        <form:option value="Madagascar" label="Madagascar"/>
-        <form:option value="Malawi" label="Malawi"/>
-        <form:option value="Malaysia" label="Malaysia"/>
-        <form:option value="Maldives" label="Maldives"/>
-        <form:option value="Mali" label="Mali"/>
-        <form:option value="Malta" label="Malta"/>
-        <form:option value="Marshall Islands" label="Marshall Islands"/>
-        <form:option value="Martinique" label="Martinique"/>
-        <form:option value="Mauritania" label="Mauritania"/>
-        <form:option value="Mauritius" label="Mauritius"/>
-        <form:option value="Mayotte" label="Mayotte"/>
-        <form:option value="Mexico" label="Mexico"/>
-        <form:option value="Micronesia, Federated States of" label="Micronesia, Federated States of"/>
-        <form:option value="Moldova, Republic of" label="Moldova, Republic of"/>
-        <form:option value="Monaco" label="Monaco"/>
-        <form:option value="Mongolia" label="Mongolia"/>
-        <form:option value="Montenegro" label="Montenegro"/>
-        <form:option value="Montserrat" label="Montserrat"/>
-        <form:option value="Morocco" label="Morocco"/>
-        <form:option value="Mozambique" label="Mozambique"/>
-        <form:option value="Myanmar" label="Myanmar"/>
-        <form:option value="Namibia" label="Namibia"/>
-        <form:option value="Nauru" label="Nauru"/>
-        <form:option value="Nepal" label="Nepal"/>
-        <form:option value="Netherlands" label="Netherlands"/>
-        <form:option value="New Caledonia" label="New Caledonia"/>
-        <form:option value="New Zealand" label="New Zealand"/>
-        <form:option value="Nicaragua" label="Nicaragua"/>
-        <form:option value="Niger" label="Niger"/>
-        <form:option value="Nigeria" label="Nigeria"/>
-        <form:option value="Niue" label="Niue"/>
-        <form:option value="Norfolk Island" label="Norfolk Island"/>
-        <form:option value="Northern Mariana Islands" label="Northern Mariana Islands"/>
-        <form:option value="Norway" label="Norway"/>
-        <form:option value="Oman" label="Oman"/>
-        <form:option value="Pakistan" label="Pakistan"/>
-        <form:option value="Palau" label="Palau"/>
-        <form:option value="Palestinian Territory, Occupied" label="Palestinian Territory, Occupied"/>
-        <form:option value="Panama" label="Panama"/>
-        <form:option value="Papua New Guinea" label="Papua New Guinea"/>
-        <form:option value="Paraguay" label="Paraguay"/>
-        <form:option value="Peru" label="Peru"/>
-        <form:option value="Philippines" label="Philippines"/>
-        <form:option value="Pitcairn" label="Pitcairn"/>
-        <form:option value="Poland" label="Poland"/>
-        <form:option value="Portugal" label="Portugal"/>
-        <form:option value="Puerto Rico" label="Puerto Rico"/>
-        <form:option value="Qatar" label="Qatar"/>
-        <form:option value="Réunion" label="Réunion"/>
-        <form:option value="Romania" label="Romania"/>
-        <form:option value="Russian Federation" label="Russian Federation"/>
-        <form:option value="Rwanda" label="Rwanda"/>
-        <form:option value="Saint Barthélemy" label="Saint Barthélemy"/>
-        <form:option value="Saint Helena, Ascension and Tristan da Cunha" label="Saint Helena, Ascension and Tristan da Cunha"/>
-        <form:option value="Saint Kitts and Nevis" label="Saint Kitts and Nevis"/>
-        <form:option value="Saint Lucia" label="Saint Lucia"/>
-        <form:option value="Saint Martin (French part)" label="Saint Martin (French part)"/>
-        <form:option value="Saint Pierre and Miquelon" label="Saint Pierre and Miquelon"/>
-        <form:option value="Saint Vincent and the Grenadines" label="Saint Vincent and the Grenadines"/>
-        <form:option value="Samoa" label="Samoa"/>
-        <form:option value="San Marino" label="San Marino"/>
-        <form:option value="Sao Tome and Principe" label="Sao Tome and Principe"/>
-        <form:option value="Saudi Arabia" label="Saudi Arabia"/>
-        <form:option value="Senegal" label="Senegal"/>
-        <form:option value="Serbia" label="Serbia"/>
-        <form:option value="Seychelles" label="Seychelles"/>
-        <form:option value="Sierra Leone" label="Sierra Leone"/>
-        <form:option value="Singapore" label="Singapore"/>
-        <form:option value="Sint Maarten (Dutch part)" label="Sint Maarten (Dutch part)"/>
-        <form:option value="Slovakia" label="Slovakia"/>
-        <form:option value="Slovenia" label="Slovenia"/>
-        <form:option value="Solomon Islands" label="Solomon Islands"/>
-        <form:option value="Somalia" label="Somalia"/>
-        <form:option value="South Africa" label="South Africa"/>
-        <form:option value="South Georgia and the South Sandwich Islands" label="South Georgia and the South Sandwich Islands"/>
-        <form:option value="South Sudan" label="South Sudan"/>
-        <form:option value="Spain" label="Spain"/>
-        <form:option value="Sri Lanka" label="Sri Lanka"/>
-        <form:option value="Sudan" label="Sudan"/>
-        <form:option value="Suriname" label="Suriname"/>
-        <form:option value="Svalbard and Jan Mayen" label="Svalbard and Jan Mayen"/>
-        <form:option value="Swaziland" label="Swaziland"/>
-        <form:option value="Sweden" label="Sweden"/>
-        <form:option value="Switzerland" label="Switzerland"/>
-        <form:option value="Syrian Arab Republic" label="Syrian Arab Republic"/>
-        <form:option value="Taiwan, Province of China" label="Taiwan, Province of China"/>
-        <form:option value="Tajikistan" label="Tajikistan"/>
-        <form:option value="Tanzania, United Republic of" label="Tanzania, United Republic of"/>
-        <form:option value="Thailand" label="Thailand"/>
-        <form:option value="Timor-Leste" label="Timor-Leste"/>
-        <form:option value="Togo" label="Togo"/>
-        <form:option value="Tokelau" label="Tokelau"/>
-        <form:option value="Tonga" label="Tonga"/>
-        <form:option value="Trinidad and Tobago" label="Trinidad and Tobago"/>
-        <form:option value="Tunisia" label="Tunisia"/>
-        <form:option value="Turkey" label="Turkey"/>
-        <form:option value="Turkmenistan" label="Turkmenistan"/>
-        <form:option value="Turks and Caicos Islands" label="Turks and Caicos Islands"/>
-        <form:option value="Tuvalu" label="Tuvalu"/>
-        <form:option value="Uganda" label="Uganda"/>
-        <form:option value="Ukraine" label="Ukraine"/>
-        <form:option value="United Arab Emirates" label="United Arab Emirates"/>
-        <form:option value="United Kingdom" label="United Kingdom"/>
-        <form:option value="United States" label="United States"/>
-        <form:option value="United States Minor Outlying Islands" label="United States Minor Outlying Islands"/>
-        <form:option value="Uruguay" label="Uruguay"/>
-        <form:option value="Uzbekistan" label="Uzbekistan"/>
-        <form:option value="Vanuatu" label="Vanuatu"/>
-        <form:option value="Venezuela, Bolivarian Republic of" label="Venezuela, Bolivarian Republic of"/>
-        <form:option value="Viet Nam" label="Viet Nam"/>
-        <form:option value="Virgin Islands, British" label="Virgin Islands, British"/>
-        <form:option value="Virgin Islands, U.S." label="Virgin Islands, U.S."/>
-        <form:option value="Wallis and Futuna" label="Wallis and Futuna"/>
-        <form:option value="Western Sahara" label="Western Sahara"/>
-        <form:option value="Yemen" label="Yemen"/>
-        <form:option value="Zambia" label="Zambia"/>
-        <form:option value="Zimbabwe" label="Zimbabwe"/>
+        <form:option value="AF" label="Afghanistan"/>
+        <form:option value="AX" label="Aland Islands"/>
+        <form:option value="AL" label="Albania"/>
+        <form:option value="DZ" label="Algeria"/>
+        <form:option value="AS" label="American Samoa"/>
+        <form:option value="AD" label="Andorra"/>
+        <form:option value="AO" label="Angola"/>
+        <form:option value="AI" label="Anguilla"/>
+        <form:option value="AQ" label="Antarctica"/>
+        <form:option value="AG" label="Antigua and Barbuda"/>
+        <form:option value="AR" label="Argentina"/>
+        <form:option value="AM" label="Armenia"/>
+        <form:option value="AW" label="Aruba"/>
+        <form:option value="AU" label="Australia"/>
+        <form:option value="AT" label="Austria"/>
+        <form:option value="AZ" label="Azerbaijan"/>
+        <form:option value="BS" label="Bahamas"/>
+        <form:option value="BH" label="Bahrain"/>
+        <form:option value="BD" label="Bangladesh"/>
+        <form:option value="BB" label="Barbados"/>
+        <form:option value="BY" label="Belarus"/>
+        <form:option value="BE" label="Belgium"/>
+        <form:option value="BZ" label="Belize"/>
+        <form:option value="BJ" label="Benin"/>
+        <form:option value="BM" label="Bermuda"/>
+        <form:option value="BT" label="Bhutan"/>
+        <form:option value="BO" label="Bolivia, Plurinational State of"/>
+        <form:option value="BQ" label="Bonaire, Sint Eustatius and Saba"/>
+        <form:option value="BA" label="Bosnia and Herzegovina"/>
+        <form:option value="BW" label="Botswana"/>
+        <form:option value="BV" label="Bouvet Island"/>
+        <form:option value="BR" label="Brazil"/>
+        <form:option value="IO" label="British Indian Ocean Territory"/>
+        <form:option value="BN" label="Brunei Darussalam"/>
+        <form:option value="BG" label="Bulgaria"/>
+        <form:option value="BF" label="Burkina Faso"/>
+        <form:option value="BI" label="Burundi"/>
+        <form:option value="KH" label="Cambodia"/>
+        <form:option value="CM" label="Cameroon"/>
+        <form:option value="CA" label="Canada"/>
+        <form:option value="CV" label="Cape Verde"/>
+        <form:option value="KY" label="Cayman Islands"/>
+        <form:option value="CF" label="Central African Republic"/>
+        <form:option value="TD" label="Chad"/>
+        <form:option value="CL" label="Chile"/>
+        <form:option value="CN" label="China"/>
+        <form:option value="CX" label="Christmas Island"/>
+        <form:option value="CC" label="Cocos (Keeling) Islands"/>
+        <form:option value="CO" label="Colombia"/>
+        <form:option value="KM" label="Comoros"/>
+        <form:option value="CG" label="Congo"/>
+        <form:option value="CD" label="Congo, the Democratic Republic of the"/>
+        <form:option value="CK" label="Cook Islands"/>
+        <form:option value="CR" label="Costa Rica"/>
+        <form:option value="CI" label="Cote d'Ivoire"/>
+        <form:option value="HR" label="Croatia"/>
+        <form:option value="CU" label="Cuba"/>
+        <form:option value="CW" label="Curacao"/>
+        <form:option value="CY" label="Cyprus"/>
+        <form:option value="CZ" label="Czech Republic"/>
+        <form:option value="DK" label="Denmark"/>
+        <form:option value="DJ" label="Djibouti"/>
+        <form:option value="DM" label="Dominica"/>
+        <form:option value="DO" label="Dominican Republic"/>
+        <form:option value="EC" label="Ecuador"/>
+        <form:option value="EG" label="Egypt"/>
+        <form:option value="SV" label="El Salvador"/>
+        <form:option value="GQ" label="Equatorial Guinea"/>
+        <form:option value="ER" label="Eritrea"/>
+        <form:option value="EE" label="Estonia"/>
+        <form:option value="ET" label="Ethiopia"/>
+        <form:option value="FK" label="Falkland Islands (Malvinas)"/>
+        <form:option value="FO" label="Faroe Islands"/>
+        <form:option value="FJ" label="Fiji"/>
+        <form:option value="FI" label="Finland"/>
+        <form:option value="FR" label="France"/>
+        <form:option value="GF" label="French Guiana"/>
+        <form:option value="PF" label="French Polynesia"/>
+        <form:option value="TF" label="French Southern Territories"/>
+        <form:option value="GA" label="Gabon"/>
+        <form:option value="GM" label="Gambia"/>
+        <form:option value="GE" label="Georgia"/>
+        <form:option value="DE" label="Germany"/>
+        <form:option value="GH" label="Ghana"/>
+        <form:option value="GI" label="Gibraltar"/>
+        <form:option value="GR" label="Greece"/>
+        <form:option value="GL" label="Greenland"/>
+        <form:option value="GD" label="Grenada"/>
+        <form:option value="GP" label="Guadeloupe"/>
+        <form:option value="GU" label="Guam"/>
+        <form:option value="GT" label="Guatemala"/>
+        <form:option value="GG" label="Guernsey"/>
+        <form:option value="GN" label="Guinea"/>
+        <form:option value="GW" label="Guinea-Bissau"/>
+        <form:option value="GY" label="Guyana"/>
+        <form:option value="HT" label="Haiti"/>
+        <form:option value="HM" label="Heard Island and McDonald Islands"/>
+        <form:option value="VA" label="Holy See (Vatican City State)"/>
+        <form:option value="HN" label="Honduras"/>
+        <form:option value="HK" label="Hong Kong"/>
+        <form:option value="HU" label="Hungary"/>
+        <form:option value="IS" label="Iceland"/>
+        <form:option value="IN" label="India"/>
+        <form:option value="ID" label="Indonesia"/>
+        <form:option value="IR" label="Iran, Islamic Republic of"/>
+        <form:option value="IQ" label="Iraq"/>
+        <form:option value="IE" label="Ireland"/>
+        <form:option value="IM" label="Isle of Man"/>
+        <form:option value="IL" label="Israel"/>
+        <form:option value="IT" label="Italy"/>
+        <form:option value="JM" label="Jamaica"/>
+        <form:option value="JP" label="Japan"/>
+        <form:option value="JE" label="Jersey"/>
+        <form:option value="JO" label="Jordan"/>
+        <form:option value="KZ" label="Kazakhstan"/>
+        <form:option value="KE" label="Kenya"/>
+        <form:option value="KI" label="Kiribati"/>
+        <form:option value="KP" label="Korea, Democratic People's Republic of"/>
+        <form:option value="KR" label="Korea, Republic of"/>
+        <form:option value="KW" label="Kuwait"/>
+        <form:option value="KG" label="Kyrgyzstan"/>
+        <form:option value="LA" label="Lao People's Democratic Republic"/>
+        <form:option value="LV" label="Latvia"/>
+        <form:option value="LB" label="Lebanon"/>
+        <form:option value="LS" label="Lesotho"/>
+        <form:option value="LR" label="Liberia"/>
+        <form:option value="LY" label="Libya"/>
+        <form:option value="LI" label="Liechtenstein"/>
+        <form:option value="LT" label="Lithuania"/>
+        <form:option value="LU" label="Luxembourg"/>
+        <form:option value="MO" label="Macao"/>
+        <form:option value="MK" label="Macedonia, the former Yugoslav Republic of"/>
+        <form:option value="MG" label="Madagascar"/>
+        <form:option value="MW" label="Malawi"/>
+        <form:option value="MY" label="Malaysia"/>
+        <form:option value="MV" label="Maldives"/>
+        <form:option value="ML" label="Mali"/>
+        <form:option value="MT" label="Malta"/>
+        <form:option value="MH" label="Marshall Islands"/>
+        <form:option value="MQ" label="Martinique"/>
+        <form:option value="MR" label="Mauritania"/>
+        <form:option value="MU" label="Mauritius"/>
+        <form:option value="YT" label="Mayotte"/>
+        <form:option value="MX" label="Mexico"/>
+        <form:option value="FM" label="Micronesia, Federated States of"/>
+        <form:option value="MD" label="Moldova, Republic of"/>
+        <form:option value="MC" label="Monaco"/>
+        <form:option value="MN" label="Mongolia"/>
+        <form:option value="ME" label="Montenegro"/>
+        <form:option value="MS" label="Montserrat"/>
+        <form:option value="MA" label="Morocco"/>
+        <form:option value="MZ" label="Mozambique"/>
+        <form:option value="MM" label="Myanmar"/>
+        <form:option value="NA" label="Namibia"/>
+        <form:option value="NR" label="Nauru"/>
+        <form:option value="NP" label="Nepal"/>
+        <form:option value="NL" label="Netherlands"/>
+        <form:option value="NC" label="New Caledonia"/>
+        <form:option value="NZ" label="New Zealand"/>
+        <form:option value="NI" label="Nicaragua"/>
+        <form:option value="NE" label="Niger"/>
+        <form:option value="NG" label="Nigeria"/>
+        <form:option value="NU" label="Niue"/>
+        <form:option value="NF" label="Norfolk Island"/>
+        <form:option value="MP" label="Northern Mariana Islands"/>
+        <form:option value="NO" label="Norway"/>
+        <form:option value="OM" label="Oman"/>
+        <form:option value="PK" label="Pakistan"/>
+        <form:option value="PW" label="Palau"/>
+        <form:option value="PS" label="Palestinian Territory, Occupied"/>
+        <form:option value="PA" label="Panama"/>
+        <form:option value="PG" label="Papua New Guinea"/>
+        <form:option value="PY" label="Paraguay"/>
+        <form:option value="PE" label="Peru"/>
+        <form:option value="PH" label="Philippines"/>
+        <form:option value="PN" label="Pitcairn"/>
+        <form:option value="PL" label="Poland"/>
+        <form:option value="PT" label="Portugal"/>
+        <form:option value="PR" label="Puerto Rico"/>
+        <form:option value="QA" label="Qatar"/>
+        <form:option value="RE" label="Reunion"/>
+        <form:option value="RO" label="Romania"/>
+        <form:option value="RU" label="Russian Federation"/>
+        <form:option value="RW" label="Rwanda"/>
+        <form:option value="BL" label="Saint Barthelemy"/>
+        <form:option value="SH" label="Saint Helena, Ascension and Tristan da Cunha"/>
+        <form:option value="KN" label="Saint Kitts and Nevis"/>
+        <form:option value="LC" label="Saint Lucia"/>
+        <form:option value="MF" label="Saint Martin (French part)"/>
+        <form:option value="PM" label="Saint Pierre and Miquelon"/>
+        <form:option value="VC" label="Saint Vincent and the Grenadines"/>
+        <form:option value="WS" label="Samoa"/>
+        <form:option value="SM" label="San Marino"/>
+        <form:option value="ST" label="Sao Tome and Principe"/>
+        <form:option value="SA" label="Saudi Arabia"/>
+        <form:option value="SN" label="Senegal"/>
+        <form:option value="RS" label="Serbia"/>
+        <form:option value="SC" label="Seychelles"/>
+        <form:option value="SL" label="Sierra Leone"/>
+        <form:option value="SG" label="Singapore"/>
+        <form:option value="SX" label="Sint Maarten (Dutch part)"/>
+        <form:option value="SK" label="Slovakia"/>
+        <form:option value="SI" label="Slovenia"/>
+        <form:option value="SB" label="Solomon Islands"/>
+        <form:option value="SO" label="Somalia"/>
+        <form:option value="ZA" label="South Africa"/>
+        <form:option value="GS" label="South Georgia and the South Sandwich Islands"/>
+        <form:option value="SS" label="South Sudan"/>
+        <form:option value="ES" label="Spain"/>
+        <form:option value="LK" label="Sri Lanka"/>
+        <form:option value="SD" label="Sudan"/>
+        <form:option value="SR" label="Suriname"/>
+        <form:option value="SJ" label="Svalbard and Jan Mayen"/>
+        <form:option value="SZ" label="Swaziland"/>
+        <form:option value="SE" label="Sweden"/>
+        <form:option value="CH" label="Switzerland"/>
+        <form:option value="SY" label="Syrian Arab Republic"/>
+        <form:option value="TW" label="Taiwan, Province of China"/>
+        <form:option value="TJ" label="Tajikistan"/>
+        <form:option value="TZ" label="Tanzania, United Republic of"/>
+        <form:option value="TH" label="Thailand"/>
+        <form:option value="TL" label="Timor-Leste"/>
+        <form:option value="TG" label="Togo"/>
+        <form:option value="TK" label="Tokelau"/>
+        <form:option value="TO" label="Tonga"/>
+        <form:option value="TT" label="Trinidad and Tobago"/>
+        <form:option value="TN" label="Tunisia"/>
+        <form:option value="TR" label="Turkey"/>
+        <form:option value="TM" label="Turkmenistan"/>
+        <form:option value="TC" label="Turks and Caicos Islands"/>
+        <form:option value="TV" label="Tuvalu"/>
+        <form:option value="UG" label="Uganda"/>
+        <form:option value="UA" label="Ukraine"/>
+        <form:option value="AE" label="United Arab Emirates"/>
+        <form:option value="GB" label="United Kingdom"/>
+        <form:option value="US" label="United States"/>
+        <form:option value="UM" label="United States Minor Outlying Islands"/>
+        <form:option value="UY" label="Uruguay"/>
+        <form:option value="UZ" label="Uzbekistan"/>
+        <form:option value="VU" label="Vanuatu"/>
+        <form:option value="VE" label="Venezuela, Bolivarian Republic of"/>
+        <form:option value="VN" label="Viet Nam"/>
+        <form:option value="VG" label="Virgin Islands, British"/>
+        <form:option value="VI" label="Virgin Islands, U.S."/>
+        <form:option value="WF" label="Wallis and Futuna"/>
+        <form:option value="EH" label="Western Sahara"/>
+        <form:option value="YE" label="Yemen"/>
+        <form:option value="ZM" label="Zambia"/>
+        <form:option value="ZW" label="Zimbabwe"/>
     </form:select>
     <div class="reg_errors"><!--  -->
         <form:errors cssClass="alert alert-error" path="country" />

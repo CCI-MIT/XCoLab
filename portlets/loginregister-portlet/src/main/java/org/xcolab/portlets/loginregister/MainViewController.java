@@ -143,7 +143,7 @@ public class MainViewController {
 			// Get country location
 			if (com.liferay.portal.kernel.util.Validator.isNull(userBean.getCountry())) {
 				try {
-					userBean.setCountry(getCountryFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
+					userBean.setCountry(getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
 				} catch (UserLocationNotResolveableException e) {
 					_log.warn(e);
 				}
@@ -338,7 +338,7 @@ public class MainViewController {
 
         if (newAccountBean.getCountry() != null
                 && newAccountBean.getCountry().length() > 0) {
-			setExpandoValue(user, CommunityConstants.COUNTRY, newAccountBean.getCountry());
+			setExpandoValue(user, CommunityConstants.COUNTRY, Helper.getCountryForCode(newAccountBean.getCountry()));
         }
 
         if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
@@ -443,4 +443,18 @@ public class MainViewController {
 		}
 		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
 	}
+	
+	private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolveableException {
+		try {
+			Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
+			if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
+				return location.getCountry();
+			}
+		} catch(Exception e) {
+			throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr), e);
+		}
+		throw new UserLocationNotResolveableException(String.format("Could not retrieve country from IP address %s", ipAddr));
+	}
+	
+	
 }
