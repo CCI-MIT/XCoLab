@@ -27,18 +27,20 @@ public class SendEmailNotifications implements MessageListener {
 
     @Override
     public void receive(Message message) throws MessageListenerException {
+    	String requestUrl = null;
 		try {
 			Company company = CompanyLocalServiceUtil.getCompany(COMPANY_ID);
 
             // Workaround to get the right port (80) on production
             int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
-            if (Validator.isNull(port) || port == 0) {
+            if (Validator.isNull(port) || port <= 0) {
                 port = PortalUtil.getPortalPort(false);
             }
 
             String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
             //String baseUrl = "http://localhost:9082";
 
+            requestUrl = baseUrl + EXECUTE_SCHEDULER_PATH;
 			URL url = new URL(baseUrl + EXECUTE_SCHEDULER_PATH);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -46,11 +48,11 @@ public class SendEmailNotifications implements MessageListener {
 			int statusCode = con.getResponseCode();
 
 			if (statusCode != 200) {
-				throw new MessageListenerException("Could not process request: Bad request");
+				throw new MessageListenerException(String.format("Could not process request: Bad request: (%s)", requestUrl));
 			}
 
 		} catch (IOException | SystemException | PortalException e) {
-			throw new MessageListenerException("Could not process request", e);
+			throw new MessageListenerException(String.format("Could not process request (%s)", requestUrl), e);
 		}
 	}
 
