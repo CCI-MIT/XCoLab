@@ -186,13 +186,14 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 						", materializedPoints: " + points.getMaterializedPoints());
 				Proposal subProposal = proposalLocalService.getProposal(target.getProposalId());
 				Contest subProposalContest = proposalLocalService.getLatestProposalContest(target.getProposalId());
-				PointType subProposalPointType = pointType;
+                //only distribute points if the subproposal's contest has a default point type defined.
 				if (subProposalContest.getDefaultParentPointType() > 0) {
-					subProposalPointType = pointTypeLocalService.getPointType(subProposalContest.getDefaultParentPointType());
+                    PointType subProposalPointType = pointTypeLocalService.getPointType(subProposalContest.getDefaultParentPointType());
+                    distributePointsToProposal(subProposal, originatingContest, points.getId(),
+                            subProposalPointType, points.getMaterializedPoints(), points.getHypotheticalPoints());
 				}
 				
-				distributePointsToProposal(subProposal, originatingContest, points.getId(), 
-						subProposalPointType, points.getMaterializedPoints(), points.getHypotheticalPoints());
+
 			}
 			
 		}
