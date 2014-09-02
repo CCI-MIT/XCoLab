@@ -935,7 +935,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
     	ContestPhase activePhase = getActiveOrLastPhase(contest);
-    	if (activePhase.getPhaseEndDate() != null && new Date().after(activePhase.getPhaseEndDate())) {
+        //Either, the active or last phase has no end date (which means the contest ended), or the current date is after it's end date.
+    	if (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate())) {
     		return true;
     	}
     	return false;
