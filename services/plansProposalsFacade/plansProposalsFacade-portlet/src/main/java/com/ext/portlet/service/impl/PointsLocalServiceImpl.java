@@ -134,10 +134,15 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			PointType pointType, 
 			double materializedPoints,
 			double hypotheticalPoints) throws SystemException, PortalException {
+        String logString = proposal.getProposalId() + ". originatingContest: " + originatingContest.getContestPK() +
+                " pointsSourceId: " + pointsSourceId + " pointType: " + pointType + " materializedPoints: " + materializedPoints +
+                " hypotheticalPoints: " + hypotheticalPoints;
+        if (hypotheticalPoints < 1 && materializedPoints < 1) {
+            _log.info("Points left to be distributed are less than 1 for proposal: " + logString);
+            return;
+        }
 		
-		_log.info("Distributing points to proposal: " + proposal.getProposalId() + ". originatingContest: " + originatingContest.getContestPK() + 
-				" pointsSourceId: " + pointsSourceId + " pointType: " + pointType + " materializedPoints: " + materializedPoints + 
-				" hypotheticalPoints: " + hypotheticalPoints);
+		_log.info("Distributing points to proposal: " + logString);
 		
 		DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
 		ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
@@ -191,7 +196,5 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			}
 			
 		}
-		
-		
 	}
 }
