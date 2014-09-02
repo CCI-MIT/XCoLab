@@ -167,7 +167,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
             double roundedHypotheticalPoints = Math.ceil(hypotheticalPoints * target.getPercentage());
             double roundedMaterializedPoints = Math.ceil(materializedPoints * target.getPercentage());
 			points.setHypotheticalPoints(roundedHypotheticalPoints);
-			points.setMaterializedPoints(roundedMaterializedPoints * target.getPercentage());
+			points.setMaterializedPoints(roundedMaterializedPoints);
 
 			if (target.isUser()) {
 				_log.info("Adding points to a user: " + target.getUserId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
