@@ -158,12 +158,17 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		
 		for (PointsTarget target: targets) {
 			Points points = createPoints(counterLocalService.increment(Points.class.getName()));
-			
+
 			points.setOriginatingContestPK(originatingContest.getContestPK());
 			points.setPointsSourceId(pointsSourceId);
 			points.setProposalId(proposal.getProposalId());
-			points.setHypotheticalPoints(hypotheticalPoints * target.getPercentage());
-			points.setMaterializedPoints(materializedPoints * target.getPercentage());
+
+            //round points up to the next integer
+            double roundedHypotheticalPoints = Math.ceil(hypotheticalPoints * target.getPercentage());
+            double roundedMaterializedPoints = Math.ceil(materializedPoints * target.getPercentage());
+			points.setHypotheticalPoints(roundedHypotheticalPoints);
+			points.setMaterializedPoints(roundedMaterializedPoints * target.getPercentage());
+
 			if (target.isUser()) {
 				_log.info("Adding points to a user: " + target.getUserId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
 						", materializedPoints: " + points.getMaterializedPoints());
