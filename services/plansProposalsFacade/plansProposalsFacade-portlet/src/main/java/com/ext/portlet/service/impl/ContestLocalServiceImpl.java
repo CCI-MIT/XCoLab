@@ -944,9 +944,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     
     public Proposal getWinnerProposal(long contestPK) throws SystemException, PortalException {
     	Contest contest = getContest(contestPK);
-    	if (hasContestEnded(contest)) {
-    		return null;
-    	}
+        //only return a winner if the contest is done
+    	if (!hasContestEnded(contest)) {
+            return null;
+        }
     	ContestPhase lastPhase = getActiveOrLastPhase(contest);
 
         for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {

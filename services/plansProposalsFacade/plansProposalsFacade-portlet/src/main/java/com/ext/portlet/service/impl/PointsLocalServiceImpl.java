@@ -86,14 +86,22 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		}
 		
 		PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
-		
+
+        boolean calculatePointsForAllProposals = true;
+
 		if (contestLocalService.hasContestEnded(contest)) {
+            calculatePointsForAllProposals = false;
 			// check if distribution targets have been defined manually
 			Collection<PointDistributionTarget> distributionTargets = pointDistributionTargetPersistence.findByContestId(contestPK);
 			if (distributionTargets.isEmpty()) {
 				// distribution targets haven't been defined - distribute points to the winner
 				Proposal proposal = contestLocalService.getWinnerProposal(contestPK);
-				distributePointsToProposal(proposal, contest, 0, pointType, 0, contest.getPoints());
+                if (proposal != null) {
+                    distributePointsToProposal(proposal, contest, 0, pointType, 0, contest.getPoints());
+                } else {
+                    //no winner is selected: calculate points for each proposal
+                    calculatePointsForAllProposals = true;
+                }
 			}
 			else {
 				for (PointDistributionTarget pdt: distributionTargets) {
@@ -111,7 +119,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			}
 			
 		}
-		else {
+		if (calculatePointsForAllProposals) {
 			// apply points to all of the proposals
 			for (Proposal proposal: proposalLocalService.getProposalsInContest(contestPK)) {
 				distributePointsToProposal(proposal, contest, 0, pointType, 0, contest.getPoints());
