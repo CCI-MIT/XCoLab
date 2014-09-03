@@ -353,7 +353,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
+                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
                     _log.info("done promoting phase " + phase.getContestPhasePK());
                 } catch (SystemException | PortalException e) {
@@ -402,7 +402,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
                     // if transition is to voting phase
                     if (getContestStatus(nextPhase).isCanVote()) {
-                    	contestLocalService.transferSupportsToVote(contest, serviceContext);
+                    	//contestLocalService.transferSupportsToVote(contest, serviceContext); //TODO enable me again
                     }
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     updateContestPhase(phase);
