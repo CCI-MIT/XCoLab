@@ -38,6 +38,9 @@ public class ContestWrapper {
 		refresh();
 	}
 
+	public boolean getCanDistributePoints() throws SystemException, PortalException {
+		return contest.getDefaultParentPointType() > 0 && contest.getPoints() > 0;
+	}
 	public boolean getHasEnded() throws SystemException, PortalException {
 		return ContestLocalServiceUtil.hasContestEnded(contest);
 	}
