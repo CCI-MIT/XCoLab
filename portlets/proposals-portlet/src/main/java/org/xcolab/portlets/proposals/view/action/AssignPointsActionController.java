@@ -78,8 +78,9 @@ public class AssignPointsActionController {
                     percentage = Math.round(Math.abs(percentage)*100)/100.0d;
                     //calculate relative percentage
                     percentage = percentage * (1.0/(this.pointTypePercentageModifiers.get(pointTypeId)*100.0));
-                    //round to two decimals
                     sum += percentage;
+                    //round to four decimals
+                    percentage = (double)Math.round(percentage * 10000) / 10000;
                     PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
                             proposal.getProposalId(),
                             pointTypeId,
