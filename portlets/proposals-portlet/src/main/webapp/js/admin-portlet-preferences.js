@@ -33,7 +33,7 @@ $(function() {
         $("#contestPhaseContainer").show();
 
         for (var i in contestPhases[id]) {
-            $("#selectContestPhase").append($("<option>", { value: i, html: contestPhases[id][i] }));
+            $("#selectContestPhase").append($("<option>", { value: contestPhases[id][i]["id"], html: contestPhases[id][i]["name"] }));
         }
     });
     $("#selectContestPhase").change(function() {
@@ -57,10 +57,10 @@ $(function() {
         var currentSelectedPhaseFound = false;
         for (var i in contestPhases[contestId]) {
             if (currentSelectedPhaseFound) {
-                $("#selectTargetContestPhase").append($("<option>", { value: i, html: contestPhases[contestId][i] }));
+                $("#selectTargetContestPhase").append($("<option>", { value: contestPhases[contestId][i]["id"], html: contestPhases[contestId][i]["name"] }));
             }
 
-            if (i == id) {
+            if (contestPhases[contestId][i]["id"] == id) {
                 currentSelectedPhaseFound = true;
             }
         }

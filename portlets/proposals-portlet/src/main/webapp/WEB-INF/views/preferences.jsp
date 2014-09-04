@@ -76,11 +76,11 @@
 <script>
 var contestPhases = {
     <c:forEach var="contestId" items="${contestPhases.keySet()}">
-        ${contestId}: {
+        ${contestId}: [
             <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
-                ${contestPhase.contestPhasePK}: "${contestPhaseType.get(contestPhase.contestPhaseType).name}",
+                {id: ${contestPhase.contestPhasePK}, name: "${contestPhaseType.get(contestPhase.contestPhaseType).name}"},
             </c:forEach>
-        },
+        ],
     </c:forEach>
 };
 
