@@ -1,5 +1,6 @@
 package com.ext.portlet.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -68,7 +69,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	}
 	
 	/**
-	 * Distribute points for given contest
+	 * Calculates the hypothetical points for all proposals for a given contest and
+     * if the contest ended, materializes the points for winning proposals.
 	 * 
 	 * @param contestPK
 	 * @throws SystemException 
@@ -76,8 +78,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 	 */
 	public void distributePoints(long contestPK) throws PortalException, SystemException {
 		Contest contest = contestLocalService.getContest(contestPK);
-		ContestPhase latestPhase = contestLocalService.getActiveOrLastPhase(contest);
-		
+
 		// clean up old data
 		pointsPersistence.removeByOriginatingContestPK(contestPK);
 		
@@ -87,50 +88,48 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		
 		PointType pointType = pointTypeLocalService.getPointType(contest.getDefaultParentPointType());
 
-        boolean calculatePointsForAllProposals = true;
+        List<Proposal> materializedProposals = new ArrayList<Proposal>();
 
-		if (contestLocalService.hasContestEnded(contest)) {
-            calculatePointsForAllProposals = false;
-			// check if distribution targets have been defined manually
-			Collection<PointDistributionTarget> distributionTargets = pointDistributionTargetPersistence.findByContestId(contestPK);
-			if (distributionTargets.isEmpty()) {
-				// distribution targets haven't been defined - distribute points to the winner
-				Proposal proposal = contestLocalService.getWinnerProposal(contestPK);
+        //only materialize if the contest has ended.
+        if (contestLocalService.hasContestEnded(contest)) {
+            // check if distribution targets have been defined manually
+            Collection<PointDistributionTarget> distributionTargets = pointDistributionTargetPersistence.findByContestId(contestPK);
+            if (distributionTargets.isEmpty()) {
+                // distribution targets haven't been defined - distribute points to the winner
+                Proposal proposal = contestLocalService.getWinnerProposal(contestPK);
                 if (proposal != null) {
-                    distributePointsToProposal(proposal, contest, 0, pointType, 0, contest.getPoints());
-                } else {
-                    //no winner is selected: calculate points for each proposal
-                    calculatePointsForAllProposals = true;
+                    materializedProposals.add(proposal);
+                    distributePointsToProposal(proposal, proposal, contest, 0, pointType, contest.getPoints(), contest.getPoints());
                 }
-			}
-			else {
-				for (PointDistributionTarget pdt: distributionTargets) {
-					Proposal proposal = proposalLocalService.getProposal(pdt.getProposalId());
-					if (! proposal.isVisible()) {
-						continue;
-					}
-					PointType pointTypeToUse = pointType;
-					if (pdt.getPointTypeOverride() > 0) {
-						pointTypeToUse = pointTypeLocalService.getPointType(pdt.getPointTypeOverride());
-					}
+            } else {
+                for (PointDistributionTarget pdt: distributionTargets) {
+                    Proposal proposal = proposalLocalService.getProposal(pdt.getProposalId());
+                    if (!proposal.isVisible()) {
+                        continue;
+                    }
+                    PointType pointTypeToUse = pointType;
+                    if (pdt.getPointTypeOverride() > 0) {
+                        pointTypeToUse = pointTypeLocalService.getPointType(pdt.getPointTypeOverride());
+                    }
 
-					distributePointsToProposal(proposal, contest, 0, pointTypeToUse, 0, pdt.getNumberOfPoints());
-				}
-			}
-			
-		}
-		if (calculatePointsForAllProposals) {
-			// apply points to all of the proposals
-			for (Proposal proposal: proposalLocalService.getProposalsInContest(contestPK)) {
-				distributePointsToProposal(proposal, contest, 0, pointType, 0, contest.getPoints());
-				
-			}
-		}
+                    materializedProposals.add(proposal);
+                    distributePointsToProposal(proposal, proposal, contest, 0, pointTypeToUse, pdt.getNumberOfPoints(), contest.getPoints());
+                }
+            }
+        }
+
+        // calculate hypothetical points for all other proposals
+        for (Proposal proposal: proposalLocalService.getProposalsInContest(contestPK)) {
+            if (!materializedProposals.contains(proposal)) {
+                distributePointsToProposal(proposal, proposal, contest, 0, pointType, 0, contest.getPoints());
+            }
+        }
 	}
-	
-	private void distributePointsToProposal(Proposal proposal, 
-			Contest originatingContest, 
-			long pointsSourceId, 
+
+	private void distributePointsToProposal(Proposal proposal,
+            Proposal originatingProposal,
+            Contest originatingContest,
+			long pointsSourceId,
 			PointType pointType, 
 			double materializedPoints,
 			double hypotheticalPoints) throws SystemException, PortalException {
@@ -149,7 +148,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 		
 		if (distributionStrategy == DistributionStrategy.DEFINED_BY_CHILDREN_PERCENTAGES) {
 			for (PointType subPointType: pointTypePersistence.findByParentPointTypeId(pointType.getId())) {
-				distributePointsToProposal(proposal, 
+				distributePointsToProposal(proposal, originatingProposal,
 						originatingContest, 
 						pointsSourceId, 
 						subPointType, 
@@ -165,6 +164,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			Points points = createPoints(counterLocalService.increment(Points.class.getName()));
 
 			points.setOriginatingContestPK(originatingContest.getContestPK());
+			points.setOriginatingProposalId(originatingProposal.getProposalId());
 			points.setPointsSourceId(pointsSourceId);
 			points.setProposalId(proposal.getProposalId());
 
@@ -189,7 +189,7 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
                 //only distribute points if the subproposal's contest has a default point type defined.
 				if (subProposalContest.getDefaultParentPointType() > 0) {
                     PointType subProposalPointType = pointTypeLocalService.getPointType(subProposalContest.getDefaultParentPointType());
-                    distributePointsToProposal(subProposal, originatingContest, points.getId(),
+                    distributePointsToProposal(subProposal, originatingProposal, originatingContest, points.getId(),
                             subProposalPointType, points.getMaterializedPoints(), points.getHypotheticalPoints());
 				}
 				

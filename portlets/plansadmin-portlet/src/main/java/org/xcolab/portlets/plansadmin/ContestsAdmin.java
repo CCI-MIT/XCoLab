@@ -41,10 +41,10 @@ public class ContestsAdmin {
     }
     
 
-    public String recalculatePoints() throws PortalException, SystemException {
-    	Contest contest = editedContest.getContest();
-    	PointsLocalServiceUtil.distributePoints(contest.getContestPK());
-    	return null;
+    public String calculatePoints() throws PortalException, SystemException {
+        Contest contest = editedContest.getContest();
+        PointsLocalServiceUtil.distributePoints(contest.getContestPK());
+        return null;
     }
 
     public void setEditedContest(ContestWrapper editedContest) {

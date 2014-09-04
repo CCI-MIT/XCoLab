@@ -38,6 +38,10 @@ public class ContestWrapper {
 		refresh();
 	}
 
+	public boolean getHasEnded() throws SystemException, PortalException {
+		return ContestLocalServiceUtil.hasContestEnded(contest);
+	}
+
 	public String getContestShortName() {
 		return contest.getContestShortName();
 	}
