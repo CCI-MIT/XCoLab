@@ -10,6 +10,7 @@ import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
@@ -17,6 +18,7 @@ import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -33,8 +35,9 @@ import org.xcolab.portlets.reporting.beans.activitiesbycontest.UserActivityByCon
 import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivities;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivityExport;
-import org.xcolab.portlets.reporting.beans.proposals2013.ProposalWithFinalistAndContent;
-import org.xcolab.portlets.reporting.beans.proposals2013.ProposalsInSpecificContests;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.ProposalWithFinalistAndContent;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.ProposalsInSpecificContests;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.GetLastVersionOfPhaseType;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
 
@@ -117,6 +120,8 @@ public class ReportingController {
     @RequestMapping(params="report=generateProposalTexts2014CreationPhase")
     public void generateProposalTexts2014CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
         ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(1L,
+                ContestFetcher.getContestPhasesIn2014()));
 
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
@@ -145,6 +150,7 @@ public class ReportingController {
     @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
     public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
         ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(11L));
 
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
@@ -305,6 +311,12 @@ public class ReportingController {
             }
         }
 
+        for (ProposalVote proposalVote : ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)) {
+            UserActivityReportBean uarb = userActivities.get(proposalVote.getUserId());
+            if(uarb == null) continue;
+            uarb.addProposalVote();
+        }
+
         for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
             UserActivityReportBean uarb = userActivities.get(proposalToUser.get(p2p.getProposalId()));
             if (uarb == null) continue;
@@ -316,7 +328,7 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"userId", "screenName", "emailAddress", "registrationDate", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount"});
+        csvWriter.writeNext(new String[]{"userId", "screenName", "emailAddress", "registrationDate", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount", "amountOfVotesCast"});
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         for (UserActivityReportBean uarb : userActivities.values()) {
             User u = uarb.getUser();
@@ -325,7 +337,9 @@ public class ReportingController {
                     sdf.format(u.getCreateDate()),
                     u.getFullName(),
                     String.valueOf(uarb.getCommentsCount()), String.valueOf(uarb.getProposalsCount()), String.valueOf(uarb.getProposalFinalistsCount()),
-                    String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount())});
+                    String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount()),
+                    ""+uarb.getProposalVotesCount()
+            });
         }
 
 

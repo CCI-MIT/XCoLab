@@ -8,9 +8,22 @@ public class UserActivityReportBean implements Comparable<UserActivityReportBean
 	private int proposalsCount;
 	private int proposalFinalistsCount;
 	private int proposalWinnersCount;
+    private int proposalVotesCount;
 	private int totalActivityCount;
 
-	public UserActivityReportBean(User user) {
+    public int getProposalVotesCount() {
+        return proposalVotesCount;
+    }
+
+    public void setProposalVotesCount(int proposalVotesCount) {
+        this.proposalVotesCount = proposalVotesCount;
+    }
+
+    public void addProposalVote() {
+        proposalVotesCount++;
+    }
+
+    public UserActivityReportBean(User user) {
 		this.user = user;
 	}
 

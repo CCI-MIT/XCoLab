@@ -1,7 +1,9 @@
 package org.xcolab.portlets.reporting.beans.contests;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.text.SimpleDateFormat;
@@ -37,5 +39,15 @@ public class ContestFetcher {
             }
         }
         return targetContests;
+    }
+
+    public static List<ContestPhase> getContestPhasesIn2014() throws Exception {
+        List<Contest> contestsIn2014 = getContestsIn2014();
+        List<ContestPhase> ret = new LinkedList<>();
+        for (Contest contest : contestsIn2014) {
+            List<ContestPhase> phasesForContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest.getContestPK());
+            ret.addAll(phasesForContest);
+        }
+        return ret;
     }
 }

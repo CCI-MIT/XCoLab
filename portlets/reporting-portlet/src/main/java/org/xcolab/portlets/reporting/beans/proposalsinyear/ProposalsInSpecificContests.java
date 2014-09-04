@@ -1,4 +1,4 @@
-package org.xcolab.portlets.reporting.beans.proposals2013;
+package org.xcolab.portlets.reporting.beans.proposalsinyear;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
@@ -19,6 +19,8 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.NewestProposal;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.ProposalVersionDeterminer;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +35,7 @@ import java.util.Set;
  */
 public class ProposalsInSpecificContests {
     List<ContestPhaseRibbonType> ribbons;
+    ProposalVersionDeterminer proposalVersionDeterminer = new NewestProposal();
 
     public ProposalsInSpecificContests() {
         try {
@@ -40,6 +43,10 @@ public class ProposalsInSpecificContests {
         } catch (SystemException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setProposalVersionDeterminer(ProposalVersionDeterminer proposalVersionDeterminer) {
+        this.proposalVersionDeterminer = proposalVersionDeterminer;
     }
 
     public List<ProposalWithFinalistAndContent> get() throws Exception {
@@ -76,7 +83,8 @@ public class ProposalsInSpecificContests {
                 ProposalWithFinalistAndContent pte = new ProposalWithFinalistAndContent();
 
 
-                int targetVersion = getEndVersionOfCreationPhase(creationPhase, visibleProposal);
+                int targetVersion = proposalVersionDeterminer.getTargetVersion(visibleProposal);
+                if(targetVersion < 0) continue;
 
                 pte.setId(visibleProposal.getProposalId());
                 pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
@@ -99,6 +107,7 @@ public class ProposalsInSpecificContests {
                             sectionTitle = "Pitch";
 
                         pte.setContentWithSectionTitles(pte.getContentWithSectionTitles() + "\n<br/><h1>" + sectionTitle + "</h1><br/>\n" + htmlValue);
+                        // class="sectiontitle"
                     }
                 }
 
