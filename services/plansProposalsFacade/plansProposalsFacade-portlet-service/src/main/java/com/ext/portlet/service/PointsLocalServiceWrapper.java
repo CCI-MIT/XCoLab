@@ -294,7 +294,8 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     }
 
     /**
-    * Distribute points for given contest
+    * Calculates the hypothetical points for all proposals for a given contest and
+    * if the contest ended, materializes the points for winning proposals.
     *
     * @param contestPK
     * @throws SystemException

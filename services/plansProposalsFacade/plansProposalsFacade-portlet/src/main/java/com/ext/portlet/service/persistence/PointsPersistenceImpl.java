@@ -2304,6 +2304,7 @@ public class PointsPersistenceImpl extends BasePersistenceImpl<Points>
         pointsImpl.setHypotheticalPoints(points.getHypotheticalPoints());
         pointsImpl.setPointsSourceId(points.getPointsSourceId());
         pointsImpl.setOriginatingContestPK(points.getOriginatingContestPK());
+        pointsImpl.setOriginatingProposalId(points.getOriginatingProposalId());
 
         return pointsImpl;
     }

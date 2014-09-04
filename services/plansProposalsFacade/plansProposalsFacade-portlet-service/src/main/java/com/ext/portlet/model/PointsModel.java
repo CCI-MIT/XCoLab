@@ -156,6 +156,20 @@ public interface PointsModel extends BaseModel<Points> {
      */
     public void setOriginatingContestPK(long originatingContestPK);
 
+    /**
+     * Returns the originating proposal ID of this points.
+     *
+     * @return the originating proposal ID of this points
+     */
+    public long getOriginatingProposalId();
+
+    /**
+     * Sets the originating proposal ID of this points.
+     *
+     * @param originatingProposalId the originating proposal ID of this points
+     */
+    public void setOriginatingProposalId(long originatingProposalId);
+
     @Override
     public boolean isNew();
 

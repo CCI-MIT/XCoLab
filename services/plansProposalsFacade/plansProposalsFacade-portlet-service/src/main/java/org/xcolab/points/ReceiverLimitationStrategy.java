@@ -76,7 +76,6 @@ public enum ReceiverLimitationStrategy {
 				}
 				if (targets.isEmpty()) {
 					// there is no configuration for specific users, distribute equally
-
 					List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
 					for (User u: members) {
 						PointsTarget target = new PointsTarget();

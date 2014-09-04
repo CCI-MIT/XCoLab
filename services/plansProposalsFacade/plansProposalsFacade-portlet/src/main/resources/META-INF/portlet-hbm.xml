@@ -946,6 +946,7 @@
 		<property name="hypotheticalPoints" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="pointsSourceId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="originatingContestPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="originatingProposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.PointsDistributionConfigurationImpl" table="xcolab_PointsDistributionConfiguration">
 		<cache usage="read-write" />

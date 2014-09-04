@@ -723,7 +723,8 @@ create table xcolab_Points (
 	materializedPoints DOUBLE,
 	hypotheticalPoints DOUBLE,
 	pointsSourceId LONG,
-	originatingContestPK LONG
+	originatingContestPK LONG,
+	originatingProposalId LONG
 );
 
 create table xcolab_PointsDistributionConfiguration (

@@ -254,7 +254,8 @@ public interface PointsLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Distribute points for given contest
+    * Calculates the hypothetical points for all proposals for a given contest and
+    * if the contest ended, materializes the points for winning proposals.
     *
     * @param contestPK
     * @throws SystemException
