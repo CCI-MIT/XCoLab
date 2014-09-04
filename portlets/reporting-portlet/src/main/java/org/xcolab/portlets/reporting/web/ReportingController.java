@@ -33,8 +33,9 @@ import org.xcolab.portlets.reporting.beans.activitiesbycontest.UserActivityByCon
 import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivities;
 import org.xcolab.portlets.reporting.beans.proposalactivityexport.ProposalActivityExport;
-import org.xcolab.portlets.reporting.beans.proposals2013.ProposalWithFinalistAndContent;
-import org.xcolab.portlets.reporting.beans.proposals2013.ProposalsInSpecificContests;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.ProposalWithFinalistAndContent;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.ProposalsInSpecificContests;
+import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.GetLastVersionOfPhaseType;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
 
@@ -117,6 +118,8 @@ public class ReportingController {
     @RequestMapping(params="report=generateProposalTexts2014CreationPhase")
     public void generateProposalTexts2014CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
         ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(1L,
+                ContestFetcher.getContestPhasesIn2014()));
 
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
@@ -145,6 +148,7 @@ public class ReportingController {
     @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
     public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
         ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(11L));
 
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
