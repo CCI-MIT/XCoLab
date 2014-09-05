@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.ext.portlet.contests.ContestStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseType;
@@ -935,8 +936,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
     	ContestPhase activePhase = getActiveOrLastPhase(contest);
+        com.ext.portlet.model.ContestPhaseType type = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
+        boolean typeIsClosed = ContestStatus.CLOSED.toString().equals(type.getStatus()) || ContestStatus.FINISHED.toString().equals(type.getStatus());
         //Either, the active or last phase has no end date (which means the contest ended), or the current date is after it's end date.
-    	if (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate())) {
+    	if (typeIsClosed && (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate()))) {
     		return true;
     	}
     	return false;
