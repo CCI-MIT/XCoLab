@@ -108,7 +108,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getIsCreationAllowedByPhase() {
-        if (contestPhase.getPhaseEndDate() != null && contestPhase.getPhaseEndDate().after(new Date()) &&
+        if ((contestPhase.getPhaseEndDate() == null || contestPhase.getPhaseEndDate().after(new Date())) &&
                 contestPhase.getPhaseStartDate() != null && contestPhase.getPhaseStartDate().before(new Date()))
             return contestStatus.isCanCreate();
         else return false;
