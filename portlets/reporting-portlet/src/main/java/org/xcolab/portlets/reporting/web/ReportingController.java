@@ -21,12 +21,14 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.reporting.beans.AuthorAttractionBean;
 import org.xcolab.portlets.reporting.beans.UserActivityReportBean;
 import org.xcolab.portlets.reporting.beans.activitiesbycontest.ActivitiesByContestBean;
@@ -328,18 +330,34 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"userId", "screenName", "emailAddress", "registrationDate", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount", "amountOfVotesCast"});
+        csvWriter.writeNext(new String[]{"userId", "screenName", "emailAddress", "registrationDate", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount", "amountOfVotesCast", "userRole"});
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         for (UserActivityReportBean uarb : userActivities.values()) {
             User u = uarb.getUser();
+            //get highest role of user
+            List<Role> roles = u.getRoles();
+            MemberRole currentRole;
+            MemberRole role = MemberRole.MEMBER;
+
+            for (Role r: roles) {
+                final String roleString = r.getName();
+
+                currentRole = MemberRole.getMember(roleString);
+                if (currentRole != null && role != null) {
+                    if (currentRole.ordinal() > role.ordinal()) {
+                        role = currentRole;
+                    }
+                }
+            }
+
             csvWriter.writeNext(new String[]{String.valueOf(u.getUserId()), u.getScreenName(),
                     u.getEmailAddress(),
                     sdf.format(u.getCreateDate()),
                     u.getFullName(),
                     String.valueOf(uarb.getCommentsCount()), String.valueOf(uarb.getProposalsCount()), String.valueOf(uarb.getProposalFinalistsCount()),
                     String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount()),
-                    ""+uarb.getProposalVotesCount()
-            });
+                    ""+uarb.getProposalVotesCount(),
+                    String.valueOf(role.ordinal())});
         }
 
 
