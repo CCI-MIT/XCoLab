@@ -4,6 +4,7 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
+import com.ext.portlet.service.impl.mock.UserLocalServiceMock;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
@@ -14,6 +15,7 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.MockContextProvider;
 import com.liferay.portal.service.ResourceActionLocalServiceUtil;
+import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
@@ -30,12 +32,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class PointsLocalServiceImplTest {
+	private static UserLocalServiceMock userLocalServiceMock;
 	private static ContestLocalService contestLocalService;
 	private static ContestPhaseLocalService contestPhaseLocalService;
 	private static ProposalLocalService proposalLocalService;
 	private static Proposal2PhaseLocalService proposal2PhaseLocalService;
     private static ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
 	private static PointsLocalService pointsLocalService;
+	private static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
 	private static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
 
     private static SimpleDateFormat dateFormat;
@@ -62,22 +66,31 @@ public class PointsLocalServiceImplTest {
         CompanyThreadLocal.setCompanyId(10112l);
 
         System.out.println("initialized?");
+        userLocalServiceMock = (UserLocalServiceMock) PortalBeanLocatorUtil.locate(UserLocalServiceMock.class.getName());
         contestLocalService = (ContestLocalService) PortalBeanLocatorUtil.locate(ContestLocalService.class.getName());
         contestPhaseLocalService = (ContestPhaseLocalService) PortalBeanLocatorUtil.locate(ContestPhaseLocalService.class.getName());
         proposalLocalService = (ProposalLocalService) PortalBeanLocatorUtil.locate(ProposalLocalService.class.getName());
         proposal2PhaseLocalService = (Proposal2PhaseLocalService) PortalBeanLocatorUtil.locate(Proposal2PhaseLocalService.class.getName());
         proposalContestPhaseAttributeLocalService = (ProposalContestPhaseAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalContestPhaseAttributeLocalService.class.getName());
         pointsLocalService = (PointsLocalService) PortalBeanLocatorUtil.locate(PointsLocalService.class.getName());
+        pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
         planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
 	}
 
     @Test
     public void testGlobalContestHypotheticalPoints() throws SystemException, PortalException, ParseException {
-        long authorId = 10144L;
-        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(authorId));
+        long adminId = 10144L;
+        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
+
+        //create 10 different authors
+        List<User> users = new ArrayList<User>();
+        for (int i = 0; i < 10; i++) {
+            users.add(userLocalServiceMock.createUser(50000+i));
+        }
+
 
         //create global contest
-        Contest globalContest = contestLocalService.createNewContest(authorId, "Test-Global-Contest");
+        Contest globalContest = contestLocalService.createNewContest(adminId, "Test-Global-Contest");
         globalContest.setPoints(10000);
         globalContest.setDefaultParentPointType(1);
         contestLocalService.updateContest(globalContest);
@@ -93,7 +106,7 @@ public class PointsLocalServiceImplTest {
         //create 10 proposals, advance half of them to the last phase.
         List<Proposal> globalProposals = new ArrayList<Proposal>();
         for (int i = 0; i < 10; i++) {
-            Proposal proposal = proposalLocalService.create(authorId, gCp1.getContestPhasePK());
+            Proposal proposal = proposalLocalService.create(users.get(i).getUserId(), gCp1.getContestPhasePK());
             globalProposals.add(proposal);
 
             //copy to first phases
@@ -110,7 +123,9 @@ public class PointsLocalServiceImplTest {
         List<Proposal> sideProposals = new ArrayList<Proposal>();
         List<Contest> sideContests = new ArrayList<Contest>();
         for (int i = 0; i < 2; i++) {
-            sideContests.add(contestLocalService.createNewContest(authorId, "Test-Side-Contest-"+(i+1)));
+            Contest sideContest = contestLocalService.createNewContest(adminId, "Test-Side-Contest-"+(i+1));
+            sideContest.setPoints(0);
+            sideContest.setDefaultParentPointType(6);
             //create phases
             ContestPhase sCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE", "2014-08-01 00:00:00", "2014-08-10 00:00:00");
             ContestPhase sCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE", "2014-08-10 00:00:01", "2014-08-14 00:00:00");
@@ -121,17 +136,11 @@ public class PointsLocalServiceImplTest {
             ContestPhase sCp6 = createContestPhase(globalContest, 17, false, "", "2015-09-24 00:00:01", null);
 
             for (int j = 0; j < 3; i++) {
-                Proposal proposal = proposalLocalService.create(authorId, gCp1.getContestPhasePK());
+                Proposal proposal = proposalLocalService.create(users.get(j+(i*3)).getUserId(), sCp1.getContestPhasePK());
                 sideProposals.add(proposal);
 
                 //copy to first phases
-                copyProposalToPhase(proposal, gCp2);
-                //copy half of the proposals to other phases
-                if (i > 4) {
-                    copyProposalToPhase(proposal, gCp3);
-                    copyProposalToPhase(proposal, gCp4);
-                    copyProposalToPhase(proposal, gCp5);
-                }
+                copyProposalToPhase(proposal, sCp2);
             }
         }
 
@@ -143,11 +152,138 @@ public class PointsLocalServiceImplTest {
                 "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(5).getProposalId()+" and "+
                 "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+globalContest.getContestPK()+"/planId/"+globalProposals.get(3).getProposalId();
         //1300907 is the sub proposal plan section definition
-        proposalLocalService.setAttribute(authorId, globalProposals.get(6).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
+        proposalLocalService.setAttribute(globalProposals.get(6).getAuthorId(), globalProposals.get(6).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
+        String sectionText2 = "These are the subproposals we link to:\n"+
+                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(2).getProposalId()+"\n\n"+
+                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(1).getProposalId()+"\n\n"+
+                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(3).getProposalId()+" and "+
+                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+globalContest.getContestPK()+"/planId/"+globalProposals.get(6).getProposalId();
+        proposalLocalService.setAttribute(globalProposals.get(7).getAuthorId(), globalProposals.get(7).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText2);
+
+        //add team members to some proposals
+        userLocalServiceMock.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(2).getUserId()});
+        userLocalServiceMock.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(4).getUserId()});
+        userLocalServiceMock.addGroupUsers(globalProposals.get(7).getGroupId(), new long[] {users.get(1).getUserId()});
+        userLocalServiceMock.addGroupUsers(sideProposals.get(0).getGroupId(), new long[] {users.get(1).getUserId()});
+        userLocalServiceMock.addGroupUsers(sideProposals.get(1).getGroupId(), new long[] {users.get(2).getUserId()});
 
         //set some point distributions
+        //GLOBAL PROPOSAL 6
+        //TEAM MEMBERS
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(6).getProposalId(),
+                2, //team member point type
+                users.get(6).getUserId(),
+                0L,
+                0.30,
+                users.get(6).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(6).getProposalId(),
+                2, //team member point type
+                users.get(2).getUserId(),
+                0L,
+                0.50,
+                users.get(6).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(6).getProposalId(),
+                2, //team member point type
+                users.get(4).getUserId(),
+                0L,
+                0.20,
+                users.get(6).getUserId()
+        );
+        //ANY NON-TEAMMEMBER
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(6).getProposalId(),
+                5, //any non-teammember
+                users.get(8).getUserId(),
+                0L,
+                1,
+                users.get(6).getUserId()
+        );
+        //GLOBAL PROPOSAL 7
+        //TEAM MEMBERS
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(7).getProposalId(),
+                2, //team member point type
+                users.get(7).getUserId(),
+                0L,
+                0.60,
+                users.get(7).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(7).getProposalId(),
+                2, //team member point type
+                users.get(1).getUserId(),
+                0L,
+                0.40,
+                users.get(7).getUserId()
+        );
+        //ANY NON-TEAMMEMBER
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                globalProposals.get(7).getProposalId(),
+                5, //any non-teammember
+                users.get(8).getUserId(),
+                0L,
+                1,
+                users.get(7).getUserId()
+        );
 
-        //test the hypothetical points distribution now.
+        //SIDE PROPOSAL 0
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(0).getProposalId(),
+                7, //any team member
+                users.get(0).getUserId(),
+                0L,
+                0.50,
+                users.get(0).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(0).getProposalId(),
+                7, //any team member
+                users.get(1).getUserId(),
+                0L,
+                0.50,
+                users.get(0).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(0).getProposalId(),
+                8, //any non-team member
+                users.get(4).getUserId(),
+                0L,
+                1,
+                users.get(0).getUserId()
+        );
+        //SIDE PROPOSAL 1
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(1).getProposalId(),
+                7, //any team member
+                users.get(1).getUserId(),
+                0L,
+                0.50,
+                users.get(0).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(1).getProposalId(),
+                7, //any team member
+                users.get(2).getUserId(),
+                0L,
+                0.50,
+                users.get(0).getUserId()
+        );
+        pointsDistributionConfigurationService.addDistributionConfiguration(
+                sideProposals.get(0).getProposalId(),
+                8, //any non-team member
+                users.get(5).getUserId(),
+                0L,
+                1,
+                users.get(0).getUserId()
+        );
+
+        //run the hypothetical points distribution now.
+        pointsLocalService.distributePoints(globalContest.getContestPK());
 
         //assert the points
 
