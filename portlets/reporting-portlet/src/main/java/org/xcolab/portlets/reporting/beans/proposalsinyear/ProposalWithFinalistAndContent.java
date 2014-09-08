@@ -1,8 +1,4 @@
-package org.xcolab.portlets.reporting.beans.proposals2013;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalRank;
+package org.xcolab.portlets.reporting.beans.proposalsinyear;
 
 /**
 * @author pdeboer
