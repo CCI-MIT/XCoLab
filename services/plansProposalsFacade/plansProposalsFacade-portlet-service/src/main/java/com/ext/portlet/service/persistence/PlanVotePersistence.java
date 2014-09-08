@@ -136,7 +136,8 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanVote[] findBycontestId_PrevAndNext(
-        PlanVotePK planVotePK, long contestId,
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK,
+        long contestId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -269,7 +270,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanVote[] findByPlanId_PrevAndNext(
-        PlanVotePK planVotePK, long planId,
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK, long planId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -377,7 +378,8 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @param planVotePK the primary key for the new plan vote
     * @return the new plan vote
     */
-    public com.ext.portlet.model.PlanVote create(PlanVotePK planVotePK);
+    public com.ext.portlet.model.PlanVote create(
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK);
 
     /**
     * Removes the plan vote with the primary key from the database. Also notifies the appropriate model listeners.
@@ -387,7 +389,8 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws com.ext.portlet.NoSuchPlanVoteException if a plan vote with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.PlanVote remove(PlanVotePK planVotePK)
+    public com.ext.portlet.model.PlanVote remove(
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -404,7 +407,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanVote findByPrimaryKey(
-        PlanVotePK planVotePK)
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
         throws com.ext.portlet.NoSuchPlanVoteException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -416,7 +419,7 @@ public interface PlanVotePersistence extends BasePersistence<PlanVote> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanVote fetchByPrimaryKey(
-        PlanVotePK planVotePK)
+        com.ext.portlet.service.persistence.PlanVotePK planVotePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

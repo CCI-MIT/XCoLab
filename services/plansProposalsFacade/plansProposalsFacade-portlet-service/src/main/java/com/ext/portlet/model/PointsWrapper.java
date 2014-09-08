@@ -341,7 +341,7 @@ public class PointsWrapper implements Points, ModelWrapper<Points> {
     }
 
     @Override
-    public int compareTo(Points points) {
+    public int compareTo(com.ext.portlet.model.Points points) {
         return _points.compareTo(points);
     }
 
@@ -351,17 +351,17 @@ public class PointsWrapper implements Points, ModelWrapper<Points> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Points> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Points> toCacheModel() {
         return _points.toCacheModel();
     }
 
     @Override
-    public Points toEscapedModel() {
+    public com.ext.portlet.model.Points toEscapedModel() {
         return new PointsWrapper(_points.toEscapedModel());
     }
 
     @Override
-    public Points toUnescapedModel() {
+    public com.ext.portlet.model.Points toUnescapedModel() {
         return new PointsWrapper(_points.toUnescapedModel());
     }
 

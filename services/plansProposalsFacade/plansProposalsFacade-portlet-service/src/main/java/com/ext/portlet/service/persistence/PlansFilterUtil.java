@@ -125,7 +125,7 @@ public class PlansFilterUtil {
     * @return the new plans filter
     */
     public static com.ext.portlet.model.PlansFilter create(
-        PlansFilterPK plansFilterPK) {
+        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK) {
         return getPersistence().create(plansFilterPK);
     }
 
@@ -138,7 +138,7 @@ public class PlansFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilter remove(
-        PlansFilterPK plansFilterPK)
+        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
         throws com.ext.portlet.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(plansFilterPK);
@@ -159,7 +159,7 @@ public class PlansFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilter findByPrimaryKey(
-        PlansFilterPK plansFilterPK)
+        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
         throws com.ext.portlet.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(plansFilterPK);
@@ -173,7 +173,7 @@ public class PlansFilterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlansFilter fetchByPrimaryKey(
-        PlansFilterPK plansFilterPK)
+        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(plansFilterPK);
     }

@@ -137,7 +137,8 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalSupporter[] findByProposalId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long proposalId,
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK,
+        long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -274,7 +275,8 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalSupporter[] findByUserId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long userId,
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK,
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -321,7 +323,7 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @return the new proposal supporter
     */
     public com.ext.portlet.model.ProposalSupporter create(
-        ProposalSupporterPK proposalSupporterPK);
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK);
 
     /**
     * Removes the proposal supporter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -332,7 +334,7 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalSupporter remove(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -349,7 +351,7 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalSupporter findByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -361,7 +363,7 @@ public interface ProposalSupporterPersistence extends BasePersistence<ProposalSu
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalSupporter fetchByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

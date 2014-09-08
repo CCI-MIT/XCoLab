@@ -435,7 +435,7 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     @Override
-    public int compareTo(Proposal proposal) {
+    public int compareTo(com.ext.portlet.model.Proposal proposal) {
         return _proposal.compareTo(proposal);
     }
 
@@ -445,17 +445,17 @@ public class ProposalWrapper implements Proposal, ModelWrapper<Proposal> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<Proposal> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Proposal> toCacheModel() {
         return _proposal.toCacheModel();
     }
 
     @Override
-    public Proposal toEscapedModel() {
+    public com.ext.portlet.model.Proposal toEscapedModel() {
         return new ProposalWrapper(_proposal.toEscapedModel());
     }
 
     @Override
-    public Proposal toUnescapedModel() {
+    public com.ext.portlet.model.Proposal toUnescapedModel() {
         return new ProposalWrapper(_proposal.toUnescapedModel());
     }
 

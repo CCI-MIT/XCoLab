@@ -212,7 +212,7 @@ public class MessagingMessageConversionTypeWrapper
 
     @Override
     public int compareTo(
-        MessagingMessageConversionType messagingMessageConversionType) {
+        com.ext.portlet.model.MessagingMessageConversionType messagingMessageConversionType) {
         return _messagingMessageConversionType.compareTo(messagingMessageConversionType);
     }
 
@@ -222,17 +222,17 @@ public class MessagingMessageConversionTypeWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<MessagingMessageConversionType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingMessageConversionType> toCacheModel() {
         return _messagingMessageConversionType.toCacheModel();
     }
 
     @Override
-    public MessagingMessageConversionType toEscapedModel() {
+    public com.ext.portlet.model.MessagingMessageConversionType toEscapedModel() {
         return new MessagingMessageConversionTypeWrapper(_messagingMessageConversionType.toEscapedModel());
     }
 
     @Override
-    public MessagingMessageConversionType toUnescapedModel() {
+    public com.ext.portlet.model.MessagingMessageConversionType toUnescapedModel() {
         return new MessagingMessageConversionTypeWrapper(_messagingMessageConversionType.toUnescapedModel());
     }
 

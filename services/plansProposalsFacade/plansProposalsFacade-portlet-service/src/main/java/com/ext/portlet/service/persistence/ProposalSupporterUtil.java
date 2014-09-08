@@ -232,7 +232,8 @@ public class ProposalSupporterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalSupporter[] findByProposalId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long proposalId,
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK,
+        long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -392,7 +393,8 @@ public class ProposalSupporterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalSupporter[] findByUserId_PrevAndNext(
-        ProposalSupporterPK proposalSupporterPK, long userId,
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK,
+        long userId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -451,7 +453,7 @@ public class ProposalSupporterUtil {
     * @return the new proposal supporter
     */
     public static com.ext.portlet.model.ProposalSupporter create(
-        ProposalSupporterPK proposalSupporterPK) {
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK) {
         return getPersistence().create(proposalSupporterPK);
     }
 
@@ -464,7 +466,7 @@ public class ProposalSupporterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalSupporter remove(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(proposalSupporterPK);
@@ -485,7 +487,7 @@ public class ProposalSupporterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalSupporter findByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.ext.portlet.NoSuchProposalSupporterException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(proposalSupporterPK);
@@ -499,7 +501,7 @@ public class ProposalSupporterUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalSupporter fetchByPrimaryKey(
-        ProposalSupporterPK proposalSupporterPK)
+        com.ext.portlet.service.persistence.ProposalSupporterPK proposalSupporterPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(proposalSupporterPK);
     }

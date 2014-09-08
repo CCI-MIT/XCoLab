@@ -347,7 +347,7 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     }
 
     @Override
-    public int compareTo(ModelInputGroup modelInputGroup) {
+    public int compareTo(com.ext.portlet.model.ModelInputGroup modelInputGroup) {
         return _modelInputGroup.compareTo(modelInputGroup);
     }
 
@@ -357,17 +357,17 @@ public class ModelInputGroupWrapper implements ModelInputGroup,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<ModelInputGroup> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelInputGroup> toCacheModel() {
         return _modelInputGroup.toCacheModel();
     }
 
     @Override
-    public ModelInputGroup toEscapedModel() {
+    public com.ext.portlet.model.ModelInputGroup toEscapedModel() {
         return new ModelInputGroupWrapper(_modelInputGroup.toEscapedModel());
     }
 
     @Override
-    public ModelInputGroup toUnescapedModel() {
+    public com.ext.portlet.model.ModelInputGroup toUnescapedModel() {
         return new ModelInputGroupWrapper(_modelInputGroup.toUnescapedModel());
     }
 

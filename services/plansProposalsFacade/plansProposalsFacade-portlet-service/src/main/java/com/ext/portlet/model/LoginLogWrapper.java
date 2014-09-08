@@ -339,7 +339,7 @@ public class LoginLogWrapper implements LoginLog, ModelWrapper<LoginLog> {
     }
 
     @Override
-    public int compareTo(LoginLog loginLog) {
+    public int compareTo(com.ext.portlet.model.LoginLog loginLog) {
         return _loginLog.compareTo(loginLog);
     }
 
@@ -349,17 +349,17 @@ public class LoginLogWrapper implements LoginLog, ModelWrapper<LoginLog> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<LoginLog> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.LoginLog> toCacheModel() {
         return _loginLog.toCacheModel();
     }
 
     @Override
-    public LoginLog toEscapedModel() {
+    public com.ext.portlet.model.LoginLog toEscapedModel() {
         return new LoginLogWrapper(_loginLog.toEscapedModel());
     }
 
     @Override
-    public LoginLog toUnescapedModel() {
+    public com.ext.portlet.model.LoginLog toUnescapedModel() {
         return new LoginLogWrapper(_loginLog.toUnescapedModel());
     }
 

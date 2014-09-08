@@ -60,9 +60,9 @@
 										<artifactId>
 											liferay-maven-plugin
 										</artifactId>
-										<versionRange>
-											[6.2.0-SNAPSHOT,)
-										</versionRange>
+										<version>
+                                            6.2.1
+										</version>
 										<goals>
 											<goal>build-thumbnail</goal>
 											<goal>theme-merge</goal>
