@@ -137,8 +137,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPosition[] findByPositionId_PrevAndNext(
-        com.ext.portlet.service.persistence.PlanPositionPK planPositionPK,
-        long positionId,
+        PlanPositionPK planPositionPK, long positionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -184,7 +183,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @return the new plan position
     */
     public com.ext.portlet.model.PlanPosition create(
-        com.ext.portlet.service.persistence.PlanPositionPK planPositionPK);
+        PlanPositionPK planPositionPK);
 
     /**
     * Removes the plan position with the primary key from the database. Also notifies the appropriate model listeners.
@@ -195,7 +194,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPosition remove(
-        com.ext.portlet.service.persistence.PlanPositionPK planPositionPK)
+        PlanPositionPK planPositionPK)
         throws com.ext.portlet.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -212,7 +211,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPosition findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanPositionPK planPositionPK)
+        PlanPositionPK planPositionPK)
         throws com.ext.portlet.NoSuchPlanPositionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -224,7 +223,7 @@ public interface PlanPositionPersistence extends BasePersistence<PlanPosition> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlanPosition fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlanPositionPK planPositionPK)
+        PlanPositionPK planPositionPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

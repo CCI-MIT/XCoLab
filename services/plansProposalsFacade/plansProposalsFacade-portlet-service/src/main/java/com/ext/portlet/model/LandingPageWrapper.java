@@ -237,7 +237,7 @@ public class LandingPageWrapper implements LandingPage,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.LandingPage landingPage) {
+    public int compareTo(LandingPage landingPage) {
         return _landingPage.compareTo(landingPage);
     }
 
@@ -247,17 +247,17 @@ public class LandingPageWrapper implements LandingPage,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.LandingPage> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<LandingPage> toCacheModel() {
         return _landingPage.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.LandingPage toEscapedModel() {
+    public LandingPage toEscapedModel() {
         return new LandingPageWrapper(_landingPage.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.LandingPage toUnescapedModel() {
+    public LandingPage toUnescapedModel() {
         return new LandingPageWrapper(_landingPage.toUnescapedModel());
     }
 

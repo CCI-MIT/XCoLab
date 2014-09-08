@@ -317,8 +317,7 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.BalloonStatsEntry balloonStatsEntry) {
+    public int compareTo(BalloonStatsEntry balloonStatsEntry) {
         return _balloonStatsEntry.compareTo(balloonStatsEntry);
     }
 
@@ -328,17 +327,17 @@ public class BalloonStatsEntryWrapper implements BalloonStatsEntry,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.BalloonStatsEntry> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<BalloonStatsEntry> toCacheModel() {
         return _balloonStatsEntry.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.BalloonStatsEntry toEscapedModel() {
+    public BalloonStatsEntry toEscapedModel() {
         return new BalloonStatsEntryWrapper(_balloonStatsEntry.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.BalloonStatsEntry toUnescapedModel() {
+    public BalloonStatsEntry toUnescapedModel() {
         return new BalloonStatsEntryWrapper(_balloonStatsEntry.toUnescapedModel());
     }
 

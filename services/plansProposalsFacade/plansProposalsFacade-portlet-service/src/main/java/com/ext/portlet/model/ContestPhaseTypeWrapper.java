@@ -273,8 +273,7 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ContestPhaseType contestPhaseType) {
+    public int compareTo(ContestPhaseType contestPhaseType) {
         return _contestPhaseType.compareTo(contestPhaseType);
     }
 
@@ -284,17 +283,17 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestPhaseType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ContestPhaseType> toCacheModel() {
         return _contestPhaseType.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseType toEscapedModel() {
+    public ContestPhaseType toEscapedModel() {
         return new ContestPhaseTypeWrapper(_contestPhaseType.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseType toUnescapedModel() {
+    public ContestPhaseType toUnescapedModel() {
         return new ContestPhaseTypeWrapper(_contestPhaseType.toUnescapedModel());
     }
 

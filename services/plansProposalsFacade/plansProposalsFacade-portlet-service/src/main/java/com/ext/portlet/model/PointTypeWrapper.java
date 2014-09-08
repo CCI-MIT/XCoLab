@@ -321,7 +321,7 @@ public class PointTypeWrapper implements PointType, ModelWrapper<PointType> {
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PointType pointType) {
+    public int compareTo(PointType pointType) {
         return _pointType.compareTo(pointType);
     }
 
@@ -331,17 +331,17 @@ public class PointTypeWrapper implements PointType, ModelWrapper<PointType> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PointType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PointType> toCacheModel() {
         return _pointType.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PointType toEscapedModel() {
+    public PointType toEscapedModel() {
         return new PointTypeWrapper(_pointType.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PointType toUnescapedModel() {
+    public PointType toUnescapedModel() {
         return new PointTypeWrapper(_pointType.toUnescapedModel());
     }
 

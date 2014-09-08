@@ -288,8 +288,7 @@ public class MessagingIgnoredRecipientsWrapper
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.MessagingIgnoredRecipients messagingIgnoredRecipients) {
+    public int compareTo(MessagingIgnoredRecipients messagingIgnoredRecipients) {
         return _messagingIgnoredRecipients.compareTo(messagingIgnoredRecipients);
     }
 
@@ -299,17 +298,17 @@ public class MessagingIgnoredRecipientsWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.MessagingIgnoredRecipients> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<MessagingIgnoredRecipients> toCacheModel() {
         return _messagingIgnoredRecipients.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.MessagingIgnoredRecipients toEscapedModel() {
+    public MessagingIgnoredRecipients toEscapedModel() {
         return new MessagingIgnoredRecipientsWrapper(_messagingIgnoredRecipients.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.MessagingIgnoredRecipients toUnescapedModel() {
+    public MessagingIgnoredRecipients toUnescapedModel() {
         return new MessagingIgnoredRecipientsWrapper(_messagingIgnoredRecipients.toUnescapedModel());
     }
 

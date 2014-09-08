@@ -195,7 +195,7 @@ public class ProposalContestPhaseAttributeTypeWrapper
 
     @Override
     public int compareTo(
-        com.ext.portlet.model.ProposalContestPhaseAttributeType proposalContestPhaseAttributeType) {
+        ProposalContestPhaseAttributeType proposalContestPhaseAttributeType) {
         return _proposalContestPhaseAttributeType.compareTo(proposalContestPhaseAttributeType);
     }
 
@@ -205,17 +205,17 @@ public class ProposalContestPhaseAttributeTypeWrapper
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalContestPhaseAttributeType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ProposalContestPhaseAttributeType> toCacheModel() {
         return _proposalContestPhaseAttributeType.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ProposalContestPhaseAttributeType toEscapedModel() {
+    public ProposalContestPhaseAttributeType toEscapedModel() {
         return new ProposalContestPhaseAttributeTypeWrapper(_proposalContestPhaseAttributeType.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ProposalContestPhaseAttributeType toUnescapedModel() {
+    public ProposalContestPhaseAttributeType toUnescapedModel() {
         return new ProposalContestPhaseAttributeTypeWrapper(_proposalContestPhaseAttributeType.toUnescapedModel());
     }
 

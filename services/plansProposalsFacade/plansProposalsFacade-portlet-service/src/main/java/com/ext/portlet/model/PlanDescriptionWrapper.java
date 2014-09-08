@@ -399,7 +399,7 @@ public class PlanDescriptionWrapper implements PlanDescription,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlanDescription planDescription) {
+    public int compareTo(PlanDescription planDescription) {
         return _planDescription.compareTo(planDescription);
     }
 
@@ -409,17 +409,17 @@ public class PlanDescriptionWrapper implements PlanDescription,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanDescription> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanDescription> toCacheModel() {
         return _planDescription.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanDescription toEscapedModel() {
+    public PlanDescription toEscapedModel() {
         return new PlanDescriptionWrapper(_planDescription.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanDescription toUnescapedModel() {
+    public PlanDescription toUnescapedModel() {
         return new PlanDescriptionWrapper(_planDescription.toUnescapedModel());
     }
 

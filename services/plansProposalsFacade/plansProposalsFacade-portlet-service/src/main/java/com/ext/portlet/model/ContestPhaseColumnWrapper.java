@@ -273,8 +273,7 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ContestPhaseColumn contestPhaseColumn) {
+    public int compareTo(ContestPhaseColumn contestPhaseColumn) {
         return _contestPhaseColumn.compareTo(contestPhaseColumn);
     }
 
@@ -284,17 +283,17 @@ public class ContestPhaseColumnWrapper implements ContestPhaseColumn,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestPhaseColumn> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ContestPhaseColumn> toCacheModel() {
         return _contestPhaseColumn.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseColumn toEscapedModel() {
+    public ContestPhaseColumn toEscapedModel() {
         return new ContestPhaseColumnWrapper(_contestPhaseColumn.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ContestPhaseColumn toUnescapedModel() {
+    public ContestPhaseColumn toUnescapedModel() {
         return new ContestPhaseColumnWrapper(_contestPhaseColumn.toUnescapedModel());
     }
 

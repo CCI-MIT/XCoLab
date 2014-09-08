@@ -182,7 +182,7 @@ public class Plan2ProposalWrapper implements Plan2Proposal,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.Plan2Proposal plan2Proposal) {
+    public int compareTo(Plan2Proposal plan2Proposal) {
         return _plan2Proposal.compareTo(plan2Proposal);
     }
 
@@ -192,17 +192,17 @@ public class Plan2ProposalWrapper implements Plan2Proposal,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.Plan2Proposal> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<Plan2Proposal> toCacheModel() {
         return _plan2Proposal.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.Plan2Proposal toEscapedModel() {
+    public Plan2Proposal toEscapedModel() {
         return new Plan2ProposalWrapper(_plan2Proposal.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.Plan2Proposal toUnescapedModel() {
+    public Plan2Proposal toUnescapedModel() {
         return new Plan2ProposalWrapper(_plan2Proposal.toUnescapedModel());
     }
 

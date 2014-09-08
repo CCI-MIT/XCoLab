@@ -391,8 +391,7 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ModelOutputChartOrder modelOutputChartOrder) {
+    public int compareTo(ModelOutputChartOrder modelOutputChartOrder) {
         return _modelOutputChartOrder.compareTo(modelOutputChartOrder);
     }
 
@@ -402,17 +401,17 @@ public class ModelOutputChartOrderWrapper implements ModelOutputChartOrder,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ModelOutputChartOrder> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ModelOutputChartOrder> toCacheModel() {
         return _modelOutputChartOrder.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ModelOutputChartOrder toEscapedModel() {
+    public ModelOutputChartOrder toEscapedModel() {
         return new ModelOutputChartOrderWrapper(_modelOutputChartOrder.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ModelOutputChartOrder toUnescapedModel() {
+    public ModelOutputChartOrder toUnescapedModel() {
         return new ModelOutputChartOrderWrapper(_modelOutputChartOrder.toUnescapedModel());
     }
 

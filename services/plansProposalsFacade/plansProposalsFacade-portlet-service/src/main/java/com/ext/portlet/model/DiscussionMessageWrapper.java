@@ -508,8 +508,7 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.DiscussionMessage discussionMessage) {
+    public int compareTo(DiscussionMessage discussionMessage) {
         return _discussionMessage.compareTo(discussionMessage);
     }
 
@@ -519,17 +518,17 @@ public class DiscussionMessageWrapper implements DiscussionMessage,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.DiscussionMessage> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<DiscussionMessage> toCacheModel() {
         return _discussionMessage.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionMessage toEscapedModel() {
+    public DiscussionMessage toEscapedModel() {
         return new DiscussionMessageWrapper(_discussionMessage.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionMessage toUnescapedModel() {
+    public DiscussionMessage toUnescapedModel() {
         return new DiscussionMessageWrapper(_discussionMessage.toUnescapedModel());
     }
 

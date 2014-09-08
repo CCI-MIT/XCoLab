@@ -208,7 +208,7 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.FocusArea focusArea) {
+    public int compareTo(FocusArea focusArea) {
         return _focusArea.compareTo(focusArea);
     }
 
@@ -218,17 +218,17 @@ public class FocusAreaWrapper implements FocusArea, ModelWrapper<FocusArea> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.FocusArea> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<FocusArea> toCacheModel() {
         return _focusArea.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.FocusArea toEscapedModel() {
+    public FocusArea toEscapedModel() {
         return new FocusAreaWrapper(_focusArea.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.FocusArea toUnescapedModel() {
+    public FocusArea toUnescapedModel() {
         return new FocusAreaWrapper(_focusArea.toUnescapedModel());
     }
 

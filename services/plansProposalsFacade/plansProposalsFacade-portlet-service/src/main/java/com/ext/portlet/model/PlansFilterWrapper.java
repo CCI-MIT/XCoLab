@@ -632,7 +632,7 @@ public class PlansFilterWrapper implements PlansFilter,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlansFilter plansFilter) {
+    public int compareTo(PlansFilter plansFilter) {
         return _plansFilter.compareTo(plansFilter);
     }
 
@@ -642,17 +642,17 @@ public class PlansFilterWrapper implements PlansFilter,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlansFilter> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlansFilter> toCacheModel() {
         return _plansFilter.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlansFilter toEscapedModel() {
+    public PlansFilter toEscapedModel() {
         return new PlansFilterWrapper(_plansFilter.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlansFilter toUnescapedModel() {
+    public PlansFilter toUnescapedModel() {
         return new PlansFilterWrapper(_plansFilter.toUnescapedModel());
     }
 

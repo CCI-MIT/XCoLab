@@ -258,8 +258,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember) {
+    public int compareTo(ContestTeamMember contestTeamMember) {
         return _contestTeamMember.compareTo(contestTeamMember);
     }
 
@@ -269,17 +268,17 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ContestTeamMember> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ContestTeamMember> toCacheModel() {
         return _contestTeamMember.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ContestTeamMember toEscapedModel() {
+    public ContestTeamMember toEscapedModel() {
         return new ContestTeamMemberWrapper(_contestTeamMember.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ContestTeamMember toUnescapedModel() {
+    public ContestTeamMember toUnescapedModel() {
         return new ContestTeamMemberWrapper(_contestTeamMember.toUnescapedModel());
     }
 

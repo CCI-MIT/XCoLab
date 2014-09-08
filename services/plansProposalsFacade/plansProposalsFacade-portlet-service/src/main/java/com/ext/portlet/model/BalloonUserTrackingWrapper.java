@@ -638,8 +638,7 @@ public class BalloonUserTrackingWrapper implements BalloonUserTracking,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.BalloonUserTracking balloonUserTracking) {
+    public int compareTo(BalloonUserTracking balloonUserTracking) {
         return _balloonUserTracking.compareTo(balloonUserTracking);
     }
 
@@ -649,17 +648,17 @@ public class BalloonUserTrackingWrapper implements BalloonUserTracking,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.BalloonUserTracking> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<BalloonUserTracking> toCacheModel() {
         return _balloonUserTracking.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.BalloonUserTracking toEscapedModel() {
+    public BalloonUserTracking toEscapedModel() {
         return new BalloonUserTrackingWrapper(_balloonUserTracking.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.BalloonUserTracking toUnescapedModel() {
+    public BalloonUserTracking toUnescapedModel() {
         return new BalloonUserTrackingWrapper(_balloonUserTracking.toUnescapedModel());
     }
 

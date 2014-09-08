@@ -182,7 +182,7 @@ public class PlanTemplateWrapper implements PlanTemplate,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.PlanTemplate planTemplate) {
+    public int compareTo(PlanTemplate planTemplate) {
         return _planTemplate.compareTo(planTemplate);
     }
 
@@ -192,17 +192,17 @@ public class PlanTemplateWrapper implements PlanTemplate,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.PlanTemplate> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<PlanTemplate> toCacheModel() {
         return _planTemplate.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.PlanTemplate toEscapedModel() {
+    public PlanTemplate toEscapedModel() {
         return new PlanTemplateWrapper(_planTemplate.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.PlanTemplate toUnescapedModel() {
+    public PlanTemplate toUnescapedModel() {
         return new PlanTemplateWrapper(_planTemplate.toUnescapedModel());
     }
 

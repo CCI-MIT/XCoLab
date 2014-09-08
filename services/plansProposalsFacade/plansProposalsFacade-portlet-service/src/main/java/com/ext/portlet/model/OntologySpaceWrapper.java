@@ -236,7 +236,7 @@ public class OntologySpaceWrapper implements OntologySpace,
     }
 
     @Override
-    public int compareTo(com.ext.portlet.model.OntologySpace ontologySpace) {
+    public int compareTo(OntologySpace ontologySpace) {
         return _ontologySpace.compareTo(ontologySpace);
     }
 
@@ -246,17 +246,17 @@ public class OntologySpaceWrapper implements OntologySpace,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.OntologySpace> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<OntologySpace> toCacheModel() {
         return _ontologySpace.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.OntologySpace toEscapedModel() {
+    public OntologySpace toEscapedModel() {
         return new OntologySpaceWrapper(_ontologySpace.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.OntologySpace toUnescapedModel() {
+    public OntologySpace toUnescapedModel() {
         return new OntologySpaceWrapper(_ontologySpace.toUnescapedModel());
     }
 

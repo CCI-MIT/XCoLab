@@ -263,8 +263,7 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
     }
 
     @Override
-    public int compareTo(
-        com.ext.portlet.model.ProposalRatingValue proposalRatingValue) {
+    public int compareTo(ProposalRatingValue proposalRatingValue) {
         return _proposalRatingValue.compareTo(proposalRatingValue);
     }
 
@@ -274,17 +273,17 @@ public class ProposalRatingValueWrapper implements ProposalRatingValue,
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<com.ext.portlet.model.ProposalRatingValue> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ProposalRatingValue> toCacheModel() {
         return _proposalRatingValue.toCacheModel();
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRatingValue toEscapedModel() {
+    public ProposalRatingValue toEscapedModel() {
         return new ProposalRatingValueWrapper(_proposalRatingValue.toEscapedModel());
     }
 
     @Override
-    public com.ext.portlet.model.ProposalRatingValue toUnescapedModel() {
+    public ProposalRatingValue toUnescapedModel() {
         return new ProposalRatingValueWrapper(_proposalRatingValue.toUnescapedModel());
     }
 

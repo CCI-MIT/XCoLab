@@ -44,8 +44,7 @@ public interface PlansFilterPersistence extends BasePersistence<PlansFilter> {
     * @param plansFilterPK the primary key for the new plans filter
     * @return the new plans filter
     */
-    public com.ext.portlet.model.PlansFilter create(
-        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK);
+    public com.ext.portlet.model.PlansFilter create(PlansFilterPK plansFilterPK);
 
     /**
     * Removes the plans filter with the primary key from the database. Also notifies the appropriate model listeners.
@@ -55,8 +54,7 @@ public interface PlansFilterPersistence extends BasePersistence<PlansFilter> {
     * @throws com.ext.portlet.NoSuchPlansFilterException if a plans filter with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.PlansFilter remove(
-        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
+    public com.ext.portlet.model.PlansFilter remove(PlansFilterPK plansFilterPK)
         throws com.ext.portlet.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -73,7 +71,7 @@ public interface PlansFilterPersistence extends BasePersistence<PlansFilter> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilter findByPrimaryKey(
-        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
+        PlansFilterPK plansFilterPK)
         throws com.ext.portlet.NoSuchPlansFilterException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -85,7 +83,7 @@ public interface PlansFilterPersistence extends BasePersistence<PlansFilter> {
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.PlansFilter fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.PlansFilterPK plansFilterPK)
+        PlansFilterPK plansFilterPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
