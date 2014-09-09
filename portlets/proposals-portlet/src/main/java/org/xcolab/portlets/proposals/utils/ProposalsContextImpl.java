@@ -145,11 +145,13 @@ public class ProposalsContextImpl implements ProposalsContext {
 
         if (contestId != null && contestId > 0) {
             contest = ContestLocalServiceUtil.getContest(contestId);
+
             if (phaseId != null && phaseId > 0) {
                 contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
             }
             else {
-                contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+                //get the latest phase this proposal was in
+                contestPhase = ProposalLocalServiceUtil.getLatestProposalContestPhase(proposalId);
             }
             
             if (proposalId != null && proposalId > 0) {
@@ -178,7 +180,6 @@ public class ProposalsContextImpl implements ProposalsContext {
                         }
                         proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
                     }
-                    
                 }
                 proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             }

@@ -1498,6 +1498,25 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     	}
     	return proposals;
     }
+
+    /**
+     * Returns latest contest phase to which proposal was submited
+     *
+     * @param proposalId id of a proposal
+     * @return last contest phase to which proposal was submited
+     * @throws PortalException
+     * @throws SystemException
+     */
+    public ContestPhase getLatestProposalContestPhase(long proposalId) throws PortalException, SystemException {
+        Proposal2Phase latestP2p = null;
+        for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
+            if (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo()) {
+                latestP2p = p2p;
+            }
+        }
+
+        return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
+    }
     
     /**
      * Returns latest contest to which proposal was submited
@@ -1508,13 +1527,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException
      */
     public Contest getLatestProposalContest(long proposalId) throws PortalException, SystemException {
-    	Proposal2Phase latestP2p = null;
-    	for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
-    		if (latestP2p == null || p2p.getVersionTo() == 0 || latestP2p.getVersionTo() < p2p.getVersionTo()) {
-    			latestP2p = p2p;
-    		}
-    	}
-    	
-    	return contestLocalService.getContest(contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId()).getContestPK());
+    	return contestLocalService.getContest(this.getLatestProposalContestPhase(proposalId).getContestPK());
     }
 }

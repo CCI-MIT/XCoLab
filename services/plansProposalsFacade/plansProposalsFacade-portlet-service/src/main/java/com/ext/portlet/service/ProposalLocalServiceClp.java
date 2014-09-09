@@ -166,6 +166,8 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     private String[] _methodParameterTypes78;
     private String _methodName79;
     private String[] _methodParameterTypes79;
+    private String _methodName80;
+    private String[] _methodParameterTypes80;
 
     public ProposalLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -545,9 +547,13 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
 
         _methodParameterTypes78 = new String[] { "long" };
 
-        _methodName79 = "getLatestProposalContest";
+        _methodName79 = "getLatestProposalContestPhase";
 
         _methodParameterTypes79 = new String[] { "long" };
+
+        _methodName80 = "getLatestProposalContest";
+
+        _methodParameterTypes80 = new String[] { "long" };
     }
 
     @Override
@@ -3089,7 +3095,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public com.ext.portlet.model.Contest getLatestProposalContest(
+    public com.ext.portlet.model.ContestPhase getLatestProposalContestPhase(
         long proposalId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -3098,6 +3104,38 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName79,
                     _methodParameterTypes79, new Object[] { proposalId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.ext.portlet.model.ContestPhase) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.ext.portlet.model.Contest getLatestProposalContest(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName80,
+                    _methodParameterTypes80, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

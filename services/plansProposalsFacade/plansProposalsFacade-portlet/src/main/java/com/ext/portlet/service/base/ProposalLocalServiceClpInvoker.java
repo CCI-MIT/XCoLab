@@ -167,6 +167,8 @@ public class ProposalLocalServiceClpInvoker {
     private String[] _methodParameterTypes647;
     private String _methodName648;
     private String[] _methodParameterTypes648;
+    private String _methodName649;
+    private String[] _methodParameterTypes649;
 
     public ProposalLocalServiceClpInvoker() {
         _methodName0 = "addProposal";
@@ -548,9 +550,13 @@ public class ProposalLocalServiceClpInvoker {
 
         _methodParameterTypes647 = new String[] { "long" };
 
-        _methodName648 = "getLatestProposalContest";
+        _methodName648 = "getLatestProposalContestPhase";
 
         _methodParameterTypes648 = new String[] { "long" };
+
+        _methodName649 = "getLatestProposalContest";
+
+        _methodParameterTypes649 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -1086,6 +1092,11 @@ public class ProposalLocalServiceClpInvoker {
 
         if (_methodName648.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes648, parameterTypes)) {
+            return ProposalLocalServiceUtil.getLatestProposalContestPhase(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName649.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes649, parameterTypes)) {
             return ProposalLocalServiceUtil.getLatestProposalContest(((Long) arguments[0]).longValue());
         }
 

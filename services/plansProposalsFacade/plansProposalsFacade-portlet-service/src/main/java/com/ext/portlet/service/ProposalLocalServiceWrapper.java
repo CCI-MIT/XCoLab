@@ -1334,6 +1334,22 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * Returns latest contest phase to which proposal was submited
+    *
+    * @param proposalId id of a proposal
+    * @return last contest phase to which proposal was submited
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Override
+    public com.ext.portlet.model.ContestPhase getLatestProposalContestPhase(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.getLatestProposalContestPhase(proposalId);
+    }
+
+    /**
     * Returns latest contest to which proposal was submited
     *
     * @param proposalId id of a proposal

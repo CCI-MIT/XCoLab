@@ -1122,6 +1122,20 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns latest contest phase to which proposal was submited
+    *
+    * @param proposalId id of a proposal
+    * @return last contest phase to which proposal was submited
+    * @throws PortalException
+    * @throws SystemException
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestPhase getLatestProposalContestPhase(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns latest contest to which proposal was submited
     *
     * @param proposalId id of a proposal
