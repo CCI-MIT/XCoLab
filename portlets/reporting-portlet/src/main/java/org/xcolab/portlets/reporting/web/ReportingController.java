@@ -49,11 +49,7 @@ import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RequestMapping("view")
 @Controller
@@ -73,15 +69,21 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorId"});
+        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorIds"});
 
         for (ProposalActivities a : pae.get()) {
+            String authorIds = "";
+            for (User u : ProposalLocalServiceUtil.getMembers(a.getProposal().getProposalId())) {
+                if (!"".equals(authorIds)) authorIds += " - ";
+                authorIds += u.getUserId();
+            }
+
             csvWriter.writeNext(new String[]{
                     ""+a.getProposal().getProposalId(),
                     ""+a.getNumDaysCreationIsBeforeFinalistSelection(),
                     ""+a.getNumUpdates(),
                     ""+a.getNumDifferentDaysProposalUpdates(),
-                    ""+a.getProposal().getAuthorId()
+                    ""+authorIds
             });
         }
 
@@ -282,14 +284,22 @@ public class ReportingController {
             if (!userActivities.containsKey(message.getAuthorId())) continue;
             userActivities.get(message.getAuthorId()).addComment();
         }
-        Map<Long, Long> proposalToUser = new HashMap<>();
+        Map<Long, List<Long>> proposalToUserIds = new HashMap<>();
 
         for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE)) {
-            if (!userActivities.containsKey(proposal.getAuthorId())) continue;
+            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+                if (!userActivities.containsKey(user.getUserId())) continue;
 
-            userActivities.get(proposal.getAuthorId()).addProposal();
-            proposalToUser.put(proposal.getProposalId(), proposal.getAuthorId());
+                userActivities.get(user.getUserId()).addProposal();
+                if (proposalToUserIds.get(proposal.getProposalId()) == null) {
+                    List<Long> userIds = new ArrayList<Long>();
+                    userIds.add(user.getUserId());
+                    proposalToUserIds.put(proposal.getProposalId(), userIds);
+                } else {
+                    proposalToUserIds.get(proposal.getProposalId()).add(user.getUserId());
+                }
 
+            }
         }
 
         Set<Long> winningRibbonTypes = new HashSet<>();
@@ -306,10 +316,12 @@ public class ReportingController {
 
 
         for (ProposalContestPhaseAttribute pcpa : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
-            UserActivityReportBean uarb = userActivities.get(proposalToUser.get(pcpa.getProposalId()));
-            if (uarb == null) continue;
-            if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
-                uarb.addProposalWinner();
+            for (Long userId : proposalToUserIds.get(pcpa.getProposalId())) {
+                UserActivityReportBean uarb = userActivities.get(userId);
+                if (uarb == null) continue;
+                if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
+                    uarb.addProposalWinner();
+                }
             }
         }
 
@@ -320,10 +332,12 @@ public class ReportingController {
         }
 
         for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
-            UserActivityReportBean uarb = userActivities.get(proposalToUser.get(p2p.getProposalId()));
-            if (uarb == null) continue;
-            if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
-                uarb.addProposalFinalist();
+            for (Long userId : proposalToUserIds.get(p2p.getProposalId())) {
+                UserActivityReportBean uarb = userActivities.get(userId);
+                if (uarb == null) continue;
+                if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
+                    uarb.addProposalFinalist();
+                }
             }
         }
 

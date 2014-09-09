@@ -42,7 +42,7 @@
     <a class='btn btn-primary' href="${downloadCsv }">Download user activities report</a>
     <br/>
 
-    <a class='btn btn-primary' href="${getProposalActivity2013 }">Download proposal activitiy for 2013 contests</a>
+    <a class='btn btn-primary' href="${getProposalActivity2013 }">Download proposal activity for 2013 contests</a>
     <br/>
     <a class='btn btn-primary' href="${generateProposalTexts2013 }">Download proposal texts for 2013 contests</a>
     <br/>
