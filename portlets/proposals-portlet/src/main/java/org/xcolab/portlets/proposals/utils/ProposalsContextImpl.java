@@ -148,10 +148,9 @@ public class ProposalsContextImpl implements ProposalsContext {
 
             if (phaseId != null && phaseId > 0) {
                 contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
-            }
-            else {
-                //get the latest phase this proposal was in
-                contestPhase = ProposalLocalServiceUtil.getLatestProposalContestPhase(proposalId);
+            } else {
+                //get the last phase of this contest
+                contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
             }
             
             if (proposalId != null && proposalId > 0) {
@@ -164,8 +163,8 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // fetch most recent one
                     
                     ContestPhase mostRecentPhase = null;
-                    if (phaseId == null) {
-                        _log.error("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
+                    if (phaseId == null || phaseId <= 0) {
+                        _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                         for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
                             ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
                             if (cp.getContestPK() == contest.getContestPK()) {
@@ -179,6 +178,9 @@ public class ProposalsContextImpl implements ProposalsContext {
                             throw e;
                         }
                         proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
+                        contestPhase = mostRecentPhase;
+                    } else {
+                        throw e;
                     }
                 }
                 proposal = ProposalLocalServiceUtil.getProposal(proposalId);
