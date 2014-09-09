@@ -332,11 +332,13 @@ public class ReportingController {
         }
 
         for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
-            for (Long userId : proposalToUserIds.get(p2p.getProposalId())) {
-                UserActivityReportBean uarb = userActivities.get(userId);
-                if (uarb == null) continue;
-                if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
-                    uarb.addProposalFinalist();
+            if (proposalToUserIds.get(p2p.getProposalId()) != null) {
+                for (Long userId : proposalToUserIds.get(p2p.getProposalId())) {
+                    UserActivityReportBean uarb = userActivities.get(userId);
+                    if (uarb == null) continue;
+                    if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
+                        uarb.addProposalFinalist();
+                    }
                 }
             }
         }
