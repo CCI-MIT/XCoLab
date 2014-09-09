@@ -316,11 +316,13 @@ public class ReportingController {
 
 
         for (ProposalContestPhaseAttribute pcpa : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
-            for (Long userId : proposalToUserIds.get(pcpa.getProposalId())) {
-                UserActivityReportBean uarb = userActivities.get(userId);
-                if (uarb == null) continue;
-                if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
-                    uarb.addProposalWinner();
+            if (proposalToUserIds.get(pcpa.getProposalId()) != null) {
+                for (Long userId : proposalToUserIds.get(pcpa.getProposalId())) {
+                    UserActivityReportBean uarb = userActivities.get(userId);
+                    if (uarb == null) continue;
+                    if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
+                        uarb.addProposalWinner();
+                    }
                 }
             }
         }
