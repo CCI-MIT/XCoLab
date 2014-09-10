@@ -88,9 +88,7 @@ contests.each do |contest|
       out_file_html.close
       out_file_plain.flush
       out_file_plain.close
-
     end
-    break
   end
 
 
