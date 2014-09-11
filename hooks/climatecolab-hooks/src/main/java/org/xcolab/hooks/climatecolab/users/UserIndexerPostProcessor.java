@@ -47,8 +47,9 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 		
 		User user = (User) object;
 		document.addDate("joinDate", user.getCreateDate());
+        long activities = ActivityUtil.getActivitiesCount(user.getUserId());
 		document.addNumber("activities",
-				ActivityUtil.getActivitiesCount(user.getUserId()));
+				activities > 0 ? activities : 1); // Fix if joined colab activity is not in DB/cache yet
 		document.addKeyword("memberCategory", getUserCategories(user));
 		document.addKeyword("realName", new DefaultFullNameGenerator()
 				.getFullName(user.getFirstName(), user.getMiddleName(),

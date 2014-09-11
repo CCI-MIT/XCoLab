@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.service.ProposalLocalServiceWrapper;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.model.*;
+import com.liferay.portal.service.*;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.admintasks.data.DataBean;
@@ -67,18 +69,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.ClassName;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Resource;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
@@ -1074,6 +1066,21 @@ public class AdminTasksBean {
         for (Contest activeContest : ContestLocalServiceUtil.getContestsByActivePrivate(true, false)) {
             ContestLocalServiceUtil.transferSupportsToVote(activeContest, serviceContext);
         }
+    }
+
+    public void addJoinedActivityToRequiredUsers() throws SystemException, PortalException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        PortletRequest portletRequest = (PortletRequest)context.getExternalContext().getRequest();
+        ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE)){
+            if (SocialActivityLocalServiceUtil.getUserActivitiesCount(u.getUserId()) == 0){
+                // Add "joined the colab" activity when user was created
+                SocialActivityLocalServiceUtil.addActivity(u.getUserId(), themeDisplay.getScopeGroupId(),u.getCreateDate(), User.class.getName(),
+                        u.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+                _log.debug("Added activity for user " + u.getUserId());
+            }
+        }
+
     }
 
 	public DataBean getDataBean() {
