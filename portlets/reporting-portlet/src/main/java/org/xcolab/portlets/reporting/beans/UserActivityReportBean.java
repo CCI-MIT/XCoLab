@@ -5,11 +5,119 @@ import com.liferay.portal.model.User;
 public class UserActivityReportBean implements Comparable<UserActivityReportBean> {
 	private final User user;
 	private int commentsCount; 
-	private int proposalsCount;
-	private int proposalFinalistsCount;
-	private int proposalWinnersCount;
+	private int proposalsAuthoredCount;
+	private int proposalsContributedToCount;
+	private int proposalsAuthoredOrContributedToCount;
+	private int proposalFinalistsAuthoredCount;
+	private int proposalFinalistsContributedToCount;
+	private int proposalFinalistsAuthoredOrContributedToCount;
+	private int proposalWinnersAuthoredCount;
+	private int proposalWinnersContributedToCount;
+    private int proposalWinnersAuthoredOrContributedToCount;
     private int proposalVotesCount;
 	private int totalActivityCount;
+
+    public void addProposalAuthored() {
+        this.proposalsAuthoredCount++;
+    }
+    public void addProposalContributedTo() {
+        this.proposalsContributedToCount++;
+    }
+    public void addProposalAuthoredOrContributedTo() {
+        this.proposalsAuthoredOrContributedToCount++;
+    }
+
+    public void addProposalFinalistAuthored() {
+        this.proposalFinalistsAuthoredCount++;
+    }
+    public void addProposalFinalistContributedTo() {
+        this.proposalFinalistsContributedToCount++;
+    }
+    public void addProposalFinalistAuthoredOrContributedTo() {
+        this.proposalFinalistsAuthoredOrContributedToCount++;
+    }
+
+    public void addProposalWinnerAuthored() {
+        this.proposalWinnersAuthoredCount++;
+    }
+    public void addProposalWinnerContributedTo() {
+        this.proposalWinnersContributedToCount++;
+    }
+    public void addProposalWinnerAuthoredOrContributedTo() {
+        this.proposalWinnersAuthoredOrContributedToCount++;
+    }
+
+    public int getProposalWinnersAuthoredOrContributedToCount() {
+        return proposalWinnersAuthoredOrContributedToCount;
+    }
+
+    public void setProposalWinnersAuthoredOrContributedToCount(int proposalWinnersAuthoredOrContributedToCount) {
+        this.proposalWinnersAuthoredOrContributedToCount = proposalWinnersAuthoredOrContributedToCount;
+    }
+
+    public int getProposalsAuthoredCount() {
+        return proposalsAuthoredCount;
+    }
+
+    public void setProposalsAuthoredCount(int proposalsAuthoredCount) {
+        this.proposalsAuthoredCount = proposalsAuthoredCount;
+    }
+
+    public int getProposalsContributedToCount() {
+        return proposalsContributedToCount;
+    }
+
+    public void setProposalsContributedToCount(int proposalsContributedToCount) {
+        this.proposalsContributedToCount = proposalsContributedToCount;
+    }
+
+    public int getProposalsAuthoredOrContributedToCount() {
+        return proposalsAuthoredOrContributedToCount;
+    }
+
+    public void setProposalsAuthoredOrContributedToCount(int proposalsAuthoredOrContributedToCount) {
+        this.proposalsAuthoredOrContributedToCount = proposalsAuthoredOrContributedToCount;
+    }
+
+    public int getProposalFinalistsAuthoredCount() {
+        return proposalFinalistsAuthoredCount;
+    }
+
+    public void setProposalFinalistsAuthoredCount(int proposalFinalistsAuthoredCount) {
+        this.proposalFinalistsAuthoredCount = proposalFinalistsAuthoredCount;
+    }
+
+    public int getProposalFinalistsContributedToCount() {
+        return proposalFinalistsContributedToCount;
+    }
+
+    public void setProposalFinalistsContributedToCount(int proposalFinalistsContributedToCount) {
+        this.proposalFinalistsContributedToCount = proposalFinalistsContributedToCount;
+    }
+
+    public int getProposalFinalistsAuthoredOrContributedToCount() {
+        return proposalFinalistsAuthoredOrContributedToCount;
+    }
+
+    public void setProposalFinalistsAuthoredOrContributedToCount(int proposalFinalistsAuthoredOrContributedToCount) {
+        this.proposalFinalistsAuthoredOrContributedToCount = proposalFinalistsAuthoredOrContributedToCount;
+    }
+
+    public int getProposalWinnersAuthoredCount() {
+        return proposalWinnersAuthoredCount;
+    }
+
+    public void setProposalWinnersAuthoredCount(int proposalWinnersAuthoredCount) {
+        this.proposalWinnersAuthoredCount = proposalWinnersAuthoredCount;
+    }
+
+    public int getProposalWinnersContributedToCount() {
+        return proposalWinnersContributedToCount;
+    }
+
+    public void setProposalWinnersContributedToCount(int proposalWinnersContributedToCount) {
+        this.proposalWinnersContributedToCount = proposalWinnersContributedToCount;
+    }
 
     public int getProposalVotesCount() {
         return proposalVotesCount;
@@ -37,42 +145,6 @@ public class UserActivityReportBean implements Comparable<UserActivityReportBean
 	
 	public void addComment() {
 		this.commentsCount ++;
-	}
-
-	public int getProposalsCount() {
-		return proposalsCount;
-	}
-
-	public void setProposalsCount(int proposalsCount) {
-		this.proposalsCount = proposalsCount;
-	}
-	
-	public void addProposal() {
-		this.proposalsCount ++;
-	}
-
-	public int getProposalFinalistsCount() {
-		return proposalFinalistsCount;
-	}
-
-	public void setProposalFinalistsCount(int proposalFinalistsCount) {
-		this.proposalFinalistsCount = proposalFinalistsCount;
-	}
-	
-	public void addProposalFinalist() {
-		this.proposalFinalistsCount ++;
-	}
-
-	public int getProposalWinnersCount() {
-		return proposalWinnersCount;
-	}
-
-	public void setProposalWinnersCount(int proposalWinnersCount) {
-		this.proposalWinnersCount = proposalWinnersCount;
-	}
-	
-	public void addProposalWinner() {
-		this.proposalWinnersCount ++;
 	}
 
 	public int getTotalActivityCount() {

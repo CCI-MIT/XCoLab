@@ -285,28 +285,35 @@ public class ReportingController {
             if (!userActivities.containsKey(message.getAuthorId())) continue;
             userActivities.get(message.getAuthorId()).addComment();
         }
-        Map<Long, Set<Long>> proposalToUserIds = new HashMap<>();
+        Map<Long, Set<Long>> proposalToTeamMemberIds = new HashMap<>();
+        Map<Long, Long> proposalToAuthorId = new HashMap<>();
 
         for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE)) {
             //determine all team members of this proposal
+            boolean authorIsInMembers = false;
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
                 if (!userActivities.containsKey(user.getUserId())) continue;
 
-                if (proposalToUserIds.get(proposal.getProposalId()) == null) {
+                if (proposalToTeamMemberIds.get(proposal.getProposalId()) == null) {
                     Set<Long> userIds = new HashSet<Long>();
                     userIds.add(user.getUserId());
-                    proposalToUserIds.put(proposal.getProposalId(), userIds);
+                    proposalToTeamMemberIds.put(proposal.getProposalId(), userIds);
                 } else {
-                    proposalToUserIds.get(proposal.getProposalId()).add(user.getUserId());
+                    proposalToTeamMemberIds.get(proposal.getProposalId()).add(user.getUserId());
+                }
+                userActivities.get(user.getUserId()).addProposalContributedTo();
+                userActivities.get(user.getUserId()).addProposalAuthoredOrContributedTo();
+                if (user.getUserId() == proposal.getAuthorId()) {
+                    authorIsInMembers = true;
                 }
             }
-            //also add the proposal author's id (because it's a set, it cannot occur twice)
+            //add the proposal author's id
             if (userActivities.containsKey(proposal.getAuthorId())) {
-                proposalToUserIds.get(proposal.getProposalId()).add(proposal.getAuthorId());
-            }
-            //increase the proposal count for the users
-            for (Long userId : proposalToUserIds.get(proposal.getProposalId())) {
-                userActivities.get(userId).addProposal();
+                proposalToAuthorId.put(proposal.getProposalId(), proposal.getAuthorId());
+                userActivities.get(proposal.getAuthorId()).addProposalAuthored();
+                if (!authorIsInMembers) {
+                    userActivities.get(proposal.getAuthorId()).addProposalAuthoredOrContributedTo();
+                }
             }
         }
 
@@ -324,12 +331,29 @@ public class ReportingController {
 
 
         for (ProposalContestPhaseAttribute pcpa : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
-            if (proposalToUserIds.get(pcpa.getProposalId()) != null) {
-                for (Long userId : proposalToUserIds.get(pcpa.getProposalId())) {
-                    UserActivityReportBean uarb = userActivities.get(userId);
+            //check if this attribute is a "winning" ribbon. if yes, increase the winners' count for the proposal authors and contributors
+            if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
+                Long authorId = proposalToAuthorId.get(pcpa.getProposalId());
+                //team members
+                boolean authorIsInMembers = false;
+                if (proposalToTeamMemberIds.get(pcpa.getProposalId()) != null) {
+                    for (Long userId : proposalToTeamMemberIds.get(pcpa.getProposalId())) {
+                        UserActivityReportBean uarb = userActivities.get(userId);
+                        if (uarb == null) continue;
+                        uarb.addProposalWinnerContributedTo();
+                        uarb.addProposalWinnerAuthoredOrContributedTo();
+                        if (userId.equals(authorId)) {
+                            authorIsInMembers = true;
+                        }
+                    }
+                }
+                //author
+                if (authorId != null) {
+                    UserActivityReportBean uarb = userActivities.get(authorId);
                     if (uarb == null) continue;
-                    if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
-                        uarb.addProposalWinner();
+                    uarb.addProposalWinnerAuthored();
+                    if (!authorIsInMembers) {
+                        uarb.addProposalWinnerAuthoredOrContributedTo();
                     }
                 }
             }
@@ -342,12 +366,28 @@ public class ReportingController {
         }
 
         for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
-            if (proposalToUserIds.get(p2p.getProposalId()) != null) {
-                for (Long userId : proposalToUserIds.get(p2p.getProposalId())) {
-                    UserActivityReportBean uarb = userActivities.get(userId);
+            if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
+                Long authorId = proposalToAuthorId.get(p2p.getProposalId());
+                //team members
+                boolean authorIsInMembers = false;
+                if (proposalToTeamMemberIds.get(p2p.getProposalId()) != null) {
+                    for (Long userId : proposalToTeamMemberIds.get(p2p.getProposalId())) {
+                        UserActivityReportBean uarb = userActivities.get(userId);
+                        if (uarb == null) continue;
+                        uarb.addProposalFinalistContributedTo();
+                        uarb.addProposalFinalistAuthoredOrContributedTo();
+                        if (userId.equals(authorId)) {
+                            authorIsInMembers = true;
+                        }
+                    }
+                }
+                //author
+                if (authorId != null) {
+                    UserActivityReportBean uarb = userActivities.get(authorId);
                     if (uarb == null) continue;
-                    if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
-                        uarb.addProposalFinalist();
+                    uarb.addProposalFinalistAuthored();
+                    if (!authorIsInMembers) {
+                        uarb.addProposalFinalistAuthoredOrContributedTo();
                     }
                 }
             }
@@ -356,7 +396,14 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"userId", "screenName", "emailAddress", "registrationDate", "fullName", "commentsCount", "proposalsCount", "proposalFinalistsCount", "proposalWinnersCount", "totalActivityCount", "amountOfVotesCast", "userRole"});
+        csvWriter.writeNext(new String[]{
+                "userId", "screenName", "emailAddress",
+                "registrationDate", "fullName", "commentsCount",
+                "proposalsAuthoredCount", "proposalsContributedToCount", "proposalsAuthoredOrContributedToCount",
+                "proposalFinalistsAuthoredCount", "proposalFinalistsContributedToCount", "proposalFinalistsAuthoredOrContributedToCount",
+                "proposalWinnersAuthoredCount", "proposalWinnersContributedToCount", "proposalWinnersAuthoredOrContributedToCount",
+                "totalActivityCount", "amountOfVotesCast", "userRole"
+        });
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         for (UserActivityReportBean uarb : userActivities.values()) {
             User u = uarb.getUser();
@@ -376,14 +423,22 @@ public class ReportingController {
                 }
             }
 
-            csvWriter.writeNext(new String[]{String.valueOf(u.getUserId()), u.getScreenName(),
-                    u.getEmailAddress(),
-                    sdf.format(u.getCreateDate()),
-                    u.getFullName(),
-                    String.valueOf(uarb.getCommentsCount()), String.valueOf(uarb.getProposalsCount()), String.valueOf(uarb.getProposalFinalistsCount()),
-                    String.valueOf(uarb.getProposalWinnersCount()), String.valueOf(uarb.getTotalActivityCount()),
-                    ""+uarb.getProposalVotesCount(),
-                    String.valueOf(role.ordinal())});
+            csvWriter.writeNext(new String[]{
+                    String.valueOf(u.getUserId()), u.getScreenName(), u.getEmailAddress(),
+                    sdf.format(u.getCreateDate()), u.getFullName(), String.valueOf(uarb.getCommentsCount()),
+
+                    String.valueOf(uarb.getProposalsAuthoredCount()),
+                    String.valueOf(uarb.getProposalsContributedToCount()),
+                    String.valueOf(uarb.getProposalsAuthoredOrContributedToCount()),
+                    String.valueOf(uarb.getProposalFinalistsAuthoredCount()),
+                    String.valueOf(uarb.getProposalFinalistsContributedToCount()),
+                    String.valueOf(uarb.getProposalFinalistsAuthoredOrContributedToCount()),
+                    String.valueOf(uarb.getProposalWinnersAuthoredCount()),
+                    String.valueOf(uarb.getProposalWinnersContributedToCount()),
+                    String.valueOf(uarb.getProposalWinnersAuthoredOrContributedToCount()),
+
+                    String.valueOf(uarb.getTotalActivityCount()), ""+uarb.getProposalVotesCount(), String.valueOf(role.ordinal())
+            });
         }
 
 
