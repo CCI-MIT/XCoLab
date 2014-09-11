@@ -69,7 +69,7 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorIds"});
+        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorId", "teamMemberIds"});
 
         for (ProposalActivities a : pae.get()) {
             String authorIds = "";
@@ -83,6 +83,7 @@ public class ReportingController {
                     ""+a.getNumDaysCreationIsBeforeFinalistSelection(),
                     ""+a.getNumUpdates(),
                     ""+a.getNumDifferentDaysProposalUpdates(),
+                    ""+a.getProposal().getAuthorId(),
                     ""+authorIds
             });
         }
@@ -284,21 +285,28 @@ public class ReportingController {
             if (!userActivities.containsKey(message.getAuthorId())) continue;
             userActivities.get(message.getAuthorId()).addComment();
         }
-        Map<Long, List<Long>> proposalToUserIds = new HashMap<>();
+        Map<Long, Set<Long>> proposalToUserIds = new HashMap<>();
 
         for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE)) {
+            //determine all team members of this proposal
             for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
                 if (!userActivities.containsKey(user.getUserId())) continue;
 
-                userActivities.get(user.getUserId()).addProposal();
                 if (proposalToUserIds.get(proposal.getProposalId()) == null) {
-                    List<Long> userIds = new ArrayList<Long>();
+                    Set<Long> userIds = new HashSet<Long>();
                     userIds.add(user.getUserId());
                     proposalToUserIds.put(proposal.getProposalId(), userIds);
                 } else {
                     proposalToUserIds.get(proposal.getProposalId()).add(user.getUserId());
                 }
-
+            }
+            //also add the proposal author's id (because it's a set, it cannot occur twice)
+            if (userActivities.containsKey(proposal.getAuthorId())) {
+                proposalToUserIds.get(proposal.getProposalId()).add(proposal.getAuthorId());
+            }
+            //increase the proposal count for the users
+            for (Long userId : proposalToUserIds.get(proposal.getProposalId())) {
+                userActivities.get(userId).addProposal();
             }
         }
 
