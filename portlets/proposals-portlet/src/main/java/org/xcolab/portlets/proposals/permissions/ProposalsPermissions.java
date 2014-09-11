@@ -140,6 +140,7 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSeeSupportButton() throws PortalException, SystemException {
+        if (contestPhase.getContestPhaseType() == 13 || contestPhase.getContestPhaseType() == 15) return false;   /* Hide Button in voting phase */
         return user.isDefaultUser() || !isSupporter();
     }
 
@@ -148,6 +149,7 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanSupportProposal() throws PortalException, SystemException {
+
         return ! user.isDefaultUser();
     }
 
