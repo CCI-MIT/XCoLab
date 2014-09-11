@@ -105,10 +105,15 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                  */
 
                 DiscussionMessage discussion = null;
-                if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids[1]);
-                } else {
-                    discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(activity.getClassPK());
+                try{
+                    if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
+                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids[1]);
+                    } else {
+                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(activity.getClassPK());
+                    }
+                } catch (Exception e){
+                    // No discussion could be found - return null and discard activity
+                    return null;
                 }
                 DiscussionCategory category = DiscussionMessageLocalServiceUtil.getCategory(discussion);
                 DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
