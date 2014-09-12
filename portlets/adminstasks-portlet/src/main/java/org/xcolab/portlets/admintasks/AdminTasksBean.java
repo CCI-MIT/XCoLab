@@ -1069,6 +1069,7 @@ public class AdminTasksBean {
     }
 
     public void addJoinedActivityToRequiredUsers() throws SystemException, PortalException {
+        _log.fatal("Starting to add events");
         FacesContext context = FacesContext.getCurrentInstance();
         PortletRequest portletRequest = (PortletRequest)context.getExternalContext().getRequest();
         ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -1080,7 +1081,7 @@ public class AdminTasksBean {
                 _log.debug("Added activity for user " + u.getUserId());
             }
         }
-
+        _log.fatal("Finished adding events");
     }
 
 	public DataBean getDataBean() {
