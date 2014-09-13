@@ -32,12 +32,6 @@
                     <ice:commandButton action="#{adminTask.fixSocialActivitiesErrors}" value="Fix activities that can't be interpreted" />
                     <ice:commandButton action="#{adminTask.findWikiPageActivities}" value="Fix wiki activities" />
                     <ice:commandButton action="#{adminTask.fixProposalDiscussionUrlsAndDescriptions}" value="Fix proposal discussion urls and descriptions" />
-
-                    <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
-                        <h:column>
-                            <h:outputText value="#{m}" />
-                        </h:column>
-                    </h:dataTable>
                 </ice:panelTab>
 
                 <ice:panelTab label="Commons">
@@ -96,8 +90,28 @@
                 		<li><ice:commandButton action="#{fixCommentActivities.fixCommentActivities}" value="Fix comment activities" /></li>
                 	</ul>
                 </ice:panelTab>
+                <ice:panelTab label="Indexer">
+                    <span>If you trigger an indexer, wait till it is finished, don't use indexers simultanously.</span>
+                    <ul>
+                        <li><ice:commandButton action="#{adminTask.removeUsers}" value="Remove Users" /></li>
+                        <li><ice:commandButton action="#{adminTask.reindexUsers}" value="Reindex Users" /></li>
+                        <li><ice:commandButton action="#{adminTask.removeProposals}" value="Remove Proposals" /></li>
+                        <li><ice:commandButton action="#{adminTask.reindexProposals}" value="Reindex Proposals" /></li>
+                        <li><ice:commandButton action="#{adminTask.removeContests}" value="Remove Contests" /></li>
+                        <li><ice:commandButton action="#{adminTask.reindexContests}" value="Reindex Contests" /></li>
+                        <li><ice:commandButton action="#{adminTask.removeDiscussions}" value="Remove Discussions" /></li>
+                        <li><ice:commandButton action="#{adminTask.reindexDiscussions}" value="Reindex Discussions" /></li>
+                        <li><ice:commandButton action="#{adminTask.removeActivities}" value="Remove Activities" /></li>
+                        <li><ice:commandButton action="#{adminTask.reindexActivities}" value="Reindex Activities" /></li>
+                    </ul>
+                </ice:panelTab>
 
             </ice:panelTabSet>
+            <h:dataTable id="messages" value="#{adminTask.messages}" var="m">
+                <h:column>
+                    <h:outputText value="#{m}" />
+                </h:column>
+            </h:dataTable>
         </ice:form>
     </ice:portlet>
 </f:view>         

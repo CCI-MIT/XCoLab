@@ -21,6 +21,9 @@ import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.service.ProposalLocalServiceWrapper;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.model.*;
 import com.liferay.portal.service.*;
 import com.liferay.util.mail.MailEngineException;
@@ -94,6 +97,12 @@ public class AdminTasksBean {
 	public List<String> getMessages() {
 		return messages;
 	}
+
+
+    public AdminTasksBean(){
+        SessionRenderer.addCurrentSession("pushMessages");
+        messages = new ArrayList<String>();
+    }
 
 	public String populateFirstEmptySectionWithDescription()
 			throws SystemException, PortalException {
@@ -1083,6 +1092,94 @@ public class AdminTasksBean {
         }
         _log.fatal("Finished adding events");
     }
+
+    // ----- Reindex Tasks -----
+    public void removeUsers() throws SearchException, SystemException {
+        pushAjaxUpdate("Removing Users from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
+        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE))
+            indexer.delete(u);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void removeProposals() throws SearchException, SystemException {
+        pushAjaxUpdate("Removing Proposals from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(Proposal.class);
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE))
+            indexer.delete(p);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void removeContests() throws SearchException, SystemException {
+        pushAjaxUpdate("Removing Contests from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
+        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE))
+            indexer.delete(c);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void removeActivities() throws SearchException, SystemException {
+        pushAjaxUpdate("Removing Activities from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
+        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE))
+            indexer.delete(s);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void removeDiscussions() throws SearchException, SystemException {
+        pushAjaxUpdate("Removing Discussions from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
+        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE))
+            indexer.delete(m);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void reindexUsers() throws SearchException, SystemException {
+        pushAjaxUpdate("Reindexing Users index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
+        for (User u : UserLocalServiceUtil.getUsers(0,Integer.MAX_VALUE))
+           indexer.reindex(u);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void reindexProposals() throws SearchException, SystemException {
+        pushAjaxUpdate("Reindexing Proposals index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(Proposal.class);
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(0,Integer.MAX_VALUE))
+            indexer.reindex(p);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void reindexContests() throws SearchException, SystemException {
+        pushAjaxUpdate("Reindexing Contests index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
+        for (Contest c : ContestLocalServiceUtil.getContests(0,Integer.MAX_VALUE))
+            indexer.reindex(c);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void reindexActivities() throws SearchException, SystemException {
+        pushAjaxUpdate("Reindexing Activities from index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
+        for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE))
+            indexer.reindex(s);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+    public void reindexDiscussions() throws SearchException, SystemException {
+        pushAjaxUpdate("Reindexing Users Discussions index");
+        Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
+        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE))
+            indexer.reindex(m);
+        pushAjaxUpdateFinishedIndexerTask();
+    }
+
+    private void pushAjaxUpdateFinishedIndexerTask(){
+        pushAjaxUpdate("Finished triggering removal. Removal is done async, please check the frontend and verify that all items were removed before triggering reindex actions.");
+    }
+
+    private void pushAjaxUpdate(String message){
+        messages.add(message);
+        SessionRenderer.render("pushMessages");
+    }
+
+    private void updateLastAjaxUpdate(String message){
+        messages.remove(messages.size()-1);
+        messages.add((message));
+        SessionRenderer.render("pushMessages");
+    }
+
 
 	public DataBean getDataBean() {
 		return dataBean;
