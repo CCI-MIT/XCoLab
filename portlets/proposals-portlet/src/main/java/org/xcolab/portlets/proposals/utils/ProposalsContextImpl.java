@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.utils;
 import javax.portlet.PortletRequest;
 
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -161,26 +162,28 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // there is no connection between proposal and selected contest phase, check if phaseId was given by the user, if it was
                     // rethrow the exception, if it wasn't check if there is a connection and any phase for given contest if there is such connection
                     // fetch most recent one
-                    
-                    ContestPhase mostRecentPhase = null;
-                    if (phaseId == null || phaseId <= 0) {
-                        _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
-                        for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
-                            ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-                            if (cp.getContestPK() == contest.getContestPK()) {
-                                // we have a candidate
-                                if (mostRecentPhase == null || mostRecentPhase.compareTo(cp) < 0) {
-                                    mostRecentPhase = cp;
+                    // if proposal is beeing moved ignore missing p2p mapping
+                    if (request.getParameter("move")==null){
+                        ContestPhase mostRecentPhase = null;
+                        if (phaseId == null || phaseId <= 0) {
+                            _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
+                            for (Long contestPhaseId: Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId)) {
+                                ContestPhase cp = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+                                if (cp.getContestPK() == contest.getContestPK()) {
+                                    // we have a candidate
+                                    if (mostRecentPhase == null || mostRecentPhase.compareTo(cp) < 0) {
+                                        mostRecentPhase = cp;
+                                    }
                                 }
                             }
-                        }
-                        if (mostRecentPhase == null) {
+                            if (mostRecentPhase == null) {
+                                throw e;
+                            }
+                            proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
+                            contestPhase = mostRecentPhase;
+                        } else {
                             throw e;
                         }
-                        proposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, mostRecentPhase.getContestPhasePK());
-                        contestPhase = mostRecentPhase;
-                    } else {
-                        throw e;
                     }
                 }
                 proposal = ProposalLocalServiceUtil.getProposal(proposalId);

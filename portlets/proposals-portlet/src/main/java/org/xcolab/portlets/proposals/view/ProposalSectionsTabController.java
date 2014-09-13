@@ -39,8 +39,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         
         //findEntitiesAndPopulateModel(proposalId, contestId, phaseId, model);
-        
-        model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request)));
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
         
@@ -85,7 +83,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         	
         	model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
         	model.addAttribute("hasNotMappedSections", hasNotMappedSections);
+        } else {
+            model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalsContext.getProposalWrapped(request)));
         }
+
         
         if (edit || move) {
             return "proposalDetails_edit";
