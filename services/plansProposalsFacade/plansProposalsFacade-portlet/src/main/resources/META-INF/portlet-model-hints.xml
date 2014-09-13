@@ -964,8 +964,12 @@
 		<field name="categoryId" type="long" />
 		<field name="firstNames" type="String" />
 		<field name="lastName" type="String" />
-		<field name="url" type="String" />
-		<field name="photoUrl" type="String" />
+		<field name="url" type="String">
+            <hint name="max-length">255</hint>
+        </field>
+		<field name="photoUrl" type="String">
+            <hint name="max-length">255</hint>
+        </field>
 		<field name="role" type="String" />
 		<field name="organization" type="String" />
 		<field name="sort" type="int" />
