@@ -33,8 +33,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 public class ProposalLocalServiceImplTest {
 	private static ProposalLocalService proposalLocalServiceImpl;
 	private static AbstractApplicationContext ctx;

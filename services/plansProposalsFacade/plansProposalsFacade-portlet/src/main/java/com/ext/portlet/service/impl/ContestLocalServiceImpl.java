@@ -586,10 +586,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private void reindex(Contest contest) {
         Indexer indexer = IndexerRegistryUtil.getIndexer(Contest.class);
 
+        String errorMessage = "Can't reindex contest " + contest.getContestPK();
         try {
             indexer.reindex(contest.getContestPK());
         } catch (SearchException e) {
-            _log.error("Can't reindex contest " + contest.getContestPK(), e);
+            _log.error(errorMessage, e);
+        } catch (NullPointerException e) {
+            _log.error(errorMessage, e);
         }
     }
     
