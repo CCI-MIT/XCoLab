@@ -15,6 +15,9 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.portlets.proposals.utils.ProposalsURLGenerator;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -29,8 +32,8 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_LABEL = "";
     
     @RequestMapping(params = {"action=voteOnProposalAction"})
-    public void handleAction(ActionRequest request, Model model, ActionResponse response) 
-                    throws PortalException, SystemException, ProposalsAuthorizationException {
+    public void handleAction(ActionRequest request, Model model, ActionResponse response)
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -69,10 +72,15 @@ public class VoteOnProposalActionController {
             if (proposalsContext.getUser(request) == null || proposalsContext.getUser(request).getUserId() == 10115) {
                 /* User is not logged in - don't count vote and let user log in*/
                 request.setAttribute("promptLoginWindow","true");
+                return;
             } else {
                 throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
             }
         }
+        // Redirect to prevent page-refreshing from influencing the vote
+        response.sendRedirect(ProposalsURLGenerator.getProposalURL(
+                proposalsContext.getProposal(request))
+        );
     }
 
 }
