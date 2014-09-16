@@ -159,7 +159,7 @@
                                         <c:if test="${pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER'}">
                                             who is not in this proposal's team
                                         </c:if>
-                                        . If this section is not completed, these points will not be allocated.
+                                        - if this section is not completed, these points will not be allocated.
                                     </c:otherwise>
                                 </c:choose>
 
