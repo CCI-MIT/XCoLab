@@ -4,7 +4,11 @@ import javax.portlet.PortletRequest;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.service.ContestLocalService;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseType;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -106,29 +110,50 @@ interface ProposalTabCanAccessAlgorithm {
         private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
     };
 
-    public final static ProposalTabCanAccessAlgorithm pointsAccess = new ProposalTabCanAccessAlgorithm() {
+
+    public final static ProposalTabCanAccessAlgorithm pointsViewAccess = new ProposalTabCanAccessAlgorithm() {
 
         @Override
         public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
             try {
-                //check if the contest has
                 Contest contest = context.getContest(request);
 
-                /*if (contest.getDefaultParentPointType() > 0 && permissions.getCanEdit()) {
-                    return true;
-                } else {
-                    return false;
-                }*/
-                //for now, allow every proposal author or team member to change the points
-                return (contest.getDefaultParentPointType() > 0 && (permissions.getIsTeamMember() || permissions.getCanAdmin()));
-            } catch (SystemException e) {
-                _log.error("can't check if user is allowed to access points", e);
-            } catch (PortalException e) {
+                //first, check if the contest has points activated.
+                if ((contest != null && contest.getDefaultParentPointType() > 0)) {
+                    //if yes, check if contest phase allows viewing
+                    Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
+                    return (pointsAccessible != null && pointsAccessible >= 1);
+                }
+            } catch (SystemException | PortalException e) {
                 _log.error("can't check if user is allowed to access points", e);
             }
             return false;
         }
         private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
     };
+
+
+    public final static ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
+
+        @Override
+        public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+            try {
+                Contest contest = context.getContest(request);
+
+                //first, check if user is a team member and if the contest has points activated.
+                if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdmin())) {
+                    //if yes, check if contest phase allows editing
+                    Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
+                    return (pointsAccessible != null && pointsAccessible >= 2);
+                }
+            } catch (SystemException | PortalException e) {
+                _log.error("can't check if user is allowed to edit points", e);
+            }
+            return false;
+        }
+        private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+    };
+
+
     
 }

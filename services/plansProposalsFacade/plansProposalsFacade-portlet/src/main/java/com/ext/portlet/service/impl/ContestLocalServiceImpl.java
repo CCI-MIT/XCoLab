@@ -972,4 +972,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     	
     }
+
+    public Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) throws SystemException, PortalException {
+        //check if the phase, the contest is currently in, allows for editing
+        ContestPhase activePhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        if (activePhase != null) {
+            com.ext.portlet.model.ContestPhaseType cpType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
+            if (cpType != null) {
+                return cpType.getPointsAccessible();
+            }
+        }
+        return null;
+    }
 }

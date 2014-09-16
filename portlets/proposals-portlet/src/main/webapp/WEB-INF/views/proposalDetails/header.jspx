@@ -75,8 +75,8 @@
 		</div>
 		<!-- /inner -->
 	</div>
-	<!-- /proposal-head -->	
-	<c:if test="${currentTabWrapped.canEdit }">
+	<!-- /proposal-head -->
+	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS'}">
 		<div class="edit-prop-wrap">
 			<div class="inner">
 				<div class="edit-prop">

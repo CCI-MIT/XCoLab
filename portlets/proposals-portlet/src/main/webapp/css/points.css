@@ -161,13 +161,13 @@ td.left.small .points-container, td.left.small .arrow-down {
         padding-right: 5px;
     }
     .percentageInput {
-        input {
+        input, .input {
             width: 50px;
             margin-left: 5px;
             margin-right: 15px;
             float: none;
         }
-        span, input {
+        span, input, .input {
           display: inline-block;
           vertical-align: baseline;
         }

@@ -20,11 +20,13 @@
         <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
             <jsp:include page="./proposalDetails/proposalPointTypes.jspx"/>
 
-            <div style="width: 229px; margin:0 auto;" class="clearfix">
-                <div class="blue-button">
-                    <a style="cursor:pointer;width:200px;text-align:center" id="submitPointsForm">Save</a>
+            <c:if test="${currentTabWrapped.canEdit}">
+                <div style="width: 229px; margin:0 auto;" class="clearfix">
+                    <div class="blue-button">
+                        <a style="cursor:pointer;width:200px;text-align:center" id="submitPointsForm">Save</a>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </form:form>
         <script type="text/javascript">
             var usersMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.screenName}"/>':'<c:out value="${user.userId}"/>',</c:forEach>};

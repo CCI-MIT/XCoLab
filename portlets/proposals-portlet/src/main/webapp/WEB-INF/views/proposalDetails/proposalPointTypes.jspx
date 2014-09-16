@@ -130,19 +130,21 @@
                                 (start typing the member's screen name, and auto-complete will help you).
                                 If you do not complete this section, these points will not be allocated.
                             </p>
-                            <label class="username-picker">
-                                Username:<br />
-                                <input id="userSelectorInput${pointType.id}" type="text" class="popupreg_input messageRecipients${pointType.id}" />
-                                <input type="hidden" class="messageRecipientsInput${pointType.id}" />
-                            </label>
+                            <c:if test="${currentTabWrapped.canEdit}">
+                                <label class="username-picker">
+                                    Username:<br />
+                                    <input id="userSelectorInput${pointType.id}" type="text" class="popupreg_input messageRecipients${pointType.id}" />
+                                    <input type="hidden" class="messageRecipientsInput${pointType.id}" />
+                                </label>
 
-                            <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
-                            <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p></p></div>
-                            <script type="text/javascript">
-                                jQuery(document).ready(function() {
-                                    initUserAutocomplete(${pointType.id});
-                                });
-                            </script>
+                                <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
+                                <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p></p></div>
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function() {
+                                        initUserAutocomplete(${pointType.id}, ${currentTabWrapped.canEdit});
+                                    });
+                                </script>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                     <c:set var="percentageToDistribute"><fmt:formatNumber type="number" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100}"/></c:set>
@@ -161,15 +163,25 @@
                             <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
                                 <li class="listItem${pointType.id}-${userId}">
                                     <label class="percentageInput">
-                                        <form:input data-changed-by-user="true"
-                                                    path="assignments[${pointType.id}][${userId}]"
-                                                    class="popupreg_input"
-                                                    value="${assignPointsBean.assignments[pointType.id][userId]}"
-                                                />
+                                        <c:choose>
+                                            <c:when test="${currentTabWrapped.canEdit}">
+                                                <form:input data-changed-by-user="true"
+                                                        path="assignments[${pointType.id}][${userId}]"
+                                                        class="popupreg_input"
+                                                        value="${assignPointsBean.assignments[pointType.id][userId]}"
+                                                    />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="input" data-value="${assignPointsBean.assignments[pointType.id][userId]}">
+
+                                                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${assignPointsBean.assignments[pointType.id][userId]}"/> %
+                                                </span>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <a href="/web/guest/member/-/member/userId/${userId}" target="_blank">
                                             <span class="replaceUserId">${userId}</span>
                                         </a>
-                                        <c:if test="${pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
+                                        <c:if test="${currentTabWrapped.canEdit and pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
                                             <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
                                         </c:if>
                                     </label>
