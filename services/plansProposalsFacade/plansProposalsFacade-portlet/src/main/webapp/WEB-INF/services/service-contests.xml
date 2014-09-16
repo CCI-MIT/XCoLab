@@ -154,6 +154,7 @@
         <column name="description" type="String" />
         <column name="status" type="String" />
         <column name="invisible" type="boolean" />
+        <column name="pointsAccessible" type="int" />
       </entity>
       
       <entity name="ContestPhaseColumn" local-service="true">

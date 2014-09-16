@@ -165,7 +165,8 @@ create table xcolab_ContestPhaseType (
 	name VARCHAR(1024) null,
 	description TEXT null,
 	status VARCHAR(75) null,
-	invisible BOOLEAN
+	invisible BOOLEAN,
+	pointsAccessible INTEGER
 );
 
 create table xcolab_ContestTeamMember (
@@ -852,8 +853,8 @@ create table xcolab_StaffMember (
 	categoryId LONG,
 	firstNames VARCHAR(75) null,
 	lastName VARCHAR(75) null,
-	url VARCHAR(75) null,
-	photoUrl VARCHAR(75) null,
+	url VARCHAR(255) null,
+	photoUrl VARCHAR(255) null,
 	role VARCHAR(75) null,
 	organization VARCHAR(75) null,
 	sort INTEGER

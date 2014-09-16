@@ -42,6 +42,7 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
         attributes.put("invisible", getInvisible());
+        attributes.put("pointsAccessible", getPointsAccessible());
 
         return attributes;
     }
@@ -76,6 +77,12 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
 
         if (invisible != null) {
             setInvisible(invisible);
+        }
+
+        Integer pointsAccessible = (Integer) attributes.get("pointsAccessible");
+
+        if (pointsAccessible != null) {
+            setPointsAccessible(pointsAccessible);
         }
     }
 
@@ -207,6 +214,26 @@ public class ContestPhaseTypeWrapper implements ContestPhaseType,
     @Override
     public void setInvisible(boolean invisible) {
         _contestPhaseType.setInvisible(invisible);
+    }
+
+    /**
+    * Returns the points accessible of this contest phase type.
+    *
+    * @return the points accessible of this contest phase type
+    */
+    @Override
+    public int getPointsAccessible() {
+        return _contestPhaseType.getPointsAccessible();
+    }
+
+    /**
+    * Sets the points accessible of this contest phase type.
+    *
+    * @param pointsAccessible the points accessible of this contest phase type
+    */
+    @Override
+    public void setPointsAccessible(int pointsAccessible) {
+        _contestPhaseType.setPointsAccessible(pointsAccessible);
     }
 
     @Override

@@ -287,6 +287,7 @@
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="invisible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="pointsAccessible" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestTeamMemberImpl" table="xcolab_ContestTeamMember">
 		<cache usage="read-write" />

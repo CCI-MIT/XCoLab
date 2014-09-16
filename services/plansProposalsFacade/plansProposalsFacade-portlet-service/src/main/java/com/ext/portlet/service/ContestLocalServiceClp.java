@@ -144,6 +144,8 @@ public class ContestLocalServiceClp implements ContestLocalService {
     private String[] _methodParameterTypes67;
     private String _methodName68;
     private String[] _methodParameterTypes68;
+    private String _methodName69;
+    private String[] _methodParameterTypes69;
 
     public ContestLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -446,6 +448,10 @@ public class ContestLocalServiceClp implements ContestLocalService {
         _methodName68 = "getWinnerProposal";
 
         _methodParameterTypes68 = new String[] { "long" };
+
+        _methodName69 = "getPointsAccessibleForActivePhaseOfContest";
+
+        _methodParameterTypes69 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     @Override
@@ -2507,5 +2513,38 @@ public class ContestLocalServiceClp implements ContestLocalService {
         }
 
         return (com.ext.portlet.model.Proposal) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.lang.Integer getPointsAccessibleForActivePhaseOfContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName69,
+                    _methodParameterTypes69,
+                    new Object[] { ClpSerializer.translateInput(contest) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.lang.Integer) ClpSerializer.translateOutput(returnObj);
     }
 }

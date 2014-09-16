@@ -338,6 +338,7 @@ public class ContestPhaseTypePersistenceImpl extends BasePersistenceImpl<Contest
         contestPhaseTypeImpl.setDescription(contestPhaseType.getDescription());
         contestPhaseTypeImpl.setStatus(contestPhaseType.getStatus());
         contestPhaseTypeImpl.setInvisible(contestPhaseType.isInvisible());
+        contestPhaseTypeImpl.setPointsAccessible(contestPhaseType.getPointsAccessible());
 
         return contestPhaseTypeImpl;
     }
