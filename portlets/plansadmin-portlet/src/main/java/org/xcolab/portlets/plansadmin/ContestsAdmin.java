@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public class ContestsAdmin {
     private ContestWrapper editedContest;
+    private ArrayList<Long> materializedPoints;
     
     public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<ContestWrapper>();
@@ -45,6 +46,14 @@ public class ContestsAdmin {
         Contest contest = editedContest.getContest();
         PointsLocalServiceUtil.distributePoints(contest.getContestPK());
         return null;
+    }
+
+    public String pointsPreview() throws PortalException, SystemException {
+        Contest contest = editedContest.getContest();
+        this.materializedPoints = new ArrayList<Long>();
+        this.materializedPoints.add(5L);
+        //PointsLocalServiceUtil.distributePoints(contest.getContestPK());
+        return "pointsPreview";
     }
 
     public void setEditedContest(ContestWrapper editedContest) {
