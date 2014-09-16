@@ -173,8 +173,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <span class="input" data-value="${assignPointsBean.assignments[pointType.id][userId]}">
-
-                                                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${assignPointsBean.assignments[pointType.id][userId]}"/> %
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignments[pointType.id][userId]}"/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>

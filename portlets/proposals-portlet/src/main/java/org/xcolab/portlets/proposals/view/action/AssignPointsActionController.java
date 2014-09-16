@@ -18,9 +18,11 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.*;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,11 +49,18 @@ public class AssignPointsActionController {
     @RequestMapping(params = {"action=savePointAssignments"})
     public void savePointAssignments(ActionRequest request, Model model,
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
-                                BindingResult result)
+                                BindingResult result, PortletRequest portletRequest)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         if (result.hasErrors()) {
             return;
         }
+
+        // Security handling
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!ProposalTab.POINTS.getCanEdit(permissions, proposalsContext, portletRequest)) {
+            return;
+        }
+
 
         Proposal proposal = proposalsContext.getProposal(request);
         User currentUser = proposalsContext.getUser(request);
