@@ -3,10 +3,13 @@ package org.xcolab.portlets.plansadmin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.portlet.PortletRequest;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
+import com.liferay.portal.service.ServiceContext;
 import org.xcolab.portlets.plansadmin.wrappers.ContestWrapper;
 
 import com.ext.portlet.model.Contest;
@@ -45,6 +48,19 @@ public class ContestsAdmin {
     	Contest contest = editedContest.getContest();
     	PointsLocalServiceUtil.distributePoints(contest.getContestPK());
     	return null;
+    }
+
+    public String sendSupport2VotesEmail() throws PortalException, SystemException {
+        Contest contest = editedContest.getContest();
+
+        PortletRequest request = (PortletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
+                request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
+
+        ContestLocalServiceUtil.transferSupportsToVote(contest, serviceContext);
+
+        return null;
     }
 
     public void setEditedContest(ContestWrapper editedContest) {
