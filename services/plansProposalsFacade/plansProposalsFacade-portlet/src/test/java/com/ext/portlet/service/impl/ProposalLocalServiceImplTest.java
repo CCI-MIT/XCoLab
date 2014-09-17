@@ -9,80 +9,26 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.xcolab.services.EventBusService;
 
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalService;
-import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
-import com.liferay.portal.service.MockContextProvider;
-import com.liferay.portal.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
-import com.liferay.portal.util.InitUtil;
 
-public class ProposalLocalServiceImplTest {
-	private static ProposalLocalService proposalLocalServiceImpl;
-	private static AbstractApplicationContext ctx;
+public class ProposalLocalServiceImplTest extends XCoLabTest {
 	private Random rand = new Random();
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
-	
-	@BeforeClass
-	public static void beforeTest() throws Exception {
-	    
-	    new DataSourceFactoryImpl();
-	    
-	    new ServiceBeanAutoProxyCreator();
-	    new MockContextProvider();
-	    System.out.println("Before init");
-	    
-	    InitUtil.initWithSpring();
-	    System.out.println("after init with spring before ctx");
-        ResourceActionLocalServiceUtil.checkResourceActions();
-        CompanyThreadLocal.setCompanyId(10112l);
-	    
-	    /*
-	    ctx = new ArrayApplicationContext(new String[] { 
-	            "META-INF/test-spring.xml", 
-	            "META-INF/util-spring.xml", 
-	            "META-INF/counter-spring.xml",
-	            "META-INF/hibernate-spring.xml",
-	            "META-INF/base-spring.xml", 
-	            "META-INF/ext-spring.xml",
-	            "META-INF/portlet-spring.xml",
-	            "META-INF/infrastructure-spring.xml", 
-	            "META-INF/management-spring.xml",
 
-	            
-	            "META-INF/portlet-spring-override.xml"});
-	            */
-	    /*
-	    ctx = new ArrayApplicationContext(new String[] {
-	            "META-INF/counter-spring.xml",
-	            "META-INF/hibernate-spring.xml",
-	            "META-INF/infrastructure-spring.xml",
-	            "META-INF/test-spring.xml"
-	    });
-	    */
-	    
-        System.out.println("initialized?");
-        proposalLocalServiceImpl = (ProposalLocalService) PortalBeanLocatorUtil.locate(ProposalLocalService.class.getName());
-	    //proposalLocalServiceImpl = ctx.getBean(ProposalLocalService.class);
-	}
 
     @Test
     public void testProposalCreation() throws SystemException, PortalException {
@@ -92,10 +38,10 @@ public class ProposalLocalServiceImplTest {
         System.out.println(users);
         
         PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(authorId));
-        Proposal p = proposalLocalServiceImpl.create(authorId, 1);
+        Proposal p = proposalLocalService.create(authorId, 1);
         assertEquals(authorId, p.getAuthorId());
         
-        Proposal rawFromDb = proposalLocalServiceImpl.getProposal(p.getProposalId());
+        Proposal rawFromDb = proposalLocalService.getProposal(p.getProposalId());
         assertEquals(rawFromDb.getProposalId(), p.getProposalId());
         assertFalse(rawFromDb == p);
         
@@ -118,9 +64,9 @@ public class ProposalLocalServiceImplTest {
         long attributeNumericVal = rand.nextLong();
         double attributeRealVal = rand.nextDouble();
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId, 1);
+        Proposal proposal = proposalLocalService.create(authorId, 1);
         
-        ProposalAttribute attribute = proposalLocalServiceImpl.setAttribute(
+        ProposalAttribute attribute = proposalLocalService.setAttribute(
                 authorId, 
                 proposal.getProposalId(), 
                 attributeName, 
@@ -129,7 +75,7 @@ public class ProposalLocalServiceImplTest {
                 attributeNumericVal, 
                 attributeRealVal);
         
-        ProposalAttribute fetchedAttribute = proposalLocalServiceImpl.getAttribute(proposal.getProposalId(), attributeName, attributeAdditionalId);
+        ProposalAttribute fetchedAttribute = proposalLocalService.getAttribute(proposal.getProposalId(), attributeName, attributeAdditionalId);
         
         assertEquals(attribute, fetchedAttribute);
         
@@ -156,10 +102,10 @@ public class ProposalLocalServiceImplTest {
                 new ProposalAttributeValues(authorId, "NAME", 0, "test name" + rand.nextLong(), rand.nextLong(), rand.nextDouble())
         };
         
-        Proposal proposal = proposalLocalServiceImpl.create(authorId, 1);
+        Proposal proposal = proposalLocalService.create(authorId, 1);
         
         for (ProposalAttributeValues valueToSet: valuesToSet) {
-            proposalLocalServiceImpl.setAttribute(valueToSet.authorId, proposal.getProposalId(), 
+            proposalLocalService.setAttribute(valueToSet.authorId, proposal.getProposalId(), 
                     valueToSet.attributeName, valueToSet.additionalId, valueToSet.stringValue, 
                     valueToSet.numericValue, valueToSet.realValue);
         }
@@ -167,13 +113,13 @@ public class ProposalLocalServiceImplTest {
         for (int i=0; i < valuesToSet.length; i++) {
             int version = i+1;
             
-            ProposalVersion proposalVersion = proposalLocalServiceImpl.getProposalVersion(proposal.getProposalId(), version);
+            ProposalVersion proposalVersion = proposalLocalService.getProposalVersion(proposal.getProposalId(), version);
             assertEquals(valuesToSet[i].authorId, proposalVersion.getAuthorId());
             assertEquals(valuesToSet[i].attributeName, proposalVersion.getUpdateType());
             assertEquals(valuesToSet[i].additionalId, proposalVersion.getUpdateAdditionalId());
             
             
-            List<ProposalAttribute> proposalVersionAttributes = proposalLocalServiceImpl.getAttributes(proposal.getProposalId(), version);
+            List<ProposalAttribute> proposalVersionAttributes = proposalLocalService.getAttributes(proposal.getProposalId(), version);
             
             for (ProposalAttribute attribute: proposalVersionAttributes) {
                 // find the value for current attribute in values to set by iterating from the beginning
@@ -198,7 +144,7 @@ public class ProposalLocalServiceImplTest {
             assertEquals(differentAttributes.size(), proposalVersionAttributes.size());
         }
         
-        proposal = proposalLocalServiceImpl.getProposal(proposal.getProposalId());
+        proposal = proposalLocalService.getProposal(proposal.getProposalId());
         assertEquals(valuesToSet.length, proposal.getCurrentVersion());
         
         

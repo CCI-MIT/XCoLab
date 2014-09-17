@@ -3,115 +3,32 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
-import com.ext.portlet.service.impl.mock.UserLocalServiceMock;
-import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.*;
-import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
-import com.liferay.portal.util.InitUtil;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.xcolab.services.EventBusService;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
-public class PointsLocalServiceImplTest {
-	private static UserLocalService userLocalService;
-	private static PasswordPolicyLocalService passwordPolicyLocalService;
-	private static ContestLocalService contestLocalService;
-	private static ContestPhaseLocalService contestPhaseLocalService;
-	private static ProposalLocalService proposalLocalService;
-	private static Proposal2PhaseLocalService proposal2PhaseLocalService;
-    private static ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
-	private static PointsLocalService pointsLocalService;
-	private static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
-	private static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
-
-    private static SimpleDateFormat dateFormat;
-    private static int contestPhaseIdCount = 0;
-
-	private static AbstractApplicationContext ctx;
-	private Random rand = new Random();
-
-    @BeanReference(type = EventBusService.class)
-    private EventBusService eventBus;
-	
-	@BeforeClass
-	public static void beforeTest() throws Exception {
-        dateFormat = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.ENGLISH);
-	    
-	    new DataSourceFactoryImpl();
-	    
-	    new ServiceBeanAutoProxyCreator();
-	    new MockContextProvider();
-	    System.out.println("Before init");
-	    
-	    InitUtil.initWithSpring();
-	    System.out.println("after init with spring before ctx");
-        ResourceActionLocalServiceUtil.checkResourceActions();
-        CompanyThreadLocal.setCompanyId(10112l);
-
-        System.out.println("initialized?");
-        passwordPolicyLocalService = (PasswordPolicyLocalService) PortalBeanLocatorUtil.locate(PasswordPolicyLocalService.class.getName());
-        userLocalService = (UserLocalService) PortalBeanLocatorUtil.locate(UserLocalService.class.getName());
-        contestLocalService = (ContestLocalService) PortalBeanLocatorUtil.locate(ContestLocalService.class.getName());
-        contestPhaseLocalService = (ContestPhaseLocalService) PortalBeanLocatorUtil.locate(ContestPhaseLocalService.class.getName());
-        proposalLocalService = (ProposalLocalService) PortalBeanLocatorUtil.locate(ProposalLocalService.class.getName());
-        proposal2PhaseLocalService = (Proposal2PhaseLocalService) PortalBeanLocatorUtil.locate(Proposal2PhaseLocalService.class.getName());
-        proposalContestPhaseAttributeLocalService = (ProposalContestPhaseAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalContestPhaseAttributeLocalService.class.getName());
-        pointsLocalService = (PointsLocalService) PortalBeanLocatorUtil.locate(PointsLocalService.class.getName());
-        pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
-        planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
-	}
+public class PointsLocalServiceImplTest extends XCoLabTest {
+    private int contestPhaseIdCount = 0;
 
     @Test
     public void testGlobalContestHypotheticalPoints() throws SystemException, PortalException, ParseException {
+        this.setupBasicDataset();
+
         long adminId = 10144L;
         PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
-
-        //create default password policy
-        passwordPolicyLocalService.addPasswordPolicy(10115L, true, "Default Password Policy", "Default Password Policy", true, false, 0L, false, true, 6, 0, 6, 0, 0, 0, "", false, 0, false, 8640000L, 0L, 0, false, 3, 600L, 0L, 0L, new ServiceContext());
 
         //create 10 different authors
         List<User> users = new ArrayList<User>();
         for (int i = 0; i < 10; i++) {
-            User user = userLocalService.createUser(50000+i);
-            user.setScreenName("thurner"+i);
-            user.setEmailAddress("john.doe+"+i+"@example.com");
-            user.setCompanyId(10112L);
-            user.setPasswordUnencrypted("test11");
-            user.setPasswordEncrypted(false);
-            user.setPasswordEncrypted(false);
-
-            userLocalService.addUser(user);
-
-            /*User user = userLocalService.addUserWithWorkflow(
-                    10144L, 10112L, false,
-                    "test11",
-                    "test11", false,
-                    "thurner"+i,
-                    "john.doe+"+i+"@example.com", 0L, "",
-                    Locale.ENGLISH,
-                    "John", "",
-                    "Doe", 0, 0, true, 1, 1,
-                    1970, "", new long[] {}, new long[] {},
-                    new long[] {}, new long[] {}, true, new ServiceContext());
-            users.add(user);*/
+            users.add(this.createUser(50000+i));
         }
-
 
         //create global contest
         Contest globalContest = contestLocalService.createNewContest(adminId, "Test-Global-Contest");
@@ -159,17 +76,18 @@ public class PointsLocalServiceImplTest {
             //this contest did not expire yet.
             ContestPhase sCp6 = createContestPhase(sideContest, 17, false, "", "2015-09-24 00:00:01", null);
 
-            for (int j = 0; j < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 Proposal proposal = proposalLocalService.create(users.get(j+(i*3)).getUserId(), sCp1.getContestPhasePK());
                 sideProposals.add(proposal);
 
                 //copy to first phases
                 copyProposalToPhase(proposal, sCp2);
             }
+            sideContests.add(sideContest);
         }
 
         //create some links from global proposals to side proposals
-        String sectionText = "These are the subproposals we link to:\n"+
+            String sectionText = "These are the subproposals we link to:\n"+
                 "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(0).getProposalId()+"\n\n"+
                 "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(1).getProposalId()+"\n\n"+
                 "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(4).getProposalId()+" and "+
@@ -190,6 +108,8 @@ public class PointsLocalServiceImplTest {
         userLocalService.addGroupUsers(globalProposals.get(7).getGroupId(), new long[] {users.get(1).getUserId()});
         userLocalService.addGroupUsers(sideProposals.get(0).getGroupId(), new long[] {users.get(1).getUserId()});
         userLocalService.addGroupUsers(sideProposals.get(1).getGroupId(), new long[] {users.get(2).getUserId()});
+
+
 
         //set some point distributions
         //GLOBAL PROPOSAL 6
@@ -306,6 +226,8 @@ public class PointsLocalServiceImplTest {
                 users.get(0).getUserId()
         );
 
+
+
         //run the hypothetical points distribution now.
         pointsLocalService.distributePoints(globalContest.getContestPK());
 
@@ -336,6 +258,8 @@ public class PointsLocalServiceImplTest {
 
         return cp;
     }
+
+
 
 
 }
