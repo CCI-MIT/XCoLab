@@ -230,9 +230,10 @@ public class MainViewController {
 				SessionErrors.clear(request);
 				response.setRenderParameter("error", "true");
 				response.setRenderParameter("recaptchaError", "true");
+                response.setRenderParameter("redirect", HtmlUtil.escape(redirect));
 			} else {
 				try {
-					completeRegistration(request, response, newAccountBean, null, false);
+					completeRegistration(request, response, newAccountBean, redirect, false);
 
 				} catch (PortalException | SystemException e) {
 					e.printStackTrace();
@@ -243,6 +244,7 @@ public class MainViewController {
 			}
 		} else {
 			response.setRenderParameter("error", "true");
+            response.setRenderParameter("redirect", HtmlUtil.escape(redirect));
 		}        
         SessionErrors.clear(request);
         SessionMessages.clear(request);
