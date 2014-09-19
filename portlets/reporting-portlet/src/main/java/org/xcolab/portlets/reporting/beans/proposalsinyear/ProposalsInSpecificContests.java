@@ -136,9 +136,10 @@ public class ProposalsInSpecificContests {
             try {
                 proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
                 if (proposalContestPhaseAttribute.getNumericValue() == 0) continue;
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                //it's visible then
+
             } catch (SystemException e) {
+                e.printStackTrace();
+            } catch (NoSuchProposalContestPhaseAttributeException e) {
                 e.printStackTrace();
             }
             targetProposals.add(proposal);

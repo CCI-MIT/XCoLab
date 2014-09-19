@@ -16,10 +16,6 @@
 	
 	
   <modules>
-    <module>sample-service</module>
-    <module>proposalsService</module>
-    <module>modshapeService</module>
-    <module>xcolab-core-services</module>
     <module>plansProposalsFacade</module>
   </modules>
 

@@ -39,6 +39,5 @@
         <module>blogsstats-portlet</module>
         <module>landingpage-portlet</module>
         <module>randomproposals-portlet</module>
-        <module>usertracker-portlet</module>
     </modules>
 </project>
