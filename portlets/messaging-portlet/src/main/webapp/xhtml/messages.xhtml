@@ -22,7 +22,7 @@
       </div>
       
       <ice:form>
-      <ice:dataTable id="messagesTable" rows="10" styleClass="colab" value="#{messagingBean.data}" var="message" rowClasses="t,nt">
+      <ice:dataTable id="messagesTable" rows="10" styleClass="colab" columnWidths="25px,325px,200px,200px" value="#{messagingBean.data}" var="message" rowClasses="t,nt">
             <ice:column rendered="#{messagingBean.type == 'INBOX'}">
                 <ice:selectBooleanCheckbox value="#{message.selected}" />
             </ice:column>
@@ -64,7 +64,7 @@
                     <f:subview rendered="#{not status.last}">
                         <br />
                     </f:subview>
-                </ice:panelSeries> 
+                </ice:panelSeries>
             </ice:column>
             <ice:column>
                 <f:facet name="header">

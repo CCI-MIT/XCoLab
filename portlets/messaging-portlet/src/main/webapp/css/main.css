@@ -37,8 +37,6 @@ h2.feedTitle {
 
 }
 
-
-
 .community .colab .iceCmdSrtHdr .column-hoverDesc {
 	width: 10px;
     height: 10px;
@@ -102,4 +100,12 @@ h2.feedTitle {
 /* honeypot */
 #ComposeMessage tr.tr {
     display: none;
+}
+
+table.colab {
+    table-layout: fixed;
+    width: 740px;
+}
+table.colab .iceOutTxt {
+    word-wrap: break-word !important;
 }
