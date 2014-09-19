@@ -123,6 +123,20 @@ public interface ContestPhaseTypeModel extends BaseModel<ContestPhaseType> {
      */
     public void setInvisible(boolean invisible);
 
+    /**
+     * Returns the points accessible of this contest phase type.
+     *
+     * @return the points accessible of this contest phase type
+     */
+    public int getPointsAccessible();
+
+    /**
+     * Sets the points accessible of this contest phase type.
+     *
+     * @param pointsAccessible the points accessible of this contest phase type
+     */
+    public void setPointsAccessible(int pointsAccessible);
+
     @Override
     public boolean isNew();
 

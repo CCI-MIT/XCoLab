@@ -644,6 +644,13 @@ public class ContestLocalServiceUtil {
         return getService().getWinnerProposal(contestPK);
     }
 
+    public static java.lang.Integer getPointsAccessibleForActivePhaseOfContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getPointsAccessibleForActivePhaseOfContest(contest);
+    }
+
     public static void clearService() {
         _service = null;
     }

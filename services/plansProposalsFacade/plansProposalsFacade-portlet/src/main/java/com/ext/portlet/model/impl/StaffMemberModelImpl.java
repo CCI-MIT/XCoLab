@@ -62,7 +62,7 @@ public class StaffMemberModelImpl extends BaseModelImpl<StaffMember>
             { "organization", Types.VARCHAR },
             { "sort", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_StaffMember (id_ LONG not null primary key,userId LONG,categoryId LONG,firstNames VARCHAR(75) null,lastName VARCHAR(75) null,url VARCHAR(75) null,photoUrl VARCHAR(75) null,role VARCHAR(75) null,organization VARCHAR(75) null,sort INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_StaffMember (id_ LONG not null primary key,userId LONG,categoryId LONG,firstNames VARCHAR(75) null,lastName VARCHAR(75) null,url VARCHAR(255) null,photoUrl VARCHAR(255) null,role VARCHAR(75) null,organization VARCHAR(75) null,sort INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_StaffMember";
     public static final String ORDER_BY_JPQL = " ORDER BY staffMember.sort ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_StaffMember.sort ASC";

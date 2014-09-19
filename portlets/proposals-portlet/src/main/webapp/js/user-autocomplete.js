@@ -4,7 +4,7 @@ var userNamesMap;
 
 
 
-function initUserAutocomplete(idPostfix) {
+function initUserAutocomplete(idPostfix, canEdit) {
     jQuery('#userSelectorInput'+idPostfix).focus(function() {
         jQuery("#please_choose_from_list"+idPostfix).hide();
     });
@@ -59,18 +59,29 @@ function initUserAutocomplete(idPostfix) {
                    //show container
                    jQuery("#userDistributionTable" + idPostfix).css("display", "block");
                    //add input
-                   jQuery("#userDistributionInputs" + idPostfix).append(
-                           '<li class="listItem' + idPostfix + '-' + usersMap[userName] + '">'
-                           + '<label class="percentageInput"><input type="text" name="assignments[' + idPostfix + ']['
-                           + usersMap[userName] +
-                           ']" class="popupreg_input" value="0.0" /> '+
-                               '<a href="/web/guest/member/-/member/userId/'+usersMap[userName]+'">'
-                               +'<span class="userId">'
-                           + userNamesMap[usersMap[userName]] +
-                           '</a></span>' +
-                           '<span class="deleteListItem" data-point-id="'+idPostfix+'" data-item-id="' + idPostfix + '-' + usersMap[userName] + '">x</span>' +
+                   var htmlTemplate =
+                       '<li class="listItem' + idPostfix + '-' + usersMap[userName] + '">'
+                       + '<label class="percentageInput">';
+                   if (canEdit) {
+                   htmlTemplate +=
+                       '<input type="text" name="assignments[' + idPostfix + ']['
+                       + usersMap[userName] +
+                       ']" class="popupreg_input" value="0.0" /> ';
+                   } else {
+                       htmlTemplate += '<span class="input">0.0</span>';
+                   }
+                   htmlTemplate +=
+                       '<a href="/web/guest/member/-/member/userId/'+usersMap[userName]+'">'
+                       +'<span class="userId">'
+                       + userNamesMap[usersMap[userName]] +
+                       '</a></span>';
+                   if (canEdit) {
+                       htmlTemplate +=
+                           '<span class="deleteListItem" data-point-id="' + idPostfix + '" data-item-id="' + idPostfix + '-' + usersMap[userName] + '">x</span>' +
                            '</label></li>'
-                   );
+                       ;
+                   }
+                   jQuery("#userDistributionInputs" + idPostfix).append(htmlTemplate);
                    distributeEvenly(jQuery("#userDistributionInputs" + idPostfix));
                    recalculateTotalPercentages();
                };
@@ -152,15 +163,20 @@ function distributeEvenly(listContainer) {
     var pointType = listContainer.attr("data-pointType");
     var containsCustomValue = false;
     var inputs = jQuery("input", listContainer);
+    var inputsReadOnly = jQuery("span.input", listContainer);
     inputs.each(function() {
         if (jQuery(this).attr("data-changed-by-user") == "true") {
             containsCustomValue = true;
         }
     });
     if (!containsCustomValue) {
-        var avg = ((listContainer.attr("data-percentage")/100)/inputs.length)*100;
+        var avg = ((listContainer.attr("data-percentage")/100)/Math.max(inputs.length, inputsReadOnly.length))*100;
             inputs.each(function() {
                 this.value = avg.toFixed(2);
+            });
+            inputsReadOnly.each(function() {
+                $(this).attr("data-value", avg.toFixed(2));
+                $(this).html(avg.toFixed(2));
             });
     }
 }
@@ -173,6 +189,9 @@ function recalculateTotalPercentages() {
         var sum = 0;
         jQuery("input", listContainer).each(function() {
             sum += Number(this.value);
+        });
+        jQuery("span.input", listContainer).each(function() {
+            sum += Number($(this).attr('data-value'));
         });
         totalNode.html(sum.toFixed(2)+"%");
     });

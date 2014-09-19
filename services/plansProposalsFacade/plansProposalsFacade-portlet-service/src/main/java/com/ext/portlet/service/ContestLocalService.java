@@ -546,4 +546,10 @@ public interface ContestLocalService extends BaseLocalService,
     public com.ext.portlet.model.Proposal getWinnerProposal(long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.Integer getPointsAccessibleForActivePhaseOfContest(
+        com.ext.portlet.model.Contest contest)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

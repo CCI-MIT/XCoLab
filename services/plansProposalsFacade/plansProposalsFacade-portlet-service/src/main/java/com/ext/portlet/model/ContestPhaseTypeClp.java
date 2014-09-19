@@ -25,6 +25,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
     private String _description;
     private String _status;
     private boolean _invisible;
+    private int _pointsAccessible;
     private BaseModel<?> _contestPhaseTypeRemoteModel;
 
     public ContestPhaseTypeClp() {
@@ -69,6 +70,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         attributes.put("description", getDescription());
         attributes.put("status", getStatus());
         attributes.put("invisible", getInvisible());
+        attributes.put("pointsAccessible", getPointsAccessible());
 
         return attributes;
     }
@@ -103,6 +105,12 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
         if (invisible != null) {
             setInvisible(invisible);
+        }
+
+        Integer pointsAccessible = (Integer) attributes.get("pointsAccessible");
+
+        if (pointsAccessible != null) {
+            setPointsAccessible(pointsAccessible);
         }
     }
 
@@ -221,6 +229,28 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         }
     }
 
+    @Override
+    public int getPointsAccessible() {
+        return _pointsAccessible;
+    }
+
+    @Override
+    public void setPointsAccessible(int pointsAccessible) {
+        _pointsAccessible = pointsAccessible;
+
+        if (_contestPhaseTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestPhaseTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setPointsAccessible", int.class);
+
+                method.invoke(_contestPhaseTypeRemoteModel, pointsAccessible);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestPhaseTypeRemoteModel() {
         return _contestPhaseTypeRemoteModel;
     }
@@ -295,6 +325,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         clone.setDescription(getDescription());
         clone.setStatus(getStatus());
         clone.setInvisible(getInvisible());
+        clone.setPointsAccessible(getPointsAccessible());
 
         return clone;
     }
@@ -340,7 +371,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(getId());
@@ -352,6 +383,8 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         sb.append(getStatus());
         sb.append(", invisible=");
         sb.append(getInvisible());
+        sb.append(", pointsAccessible=");
+        sb.append(getPointsAccessible());
         sb.append("}");
 
         return sb.toString();
@@ -359,7 +392,7 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseType");
@@ -384,6 +417,10 @@ public class ContestPhaseTypeClp extends BaseModelImpl<ContestPhaseType>
         sb.append(
             "<column><column-name>invisible</column-name><column-value><![CDATA[");
         sb.append(getInvisible());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>pointsAccessible</column-name><column-value><![CDATA[");
+        sb.append(getPointsAccessible());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

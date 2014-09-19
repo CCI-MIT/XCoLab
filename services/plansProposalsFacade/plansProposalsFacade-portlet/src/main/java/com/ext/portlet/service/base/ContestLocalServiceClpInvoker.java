@@ -145,6 +145,8 @@ public class ContestLocalServiceClpInvoker {
     private String[] _methodParameterTypes637;
     private String _methodName638;
     private String[] _methodParameterTypes638;
+    private String _methodName639;
+    private String[] _methodParameterTypes639;
 
     public ContestLocalServiceClpInvoker() {
         _methodName0 = "addContest";
@@ -445,6 +447,10 @@ public class ContestLocalServiceClpInvoker {
         _methodName638 = "getWinnerProposal";
 
         _methodParameterTypes638 = new String[] { "long" };
+
+        _methodName639 = "getPointsAccessibleForActivePhaseOfContest";
+
+        _methodParameterTypes639 = new String[] { "com.ext.portlet.model.Contest" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -826,6 +832,11 @@ public class ContestLocalServiceClpInvoker {
         if (_methodName638.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
             return ContestLocalServiceUtil.getWinnerProposal(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName639.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes639, parameterTypes)) {
+            return ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest((com.ext.portlet.model.Contest) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

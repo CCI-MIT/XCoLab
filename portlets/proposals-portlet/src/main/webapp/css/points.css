@@ -167,9 +167,17 @@ td.left.small .points-container, td.left.small .arrow-down {
             margin-right: 15px;
             float: none;
         }
-        span, input {
+        span, input, .input {
           display: inline-block;
           vertical-align: baseline;
+        }
+        span.input {
+            text-align: center;
+            height: 24px;
+            width: 75px;
+            margin-right: 5px;
+            margin-left: 0;
+            float: none;
         }
     }
     .deleteListItem {
@@ -201,5 +209,25 @@ td.left.small .points-container, td.left.small .arrow-down {
     .totalRow .percentage.smaller {
         width: 51px;
         margin-right: 6px;
+        margin-left: 11px;
     }
+}
+
+
+#help-text {
+    margin: 1.5em 0;
+    padding: 15px;
+    background: url(/climatecolab-theme/images/bg-noise.jpg) #ecece5;
+    border-radius: 10px;
+    display: none;
+}
+
+#expand-help-text {
+    display: inline-block;
+    text-indent: -1000px;
+    background-image: url(../img/icon-question-mark.png);
+    background-size: cover;
+    width: 29px;
+    height: 29px;
+    cursor: pointer;
 }

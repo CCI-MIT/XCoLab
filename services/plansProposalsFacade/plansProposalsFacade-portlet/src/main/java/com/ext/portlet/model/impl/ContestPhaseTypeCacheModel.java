@@ -25,10 +25,11 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
     public String description;
     public String status;
     public boolean invisible;
+    public int pointsAccessible;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(id);
@@ -40,6 +41,8 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         sb.append(status);
         sb.append(", invisible=");
         sb.append(invisible);
+        sb.append(", pointsAccessible=");
+        sb.append(pointsAccessible);
         sb.append("}");
 
         return sb.toString();
@@ -70,6 +73,7 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         }
 
         contestPhaseTypeImpl.setInvisible(invisible);
+        contestPhaseTypeImpl.setPointsAccessible(pointsAccessible);
 
         contestPhaseTypeImpl.resetOriginalValues();
 
@@ -83,6 +87,7 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         description = objectInput.readUTF();
         status = objectInput.readUTF();
         invisible = objectInput.readBoolean();
+        pointsAccessible = objectInput.readInt();
     }
 
     @Override
@@ -109,5 +114,6 @@ public class ContestPhaseTypeCacheModel implements CacheModel<ContestPhaseType>,
         }
 
         objectOutput.writeBoolean(invisible);
+        objectOutput.writeInt(pointsAccessible);
     }
 }
