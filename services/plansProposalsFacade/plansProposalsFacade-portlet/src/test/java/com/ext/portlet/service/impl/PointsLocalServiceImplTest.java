@@ -78,6 +78,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             Contest sideContest = contestLocalService.createNewContest(adminId, "Test-Side-Contest-"+(i+1));
             sideContest.setPoints(0);
             sideContest.setDefaultParentPointType(6);
+            contestLocalService.updateContest(sideContest);
             //create phases
             ContestPhase sCp1 = createContestPhase(sideContest, 1, false, "PROMOTE_DONE", "2014-08-01 00:00:00", "2014-08-10 00:00:00");
             ContestPhase sCp2 = createContestPhase(sideContest, 16, true, "PROMOTE_DONE", "2014-08-10 00:00:01", "2014-08-14 00:00:00");
@@ -114,6 +115,14 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         proposalLocalService.setAttribute(globalProposals.get(7).getAuthorId(), globalProposals.get(7).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText2);
 
         //add team members to some proposals
+        for (int i = 0; i < globalProposals.size(); i++) {
+            userLocalService.deleteGroupUser(globalProposals.get(i).getGroupId(), adminId);
+            userLocalService.addGroupUsers(globalProposals.get(i).getGroupId(), new long[] {users.get(i).getUserId()});
+        }
+        for (int i = 0; i < sideProposals.size(); i++) {
+            userLocalService.deleteGroupUser(sideProposals.get(i).getGroupId(), adminId);
+            userLocalService.addGroupUsers(sideProposals.get(i).getGroupId(), new long[] {users.get(i).getUserId()});
+        }
         userLocalService.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(2).getUserId()});
         userLocalService.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(4).getUserId()});
         userLocalService.addGroupUsers(globalProposals.get(7).getGroupId(), new long[] {users.get(1).getUserId()});
@@ -230,7 +239,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
                 users.get(0).getUserId()
         );
         pointsDistributionConfigurationService.addDistributionConfiguration(
-                sideProposals.get(0).getProposalId(),
+                sideProposals.get(1).getProposalId(),
                 8, //any non-team member
                 users.get(5).getUserId(),
                 0L,
@@ -246,7 +255,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         //assert the points in two ways:
         // First, make sure that the users have the right amount of hypothetical points
         // Second, assure that the individual Point data entries are correct
-        List<Points> points = pointsLocalService.getPointses(0, Integer.MAX_VALUE);
+        List<Points> points = new ArrayList<Points>(pointsLocalService.getPointses(0, Integer.MAX_VALUE));
 
         for (int i = 5; i < 10; i++) {
             if (i != 6 && i != 7) {
@@ -261,7 +270,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
 
     private void assertBlankGlobalProposalPoints(int proposalNumber, List<Points> points, double pointsToBeDistributed, long sourceId) {
         //pointsToBeDistributed * 20% * 90% go to the proposal author
-        assertNotNull(popPointEntryInList(points, globalProposals.get(proposalNumber).getProposalId(), users.get(proposalNumber).getUserId(), sourceId, 0, pointsToBeDistributed*0.2*0.9));
+        assertNotNull(popPointEntryInList(points, globalProposals.get(proposalNumber).getProposalId(), users.get(proposalNumber).getUserId(), sourceId, 0, Math.ceil(pointsToBeDistributed*0.2*0.9)));
         //no other points distributed
     }
 
@@ -303,7 +312,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             if (proposalId.equals(sideProposals.get(3).getProposalId())) {
                 assertNotNull(popPointEntryInList(points, proposalId, users.get(3).getUserId(), subProposalSourcePoints.getId(), 0, 1600));
             }
-            if (proposalId.equals(sideProposals.get(6).getProposalId())) {
+            if (proposalId.equals(globalProposals.get(6).getProposalId())) {
                 this.assertProposal6Points(points, 2000, subProposalSourcePoints.getId());
             }
         }
@@ -317,9 +326,9 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         double nonTeamPoints = pointsToBeDistributed*0.2*0.1;
 
         //Proposal 6 TEAM
-        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(2).getUserId(), sourceId, 0, teamPoints*0.5));
-        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(4).getUserId(), sourceId, 0, teamPoints*0.2));
-        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(6).getUserId(), sourceId, 0, teamPoints*0.3));
+        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(2).getUserId(), sourceId, 0, Math.ceil(teamPoints*0.5)));
+        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(4).getUserId(), sourceId, 0, Math.ceil(teamPoints*0.2)));
+        assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(6).getUserId(), sourceId, 0, Math.ceil(teamPoints*0.3)));
         //Proposal 6 NON-TEAM
         assertNotNull(popPointEntryInList(points, globalProposals.get(6).getProposalId(), users.get(8).getUserId(), sourceId, 0, nonTeamPoints));
         //Proposal 6 SUB-PROPOSALS
@@ -345,32 +354,32 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             //first referenced sub-proposal: 0
             if (proposalId.equals(sideProposals.get(0).getProposalId())) {
                 //640 points for user 0 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(0).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.4));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(0).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.4)));
                 //640 points for user 1 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(1).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.4));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(1).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.4)));
                 //320 points for user 4
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(4).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.2));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(4).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.2)));
             }
             //second referenced sub-proposal: 1
             if (proposalId.equals(sideProposals.get(1).getProposalId())) {
                 //128 points for user 1 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(1).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.8*0.1));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(1).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.8*0.1)));
                 //1152 points for user 2 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(2).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.8*0.9));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(2).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.8*0.9)));
                 //320 points for user 4
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(5).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.2));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(5).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.2)));
             }
             //distributions for proposals 4 and 5 are not defined explicitly: the team points should be still distributed though!
             if (proposalId.equals(sideProposals.get(4).getProposalId())) {
                 //640 points for user 4 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(4).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.4));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(4).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.4)));
                 //640 points for user 2 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(2).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.4));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(2).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.4)));
                 //no other points distributed
             }
             if (proposalId.equals(sideProposals.get(5).getProposalId())) {
                 //1280 points for user 5 (team)
-                assertNotNull(popPointEntryInList(points, proposalId, users.get(5).getUserId(), subProposalSourcePoints.getId(), 0, subProposalPoints*0.8));
+                assertNotNull(popPointEntryInList(points, proposalId, users.get(5).getUserId(), subProposalSourcePoints.getId(), 0, Math.ceil(subProposalPoints*0.8)));
                 //no other points distributed
             }
 
