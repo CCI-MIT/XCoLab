@@ -33,8 +33,8 @@ public class GlobalContestSimulator {
     private List<User> users;
     protected static SimpleDateFormat dateFormat;
     protected static Random random;
-    /*private Map<Integer, Integer> globalProposalIndexToUserIndex;
-    private Map<Integer, Integer> sideProposalIndexToUserIndex;*/
+    private Map<Integer, List<User>> globalProposalsToUsers;
+    private Map<Integer, Map<Integer, List<User>>> sideProposalsToUsers;
 
     private int amountOfUsers;
     private double pointsToBeDistributed;
@@ -44,6 +44,7 @@ public class GlobalContestSimulator {
     private int amountOfProposalsPerSideContest;
     private double probabilityToLinkToOtherProposal;
     private double probabilityOfBeingAdvancedToNextPhase;
+    private double probabilityOfAdditionalTeamMember;
 
     public static void initSimulatorWithTestEnvironment(XCoLabTest testInstance) {
         GlobalContestSimulator.testInstance = testInstance;
@@ -60,7 +61,8 @@ public class GlobalContestSimulator {
             int amountOfSideContests,
             int amountOfProposalsPerSideContest,
             double probabilityToLinkToOtherProposal,
-            double probabilityOfBeingAdvancedToNextPhase
+            double probabilityOfBeingAdvancedToNextPhase,
+            double probabilityOfAdditionalTeamMember
     ) throws SystemException, PortalException, ParseException {
         this.amountOfUsers = amountOfUsers;
         this.pointsToBeDistributed = pointsToBeDistributed;
@@ -70,6 +72,7 @@ public class GlobalContestSimulator {
         this.amountOfProposalsPerSideContest = amountOfProposalsPerSideContest;
         this.probabilityToLinkToOtherProposal = probabilityToLinkToOtherProposal;
         this.probabilityOfBeingAdvancedToNextPhase = probabilityOfBeingAdvancedToNextPhase;
+        this.probabilityOfAdditionalTeamMember = probabilityOfAdditionalTeamMember;
 
         this.createUsers();
         this.createGlobalContestAndProposals();
@@ -85,6 +88,20 @@ public class GlobalContestSimulator {
         for (int i = 0; i < amountOfUsers; i++) {
             users.add(testInstance.createUser(i));
         }
+    }
+
+    private List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
+        //sometimes the admin user is still in the user group
+        testInstance.userLocalService.deleteGroupUser(proposal.getGroupId(), testInstance.adminId);
+
+        List<User> teamMembers = new ArrayList<User>();
+        teamMembers.add(author);
+        while (doWithProbability(probabilityOfAdditionalTeamMember) && probabilityOfAdditionalTeamMember < 1) {
+            teamMembers.add(users.get(randomInt(0, amountOfUsers)));
+        }
+        testInstance.userLocalService.addGroupUsers(proposal.getGroupId(), teamMembers);
+
+        return teamMembers;
     }
 
     private void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
@@ -110,8 +127,11 @@ public class GlobalContestSimulator {
         //create proposals, authored by a random user, advance them with a probability to the next phases
         globalProposals = new ArrayList<Proposal>();
         for (int i = 0; i < amountOfGlobalProposals; i++) {
-            User randomUser = users.get(randomInt(0, amountOfUsers));
-            Proposal proposal = testInstance.proposalLocalService.create(randomUser.getUserId(), gCp1.getContestPhasePK());
+            User author = users.get(randomInt(0, amountOfUsers));
+            Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), gCp1.getContestPhasePK());
+
+            //create team members
+            globalProposalsToUsers.put(i, setTeamMembers(proposal, author));
             globalProposals.add(proposal);
 
             //copy to first phase
@@ -155,10 +175,13 @@ public class GlobalContestSimulator {
             }
 
             sideProposals.put(i, new ArrayList<Proposal>());
+            sideProposalsToUsers.put(i, new HashMap<Integer, List<User>>());
 
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
-                Proposal proposal = testInstance.proposalLocalService.create(users.get(randomInt(0, amountOfUsers)).getUserId(), sCp1.getContestPhasePK());
+                User author = users.get(randomInt(0, amountOfUsers));
+                Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sCp1.getContestPhasePK());
                 sideProposals.get(j).add(proposal);
+                sideProposalsToUsers.get(j).put(i, setTeamMembers(proposal, author));
 
                 //copy to second phase
                 copyProposalToPhase(proposal, sCp2);

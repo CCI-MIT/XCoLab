@@ -31,23 +31,6 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
 
         //TODO: this is currently getting refactored to the GlobalContestSimulator class
 
-        //add team members
-        //add team members to some proposals
-        for (int i = 0; i < globalProposals.size(); i++) {
-            userLocalService.deleteGroupUser(globalProposals.get(i).getGroupId(), adminId);
-            userLocalService.addGroupUsers(globalProposals.get(i).getGroupId(), new long[] {users.get(i).getUserId()});
-        }
-        for (int i = 0; i < sideProposals.size(); i++) {
-            userLocalService.deleteGroupUser(sideProposals.get(i).getGroupId(), adminId);
-            userLocalService.addGroupUsers(sideProposals.get(i).getGroupId(), new long[] {users.get(i).getUserId()});
-        }
-        userLocalService.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(2).getUserId()});
-        userLocalService.addGroupUsers(globalProposals.get(6).getGroupId(), new long[] {users.get(4).getUserId()});
-        userLocalService.addGroupUsers(globalProposals.get(7).getGroupId(), new long[] {users.get(1).getUserId()});
-        userLocalService.addGroupUsers(sideProposals.get(0).getGroupId(), new long[] {users.get(1).getUserId()});
-        userLocalService.addGroupUsers(sideProposals.get(1).getGroupId(), new long[] {users.get(2).getUserId()});
-        userLocalService.addGroupUsers(sideProposals.get(4).getGroupId(), new long[] {users.get(2).getUserId()});
-
         //set some point distributions
         //GLOBAL PROPOSAL 6
         //TEAM MEMBERS
