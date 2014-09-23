@@ -43,7 +43,7 @@ public class XCoLabTest {
     protected static PointsLocalService pointsLocalService;
     protected static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
     protected static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
-    protected static SimpleDateFormat dateFormat;
+    protected static long adminId = 10144L;
 
     @BeforeClass
     public static void beforeTest() throws Exception {
@@ -73,7 +73,7 @@ public class XCoLabTest {
         pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
         planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
 
-        dateFormat = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.ENGLISH);
+        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
     }
 
     protected User createUser(long id) throws SystemException {

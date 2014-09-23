@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.model.*;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.*;

@@ -20,100 +20,18 @@ import static org.junit.Assert.*;
 
 
 public class PointsLocalServiceImplTest extends XCoLabTest {
-    private int contestPhaseIdCount = 0;
-    private List<Proposal> sideProposals;
-    private List<Proposal> globalProposals;
-    private Contest globalContest;
-    private List<Contest> sideContests;
-    private List<User> users;
+
 
     @Test
     public void testGlobalContestHypotheticalPoints() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         this.setupBasicDataset();
 
-        long adminId = 10144L;
+
         final int pointsToBeDistributed = 10000;
-        PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
 
-        //create 10 different authors
-        users = new ArrayList<User>();
-        for (int i = 0; i < 10; i++) {
-            users.add(this.createUser(50000+i));
-        }
+        //TODO: this is currently getting refactored to the GlobalContestSimulator class
 
-        //create global contest
-        globalContest = contestLocalService.createNewContest(adminId, "Test-Global-Contest");
-        globalContest.setPoints(pointsToBeDistributed);
-        globalContest.setDefaultParentPointType(1);
-        contestLocalService.updateContest(globalContest);
-        //create phases
-        ContestPhase gCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE",  "2014-08-01 00:00:00", "2014-08-10 00:00:00");
-        ContestPhase gCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE",  "2014-08-10 00:00:01", "2014-08-14 00:00:00");
-        ContestPhase gCp3 = createContestPhase(globalContest, 18, false, "PROMOTE_DONE", "2014-08-14 00:00:01", "2014-08-16 00:00:00");
-        ContestPhase gCp4 = createContestPhase(globalContest, 19, true, "PROMOTE_DONE",  "2014-08-16 00:00:01", "2014-08-20 00:00:00");
-        ContestPhase gCp5 = createContestPhase(globalContest, 15, false, "PROMOTE_DONE", "2014-08-20 00:00:01", "2015-09-24 00:00:00");
-        //this contest did not expire yet.
-        ContestPhase gCp6 = createContestPhase(globalContest, 17, false, "", "2015-09-24 00:00:01", null);
-
-        //create 10 proposals, authored by user i, advance half of them to the last phase.
-        globalProposals = new ArrayList<Proposal>();
-        for (int i = 0; i < 10; i++) {
-            Proposal proposal = proposalLocalService.create(users.get(i).getUserId(), gCp1.getContestPhasePK());
-            globalProposals.add(proposal);
-
-            //copy to first phases
-            copyProposalToPhase(proposal, gCp2);
-            //copy half of the proposals to other phases
-            if (i > 4) {
-                copyProposalToPhase(proposal, gCp3);
-                copyProposalToPhase(proposal, gCp4);
-                copyProposalToPhase(proposal, gCp5);
-            }
-        }
-
-        //create side contests
-        sideProposals = new ArrayList<Proposal>();
-        sideContests = new ArrayList<Contest>();
-        for (int i = 0; i < 2; i++) {
-            Contest sideContest = contestLocalService.createNewContest(adminId, "Test-Side-Contest-"+(i+1));
-            sideContest.setPoints(0);
-            sideContest.setDefaultParentPointType(6);
-            contestLocalService.updateContest(sideContest);
-            //create phases
-            ContestPhase sCp1 = createContestPhase(sideContest, 1, false, "PROMOTE_DONE", "2014-08-01 00:00:00", "2014-08-10 00:00:00");
-            ContestPhase sCp2 = createContestPhase(sideContest, 16, true, "PROMOTE_DONE", "2014-08-10 00:00:01", "2014-08-14 00:00:00");
-            ContestPhase sCp3 = createContestPhase(sideContest, 18, false, "PROMOTE_DONE", "2014-08-14 00:00:01", "2014-08-16 00:00:00");
-            ContestPhase sCp4 = createContestPhase(sideContest, 19, true, "PROMOTE_DONE", "2014-08-16 00:00:01", "2014-08-20 00:00:00");
-            ContestPhase sCp5 = createContestPhase(sideContest, 15, false, "PROMOTE_DONE", "2014-08-20 00:00:01", "2015-09-24 00:00:00");
-            //this contest did not expire yet.
-            ContestPhase sCp6 = createContestPhase(sideContest, 17, false, "", "2015-09-24 00:00:01", null);
-
-            for (int j = 0; j < 3; j++) {
-                Proposal proposal = proposalLocalService.create(users.get(j+(i*3)).getUserId(), sCp1.getContestPhasePK());
-                sideProposals.add(proposal);
-
-                //copy to first phases
-                copyProposalToPhase(proposal, sCp2);
-            }
-            sideContests.add(sideContest);
-        }
-
-        //create some links from global proposals to side proposals
-        String sectionText = "These are the subproposals we link to:\n"+
-            "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(0).getProposalId()+"\n\n"+
-            "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(1).getProposalId()+"\n\n"+
-            "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(4).getProposalId()+" and "+
-            "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(5).getProposalId()+" and "+
-            "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+globalContest.getContestPK()+"/planId/"+globalProposals.get(3).getProposalId();
-        //1300907 is the sub proposal plan section definition
-        proposalLocalService.setAttribute(globalProposals.get(6).getAuthorId(), globalProposals.get(6).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText);
-        String sectionText2 = "These are the subproposals we link to:\n"+
-                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(2).getProposalId()+"\n\n"+
-                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(0).getContestPK()+"/planId/"+sideProposals.get(1).getProposalId()+"\n\n"+
-                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+sideContests.get(1).getContestPK()+"/planId/"+sideProposals.get(3).getProposalId()+" and "+
-                "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/"+globalContest.getContestPK()+"/planId/"+globalProposals.get(6).getProposalId();
-        proposalLocalService.setAttribute(globalProposals.get(7).getAuthorId(), globalProposals.get(7).getProposalId(), ProposalAttributeKeys.SECTION, 1300907L, sectionText2);
-
+        //add team members
         //add team members to some proposals
         for (int i = 0; i < globalProposals.size(); i++) {
             userLocalService.deleteGroupUser(globalProposals.get(i).getGroupId(), adminId);
@@ -129,8 +47,6 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         userLocalService.addGroupUsers(sideProposals.get(0).getGroupId(), new long[] {users.get(1).getUserId()});
         userLocalService.addGroupUsers(sideProposals.get(1).getGroupId(), new long[] {users.get(2).getUserId()});
         userLocalService.addGroupUsers(sideProposals.get(4).getGroupId(), new long[] {users.get(2).getUserId()});
-
-
 
         //set some point distributions
         //GLOBAL PROPOSAL 6
@@ -416,29 +332,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         return find;
     }
 
-    private void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
-        Proposal2Phase p2p = proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
-        p2p.setVersionFrom(1);
-        p2p.setVersionTo(1);
-        proposal2PhaseLocalService.updateProposal2Phase(p2p);
-    }
 
-    private ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
-        ContestPhase cp = contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
-        cp.setContestPK(c.getContestPK());
-        cp.setContestPhaseType(type);
-        cp.setFellowScreeningActive(fellowScreeningActive);
-        cp.setContestPhaseAutopromote(autoPromote);
-        cp.setPhaseActiveOverride(false);
-        cp.setPhaseInactiveOverride(false);
-        cp.setPhaseStartDate(dateFormat.parse(startDate));
-        if (endDate != null) {
-            cp.setPhaseEndDate(dateFormat.parse(endDate));
-        }
-        contestPhaseLocalService.updateContestPhase(cp);
-
-        return cp;
-    }
 
 
 
