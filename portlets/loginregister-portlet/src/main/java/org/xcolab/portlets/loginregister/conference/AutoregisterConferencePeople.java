@@ -111,7 +111,7 @@ public class AutoregisterConferencePeople implements MessageListener {
 
         ExpandoColumn conferenceExpando = null;
         try {
-            conferenceExpando = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.CONFERENCE2013);
+            conferenceExpando = ExpandoColumnLocalServiceUtil.getColumn(table.getTableId(), CommunityConstants.CONFERENCE2014);
         } catch (Exception e) {
 
         }
@@ -119,11 +119,11 @@ public class AutoregisterConferencePeople implements MessageListener {
         if (conferenceExpando == null) {
             System.out.println("creating expando column");
             conferenceExpando = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
-                    CommunityConstants.CONFERENCE2013, ExpandoColumnConstants.STRING);
+                    CommunityConstants.CONFERENCE2014, ExpandoColumnConstants.STRING);
         }
 
         ExpandoValueLocalServiceUtil.addValue(LoginController.companyId, User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.CONFERENCE2013, u.getUserId(), "1");
+                CommunityConstants.CONFERENCE2014, u.getUserId(), "1");
     }
 
     private boolean emailExists(String email) {
@@ -140,7 +140,8 @@ public class AutoregisterConferencePeople implements MessageListener {
 
     private List<ConferenceUser> getConferenceUsers() throws IOException {
         HttpClient client = new HttpClient();
-        GetMethod method = new GetMethod("https://classic.regonline.com/activereports/smartLink.aspx?eventid=WThQT9uce5k=&crid=1056641");
+        //GetMethod method = new GetMethod("https://www.regonline.com/activereports/smartLink.aspx?eventid=9/xyyCcO4Ug=&crid=1236062");
+        GetMethod method = new GetMethod("http://localhost/CustomReport1619563.xls");
 
         client.executeMethod(method);
 

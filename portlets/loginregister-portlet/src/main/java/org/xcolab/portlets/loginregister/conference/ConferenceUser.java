@@ -15,12 +15,12 @@ class ConferenceUser {
     private Boolean isMember, joinColab;
 
     ConferenceUser(Row row) {
-        lastName = row.getCell(1).getStringCellValue();
+        lastName = row.getCell(4).getStringCellValue();
         firstName = row.getCell(2).getStringCellValue();
         middleName = row.getCell(3).getStringCellValue();
-        eMail = row.getCell(4).getStringCellValue();
-        secondaryEmail = row.getCell(5).getStringCellValue();
-//            regDate = row.getCell(6).getDateCellValue();
+        eMail = row.getCell(5).getStringCellValue();
+        secondaryEmail = row.getCell(6).getStringCellValue();
+//            regDate = row.getCell(10).getDateCellValue();
         isMember = YES.equals(row.getCell(7).getStringCellValue());
         colabEmail = row.getCell(8).getStringCellValue();
         joinColab = YES.equals(row.getCell(9).getStringCellValue());

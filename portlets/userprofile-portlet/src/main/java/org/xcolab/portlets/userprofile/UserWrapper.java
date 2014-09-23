@@ -96,7 +96,7 @@ public class
                 CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
                 user.getUserId(), StringPool.BLANK);
 
-        attendsConference = ExpandoValueLocalServiceUtil.getData(User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2013, user.getUserId(), "").equals("1");
+        attendsConference = ExpandoValueLocalServiceUtil.getData(User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
 
         // filteredAbout =
         // Helper.filterLinkifyUrls(Helper.filterLineBreaks(about));

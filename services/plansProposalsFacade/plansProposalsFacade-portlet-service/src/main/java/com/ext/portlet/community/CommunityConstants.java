@@ -45,6 +45,7 @@ public class CommunityConstants {
     public static String RED_BALLOON = "redBalloon";
 
     public static String CONFERENCE2013 = "conference2013";
+    public static String CONFERENCE2014 = "conference2014";
 
     public static final String PLANFAN_PAGER_START = "planfan_pagerStart";
     public static final String PLANFAN_PAGER_MAX = "planfan_pagerMax";
