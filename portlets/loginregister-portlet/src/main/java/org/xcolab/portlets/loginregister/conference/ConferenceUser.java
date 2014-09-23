@@ -23,7 +23,11 @@ class ConferenceUser {
 //            regDate = row.getCell(10).getDateCellValue();
         isMember = YES.equals(row.getCell(7).getStringCellValue());
         colabEmail = row.getCell(8).getStringCellValue();
-        joinColab = YES.equals(row.getCell(9).getStringCellValue());
+        if (row.getCell(9) != null) {
+            joinColab = YES.equals(row.getCell(9).getStringCellValue());
+        } else {
+            joinColab = false;
+        }
     }
 
     public String getLastName() {

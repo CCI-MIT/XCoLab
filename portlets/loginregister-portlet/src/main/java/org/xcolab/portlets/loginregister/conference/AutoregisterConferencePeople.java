@@ -33,10 +33,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.xcolab.portlets.loginregister.LoginController;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author pdeboer
@@ -55,6 +52,7 @@ public class AutoregisterConferencePeople implements MessageListener {
                         if (!u.getMember() && u.getJoinColab()) {
                             registerUser(u);
                         } else if (u.getColabEmail() != null && !u.getColabEmail().equals("")) {
+                            System.out.println("set expando for"+u.getColabEmail()+" - "+(getUserByEmail(u.getColabEmail()) != null ? getUserByEmail(u.getColabEmail()) : "null"));
                             setConferenceAttendingExpando(getUserByEmail(u.getColabEmail()));
                         }
                     }
@@ -70,7 +68,7 @@ public class AutoregisterConferencePeople implements MessageListener {
             String email = u.geteMail();
             if (!emailExists(email)) {
                 UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
-                String screenName = userAccountGenerator.generateUsername(u.getFirstName(), u.getLastName());
+                String screenName = userAccountGenerator.generateUsername(u.getFirstName(), u.getLastName())+(new Random()).nextInt(10);
 
                 Role adminRole = RoleLocalServiceUtil.getRole(LoginController.companyId, "Administrator");
                 List<User> adminUsers = UserLocalServiceUtil.getRoleUsers(adminRole.getRoleId());
@@ -121,7 +119,6 @@ public class AutoregisterConferencePeople implements MessageListener {
             conferenceExpando = ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(),
                     CommunityConstants.CONFERENCE2014, ExpandoColumnConstants.STRING);
         }
-
         ExpandoValueLocalServiceUtil.addValue(LoginController.companyId, User.class.getName(), CommunityConstants.EXPANDO,
                 CommunityConstants.CONFERENCE2014, u.getUserId(), "1");
     }
@@ -141,7 +138,7 @@ public class AutoregisterConferencePeople implements MessageListener {
     private List<ConferenceUser> getConferenceUsers() throws IOException {
         HttpClient client = new HttpClient();
         //GetMethod method = new GetMethod("https://www.regonline.com/activereports/smartLink.aspx?eventid=9/xyyCcO4Ug=&crid=1236062");
-        GetMethod method = new GetMethod("http://localhost/CustomReport1619563.xls");
+        GetMethod method = new GetMethod("https://www.regonline.com/activereports/smartLink.aspx?eventid=9/xyyCcO4Ug=&crid=1236062");
 
         client.executeMethod(method);
 
@@ -155,6 +152,7 @@ public class AutoregisterConferencePeople implements MessageListener {
                 ConferenceUser u = new ConferenceUser(row);
                 users.add(u);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
