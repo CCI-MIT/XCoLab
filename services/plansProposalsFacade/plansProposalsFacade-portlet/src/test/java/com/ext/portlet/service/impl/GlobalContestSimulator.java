@@ -17,40 +17,32 @@ import static org.junit.Assert.assertTrue;
  * Created by Manuel Thurner on 22/09/14.
  */
 public class GlobalContestSimulator {
-    private static XCoLabTest testInstance;
+    protected static XCoLabTest testInstance;
 
-    private int contestPhaseIdCount = 0;
-    private Map<Integer, List<Proposal>> sideProposals;
-    private List<Proposal> globalProposals;
-    private List<Proposal> globalProposalsInLastPhase;
-    private Contest globalContest;
-    private List<Contest> sideContests;
-    private List<User> users;
+    protected int contestPhaseIdCount = 0;
+    protected Map<Integer, List<Proposal>> sideProposals;
+    protected List<Proposal> globalProposals;
+    protected List<Integer> globalProposalsInLastPhase;
+    protected Contest globalContest;
+    protected List<Contest> sideContests;
+    protected List<User> users;
     protected static SimpleDateFormat dateFormat;
     protected static Random random;
-    private Map<Integer, List<User>> globalProposalsTeamMembers;
-    private Map<Integer, DistributionConfiguration> globalProposalsDistributions;
-    private Map<Integer, Map<Integer, List<User>>> sideProposalsTeamMembers;
-    private Map<Integer, Map<Integer, DistributionConfiguration>> sideProposalsDistributions;
+    protected Map<Integer, List<User>> globalProposalsTeamMembers;
+    protected Map<Integer, Map<Integer, List<User>>> sideProposalsTeamMembers;
 
-    private int amountOfUsers;
-    private double pointsToBeDistributed;
-    private boolean hasContestEnded;
-    private int amountOfGlobalProposals;
-    private int amountOfSideContests;
-    private int amountOfProposalsPerSideContest;
-    private double probabilityToLinkToOtherProposal;
-    private double probabilityOfBeingAdvancedToNextPhase;
-    private double probabilityOfAdditionalTeamMember;
+    protected int amountOfUsers;
+    protected double pointsToBeDistributed;
+    protected boolean hasContestEnded;
+    protected int amountOfGlobalProposals;
+    protected int amountOfSideContests;
+    protected int amountOfProposalsPerSideContest;
+    protected double probabilityToLinkToOtherProposal;
+    protected double probabilityOfBeingAdvancedToNextPhase;
+    protected double probabilityOfAdditionalTeamMember;
 
-    private double probabilityOfPointsDistributionAdditionalNonTeamMembers;
-
-    class DistributionConfiguration {
-        //the teamMemberShares indizes are the indizes in the proposalTeamMembers field
-        public Map<Integer, Double> teamMemberShares = new HashMap<Integer, Double>();
-        //in additionalShares, the indizes are the indizes of the users field
-        public Map<Integer, Double> additionalShares = new HashMap<Integer, Double>();
-    }
+    protected Map<Integer, List<Integer>> globalProposalLinksToGlobalProposals;
+    protected Map<Integer, Map<Integer, List<Integer>>> globalProposalLinksToSideProposals;
 
     public static void initSimulatorWithTestEnvironment(XCoLabTest testInstance) {
         GlobalContestSimulator.testInstance = testInstance;
@@ -59,16 +51,18 @@ public class GlobalContestSimulator {
 
     }
 
-    public GlobalContestSimulator(
-            int amountOfUsers,
-            double pointsToBeDistributed,
-            boolean hasContestEnded,
-            int amountOfGlobalProposals,
-            int amountOfSideContests,
-            int amountOfProposalsPerSideContest,
-            double probabilityToLinkToOtherProposal,
-            double probabilityOfBeingAdvancedToNextPhase,
-            double probabilityOfAdditionalTeamMember
+    public GlobalContestSimulator() {
+    }
+
+    public void initializeContests(int amountOfUsers,
+                              double pointsToBeDistributed,
+                              boolean hasContestEnded,
+                              int amountOfGlobalProposals,
+                              int amountOfSideContests,
+                              int amountOfProposalsPerSideContest,
+                              double probabilityToLinkToOtherProposal,
+                              double probabilityOfBeingAdvancedToNextPhase,
+                              double probabilityOfAdditionalTeamMember
     ) throws SystemException, PortalException, ParseException {
         this.amountOfUsers = amountOfUsers;
         this.pointsToBeDistributed = pointsToBeDistributed;
@@ -87,40 +81,6 @@ public class GlobalContestSimulator {
     }
 
 
-
-    public void setPointsDistributions(
-            double probabilityOfEmptyGlobalProposalConfiguration,
-            double probabilityOfEmptySideProposalConfiguration,
-            double probabilityOfPointsDistributionAdditionalNonTeamMembers
-    ) throws NoSuchUserException, SystemException {
-        this.probabilityOfPointsDistributionAdditionalNonTeamMembers = probabilityOfPointsDistributionAdditionalNonTeamMembers;
-
-        //Global Proposals
-        for (int i = 0; i < amountOfGlobalProposals; i++) {
-            if (!doWithProbability(probabilityOfEmptyGlobalProposalConfiguration)) {
-                DistributionConfiguration config = this.setPointsDistributionForProposal(globalProposals.get(i), globalProposalsTeamMembers.get(i), true);
-                globalProposalsDistributions.put(i, config);
-            }
-        }
-
-        //Side Proposals
-        for (int i = 0; i < amountOfSideContests; i++) {
-            for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
-                sideProposalsDistributions.put(i, new HashMap<Integer, DistributionConfiguration>());
-                if (!doWithProbability(probabilityOfEmptySideProposalConfiguration)) {
-                    DistributionConfiguration config = this.setPointsDistributionForProposal(sideProposals.get(i).get(j), sideProposalsTeamMembers.get(i).get(j), true);
-                    sideProposalsDistributions.get(i).put(j, config);
-                }
-            }
-        }
-    }
-
-    public void runDistributionAlgorithm() throws SystemException, PortalException {
-        testInstance.pointsLocalService.distributePoints(globalContest.getContestPK());
-    }
-
-
-
     private void createUsers() throws SystemException {
         users = new ArrayList<User>();
         for (int i = 0; i < amountOfUsers; i++) {
@@ -128,97 +88,6 @@ public class GlobalContestSimulator {
         }
     }
 
-    /**
-     * Sets a random point distribution configuration for the given proposal and its team members.
-     * Dependent on the fields probabilityOfPointsDistributionAdditionalNonTeamMembers and random dice throws,
-     * a configuration is saved in the database and a DistributionConfiguration object returned, which can be
-     * used for later verification of the distributed points.
-     *
-     * @param proposal
-     * @param teamMembers
-     * @param isGlobal
-     * @return
-     * @throws NoSuchUserException
-     * @throws SystemException
-     */
-    private DistributionConfiguration setPointsDistributionForProposal(Proposal proposal, List<User> teamMembers, boolean isGlobal) throws NoSuchUserException, SystemException {
-        DistributionConfiguration config = new DistributionConfiguration();
-
-        //ANY TEAM MEMBER
-        User author = teamMembers.get(0);
-        double sumOfShares = 0.0;
-        for (int i = 0; i < teamMembers.size(); i++) {
-            User teamMember = teamMembers.get(i);
-            //distribute randomly until the last member. he will get the rest
-            double share;
-            if (i < teamMembers.size()-1) {
-                do {
-                    share = generateProbabilityForTeamMembers(teamMembers.size());
-                } while (share+sumOfShares > 1.0);
-            } else {
-                share = 1-sumOfShares;
-            }
-
-            config.teamMemberShares.put(i, share);
-
-            testInstance.pointsDistributionConfigurationService.addDistributionConfiguration(
-                    proposal.getProposalId(),
-                    isGlobal ? 2 : 7, //team member point type
-                    teamMember.getUserId(),
-                    0L,
-                    share,
-                    author.getUserId()
-            );
-            sumOfShares += share;
-        }
-        assertTrue(sumOfShares == 1);
-
-        sumOfShares = 0.0;
-        //ANY NON-TEAM-MEMBER
-        for (int i = 1; doWithProbability(probabilityOfPointsDistributionAdditionalNonTeamMembers/i); i++) {
-            int randomUserIndex = randomInt(0, amountOfUsers);
-            User randomUser = users.get(randomUserIndex);
-
-            double share;
-            do {
-                share = generateProbabilityForTeamMembers(i);
-            } while (share+sumOfShares > 1.0);
-            if (share > 0) {
-                testInstance.pointsDistributionConfigurationService.addDistributionConfiguration(
-                        proposal.getProposalId(),
-                        isGlobal ? 5 : 8, //any non-team-member
-                        randomUser.getUserId(),
-                        0L,
-                        share,
-                        author.getUserId()
-                );
-                config.additionalShares.put(randomUserIndex, share);
-                sumOfShares += share;
-            }
-        }
-        assertTrue(sumOfShares <= 1);
-
-        if (sumOfShares > 0 && sumOfShares < 1) {
-            int randomUserIndex = randomInt(0, amountOfUsers);
-            User randomUser = users.get(randomUserIndex);
-            double share = 1-sumOfShares;
-            //add another one to make the sum total 1
-            testInstance.pointsDistributionConfigurationService.addDistributionConfiguration(
-                    proposal.getProposalId(),
-                    isGlobal ? 5 : 8, //any non-team-member
-                    randomUser.getUserId(),
-                    0L,
-                    share,
-                    author.getUserId()
-            );
-            config.additionalShares.put(randomUserIndex, share);
-            sumOfShares += share;
-        }
-
-        assertTrue(sumOfShares == 1);
-
-        return config;
-    }
 
     private List<User> setTeamMembers(Proposal proposal, User author) throws SystemException, PortalException {
         //sometimes the admin user is still in the user group
@@ -275,7 +144,7 @@ public class GlobalContestSimulator {
                     if (hasContestEnded) {
                         copyProposalToPhase(proposal, gCp6);
                     }
-                    globalProposalsInLastPhase.add(proposal);
+                    globalProposalsInLastPhase.add(i);
                 }
             }
         }
@@ -332,16 +201,22 @@ public class GlobalContestSimulator {
 
     private void createLinksBetweenProposals() throws SystemException, PortalException {
         for (int i = 0; i < amountOfGlobalProposals; i++) {
+            globalProposalLinksToGlobalProposals.put(i, new ArrayList<Integer>());
+            globalProposalLinksToSideProposals.put(i, new HashMap<Integer, List<Integer>>());
             String sectionText = "These are the proposals we link to:\n";
+
             for (int j = 0; j < amountOfGlobalProposals; i++) {
                 if (doWithProbability(probabilityToLinkToOtherProposal)) {
                     sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + globalContest.getContestPK() + "/planId/" + globalProposals.get(j).getProposalId() + "\n\n";
+                    globalProposalLinksToGlobalProposals.get(i).add(j);
                 }
             }
             for (int j = 0; j < amountOfSideContests; j++) {
+                globalProposalLinksToSideProposals.get(i).put(j, new ArrayList<Integer>());
                 for (int k = 0; k < amountOfProposalsPerSideContest; k++) {
                     if (doWithProbability(probabilityToLinkToOtherProposal)) {
                         sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + sideContests.get(j).getContestPK() + "/planId/" + sideProposals.get(j).get(k).getProposalId() + "\n\n";
+                        globalProposalLinksToSideProposals.get(i).get(j).add(k);
                     }
                 }
             }

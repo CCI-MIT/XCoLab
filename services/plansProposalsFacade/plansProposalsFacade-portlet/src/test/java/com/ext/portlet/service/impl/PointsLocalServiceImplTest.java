@@ -21,6 +21,27 @@ import static org.junit.Assert.*;
 
 public class PointsLocalServiceImplTest extends XCoLabTest {
 
+    @Test
+    public void firstTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+        this.setupBasicDataset();
+        GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
+        GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
+        gcs.initializeContests(
+                500,
+                20000,
+                false,
+                40,
+                10,
+                15,
+                0.02,
+                0.40,
+                0.04
+        );
+        gcs.setPointsDistributions(0.3, 0.6, 0.2);
+        gcs.runPointDistributionAlgorithm();
+        gcs.assertPointDistributions();
+    }
+
 
     @Test
     public void testGlobalContestHypotheticalPoints() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
@@ -30,12 +51,6 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         final int pointsToBeDistributed = 10000;
 
         //TODO: this is currently getting refactored to the GlobalContestSimulator class
-
-
-
-
-
-
 
         //assert the points in two ways:
         // First, make sure that the users have the right amount of hypothetical points
@@ -176,30 +191,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         assertTrue(childrenProposalIds.isEmpty());
     }
 
-    private Long getProposalIdByPointsSourceIdInList(List<Points> points, long pointsSourceId) {
-        for (Points p : points) {
-            if (p.getPointsSourceId() == pointsSourceId) {
-                return p.getProposalId();
-            }
-        }
-        return null;
-    }
 
-    private Points popPointEntryInList(List<Points> points, long proposalId, long userId, long pointsSourceId, double materializedPoints, double hypotheticalPoints) {
-        Points find = null;
-        for (Points p : points) {
-            if (p.getProposalId() == proposalId &&
-                    p.getUserId() == userId &&
-                    p.getMaterializedPoints() == materializedPoints &&
-                    p.getHypotheticalPoints() == hypotheticalPoints &&
-                    p.getPointsSourceId() == pointsSourceId) {
-                find = p;
-                break;
-            }
-        }
-        if (find != null) points.remove(find);
-        return find;
-    }
 
 
 
