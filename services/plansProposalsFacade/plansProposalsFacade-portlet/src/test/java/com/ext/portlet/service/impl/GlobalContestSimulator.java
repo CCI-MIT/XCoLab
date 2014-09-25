@@ -133,7 +133,7 @@ public class GlobalContestSimulator {
     private void createUsers() throws SystemException {
         users = new ArrayList<User>();
         for (int i = 0; i < amountOfUsers; i++) {
-            users.add(testInstance.createUser(i));
+            users.add(testInstance.createUser(i+1));
         }
     }
 
