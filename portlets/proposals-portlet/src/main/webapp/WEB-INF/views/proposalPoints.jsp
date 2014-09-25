@@ -16,13 +16,10 @@
         </h1>
         <div id="help-text">
             <p>
-                A winning integrated proposal includes ideas from all the people who contributed to the sub-proposals, not just those who created the integrated proposal itself.
+                In 2014, the Climate CoLab launched its first contest seeking <a href="/web/guest/resources/-/wiki/Main/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other contests into a larger whole. Other Climate CoLab proposals used in these integrated proposals are called sub-proposals.
             </p>
-            <p>
-                To recognize all these contributions, a winning integrated proposal receives CoLab Points that are distributed among all these people. Each community member’s profile will show the points he or she has received
-            </p>
-            <p style="margin-bottom: 0;">
-                For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">Climate CoLab Points</a>.
+            <p style="margin-bottom:0">
+                Good integrated proposals include ideas from the people who contributed to the sub-proposals, not just those who created the integrated proposal itself. To recognize all these contributions, a winning integrated proposal receives CoLab Points that are distributed among all these people. Each proposal will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">Climate CoLab Points</a>.
             </p>
         </div>
         <portlet:actionURL var="savePointsAssignmentsURL">
