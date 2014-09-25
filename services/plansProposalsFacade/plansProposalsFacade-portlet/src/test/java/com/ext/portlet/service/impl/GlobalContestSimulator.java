@@ -2,6 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.*;
+import com.ext.portlet.service.ProposalAttributeLocalService;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -41,6 +42,8 @@ public class GlobalContestSimulator {
     protected double probabilityOfBeingAdvancedToNextPhase;
     protected double probabilityOfAdditionalTeamMember;
 
+    private List<ContestPhase> contestPhasesCreated;
+
     protected Map<Integer, List<Integer>> globalProposalLinksToGlobalProposals;
     protected Map<Integer, Map<Integer, List<Integer>>> globalProposalLinksToSideProposals;
 
@@ -74,10 +77,56 @@ public class GlobalContestSimulator {
         this.probabilityOfBeingAdvancedToNextPhase = probabilityOfBeingAdvancedToNextPhase;
         this.probabilityOfAdditionalTeamMember = probabilityOfAdditionalTeamMember;
 
-        this.createUsers();
+        if (users == null || users.isEmpty()) {
+            this.createUsers();
+        }
         this.createGlobalContestAndProposals();
         this.createSideContestsAndProposals();
         this.createLinksBetweenProposals();
+    }
+
+    public void deleteContestsAndProposals() throws SystemException {
+        //delete all contestPhases
+        for (ContestPhase cp : contestPhasesCreated) {
+            testInstance.contestPhaseLocalService.deleteContestPhase(cp);
+        }
+        contestPhasesCreated = null;
+
+        //delete links between proposals
+        List<ProposalAttribute> proposalAttributes = testInstance.proposalAttributeLocalService.getProposalAttributes(0, Integer.MAX_VALUE);
+        for (ProposalAttribute pa: proposalAttributes) {
+            testInstance.proposalAttributeLocalService.deleteProposalAttribute(pa);
+        }
+        globalProposalLinksToGlobalProposals = null;
+        globalProposalLinksToSideProposals = null;
+
+        //delete Proposal 2 phases
+        List<Proposal2Phase> p2ps = testInstance.proposal2PhaseLocalService.getProposal2Phases(0, Integer.MAX_VALUE);
+        for (Proposal2Phase p2p: p2ps) {
+            testInstance.proposal2PhaseLocalService.deleteProposal2Phase(p2p);
+        }
+
+        //Delete proposals
+        for (int i = 0; i < globalProposals.size(); i++) {
+            Proposal p = globalProposals.get(i);
+            testInstance.userLocalService.deleteGroupUsers(p.getGroupId(), globalProposalsTeamMembers.get(i));
+            testInstance.proposalLocalService.deleteProposal(p);
+        }
+        for (int j = 0; j < sideContests.size(); j++) {
+            for (int i = 0; i < amountOfProposalsPerSideContest; i++) {
+                Proposal p = sideProposals.get(j).get(i);
+                testInstance.userLocalService.deleteGroupUsers(p.getGroupId(), sideProposalsTeamMembers.get(j).get(i));
+                testInstance.proposalLocalService.deleteProposal(p);
+            }
+        }
+
+        //delete contests
+        testInstance.contestLocalService.deleteContest(globalContest);
+        globalContest = null;
+        for (int j = 0; j < sideContests.size(); j++) {
+            testInstance.contestLocalService.deleteContest(sideContests.get(j));
+        }
+        sideContests = null;
     }
 
 
@@ -109,6 +158,8 @@ public class GlobalContestSimulator {
         globalContest.setPoints(pointsToBeDistributed);
         globalContest.setDefaultParentPointType(1);
         testInstance.contestLocalService.updateContest(globalContest);
+
+        contestPhasesCreated = new ArrayList<ContestPhase>();
         //create phases
         ContestPhase gCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE",  "2014-08-01 00:00:00", "2014-08-10 00:00:00");
         ContestPhase gCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE",  "2014-08-10 00:00:01", "2014-08-14 00:00:00");
@@ -245,6 +296,7 @@ public class GlobalContestSimulator {
             cp.setPhaseEndDate(dateFormat.parse(endDate));
         }
         testInstance.contestPhaseLocalService.updateContestPhase(cp);
+        contestPhasesCreated.add(cp);
 
         return cp;
     }
@@ -268,7 +320,7 @@ public class GlobalContestSimulator {
     public static double generateProbabilityForTeamMembers(int teamSize) {
         //bias the probability towards getting 1
         //also take into account team size and divide by two thirds of the team size.
-        return doWithProbability(0.1) ? 1 : random.nextDouble()/(teamSize*2/3);
+        return doWithProbability(0.1) ? 1 : random.nextDouble()/(Math.ceil(teamSize*2.0/3.0));
     }
 
 }

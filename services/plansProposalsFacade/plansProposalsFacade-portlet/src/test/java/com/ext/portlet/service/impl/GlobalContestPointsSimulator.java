@@ -30,6 +30,24 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         public Map<Integer, Double> additionalShares = new HashMap<Integer, Double>();
     }
 
+    public void deletePointDistributions() throws SystemException {
+        //delete points
+        List<Points> points = testInstance.pointsLocalService.getPointses(0, Integer.MAX_VALUE);
+        for (Points p: points) {
+            testInstance.pointsLocalService.deletePoints(p);
+        }
+
+        //delete configurations
+        List<PointsDistributionConfiguration> configs = testInstance.pointsDistributionConfigurationService.getPointsDistributionConfigurations(0, Integer.MAX_VALUE);
+        for (PointsDistributionConfiguration pdc: configs) {
+            testInstance.pointsDistributionConfigurationService.deletePointsDistributionConfiguration(pdc);
+        }
+        globalProposalsDistributions = null;
+        sideProposalsDistributions = null;
+        this.points = null;
+        probabilityOfPointsDistributionAdditionalNonTeamMembers = 0;
+    }
+
     public void setPointsDistributions(
             double probabilityOfEmptyGlobalProposalConfiguration,
             double probabilityOfEmptySideProposalConfiguration,
@@ -65,6 +83,15 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     }
 
 
+    private int getRandomNonTeamUser(List<User> teamMembers) {
+        int randomUserIndex = randomInt(0, amountOfUsers);
+        User randomUser = users.get(randomUserIndex);
+        if (teamMembers.contains(randomUser)) {
+            return getRandomNonTeamUser(teamMembers);
+        } else {
+            return randomUserIndex;
+        }
+    }
 
     /**
      * Sets a random point distribution configuration for the given proposal and its team members.
@@ -88,11 +115,13 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         for (int i = 0; i < teamMembers.size(); i++) {
             User teamMember = teamMembers.get(i);
             //distribute randomly until the last member. he will get the rest
-            double share;
+            double share = 0;
             if (i < teamMembers.size()-1) {
-                do {
-                    share = generateProbabilityForTeamMembers(teamMembers.size());
-                } while (share+sumOfShares > 1.0);
+                if (sumOfShares < 1) {
+                    do {
+                        share = generateProbabilityForTeamMembers(teamMembers.size());
+                    } while (share + sumOfShares > 1.0);
+                }
             } else {
                 share = 1-sumOfShares;
             }
@@ -114,30 +143,33 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         sumOfShares = 0.0;
         //ANY NON-TEAM-MEMBER
         for (int i = 1; doWithProbability(probabilityOfPointsDistributionAdditionalNonTeamMembers/i); i++) {
-            int randomUserIndex = randomInt(0, amountOfUsers);
+            int randomUserIndex = getRandomNonTeamUser(teamMembers);
             User randomUser = users.get(randomUserIndex);
 
-            double share;
-            do {
-                share = generateProbabilityForTeamMembers(i);
-            } while (share+sumOfShares > 1.0);
-            if (share > 0) {
-                testInstance.pointsDistributionConfigurationService.addDistributionConfiguration(
-                        proposal.getProposalId(),
-                        isGlobal ? 5 : 8, //any non-team-member
-                        randomUser.getUserId(),
-                        0L,
-                        share,
-                        author.getUserId()
-                );
-                config.additionalShares.put(randomUserIndex, share);
-                sumOfShares += share;
+            double share = 0;
+            if (sumOfShares < 1) {
+                do {
+                    share = generateProbabilityForTeamMembers(i);
+                } while (share + sumOfShares > 1.0);
+
+                if (share > 0) {
+                    testInstance.pointsDistributionConfigurationService.addDistributionConfiguration(
+                            proposal.getProposalId(),
+                            isGlobal ? 5 : 8, //any non-team-member
+                            randomUser.getUserId(),
+                            0L,
+                            share,
+                            author.getUserId()
+                    );
+                    config.additionalShares.put(randomUserIndex, share);
+                    sumOfShares += share;
+                }
             }
         }
         assertTrue(sumOfShares <= 1);
 
         if (sumOfShares >= 0 && sumOfShares < 1) {
-            int randomUserIndex = randomInt(0, amountOfUsers);
+            int randomUserIndex = getRandomNonTeamUser(teamMembers);
             User randomUser = users.get(randomUserIndex);
             double share = 1-sumOfShares;
             //add another one to make the sum total 1
@@ -154,6 +186,14 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
 
         assertTrue(sumOfShares == 1);
+        //make sure again that additional shares are 1
+        if (config.additionalShares.size() > 0) {
+            double sum = 0.0;
+            for (Double value: config.additionalShares.values()) {
+                sum += value;
+            }
+            assertTrue(sum == 1.0);
+        }
 
         return config;
     }
@@ -168,7 +208,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
             amountOfSubProposals += globalProposalLinksToSideProposals.get(proposalIndex).get(i).size();
         }
-        double pointsPerSubProposal = (pointsToBeDistributed*0.8)/amountOfSubProposals;
+        double pointsPerSubProposal = amountOfSubProposals > 0 ? (pointsToBeDistributed*0.8)/amountOfSubProposals : 0;
 
         //TEAM
         for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
@@ -192,61 +232,63 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
 
         //SUB-PROPOSALS
-        //first gather all linked proposal ids and where they are located in our fields
-        List<Long> childrenProposalIds = new ArrayList<Long>();
-        List<Boolean> childrenProposalIsGlobal = new ArrayList<Boolean>();
-        List<Integer> childrenGlobalProposalIndizes = new ArrayList<Integer>();
-        List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();
-        for (Integer subProposalIndex: globalProposalLinksToGlobalProposals.get(proposalIndex)) {
-            childrenProposalIds.add(globalProposals.get(subProposalIndex).getProposalId());
-            childrenGlobalProposalIndizes.add(subProposalIndex);
-            childrenProposalIsGlobal.add(true);
-        }
-        for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
-            for (Integer subProposalIndex: globalProposalLinksToSideProposals.get(proposalIndex).get(i)) {
-                childrenProposalIds.add(sideProposals.get(i).get(subProposalIndex).getProposalId());
-                childrenProposalIsGlobal.add(false);
-                childrenSideProposalIndizes.add(new Integer[]{i, subProposalIndex});
+        if (pointsPerSubProposal >= 1 && amountOfSubProposals > 0) {
+            //first gather all linked proposal ids and where they are located in our fields
+            List<Long> childrenProposalIds = new ArrayList<Long>();
+            List<Boolean> childrenProposalIsGlobal = new ArrayList<Boolean>();
+            List<Integer> childrenGlobalProposalIndizes = new ArrayList<Integer>();
+            List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();
+            for (Integer subProposalIndex : globalProposalLinksToGlobalProposals.get(proposalIndex)) {
+                childrenProposalIds.add(globalProposals.get(subProposalIndex).getProposalId());
+                childrenGlobalProposalIndizes.add(subProposalIndex);
+                childrenProposalIsGlobal.add(true);
             }
-        }
-
-        //now go through all linked proposals and find their origin
-        for (int i = 0; i < amountOfSubProposals; i++) {
-            //find the related subProposal Point entry
-            Points subProposalSourcePoints = popPointEntryInList(points, p.getProposalId(), 0, sourceId, 0, pointsPerSubProposal);
-            assertNotNull(subProposalSourcePoints);
-
-            //find the proposalId which has the sub-proposal Point entry as a parent
-            Long proposalId = getProposalIdByPointsSourceIdInList(points, subProposalSourcePoints.getId());
-            assertNotNull(proposalId);
-
-            //remove
-            int indexOfProposalId = childrenProposalIds.indexOf(proposalId);
-            Boolean isProposalGlobal = childrenProposalIsGlobal.get(indexOfProposalId);
-            if (indexOfProposalId > -1) {
-                childrenProposalIds.remove(indexOfProposalId);
-                childrenProposalIsGlobal.remove(indexOfProposalId);
-            } else {
-                throw new RuntimeException("Wrong sub-proposal "+proposalId);
+            for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
+                for (Integer subProposalIndex : globalProposalLinksToSideProposals.get(proposalIndex).get(i)) {
+                    childrenProposalIds.add(sideProposals.get(i).get(subProposalIndex).getProposalId());
+                    childrenProposalIsGlobal.add(false);
+                    childrenSideProposalIndizes.add(new Integer[]{i, subProposalIndex});
+                }
             }
-            //distinguish between proposal types
-            if (isProposalGlobal) {
-                int globalProposalIndex = childrenGlobalProposalIndizes.get(indexOfProposalId);
-                childrenGlobalProposalIndizes.remove(indexOfProposalId);
 
-                this.assertDistributionForGlobalProposal(globalProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
-            } else {
-                Integer[] sideProposalIndex = childrenSideProposalIndizes.get(indexOfProposalId);
-                childrenSideProposalIndizes.remove(indexOfProposalId);
+            //now go through all linked proposals and find their origin
+            for (int i = 0; i < amountOfSubProposals; i++) {
+                //find the related subProposal Point entry
+                Points subProposalSourcePoints = popPointEntryInList(points, p.getProposalId(), 0, sourceId, 0, Math.ceil(pointsPerSubProposal));
+                assertNotNull(subProposalSourcePoints);
 
-                this.assertDistributionForSideProposal(sideProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
+                //find the proposalId which has the sub-proposal Point entry as a parent
+                Long proposalId = getProposalIdByPointsSourceIdInList(points, subProposalSourcePoints.getId());
+                assertNotNull(proposalId);
+
+                //remove
+                int indexOfProposalId = childrenProposalIds.indexOf(proposalId);
+                Boolean isProposalGlobal = childrenProposalIsGlobal.get(indexOfProposalId);
+                if (indexOfProposalId > -1) {
+                    childrenProposalIds.remove(indexOfProposalId);
+                    childrenProposalIsGlobal.remove(indexOfProposalId);
+                } else {
+                    throw new RuntimeException("Wrong sub-proposal " + proposalId);
+                }
+                //distinguish between proposal types
+                if (isProposalGlobal) {
+                    int globalProposalIndex = childrenGlobalProposalIndizes.get(indexOfProposalId);
+                    childrenGlobalProposalIndizes.remove(indexOfProposalId);
+
+                    this.assertDistributionForGlobalProposal(globalProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
+                } else {
+                    Integer[] sideProposalIndex = childrenSideProposalIndizes.get(indexOfProposalId);
+                    childrenSideProposalIndizes.remove(indexOfProposalId);
+
+                    this.assertDistributionForSideProposal(sideProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
+                }
             }
+            // we are done. all the generated arrays should be empty by now.
+            assertTrue(childrenProposalIds.isEmpty());
+            assertTrue(childrenProposalIsGlobal.isEmpty());
+            assertTrue(childrenGlobalProposalIndizes.isEmpty());
+            assertTrue(childrenSideProposalIndizes.isEmpty());
         }
-        // we are done. all the generated arrays should be empty by now.
-        assertTrue(childrenProposalIds.isEmpty());
-        assertTrue(childrenProposalIsGlobal.isEmpty());
-        assertTrue(childrenGlobalProposalIndizes.isEmpty());
-        assertTrue(childrenSideProposalIndizes.isEmpty());
     }
 
 

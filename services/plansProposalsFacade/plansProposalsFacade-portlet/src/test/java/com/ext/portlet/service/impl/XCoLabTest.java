@@ -37,6 +37,7 @@ public class XCoLabTest {
     protected static ContestLocalService contestLocalService;
     protected static ContestPhaseLocalService contestPhaseLocalService;
     protected static ProposalLocalService proposalLocalService;
+    protected static ProposalAttributeLocalService proposalAttributeLocalService;
     protected static Proposal2PhaseLocalService proposal2PhaseLocalService;
     protected static ProposalContestPhaseAttributeLocalService proposalContestPhaseAttributeLocalService;
     protected static PointTypeLocalService pointTypeLocalService;
@@ -66,6 +67,7 @@ public class XCoLabTest {
         contestLocalService = (ContestLocalService) PortalBeanLocatorUtil.locate(ContestLocalService.class.getName());
         contestPhaseLocalService = (ContestPhaseLocalService) PortalBeanLocatorUtil.locate(ContestPhaseLocalService.class.getName());
         proposalLocalService = (ProposalLocalService) PortalBeanLocatorUtil.locate(ProposalLocalService.class.getName());
+        proposalAttributeLocalService = (ProposalAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalAttributeLocalService.class.getName());
         proposal2PhaseLocalService = (Proposal2PhaseLocalService) PortalBeanLocatorUtil.locate(Proposal2PhaseLocalService.class.getName());
         proposalContestPhaseAttributeLocalService = (ProposalContestPhaseAttributeLocalService) PortalBeanLocatorUtil.locate(ProposalContestPhaseAttributeLocalService.class.getName());
         pointTypeLocalService = (PointTypeLocalService) PortalBeanLocatorUtil.locate(PointTypeLocalService.class.getName());

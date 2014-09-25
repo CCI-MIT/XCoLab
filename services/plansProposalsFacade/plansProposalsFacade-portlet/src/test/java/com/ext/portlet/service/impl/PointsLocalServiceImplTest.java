@@ -26,19 +26,29 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
         this.setupBasicDataset();
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
-        gcs.initializeContests(
-                500,
-                20000,
-                false,
-                40,
-                10,
-                15,
-                0.02,
-                0.40,
-                0.04
-        );
-        gcs.setPointsDistributions(0.3, 0.6, 0.2);
-        gcs.runPointDistributionAlgorithm();
-        gcs.assertPointDistributions();
+        for (int j = 0; j < 1000; j++) {
+            gcs.initializeContests(
+                    200,
+                    20000,
+                    false,
+                    20,
+                    2,
+                    5,
+                    0.02,
+                    0.40,
+                    0.04
+            );
+            //Test 50 different distributions per contest
+            for (int i = 0; i < 50; i++) {
+                gcs.setPointsDistributions(0.3, 0.6, 0.2);
+                gcs.runPointDistributionAlgorithm();
+                gcs.assertPointDistributions();
+                //reset distribution for next run
+                gcs.deletePointDistributions();
+            }
+            //reset
+            gcs.deleteContestsAndProposals();
+        }
+
     }
 }
