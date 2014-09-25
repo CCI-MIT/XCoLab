@@ -125,6 +125,8 @@ public class GlobalContestSimulator {
 
         //create proposals, authored by a random user, advance them with a probability to the next phases
         globalProposals = new ArrayList<Proposal>();
+        globalProposalsTeamMembers = new HashMap<Integer, List<User>>();
+        globalProposalsInLastPhase = new ArrayList<>();
         for (int i = 0; i < amountOfGlobalProposals; i++) {
             User author = users.get(randomInt(0, amountOfUsers));
             Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), gCp1.getContestPhasePK());
@@ -154,6 +156,7 @@ public class GlobalContestSimulator {
         //create side contests
         sideProposals = new HashMap<Integer, List<Proposal>>();
         sideContests = new ArrayList<Contest>();
+        sideProposalsTeamMembers = new HashMap<>();
         for (int i = 0; i < amountOfSideContests; i++) {
             Contest sideContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Side-Contest-"+(i+1));
             sideContest.setPoints(0);
@@ -179,8 +182,8 @@ public class GlobalContestSimulator {
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
                 User author = users.get(randomInt(0, amountOfUsers));
                 Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sCp1.getContestPhasePK());
-                sideProposals.get(j).add(proposal);
-                sideProposalsTeamMembers.get(j).put(i, setTeamMembers(proposal, author));
+                sideProposals.get(i).add(proposal);
+                sideProposalsTeamMembers.get(i).put(j, setTeamMembers(proposal, author));
 
                 //copy to second phase
                 copyProposalToPhase(proposal, sCp2);
@@ -200,12 +203,15 @@ public class GlobalContestSimulator {
     }
 
     private void createLinksBetweenProposals() throws SystemException, PortalException {
+        globalProposalLinksToGlobalProposals = new HashMap<>();
+        globalProposalLinksToSideProposals = new HashMap<>();
+
         for (int i = 0; i < amountOfGlobalProposals; i++) {
             globalProposalLinksToGlobalProposals.put(i, new ArrayList<Integer>());
             globalProposalLinksToSideProposals.put(i, new HashMap<Integer, List<Integer>>());
             String sectionText = "These are the proposals we link to:\n";
 
-            for (int j = 0; j < amountOfGlobalProposals; i++) {
+            for (int j = 0; j < amountOfGlobalProposals; j++) {
                 if (doWithProbability(probabilityToLinkToOtherProposal)) {
                     sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + globalContest.getContestPK() + "/planId/" + globalProposals.get(j).getProposalId() + "\n\n";
                     globalProposalLinksToGlobalProposals.get(i).add(j);

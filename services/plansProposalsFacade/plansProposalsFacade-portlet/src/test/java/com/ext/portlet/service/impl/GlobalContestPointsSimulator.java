@@ -35,6 +35,9 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             double probabilityOfEmptySideProposalConfiguration,
             double probabilityOfPointsDistributionAdditionalNonTeamMembers
     ) throws NoSuchUserException, SystemException {
+        globalProposalsDistributions = new HashMap<>();
+        sideProposalsDistributions = new HashMap<>();
+
         this.probabilityOfPointsDistributionAdditionalNonTeamMembers = probabilityOfPointsDistributionAdditionalNonTeamMembers;
 
         //Global Proposals
@@ -133,7 +136,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
         assertTrue(sumOfShares <= 1);
 
-        if (sumOfShares > 0 && sumOfShares < 1) {
+        if (sumOfShares >= 0 && sumOfShares < 1) {
             int randomUserIndex = randomInt(0, amountOfUsers);
             User randomUser = users.get(randomUserIndex);
             double share = 1-sumOfShares;
@@ -239,12 +242,48 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                 this.assertDistributionForSideProposal(sideProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
             }
         }
-
-
-
+        // we are done. all the generated arrays should be empty by now.
+        assertTrue(childrenProposalIds.isEmpty());
+        assertTrue(childrenProposalIsGlobal.isEmpty());
+        assertTrue(childrenGlobalProposalIndizes.isEmpty());
+        assertTrue(childrenSideProposalIndizes.isEmpty());
     }
 
-    public void assertDistributions() throws SystemException {
+
+    private void assertDistributionForSideProposal(Integer[] sideProposalIndex, long sourceId, double pointsToBeDistributed) {
+        assertTrue(sideProposalIndex.length == 2);
+        int contestIndex = sideProposalIndex[0];
+        int proposalIndex = sideProposalIndex[1];
+
+        DistributionConfiguration config = sideProposalsDistributions.get(contestIndex).get(proposalIndex);
+        Proposal p = sideProposals.get(contestIndex).get(proposalIndex);
+        double teamPoints = pointsToBeDistributed*0.8;
+        double nonTeamPoints = pointsToBeDistributed*0.2;
+
+        //TEAM
+        List<User> teamMembers = sideProposalsTeamMembers.get(contestIndex).get(proposalIndex);
+        for (int j = 0; j < teamMembers.size(); j++) {
+            User teamMember = teamMembers.get(j);
+            double share;
+            if (config != null) {
+                share = config.teamMemberShares.get(j);
+            } else {
+                //no config is present. shares are distributed equally
+                share = 1.00/teamMembers.size();
+            }
+            assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints*share)));
+        }
+
+        //NON-TEAM
+        if (config != null) {
+            for (int userIndex: config.additionalShares.keySet()) {
+                double share = config.additionalShares.get(userIndex);
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, 0, Math.ceil(nonTeamPoints*share)));
+            }
+        }
+    }
+
+    public void assertPointDistributions() throws SystemException {
         //Assure that the individual Point data entries are correct
         this.points = new ArrayList<Points>(testInstance.pointsLocalService.getPointses(0, Integer.MAX_VALUE));
 
@@ -252,7 +291,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             this.assertDistributionForGlobalProposal(i, 0L, pointsToBeDistributed);
         }
 
-        //all points should be popped and verified after this.
+        //all points should have been popped and verified after this. so the array should be empty.
         assertTrue(points.isEmpty());
     }
 
