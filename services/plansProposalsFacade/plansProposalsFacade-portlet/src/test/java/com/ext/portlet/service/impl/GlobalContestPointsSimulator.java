@@ -68,8 +68,8 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
 
         //Side Proposals
         for (int i = 0; i < amountOfSideContests; i++) {
+            sideProposalsDistributions.put(i, new HashMap<Integer, DistributionConfiguration>());
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
-                sideProposalsDistributions.put(i, new HashMap<Integer, DistributionConfiguration>());
                 if (!doWithProbability(probabilityOfEmptySideProposalConfiguration)) {
                     DistributionConfiguration config = this.setPointsDistributionForProposal(sideProposals.get(i).get(j), sideProposalsTeamMembers.get(i).get(j), false);
                     sideProposalsDistributions.get(i).put(j, config);
@@ -240,7 +240,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         }
 
         //SUB-PROPOSALS
-        if (pointsPerSubProposal >= 1 && amountOfSubProposals > 0) {
+        if (Math.ceil(pointsToBeDistributed)*0.8 >= 1 && amountOfSubProposals > 0) {
             //first gather all linked proposal ids and where they are located in our fields
             List<Long> childrenProposalIds = new ArrayList<Long>();
             List<Boolean> childrenProposalIsGlobal = new ArrayList<Boolean>();
