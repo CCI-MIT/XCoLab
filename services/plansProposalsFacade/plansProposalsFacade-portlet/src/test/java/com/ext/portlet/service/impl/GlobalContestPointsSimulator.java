@@ -71,7 +71,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
                 sideProposalsDistributions.put(i, new HashMap<Integer, DistributionConfiguration>());
                 if (!doWithProbability(probabilityOfEmptySideProposalConfiguration)) {
-                    DistributionConfiguration config = this.setPointsDistributionForProposal(sideProposals.get(i).get(j), sideProposalsTeamMembers.get(i).get(j), true);
+                    DistributionConfiguration config = this.setPointsDistributionForProposal(sideProposals.get(i).get(j), sideProposalsTeamMembers.get(i).get(j), false);
                     sideProposalsDistributions.get(i).put(j, config);
                 }
             }
@@ -83,11 +83,11 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     }
 
 
-    private int getRandomNonTeamUser(List<User> teamMembers) {
+    private int getRandomNonTeamUser(List<User> teamMembers, List <User> alreadyChosenMembers) {
         int randomUserIndex = randomInt(0, amountOfUsers);
         User randomUser = users.get(randomUserIndex);
-        if (teamMembers.contains(randomUser)) {
-            return getRandomNonTeamUser(teamMembers);
+        if (teamMembers.contains(randomUser) || alreadyChosenMembers.contains(randomUser)) {
+            return getRandomNonTeamUser(teamMembers, alreadyChosenMembers);
         } else {
             return randomUserIndex;
         }
@@ -142,8 +142,9 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
 
         sumOfShares = 0.0;
         //ANY NON-TEAM-MEMBER
+        List<User> chosenRandomUsers = new ArrayList<User>();
         for (int i = 1; doWithProbability(probabilityOfPointsDistributionAdditionalNonTeamMembers/i); i++) {
-            int randomUserIndex = getRandomNonTeamUser(teamMembers);
+            int randomUserIndex = getRandomNonTeamUser(teamMembers, chosenRandomUsers);
             User randomUser = users.get(randomUserIndex);
 
             double share = 0;
@@ -163,13 +164,14 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                     );
                     config.additionalShares.put(randomUserIndex, share);
                     sumOfShares += share;
+                    chosenRandomUsers.add(randomUser);
                 }
             }
         }
         assertTrue(sumOfShares <= 1);
 
         if (sumOfShares >= 0 && sumOfShares < 1) {
-            int randomUserIndex = getRandomNonTeamUser(teamMembers);
+            int randomUserIndex = getRandomNonTeamUser(teamMembers, chosenRandomUsers);
             User randomUser = users.get(randomUserIndex);
             double share = 1-sumOfShares;
             //add another one to make the sum total 1
@@ -183,6 +185,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             );
             config.additionalShares.put(randomUserIndex, share);
             sumOfShares += share;
+            chosenRandomUsers.add(randomUser);
         }
 
         assertTrue(sumOfShares == 1);
@@ -204,30 +207,32 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     private void assertDistributionForGlobalProposal(int proposalIndex, long sourceId, double pointsToBeDistributed) {
         DistributionConfiguration config = globalProposalsDistributions.get(proposalIndex);
         Proposal p = globalProposals.get(proposalIndex);
-        double teamPoints = pointsToBeDistributed*0.2*0.9;
-        double nonTeamPoints = pointsToBeDistributed*0.2*0.1;
+        double teamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.9;
+        double nonTeamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.1;
 
         int amountOfSubProposals = globalProposalLinksToGlobalProposals.get(proposalIndex).size();
         for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
             amountOfSubProposals += globalProposalLinksToSideProposals.get(proposalIndex).get(i).size();
         }
-        double pointsPerSubProposal = amountOfSubProposals > 0 ? (pointsToBeDistributed*0.8)/amountOfSubProposals : 0;
+        double pointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(pointsToBeDistributed)*0.8)/amountOfSubProposals : 0;
 
         //TEAM
-        for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
-            User teamMember = globalProposalsTeamMembers.get(proposalIndex).get(j);
-            double share;
-            if (config != null) {
-                share = config.teamMemberShares.get(j);
-            } else {
-                //no config is present. shares are distributed equally
-                share = 1.00/globalProposalsTeamMembers.get(proposalIndex).size();
+        if (teamPoints >= 1) {
+            for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
+                User teamMember = globalProposalsTeamMembers.get(proposalIndex).get(j);
+                double share;
+                if (config != null) {
+                    share = config.teamMemberShares.get(j);
+                } else {
+                    //no config is present. shares are distributed equally
+                    share = 1.00 / globalProposalsTeamMembers.get(proposalIndex).size();
+                }
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints * share)));
             }
-            assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints*share)));
         }
 
         //NON-TEAM
-        if (config != null) {
+        if (nonTeamPoints >= 1 && config != null) {
             for (int userIndex: config.additionalShares.keySet()) {
                 double share = config.additionalShares.get(userIndex);
                 assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, 0, Math.ceil(nonTeamPoints*share)));
@@ -306,25 +311,27 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
 
         DistributionConfiguration config = sideProposalsDistributions.get(contestIndex).get(proposalIndex);
         Proposal p = sideProposals.get(contestIndex).get(proposalIndex);
-        double teamPoints = pointsToBeDistributed*0.8;
-        double nonTeamPoints = pointsToBeDistributed*0.2;
+        double teamPoints = Math.ceil(pointsToBeDistributed)*0.8;
+        double nonTeamPoints = Math.ceil(pointsToBeDistributed)*0.2;
 
         //TEAM
-        List<User> teamMembers = sideProposalsTeamMembers.get(contestIndex).get(proposalIndex);
-        for (int j = 0; j < teamMembers.size(); j++) {
-            User teamMember = teamMembers.get(j);
-            double share;
-            if (config != null) {
-                share = config.teamMemberShares.get(j);
-            } else {
-                //no config is present. shares are distributed equally
-                share = 1.00/teamMembers.size();
+        if (teamPoints >= 1) {
+            List<User> teamMembers = sideProposalsTeamMembers.get(contestIndex).get(proposalIndex);
+            for (int j = 0; j < teamMembers.size(); j++) {
+                User teamMember = teamMembers.get(j);
+                double share;
+                if (config != null) {
+                    share = config.teamMemberShares.get(j);
+                } else {
+                    //no config is present. shares are distributed equally
+                    share = 1.00 / teamMembers.size();
+                }
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints * share)));
             }
-            assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints*share)));
         }
 
         //NON-TEAM
-        if (config != null) {
+        if (nonTeamPoints >= 1 && config != null) {
             for (int userIndex: config.additionalShares.keySet()) {
                 double share = config.additionalShares.get(userIndex);
                 assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, 0, Math.ceil(nonTeamPoints*share)));
@@ -366,6 +373,6 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             }
         }
         if (find != null) points.remove(find);
-        return find;
+        return find; //put a breakpoint here with condition find == null
     }
 }

@@ -41,7 +41,12 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             //Test 50 different distributions per contest
             for (int i = 0; i < 50; i++) {
                 gcs.setPointsDistributions(0.3, 0.6, 0.2);
-                gcs.runPointDistributionAlgorithm();
+                try {
+                    gcs.runPointDistributionAlgorithm();
+                } catch (StackOverflowError e) {
+                    //here, a stackoverflow exception might occurr. set breakpoint here to inspect the system setup
+                    e.printStackTrace();
+                }
                 gcs.assertPointDistributions();
                 //reset distribution for next run
                 gcs.deletePointDistributions();
