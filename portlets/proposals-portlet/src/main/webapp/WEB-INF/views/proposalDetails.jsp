@@ -54,7 +54,7 @@
             <div class="edit-prop-wrap" style="width:616px; padding-top: 0px">
                 <div class="inner">
                     <div style="display:inline-block; width: 616px;">
-                        <c:if test="${not proposal.isLatestVersion }">
+                        <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                             <div class="edit-prop-butts" style="line-height: normal;">
                                 <a href="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}">Go
                                     to current</a>
@@ -66,11 +66,21 @@
                                 history</a>
                             <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                         </div>
-                        <c:if test="${not proposal.isLatestVersion }">
+
+
+                        <c:if test="${proposal.wasMovedToContest != null}">
+                            <div>This proposal was moved to: <proposalsPortlet:contestLink contestId="${proposal.wasMovedToContest.contestPK}"
+                                                                                 text="${proposal.wasMovedToContest.contestShortName}"/></div>
+                        </c:if>
+
+
+                        <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                             <div class="lastedited">
                                 Currently viewing version from
                                 <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format(
                                 		"MM/DD/YYYY hh:mm A"));
+                                    var version = ${proposal.selectedVersion};
+                                    triggerHistoryVisibility();
                                 </script>
                                 by
                                 <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
@@ -92,9 +102,6 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${not proposal.isLatestVersion }">
-                <script>triggerHistoryVisibility();</script>
-            </c:if>
             <c:if test="${not empty proposal.pitch }">
                 <h2>Pitch</h2>
 
@@ -144,7 +151,8 @@
 	<script>
 		var currentProposal = {
 				proposalId: ${proposal.proposalId},
-				version: ${proposal.version}
+				version: ${proposal.version},
+                contestId: ${proposal.contest.getContestPK()}
 		}
 	</script>
 

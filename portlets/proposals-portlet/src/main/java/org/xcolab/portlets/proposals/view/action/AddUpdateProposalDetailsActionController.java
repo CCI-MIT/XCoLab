@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.portlet.ActionRequest;
@@ -9,8 +10,8 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
@@ -36,13 +37,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -103,24 +97,43 @@ public class AddUpdateProposalDetailsActionController {
         if (proposalsContext.getProposal(request) != null) {
             proposal = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
-            	// make proposal invisible in all contest phases to which it belonged to
-            	for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
-            		ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(), 
-            				ProposalContestPhaseAttributeKeys.VISIBLE, 0);
+            	if (updateProposalSectionsBean.isHideOnMove()){
+                    // make proposal invisible in all contest phases to which it belonged to
+                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+                        ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(),
+                                ProposalContestPhaseAttributeKeys.VISIBLE, 0);
 
-            		if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
-            			Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
-            		}
-            		else if (p2p.getVersionTo() < 0) {
-            			p2p.setVersionTo(proposal.getCurrentVersion()-1);
-            			Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-            		}
-            		
-            		
-            	}
-            	
-            	// associate proposal with selected contest phase
-            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(), 
+                        if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
+                            Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
+                        }
+                        else if (p2p.getVersionTo() < 0) {
+                            p2p.setVersionTo(proposal.getCurrentVersion());
+                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        }
+                    }
+                } else {
+                    // Conclude last P2P mapping to prevent concurrent editing
+                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+                        if (p2p.getVersionTo() < 0) {
+                            p2p.setVersionTo(proposal.getCurrentVersion());
+                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        }
+                    }
+                }
+
+                // Find creation phase for contest
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
+                ContestPhase targetPhase=null;
+                for (ContestPhase c : contestPhases){
+                    if(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(c.getContestPhaseType()).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION")){
+                        targetPhase = c;
+                        break;
+                    }
+                }
+                if (targetPhase == null) throw new SystemException("No Proposal creation phase is associated with target contest.");
+
+            	// associate proposal with creation phase
+            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), targetPhase.getContestPhasePK(),
             			proposal.getCurrentVersion(), -1);
                 ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 1);

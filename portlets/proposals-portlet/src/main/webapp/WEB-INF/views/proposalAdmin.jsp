@@ -109,19 +109,33 @@
         	
         </c:if>
         
-        <c:if test="${proposalsPermissions.canMoveProposal}">
+        <c:if test="${ proposalsPermissions.getCanMoveProposalAndHideInCurrentContest() }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>Move proposal</strong>
+            	<strong>Move proposal while hiding it in the current contest</strong>
             	<div>            		
 					<div class="blue-button">
 						<a href="javascript:;"
-							onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true)">
-							<span>Move </span> this proposal
+							onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,true)">
+							<span>Move</span> this proposal
 						</a>
 					</div>
 				</div>
 			</div>
 		</c:if>
+
+            <c:if test="${ proposalsPermissions.getCanMoveProposalAndKeepInCurrentContest() }">
+                <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+                    <strong>Move proposal while keeping it in the current contest</strong>
+                    <div>
+                        <div class="blue-button">
+                            <a href="javascript:;"
+                               onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,false)">
+                                <span>Move</span> this proposal
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         
         
         </div>

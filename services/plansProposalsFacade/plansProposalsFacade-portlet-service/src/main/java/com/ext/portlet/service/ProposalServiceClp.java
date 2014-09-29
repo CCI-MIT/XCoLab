@@ -44,7 +44,9 @@ public class ProposalServiceClp implements ProposalService {
 
         _methodName5 = "getProposalVersions";
 
-        _methodParameterTypes5 = new String[] { "long", "long", "int", "int" };
+        _methodParameterTypes5 = new String[] {
+                "long", "long", "long", "int", "int"
+            };
 
         _methodName6 = "getProposalVersions";
 
@@ -168,7 +170,7 @@ public class ProposalServiceClp implements ProposalService {
 
     @Override
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestPhaseId, long proposalId, int start, int end)
+        long contestId, long contestPhaseId, long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
@@ -176,7 +178,17 @@ public class ProposalServiceClp implements ProposalService {
         try {
             returnObj = _invokableService.invokeMethod(_methodName5,
                     _methodParameterTypes5,
-                    new Object[] { contestPhaseId, proposalId, start, end });
+                    new Object[] {
+                        contestId,
+                        
+                    contestPhaseId,
+                        
+                    proposalId,
+                        
+                    start,
+                        
+                    end
+                    });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 

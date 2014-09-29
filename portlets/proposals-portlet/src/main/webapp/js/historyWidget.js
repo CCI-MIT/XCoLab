@@ -16,7 +16,8 @@ function loadHistory(page) {
     }
 }
 function load(page, phaseId){
-    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage - 1), { get_param: 'value' }, function(data) {
+    console.log('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestId/' + currentProposal.contestId + '/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage - 1));
+    $.getJSON('/plansProposalsFacade-portlet/api/jsonws/proposal/get-proposal-versions/contestId/' + currentProposal.contestId + '/contestPhaseId/' + phaseId + '/proposalId/' + proposalId + '/start/' + (page * itemsPerPage) + '/end/' + ((1+page) * itemsPerPage - 1), { get_param: 'value' }, function(data) {
         $('#versions > div > div > table > tbody').empty();
         var even = true;
         $.each(data.versions, function(index, attr) {

@@ -79,13 +79,22 @@ public class ProposalServiceWrapper implements ProposalService,
         return _proposalService.getProposalVersionIndex(version, proposalId);
     }
 
+    /**
+    * @param contestPhaseId ID of contest phase or -1 for general query
+    * @param proposalId
+    * @param start
+    * @param end
+    * @return
+    * @throws PortalException
+    * @throws SystemException
+    */
     @Override
     public com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestPhaseId, long proposalId, int start, int end)
+        long contestId, long contestPhaseId, long proposalId, int start, int end)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _proposalService.getProposalVersions(contestPhaseId, proposalId,
-            start, end);
+        return _proposalService.getProposalVersions(contestId, contestPhaseId,
+            proposalId, start, end);
     }
 
     @Override

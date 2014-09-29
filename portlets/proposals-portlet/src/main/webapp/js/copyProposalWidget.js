@@ -1,4 +1,4 @@
-function proposalCopy_loadContests(move) {
+function proposalCopy_loadContests(move, hideOnMove) {
     jQuery.getJSON('/api/jsonws/plansProposalsFacade-portlet.contest/get-contests-open-for-proposals', function(data) {
     	var html = ["<table>"];
     	jQuery(data).each(function(idx, obj) {
@@ -11,11 +11,16 @@ function proposalCopy_loadContests(move) {
     		html.push("<td>");
     		html.push('<div class="blue-button"><a href="/web/guest/plans/-/plans/contestId/');
     		html.push(obj.contestPK);
-    		if (move) {
+    		if (move && hideOnMove) {
     			html.push('/planId/');
     			html.push(currentProposal.proposalId);
-    			html.push("/move");
+    			html.push("/moveAndHide");
     		}
+            else if (move && !hideOnMove) {
+                html.push('/planId/');
+                html.push(currentProposal.proposalId);
+                html.push("/moveAndKeep");
+            }
     		else {
     			html.push('/createProposal/basedOn/');
     			html.push(currentProposal.proposalId);
@@ -111,8 +116,8 @@ jQuery(function() {
 	});
 });
 
-function showCopyProposalPopup(move) {
-	proposalCopy_loadContests(move);
+function showCopyProposalPopup(move, hideOnMove) {
+	proposalCopy_loadContests(move, hideOnMove);
 	jQuery("#copyProposalContainer").show();
 	updatePopupSize();
 }

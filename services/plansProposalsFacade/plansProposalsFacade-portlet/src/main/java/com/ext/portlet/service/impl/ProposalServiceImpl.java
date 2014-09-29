@@ -13,12 +13,7 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+import com.ext.portlet.service.*;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -118,25 +113,48 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
         return result;
     }
 
-    /* TODO IMPROVE CODE QUALITY */
+    /**
+     *
+     * @param contestPhaseId ID of contest phase or -1 for general query
+     * @param proposalId
+     * @param start
+     * @param end
+     * @return
+     * @throws PortalException
+     * @throws SystemException
+     */
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
-    public JSONObject getProposalVersions(long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
+    public JSONObject getProposalVersions(long contestId, long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
         Date oldDate = new Date();
 
         Proposal2Phase p2p = null;
-        if (contestPhaseId > 0) p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+        Contest c = ContestLocalServiceUtil.getContest(contestId);
+        if (contestPhaseId > 0) {
+            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+
+        }
 
         JSONObject result = JSONFactoryUtil.createJSONObject();
         result.put("proposalId", proposalId);
         result.put("start", start);
         result.put("end", end);
 
+
+        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
+
         // COUNT VERSIONS
-        int numberOfVersions = 0;
         int offset = 0;
         int counter = 0;
+        int numberOfVersions = 0;
         for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+            if (c!=null){
+                // Skip versions that do not belong to this contest
+                long cph = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
+                Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cph));
+                if (c2.getContestPK() != c.getContestPK()) continue;
+            }
+
             if (p2p != null
                     && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
                     ) {
@@ -145,24 +163,6 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
 
             if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
                 numberOfVersions++;
-                oldDate = proposalVersion.getCreateDate();
-            }
-        }
-        result.put("totalCount", numberOfVersions);
-
-
-        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
-        result.put("versions", proposalVersionsArray);
-        offset = 0;
-        counter = 0;
-        oldDate = new Date();
-        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
-            if (p2p != null
-                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
-                    ) {
-                continue;
-            }
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
                 if (counter > (end-start)) {
                     oldDate = proposalVersion.getCreateDate();
                     continue;
@@ -182,11 +182,13 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
                 try{
                     proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
                 } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
-                counter++;
+
                 oldDate = proposalVersion.getCreateDate();
+                counter++;
             }
         }
-
+        result.put("totalCount", numberOfVersions);
+        result.put("versions", proposalVersionsArray);
 
         return result;
     }
@@ -194,7 +196,7 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long proposalId, int start, int end) throws PortalException, SystemException {
-        return  getProposalVersions(-1, proposalId, start, end);
+        return  getProposalVersions(-1, -1, proposalId, start, end);
     }
 
     @JSONWebService

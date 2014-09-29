@@ -70,8 +70,13 @@ public class Proposal2PhaseLocalServiceImpl
         if (proposal2Phases.isEmpty()) {
             throw new SystemException("Proposal " + proposalId + " isn't associated with any contest");
         }
-        ContestPhase phase = contestPhaseLocalService.getContestPhase(proposal2Phases.get(proposal2Phases.size()-1).getContestPhaseId());
-        return contestLocalService.getContest(phase.getContestPK());
+        for (Proposal2Phase p2p : proposal2Phases){
+            if (p2p.getVersionTo() == -1){
+                ContestPhase phase = contestPhaseLocalService.getContestPhase(p2p.getContestPhaseId());
+                return contestLocalService.getContest(phase.getContestPK());
+            }
+        }
+        throw new SystemException("Proposal " + proposalId + " has no active association.");
     }
 
     public Proposal2Phase getForVersion(ProposalVersion proposalVersion) throws SystemException, PortalException {

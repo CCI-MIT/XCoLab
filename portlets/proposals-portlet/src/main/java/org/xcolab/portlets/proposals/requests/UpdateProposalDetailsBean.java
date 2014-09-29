@@ -23,10 +23,12 @@ public class UpdateProposalDetailsBean {
     private long baseProposalId;
     private long baseProposalContestId;
     private long moveToContestPhaseId;
+    private boolean hideOnMove;
 
     // legacy
     private String description;
 	private boolean move;
+
 
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
         for (ProposalSectionWrapper section : proposal.getSections()) {
@@ -139,6 +141,14 @@ public class UpdateProposalDetailsBean {
 	public void setMoveToContestPhaseId(long moveToContestPhaseId) {
 		this.moveToContestPhaseId = moveToContestPhaseId;
 	}
+
+    public boolean isHideOnMove() {
+        return hideOnMove;
+    }
+
+    public void setHideOnMove(boolean hideOnMove) {
+        this.hideOnMove = hideOnMove;
+    }
 
 
 }
