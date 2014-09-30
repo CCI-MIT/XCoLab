@@ -201,6 +201,13 @@ public class ProposalWrapper {
         }
         return 0;
     }
+    public long getRibbonId() throws PortalException, SystemException {
+        getRibbonType();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getId();
+        }
+        return 0L;
+    }
 
     public String getRibbonText() throws PortalException, SystemException {
         getRibbonType();

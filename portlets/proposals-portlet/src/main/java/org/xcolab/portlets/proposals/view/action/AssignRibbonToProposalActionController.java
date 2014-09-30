@@ -19,6 +19,8 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("view")
 public class AssignRibbonToProposalActionController {
@@ -27,12 +29,13 @@ public class AssignRibbonToProposalActionController {
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"action=assignRibbon"})
-    public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam int ribbon) 
-                    throws PortalException, SystemException, ProposalsAuthorizationException {
+    public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam int ribbon)
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanAssignRibbon()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+            long contestId = proposalsContext.getContest(request).getContestPK();
             
             try {
                 ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbon);
@@ -43,11 +46,13 @@ public class AssignRibbonToProposalActionController {
                 ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId, 
                         ProposalContestPhaseAttributeKeys.RIBBON);   
             }
-            
+            //refresh page, otherwise the new ribbon assignment is not up to date. also prevents internal errors on refresh
+            response.sendRedirect("/web/guest/plans/-/plans/contestId/"+contestId+"/phaseId/"+contestPhaseId+"/planId/"+proposalId+"/tab/ADMIN");
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign ribbon");
         }
+
     }
 
 }
