@@ -108,7 +108,9 @@ public enum ReceiverLimitationStrategy {
 			Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
 			Set<Long> proposalIds = new HashSet<Long>();
 			for (Proposal p: subProposals) {
-				proposalIds.add(p.getProposalId());
+                if (p.getProposalId() != proposal.getProposalId()) {
+                    proposalIds.add(p.getProposalId());
+                }
 			}
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
@@ -122,12 +124,10 @@ public enum ReceiverLimitationStrategy {
 			}
 			else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
 				for (Long proposalId: proposalIds) {
-                    if (proposalId != proposal.getProposalId()) {
-                        PointsTarget target = new PointsTarget();
-                        target.setProposalId(proposalId);
-                        target.setPercentage(1.0d / proposalIds.size());
-                        targets.add(target);
-                    }
+                    PointsTarget target = new PointsTarget();
+                    target.setProposalId(proposalId);
+                    target.setPercentage(1.0d / proposalIds.size());
+                    targets.add(target);
 				}
 			}
 			return targets;
