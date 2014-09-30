@@ -210,7 +210,12 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         double teamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.9;
         double nonTeamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.1;
 
-        int amountOfSubProposals = globalProposalLinksToGlobalProposals.get(proposalIndex).size();
+        int amountOfSubProposals = 0;
+        for (int i = 0; i < globalProposalLinksToGlobalProposals.get(proposalIndex).size(); i++) {
+            if (globalProposalLinksToGlobalProposals.get(proposalIndex).get(i) != proposalIndex) {
+                amountOfSubProposals++;
+            }
+        }
         for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
             amountOfSubProposals += globalProposalLinksToSideProposals.get(proposalIndex).get(i).size();
         }
@@ -247,10 +252,12 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             List<Integer> childrenGlobalProposalIndizes = new ArrayList<Integer>();
             List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();
             for (Integer subProposalIndex : globalProposalLinksToGlobalProposals.get(proposalIndex)) {
-                childrenProposalIds.add(globalProposals.get(subProposalIndex).getProposalId());
-                childrenGlobalProposalIndizes.add(subProposalIndex);
-                childrenSideProposalIndizes.add(new Integer[]{});
-                childrenProposalIsGlobal.add(true);
+                if (subProposalIndex != proposalIndex) {
+                    childrenProposalIds.add(globalProposals.get(subProposalIndex).getProposalId());
+                    childrenGlobalProposalIndizes.add(subProposalIndex);
+                    childrenSideProposalIndizes.add(new Integer[]{});
+                    childrenProposalIsGlobal.add(true);
+                }
             }
             for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
                 for (Integer subProposalIndex : globalProposalLinksToSideProposals.get(proposalIndex).get(i)) {

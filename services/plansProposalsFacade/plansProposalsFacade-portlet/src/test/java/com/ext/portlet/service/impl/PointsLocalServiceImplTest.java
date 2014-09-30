@@ -44,7 +44,7 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
                 try {
                     gcs.runPointDistributionAlgorithm();
                 } catch (StackOverflowError e) {
-                    //here, a stackoverflow exception might occurr. set breakpoint here to inspect the system setup
+                    //here, a stack overflow exception might occur. set breakpoint here to inspect the system setup
                     e.printStackTrace();
                 }
                 gcs.assertPointDistributions();

@@ -112,7 +112,7 @@ public enum ReceiverLimitationStrategy {
 			}
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
-					if (pdc.getTargetSubProposalId() > 0 && proposalIds.contains(pdc.getTargetSubProposalId())) {
+					if (pdc.getTargetSubProposalId() > 0 && proposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
 						PointsTarget target = new PointsTarget();
 						target.setProposalId(pdc.getTargetSubProposalId());
 						target.setPercentage(pdc.getPercentage());
@@ -122,10 +122,12 @@ public enum ReceiverLimitationStrategy {
 			}
 			else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
 				for (Long proposalId: proposalIds) {
-					PointsTarget target = new PointsTarget();
-					target.setProposalId(proposalId);
-					target.setPercentage(1.0d / proposalIds.size());
-					targets.add(target);
+                    if (proposalId != proposal.getProposalId()) {
+                        PointsTarget target = new PointsTarget();
+                        target.setProposalId(proposalId);
+                        target.setPercentage(1.0d / proposalIds.size());
+                        targets.add(target);
+                    }
 				}
 			}
 			return targets;
