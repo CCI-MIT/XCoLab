@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.portlet.*;
 
+import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
@@ -66,7 +68,7 @@ public class ProposalsPreferencesController {
             }
         }
 
-
+        model.addAttribute("availableRibbons", ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE));
         model.addAttribute("contests", contests);
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
@@ -78,7 +80,7 @@ public class ProposalsPreferencesController {
     
 
     @RequestMapping(params = "action=save")
-    public void showPreferences(ActionRequest request, ActionResponse response, Model model, ProposalsPreferencesWrapper preferences)
+    public void savePreferences(ActionRequest request, ActionResponse response, Model model, ProposalsPreferencesWrapper preferences)
             throws ReadOnlyException, ValidatorException, IOException, PortalException {
         //save terms
         preferences.store(request);
@@ -87,11 +89,81 @@ public class ProposalsPreferencesController {
         Long moveToContestPhaseId = preferences.getMoveToContestPhaseId();
         Long moveFromContestId = preferences.getMoveFromContestId();
         String proposalIdsToBeMovedString = preferences.getProposalIdsToBeMoved();
+        Long ribbonId = preferences.getRibbonId();
 
         String[] proposalIdsToBeMoved = proposalIdsToBeMovedString.split(",");
-        String message = "";
+
 
         //moving parameters are set
+        String message = moveProposals(proposalIdsToBeMoved, moveFromContestId, moveToContestPhaseId, ribbonId);
+        model.addAttribute("message", message);
+    }
+
+    @RequestMapping(params = "action=runRibbonDistribution")
+    public void runRibbonDistribution(ActionRequest request, ActionResponse response, Model model)
+            throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+        List<Contest> activeContests = ContestLocalServiceUtil.getContestsByActivePrivate(true, false);
+        String message = "";
+
+        for (Contest c : activeContests) {
+            if (ContestLocalServiceUtil.getActivePhase(c) == null || ContestLocalServiceUtil.getActivePhase(c).getContestPhaseType() != 17L) {
+                message += "<br/>\nSkipped contest: "+c.getContestShortName()+"<br/><br/>\n";
+                continue;
+            }
+
+            message += "<br/><br/>\nCONTEST: "+c.getContestShortName()+"<br/><br/>\n";
+
+            //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
+            List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
+            ContestPhase winnersAwarded = null;
+            ContestPhase winnersSelection = null;
+            ContestPhase finalistSelection = null;
+            ContestPhase proposalCreation = null;
+
+            for (ContestPhase cp : contestPhases) {
+                if (cp.getContestPhaseType() == 17) {
+                    winnersAwarded = cp;
+                } else if (cp.getContestPhaseType() == 15) {
+                    winnersSelection = cp;
+                } else if (cp.getContestPhaseType() == 19) {
+                    finalistSelection = cp;
+                } else if (cp.getContestPhaseType() == 1) {
+                    proposalCreation = cp;
+                }
+            }
+
+            if (winnersAwarded != null && winnersSelection != null && finalistSelection != null && proposalCreation != null) {
+                //get all proposals in Winners selection
+                List<Proposal> finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(winnersSelection.getContestPhasePK());
+                List<Proposal> semiFinalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalistSelection.getContestPhasePK());
+                List<Proposal> otherProposals = ProposalLocalServiceUtil.getProposalsInContestPhase(proposalCreation.getContestPhasePK());
+
+                final Long finalistRibbon = 1L;
+                final Long semiFinalistRibbon = 3L;
+
+                message += moveProposals(proposalListToStringArray(finalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon);
+                message += moveProposals(proposalListToStringArray(semiFinalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon);
+                message += moveProposals(proposalListToStringArray(otherProposals), c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L);
+            } else {
+                message += "The proposals in this contests were not moved because the contest phases have not been found.<br/>\n";
+            }
+        }
+
+        //moving parameters are set
+        model.addAttribute("message", message);
+    }
+
+    private static String[] proposalListToStringArray(List<Proposal> proposalList) {
+        String[] ids = new String[proposalList.size()];
+        int i = 0;
+        for (Proposal p : proposalList) {
+            ids[i++] = String.valueOf(p.getProposalId());
+        }
+        return ids;
+    }
+
+    private String moveProposals(String[] proposalIdsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId) throws PortalException {
+        String message = "";
         if (proposalIdsToBeMoved.length > 0 && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
                 Contest moveFromContest = ContestLocalServiceUtil.fetchContest(moveFromContestId);
@@ -124,7 +196,7 @@ public class ProposalsPreferencesController {
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
                     if (lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
-                             lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate())) {
+                            lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate())) {
                         //skip this
                         message += "Proposal "+proposal.getProposalId()+" is already in the target phase or in a later phase.<br/>\n";
                     } else {
@@ -148,15 +220,31 @@ public class ProposalsPreferencesController {
                         p2p.setVersionFrom(currentProposalVersion.intValue());
                         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
                         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+
+                        //create ribbon in target phase
+                        if (ribbonId > 0) {
+                            try {
+                                ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
+                                ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                        ProposalContestPhaseAttributeKeys.RIBBON, ribbonId);
+                            } catch (NoSuchContestPhaseRibbonTypeException e) {
+                                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                        ProposalContestPhaseAttributeKeys.RIBBON);
+                            }
+                        }
+
+
                         message += "Proposal "+proposal.getProposalId()+" moved successfully (version: "+currentProposalVersion+").<br/>\n";
                     }
                 }
 
-                model.addAttribute("message", message += "The operation completed successfully!<br/>\n");
+                message += "The operation completed successfully!<br/>\n";
             } catch (SystemException e) {
                 e.printStackTrace();
-                model.addAttribute("message", message += "There was a problem moving the proposals.<br/>\n");
+                message += "There was a problem moving the proposals.<br/>\n";
             }
         }
+
+        return message;
     }
 }

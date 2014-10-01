@@ -22,6 +22,8 @@ public class ProposalsPreferencesWrapper {
     private long moveFromContestId;
     private long moveToContestPhaseId;
 
+    private long ribbonId = -1;
+
     public ProposalsPreferencesWrapper() {
 
     }
@@ -38,6 +40,14 @@ public class ProposalsPreferencesWrapper {
         PortletPreferences preferences = request.getPreferences();
         preferences.setValue(TERMS_OF_SERVICE_PREF, termsOfService);
         preferences.store();
+    }
+
+    public long getRibbonId() {
+        return ribbonId;
+    }
+
+    public void setRibbonId(long ribbonId) {
+        this.ribbonId = ribbonId;
     }
 
     public long getMoveToContestPhaseId() {
