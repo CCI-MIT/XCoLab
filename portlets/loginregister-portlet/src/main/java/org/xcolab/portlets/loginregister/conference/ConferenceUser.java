@@ -15,19 +15,22 @@ class ConferenceUser {
     private Boolean isMember, joinColab;
 
     ConferenceUser(Row row) {
-        lastName = row.getCell(4).getStringCellValue();
-        firstName = row.getCell(2).getStringCellValue();
-        middleName = row.getCell(3).getStringCellValue();
-        eMail = row.getCell(5).getStringCellValue();
-        secondaryEmail = row.getCell(6).getStringCellValue();
-//            regDate = row.getCell(10).getDateCellValue();
-        isMember = YES.equals(row.getCell(7).getStringCellValue());
-        colabEmail = row.getCell(8).getStringCellValue();
+        lastName = getCellOrEmptyString(row, 4);
+        firstName = getCellOrEmptyString(row, 2);
+        middleName = getCellOrEmptyString(row, 3);
+        eMail = getCellOrEmptyString(row, 5);
+        secondaryEmail = getCellOrEmptyString(row, 6);
+        isMember = YES.equals(getCellOrEmptyString(row, 7));
+        colabEmail = getCellOrEmptyString(row, 8);
         if (row.getCell(9) != null) {
             joinColab = YES.equals(row.getCell(9).getStringCellValue());
         } else {
             joinColab = false;
         }
+    }
+
+    private static String getCellOrEmptyString(Row row, int cellNr) {
+        return row.getCell(cellNr) != null ? row.getCell(cellNr).getStringCellValue() : "";
     }
 
     public String getLastName() {
