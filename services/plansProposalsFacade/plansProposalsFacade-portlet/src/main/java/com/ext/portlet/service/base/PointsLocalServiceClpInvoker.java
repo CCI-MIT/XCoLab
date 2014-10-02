@@ -51,6 +51,8 @@ public class PointsLocalServiceClpInvoker {
     private String[] _methodParameterTypes583;
     private String _methodName584;
     private String[] _methodParameterTypes584;
+    private String _methodName585;
+    private String[] _methodParameterTypes585;
 
     public PointsLocalServiceClpInvoker() {
         _methodName0 = "addPoints";
@@ -148,6 +150,10 @@ public class PointsLocalServiceClpInvoker {
         _methodName584 = "distributePoints";
 
         _methodParameterTypes584 = new String[] { "long" };
+
+        _methodName585 = "previewMaterializedPoints";
+
+        _methodParameterTypes585 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -266,6 +272,11 @@ public class PointsLocalServiceClpInvoker {
             PointsLocalServiceUtil.distributePoints(((Long) arguments[0]).longValue());
 
             return null;
+        }
+
+        if (_methodName585.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes585, parameterTypes)) {
+            return PointsLocalServiceUtil.previewMaterializedPoints(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

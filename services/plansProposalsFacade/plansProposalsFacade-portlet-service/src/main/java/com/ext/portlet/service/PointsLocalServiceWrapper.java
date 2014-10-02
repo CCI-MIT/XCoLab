@@ -308,6 +308,14 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
         _pointsLocalService.distributePoints(contestPK);
     }
 
+    @Override
+    public java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.previewMaterializedPoints(contestPK);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

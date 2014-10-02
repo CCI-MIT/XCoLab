@@ -297,6 +297,13 @@ public class PointsLocalServiceUtil {
         getService().distributePoints(contestPK);
     }
 
+    public static java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().previewMaterializedPoints(contestPK);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -50,6 +50,8 @@ public class PointsLocalServiceClp implements PointsLocalService {
     private String[] _methodParameterTypes20;
     private String _methodName21;
     private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
 
     public PointsLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -149,6 +151,10 @@ public class PointsLocalServiceClp implements PointsLocalService {
         _methodName21 = "distributePoints";
 
         _methodParameterTypes21 = new String[] { "long" };
+
+        _methodName22 = "previewMaterializedPoints";
+
+        _methodParameterTypes22 = new String[] { "long" };
     }
 
     @Override
@@ -737,5 +743,37 @@ public class PointsLocalServiceClp implements PointsLocalService {
                     " is not a valid exception");
             }
         }
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName22,
+                    _methodParameterTypes22, new Object[] { contestPK });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.Points>) ClpSerializer.translateOutput(returnObj);
     }
 }

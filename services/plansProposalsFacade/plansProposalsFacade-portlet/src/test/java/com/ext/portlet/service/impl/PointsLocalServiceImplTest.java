@@ -36,11 +36,11 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
      */
 
     @Test
-    public void firstTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+    public void fixedHypotheticalTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         this.setupBasicDataset();
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
-        for (int j = 0; j < 1000; j++) {
+        for (int j = 0; j < 50; j++) {
             gcs.initializeContests(
                     200,
                     20000,
@@ -68,6 +68,43 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             //reset
             gcs.deleteContestsAndProposals();
         }
-
+    }
+    @Test
+    public void randomHypotheticalTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+        this.setupBasicDataset();
+        GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
+        GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
+        for (int j = 0; j < 50; j++) {
+            gcs.initializeContests(
+                    GlobalContestSimulator.randomInt(50, 3000),
+                    GlobalContestSimulator.randomInt(0, 50000),
+                    false,
+                    GlobalContestSimulator.randomInt(0, 50),
+                    GlobalContestSimulator.randomInt(0, 15),
+                    GlobalContestSimulator.randomInt(0, 50),
+                    new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
+                    new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
+                    new Double(GlobalContestSimulator.randomInt(0, 100))/100.0
+            );
+            //Test 50 different distributions per contest
+            for (int i = 0; i < 50; i++) {
+                gcs.setPointsDistributions(
+                        new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
+                        new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
+                        new Double(GlobalContestSimulator.randomInt(0, 100))/100.0
+                );
+                try {
+                    gcs.runPointDistributionAlgorithm();
+                } catch (StackOverflowError e) {
+                    //here, a stack overflow exception might occur. set breakpoint here to inspect the system setup
+                    e.printStackTrace();
+                }
+                gcs.assertPointDistributions();
+                //reset distribution for next run
+                gcs.deletePointDistributions();
+            }
+            //reset
+            gcs.deleteContestsAndProposals();
+        }
     }
 }
