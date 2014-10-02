@@ -21,6 +21,20 @@ import static org.junit.Assert.*;
 
 public class PointsLocalServiceImplTest extends XCoLabTest {
 
+    /*
+     Useful commands and snippets for debugging:
+
+     Redeploy service layer:
+     cd $XCOLAB_HOME/services/plansProposalsFacade/plansProposalsFacade-portlet
+     mvn compile package liferay:deploy -DskipTests=true
+
+    Watches in Debugger Tab:
+
+    Get all points generated:
+    testInstance.pointsLocalService.getPointses(0, Integer.MAX_VALUE)
+
+     */
+
     @Test
     public void firstTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         this.setupBasicDataset();

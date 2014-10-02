@@ -1494,7 +1494,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
     	List<Proposal> proposals = new ArrayList<Proposal>();
     	for (Long subProposalId: detectedIds) {
-    		proposals.add(getProposal(subProposalId));
+            Proposal p = getProposal(subProposalId);
+            if (p != null) {
+                //do not allow subproposals to be in the same contest as the current proposal. this saves a lot of headaches regarding transitive loops
+                if (!getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                    proposals.add(p);
+                }
+            }
+
     	}
     	return proposals;
     }
