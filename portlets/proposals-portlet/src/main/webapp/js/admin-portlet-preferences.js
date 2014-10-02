@@ -33,7 +33,7 @@ $(function() {
         $("#contestPhaseContainer").show();
 
         for (var i in contestPhases[id]) {
-            $("#selectContestPhase").append($("<option>", { value: contestPhases[id][i]["id"], html: contestPhases[id][i]["name"] }));
+            $("#selectContestPhase").append($("<option>", { value: contestPhases[id][i].pk, html: contestPhases[id][i].name }));
         }
     });
     $("#selectContestPhase").change(function() {
@@ -57,10 +57,10 @@ $(function() {
         var currentSelectedPhaseFound = false;
         for (var i in contestPhases[contestId]) {
             if (currentSelectedPhaseFound) {
-                $("#selectTargetContestPhase").append($("<option>", { value: contestPhases[contestId][i]["id"], html: contestPhases[contestId][i]["name"] }));
+                $("#selectTargetContestPhase").append($("<option>", { value: contestPhases[contestId][i].pk, html: contestPhases[contestId][i].name }));
             }
 
-            if (contestPhases[contestId][i]["id"] == id) {
+            if (contestPhases[contestId][i].pk == id) {
                 currentSelectedPhaseFound = true;
             }
         }

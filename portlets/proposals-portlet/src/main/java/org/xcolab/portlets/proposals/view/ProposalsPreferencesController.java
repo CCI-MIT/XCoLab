@@ -6,12 +6,9 @@ import java.util.*;
 import javax.portlet.*;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
+import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -95,7 +92,7 @@ public class ProposalsPreferencesController {
 
 
         //moving parameters are set
-        String message = moveProposals(proposalIdsToBeMoved, moveFromContestId, moveToContestPhaseId, ribbonId);
+        String message = moveProposals(proposalIdsToBeMoved, moveFromContestId, moveToContestPhaseId, ribbonId, false);
         model.addAttribute("message", message);
     }
 
@@ -106,7 +103,7 @@ public class ProposalsPreferencesController {
         String message = "";
 
         for (Contest c : activeContests) {
-            if (ContestLocalServiceUtil.getActivePhase(c) == null || ContestLocalServiceUtil.getActivePhase(c).getContestPhaseType() != 17L) {
+            if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
                 message += "<br/>\nSkipped contest: "+c.getContestShortName()+"<br/><br/>\n";
                 continue;
             }
@@ -134,16 +131,16 @@ public class ProposalsPreferencesController {
 
             if (winnersAwarded != null && winnersSelection != null && finalistSelection != null && proposalCreation != null) {
                 //get all proposals in Winners selection
-                List<Proposal> finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(winnersSelection.getContestPhasePK());
-                List<Proposal> semiFinalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalistSelection.getContestPhasePK());
-                List<Proposal> otherProposals = ProposalLocalServiceUtil.getProposalsInContestPhase(proposalCreation.getContestPhasePK());
+                List<Proposal> finalists = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(winnersSelection.getContestPhasePK());
+                List<Proposal> semiFinalists = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(finalistSelection.getContestPhasePK());
+                List<Proposal> otherProposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(proposalCreation.getContestPhasePK());
 
                 final Long finalistRibbon = 1L;
                 final Long semiFinalistRibbon = 3L;
 
-                message += moveProposals(proposalListToStringArray(finalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon);
-                message += moveProposals(proposalListToStringArray(semiFinalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon);
-                message += moveProposals(proposalListToStringArray(otherProposals), c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L);
+                message += moveProposals(proposalListToStringArray(finalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true);
+                message += moveProposals(proposalListToStringArray(semiFinalists), c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false);
+                message += moveProposals(proposalListToStringArray(otherProposals), c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false);
             } else {
                 message += "The proposals in this contests were not moved because the contest phases have not been found.<br/>\n";
             }
@@ -162,7 +159,7 @@ public class ProposalsPreferencesController {
         return ids;
     }
 
-    private String moveProposals(String[] proposalIdsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId) throws PortalException {
+    private String moveProposals(String[] proposalIdsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation) throws PortalException {
         String message = "";
         if (proposalIdsToBeMoved.length > 0 && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
@@ -195,8 +192,9 @@ public class ProposalsPreferencesController {
                     }
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
-                    if (lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
-                            lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate())) {
+                    boolean proposalAlreadyInTargetPhase = lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
+                            lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate());
+                    if (proposalAlreadyInTargetPhase) {
                         //skip this
                         message += "Proposal "+proposal.getProposalId()+" is already in the target phase or in a later phase.<br/>\n";
                     } else {
@@ -221,20 +219,34 @@ public class ProposalsPreferencesController {
                         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
                         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
 
+                        message += "Proposal "+proposal.getProposalId()+" moved successfully (version: "+currentProposalVersion+").<br/>\n";
+                    }
+
+                    if (!proposalAlreadyInTargetPhase || forceRibbonCreation) {
                         //create ribbon in target phase
                         if (ribbonId > 0) {
+
+                            //first, see if a ribbon already exists
+                            ProposalContestPhaseAttribute attribute = null;
                             try {
-                                ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
-                                ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
-                                        ProposalContestPhaseAttributeKeys.RIBBON, ribbonId);
-                            } catch (NoSuchContestPhaseRibbonTypeException e) {
-                                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                attribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.RIBBON);
                             }
+                            catch (NoSuchProposalContestPhaseAttributeException e) {
+                            }
+
+                            //do not overwrite existing ribbons
+                            if (attribute == null) {
+                                try {
+                                    ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
+                                    ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                            ProposalContestPhaseAttributeKeys.RIBBON, ribbonId);
+                                } catch (NoSuchContestPhaseRibbonTypeException e) {
+                                    ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                            ProposalContestPhaseAttributeKeys.RIBBON);
+                                }
+                            }
                         }
-
-
-                        message += "Proposal "+proposal.getProposalId()+" moved successfully (version: "+currentProposalVersion+").<br/>\n";
                     }
                 }
 
