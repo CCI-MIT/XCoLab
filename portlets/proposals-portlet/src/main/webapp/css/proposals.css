@@ -486,3 +486,8 @@ table.judgingForm {
 #portlet-preferences h2 {
     margin: 1em 0;
 }
+
+/* fix problem with the tooltip library, where tooltips overlay the phase names */
+.contestbar .phaseLinkContainer div.tooltip {
+    top: -102px !important;
+}

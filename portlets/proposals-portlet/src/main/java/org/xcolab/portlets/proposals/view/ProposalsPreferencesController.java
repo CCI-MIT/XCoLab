@@ -120,7 +120,7 @@ public class ProposalsPreferencesController {
             for (ContestPhase cp : contestPhases) {
                 if (cp.getContestPhaseType() == 17) {
                     winnersAwarded = cp;
-                } else if (cp.getContestPhaseType() == 15) {
+                } else if (cp.getContestPhaseType() == 15 || cp.getContestPhaseType() == 20) {
                     winnersSelection = cp;
                 } else if (cp.getContestPhaseType() == 19) {
                     finalistSelection = cp;
