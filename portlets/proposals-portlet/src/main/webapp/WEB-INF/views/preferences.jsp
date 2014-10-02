@@ -10,6 +10,26 @@
 <div id="content">
     <div id="portlet-preferences">
         <h1>Proposals preferences</h1>
+        <portlet:actionURL var="runRibbonDistributionURL">
+            <portlet:param name="action" value="runRibbonDistribution" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${runRibbonDistributionURL}">
+            <p>
+                <input type="submit"
+                  style="
+                    background: #a30;
+                    color: white;
+                    font-size: 1em;
+                    border: 1px solid gray;
+                    border-radius: 6px;
+                    padding: 0.5em;
+                    cursor: pointer;
+                    margin-top: 2em;
+                   "
+                   value="Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests"
+                   onclick="return confirm('Are you sure? This action cannot be undone.');" />
+            </p>
+        </form:form>
         <portlet:actionURL var="saveURL">
             <portlet:param name="action" value="save" />
         </portlet:actionURL>
@@ -46,14 +66,35 @@
                     </select>
                 </label>
             </p>
-            <p id="targetContestPhaseContainer">
+            <div id="targetContestPhaseContainer">
+                <p>
                     <label>
                         <strong>Target Phase:</strong><br />
                         <form:select id="selectTargetContestPhase" path="moveToContestPhaseId">
                             <form:option value="-1" label="Choose a contest phase" />
                         </form:select>
                     </label>
-            </p>
+                </p>
+                <p>
+                    <label>
+                        Assign Ribbon in Target Phase:
+                        <form:select path="ribbonId">
+                            <form:option value="-1" label="no ribbon" />
+                            <c:forEach var="ribbon" items="${availableRibbons }">
+                                <c:choose>
+                                    <c:when test="${proposal.ribbon == ribbon.ribbon }">
+                                        <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form:option value="${ribbon.id}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </form:select>
+                    </label>
+                </p>
+            </div>
+
             <p>
                 <form:hidden id="proposalIdsToBeMoved" path="proposalIdsToBeMoved" />
             </p>
@@ -76,11 +117,11 @@
 <script>
 var contestPhases = {
     <c:forEach var="contestId" items="${contestPhases.keySet()}">
-        ${contestId}: {
+        ${contestId}: [
             <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
-                ${contestPhase.contestPhasePK}: "${contestPhaseType.get(contestPhase.contestPhaseType).name}",
+                {pk: ${contestPhase.contestPhasePK}, name: "${contestPhaseType.get(contestPhase.contestPhaseType).name}"},
             </c:forEach>
-        },
+        ],
     </c:forEach>
 };
 
