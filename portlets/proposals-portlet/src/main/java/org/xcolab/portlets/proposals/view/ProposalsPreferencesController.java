@@ -12,6 +12,7 @@ import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,6 +95,52 @@ public class ProposalsPreferencesController {
         //moving parameters are set
         String message = moveProposals(proposalIdsToBeMoved, moveFromContestId, moveToContestPhaseId, ribbonId, false);
         model.addAttribute("message", message);
+    }
+
+    @RequestMapping(params = "action=checkForMissingTeamMembers")
+    public void checkForMissingTeamMembers(ActionRequest request, ActionResponse response, Model model)
+            throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+        List<Contest> activeContests = ContestLocalServiceUtil.getContestsByActivePrivate(true, false);
+        String message = "";
+
+        for (Contest c : activeContests) {
+            if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
+                message += "<br/>\nSkipped contest: "+c.getContestShortName()+"<br/><br/>\n";
+                continue;
+            }
+
+            message += "<br/><br/>\nCONTEST: "+c.getContestShortName()+"<br/><br/>\n";
+
+
+            for (Proposal p :ProposalLocalServiceUtil.getProposalsInContest(c.getContestPK())) {
+                //author id check
+                Long authorId = p.getAuthorId();
+
+                List<User> members = ProposalLocalServiceUtil.getMembers(p.getProposalId());
+                boolean foundAuthor = false;
+                for (User u: members) {
+                    if (u.getUserId() == authorId) {
+                        foundAuthor = true;
+                    }
+                }
+                if (!foundAuthor) {
+                    message += "<br/><br/>\nMISSING AUTHOR FOR PROPOSAL: "+p.getProposalId()+"<br/><br/>\n";
+                }
+
+                //proposal version check
+                for (ProposalVersion pv: ProposalVersionLocalServiceUtil.getByProposalId(p.getProposalId(), 0, Integer.MAX_VALUE)) {
+                    boolean foundVersionAuthor = false;
+                    for (User u: members) {
+                        if (u.getUserId() == pv.getAuthorId()) {
+                            foundVersionAuthor = true;
+                        }
+                    }
+                    if (!foundVersionAuthor) {
+                        message += "<br/><br/>\nMISSING VERSION AUTHOR FOR PROPOSAL: "+p.getProposalId()+" Version: "+pv.getVersion()+"<br/><br/>\n";
+                    }
+                }
+            }
+        }
     }
 
     @RequestMapping(params = "action=runRibbonDistribution")

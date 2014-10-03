@@ -10,6 +10,26 @@
 <div id="content">
     <div id="portlet-preferences">
         <h1>Proposals preferences</h1>
+        <portlet:actionURL var="checkForMissingTeamMembersURL">
+            <portlet:param name="action" value="checkForMissingTeamMembers" />
+        </portlet:actionURL>
+        <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
+            <p>
+                <input type="submit"
+                       style="
+                    background: #ddd;
+                    color: white;
+                    font-size: 1em;
+                    border: 1px solid gray;
+                    border-radius: 6px;
+                    padding: 0.5em;
+                    cursor: pointer;
+                    margin-top: 2em;
+                   "
+                       value="Check for missing team members"
+                        />
+            </p>
+        </form:form>
         <portlet:actionURL var="runRibbonDistributionURL">
             <portlet:param name="action" value="runRibbonDistribution" />
         </portlet:actionURL>
