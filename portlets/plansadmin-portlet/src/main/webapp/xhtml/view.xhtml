@@ -52,10 +52,10 @@
                 <ice:commandButton rendered="#{contest.canDistributePoints and contest.hasEnded}" value="Calculate and materialize points" action="#{contestsAdmin.calculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
-                <ice:commandButton rendered="#{contest.canDistributePoints and contest.hasEnded}" value="Preview how points would be materialized" action="#{contestsAdmin.pointsPreview}" actionListener="#{contestsAdmin.editContestActionListener}">
+                <ice:commandButton rendered="#{contest.canDistributePoints and contest.hasEnded}" value="Preview materialized points" action="#{contestsAdmin.pointsPreview}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
-                <ice:commandButton rendered="#{contest.canDistributePoints and not contest.hasEnded}" value="Calculate points" action="#{contestsAdmin.calculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
+                <ice:commandButton rendered="#{contest.canDistributePoints and not contest.hasEnded}" value="Calculate hypothetical points" action="#{contestsAdmin.calculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
                 <ice:commandButton value="delete" actionListener="#{contest.delete}" />

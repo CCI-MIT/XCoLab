@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import com.ext.portlet.model.Points;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import org.xcolab.portlets.plansadmin.wrappers.ContestWrapper;
@@ -16,7 +17,16 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public class ContestsAdmin {
     private ContestWrapper editedContest;
-    private ArrayList<Long> materializedPoints;
+
+    public List<Points> getMaterializedPoints() {
+        return materializedPoints;
+    }
+
+    public void setMaterializedPoints(List<Points> materializedPoints) {
+        this.materializedPoints = materializedPoints;
+    }
+
+    private List<Points> materializedPoints;
     
     public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<ContestWrapper>();
@@ -50,9 +60,8 @@ public class ContestsAdmin {
 
     public String pointsPreview() throws PortalException, SystemException {
         Contest contest = editedContest.getContest();
-        this.materializedPoints = new ArrayList<Long>();
-        this.materializedPoints.add(5L);
-        //PointsLocalServiceUtil.distributePoints(contest.getContestPK());
+        this.materializedPoints = PointsLocalServiceUtil.previewMaterializedPoints(contest.getContestPK());
+
         return "pointsPreview";
     }
 

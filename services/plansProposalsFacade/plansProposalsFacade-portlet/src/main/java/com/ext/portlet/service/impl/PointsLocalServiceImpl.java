@@ -164,11 +164,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
             List<Points> materializedPointsList = new ArrayList<Points>();
 			for (PointType subPointType: pointTypePersistence.findByParentPointTypeId(pointType.getId())) {
                 materializedPointsList.addAll(distributePointsToProposal(proposal, originatingProposal,
-						originatingContest, 
-						pointsSourceId, 
-						subPointType, 
-						materializedPoints * subPointType.getPercentageOfParent(), 
-						hypotheticalPoints * subPointType.getPercentageOfParent(),
+                        originatingContest,
+                        pointsSourceId,
+                        subPointType,
+                        materializedPoints * subPointType.getPercentageOfParent(),
+                        hypotheticalPoints * subPointType.getPercentageOfParent(),
                         previewOnly));
 			}
 			return materializedPointsList;
@@ -196,8 +196,11 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 						", materializedPoints: " + points.getMaterializedPoints());
 				points.setUserId(target.getUserId());
 			}
-			
-			addPoints(points);
+
+            if (!previewOnly) {
+                addPoints(points);
+            }
+            materializedPointsList.add(points);
 			if (target.isProposal()) {
 				_log.info("Passing points to a proposal: " + target.getProposalId() + ", hypotheticalPoints: " + points.getHypotheticalPoints() + 
 						", materializedPoints: " + points.getMaterializedPoints());
