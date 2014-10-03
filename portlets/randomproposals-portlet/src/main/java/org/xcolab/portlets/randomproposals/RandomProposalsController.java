@@ -66,13 +66,11 @@ public class RandomProposalsController {
 		return ret;
 	}
 
-	private static ContestPhaseRibbonType getRibbonType(Proposal p)
+	private static ContestPhaseRibbonType getRibbonType(Proposal p, Long contestPhasePK)
 			throws PortalException, SystemException {
 		ContestPhaseRibbonType contestPhaseRibbonType = null;
-		List<Long> phasesForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
-		ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phasesForProposal.get(phasesForProposal.size() - 1));
 		try {
-			long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),contestPhase.getContestPhasePK(),ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+			long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),contestPhasePK,ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
 			contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
 		} catch (NoSuchProposalContestPhaseAttributeException e) {
 			// ignore
@@ -101,10 +99,10 @@ public class RandomProposalsController {
 					for (Long contestPhasePk : selectedPhases) {
 						for (Proposal p : ProposalLocalServiceUtil
 								.getProposalsInContestPhase(contestPhasePk)) {
-							if (getRibbonType(p) == null
-									|| getRibbonType(p).getRibbon() == 0)
+							if (getRibbonType(p, contestPhasePk) == null
+									|| getRibbonType(p, contestPhasePk).getRibbon() == 0)
 								continue;
-							int ribbon = getRibbonType(p).getRibbon();
+							int ribbon = getRibbonType(p, contestPhasePk).getRibbon();
 							for (Long flag : flagFilters) {
 								if (ribbon == flag.intValue()) {
 									availableProposals.add(p);
