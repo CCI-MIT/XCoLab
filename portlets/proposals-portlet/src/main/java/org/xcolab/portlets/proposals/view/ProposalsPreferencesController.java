@@ -124,10 +124,11 @@ public class ProposalsPreferencesController {
                     }
                 }
                 if (!foundAuthor) {
-                    message += "<br/><br/>\nMISSING AUTHOR FOR PROPOSAL: "+p.getProposalId()+"<br/><br/>\n";
+                    message += "<br/><br/>\nMISSING AUTHOR "+authorId+" FOR PROPOSAL: "+p.getProposalId()+"<br/><br/>\n";
                 }
 
                 //proposal version check
+                boolean warningIssued = false;
                 for (ProposalVersion pv: ProposalVersionLocalServiceUtil.getByProposalId(p.getProposalId(), 0, Integer.MAX_VALUE)) {
                     boolean foundVersionAuthor = false;
                     for (User u: members) {
@@ -136,10 +137,17 @@ public class ProposalsPreferencesController {
                         }
                     }
                     if (!foundVersionAuthor) {
-                        message += "<br/><br/>\nMISSING VERSION AUTHOR FOR PROPOSAL: "+p.getProposalId()+" Version: "+pv.getVersion()+"<br/><br/>\n";
+                        if (!warningIssued) {
+                            warningIssued = true;
+                            message += "<br/><br/>\nversion author "+pv.getAuthorId()+" missing for proposal: "+p.getProposalId()+" Version: "+pv.getVersion()+"<br/>\n";
+                        } else {
+                            message += "a:" + pv.getAuthorId() + ",v:" + pv.getVersion() + " - ";
+                        }
                     }
                 }
             }
+
+            model.addAttribute("message", message);
         }
     }
 
