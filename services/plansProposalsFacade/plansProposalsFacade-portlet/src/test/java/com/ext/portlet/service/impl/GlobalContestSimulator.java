@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,6 +20,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class GlobalContestSimulator {
     protected static XCoLabTest testInstance;
+    private static long DAY_IN_MS = 1000 * 60 * 60 * 24;
+    protected static SimpleDateFormat dateFormat;
+    protected static Random random;
 
     protected int contestPhaseIdCount = 0;
     protected Map<Integer, List<Proposal>> sideProposals;
@@ -27,8 +31,7 @@ public class GlobalContestSimulator {
     protected Contest globalContest;
     protected List<Contest> sideContests;
     protected List<User> users;
-    protected static SimpleDateFormat dateFormat;
-    protected static Random random;
+
     protected Map<Integer, List<User>> globalProposalsTeamMembers;
     protected Map<Integer, Map<Integer, List<User>>> sideProposalsTeamMembers;
 
@@ -49,7 +52,7 @@ public class GlobalContestSimulator {
 
     public static void initSimulatorWithTestEnvironment(XCoLabTest testInstance) {
         GlobalContestSimulator.testInstance = testInstance;
-        dateFormat = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.ENGLISH);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         random = new Random();
 
     }
@@ -161,17 +164,26 @@ public class GlobalContestSimulator {
 
         contestPhasesCreated = new ArrayList<ContestPhase>();
         //create phases
-        ContestPhase gCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE",  "2014-08-01 00:00:00", "2014-08-10 00:00:00");
-        ContestPhase gCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE",  "2014-08-10 00:00:01", "2014-08-14 00:00:00");
-        ContestPhase gCp3 = createContestPhase(globalContest, 18, false, "PROMOTE_DONE", "2014-08-14 00:00:01", "2014-08-16 00:00:00");
-        ContestPhase gCp4 = createContestPhase(globalContest, 19, true, "PROMOTE_DONE",  "2014-08-16 00:00:01", "2014-08-20 00:00:00");
-        ContestPhase gCp5 = createContestPhase(globalContest, 15, false, "PROMOTE_DONE", "2014-08-20 00:00:01", "2015-09-24 00:00:00");
-        ContestPhase gCp6;
+        final int dayDeviation = 2;
+        final int dayOffset;
         if (hasContestEnded) {
-            gCp6 = createContestPhase(globalContest, 17, false, "", "2015-09-20 00:00:01", null);
+            dayOffset = randomInt(5, 30);
         } else {
-            gCp6 = createContestPhase(globalContest, 17, false, "", "2015-09-30 00:00:01", null);
+            dayOffset = randomInt(0, 5)-5;
         }
+
+        String sCp1StartDate = generateRandomIsoDatePair(30+dayOffset, dayDeviation)[0];
+        String[] sCp1To2Transition = generateRandomIsoDatePair(24+dayOffset, dayDeviation);
+        String[] sCp2To3Transition = generateRandomIsoDatePair(17+dayOffset, dayDeviation);
+        String[] sCp3To4Transition = generateRandomIsoDatePair(10+dayOffset, dayDeviation);
+        String[] sCp4To5Transition = generateRandomIsoDatePair(3+dayOffset, dayDeviation);
+        String[] sCp5To6Transition = generateRandomIsoDatePair(-2+dayOffset, dayDeviation);
+        ContestPhase gCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]);
+        ContestPhase gCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]);
+        ContestPhase gCp3 = createContestPhase(globalContest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]);
+        ContestPhase gCp4 = createContestPhase(globalContest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]);
+        ContestPhase gCp5 = createContestPhase(globalContest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]);
+        ContestPhase gCp6 = createContestPhase(globalContest, 17, false, "", sCp5To6Transition[1], null);
 
 
         //create proposals, authored by a random user, advance them with a probability to the next phases
@@ -214,18 +226,20 @@ public class GlobalContestSimulator {
             sideContest.setDefaultParentPointType(6);
             testInstance.contestLocalService.updateContest(sideContest);
             //create phases
-            ContestPhase sCp1 = createContestPhase(sideContest, 1, false, "PROMOTE_DONE", "2014-08-01 00:00:00", "2014-08-10 00:00:00");
-            ContestPhase sCp2 = createContestPhase(sideContest, 16, true, "PROMOTE_DONE", "2014-08-10 00:00:01", "2014-08-14 00:00:00");
-            ContestPhase sCp3 = createContestPhase(sideContest, 18, false, "PROMOTE_DONE", "2014-08-14 00:00:01", "2014-08-16 00:00:00");
-            ContestPhase sCp4 = createContestPhase(sideContest, 19, true, "PROMOTE_DONE", "2014-08-16 00:00:01", "2014-08-20 00:00:00");
-            ContestPhase sCp5 = createContestPhase(sideContest, 15, false, "PROMOTE_DONE", "2014-08-20 00:00:01", "2015-09-24 00:00:00");
-            ContestPhase sCp6;
-            if (doWithProbability(0.5)) {
-                //this contest did not expire yet.
-                sCp6 = createContestPhase(sideContest, 17, false, "", "2015-09-24 00:00:01", null);
-            } else {
-                sCp6 = createContestPhase(sideContest, 17, false, "", "2015-09-24 00:00:01", null);
-            }
+            final int dayDeviation = 2;
+            final int dayOffset = randomInt(0, 30)-15;
+            String sCp1StartDate = generateRandomIsoDatePair(30+dayOffset, dayDeviation)[0];
+            String[] sCp1To2Transition = generateRandomIsoDatePair(24+dayOffset, dayDeviation);
+            String[] sCp2To3Transition = generateRandomIsoDatePair(17+dayOffset, dayDeviation);
+            String[] sCp3To4Transition = generateRandomIsoDatePair(10+dayOffset, dayDeviation);
+            String[] sCp4To5Transition = generateRandomIsoDatePair(3+dayOffset, dayDeviation);
+            String[] sCp5To6Transition = generateRandomIsoDatePair(-2+dayOffset, dayDeviation);
+            ContestPhase sCp1 = createContestPhase(sideContest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]);
+            ContestPhase sCp2 = createContestPhase(sideContest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]);
+            ContestPhase sCp3 = createContestPhase(sideContest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]);
+            ContestPhase sCp4 = createContestPhase(sideContest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]);
+            ContestPhase sCp5 = createContestPhase(sideContest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]);
+            ContestPhase sCp6 = createContestPhase(sideContest, 17, false, "", sCp5To6Transition[1], null);
 
             sideProposals.put(i, new ArrayList<Proposal>());
             sideProposalsTeamMembers.put(i, new HashMap<Integer, List<User>>());
@@ -301,6 +315,10 @@ public class GlobalContestSimulator {
         return cp;
     }
 
+
+
+
+
     private static void copyProposalToPhase(Proposal p, ContestPhase cp) throws SystemException {
         Proposal2Phase p2p = testInstance.proposal2PhaseLocalService.create(p.getProposalId(), cp.getContestPhasePK());
         p2p.setVersionFrom(1);
@@ -321,6 +339,19 @@ public class GlobalContestSimulator {
         //bias the probability towards getting 1
         //also take into account team size and divide by two thirds of the team size.
         return doWithProbability(0.1) ? 1 : random.nextDouble()/(Math.ceil(teamSize*2.0/3.0));
+    }
+
+    public  static String[] generateRandomIsoDatePair(int daysAgo, int daysDeviation) {
+        Long minTime = System.currentTimeMillis() - Math.round(((daysAgo+(daysDeviation*0.5)) * DAY_IN_MS));
+        Long maxTime = System.currentTimeMillis() - Math.round(((daysAgo-(daysDeviation*0.5)) * DAY_IN_MS));
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(minTime + new Random().nextInt((int) Math.abs(maxTime - minTime)));
+
+        String[] tuple = new String[2];
+        tuple[0] = dateFormat.format(cal.getTime());
+        cal.add(Calendar.SECOND, 1);
+        tuple[1] = dateFormat.format(cal.getTime());
+        return tuple;
     }
 
 }
