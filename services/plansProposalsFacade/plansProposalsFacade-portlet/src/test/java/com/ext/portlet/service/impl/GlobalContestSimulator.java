@@ -185,6 +185,21 @@ public class GlobalContestSimulator {
         ContestPhase gCp5 = createContestPhase(globalContest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]);
         ContestPhase gCp6 = createContestPhase(globalContest, 17, false, "", sCp5To6Transition[1], null);
 
+        int lastPhase;
+        Date now = new Date();
+        if (now.after(dateFormat.parse(sCp5To6Transition[0]))) {
+            lastPhase = 6;
+        } else if (now.after(dateFormat.parse(sCp4To5Transition[0]))) {
+            lastPhase = 5;
+        } else if (now.after(dateFormat.parse(sCp3To4Transition[0]))) {
+            lastPhase = 4;
+        } else if (now.after(dateFormat.parse(sCp2To3Transition[0]))) {
+            lastPhase = 3;
+        } else if (now.after(dateFormat.parse(sCp1To2Transition[0]))) {
+            lastPhase = 2;
+        } else {
+            lastPhase = 1;
+        }
 
         //create proposals, authored by a random user, advance them with a probability to the next phases
         globalProposals = new ArrayList<Proposal>();
@@ -198,18 +213,34 @@ public class GlobalContestSimulator {
             globalProposalsTeamMembers.put(i, setTeamMembers(proposal, author));
             globalProposals.add(proposal);
 
-            //copy to first phase
-            copyProposalToPhase(proposal, gCp2);
-            //copy half of the proposals to other phases
-            if (doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                copyProposalToPhase(proposal, gCp3);
-                copyProposalToPhase(proposal, gCp4);
-                if (doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                    copyProposalToPhase(proposal, gCp5);
-                    if (hasContestEnded) {
-                        copyProposalToPhase(proposal, gCp6);
-                    }
+            if (lastPhase == 1) {
+                globalProposalsInLastPhase.add(i);
+            } else if (lastPhase > 1) {
+                //copy to second phase
+                copyProposalToPhase(proposal, gCp2);
+
+                //copy some of the proposals to other phases
+                if (lastPhase == 2) {
                     globalProposalsInLastPhase.add(i);
+                } else if (lastPhase > 2 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
+                    copyProposalToPhase(proposal, gCp3);
+                    if (lastPhase == 3) {
+                        globalProposalsInLastPhase.add(i);
+                    } else if (lastPhase > 3) {
+                        copyProposalToPhase(proposal, gCp4);
+                        if (lastPhase == 4) {
+                            globalProposalsInLastPhase.add(i);
+                        } else if (lastPhase > 4 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
+                            copyProposalToPhase(proposal, gCp5);
+                            if (lastPhase == 5) {
+                                globalProposalsInLastPhase.add(i);
+                            } else if (lastPhase > 5) {
+                                globalProposalsInLastPhase.add(i);
+                                copyProposalToPhase(proposal, gCp6);
+                            }
+
+                        }
+                    }
                 }
             }
         }
