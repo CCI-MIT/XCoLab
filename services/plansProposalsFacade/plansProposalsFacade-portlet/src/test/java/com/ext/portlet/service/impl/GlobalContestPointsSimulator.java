@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     private double probabilityOfPointsDistributionAdditionalNonTeamMembers;
     protected Map<Integer, DistributionConfiguration> globalProposalsDistributions;
+    protected Map<Integer, PointDistributionTarget> globalProposalsDistributionTargets;
     protected Map<Integer, Map<Integer, DistributionConfiguration>> sideProposalsDistributions;
     protected List<Points> points;
 
@@ -55,6 +56,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     ) throws NoSuchUserException, SystemException {
         globalProposalsDistributions = new HashMap<>();
         sideProposalsDistributions = new HashMap<>();
+        globalProposalsDistributionTargets = new HashMap<>();
 
         this.probabilityOfPointsDistributionAdditionalNonTeamMembers = probabilityOfPointsDistributionAdditionalNonTeamMembers;
 
@@ -75,6 +77,34 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                     sideProposalsDistributions.get(i).put(j, config);
                 }
             }
+        }
+    }
+
+    public void setPointDistributionTargets() throws SystemException {
+        double sumOfPoints = 0;
+
+        for (long i = 0; sumOfPoints < pointsToBeDistributed; i++) {
+            //create random distribution target
+            int points;
+            //either create random points or finish the distribution by assigning the rest of points
+            if (doWithProbability(0.5)) {
+                //sumOfPoints[n-1] < sumOfPoints[n] <= pointsToBeDistributed
+                points = randomInt(1, (int) (pointsToBeDistributed - sumOfPoints)+1);
+            } else {
+                //sumOfPoints[n] == pointsToBeDistributed
+                points = (int)(pointsToBeDistributed - sumOfPoints);
+            }
+
+            sumOfPoints += points;
+
+            //choose a random proposal
+            int proposalIndex = randomInt(0, globalProposalsInLastPhase.size());
+            PointDistributionTarget pdt = testInstance.pointDistributionTargetService.createPointDistributionTarget(i+1);
+            pdt.setContestId(globalContest.getContestPK());
+            pdt.setProposalId(globalProposals.get(globalProposalsInLastPhase.get(proposalIndex)).getProposalId());
+            pdt.setNumberOfPoints(points);
+            testInstance.pointDistributionTargetService.addPointDistributionTarget(pdt);
+            globalProposalsDistributionTargets.put(globalProposalsInLastPhase.get(proposalIndex), pdt);
         }
     }
 
@@ -204,21 +234,24 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         return config;
     }
 
-    private void assertDistributionForGlobalProposal(int proposalIndex, long sourceId, double pointsToBeDistributed) {
+    private void assertDistributionForGlobalProposal(int proposalIndex, long sourceId, double hypotheticalPoints, double materializedPoints) {
         DistributionConfiguration config = globalProposalsDistributions.get(proposalIndex);
         Proposal p = globalProposals.get(proposalIndex);
-        double teamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.9;
-        double nonTeamPoints =  Math.ceil(pointsToBeDistributed)*0.2*0.1;
+        double matTeamPoints =  Math.ceil(materializedPoints)*0.2*0.9;
+        double hypTeamPoints =  Math.ceil(hypotheticalPoints)*0.2*0.9;
+        double matNonTeamPoints =  Math.ceil(materializedPoints)*0.2*0.1;
+        double hypNonTeamPoints =  Math.ceil(hypotheticalPoints)*0.2*0.1;
 
         int amountOfSubProposals = 0;
 
         for (int i = 0; i < globalProposalLinksToSideProposals.get(proposalIndex).size(); i++) {
             amountOfSubProposals += globalProposalLinksToSideProposals.get(proposalIndex).get(i).size();
         }
-        double pointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(pointsToBeDistributed)*0.8)/amountOfSubProposals : 0;
+        double hypPointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(hypotheticalPoints)*0.8)/amountOfSubProposals : 0;
+        double matPointsPerSubProposal = amountOfSubProposals > 0 ? ( Math.ceil(materializedPoints)*0.8)/amountOfSubProposals : 0;
 
         //TEAM
-        if (teamPoints >= 1) {
+        if (hypPointsPerSubProposal >= 1) {
             for (int j = 0; j < globalProposalsTeamMembers.get(proposalIndex).size(); j++) {
                 User teamMember = globalProposalsTeamMembers.get(proposalIndex).get(j);
                 double share;
@@ -228,20 +261,20 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                     //no config is present. shares are distributed equally
                     share = 1.00 / globalProposalsTeamMembers.get(proposalIndex).size();
                 }
-                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints * share)));
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
             }
         }
 
         //NON-TEAM
-        if (nonTeamPoints >= 1 && config != null) {
+        if (hypNonTeamPoints >= 1 && config != null) {
             for (int userIndex: config.additionalShares.keySet()) {
                 double share = config.additionalShares.get(userIndex);
-                assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, 0, Math.ceil(nonTeamPoints*share)));
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, Math.ceil(matNonTeamPoints*share), Math.ceil(hypNonTeamPoints*share)));
             }
         }
 
         //SUB-PROPOSALS
-        if (Math.ceil(pointsToBeDistributed)*0.8 >= 1 && amountOfSubProposals > 0) {
+        if (Math.ceil(hypotheticalPoints)*0.8 >= 1 && amountOfSubProposals > 0) {
             //first gather all linked proposal ids and where they are located in our fields
             List<Long> childrenProposalIds = new ArrayList<Long>();
             List<Integer[]> childrenSideProposalIndizes = new ArrayList<Integer[]>();
@@ -256,7 +289,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             //now go through all linked proposals and find their origin
             for (int i = 0; i < amountOfSubProposals; i++) {
                 //find the related subProposal Point entry
-                Points subProposalSourcePoints = popPointEntryInList(points, p.getProposalId(), 0, sourceId, 0, Math.ceil(pointsPerSubProposal));
+                Points subProposalSourcePoints = popPointEntryInList(points, p.getProposalId(), 0, sourceId, Math.ceil(matPointsPerSubProposal), Math.ceil(hypPointsPerSubProposal));
                 assertNotNull(subProposalSourcePoints);
 
                 //find the proposalId which has the sub-proposal Point entry as a parent
@@ -273,7 +306,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                 Integer[] sideProposalIndex = childrenSideProposalIndizes.get(indexOfProposalId);
                 childrenSideProposalIndizes.remove(indexOfProposalId);
 
-                this.assertDistributionForSideProposal(sideProposalIndex, subProposalSourcePoints.getId(), pointsPerSubProposal);
+                this.assertDistributionForSideProposal(sideProposalIndex, subProposalSourcePoints.getId(), hypPointsPerSubProposal, matPointsPerSubProposal);
             }
             // we are done. all the generated arrays should be empty by now.
             assertTrue(childrenProposalIds.isEmpty());
@@ -282,18 +315,20 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     }
 
 
-    private void assertDistributionForSideProposal(Integer[] sideProposalIndex, long sourceId, double pointsToBeDistributed) {
+    private void assertDistributionForSideProposal(Integer[] sideProposalIndex, long sourceId, double hypotheticalPoints, double materializedPoints) {
         assertTrue(sideProposalIndex.length == 2);
         int contestIndex = sideProposalIndex[0];
         int proposalIndex = sideProposalIndex[1];
 
         DistributionConfiguration config = sideProposalsDistributions.get(contestIndex).get(proposalIndex);
         Proposal p = sideProposals.get(contestIndex).get(proposalIndex);
-        double teamPoints = Math.ceil(pointsToBeDistributed)*0.8;
-        double nonTeamPoints = Math.ceil(pointsToBeDistributed)*0.2;
+        double matTeamPoints = Math.ceil(materializedPoints)*0.8;
+        double hypTeamPoints = Math.ceil(hypotheticalPoints)*0.8;
+        double matNonTeamPoints = Math.ceil(materializedPoints)*0.2;
+        double hypNonTeamPoints = Math.ceil(hypotheticalPoints)*0.2;
 
         //TEAM
-        if (teamPoints >= 1) {
+        if (hypTeamPoints >= 1) {
             List<User> teamMembers = sideProposalsTeamMembers.get(contestIndex).get(proposalIndex);
             for (int j = 0; j < teamMembers.size(); j++) {
                 User teamMember = teamMembers.get(j);
@@ -304,29 +339,60 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
                     //no config is present. shares are distributed equally
                     share = 1.00 / teamMembers.size();
                 }
-                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, 0, Math.ceil(teamPoints * share)));
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), teamMember.getUserId(), sourceId, Math.ceil(matTeamPoints * share), Math.ceil(hypTeamPoints * share)));
             }
         }
 
         //NON-TEAM
-        if (nonTeamPoints >= 1 && config != null) {
+        if (hypNonTeamPoints >= 1 && config != null) {
             for (int userIndex: config.additionalShares.keySet()) {
                 double share = config.additionalShares.get(userIndex);
-                assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, 0, Math.ceil(nonTeamPoints*share)));
+                assertNotNull(popPointEntryInList(points, p.getProposalId(), users.get(userIndex).getUserId(), sourceId, Math.ceil(matNonTeamPoints * share), Math.ceil(hypNonTeamPoints*share)));
             }
         }
     }
 
-    public void assertPointDistributions() throws SystemException {
+    public void assertPointDistributions() throws SystemException, PortalException {
         //Assure that the individual Point data entries are correct
         this.points = new ArrayList<Points>(testInstance.pointsLocalService.getPointses(0, Integer.MAX_VALUE));
 
-        for (int i: globalProposalsInLastPhase) {
-            this.assertDistributionForGlobalProposal(i, 0L, pointsToBeDistributed);
+        //if the contest has ended, and the targets are not defined, the winner will materialize all points.
+        if (hasContestEnded && globalProposalsDistributionTargets.size() == 0) {
+            //if there are no distribution targets assigned, the winning proposal (if exists) gets all points.
+            Proposal winningProposal = testInstance.contestLocalService.getWinnerProposal(globalContest.getContestPK());
+            if (winningProposal != null) {
+                //create artificial pdt, this lets us treat the winning case and the target-defined case equally afterwards.
+                PointDistributionTarget pdt = testInstance.pointDistributionTargetService.createPointDistributionTarget(1);
+                pdt.setContestId(globalContest.getContestPK());
+                pdt.setProposalId(winningProposal.getProposalId());
+                pdt.setNumberOfPoints(pointsToBeDistributed);
+                //note that we do not save the pdt in the db
+                globalProposalsDistributionTargets.put(this.getProposalIndexForProposal(winningProposal), pdt);
+            }
+        }
+
+        for (int i : globalProposalsInLastPhase) {
+            double materializedPoints = 0L;
+            if (globalProposalsDistributionTargets.size() > 0 && globalProposalsDistributionTargets.get(i) != null) {
+                materializedPoints = globalProposalsDistributionTargets.get(i).getNumberOfPoints();
+            }
+            this.assertDistributionForGlobalProposal(i, 0L, materializedPoints, pointsToBeDistributed);
         }
 
         //all points should have been popped and verified after this. so the array should be empty.
         assertTrue(points.isEmpty());
+    }
+
+    private int getProposalIndexForProposal(Proposal proposal) {
+        //find out which index this proposal has
+        int index = -1;
+        for (int i = 0; i < amountOfGlobalProposals; i++) {
+            if (globalProposals.get(i).getProposalId() == proposal.getProposalId()) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     private Long getProposalIdByPointsSourceIdInList(List<Points> points, long pointsSourceId) {

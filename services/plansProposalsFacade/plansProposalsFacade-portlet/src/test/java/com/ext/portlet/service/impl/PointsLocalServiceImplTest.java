@@ -69,16 +69,16 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             gcs.deleteContestsAndProposals();
         }
     }
-    @Test
-    public void randomHypotheticalTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+
+    private void performRandomTest(boolean hasContestEnded) throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         this.setupBasicDataset();
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
         for (int j = 0; j < 50; j++) {
             gcs.initializeContests(
-                    GlobalContestSimulator.randomInt(50, 3000),
+                    GlobalContestSimulator.randomInt(50, 1500),
                     GlobalContestSimulator.randomInt(0, 50000),
-                    false,
+                    hasContestEnded,
                     GlobalContestSimulator.randomInt(0, 50),
                     GlobalContestSimulator.randomInt(0, 15),
                     GlobalContestSimulator.randomInt(0, 50),
@@ -93,6 +93,13 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
                         new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
                         new Double(GlobalContestSimulator.randomInt(0, 100))/100.0
                 );
+                //set distribution targets
+                if (hasContestEnded) {
+                    if (gcs.doWithProbability(0.5)) {
+                        gcs.setPointDistributionTargets();
+                    }
+                }
+
                 try {
                     gcs.runPointDistributionAlgorithm();
                 } catch (StackOverflowError e) {
@@ -106,5 +113,14 @@ public class PointsLocalServiceImplTest extends XCoLabTest {
             //reset
             gcs.deleteContestsAndProposals();
         }
+    }
+
+    @Test
+    public void randomHypotheticalTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+        this.performRandomTest(false);
+    }
+    @Test
+    public void randomMaterializedTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
+        this.performRandomTest(true);
     }
 }

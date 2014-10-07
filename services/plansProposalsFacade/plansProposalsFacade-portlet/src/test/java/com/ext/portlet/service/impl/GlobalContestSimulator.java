@@ -1,8 +1,10 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.ProposalAttributeLocalService;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -238,12 +240,25 @@ public class GlobalContestSimulator {
                                 globalProposalsInLastPhase.add(i);
                                 copyProposalToPhase(proposal, gCp6);
                             }
-
                         }
                     }
                 }
             }
         }
+
+        //select winner
+        if (hasContestEnded) {
+            for (int i : globalProposalsInLastPhase) {
+                //select this proposal as winner with a specific probability
+                //note that this does not always select a winner. this is fine though, since we want some test cases without winner. 
+                if (doWithProbability(1/globalProposalsInLastPhase.size())) {
+                    testInstance.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), gCp6.getContestPhasePK(),
+                            ProposalContestPhaseAttributeKeys.RIBBON, 2L);
+                    break;
+                }
+            }
+        }
+
     }
 
     private void createSideContestsAndProposals() throws SystemException, PortalException, ParseException {

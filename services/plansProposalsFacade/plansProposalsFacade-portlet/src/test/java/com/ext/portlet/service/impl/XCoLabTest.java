@@ -43,6 +43,7 @@ public class XCoLabTest {
     protected static PointTypeLocalService pointTypeLocalService;
     protected static PointsLocalService pointsLocalService;
     protected static PointsDistributionConfigurationLocalService pointsDistributionConfigurationService;
+    protected static PointDistributionTargetLocalService pointDistributionTargetService;
     protected static PlanSectionDefinitionLocalService planSectionDefinitionLocalService;
     protected static long adminId = 10144L;
 
@@ -73,6 +74,7 @@ public class XCoLabTest {
         pointTypeLocalService = (PointTypeLocalService) PortalBeanLocatorUtil.locate(PointTypeLocalService.class.getName());
         pointsLocalService = (PointsLocalService) PortalBeanLocatorUtil.locate(PointsLocalService.class.getName());
         pointsDistributionConfigurationService = (PointsDistributionConfigurationLocalService) PortalBeanLocatorUtil.locate(PointsDistributionConfigurationLocalService.class.getName());
+        pointDistributionTargetService = (PointDistributionTargetLocalService) PortalBeanLocatorUtil.locate(PointDistributionTargetLocalService.class.getName());
         planSectionDefinitionLocalService = (PlanSectionDefinitionLocalService) PortalBeanLocatorUtil.locate(PlanSectionDefinitionLocalService.class.getName());
 
         PermissionCheckerUtil.setThreadValues(UserLocalServiceUtil.getUser(adminId));
