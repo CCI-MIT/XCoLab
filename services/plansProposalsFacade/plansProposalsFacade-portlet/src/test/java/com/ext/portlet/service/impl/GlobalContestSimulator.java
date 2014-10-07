@@ -250,7 +250,7 @@ public class GlobalContestSimulator {
         if (hasContestEnded) {
             for (int i : globalProposalsInLastPhase) {
                 //select this proposal as winner with a specific probability
-                //note that this does not always select a winner. this is fine though, since we want some test cases without winner. 
+                //note that this does not always select a winner. this is fine though, since we want some test cases without winner.
                 if (doWithProbability(1/globalProposalsInLastPhase.size())) {
                     testInstance.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), gCp6.getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.RIBBON, 2L);

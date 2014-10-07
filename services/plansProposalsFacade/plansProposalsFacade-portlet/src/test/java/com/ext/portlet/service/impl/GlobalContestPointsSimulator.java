@@ -43,6 +43,12 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
         for (PointsDistributionConfiguration pdc: configs) {
             testInstance.pointsDistributionConfigurationService.deletePointsDistributionConfiguration(pdc);
         }
+        //delete configurations
+        List<PointDistributionTarget> targets = testInstance.pointDistributionTargetService.getPointDistributionTargets(0, Integer.MAX_VALUE);
+        for (PointDistributionTarget pdt: targets) {
+            testInstance.pointDistributionTargetService.deletePointDistributionTarget(pdt);
+        }
+
         globalProposalsDistributions = null;
         sideProposalsDistributions = null;
         this.points = null;
@@ -83,28 +89,38 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
     public void setPointDistributionTargets() throws SystemException {
         double sumOfPoints = 0;
 
-        for (long i = 0; sumOfPoints < pointsToBeDistributed; i++) {
-            //create random distribution target
-            int points;
-            //either create random points or finish the distribution by assigning the rest of points
-            if (doWithProbability(0.5)) {
-                //sumOfPoints[n-1] < sumOfPoints[n] <= pointsToBeDistributed
-                points = randomInt(1, (int) (pointsToBeDistributed - sumOfPoints)+1);
-            } else {
-                //sumOfPoints[n] == pointsToBeDistributed
-                points = (int)(pointsToBeDistributed - sumOfPoints);
+        if (globalProposalsInLastPhase.size() > 0) {
+            for (long i = 0; sumOfPoints < pointsToBeDistributed; i++) {
+                //create random distribution target
+                int points;
+                //either create random points or finish the distribution by assigning the rest of points
+                if (doWithProbability(0.5)) {
+                    //sumOfPoints[n-1] < sumOfPoints[n] <= pointsToBeDistributed
+                    points = randomInt(1, (int) (pointsToBeDistributed - sumOfPoints) + 1);
+                } else {
+                    //sumOfPoints[n] == pointsToBeDistributed
+                    points = (int) (pointsToBeDistributed - sumOfPoints);
+                }
+
+                sumOfPoints += points;
+
+                //choose a random proposal, which has not been picked before
+                boolean randomProposalChosen = false;
+                int proposalIndex = 0;
+                while (!randomProposalChosen) {
+                    proposalIndex = randomInt(0, globalProposalsInLastPhase.size());
+                    if (globalProposalsDistributionTargets.get(globalProposalsInLastPhase.get(proposalIndex)) == null) {
+                        randomProposalChosen = true;
+                    }
+                }
+
+                PointDistributionTarget pdt = testInstance.pointDistributionTargetService.createPointDistributionTarget(i + 1);
+                pdt.setContestId(globalContest.getContestPK());
+                pdt.setProposalId(globalProposals.get(globalProposalsInLastPhase.get(proposalIndex)).getProposalId());
+                pdt.setNumberOfPoints(points);
+                testInstance.pointDistributionTargetService.addPointDistributionTarget(pdt);
+                globalProposalsDistributionTargets.put(globalProposalsInLastPhase.get(proposalIndex), pdt);
             }
-
-            sumOfPoints += points;
-
-            //choose a random proposal
-            int proposalIndex = randomInt(0, globalProposalsInLastPhase.size());
-            PointDistributionTarget pdt = testInstance.pointDistributionTargetService.createPointDistributionTarget(i+1);
-            pdt.setContestId(globalContest.getContestPK());
-            pdt.setProposalId(globalProposals.get(globalProposalsInLastPhase.get(proposalIndex)).getProposalId());
-            pdt.setNumberOfPoints(points);
-            testInstance.pointDistributionTargetService.addPointDistributionTarget(pdt);
-            globalProposalsDistributionTargets.put(globalProposalsInLastPhase.get(proposalIndex), pdt);
         }
     }
 
@@ -376,7 +392,7 @@ public class GlobalContestPointsSimulator extends GlobalContestSimulator {
             if (globalProposalsDistributionTargets.size() > 0 && globalProposalsDistributionTargets.get(i) != null) {
                 materializedPoints = globalProposalsDistributionTargets.get(i).getNumberOfPoints();
             }
-            this.assertDistributionForGlobalProposal(i, 0L, materializedPoints, pointsToBeDistributed);
+            this.assertDistributionForGlobalProposal(i, 0L, pointsToBeDistributed, materializedPoints);
         }
 
         //all points should have been popped and verified after this. so the array should be empty.
