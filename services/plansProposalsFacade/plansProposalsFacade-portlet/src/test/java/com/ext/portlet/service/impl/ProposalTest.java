@@ -23,7 +23,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-public class ProposalLocalServiceImplTest extends XCoLabTest {
+public class ProposalTest extends XCoLabTest {
 	private Random rand = new Random();
 
     @BeanReference(type = EventBusService.class)

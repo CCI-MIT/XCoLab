@@ -19,7 +19,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 
-public class PointsLocalServiceImplTest extends XCoLabTest {
+public class PointsTest extends XCoLabTest {
 
     /*
      Useful commands and snippets for debugging:

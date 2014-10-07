@@ -79,6 +79,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      */
     private final static Log _log = LogFactoryUtil.getLog(ContestPhaseLocalServiceImpl.class);
     private static final String SERVER_PORT_PROPS_KEY = "climatecolab.server.port";
+    private Clock clock = new ClockImpl();
+
+    /** This can be used by unit tests to set a different clock than the standard one */
+    public void overrideClock(Clock clock) {
+        this.clock = clock;
+    }
 
     public List<PlanItem> getPlans(ContestPhase contestPhase) throws SystemException, PortalException {
         return PlanItemLocalServiceUtil.getPlans(Collections.emptyMap(), Collections.emptyMap(), 0L,
@@ -152,7 +158,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             return contestPhase.getPhaseInactiveOverride();
         }
         if (contestPhase.getPhaseStartDate() != null) {
-            java.util.Date now = new java.util.Date();
+            Date now = clock.now();
             if (now.after(contestPhase.getPhaseStartDate())) {
                 if (contestPhase.getPhaseEndDate() != null) {
                     return now.before(contestPhase.getPhaseEndDate());
@@ -172,7 +178,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     }
 
     public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {
-        Date now = new Date();
+        Date now = clock.now();
         try {
             return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
                     new OrderByComparator() {
@@ -314,7 +320,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      */
     public void autoPromoteProposals() throws SystemException, PortalException {
     	
-        Date now = new Date();
+        Date now = clock.now();
         ServiceContext serviceContext = new ServiceContext();
         int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
         if (Validator.isNull(port) || port <= 0) {
@@ -455,7 +461,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
 
     public void forcePromotionOfProposalInPhase(Proposal p, ContestPhase phase) throws SystemException, PortalException {
-        Date now = new Date();
+        Date now = clock.now();
         ContestPhase nextPhase = getNextContestPhase(phase);
 
         //skip already promoted proposal

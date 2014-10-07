@@ -30,6 +30,8 @@ public class GlobalContestSimulator {
     protected Map<Integer, List<Proposal>> sideProposals;
     protected List<Proposal> globalProposals;
     protected List<Integer> globalProposalsInLastPhase;
+    protected Map<Integer, List<Integer>> sideProposalsInLastPhase;
+
     protected Contest globalContest;
     protected List<Contest> sideContests;
     protected List<User> users;
@@ -37,9 +39,18 @@ public class GlobalContestSimulator {
     protected Map<Integer, List<User>> globalProposalsTeamMembers;
     protected Map<Integer, Map<Integer, List<User>>> sideProposalsTeamMembers;
 
+    protected List<ContestPhase> globalContestPhases;
+    protected Map<Integer, List<ContestPhase>> sideContestPhases;
+
+    protected Map<Integer, List<Integer>> globalProposalLinksToGlobalProposals;
+    protected Map<Integer, Map<Integer, List<Integer>>> globalProposalLinksToSideProposals;
+
     protected int amountOfUsers;
     protected double pointsToBeDistributed;
     protected boolean hasContestEnded;
+    protected boolean areSideContestsTimedLikeGlobalContest;
+    protected int startPhase;
+    protected int currentPhase;
     protected int amountOfGlobalProposals;
     protected int amountOfSideContests;
     protected int amountOfProposalsPerSideContest;
@@ -47,10 +58,7 @@ public class GlobalContestSimulator {
     protected double probabilityOfBeingAdvancedToNextPhase;
     protected double probabilityOfAdditionalTeamMember;
 
-    private List<ContestPhase> contestPhasesCreated;
 
-    protected Map<Integer, List<Integer>> globalProposalLinksToGlobalProposals;
-    protected Map<Integer, Map<Integer, List<Integer>>> globalProposalLinksToSideProposals;
 
     public static void initSimulatorWithTestEnvironment(XCoLabTest testInstance) {
         GlobalContestSimulator.testInstance = testInstance;
@@ -63,8 +71,31 @@ public class GlobalContestSimulator {
     }
 
     public void initializeContests(int amountOfUsers,
+                                   double pointsToBeDistributed,
+                                   boolean hasContestEnded,
+                                   int amountOfGlobalProposals,
+                                   int amountOfSideContests,
+                                   int amountOfProposalsPerSideContest,
+                                   double probabilityToLinkToOtherProposal,
+                                   double probabilityOfBeingAdvancedToNextPhase,
+                                   double probabilityOfAdditionalTeamMember
+    ) throws SystemException, PortalException, ParseException {
+        this.initializeContests(amountOfUsers,
+        pointsToBeDistributed,
+        hasContestEnded ? 6 : 5,
+        false,
+        amountOfGlobalProposals,
+        amountOfSideContests,
+        amountOfProposalsPerSideContest,
+        probabilityToLinkToOtherProposal,
+        probabilityOfBeingAdvancedToNextPhase,
+        probabilityOfAdditionalTeamMember);
+    }
+
+    public void initializeContests(int amountOfUsers,
                               double pointsToBeDistributed,
-                              boolean hasContestEnded,
+                              int startPhase,
+                              boolean areSideContestsTimedLikeGlobalContest,
                               int amountOfGlobalProposals,
                               int amountOfSideContests,
                               int amountOfProposalsPerSideContest,
@@ -74,7 +105,10 @@ public class GlobalContestSimulator {
     ) throws SystemException, PortalException, ParseException {
         this.amountOfUsers = amountOfUsers;
         this.pointsToBeDistributed = pointsToBeDistributed;
-        this.hasContestEnded = hasContestEnded;
+        this.areSideContestsTimedLikeGlobalContest = areSideContestsTimedLikeGlobalContest;
+        this.startPhase = startPhase;
+        this.currentPhase = startPhase;
+        this.hasContestEnded = (startPhase == 6);
         this.amountOfGlobalProposals = amountOfGlobalProposals;
         this.amountOfSideContests = amountOfSideContests;
         this.amountOfProposalsPerSideContest = amountOfProposalsPerSideContest;
@@ -92,10 +126,15 @@ public class GlobalContestSimulator {
 
     public void deleteContestsAndProposals() throws SystemException {
         //delete all contestPhases
-        for (ContestPhase cp : contestPhasesCreated) {
+        for (ContestPhase cp : globalContestPhases) {
             testInstance.contestPhaseLocalService.deleteContestPhase(cp);
         }
-        contestPhasesCreated = null;
+        for (int j = 0; j < sideContests.size(); j++) {
+            for (ContestPhase cp : sideContestPhases.get(j)) {
+                testInstance.contestPhaseLocalService.deleteContestPhase(cp);
+            }
+        }
+        globalContestPhases = null;
 
         //delete links between proposals
         List<ProposalAttribute> proposalAttributes = testInstance.proposalAttributeLocalService.getProposalAttributes(0, Integer.MAX_VALUE);
@@ -157,6 +196,8 @@ public class GlobalContestSimulator {
         return teamMembers;
     }
 
+
+
     private void createGlobalContestAndProposals() throws SystemException, PortalException, ParseException {
         //create global contest
         globalContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Global-Contest");
@@ -164,44 +205,7 @@ public class GlobalContestSimulator {
         globalContest.setDefaultParentPointType(1);
         testInstance.contestLocalService.updateContest(globalContest);
 
-        contestPhasesCreated = new ArrayList<ContestPhase>();
-        //create phases
-        final int dayDeviation = 2;
-        final int dayOffset;
-        if (hasContestEnded) {
-            dayOffset = randomInt(5, 30);
-        } else {
-            dayOffset = randomInt(0, 5)-5;
-        }
-
-        String sCp1StartDate = generateRandomIsoDatePair(30+dayOffset, dayDeviation)[0];
-        String[] sCp1To2Transition = generateRandomIsoDatePair(24+dayOffset, dayDeviation);
-        String[] sCp2To3Transition = generateRandomIsoDatePair(17+dayOffset, dayDeviation);
-        String[] sCp3To4Transition = generateRandomIsoDatePair(10+dayOffset, dayDeviation);
-        String[] sCp4To5Transition = generateRandomIsoDatePair(3+dayOffset, dayDeviation);
-        String[] sCp5To6Transition = generateRandomIsoDatePair(-2+dayOffset, dayDeviation);
-        ContestPhase gCp1 = createContestPhase(globalContest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]);
-        ContestPhase gCp2 = createContestPhase(globalContest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]);
-        ContestPhase gCp3 = createContestPhase(globalContest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]);
-        ContestPhase gCp4 = createContestPhase(globalContest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]);
-        ContestPhase gCp5 = createContestPhase(globalContest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]);
-        ContestPhase gCp6 = createContestPhase(globalContest, 17, false, "", sCp5To6Transition[1], null);
-
-        int lastPhase;
-        Date now = new Date();
-        if (now.after(dateFormat.parse(sCp5To6Transition[0]))) {
-            lastPhase = 6;
-        } else if (now.after(dateFormat.parse(sCp4To5Transition[0]))) {
-            lastPhase = 5;
-        } else if (now.after(dateFormat.parse(sCp3To4Transition[0]))) {
-            lastPhase = 4;
-        } else if (now.after(dateFormat.parse(sCp2To3Transition[0]))) {
-            lastPhase = 3;
-        } else if (now.after(dateFormat.parse(sCp1To2Transition[0]))) {
-            lastPhase = 2;
-        } else {
-            lastPhase = 1;
-        }
+        globalContestPhases = createPhasesForContest(globalContest, null, startPhase);
 
         //create proposals, authored by a random user, advance them with a probability to the next phases
         globalProposals = new ArrayList<Proposal>();
@@ -209,41 +213,13 @@ public class GlobalContestSimulator {
         globalProposalsInLastPhase = new ArrayList<>();
         for (int i = 0; i < amountOfGlobalProposals; i++) {
             User author = users.get(randomInt(0, amountOfUsers));
-            Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), gCp1.getContestPhasePK());
+            Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), globalContestPhases.get(0).getContestPhasePK());
 
             //create team members
             globalProposalsTeamMembers.put(i, setTeamMembers(proposal, author));
             globalProposals.add(proposal);
 
-            if (lastPhase == 1) {
-                globalProposalsInLastPhase.add(i);
-            } else if (lastPhase > 1) {
-                //copy to second phase
-                copyProposalToPhase(proposal, gCp2);
-
-                //copy some of the proposals to other phases
-                if (lastPhase == 2) {
-                    globalProposalsInLastPhase.add(i);
-                } else if (lastPhase > 2 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                    copyProposalToPhase(proposal, gCp3);
-                    if (lastPhase == 3) {
-                        globalProposalsInLastPhase.add(i);
-                    } else if (lastPhase > 3) {
-                        copyProposalToPhase(proposal, gCp4);
-                        if (lastPhase == 4) {
-                            globalProposalsInLastPhase.add(i);
-                        } else if (lastPhase > 4 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                            copyProposalToPhase(proposal, gCp5);
-                            if (lastPhase == 5) {
-                                globalProposalsInLastPhase.add(i);
-                            } else if (lastPhase > 5) {
-                                globalProposalsInLastPhase.add(i);
-                                copyProposalToPhase(proposal, gCp6);
-                            }
-                        }
-                    }
-                }
-            }
+            initializePhasesForProposal(proposal, i, startPhase, globalContestPhases, globalProposalsInLastPhase);
         }
 
         //select winner
@@ -252,7 +228,7 @@ public class GlobalContestSimulator {
                 //select this proposal as winner with a specific probability
                 //note that this does not always select a winner. this is fine though, since we want some test cases without winner.
                 if (doWithProbability(1/globalProposalsInLastPhase.size())) {
-                    testInstance.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), gCp6.getContestPhasePK(),
+                    testInstance.proposalContestPhaseAttributeLocalService.setProposalContestPhaseAttribute(globalProposals.get(i).getProposalId(), globalContestPhases.get(5).getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.RIBBON, 2L);
                     break;
                 }
@@ -266,48 +242,32 @@ public class GlobalContestSimulator {
         sideProposals = new HashMap<Integer, List<Proposal>>();
         sideContests = new ArrayList<Contest>();
         sideProposalsTeamMembers = new HashMap<>();
+        sideContestPhases = new HashMap<>();
+        sideProposalsInLastPhase = new HashMap<>();
         for (int i = 0; i < amountOfSideContests; i++) {
             Contest sideContest = testInstance.contestLocalService.createNewContest(testInstance.adminId, "Test-Side-Contest-"+(i+1));
             sideContest.setPoints(0);
             sideContest.setDefaultParentPointType(6);
             testInstance.contestLocalService.updateContest(sideContest);
-            //create phases
-            final int dayDeviation = 2;
-            final int dayOffset = randomInt(0, 30)-15;
-            String sCp1StartDate = generateRandomIsoDatePair(30+dayOffset, dayDeviation)[0];
-            String[] sCp1To2Transition = generateRandomIsoDatePair(24+dayOffset, dayDeviation);
-            String[] sCp2To3Transition = generateRandomIsoDatePair(17+dayOffset, dayDeviation);
-            String[] sCp3To4Transition = generateRandomIsoDatePair(10+dayOffset, dayDeviation);
-            String[] sCp4To5Transition = generateRandomIsoDatePair(3+dayOffset, dayDeviation);
-            String[] sCp5To6Transition = generateRandomIsoDatePair(-2+dayOffset, dayDeviation);
-            ContestPhase sCp1 = createContestPhase(sideContest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]);
-            ContestPhase sCp2 = createContestPhase(sideContest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]);
-            ContestPhase sCp3 = createContestPhase(sideContest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]);
-            ContestPhase sCp4 = createContestPhase(sideContest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]);
-            ContestPhase sCp5 = createContestPhase(sideContest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]);
-            ContestPhase sCp6 = createContestPhase(sideContest, 17, false, "", sCp5To6Transition[1], null);
+
+            if (this.areSideContestsTimedLikeGlobalContest) {
+                sideContestPhases.put(i, this.createPhasesForContest(sideContest, globalContestPhases, null));
+            } else {
+                sideContestPhases.put(i, this.createPhasesForContest(sideContest, null, startPhase));
+            }
 
             sideProposals.put(i, new ArrayList<Proposal>());
             sideProposalsTeamMembers.put(i, new HashMap<Integer, List<User>>());
+            sideProposalsInLastPhase.put(i, new ArrayList<Integer>());
 
             for (int j = 0; j < amountOfProposalsPerSideContest; j++) {
                 User author = users.get(randomInt(0, amountOfUsers));
-                Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sCp1.getContestPhasePK());
+                Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sideContestPhases.get(i).get(0).getContestPhasePK());
                 sideProposals.get(i).add(proposal);
                 sideProposalsTeamMembers.get(i).put(j, setTeamMembers(proposal, author));
 
-                //copy to second phase
-                copyProposalToPhase(proposal, sCp2);
-                if (doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                    copyProposalToPhase(proposal, sCp3);
-                    copyProposalToPhase(proposal, sCp4);
-                    if (doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
-                        copyProposalToPhase(proposal, sCp5);
-                        if (hasContestEnded) {
-                            copyProposalToPhase(proposal, sCp6);
-                        }
-                    }
-                }
+                initializePhasesForProposal(proposal, j, startPhase, sideContestPhases.get(i), sideProposalsInLastPhase.get(i));
+
             }
             sideContests.add(sideContest);
         }
@@ -343,6 +303,139 @@ public class GlobalContestSimulator {
         }
     }
 
+
+
+    private List<ContestPhase> createPhasesForContest(Contest contest, List<ContestPhase> baseOnExistingPhases, Integer startPhase) throws ParseException, SystemException {
+        List<ContestPhase> createdPhases = new ArrayList<ContestPhase>();
+        String sCp1StartDate;
+        String[] sCp1To2Transition;
+        String[] sCp2To3Transition;
+        String[] sCp3To4Transition;
+        String[] sCp4To5Transition;
+        String[] sCp5To6Transition;
+        if (baseOnExistingPhases == null) {
+            //calculate phases
+            final int dayDeviation = 2;
+            final int dayOffset;
+            switch (startPhase) {
+                case 0:
+                    dayOffset = randomInt(0, 10) - 43;
+                    break;
+                case 1:
+                    dayOffset = -26;
+                    break;
+                case 2:
+                    dayOffset = -19;
+                    break;
+                case 3:
+                    dayOffset = -12;
+                    break;
+                case 4:
+                    dayOffset = -5;
+                    break;
+                case 5:
+                    dayOffset = 0;
+                    break;
+                case 6:
+                default:
+                    dayOffset = randomInt(5, 30);
+                    break;
+            }
+
+            sCp1StartDate = generateRandomIsoDatePair(30 + dayOffset, dayDeviation)[0];
+            sCp1To2Transition = generateRandomIsoDatePair(24 + dayOffset, dayDeviation);
+            sCp2To3Transition = generateRandomIsoDatePair(17 + dayOffset, dayDeviation);
+            sCp3To4Transition = generateRandomIsoDatePair(10 + dayOffset, dayDeviation);
+            sCp4To5Transition = generateRandomIsoDatePair(3 + dayOffset, dayDeviation);
+            sCp5To6Transition = generateRandomIsoDatePair(-2 + dayOffset, dayDeviation);
+        } else {
+            //take the existing dates
+            sCp1StartDate = dateFormat.format(baseOnExistingPhases.get(0).getPhaseStartDate());
+            sCp1To2Transition = new String[]{
+                    dateFormat.format(baseOnExistingPhases.get(0).getPhaseEndDate()),
+                    dateFormat.format(baseOnExistingPhases.get(1).getPhaseStartDate()),
+            };
+            sCp2To3Transition = new String[]{
+                    dateFormat.format(baseOnExistingPhases.get(1).getPhaseEndDate()),
+                    dateFormat.format(baseOnExistingPhases.get(2).getPhaseStartDate()),
+            };
+            sCp3To4Transition = new String[]{
+                    dateFormat.format(baseOnExistingPhases.get(2).getPhaseEndDate()),
+                    dateFormat.format(baseOnExistingPhases.get(3).getPhaseStartDate()),
+            };
+            sCp4To5Transition = new String[]{
+                    dateFormat.format(baseOnExistingPhases.get(3).getPhaseEndDate()),
+                    dateFormat.format(baseOnExistingPhases.get(4).getPhaseStartDate()),
+            };
+            sCp5To6Transition = new String[]{
+                    dateFormat.format(baseOnExistingPhases.get(4).getPhaseEndDate()),
+                    dateFormat.format(baseOnExistingPhases.get(5).getPhaseStartDate()),
+            };
+        }
+        createdPhases.add(createContestPhase(contest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]));
+        createdPhases.add(createContestPhase(contest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]));
+        createdPhases.add(createContestPhase(contest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]));
+        createdPhases.add(createContestPhase(contest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]));
+        createdPhases.add(createContestPhase(contest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]));
+        createdPhases.add(createContestPhase(contest, 17, false, "", sCp5To6Transition[1], null));
+
+        //calculate the current phase and assert it afterwards, just to make sure that our date calculations were correct
+        int currentPhase;
+        Date now = new Date();
+        if (now.after(dateFormat.parse(sCp5To6Transition[0]))) {
+            currentPhase = 6;
+        } else if (now.after(dateFormat.parse(sCp4To5Transition[0]))) {
+            currentPhase = 5;
+        } else if (now.after(dateFormat.parse(sCp3To4Transition[0]))) {
+            currentPhase = 4;
+        } else if (now.after(dateFormat.parse(sCp2To3Transition[0]))) {
+            currentPhase = 3;
+        } else if (now.after(dateFormat.parse(sCp1To2Transition[0]))) {
+            currentPhase = 2;
+        } else if (now.after(dateFormat.parse(sCp1StartDate))) {
+            currentPhase = 1;
+        } else {
+            currentPhase = 0;
+        }
+
+        assertTrue(currentPhase == startPhase);
+        return createdPhases;
+    }
+
+
+    private void initializePhasesForProposal(Proposal proposal, int proposalIndex, int currentPhase, List<ContestPhase> contestPhases, List<Integer> proposalsInLastPhase) throws SystemException {
+        if (currentPhase == 1) {
+            proposalsInLastPhase.add(proposalIndex);
+        } else if (currentPhase > 1) {
+            //copy to second phase
+            copyProposalToPhase(proposal, contestPhases.get(1));
+
+            //copy some of the proposals to other phases
+            if (currentPhase == 2) {
+                proposalsInLastPhase.add(proposalIndex);
+            } else if (currentPhase > 2 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
+                copyProposalToPhase(proposal, contestPhases.get(2));
+                if (currentPhase == 3) {
+                    proposalsInLastPhase.add(proposalIndex);
+                } else if (currentPhase > 3) {
+                    copyProposalToPhase(proposal, contestPhases.get(3));
+                    if (currentPhase == 4) {
+                        proposalsInLastPhase.add(proposalIndex);
+                    } else if (currentPhase > 4 && doWithProbability(probabilityOfBeingAdvancedToNextPhase)) {
+                        copyProposalToPhase(proposal, contestPhases.get(4));
+                        if (currentPhase == 5) {
+                            proposalsInLastPhase.add(proposalIndex);
+                        } else if (currentPhase > 5) {
+                            proposalsInLastPhase.add(proposalIndex);
+                            copyProposalToPhase(proposal, contestPhases.get(5));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     private ContestPhase createContestPhase(Contest c, long type, boolean fellowScreeningActive, String autoPromote, String startDate, String endDate) throws SystemException, ParseException {
         ContestPhase cp = testInstance.contestPhaseLocalService.createContestPhase(100000+contestPhaseIdCount++);
         cp.setContestPK(c.getContestPK());
@@ -356,12 +449,9 @@ public class GlobalContestSimulator {
             cp.setPhaseEndDate(dateFormat.parse(endDate));
         }
         testInstance.contestPhaseLocalService.updateContestPhase(cp);
-        contestPhasesCreated.add(cp);
 
         return cp;
     }
-
-
 
 
 
