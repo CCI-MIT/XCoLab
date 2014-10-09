@@ -273,8 +273,17 @@ public class ProposalsPermissions {
     	return !ContestLocalServiceUtil.findByActive(true).isEmpty();
     }
     
-    public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException {
-    	return getCanAdminAll(); /* Only allowed for admins */
+    public boolean getCanMoveProposalAndHideInCurrentContest() throws SystemException, PortalException {
+        if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
+            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
+            return false;
+        }
+        // In Submission Phase, owner and admin should be able to move
+        if (getIsCreationAllowedByPhase()){
+            return isOwner() || getCanAdminAll();
+        }
+        // Otherwise just the admin should be able to move between contests
+    	return getCanAdminAll();
     }
 
     public boolean getCanMoveProposalAndKeepInCurrentContest() throws SystemException, PortalException {
@@ -305,7 +314,17 @@ public class ProposalsPermissions {
             return false;
         }
         if (p2p.getContestPhaseId() == lastPhase.getContestPhasePK()){
-            // This is the last or current active phase (Violation of 1)
+            // Check of this is the last phase in the contest (2)
+            List <ContestPhase> phases = ContestPhaseLocalServiceUtil.getPhasesForContest(contestPhase.getContestPK());
+            ContestPhase lastPhaseofContest = phases.get(phases.size()-1);
+            if (lastPhaseofContest.getContestPhasePK() != p2p.getContestPhaseId()){
+                // This is the current active phase (Violation of 1)
+                return false;
+            }
+        }
+
+        // allow copy only if the current contest is not in creation phase anymore, in this case "move" should be used instead of "copy"
+        if (getIsCreationAllowedByPhase()){
             return false;
         }
 
