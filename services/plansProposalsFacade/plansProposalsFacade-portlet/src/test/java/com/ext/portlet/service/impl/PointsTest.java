@@ -74,9 +74,10 @@ public class PointsTest extends XCoLabTest {
         this.setupBasicDataset();
         GlobalContestPointsSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPointsSimulator gcs = new GlobalContestPointsSimulator();
+        int amountOfUsers = GlobalContestSimulator.randomInt(50, 1500);
         for (int j = 0; j < 50; j++) {
             gcs.initializeContests(
-                    GlobalContestSimulator.randomInt(50, 1500),
+                    amountOfUsers,
                     GlobalContestSimulator.randomInt(0, 50000),
                     hasContestEnded,
                     GlobalContestSimulator.randomInt(0, 50),

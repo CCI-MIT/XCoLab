@@ -251,7 +251,7 @@ public class GlobalContestSimulator {
             testInstance.contestLocalService.updateContest(sideContest);
 
             if (this.areSideContestsTimedLikeGlobalContest) {
-                sideContestPhases.put(i, this.createPhasesForContest(sideContest, globalContestPhases, null));
+                sideContestPhases.put(i, this.createPhasesForContest(sideContest, globalContestPhases, startPhase));
             } else {
                 sideContestPhases.put(i, this.createPhasesForContest(sideContest, null, startPhase));
             }
@@ -372,11 +372,14 @@ public class GlobalContestSimulator {
                     dateFormat.format(baseOnExistingPhases.get(5).getPhaseStartDate()),
             };
         }
-        createdPhases.add(createContestPhase(contest, 1, false, "PROMOTE_DONE", sCp1StartDate, sCp1To2Transition[0]));
-        createdPhases.add(createContestPhase(contest, 16, true, "PROMOTE_DONE", sCp1To2Transition[1], sCp2To3Transition[0]));
-        createdPhases.add(createContestPhase(contest, 18, false, "PROMOTE_DONE", sCp2To3Transition[1], sCp3To4Transition[0]));
-        createdPhases.add(createContestPhase(contest, 19, true, "PROMOTE_DONE", sCp3To4Transition[1], sCp4To5Transition[0]));
-        createdPhases.add(createContestPhase(contest, 15, false, "PROMOTE_DONE", sCp4To5Transition[1], sCp5To6Transition[0]));
+        String promoteDone = "PROMOTE_DONE";
+        String alwaysPromote = "PROMOTE";
+        String promoteJudged = "PROMOTE_JUDGED";
+        createdPhases.add(createContestPhase(contest, 1, false, startPhase > 1 ? promoteDone : alwaysPromote, sCp1StartDate, sCp1To2Transition[0]));
+        createdPhases.add(createContestPhase(contest, 16, true, startPhase > 2 ? promoteDone : promoteJudged, sCp1To2Transition[1], sCp2To3Transition[0]));
+        createdPhases.add(createContestPhase(contest, 18, false, startPhase > 3 ? promoteDone : alwaysPromote, sCp2To3Transition[1], sCp3To4Transition[0]));
+        createdPhases.add(createContestPhase(contest, 19, true, startPhase > 4 ? promoteDone : promoteJudged, sCp3To4Transition[1], sCp4To5Transition[0]));
+        createdPhases.add(createContestPhase(contest, 15, false, startPhase > 5 ? promoteDone : alwaysPromote, sCp4To5Transition[1], sCp5To6Transition[0]));
         createdPhases.add(createContestPhase(contest, 17, false, "", sCp5To6Transition[1], null));
 
         //calculate the current phase and assert it afterwards, just to make sure that our date calculations were correct

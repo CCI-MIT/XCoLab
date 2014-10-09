@@ -13,11 +13,11 @@ public class PhaseTransitionTest extends XCoLabTest {
     @Test
     public void randomTest() throws SystemException, PortalException, ParseException, NoSuchFieldException, IllegalAccessException {
         this.setupBasicDataset();
-        GlobalContestSimulator.initSimulatorWithTestEnvironment(this);
-        GlobalContestSimulator gcs = new GlobalContestSimulator();
+        GlobalContestPhaseTransitionSimulator.initSimulatorWithTestEnvironment(this);
+        GlobalContestPhaseTransitionSimulator gcs = new GlobalContestPhaseTransitionSimulator();
         for (int j = 0; j < 50; j++) {
             gcs.initializeContests(
-                    GlobalContestSimulator.randomInt(50, 1500),
+                    350,
                     0,
                     0, //firstPhase
                     true, //side contests are timed like global contest
@@ -28,6 +28,8 @@ public class PhaseTransitionTest extends XCoLabTest {
                     new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
                     new Double(GlobalContestSimulator.randomInt(0, 100))/100.0
             );
+
+            gcs.advanceAllContestsToNextPhase();
 
             //reset
             gcs.deleteContestsAndProposals();
