@@ -41,6 +41,8 @@ import com.liferay.util.portlet.PortletProps;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.utils.Clock;
+import org.xcolab.utils.ClockImpl;
 
 import javax.mail.internet.AddressException;
 

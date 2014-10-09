@@ -179,7 +179,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
 
         _methodName19 = "overrideClock";
 
-        _methodParameterTypes19 = new String[] { "com.ext.utils.Clock" };
+        _methodParameterTypes19 = new String[] { "org.xcolab.utils.Clock" };
 
         _methodName20 = "getPlans";
 
@@ -795,7 +795,7 @@ public class ContestPhaseLocalServiceClp implements ContestPhaseLocalService {
     }
 
     @Override
-    public void overrideClock(com.ext.utils.Clock clock) {
+    public void overrideClock(org.xcolab.utils.Clock clock) {
         try {
             _invokableLocalService.invokeMethod(_methodName19,
                 _methodParameterTypes19,

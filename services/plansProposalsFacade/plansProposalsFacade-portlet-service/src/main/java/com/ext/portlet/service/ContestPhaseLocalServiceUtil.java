@@ -266,7 +266,7 @@ public class ContestPhaseLocalServiceUtil {
     /**
     * This can be used by unit tests to set a different clock than the standard one
     */
-    public static void overrideClock(com.ext.utils.Clock clock) {
+    public static void overrideClock(org.xcolab.utils.Clock clock) {
         getService().overrideClock(clock);
     }
 

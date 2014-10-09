@@ -239,7 +239,7 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     /**
     * This can be used by unit tests to set a different clock than the standard one
     */
-    public void overrideClock(com.ext.utils.Clock clock);
+    public void overrideClock(org.xcolab.utils.Clock clock);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.PlanItem> getPlans(

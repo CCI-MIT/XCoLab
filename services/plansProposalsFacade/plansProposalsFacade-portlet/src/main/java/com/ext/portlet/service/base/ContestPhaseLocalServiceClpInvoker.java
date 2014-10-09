@@ -1,7 +1,6 @@
 package com.ext.portlet.service.base;
 
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import org.xcolab.utils.Clock;
 
 import java.util.Arrays;
 
@@ -382,7 +381,7 @@ public class ContestPhaseLocalServiceClpInvoker {
 
         if (_methodName582.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes582, parameterTypes)) {
-            ContestPhaseLocalServiceUtil.overrideClock((Clock) arguments[0]);
+            ContestPhaseLocalServiceUtil.overrideClock((org.xcolab.utils.Clock) arguments[0]);
 
             return null;
         }
