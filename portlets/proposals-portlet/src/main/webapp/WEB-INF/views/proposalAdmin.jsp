@@ -111,7 +111,7 @@
         
         <c:if test="${ proposalsPermissions.getCanMoveProposalAndHideInCurrentContest() }">
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-            	<strong>Move proposal while hiding it in the current contest</strong>
+            	<strong>Move proposal to different contest</strong>
             	<div>            		
 					<div class="blue-button">
 						<a href="javascript:;"
@@ -125,12 +125,12 @@
 
             <c:if test="${ proposalsPermissions.getCanMoveProposalAndKeepInCurrentContest() }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-                    <strong>Move proposal while keeping it in the current contest</strong>
+                    <strong>Copy proposal to different contest</strong>
                     <div>
                         <div class="blue-button">
                             <a href="javascript:;"
                                onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,false)">
-                                <span>Move</span> this proposal
+                                <span>Copy</span> this proposal
                             </a>
                         </div>
                     </div>

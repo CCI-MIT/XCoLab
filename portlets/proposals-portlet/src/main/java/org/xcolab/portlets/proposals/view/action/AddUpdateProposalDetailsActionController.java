@@ -100,6 +100,12 @@ public class AddUpdateProposalDetailsActionController {
             	if (updateProposalSectionsBean.isHideOnMove()){
                     // make proposal invisible in all contest phases to which it belonged to
                     for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
+                        // only handle phases of the currrent contest and remove these. this allows for more advanced proposal movement
+                        if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK() != updateProposalSectionsBean.getBaseProposalContestId()){
+                            continue;
+                        }
+                        // remove proposal from this contest completely
+
                         ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(),
                                 ProposalContestPhaseAttributeKeys.VISIBLE, 0);
 
