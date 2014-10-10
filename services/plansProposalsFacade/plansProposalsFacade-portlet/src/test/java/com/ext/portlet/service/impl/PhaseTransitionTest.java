@@ -15,11 +15,12 @@ public class PhaseTransitionTest extends XCoLabTest {
         this.setupBasicDataset();
         GlobalContestPhaseTransitionSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPhaseTransitionSimulator gcs = new GlobalContestPhaseTransitionSimulator();
+
         for (int j = 0; j < 50; j++) {
             gcs.initializeContests(
                     350,
                     0,
-                    0, //firstPhase
+                    1, //firstPhase
                     true, //side contests are timed like global contest
                     GlobalContestSimulator.randomInt(0, 50),
                     GlobalContestSimulator.randomInt(0, 15),
@@ -28,8 +29,11 @@ public class PhaseTransitionTest extends XCoLabTest {
                     new Double(GlobalContestSimulator.randomInt(0, 100))/100.0,
                     new Double(GlobalContestSimulator.randomInt(0, 100))/100.0
             );
+            gcs.setupJudgesAndFellowsForContests();
 
-            gcs.advanceAllContestsToNextPhase();
+            while (gcs.currentPhase < 6) {
+                gcs.advanceAllContestsToNextPhase();
+            }
 
             //reset
             gcs.deleteContestsAndProposals();

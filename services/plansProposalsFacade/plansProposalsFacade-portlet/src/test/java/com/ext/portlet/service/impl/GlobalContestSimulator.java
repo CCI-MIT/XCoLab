@@ -124,7 +124,7 @@ public class GlobalContestSimulator {
         this.createLinksBetweenProposals();
     }
 
-    public void deleteContestsAndProposals() throws SystemException {
+    public void deleteContestsAndProposals() throws SystemException, PortalException {
         //delete all contestPhases
         for (ContestPhase cp : globalContestPhases) {
             testInstance.contestPhaseLocalService.deleteContestPhase(cp);
@@ -219,6 +219,9 @@ public class GlobalContestSimulator {
             globalProposalsTeamMembers.put(i, setTeamMembers(proposal, author));
             globalProposals.add(proposal);
 
+            //create proposal name
+            testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Global Proposal "+i);
+
             initializePhasesForProposal(proposal, i, startPhase, globalContestPhases, globalProposalsInLastPhase);
         }
 
@@ -265,6 +268,8 @@ public class GlobalContestSimulator {
                 Proposal proposal = testInstance.proposalLocalService.create(author.getUserId(), sideContestPhases.get(i).get(0).getContestPhasePK());
                 sideProposals.get(i).add(proposal);
                 sideProposalsTeamMembers.get(i).put(j, setTeamMembers(proposal, author));
+
+                testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Side-Proposal "+i+"-"+j);
 
                 initializePhasesForProposal(proposal, j, startPhase, sideContestPhases.get(i), sideProposalsInLastPhase.get(i));
 

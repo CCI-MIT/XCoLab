@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulator {
     private CustomClock testClock;
     protected Map<Integer, Contest> allContests;
+    protected Map<Integer, Boolean> contestIsBlockedFromAdvancement;
     protected Map<Integer, List<User>> contestFellows;
     protected Map<Integer, List<User>> contestJudges;
     private static final long FELLOW_ROLE_ID = 193261;
@@ -62,6 +63,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         for (int i = 0; i < sideContests.size(); i++) {
             allContests.put(i, sideContests.get(i));
         }
+        contestIsBlockedFromAdvancement = new HashMap<>();
     }
 
     public GlobalContestPhaseTransitionSimulator() {
@@ -70,8 +72,28 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         testInstance.contestPhaseLocalService.overrideClock((Clock)testClock);
     }
 
-    public static User getRandomUserNotInList(List<User> users) {
-        User u = users.get(randomInt(0, users.size()));
+    @Override
+    public void deleteContestsAndProposals() throws SystemException, PortalException {
+        super.deleteContestsAndProposals();
+        //reset date
+        testClock.date = new Date();
+        for (Integer cI: allContests.keySet()) {
+            for (User u : contestFellows.get(cI)) {
+                testInstance.userLocalService.deleteRoleUser(FELLOW_ROLE_ID, u.getUserId());
+            }
+            for (User u : contestJudges.get(cI)) {
+                testInstance.userLocalService.deleteRoleUser(JUDGE_ROLE_ID, u.getUserId());
+            }
+        }
+        for (ContestTeamMember ctm : testInstance.contestTeamMemberLocalService.getContestTeamMembers(0, Integer.MAX_VALUE)) {
+            testInstance.contestTeamMemberLocalService.delete(ctm);
+        }
+
+
+    }
+
+    public User getRandomUserNotInList(List<User> users) {
+        User u = this.users.get(randomInt(0, this.users.size()));
         if (users.contains(u)) {
             return getRandomUserNotInList(users);
         } else {
@@ -80,6 +102,8 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
     }
 
     public void setupJudgesAndFellowsForContests() throws SystemException {
+        contestFellows = new HashMap<>();
+        contestJudges = new HashMap<>();
         //Set judges and fellows for every contest
         for (Integer cI: allContests.keySet()) {
             Contest contest = allContests.get(cI);
@@ -100,6 +124,8 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 judges.add(randomUser);
                 testInstance.userLocalService.addRoleUser(JUDGE_ROLE_ID, randomUser.getUserId());
                 testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), "Judge");
+
+
             } while (doWithProbability(0.6));
 
             contestFellows.put(cI, fellows);
@@ -115,6 +141,9 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         Map<Integer, List<Proposal>> proposalsInNextPhase = new LinkedHashMap<>();
 
         for (Integer cI: allContests.keySet()) {
+            if (contestIsBlockedFromAdvancement.get(cI) != null && contestIsBlockedFromAdvancement.get(cI)) {
+                continue;
+            }
             Contest contest = allContests.get(cI);
             List<ContestPhase> contestPhases = cI >= 0 ? sideContestPhases.get(cI) : globalContestPhases;
 
@@ -127,21 +156,46 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 return;
             }
 
-            if (currentPhase == 1 || currentPhase == 3) {
+            if (currentPhase == 2 || currentPhase == 4) {
                 //judging phases! Let's assign some judging results.
-                proposalsInNextPhase.put(cI, this.createJudgingForContestPhase(proposalsInCurrentPhase.get(cI), contestPhases.get(currentPhase - 1)));
+                proposalsInNextPhase.put(cI, this.createJudgingForContestPhase(proposalsInCurrentPhase.get(cI), cI, contestPhases.get(currentPhase - 1)));
             } else {
                 proposalsInNextPhase.put(cI, proposalsInCurrentPhase.get(cI));
             }
+            //TODO: add some edits of the proposals if the phase is open at the moment
         }
 
         //add some time after the new phase start
         testClock.setDate(getDatePlusNMinutes(globalContestPhases.get(currentPhase).getPhaseStartDate(), 10));
         //run the autoPromote mechanism
         testInstance.contestPhaseLocalService.autoPromoteProposals();
+        currentPhase++;
+
+        //now assert, that the proposals in the next phase are those we calculated previously
+        for (Integer cI: allContests.keySet()) {
+            if (contestIsBlockedFromAdvancement.get(cI) != null && contestIsBlockedFromAdvancement.get(cI)) {
+                continue;
+            }
+            Contest contest = allContests.get(cI);
+            List<ContestPhase> contestPhases = cI >= 0 ? sideContestPhases.get(cI) : globalContestPhases;
+
+            //assert new phase is active
+            assertTrue(contestPhases.get(currentPhase - 1).getContestPhasePK() == testInstance.contestPhaseLocalService.getActivePhaseForContest(contest).getContestPhasePK());
+            List<Proposal> proposalsActuallyInNextPhase = testInstance.proposalLocalService.getProposalsInContestPhase(globalContestPhases.get(currentPhase - 1).getContestPhasePK());
+            for (Proposal p : proposalsInNextPhase.get(cI)) {
+                if (proposalsActuallyInNextPhase.contains(p)) {
+                    proposalsActuallyInNextPhase.remove(p);
+                } else {
+                    throw new AssertionError("Proposal "+p.getProposalId()+" of contest number "+cI+" is not in the list of advanced proposals!");
+                }
+            }
+            //by now, all proposals should have been removed.
+            assertTrue(proposalsActuallyInNextPhase.isEmpty());
+        }
     }
 
     private List<Proposal> createJudgingForContestPhase(List<Proposal> proposals, Integer contestIndex, ContestPhase contestPhase) throws SystemException, PortalException {
+        List<Proposal> proposalsToBeAdvanced = new ArrayList<Proposal>();
         //Judging: If a proposal is not judged by judges, but set by fellows to be advanced to judges, the proposal prohibits the promotion of the contest.
         for (Proposal p : proposals) {
             /* set fellow action
@@ -170,12 +224,29 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                             new ArrayList<Long>(selectedJudgeIds)
                     );
 
-                    //now actually set the judges' ratings
-
+                    //skip setting judging actions now. just set advance to true or false
+                    /* NO_DECISION(0, "No decision made yet"),
+                        DONT_MOVE_ON(1, "Do Not Advance"),
+                        MOVE_ON(2, "Advance"); */
+                    int advanceDecision = randomInt(0, 3);
+                    testInstance.proposalContestPhaseAttributeLocalService.persistAttribute(
+                            p.getProposalId(),
+                            contestPhase.getContestPhasePK(),
+                            ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
+                            0,
+                            advanceDecision
+                    );
+                    if (advanceDecision == 2) {
+                        proposalsToBeAdvanced.add(p);
+                    } else {
+                        //this contest cannot advance anymore due to missing judge input
+                        contestIsBlockedFromAdvancement.put(contestIndex, true);
+                    }
 
                 }
             }
         }
+        return proposalsToBeAdvanced;
     }
 
     private static Date getDatePlusNMinutes(Date date, int n) {
