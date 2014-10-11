@@ -7,7 +7,9 @@ import com.ext.portlet.service.ContestTeamMemberLocalService;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.model.User;
+import org.xcolab.services.tasks.ProposalContestPhaseAutopromoteTask;
 import org.xcolab.utils.Clock;
 
 import java.text.ParseException;
@@ -133,7 +135,49 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         }
     }
 
-    public void advanceAllContestsToNextPhase() throws SystemException, PortalException {
+    private void advanceThroughConcurrentTask() {
+        //spawn 2 concurrent processes
+        final Date targetTime = getDatePlusNMinutes(new Date(), 1);
+        Runnable r = new Runnable() {
+            public void run() {
+                while(new Date().before(targetTime)) {
+                    try {
+                        Thread.sleep(100);
+                        ProposalContestPhaseAutopromoteTask task = new ProposalContestPhaseAutopromoteTask();
+                        task.receive(null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (MessageListenerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread t1 = new Thread(r);
+        Thread t2 = new Thread(r);
+
+        t1.start();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+
+        //wait until the threads are done with their work
+        while(new Date().before(targetTime)) {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        t1.stop();
+        t2.stop();
+        return;
+    }
+
+    public void advanceAllContestsToNextPhase(boolean advanceThroughConcurrentTask) throws SystemException, PortalException {
         assertTrue(areSideContestsTimedLikeGlobalContest);
 
 
@@ -168,7 +212,11 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         //add some time after the new phase start
         testClock.setDate(getDatePlusNMinutes(globalContestPhases.get(currentPhase).getPhaseStartDate(), 10));
         //run the autoPromote mechanism
-        testInstance.contestPhaseLocalService.autoPromoteProposals();
+        if (advanceThroughConcurrentTask) {
+            this.advanceThroughConcurrentTask();
+        } else {
+            testInstance.contestPhaseLocalService.autoPromoteProposals();
+        }
         currentPhase++;
 
         //now assert, that the proposals in the next phase are those we calculated previously
