@@ -386,14 +386,16 @@ public class ContestWrapper {
         return lastVotingPhase != null ? lastVotingPhase.getContestPhasePK() : 0;
     }
 
-    public boolean getIsContestCompleted() {
+    public boolean isContestCompleted(ContestPhaseWrapper contestPhase) {
         ContestPhaseType type;
+        ContestPhase activePhase;
         try {
-            type = new ContestPhaseWrapper(ContestLocalServiceUtil.getActivePhase(this.contest)).getContestPhaseTypeObject();
+            activePhase = ContestLocalServiceUtil.getActivePhase(this.contest);
+            type = new ContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
         } catch (NullPointerException | SystemException | PortalException e) {
             return false;
         }
-        if (type == null) {
+        if (type == null || activePhase == null || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()) {
             return false;
         }
         return  ("COMPLETED".equals(type.getStatus()));

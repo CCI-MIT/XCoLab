@@ -68,7 +68,7 @@
 					</div>
 				</div>
 
-                <c:if test="${contestPhase.canVote or contest.isContestCompleted }">
+                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
                     <div class="votes">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestId" value="${contest.contestPK }" />
@@ -118,7 +118,7 @@
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
 				</div>
-                <c:if test="${not contest.isContestCompleted}">
+                <c:if test="${not contest.isContestCompleted(contestPhase)}">
                     <div class="modified">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestId" value="${contest.contestPK }" />
