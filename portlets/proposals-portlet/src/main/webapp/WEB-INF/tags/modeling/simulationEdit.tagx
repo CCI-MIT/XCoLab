@@ -33,5 +33,4 @@
 			jQuery("#modelingScenarioId").addClass("editorDirty");
 		});
 	</script>
-	
 </jsp:root>
