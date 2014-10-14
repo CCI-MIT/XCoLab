@@ -395,11 +395,12 @@ public class MainViewController {
             if (img != null) {
                 byte[] bytes = img.getTextObj();
                 UserServiceUtil.updatePortrait(user.getUserId(), bytes);
+                user.setPortraitId(0L);
+                UserLocalServiceUtil.updateUser(user);
+                UserServiceUtil.updatePortrait(user.getUserId(), bytes);
+                user = UserLocalServiceUtil.getUser(user.getUserId());
             }
         }
-        user.setPortraitId(0L);
-        UserLocalServiceUtil.updateUser(user);
-        user = UserLocalServiceUtil.getUser(user.getUserId());
 
         AuthenticationServiceUtil.logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
 
