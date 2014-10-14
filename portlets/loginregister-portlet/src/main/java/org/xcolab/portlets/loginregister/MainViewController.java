@@ -387,20 +387,19 @@ public class MainViewController {
                 && newAccountBean.getImageId().length() > 0) {
             Image img = ImageLocalServiceUtil.getImage(Long
                     .parseLong(newAccountBean.getImageId()));
-            byte[] bytes = img.getTextObj();
             // we need to set permission checker for liferay
             PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
                     .create(user, true);
-
             PermissionThreadLocal
                     .setPermissionChecker(permissionChecker);
-
-            UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-            user.setPortraitId(0L);
-            UserLocalServiceUtil.updateUser(user);
-            UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-            user = UserLocalServiceUtil.getUser(user.getUserId());
+            if (img != null) {
+                byte[] bytes = img.getTextObj();
+                UserServiceUtil.updatePortrait(user.getUserId(), bytes);
+            }
         }
+        user.setPortraitId(0L);
+        UserLocalServiceUtil.updateUser(user);
+        user = UserLocalServiceUtil.getUser(user.getUserId());
 
         AuthenticationServiceUtil.logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
 
