@@ -171,7 +171,11 @@ public class MembersBean extends DataSource implements Serializable {
             query.add(subQuery, BooleanClauseOccurImpl.MUST);
         }
         Sort sort = SortFactoryUtil.create(sortColumn.getField(), sortColumn.getType(), !sortAscending);
-            
+
+
+        BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
+        subQuery.addExactTerm("status", "0");
+        query.add(subQuery, BooleanClauseOccurImpl.MUST);
 
         Hits hits = SearchEngineUtil.search(10112L, query, sort, startRow, startRow + pageSize);
        

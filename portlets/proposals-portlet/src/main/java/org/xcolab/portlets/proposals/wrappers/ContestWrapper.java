@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import java.util.*;
 
+import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.*;
 import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -374,6 +375,30 @@ public class ContestWrapper {
         	return "";
         }
         return ontologyJoinedName;
+    }
+
+    public Long getVotingPhasePK() throws PortalException, SystemException {
+        ContestPhaseWrapper lastVotingPhase = null;
+        for (ContestPhaseWrapper ph : getPhases()) {
+            if (ph.getContestPhaseTypeObject() != null && "VOTING".equals(ph.getContestPhaseTypeObject().getStatus()))
+                lastVotingPhase = ph;
+        }
+        return lastVotingPhase != null ? lastVotingPhase.getContestPhasePK() : 0;
+    }
+
+    public boolean isContestCompleted(ContestPhaseWrapper contestPhase) {
+        ContestPhaseType type;
+        ContestPhase activePhase;
+        try {
+            activePhase = ContestLocalServiceUtil.getActivePhase(this.contest);
+            type = new ContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
+        } catch (NullPointerException | SystemException | PortalException e) {
+            return false;
+        }
+        if (type == null || activePhase == null || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()) {
+            return false;
+        }
+        return  ("COMPLETED".equals(type.getStatus()));
     }
 
 

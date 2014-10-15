@@ -57,18 +57,16 @@
                     </h4>
                     <div class="clear" ><!--  --></div>
                 </div>
-                <c:choose>
-                	<c:when test="${contestPhase.canVote}">
-                		<div class="voteboxsmall">
-    	            		<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
-    	        		</div>
-    	        	</c:when>
-    	        	<c:otherwise>
-    	        		<div class="thumbbox">
-                			<collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" tab="TEAM"/>
-                		</div>
-                	</c:otherwise>
-               	</c:choose>
+                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+                    <div class="voteboxsmall">
+                        <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.votesCount}" />
+                    </div>
+                </c:if>
+                <c:if test="${not contestPhase.canVote}">
+                    <div class="thumbbox">
+                        <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.supportersCount}" tab="TEAM"/>
+                    </div>
+               	</c:if>
                 <div class="commbox">
                     <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>

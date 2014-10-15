@@ -332,9 +332,10 @@ public class ProposalWrapper {
         return false;
     }
 
-    public long getVotesCount() throws SystemException {
+    public long getVotesCount() throws SystemException, PortalException {
         if (proposal.getProposalId() > 0) {
-            return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            long votingPhasePK = new ContestWrapper(contest).getVotingPhasePK();
+            return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), votingPhasePK);
         }
         return 0;
     }

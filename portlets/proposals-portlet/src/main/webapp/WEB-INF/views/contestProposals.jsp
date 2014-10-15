@@ -67,43 +67,41 @@
 						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
 					</div>
 				</div>
-				
-        		<c:choose>
-        			<c:when test="${contestPhase.canVote }">
-						<div class="votes">
-							<portlet:renderURL var="sortURL">
-        						<portlet:param name="contestId" value="${contest.contestPK }" />
-        						<portlet:param name="pageToDisplay" value="contestProposals" />
-        						<portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
-        						<portlet:param name="sortColumn" value="VOTES" />
-        						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
-        					</portlet:renderURL>
-							<a href="${sortURL }"><!--  --></a>
-							<div class="tooltip">
-								click to sort by<br />number of votes
-								<div class="tt-arrow"><!-- --></div>
-							</div>
-							<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
-						</div>
-        			</c:when>
-        			<c:otherwise>
-						<div class="thumbs">
-							<portlet:renderURL var="sortURL">
-        						<portlet:param name="contestId" value="${contest.contestPK }" />
-        						<portlet:param name="pageToDisplay" value="contestProposals" />
-        						<portlet:param name="sortColumn" value="SUPPORTERS" />
-        						<portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
-        						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
-        					</portlet:renderURL>
-							<a href="${sortURL }"><!--  --></a>
-							<div class="tooltip">
-								click to sort by<br />number of supporters
-								<div class="tt-arrow"><!-- --></div>
-							</div>
-							<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
-						</div>
-					</c:otherwise>
-				</c:choose>
+
+                <c:if test="${contestPhase.canVote or contest.isContestCompleted(contestPhase) }">
+                    <div class="votes">
+                        <portlet:renderURL var="sortURL">
+                            <portlet:param name="contestId" value="${contest.contestPK }" />
+                            <portlet:param name="pageToDisplay" value="contestProposals" />
+                            <portlet:param name="phaseId" value="${contest.votingPhasePK }" />
+                            <portlet:param name="sortColumn" value="VOTES" />
+                            <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
+                        </portlet:renderURL>
+                        <a href="${sortURL }"><!--  --></a>
+                        <div class="tooltip">
+                            click to sort by<br />number of votes
+                            <div class="tt-arrow"><!-- --></div>
+                        </div>
+                        <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
+                    </div>
+                </c:if>
+                <c:if test="${not contestPhase.canVote}">
+                    <div class="thumbs">
+                        <portlet:renderURL var="sortURL">
+                            <portlet:param name="contestId" value="${contest.contestPK }" />
+                            <portlet:param name="pageToDisplay" value="contestProposals" />
+                            <portlet:param name="sortColumn" value="SUPPORTERS" />
+                            <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
+                            <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
+                        </portlet:renderURL>
+                        <a href="${sortURL }"><!--  --></a>
+                        <div class="tooltip">
+                            click to sort by<br />number of supporters
+                            <div class="tt-arrow"><!-- --></div>
+                        </div>
+                        <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
+                    </div>
+				</c:if>
 				
 				<div class="propcomm">
 					<portlet:renderURL var="sortURL">
@@ -120,21 +118,23 @@
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
 				</div>
-				<div class="modified">
-					<portlet:renderURL var="sortURL">
-        				<portlet:param name="contestId" value="${contest.contestPK }" />
-        				<portlet:param name="pageToDisplay" value="contestProposals" />
-        				<portlet:param name="sortColumn" value="MODIFIED" />
-        				<portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
-        				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
-        			</portlet:renderURL>
-					<a href="${sortURL }">Modified</a>
-					<div class="tooltip">
-						click to sort by date
-						<div class="tt-arrow"><!-- --></div>
-					</div>
-					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
-				</div>
+                <c:if test="${not contest.isContestCompleted(contestPhase)}">
+                    <div class="modified">
+                        <portlet:renderURL var="sortURL">
+                            <portlet:param name="contestId" value="${contest.contestPK }" />
+                            <portlet:param name="pageToDisplay" value="contestProposals" />
+                            <portlet:param name="sortColumn" value="MODIFIED" />
+                            <portlet:param name="phaseId" value="${contestPhase.contestPhasePK }" />
+                            <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
+                        </portlet:renderURL>
+                        <a href="${sortURL }">Modified</a>
+                        <div class="tooltip">
+                            click to sort by date
+                            <div class="tt-arrow"><!-- --></div>
+                        </div>
+                        <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
+                    </div>
+                </c:if>
 				<div class="contributor">
 					<portlet:renderURL var="sortURL">
         				<portlet:param name="contestId" value="${contest.contestPK }" />
