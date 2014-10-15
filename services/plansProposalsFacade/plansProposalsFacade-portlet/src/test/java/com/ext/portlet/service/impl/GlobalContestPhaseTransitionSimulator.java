@@ -185,6 +185,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         Map<Integer, List<Proposal>> proposalsInNextPhase = new LinkedHashMap<>();
 
         for (Integer cI: allContests.keySet()) {
+            proposalsInNextPhase.put(cI, null);
             if (contestIsBlockedFromAdvancement.get(cI) != null && contestIsBlockedFromAdvancement.get(cI)) {
                 continue;
             }
@@ -194,7 +195,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
             //assert current contest phase
             assertTrue(contestPhases.get(currentPhase - 1).getContestPhasePK() == testInstance.contestPhaseLocalService.getActivePhaseForContest(contest).getContestPhasePK());
             //get proposals in current phase
-            proposalsInCurrentPhase.put(cI, testInstance.proposalLocalService.getProposalsInContestPhase(globalContestPhases.get(currentPhase - 1).getContestPhasePK()));
+            proposalsInCurrentPhase.put(cI, testInstance.proposalLocalService.getProposalsInContestPhase(contestPhases.get(currentPhase - 1).getContestPhasePK()));
 
             if (currentPhase >= 6) {
                 return;
@@ -229,7 +230,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
 
             //assert new phase is active
             assertTrue(contestPhases.get(currentPhase - 1).getContestPhasePK() == testInstance.contestPhaseLocalService.getActivePhaseForContest(contest).getContestPhasePK());
-            List<Proposal> proposalsActuallyInNextPhase = testInstance.proposalLocalService.getProposalsInContestPhase(globalContestPhases.get(currentPhase - 1).getContestPhasePK());
+            List<Proposal> proposalsActuallyInNextPhase = testInstance.proposalLocalService.getProposalsInContestPhase(contestPhases.get(currentPhase - 1).getContestPhasePK());
             for (Proposal p : proposalsInNextPhase.get(cI)) {
                 if (proposalsActuallyInNextPhase.contains(p)) {
                     proposalsActuallyInNextPhase.remove(p);
@@ -260,6 +261,8 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 User judgingFellow = contestFellows.get(contestIndex).get(randomInt(0, contestFellows.get(contestIndex).size()));
                 testInstance.proposalLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
 
+                System.out.println("contestIndex: "+contestIndex+" proposal: "+p.getProposalId()+" fellowAction: "+fellowAction);
+
                 if (fellowAction == 3) {
                     Set<Long> selectedJudgeIds = new HashSet<>();
                     do {
@@ -271,6 +274,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                             contestPhase.getContestPhasePK(),
                             new ArrayList<Long>(selectedJudgeIds)
                     );
+                    System.out.println("contestIndex: "+contestIndex +" proposal: "+p.getProposalId()+" judges: "+selectedJudgeIds.size());
 
                     //skip setting judging actions now. just set advance to true or false
                     /* NO_DECISION(0, "No decision made yet"),
@@ -284,6 +288,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                             0,
                             advanceDecision
                     );
+                    System.out.println("contestIndex: "+contestIndex+ "proposal: "+p.getProposalId()+" advanceAction: "+advanceDecision);
                     if (advanceDecision == 2) {
                         proposalsToBeAdvanced.add(p);
                     } else {

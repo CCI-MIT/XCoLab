@@ -16,7 +16,7 @@ public class PhaseTransitionTest extends XCoLabTest {
         GlobalContestPhaseTransitionSimulator.initSimulatorWithTestEnvironment(this);
         GlobalContestPhaseTransitionSimulator gcs = new GlobalContestPhaseTransitionSimulator();
 
-        for (int j = 0; j < 50; j++) {
+        for (int j = 0; j < 10; j++) {
             gcs.initializeContests(
                     350,
                     0,

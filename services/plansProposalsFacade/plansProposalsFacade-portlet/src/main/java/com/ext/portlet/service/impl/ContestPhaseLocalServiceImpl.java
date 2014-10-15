@@ -392,11 +392,13 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                     	}
                         //skip already promoted proposal
                         if (hasProposalAlreadyBeenPromoted(p, phase)) {
+                            System.out.println("Proposal already promoted "+p.getProposalId());
                             continue;
                         }
 
                         // Decide about the promotion
                         if (didJudgeDecideToPromote(p, phase)) {
+                            System.out.println("Promote proposal "+p.getProposalId());
                             promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK());
                         }
 
