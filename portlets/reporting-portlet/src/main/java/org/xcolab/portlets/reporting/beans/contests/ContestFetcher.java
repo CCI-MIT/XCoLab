@@ -31,9 +31,9 @@ public class ContestFetcher {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date targetDate = sdf.parse("2014-02-20");
         for (Contest contest : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
-            if(contest.getContestActive()
-                    && contest.getFlag() == 0 //right now all closed contests have flag=0
-                    && contest.getCreated().after(targetDate)
+            if(contest.getCreated().after(targetDate)
+                    && contest.getContestPK() != 1300601L
+					&& contest.getContestPK() != 1301001L
                     ) {
                 targetContests.add(contest);
             }

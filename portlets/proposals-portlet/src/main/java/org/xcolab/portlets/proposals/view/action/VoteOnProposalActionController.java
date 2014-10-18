@@ -48,24 +48,13 @@ public class VoteOnProposalActionController {
                     ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
                 }
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
-                int analyticsValue = 0;
-                int supportedCount = ProposalLocalServiceUtil.getUserVotedProposalsCount(userId);
-                if (supportedCount > 0) {
-                	if (supportedCount == 1) {
-                		analyticsValue = 1;
-                	}
-                	else if ( supportedCount < 5) {
-                		analyticsValue = 2;
-                	}
-                	else {
-                		analyticsValue = 3;
-                	}
-            	AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + analyticsValue, 
+
+                //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
+            	AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY+contestPhaseId,
             			VOTE_ANALYTICS_CATEGORY, 
-            			VOTE_ANALYTICS_ACTION , 
+            			VOTE_ANALYTICS_ACTION,
             			VOTE_ANALYTICS_LABEL, 
-            			analyticsValue);
-                }
+            			1);
             }
         }
         else {
