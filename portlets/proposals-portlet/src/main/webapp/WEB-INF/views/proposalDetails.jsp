@@ -77,9 +77,8 @@
                         <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                             <div class="lastedited">
                                 Currently viewing version from
-                                <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format(
-                                		"MM/DD/YYYY hh:mm A"));
-                                    var version = ${proposal.selectedVersion};
+                                <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
+                                    var version = ${proposal.selectedVersion.version};
                                     triggerHistoryVisibility();
                                 </script>
                                 by
