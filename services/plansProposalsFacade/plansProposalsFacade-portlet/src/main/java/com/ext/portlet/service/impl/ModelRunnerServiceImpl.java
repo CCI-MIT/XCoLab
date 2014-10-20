@@ -20,6 +20,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ac.AccessControlled;
 
 import edu.mit.cci.roma.client.Scenario;
@@ -27,6 +30,7 @@ import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+import org.jsoup.Jsoup;
 
 /**
  * The implementation of the model runner remote service.
@@ -50,6 +54,8 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
 
     //private ClientRepository repository;
+
+    private Log _log = LogFactoryUtil.getLog(ModelRunnerServiceImpl.class);
 
     /*
      * NOTE FOR DEVELOPERS:
@@ -104,6 +110,12 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
 
         Scenario scenario = CollaboratoriumModelingService.repository().runModel(simulation, inputsValues, 0L, false);
+
+        if(Validator.isNotNull(scenario.getErrorStackTrace())){
+            // Log error
+            _log.error("Error while fetching scenario: " + Jsoup.parse(scenario.getErrorStackTrace()).getElementById("main").text());
+        }
+
         return convertScenario(scenario); 
     }
     
@@ -113,9 +125,16 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
     
     private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
-    	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
-        ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+        if(Validator.isNotNull(scenario.getErrorStackTrace())){
+            jsonObject.put("error", true);
+            jsonObject.put("errorStackTrace", scenario.getErrorStackTrace());
+            return jsonObject;
+        }
+
+        ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
+        ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
+
         jsonObject.put("scenarioId", scenario.getId());
         jsonObject.put("modelId", scenario.getSimulation().getId());
         jsonObject.put("modelName", scenario.getSimulation().getName());

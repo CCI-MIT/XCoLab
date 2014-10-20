@@ -55,10 +55,11 @@ function ModelingWidget(selector, options) {
 		that.modelId = event.scenario.modelId;
 	});
 
+    jQuery(this).on('scenarioFetchedWithErrors', ModelingWidget.prototype.showStackTrace);
+
 	jQuery(this).on('modelFetched', function(event) {
 		that.modelId = event.model.modelId;
 	});
-	
 }
 
 ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
@@ -218,15 +219,15 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 	jQuery.ajax({
 		url: this.getScenarioUrl, 
 		data: {scenarioId: scenarioId}, 
-		dataType: 'jsonp',
+		dataType: 'jsonp'
 	}).done(function(data, textStatus, jqXHR) {
 		console.debug('scenario loaded', scenarioId, data, textStatus, jqXHR);
-		
 		var event = jQuery.Event( "scenarioFetched" );
 		event.scenario = data;
 		jQuery(modelingWidget).trigger(event);
 		
 	}).fail(function(data, textStatus, errorThrown) {
+        console.log('error');
 		console.debug("can't load scenario", scenarioId, data, textStatus, errorThrown);
 		var event = jQuery.Event( "scenarioFetchingError" );
 		event.scenario = data;
@@ -240,25 +241,31 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
  */
 ModelingWidget.prototype.runTheModel = function() {
 	var modelingWidget = this;
-	
+
 	var values = {};
 	this.container.find(".valueBinding").each(function() {
 		values[jQuery(this).attr('data-id')] = jQuery(this).val();
 	});
-	
+
 	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery(modelingWidget).trigger("runningModel");
-	
+
 	
 	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId);
 	jQuery.ajax({
 		url: modelingWidget.runModelUrl, 
 		data: {modelId: modelingWidget.modelId, inputs: JSON.stringify(values)}, 
-		dataType: 'jsonp',
+		dataType: 'jsonp'
 	}).done(function(data) {
-		var event = jQuery.Event( "scenarioFetched" );
+		var event;
+        if(data.error){
+            event = jQuery.Event( "scenarioFetchedWithErrors" );
+        } else{
+            event = jQuery.Event( "scenarioFetched" );
+        }
 		event.scenario = data;
-		jQuery(modelingWidget).trigger(event);
+        jQuery(modelingWidget).trigger(event);
+
 	}).fail(function(a, b, c) {
 		console.log("model run failed :(", a, b, c);
 	});
@@ -311,6 +318,25 @@ XCoLab.modeling = function(selector, options) {
 		options.renderers.push(XCoLab.modeling.outputsRenderers[0]);
 	}
 	return new ModelingWidget(selector, options);
+};
+
+/**
+ * In case of error presents a modal view with the stacktrace.
+ */
+ModelingWidget.prototype.showStackTrace = function(data) {
+    if (typeof showModalError != 'undefined' && showModalError){
+        if(!data.scenario.error) return;
+        // Get stack trace
+        var tempDom = jQuery('<output>').append(jQuery.parseHTML(data.scenario.errorStackTrace));
+        var appContainer = jQuery('#main', tempDom);
+        console.log(tempDom, appContainer[0]);
+
+        // Attach Modal
+        jQuery('#errorModal').remove();
+        jQuery('body').append('<div id="errorModal" class="modal fade" style="width:700px;background: none;border: none;box-shadow: none;"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Error</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
+        jQuery("#errorModal").modal('show');
+        jQuery('.modal-body').html(jQuery('#main', tempDom));
+    }
 };
 
 XCoLab.modeling.outputItemRenderers = [];

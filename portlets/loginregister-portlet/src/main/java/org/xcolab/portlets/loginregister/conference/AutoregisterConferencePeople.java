@@ -52,7 +52,7 @@ public class AutoregisterConferencePeople implements MessageListener {
                         if (!u.getMember() && u.getJoinColab()) {
                             registerUser(u);
                         } else if (u.getColabEmail() != null && !u.getColabEmail().equals("")) {
-                            System.out.println("set expando for"+u.getColabEmail()+" - "+(getUserByEmail(u.getColabEmail()) != null ? getUserByEmail(u.getColabEmail()) : "null"));
+                            //System.out.println("set expando for"+u.getColabEmail()+" - "+(getUserByEmail(u.getColabEmail()) != null ? getUserByEmail(u.getColabEmail()) : "null"));
                             setConferenceAttendingExpando(getUserByEmail(u.getColabEmail()));
                         }
                     }
