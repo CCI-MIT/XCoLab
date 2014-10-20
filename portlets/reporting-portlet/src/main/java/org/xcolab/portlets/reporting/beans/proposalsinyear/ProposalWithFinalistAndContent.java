@@ -1,5 +1,7 @@
 package org.xcolab.portlets.reporting.beans.proposalsinyear;
 
+import com.ext.portlet.model.Contest;
+
 /**
 * @author pdeboer
 *         First created on 01/07/14 at 10:46
@@ -10,11 +12,19 @@ public class ProposalWithFinalistAndContent {
     private String content = "";
     private String contentWithSectionTitles = "";
     private int proposalRibbon = 0;
-    private String contestName;
     private int usedVersion = 0;
     private String proposalName = "";
+	private Contest contest;
 
-    public String getUrl() {
+	public Contest getContest() {
+		return contest;
+	}
+
+	public void setContest(Contest contest) {
+		this.contest = contest;
+	}
+
+	public String getUrl() {
         return url;
     }
 
@@ -52,14 +62,6 @@ public class ProposalWithFinalistAndContent {
 
     public void setProposalRibbon(int proposalRibbon) {
         this.proposalRibbon = proposalRibbon;
-    }
-
-    public String getContestName() {
-        return contestName;
-    }
-
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
     }
 
     public int getUsedVersion() {

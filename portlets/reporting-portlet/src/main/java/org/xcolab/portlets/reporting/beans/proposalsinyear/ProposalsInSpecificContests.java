@@ -85,10 +85,9 @@ public class ProposalsInSpecificContests {
 
                 int targetVersion = proposalVersionDeterminer.getTargetVersion(visibleProposal);
                 if(targetVersion < 0) continue;
-
+				pte.setContest(contest);
                 pte.setId(visibleProposal.getProposalId());
                 pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
-                pte.setContestName(contest.getContestShortName());
                 pte.setUsedVersion(targetVersion);
                 pte.setProposalRibbon(getProposalRibbon(visibleProposal, completedPhase));
 

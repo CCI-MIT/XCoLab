@@ -131,14 +131,15 @@ public class ReportingController {
         Writer w = response.getWriter();
         CSVWriter csvWriter = new CSVWriter(w);
 //, "content", "content_with_section_titles"
-        csvWriter.writeNext(new String[]{"id","proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed"});
+        csvWriter.writeNext(new String[]{"id","proposal_name", "url","contestId", "contest", "version_in_creation", "ribbon_type_in_completed"});
 
         for (ProposalWithFinalistAndContent e : pic.get(ContestFetcher.getContestsIn2014(), true)) {
             csvWriter.writeNext(new String[]{
                     ""+e.getId(),
                     e.getProposalName(),
                     e.getUrl(),
-                    e.getContestName(),
+					""+e.getContest().getContestPK(),
+                    e.getContest().getContestShortName(),
                     ""+e.getUsedVersion(),
                     ""+e.getProposalRibbon(),
                     //e.getContent(),
@@ -167,7 +168,7 @@ public class ReportingController {
                     ""+e.getId(),
                     e.getProposalName(),
                     e.getUrl(),
-                    e.getContestName(),
+                    e.getContest().getContestShortName(),
                     ""+e.getUsedVersion(),
                     ""+e.getProposalRibbon(),
                     e.getContent(),
