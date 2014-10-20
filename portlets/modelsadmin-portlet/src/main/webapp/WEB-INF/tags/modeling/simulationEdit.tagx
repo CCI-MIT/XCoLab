@@ -33,5 +33,9 @@
 			jQuery("#modelingScenarioId").addClass("editorDirty");
 		});
 	</script>
+
+
+    <script>showModalError=true;</script>
+
 	
 </jsp:root>
