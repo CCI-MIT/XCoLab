@@ -14,7 +14,16 @@ public class ProposalWithFinalistAndContent {
     private int proposalRibbon = 0;
     private int usedVersion = 0;
     private String proposalName = "";
+	private boolean proposalMoved = false;
 	private Contest contest;
+
+	public boolean isProposalMoved() {
+		return proposalMoved;
+	}
+
+	public void setProposalMoved(boolean proposalMoved) {
+		this.proposalMoved = proposalMoved;
+	}
 
 	public Contest getContest() {
 		return contest;
