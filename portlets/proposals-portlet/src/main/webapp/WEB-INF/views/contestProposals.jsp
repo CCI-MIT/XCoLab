@@ -31,7 +31,11 @@
                 </c:if>
             </div>
         </div>
-        <div class="blueheaderbar tooltips${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? ' judgement-actions' : ''}">
+        <div class="blueheaderbar
+                    tooltips
+                    ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
+                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                    ">
             <div class="proposalname">
                 <div style="display: inline-block">
                     <portlet:renderURL var="sortURL">
@@ -102,7 +106,8 @@
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                     </div>
 				</c:if>
-				
+
+            <c:if test="${not contest.isContestCompleted(contestPhase) }">
 				<div class="propcomm">
 					<portlet:renderURL var="sortURL">
         				<portlet:param name="contestId" value="${contest.contestPK }" />
@@ -150,6 +155,7 @@
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
 				</div>
+            </c:if>
         <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
             <div class="judgefellow">
                 Advancing Status<br />

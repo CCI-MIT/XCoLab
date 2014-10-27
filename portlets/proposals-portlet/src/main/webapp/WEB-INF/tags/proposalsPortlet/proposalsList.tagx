@@ -29,7 +29,12 @@
         </c:choose>
     </c:if>
 
-<div class="propbox ${proposal.featured ? 'featured' : ''}${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? ' judgement-actions' : ''} ${additionalCSSClasses}">
+    <div class="propbox
+                ${proposal.featured ? 'featured' : ''}
+                ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
+                ${additionalCSSClasses}
+                ">
 					<c:if test="${proposal.ribbon != null and proposal.ribbon > 0}">
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
@@ -70,19 +75,21 @@
                 <div class="commbox">
                     <collab:proposalLink proposalId="${proposal.proposalId}" contestId="${contest.contestPK}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
-                <div class="modbox">
-                    <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
-                </div>
-                <div class="conbox">
-                	<c:choose>
-                		<c:when test="${proposal.open}">
-	                        anyone
-	                    </c:when>
-	                    <c:otherwise>
-                        	team only
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                <c:if test="${not contest.isContestCompleted(contestPhase) }">
+                    <div class="modbox">
+                        <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
+                    </div>
+                    <div class="conbox">
+                        <c:choose>
+                            <c:when test="${proposal.open}">
+                                anyone
+                            </c:when>
+                            <c:otherwise>
+                                team only
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:if>
 
 
                 <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
@@ -109,7 +116,7 @@
                                     The judges have not rated this proposal yet.
                                 </c:when>
                                 <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                    Fellows decided that the ‡proposal will not proceed to next round.
+                                    Fellows decided that the proposal will not proceed to next round.
                                 </c:when>
                                 <c:otherwise>
                                     All judges have completed the reviewing process.

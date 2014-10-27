@@ -110,25 +110,24 @@
         <div class="prop-title addprop">
             ${proposal.name}
         </div>
+		
 
-        <c:if test="${not contest.isContestCompleted(contestPhase) }">
-            <div class="prop-settings">
-                <c:choose>
-                    <c:when test="${proposal.open }">
-                        <strong>Public Proposal:</strong> Anyone will be able to edit this proposal.&#160;
-                    </c:when>
-                    <c:otherwise>
-                    <strong>Team Proposal:</strong> Only team members will be able to edit this proposal.&#160;
-                    </c:otherwise>
-                </c:choose>
+        <div class="prop-settings">
+            <c:choose>
+                <c:when test="${proposal.open }">
+                    <strong>Public Proposal:</strong> Anyone will be able to edit this proposal.&#160;
+                </c:when>
+                <c:otherwise>
+                <strong>Team Proposal:</strong> Only team members will be able to edit this proposal.&#160;
+                </c:otherwise>
+            </c:choose>
 
-                <c:if test="${proposalsPermissions.canAdmin }">
-                    <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
-                </c:if>
+            <c:if test="${proposalsPermissions.canAdmin }">
+                <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
+            </c:if>
 
-            </div>
-        </c:if>
-        
+        </div>
+
         <div class="prop-avatar">
         	<proposalsPortlet:userPortrait height="42" screenName="${empty proposal.authorName }" portraitId="${proposal.author.portraitId }" width="42" />
             By:&#160;
