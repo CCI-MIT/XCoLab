@@ -46,3 +46,5 @@ target*
 *.iml
 .idea*
 rebel.xml
+
+/other/logwatcher/src/main/resources/config.properties
