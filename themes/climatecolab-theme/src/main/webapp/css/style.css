@@ -709,7 +709,8 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 .propbox .row2 {height:30px; font-size:13px; color:#494949; clear: both;}
 .propbox .title-author {float:left; width:632px;  margin-top:12px;}
 .propbox.featured .title-author {float:left; width:602px;  margin-top:12px;}
-.propbox.completed .title-author {float:left; width:722px;  margin-top:12px;}
+.propbox.completed .title-author { width:752px; }
+.propbox.featured.completed .title-author {width:722px; }
 .propbox h4 {float:left; display:inline; font-weight:700; color:#404040;}
 .propbox h4 span {color:#000;}
 .thumbbox, .commbox, .voteboxsmall {float:left; width:30px; height:22px; font-weight:700; color:#000; padding:4px 0 0 31px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;}
