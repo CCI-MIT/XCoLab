@@ -959,6 +959,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return null;
         }
     	ContestPhase lastPhase = getActiveOrLastPhase(contest);
+        //this is the winner of combined award such as judges & popular choice award. he will be returned if no one won the popular choice award directly
+        Proposal winnerOfCombinedAwards = null;
 
         for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {
             Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
@@ -971,14 +973,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	if (pcpa.getNumericValue() == 2) {
             		// FIXME - this has to be improved to make sure that we select proper ribbon
             		return proposal;
-            	}
+            	} else if (pcpa.getNumericValue() == 5 || pcpa.getNumericValue() == 7|| pcpa.getNumericValue() == 8|| pcpa.getNumericValue() == 9) {
+                    winnerOfCombinedAwards = proposal;
+                }
             }
             catch (NoSuchProposalContestPhaseAttributeException e) {
             	// ignore
             }
             
         }
-        return null;
+        return winnerOfCombinedAwards;
     	
     }
 
