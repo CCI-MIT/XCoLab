@@ -940,7 +940,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
     	ContestPhase activePhase = getActiveOrLastPhase(contest);
         com.ext.portlet.model.ContestPhaseType type = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
-        boolean typeIsClosed = ContestStatus.CLOSED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) || ContestStatus.FINISHED.toString().toUpperCase().equals(type.getStatus().toUpperCase());
+        boolean typeIsClosed =
+                ContestStatus.COMPLETED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
+                ContestStatus.CLOSED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
+                ContestStatus.FINISHED.toString().toUpperCase().equals(type.getStatus().toUpperCase());
         //Either, the active or last phase has no end date (which means the contest ended), or the current date is after it's end date.
     	if (typeIsClosed && (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate()))) {
     		return true;
