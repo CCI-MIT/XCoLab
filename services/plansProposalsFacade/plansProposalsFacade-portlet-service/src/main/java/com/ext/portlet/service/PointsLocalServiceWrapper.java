@@ -294,7 +294,8 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     }
 
     /**
-    * Distribute points for given contest
+    * Calculates the hypothetical points for all proposals for a given contest and
+    * if the contest ended, materializes the points for winning proposals.
     *
     * @param contestPK
     * @throws SystemException
@@ -305,6 +306,14 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         _pointsLocalService.distributePoints(contestPK);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.previewMaterializedPoints(contestPK);
     }
 
     /**

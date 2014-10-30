@@ -10,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.*;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
@@ -25,9 +22,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -87,8 +82,9 @@ public class AssignPointsActionController {
                     percentage = Math.round(Math.abs(percentage)*100)/100.0d;
                     //calculate relative percentage
                     percentage = percentage * (1.0/(this.pointTypePercentageModifiers.get(pointTypeId)*100.0));
-                    //round to two decimals
                     sum += percentage;
+                    //round to four decimals
+                    percentage = (double)Math.round(percentage * 10000) / 10000;
                     PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
                             proposal.getProposalId(),
                             pointTypeId,

@@ -254,13 +254,19 @@ public interface PointsLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Distribute points for given contest
+    * Calculates the hypothetical points for all proposals for a given contest and
+    * if the contest ended, materializes the points for winning proposals.
     *
     * @param contestPK
     * @throws SystemException
     * @throws PortalException
     */
     public void distributePoints(long contestPK)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<com.ext.portlet.model.Points> previewMaterializedPoints(
+        long contestPK)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

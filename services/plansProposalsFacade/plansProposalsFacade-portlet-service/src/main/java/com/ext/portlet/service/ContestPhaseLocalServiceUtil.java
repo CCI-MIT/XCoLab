@@ -263,6 +263,13 @@ public class ContestPhaseLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    /**
+    * This can be used by unit tests to set a different clock than the standard one
+    */
+    public static void overrideClock(org.xcolab.utils.Clock clock) {
+        getService().overrideClock(clock);
+    }
+
     public static java.util.List<com.ext.portlet.model.PlanItem> getPlans(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,

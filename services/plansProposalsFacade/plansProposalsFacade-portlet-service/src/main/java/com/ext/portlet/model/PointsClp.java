@@ -28,6 +28,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
     private double _hypotheticalPoints;
     private long _pointsSourceId;
     private long _originatingContestPK;
+    private long _originatingProposalId;
     private BaseModel<?> _pointsRemoteModel;
 
     public PointsClp() {
@@ -74,6 +75,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         attributes.put("hypotheticalPoints", getHypotheticalPoints());
         attributes.put("pointsSourceId", getPointsSourceId());
         attributes.put("originatingContestPK", getOriginatingContestPK());
+        attributes.put("originatingProposalId", getOriginatingProposalId());
 
         return attributes;
     }
@@ -123,6 +125,13 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
 
         if (originatingContestPK != null) {
             setOriginatingContestPK(originatingContestPK);
+        }
+
+        Long originatingProposalId = (Long) attributes.get(
+                "originatingProposalId");
+
+        if (originatingProposalId != null) {
+            setOriginatingProposalId(originatingProposalId);
         }
     }
 
@@ -293,6 +302,29 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         }
     }
 
+    @Override
+    public long getOriginatingProposalId() {
+        return _originatingProposalId;
+    }
+
+    @Override
+    public void setOriginatingProposalId(long originatingProposalId) {
+        _originatingProposalId = originatingProposalId;
+
+        if (_pointsRemoteModel != null) {
+            try {
+                Class<?> clazz = _pointsRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setOriginatingProposalId",
+                        long.class);
+
+                method.invoke(_pointsRemoteModel, originatingProposalId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getPointsRemoteModel() {
         return _pointsRemoteModel;
     }
@@ -367,6 +399,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         clone.setHypotheticalPoints(getHypotheticalPoints());
         clone.setPointsSourceId(getPointsSourceId());
         clone.setOriginatingContestPK(getOriginatingContestPK());
+        clone.setOriginatingProposalId(getOriginatingProposalId());
 
         return clone;
     }
@@ -412,7 +445,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(getId());
@@ -428,6 +461,8 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         sb.append(getPointsSourceId());
         sb.append(", originatingContestPK=");
         sb.append(getOriginatingContestPK());
+        sb.append(", originatingProposalId=");
+        sb.append(getOriginatingProposalId());
         sb.append("}");
 
         return sb.toString();
@@ -435,7 +470,7 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Points");
@@ -468,6 +503,10 @@ public class PointsClp extends BaseModelImpl<Points> implements Points {
         sb.append(
             "<column><column-name>originatingContestPK</column-name><column-value><![CDATA[");
         sb.append(getOriginatingContestPK());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>originatingProposalId</column-name><column-value><![CDATA[");
+        sb.append(getOriginatingProposalId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

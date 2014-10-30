@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.portlet.PortletRequest;
 
+import com.ext.portlet.model.Points;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import com.liferay.portal.service.ServiceContext;
@@ -19,6 +20,16 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 public class ContestsAdmin {
     private ContestWrapper editedContest;
+
+    public List<Points> getMaterializedPoints() {
+        return materializedPoints;
+    }
+
+    public void setMaterializedPoints(List<Points> materializedPoints) {
+        this.materializedPoints = materializedPoints;
+    }
+
+    private List<Points> materializedPoints;
     
     public List<ContestWrapper> getContests() throws SystemException, PortalException {
         List<ContestWrapper> ret = new ArrayList<ContestWrapper>();
@@ -44,10 +55,17 @@ public class ContestsAdmin {
     }
     
 
-    public String recalculatePoints() throws PortalException, SystemException {
-    	Contest contest = editedContest.getContest();
-    	PointsLocalServiceUtil.distributePoints(contest.getContestPK());
-    	return null;
+    public String calculatePoints() throws PortalException, SystemException {
+        Contest contest = editedContest.getContest();
+        PointsLocalServiceUtil.distributePoints(contest.getContestPK());
+        return null;
+    }
+
+    public String pointsPreview() throws PortalException, SystemException {
+        Contest contest = editedContest.getContest();
+        this.materializedPoints = PointsLocalServiceUtil.previewMaterializedPoints(contest.getContestPK());
+
+        return "pointsPreview";
     }
 
     public String sendSupport2VotesEmail() throws PortalException, SystemException {

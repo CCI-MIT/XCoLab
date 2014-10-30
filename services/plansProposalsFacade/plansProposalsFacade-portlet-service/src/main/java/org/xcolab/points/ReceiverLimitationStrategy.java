@@ -76,7 +76,6 @@ public enum ReceiverLimitationStrategy {
 				}
 				if (targets.isEmpty()) {
 					// there is no configuration for specific users, distribute equally
-
 					List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
 					for (User u: members) {
 						PointsTarget target = new PointsTarget();
@@ -109,11 +108,13 @@ public enum ReceiverLimitationStrategy {
 			Collection<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId());
 			Set<Long> proposalIds = new HashSet<Long>();
 			for (Proposal p: subProposals) {
-				proposalIds.add(p.getProposalId());
+                if (p.getProposalId() != proposal.getProposalId()) {
+                    proposalIds.add(p.getProposalId());
+                }
 			}
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalPointType(proposal, pointType)) {
-					if (pdc.getTargetSubProposalId() > 0 && proposalIds.contains(pdc.getTargetSubProposalId())) {
+					if (pdc.getTargetSubProposalId() > 0 && proposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
 						PointsTarget target = new PointsTarget();
 						target.setProposalId(pdc.getTargetSubProposalId());
 						target.setPercentage(pdc.getPercentage());
@@ -123,10 +124,10 @@ public enum ReceiverLimitationStrategy {
 			}
 			else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
 				for (Long proposalId: proposalIds) {
-					PointsTarget target = new PointsTarget();
-					target.setProposalId(proposalId);
-					target.setPercentage(1.0d / proposalIds.size());
-					targets.add(target);
+                    PointsTarget target = new PointsTarget();
+                    target.setProposalId(proposalId);
+                    target.setPercentage(1.0d / proposalIds.size());
+                    targets.add(target);
 				}
 			}
 			return targets;

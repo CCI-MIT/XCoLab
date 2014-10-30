@@ -52,13 +52,18 @@
                 <ice:commandButton value="send email to cast support2votes" rendered="${contest.contestActive}" action="#{contestsAdmin.sendSupport2VotesEmail}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
-                <ice:commandButton value="recalculate points" action="#{contestsAdmin.recalculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
+                
+                <ice:commandButton rendered="#{contest.canDistributePoints and contest.hasEnded}" value="Calculate and materialize points" action="#{contestsAdmin.calculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
+                    <f:attribute name="contest" value="#{contest}" />
+                </ice:commandButton>
+                <ice:commandButton rendered="#{contest.canDistributePoints and contest.hasEnded}" value="Preview materialized points" action="#{contestsAdmin.pointsPreview}" actionListener="#{contestsAdmin.editContestActionListener}">
+                    <f:attribute name="contest" value="#{contest}" />
+                </ice:commandButton>
+                <ice:commandButton rendered="#{contest.canDistributePoints and not contest.hasEnded}" value="Calculate hypothetical points" action="#{contestsAdmin.calculatePoints}" actionListener="#{contestsAdmin.editContestActionListener}">
                     <f:attribute name="contest" value="#{contest}" />
                 </ice:commandButton>
                 <ice:commandButton value="delete" actionListener="#{contest.delete}" />
-            
             </ice:column>
-            
         </ice:dataTable>
 		<ice:commandButton value="Add new contest" action="#{contestsAdmin.addContest}"  />
     </ice:panelTab>

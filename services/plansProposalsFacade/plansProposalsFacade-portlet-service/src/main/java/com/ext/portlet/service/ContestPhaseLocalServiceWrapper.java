@@ -275,6 +275,14 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
             arguments);
     }
 
+    /**
+    * This can be used by unit tests to set a different clock than the standard one
+    */
+    @Override
+    public void overrideClock(org.xcolab.utils.Clock clock) {
+        _contestPhaseLocalService.overrideClock(clock);
+    }
+
     @Override
     public java.util.List<com.ext.portlet.model.PlanItem> getPlans(
         com.ext.portlet.model.ContestPhase contestPhase)

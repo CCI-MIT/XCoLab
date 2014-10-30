@@ -43,6 +43,7 @@ public class PointsWrapper implements Points, ModelWrapper<Points> {
         attributes.put("hypotheticalPoints", getHypotheticalPoints());
         attributes.put("pointsSourceId", getPointsSourceId());
         attributes.put("originatingContestPK", getOriginatingContestPK());
+        attributes.put("originatingProposalId", getOriginatingProposalId());
 
         return attributes;
     }
@@ -92,6 +93,13 @@ public class PointsWrapper implements Points, ModelWrapper<Points> {
 
         if (originatingContestPK != null) {
             setOriginatingContestPK(originatingContestPK);
+        }
+
+        Long originatingProposalId = (Long) attributes.get(
+                "originatingProposalId");
+
+        if (originatingProposalId != null) {
+            setOriginatingProposalId(originatingProposalId);
         }
     }
 
@@ -275,6 +283,26 @@ public class PointsWrapper implements Points, ModelWrapper<Points> {
     @Override
     public void setOriginatingContestPK(long originatingContestPK) {
         _points.setOriginatingContestPK(originatingContestPK);
+    }
+
+    /**
+    * Returns the originating proposal ID of this points.
+    *
+    * @return the originating proposal ID of this points
+    */
+    @Override
+    public long getOriginatingProposalId() {
+        return _points.getOriginatingProposalId();
+    }
+
+    /**
+    * Sets the originating proposal ID of this points.
+    *
+    * @param originatingProposalId the originating proposal ID of this points
+    */
+    @Override
+    public void setOriginatingProposalId(long originatingProposalId) {
+        _points.setOriginatingProposalId(originatingProposalId);
     }
 
     @Override

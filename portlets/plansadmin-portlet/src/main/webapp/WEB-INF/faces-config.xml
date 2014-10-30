@@ -82,10 +82,17 @@
 	<navigation-rule>
 		<from-view-id>/xhtml/view.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>editContest</from-outcome>
-			<to-view-id>/xhtml/editContest.xhtml</to-view-id>
+			<from-outcome>pointsPreview</from-outcome>
+			<to-view-id>/xhtml/pointsPreview.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+    <navigation-rule>
+        <from-view-id>/xhtml/view.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editContest</from-outcome>
+            <to-view-id>/xhtml/editContest.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<from-view-id>/xhtml/view.xhtml</from-view-id>
 		<navigation-case>

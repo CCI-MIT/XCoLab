@@ -25,10 +25,11 @@ public class PointsCacheModel implements CacheModel<Points>, Externalizable {
     public double hypotheticalPoints;
     public long pointsSourceId;
     public long originatingContestPK;
+    public long originatingProposalId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(id);
@@ -44,6 +45,8 @@ public class PointsCacheModel implements CacheModel<Points>, Externalizable {
         sb.append(pointsSourceId);
         sb.append(", originatingContestPK=");
         sb.append(originatingContestPK);
+        sb.append(", originatingProposalId=");
+        sb.append(originatingProposalId);
         sb.append("}");
 
         return sb.toString();
@@ -60,6 +63,7 @@ public class PointsCacheModel implements CacheModel<Points>, Externalizable {
         pointsImpl.setHypotheticalPoints(hypotheticalPoints);
         pointsImpl.setPointsSourceId(pointsSourceId);
         pointsImpl.setOriginatingContestPK(originatingContestPK);
+        pointsImpl.setOriginatingProposalId(originatingProposalId);
 
         pointsImpl.resetOriginalValues();
 
@@ -75,6 +79,7 @@ public class PointsCacheModel implements CacheModel<Points>, Externalizable {
         hypotheticalPoints = objectInput.readDouble();
         pointsSourceId = objectInput.readLong();
         originatingContestPK = objectInput.readLong();
+        originatingProposalId = objectInput.readLong();
     }
 
     @Override
@@ -87,5 +92,6 @@ public class PointsCacheModel implements CacheModel<Points>, Externalizable {
         objectOutput.writeDouble(hypotheticalPoints);
         objectOutput.writeLong(pointsSourceId);
         objectOutput.writeLong(originatingContestPK);
+        objectOutput.writeLong(originatingProposalId);
     }
 }

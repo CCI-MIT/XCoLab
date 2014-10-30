@@ -56,9 +56,10 @@ public class PointsModelImpl extends BaseModelImpl<Points>
             { "materializedPoints", Types.DOUBLE },
             { "hypotheticalPoints", Types.DOUBLE },
             { "pointsSourceId", Types.BIGINT },
-            { "originatingContestPK", Types.BIGINT }
+            { "originatingContestPK", Types.BIGINT },
+            { "originatingProposalId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Points (id_ LONG not null primary key,proposalId LONG,userId LONG,materializedPoints DOUBLE,hypotheticalPoints DOUBLE,pointsSourceId LONG,originatingContestPK LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Points (id_ LONG not null primary key,proposalId LONG,userId LONG,materializedPoints DOUBLE,hypotheticalPoints DOUBLE,pointsSourceId LONG,originatingContestPK LONG,originatingProposalId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Points";
     public static final String ORDER_BY_JPQL = " ORDER BY points.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Points.id_ ASC";
@@ -99,6 +100,7 @@ public class PointsModelImpl extends BaseModelImpl<Points>
     private long _originatingContestPK;
     private long _originalOriginatingContestPK;
     private boolean _setOriginalOriginatingContestPK;
+    private long _originatingProposalId;
     private long _columnBitmask;
     private Points _escapedModel;
 
@@ -125,6 +127,7 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         model.setHypotheticalPoints(soapModel.getHypotheticalPoints());
         model.setPointsSourceId(soapModel.getPointsSourceId());
         model.setOriginatingContestPK(soapModel.getOriginatingContestPK());
+        model.setOriginatingProposalId(soapModel.getOriginatingProposalId());
 
         return model;
     }
@@ -190,6 +193,7 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         attributes.put("hypotheticalPoints", getHypotheticalPoints());
         attributes.put("pointsSourceId", getPointsSourceId());
         attributes.put("originatingContestPK", getOriginatingContestPK());
+        attributes.put("originatingProposalId", getOriginatingProposalId());
 
         return attributes;
     }
@@ -239,6 +243,13 @@ public class PointsModelImpl extends BaseModelImpl<Points>
 
         if (originatingContestPK != null) {
             setOriginatingContestPK(originatingContestPK);
+        }
+
+        Long originatingProposalId = (Long) attributes.get(
+                "originatingProposalId");
+
+        if (originatingProposalId != null) {
+            setOriginatingProposalId(originatingProposalId);
         }
     }
 
@@ -377,6 +388,17 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         return _originalOriginatingContestPK;
     }
 
+    @JSON
+    @Override
+    public long getOriginatingProposalId() {
+        return _originatingProposalId;
+    }
+
+    @Override
+    public void setOriginatingProposalId(long originatingProposalId) {
+        _originatingProposalId = originatingProposalId;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -415,6 +437,7 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         pointsImpl.setHypotheticalPoints(getHypotheticalPoints());
         pointsImpl.setPointsSourceId(getPointsSourceId());
         pointsImpl.setOriginatingContestPK(getOriginatingContestPK());
+        pointsImpl.setOriginatingProposalId(getOriginatingProposalId());
 
         pointsImpl.resetOriginalValues();
 
@@ -501,12 +524,14 @@ public class PointsModelImpl extends BaseModelImpl<Points>
 
         pointsCacheModel.originatingContestPK = getOriginatingContestPK();
 
+        pointsCacheModel.originatingProposalId = getOriginatingProposalId();
+
         return pointsCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(17);
 
         sb.append("{id=");
         sb.append(getId());
@@ -522,6 +547,8 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         sb.append(getPointsSourceId());
         sb.append(", originatingContestPK=");
         sb.append(getOriginatingContestPK());
+        sb.append(", originatingProposalId=");
+        sb.append(getOriginatingProposalId());
         sb.append("}");
 
         return sb.toString();
@@ -529,7 +556,7 @@ public class PointsModelImpl extends BaseModelImpl<Points>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(28);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Points");
@@ -562,6 +589,10 @@ public class PointsModelImpl extends BaseModelImpl<Points>
         sb.append(
             "<column><column-name>originatingContestPK</column-name><column-value><![CDATA[");
         sb.append(getOriginatingContestPK());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>originatingProposalId</column-name><column-value><![CDATA[");
+        sb.append(getOriginatingProposalId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");
