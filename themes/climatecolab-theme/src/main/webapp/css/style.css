@@ -604,7 +604,8 @@ a.get:hover {background:url(../images/homespot-get-hover.png) no-repeat;}
 
 /* top section of the contests page under the headline, above the sub-headline */
 .contest-detail {background-color:#f2f1e9; border-bottom:1px solid #bdbcb7; margin-top:-4px; color:#404040;}
-.contest-detail .heading {background:url(../images/pattern-6x6-lite.png) #e6e4d5; min-height:24px; padding:27px 0 25px 20px; font-size:22px;}
+.contest-detail .heading {background:url(../images/pattern-6x6-lite.png) #e6e4d5; min-height:24px; padding:7px 0 5px 20px; font-size:22px;}
+.contest-detail .heading-title {margin: 20px 0;}
 .contest-detail .description {padding:18px 16px 20px 18px;}
 .contest-detail .description p {padding-right:22px; line-height:24px;}
 
