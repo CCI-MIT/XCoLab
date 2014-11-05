@@ -11,14 +11,17 @@ function proposalCopy_loadContests(move, hideOnMove) {
     		html.push("<td>");
     		html.push('<div class="blue-button"><a href="/web/guest/plans/-/plans/contestId/');
     		html.push(obj.contestPK);
+
     		if (move && hideOnMove) {
     			html.push('/planId/');
     			html.push(currentProposal.proposalId);
+                html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
     			html.push("/moveAndHide");
     		}
             else if (move && !hideOnMove) {
                 html.push('/planId/');
                 html.push(currentProposal.proposalId);
+                html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
                 html.push("/moveAndKeep");
             }
     		else {

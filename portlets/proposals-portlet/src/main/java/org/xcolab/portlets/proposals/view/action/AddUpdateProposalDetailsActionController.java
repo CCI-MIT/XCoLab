@@ -99,22 +99,25 @@ public class AddUpdateProposalDetailsActionController {
             if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
             	if (updateProposalSectionsBean.isHideOnMove()){
                     // make proposal invisible in all contest phases to which it belonged to
+
                     for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
                         // only handle phases of the currrent contest and remove these. this allows for more advanced proposal movement
-                        if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK() != updateProposalSectionsBean.getBaseProposalContestId()){
+                        if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK() != updateProposalSectionsBean.getBaseProposalContestId()) {
                             continue;
                         }
-                        // remove proposal from this contest completely
 
-                        ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), p2p.getContestPhaseId(),
-                                ProposalContestPhaseAttributeKeys.VISIBLE, 0);
-
-                        if (p2p.getContestPhaseId() == proposalsContext.getContestPhase(request).getContestPhasePK()) {
-                            Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
-                        }
-                        else if (p2p.getVersionTo() < 0) {
+                        // Set end version if it was not set already
+                        if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposal.getCurrentVersion());
                             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                        }
+
+                        if(updateProposalSectionsBean.getMoveFromContestPhaseId() != null){
+                            if (!ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate().before(
+                                    ContestPhaseLocalServiceUtil.getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId()).getPhaseStartDate())) {
+                                // remove proposal from this contest in all phases that come after the selected one
+                                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
+                            }
                         }
                     }
                 } else {
